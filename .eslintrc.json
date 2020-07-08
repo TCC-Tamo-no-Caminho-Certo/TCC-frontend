@@ -1,0 +1,38 @@
+{
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb",
+    "prettier",
+    "prettier/standard",
+    "prettier/react",
+    "eslint:recommended"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 8,
+    "sourceType": "module"
+  },
+  "env": {
+    "browser": true
+  },
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "detect"
+    },
+    "import/resolver": {
+      "babel-plugin-root-import": {
+        "rootPathSuffix": "src"
+      }
+    }
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "import/prefer-default-export": "off",
+    "import/no-default-export": "error"
+  }
+}
