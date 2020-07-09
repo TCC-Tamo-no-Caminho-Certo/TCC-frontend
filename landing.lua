@@ -9,7 +9,7 @@ if Directory.exists(distPath) == false then
 end
 
 -- Create directories
-outputDirectory = Path.combine(Directory.getCurrentDirectory(), "build");
+outputDirectory = Path.combine(Directory.getCurrentDirectory(), "landing");
 outputDirectories = Directory.getDirectories(outputDirectory, "*", SearchOption.AllDirectories)
 for key,value in ipairs(outputDirectories) do
   directoryReplace = value:gsub(outputPath, "")
