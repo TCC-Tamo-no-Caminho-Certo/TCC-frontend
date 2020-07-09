@@ -2,8 +2,9 @@ import styled from "styled-components"
 import FlexBox from "components/FlexBox"
 
 export const Style = styled(FlexBox)`
-  width: 258px;
+  width: 244px;
   flex-direction: row;
+
 
   #logoImage {
     margin-right: 20px;
