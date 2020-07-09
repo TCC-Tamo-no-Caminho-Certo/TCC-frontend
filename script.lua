@@ -40,7 +40,7 @@ for key,value in ipairs(outputDirectories) do
     print("Blacklisted directory: " .. Path.getFileName(directoryReplace) .. "\n")
     goto continue
   end
-  fixedDirectory = Path.combine(pluginsPath, directoryReplace)
+  fixedDirectory = Path.combine(distPath, directoryReplace)
   if Directory.exists(fixedDirectory) == false then
     print("Creating directory: " .. fixedDirectory .. "\n")
     Directory.createDirectory(fixedDirectory)
@@ -56,7 +56,7 @@ for key,value in ipairs(outputFiles) do
     print("Blacklisted file: " .. Path.getFileName(fileNameReplace) .. "\n")
     goto continue
   end
-  fixedFileName = Path.combine(pluginsPath, fileNameReplace)
+  fixedFileName = Path.combine(distPath, fileNameReplace)
   print("Copying file: " .. fixedFileName .. "\n")
   File.copy(value, fixedFileName, true)
   ::continue::
