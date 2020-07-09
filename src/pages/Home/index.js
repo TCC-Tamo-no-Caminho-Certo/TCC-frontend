@@ -4,10 +4,10 @@ import SignIn from "./SignIn"
 import SignUp from "./SignUp"
 import About from "./About"
 import useRegister from "store/useRegister"
-import {Helmet} from "react-helmet"
+import { Helmet } from "react-helmet"
 
 export default function Home() {
-  const {register} = useRegister()
+  const { register } = useRegister()
 
   return (
     <Style register={register}>
@@ -22,7 +22,7 @@ export default function Home() {
         <meta name="keywords" content="emprego, estágio, desenvolvedor" />
       </Helmet>
       <SignIn />
-      <SignUp />
+      {register !== "starting" && <SignUp />}
       <About />
     </Style>
   )

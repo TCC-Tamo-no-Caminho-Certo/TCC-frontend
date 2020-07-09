@@ -1,4 +1,4 @@
-import {createGlobalStyle} from "styled-components"
+import { createGlobalStyle } from "styled-components"
 import cursor from "assets/cursor.cur"
 
 const GlobalStyle = createGlobalStyle`

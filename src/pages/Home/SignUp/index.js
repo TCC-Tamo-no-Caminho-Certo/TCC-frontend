@@ -1,27 +1,27 @@
-import React, {useRef, useEffect} from "react"
+import React, { useRef, useEffect } from "react"
 import Style from "./styles"
 import validation from "./validation"
 import InputText from "components/Form/InputText"
-import {ButtonPrimary} from "components/Form/Button"
+import { ButtonPrimary } from "components/Form/Button"
 import FlexBox from "components/FlexBox"
 import CheckBox from "components/Form/CheckBox"
 import Select from "components/Form/Select"
 import useRegister from "store/useRegister"
 import api from "services/api"
 import x from "assets/x.svg"
-import {Form} from "@unform/web"
+import { Form } from "@unform/web"
 import * as Yup from "yup"
 import anime from "animejs"
 
 const roles = [
-  {value: "student", label: "Estudante"},
-  {value: "professor", label: "Professor"},
-  {value: "client", label: "Cliente"},
+  { value: "student", label: "Estudante" },
+  { value: "professor", label: "Professor" },
+  { value: "client", label: "Cliente" },
 ]
 
 export default function SignUp() {
   const signUpRef = useRef(null)
-  const {register, setRegister} = useRegister()
+  const { register, setRegister } = useRegister()
 
   useEffect(() => {
     if (register !== "starting") {
@@ -34,7 +34,7 @@ export default function SignUp() {
     }
   }, [register])
 
-  async function onSignUpSubmit(data, {reset}) {
+  async function onSignUpSubmit(data, { reset }) {
     try {
       const schema = Yup.object().shape(validation)
       await schema.validate(data, {

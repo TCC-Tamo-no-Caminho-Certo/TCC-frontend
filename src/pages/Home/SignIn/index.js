@@ -1,24 +1,24 @@
-import React, {useRef, useEffect} from "react"
+import React, { useRef, useEffect } from "react"
 import Style from "./styles"
 import Logo from "./Logo"
 import validation from "./validation"
-import {useHistory} from "react-router-dom"
-import {Form} from "@unform/web"
-import * as Yup from "yup"
-import anime from "animejs"
 import ThemeSwitch from "components/ThemeSwitch"
 import InputText from "components/Form/InputText"
 import FlexBox from "components/FlexBox"
-import {ButtonPrimary, ButtonSecondary} from "components/Form/Button"
+import { ButtonPrimary, ButtonSecondary } from "components/Form/Button"
 import useRegister from "store/useRegister"
 import api from "services/api"
 import linkedin from "assets/linkedin.png"
 import google from "assets/google.png"
 import github from "assets/github.png"
+import { Form } from "@unform/web"
+import * as Yup from "yup"
+import anime from "animejs"
+import { useHistory } from "react-router-dom"
 
 export default function SignIn() {
   const signInRef = useRef(null)
-  const {register, setRegister} = useRegister()
+  const { register, setRegister } = useRegister()
   let history = useHistory()
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function SignIn() {
     }
   }, [register])
 
-  async function onSignInSubmit(data, {reset}) {
+  async function onSignInSubmit(data, { reset }) {
     try {
       const schema = Yup.object().shape(validation)
       await schema.validate(data, {

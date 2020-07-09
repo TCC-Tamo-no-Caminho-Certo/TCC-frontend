@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import FlexBox from "components/FlexBox"
 
-const fromTheme = (attribute) => ({theme}) => theme[attribute]
+const fromTheme = (attribute) => ({ theme }) => theme[attribute]
 
 const Style = styled(FlexBox)`
   grid-area: signIn;
@@ -26,8 +26,7 @@ const Style = styled(FlexBox)`
     margin-bottom: 20px;
   }
   .Switch {
-    padding-right: 45%;
-    margin-left: 100%;
+    padding-left: 45%;
   }
 
   @media screen and (min-width: 1200px) {

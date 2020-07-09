@@ -1,16 +1,16 @@
-import React, {useContext} from "react"
-import FlexBox from "components/FlexBox"
-import useTheme from "store/useTheme"
-import {ThemeContext} from "styled-components"
-import Switch from "react-switch"
+import React, { useContext } from "react"
 
+import useTheme from "store/useTheme"
+import { ThemeContext } from "styled-components"
+import Switch from "react-switch"
+import FlexBox from 'components/FlexBox'
 function ThemSwitch() {
   const themes = useContext(ThemeContext)
-  const {theme, setTheme} = useTheme()
+  const { theme, setTheme } = useTheme()
 
   return (
     <FlexBox row className="Switch">
-      <span style={{color: themes.tertiary}}>Darkmode</span>
+      <span style={{ color: themes.tertiary }}>Darkmode</span>
       <Switch
         offColor={themes.primary}
         onColor={themes.tertiary}
