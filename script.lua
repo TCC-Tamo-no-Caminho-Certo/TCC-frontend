@@ -14,52 +14,60 @@ function executeProcess(exec, args)
     print(data)
 end
 
-print("Running 'npm install'...\n")
-executeProcess("npm", "install")
+--print("Running 'npm install'...\n")
+--executeProcess("npm", "install")
 
-print("Running 'npm run build'...\n")
-executeProcess("npm", "run build")
+--print("Running 'npm run build'...\n")
+--executeProcess("npm", "run build")
 
 -- Filename and directory blacklist
-function isBlackListed(path)
-  return false
-end
-  
+ 
 -- Create base directory
 distPath = "/home/frontend/dist"
+outputPath = "/home/frontend/lbe/dev_frontend/build/"
 if Directory.exists(distPath) == false then
   Directory.createDirectory(distPath)
 end
-  
--- Create directories
+
 outputDirectory = Path.combine(Directory.getCurrentDirectory(), "build");
 outputDirectories = Directory.getDirectories(outputDirectory, "*", SearchOption.AllDirectories)
 for key,value in ipairs(outputDirectories) do
-  directoryReplace = value:gsub(outputDirectory, "")
-  if isBlackListed(directoryReplace) == true then
-    print("Blacklisted directory: " .. Path.getFileName(directoryReplace) .. "\n")
-    goto continue
-  end
+  directoryReplace = value:gsub(outputPath, "")
   fixedDirectory = Path.combine(distPath, directoryReplace)
   if Directory.exists(fixedDirectory) == false then
     print("Creating directory: " .. fixedDirectory .. "\n")
-    Directory.createDirectory(fixedDirectory)
+    --Directory.createDirectory(fixedDirectory)
   end
-  ::continue::
 end
-  
--- Copy files
+
 outputFiles = Directory.getFiles(outputDirectory, "*.*", SearchOption.AllDirectories)
 for key,value in ipairs(outputFiles) do
-  fileNameReplace = value:gsub(outputDirectory, "")
-  if isBlackListed(Path.getFileName(fileNameReplace)) == true then
-    print("Blacklisted file: " .. Path.getFileName(fileNameReplace) .. "\n")
-    goto continue
-  end
+  fileNameReplace = value:gsub(outputPath, "")
   fixedFileName = Path.combine(distPath, fileNameReplace)
   print("Copying file: " .. fixedFileName .. "\n")
-  File.copy(value, fixedFileName, true)
-  ::continue::
+  --File.copy(value, fixedFileName, true)
 end
+
+-- Create directories
+--outputDirectory = Path.combine(Directory.getCurrentDirectory(), "build");
+--outputDirectories = Directory.getDirectories(outputDirectory, "*", SearchOption.AllDirectories)
+--for key,value in ipairs(outputDirectories) do
+  --directoryReplace = value:gsub(outputDirectory, "")
+
+  --fixedDirectory = Path.combine(distPath, directoryReplace)
+  --if Directory.exists(fixedDirectory) == false then
+    --print("Creating directory: " .. fixedDirectory .. "\n")
+    --Directory.createDirectory(fixedDirectory)
+  --end
+--end
+  
+-- Copy files
+--outputFiles = Directory.getFiles(outputDirectory, "*.*", SearchOption.AllDirectories)
+--for key,value in ipairs(outputFiles) do
+  --fileNameReplace = value:gsub(outputDirectory, "")
+  --fixedFileName = Path.combine(distPath, fileNameReplace)
+  --print("Copying file: " .. fixedFileName .. "\n")
+  --File.copy(value, fixedFileName, true)
+--end
 
 print("[LuaBuildEvents] Finishing Frontend Post Pull\n")
