@@ -8,6 +8,16 @@ if Directory.exists(distPath) == false then
   Directory.createDirectory(distPath)
 end
 
+-- Delete old data
+oldFiles = Directory.getFiles(distPath, "*.*", SearchOption.AllDirectories)
+for key,value in ipairs(oldFiles) do
+  File.delete(value)
+end
+oldDirectories = Directory.getDirectories(distPath, "*", SearchOption.AllDirectories)
+for key,value in ipairs(oldDirectories) do
+  Directory.delete(value)
+end
+
 -- Create directories
 outputDirectory = Path.combine(Directory.getCurrentDirectory(), "landing");
 outputDirectories = Directory.getDirectories(outputDirectory, "*", SearchOption.AllDirectories)
