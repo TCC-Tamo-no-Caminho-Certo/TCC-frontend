@@ -15,7 +15,7 @@ for key,value in ipairs(oldFiles) do
 end
 oldDirectories = Directory.getDirectories(distPath, "*", SearchOption.AllDirectories)
 for key,value in ipairs(oldDirectories) do
-  Directory.delete(value)
+  Directory.delete(value, true)
 end
 
 -- Create directories
