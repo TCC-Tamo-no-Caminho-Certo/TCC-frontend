@@ -17,4 +17,7 @@ end
 print("Running 'npm install'...\n");
 executeProcess("npm", "install");
 
+print("Running 'npm build'...\n");
+executeProcess("npm", "build");
+
 print("[LuaBuildEvents] Finishing Frontend Post Pull\n");
