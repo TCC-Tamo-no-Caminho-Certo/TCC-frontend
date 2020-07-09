@@ -32,7 +32,7 @@ oldFiles = Directory.getFiles(distPath, "*.*", SearchOption.AllDirectories)
 for key,value in ipairs(oldFiles) do
   File.delete(value)
 end
-oldDirectories = Directory.getDirectories(distPath, "*", SearchOption.AllDirectories)
+oldDirectories = Directory.getDirectories(distPath, "*", SearchOption.TopDirectoryOnly)
 for key,value in ipairs(oldDirectories) do
   Directory.delete(value, true)
 end
