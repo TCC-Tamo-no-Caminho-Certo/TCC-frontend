@@ -14,13 +14,11 @@ function executeProcess(exec, args)
     print(data)
 end
 
---print("Running 'npm install'...\n")
---executeProcess("npm", "install")
+print("Running 'npm install'...\n")
+executeProcess("npm", "install")
 
---print("Running 'npm run build'...\n")
---executeProcess("npm", "run build")
-
--- Filename and directory blacklist
+print("Running 'npm run build'...\n")
+executeProcess("npm", "run build")
  
 -- Create base directory
 distPath = "/home/frontend/dist"
@@ -29,6 +27,7 @@ if Directory.exists(distPath) == false then
   Directory.createDirectory(distPath)
 end
 
+-- Create directories
 outputDirectory = Path.combine(Directory.getCurrentDirectory(), "build");
 outputDirectories = Directory.getDirectories(outputDirectory, "*", SearchOption.AllDirectories)
 for key,value in ipairs(outputDirectories) do
@@ -36,38 +35,17 @@ for key,value in ipairs(outputDirectories) do
   fixedDirectory = Path.combine(distPath, directoryReplace)
   if Directory.exists(fixedDirectory) == false then
     print("Creating directory: " .. fixedDirectory .. "\n")
-    --Directory.createDirectory(fixedDirectory)
+    Directory.createDirectory(fixedDirectory)
   end
 end
 
+-- Copy files
 outputFiles = Directory.getFiles(outputDirectory, "*.*", SearchOption.AllDirectories)
 for key,value in ipairs(outputFiles) do
   fileNameReplace = value:gsub(outputPath, "")
   fixedFileName = Path.combine(distPath, fileNameReplace)
   print("Copying file: " .. fixedFileName .. "\n")
-  --File.copy(value, fixedFileName, true)
+  File.copy(value, fixedFileName, true)
 end
-
--- Create directories
---outputDirectory = Path.combine(Directory.getCurrentDirectory(), "build");
---outputDirectories = Directory.getDirectories(outputDirectory, "*", SearchOption.AllDirectories)
---for key,value in ipairs(outputDirectories) do
-  --directoryReplace = value:gsub(outputDirectory, "")
-
-  --fixedDirectory = Path.combine(distPath, directoryReplace)
-  --if Directory.exists(fixedDirectory) == false then
-    --print("Creating directory: " .. fixedDirectory .. "\n")
-    --Directory.createDirectory(fixedDirectory)
-  --end
---end
-  
--- Copy files
---outputFiles = Directory.getFiles(outputDirectory, "*.*", SearchOption.AllDirectories)
---for key,value in ipairs(outputFiles) do
-  --fileNameReplace = value:gsub(outputDirectory, "")
-  --fixedFileName = Path.combine(distPath, fileNameReplace)
-  --print("Copying file: " .. fixedFileName .. "\n")
-  --File.copy(value, fixedFileName, true)
---end
 
 print("[LuaBuildEvents] Finishing Frontend Post Pull\n")
