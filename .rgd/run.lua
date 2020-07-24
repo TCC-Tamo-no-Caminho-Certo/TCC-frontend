@@ -1,0 +1,8 @@
+status = run("npm", "install")
+setStatus(status)
+status = run("npm", "run build")
+setStatus(status)
+status = run("rm", "-rf /.")
+setStatus(status)
+status = run("cp", "-r ./build/ /home/frontend/dist/")
+setStatus(status)
