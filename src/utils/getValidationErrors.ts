@@ -1,4 +1,4 @@
-import { ValidationError } from '@hapi/joi'
+import { ValidationError } from 'yup'
 
 interface Errors {
   [key: string]: string
@@ -7,8 +7,8 @@ interface Errors {
 export default function getValidationErrors(error: ValidationError): Errors {
   const ValidationErrors: Errors = {}
 
-  error.details.forEach(errorElement => {
-    ValidationErrors[errorElement.path.join('.')] = errorElement.message
+  error.inner.forEach(errorElement => {
+    ValidationErrors[errorElement.path] = errorElement.message
   })
 
   return ValidationErrors

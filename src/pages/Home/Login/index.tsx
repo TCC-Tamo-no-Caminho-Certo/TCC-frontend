@@ -12,7 +12,7 @@ import { SubmitHandler, FormHandles } from '@unform/core'
 import Switch from 'react-switch'
 import { ThemeContext } from 'styled-components'
 import { useHistory } from 'react-router-dom'
-import Joi from '@hapi/joi'
+import * as Yup from 'yup'
 // import api from 'services/api'
 import anime from 'animejs'
 import { useAuth } from 'hooks/useAuth'
@@ -84,15 +84,16 @@ const Login: React.FC = () => {
     async (data, { reset }, event) => {
       event?.preventDefault()
       try {
-        Joi.assert(data, loginSchema, { abortEarly: false })
+        await loginSchema.validate(data, { abortEarly: false })
         await login(data)
         loginFormRef.current?.setErrors({})
         reset()
         history.push('/map')
       } catch (error) {
-        if (error instanceof Joi.ValidationError) {
+        if (error instanceof Yup.ValidationError) {
           const errorList = getValidationErrors(error)
           loginFormRef.current?.setErrors(errorList)
+          console.log(errorList)
         }
       }
     },

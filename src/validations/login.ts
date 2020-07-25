@@ -1,27 +1,11 @@
-import Joi from '@hapi/joi'
+import * as Yup from 'yup'
 
-const loginSchema = Joi.object({
-  email: Joi.string()
-    .email({ tlds: { allow: false } })
-    .max(50)
-    .required()
-    .messages({
-      'string.empty': `Você esqueceu do e-mail!`,
-      'any.required': `Você esqueceu do email!`,
-      'string.max': `Você ultrapassou o limite de caracteres!`,
-    }),
+const loginSchema = Yup.object({
+  email: Yup.string()
+    .email('O e-mail deve ser válido!')
+    .required('Você esqueceu de informar o email!'),
 
-  password: Joi.string()
-    .min(8)
-    .regex(
-      /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[#?!@$%^&*+{}()[\]/"';,.°~=|_-]).{8,}$/
-    )
-    .required()
-    .messages({
-      'string.empty': `Não deixe a senha vazia!`,
-      'any.required': `Não deixe a senha vazia!`,
-      'string.min': `A senha deve conter mais que 8 caracteres!`,
-    }),
+  password: Yup.string().required('Você esqueceu de informar a senha!'),
 })
 
 export default loginSchema
