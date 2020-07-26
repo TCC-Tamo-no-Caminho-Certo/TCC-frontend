@@ -17,7 +17,7 @@ export const Style = styled.div<StyleProps>`
   border: none;
   background-color: transparent;
   position: relative;
-  border-bottom: 2px solid ${fromTheme('quinary')};
+  border-bottom: 2px solid ${fromTheme('tertiary')};
 
   .alert {
     opacity: 0.8;
@@ -35,7 +35,7 @@ export const Style = styled.div<StyleProps>`
   }
 
   svg {
-    color: ${fromTheme('quinary')};
+    color: ${fromTheme('tertiary')};
     height: 100%;
     width: 10%;
     padding: 2px;
@@ -51,7 +51,7 @@ export const Style = styled.div<StyleProps>`
     color: ${fromTheme('primary')};
 
     &::placeholder {
-      color: ${fromTheme('quinary')};
+      color: ${fromTheme('tertiary')};
     }
   }
 
@@ -84,5 +84,3 @@ export const Style = styled.div<StyleProps>`
       }
     `}
 `
-
-export const Error = styled.div``

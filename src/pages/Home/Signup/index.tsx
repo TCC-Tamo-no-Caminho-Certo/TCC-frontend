@@ -1,14 +1,14 @@
-import React, { useRef, useEffect, useCallback } from 'react'
+import React, { useRef, useCallback } from 'react'
 import { Form } from '@unform/web'
 import InputText from 'components/InputText/index'
 import { FormHandles, SubmitHandler } from '@unform/core'
 import { useHistory } from 'react-router-dom'
 import signupSchema from 'validations/signup'
 import SignupButton from 'components/Button'
-import { useRegister } from 'hooks/useRegister'
-import anime from 'animejs'
 import * as Yup from 'yup'
 import getValidationErrors from 'utils/getValidationErrors'
+import { useRegister } from 'hooks/useRegister'
+import Anime from '@mollycule/react-anime'
 import { Style } from './styles'
 
 interface FormData {
@@ -16,26 +16,11 @@ interface FormData {
   password: string
 }
 
-interface ErrorList {
-  [key: string]: string
-}
-
 const Signup: React.FC = () => {
   const signupFormRef = useRef<FormHandles>(null)
   const signupRef = useRef(null)
   const history = useHistory()
-  const { register } = useRegister()
-
-  useEffect(() => {
-    if (register !== 'starting') {
-      anime({
-        targets: signupRef.current,
-        duration: 1000,
-        easing: 'easeInOutCirc',
-        translateX: register === 'registering' ? [0, '-100%'] : ['-100%', 0],
-      })
-    }
-  }, [register])
+  const { register, setRegister } = useRegister()
 
   const onSignupSubmit: SubmitHandler<FormData> = useCallback(
     async (data, { reset }, event) => {
@@ -49,7 +34,6 @@ const Signup: React.FC = () => {
         if (error instanceof Yup.ValidationError) {
           const errorList = getValidationErrors(error)
           signupFormRef.current?.setErrors(errorList)
-          console.log(errorList)
         }
       }
     },
@@ -57,15 +41,34 @@ const Signup: React.FC = () => {
   )
 
   return (
-    <Style ref={signupRef}>
-      <Form ref={signupFormRef} onSubmit={onSignupSubmit}>
-        <InputText name='name' placeholder='name' />
-        <InputText name='email' placeholder='email' />
-        <InputText name='password' placeholder='password' />
-        <InputText name='confirm_password' placeholder='Confirmar Senha' />
-        <SignupButton type='submit'>Concluir Cadastro</SignupButton>
-      </Form>
-    </Style>
+    <Anime
+      in={register}
+      appear={false}
+      duration={2000}
+      mountOnEnter
+      unmountOnExit
+      onEntering={{
+        easing: 'easeOutQuad',
+        translateX: [0, '-100vw'],
+      }}
+      onExiting={{
+        easing: 'easeOutQuad',
+        translateX: ['-100vw', 0],
+      }}
+    >
+      <Style ref={signupRef}>
+        <button type='button' onClick={() => setRegister(false)}>
+          Voltar
+        </button>
+        <Form ref={signupFormRef} onSubmit={onSignupSubmit}>
+          <InputText name='name' placeholder='name' />
+          <InputText name='email' placeholder='email' />
+          <InputText name='password' placeholder='password' />
+          <InputText name='confirm_password' placeholder='Confirmar Senha' />
+          <SignupButton type='submit'>Concluir Cadastro</SignupButton>
+        </Form>
+      </Style>
+    </Anime>
   )
 }
 

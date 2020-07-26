@@ -6,7 +6,7 @@ interface StyleProps {
 
 export const Style = styled.div<StyleProps>`
   display: grid;
-  overflow-x: hidden;
+  overflow: hidden;
 
   grid:
     'login signup' ${({ register }) =>
@@ -14,9 +14,6 @@ export const Style = styled.div<StyleProps>`
     'about .' 100vh/ 100vw 100vw;
 
   @media screen and (min-width: 1200px) {
-    grid: 'about login signup' ${({ register }) =>
-        register === 'registering'
-          ? 'minmax(100vh, auto)'
-          : '100vh'} / 70vw 30vw 70vw;
+    grid: 'about login signup subscribe' 100vh / 70vw 30vw 30vw 70vw;
   }
 `

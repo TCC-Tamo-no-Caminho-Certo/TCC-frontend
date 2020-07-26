@@ -1,9 +1,10 @@
 import React from 'react'
 import { useRegister } from 'hooks/useRegister'
+import { Style } from './styles'
 import Signup from './Signup'
 import Login from './Login'
-import { Style } from './styles'
 import About from './About'
+import Subscribe from './Subscribe'
 
 const Home: React.FC = () => {
   const { register } = useRegister()
@@ -11,6 +12,8 @@ const Home: React.FC = () => {
   return (
     <Style register={register}>
       <Login />
+
+      <Subscribe />
 
       <Signup />
 

@@ -10,6 +10,7 @@ export const Style = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: ${fromTheme('secondary')};
 `
 
 export const ThemeSwitch = styled.div`
@@ -52,45 +53,10 @@ export const LoginButton = styled(Button)`
   border-radius: 5px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   background-color: #80535d;
-  color: ${fromTheme('white')};
+  color: ${fromTheme('secondary')};
+  margin-top: 20px;
 `
 
 export const SignupButton = styled(Button)`
   margin-top: 20px;
-`
-
-export const Row = styled.div`
-  display: flex;
-  align-items: center;
-  width: 258px;
-  height: 36px;
-  margin-top: 20px;
-
-  ul {
-    display: flex;
-    align-items: center;
-    flex: 1;
-
-    li {
-      width: 34px;
-      height: 34px;
-
-      & + li {
-        margin-left: 12px;
-      }
-
-      img {
-        width: 34px;
-        height: 34px;
-        cursor: pointer;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        border-radius: 50%;
-
-        &:hover {
-          width: 35px;
-          height: 35px;
-        }
-      }
-    }
-  }
 `

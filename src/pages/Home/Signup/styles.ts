@@ -9,5 +9,5 @@ export const Style = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${fromTheme('background')};
+  background-color: ${fromTheme('secondary')};
 `

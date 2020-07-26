@@ -4,17 +4,20 @@ import React, {
   useContext,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from 'react'
 
 interface Register {
-  register: string
-  setRegister: Dispatch<SetStateAction<string>>
+  register: boolean
+  setRegister: Dispatch<SetStateAction<boolean>>
 }
 
 const RegisterContext = createContext({} as Register)
 
 export const RegisterProvider: React.FC = ({ children }) => {
-  const [register, setRegister] = useState('starting')
+  const [register, setRegister] = useState(false)
+
+  useEffect(() => console.log(register), [register])
 
   return (
     <RegisterContext.Provider value={{ register, setRegister }}>
