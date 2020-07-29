@@ -6,11 +6,11 @@ import React, {
   InputHTMLAttributes,
   ComponentType,
 } from 'react'
-import { IconBaseProps } from 'react-icons'
-import { useField } from '@unform/core'
-import { FcHighPriority } from 'react-icons/fc'
-import ReactTooltip from 'react-tooltip'
 import { Style } from './styles'
+import ReactTooltip from 'react-tooltip'
+import { useField } from '@unform/core'
+import { IconBaseProps } from 'react-icons'
+import { FcHighPriority } from 'react-icons/fc'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import fromTheme from 'utils/fromTheme'
 import Button from 'components/Button/index'
+import fromTheme from 'utils/fromTheme'
 
 export const Style = styled.section`
   grid-area: login;

@@ -1,7 +1,7 @@
 import React from 'react'
 import GlobalStyle from 'styles/GlobalStyle'
+import Routes from 'routes/index'
 import GlobalContext from 'hooks'
-import Routes from './routes/index'
 
 const App: React.FC = () => {
   return (

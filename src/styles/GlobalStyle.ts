@@ -11,7 +11,7 @@ export default createGlobalStyle`
   }
   body {
     font-size: 62.5%;
-    background-color: ${fromTheme('primary')}
+    background-color: ${fromTheme('secondary')}
   }
   a {
     text-decoration: none

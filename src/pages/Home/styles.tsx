@@ -1,16 +1,19 @@
 import styled from 'styled-components'
 
-interface StyleProps {
-  register: string | boolean
+interface RowProps {
+  registerSlide: string | boolean
 }
 
-export const Style = styled.div<StyleProps>`
+export const Style = styled.div`
+  /* overflow: hidden; */
+`
+
+export const Row = styled.section<RowProps>`
   display: grid;
-  overflow: hidden;
 
   grid:
-    'login signup' ${({ register }) =>
-      register === 'registering' ? 'minmax(100vh, auto)' : '100vh'}
+    'login signup' ${({ registerSlide }) =>
+      registerSlide ? 'minmax(100vh, auto)' : '100vh'}
     'about .' 100vh/ 100vw 100vw;
 
   @media screen and (min-width: 1200px) {

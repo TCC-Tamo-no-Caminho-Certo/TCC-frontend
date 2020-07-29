@@ -45,6 +45,7 @@
     "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/explicit-function-return-type": "off",
     "import/prefer-default-export": "off",
+    "import/order": "off",
     "react/jsx-filename-extension": [
       1,
       {

@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react'
-import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 import dark from 'styles/themes/dark'
 import light from 'styles/themes/light'
+import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 
 interface Theme {
   themeState: boolean

@@ -1,11 +1,11 @@
 import React from 'react'
 import { ThemeProvider } from './useTheme'
-import { RegisterProvider } from './useRegister'
+import { RegisterSlideProvider } from './useRegisterSlide'
 
 const GlobalProvider: React.FC = ({ children }) => {
   return (
     <ThemeProvider>
-      <RegisterProvider>{children}</RegisterProvider>
+      <RegisterSlideProvider>{children}</RegisterSlideProvider>
     </ThemeProvider>
   )
 }

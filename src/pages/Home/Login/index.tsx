@@ -1,20 +1,10 @@
-import React, { useContext, useRef, useEffect, useCallback } from 'react'
-import { FiUser, FiLock } from 'react-icons/fi'
-import loginSchema from 'validations/login'
-import InputText from 'components/InputText/'
-import Anime from '@mollycule/react-anime'
-import Logo from 'assets/Logo'
-import { useTheme } from 'hooks/useTheme'
-import { Form } from '@unform/web'
-import { SubmitHandler, FormHandles } from '@unform/core'
-import Switch from 'react-switch'
-import { ThemeContext } from 'styled-components'
-import { useHistory } from 'react-router-dom'
-import * as Yup from 'yup'
-import anime from 'animejs'
-import { useAuth } from 'hooks/useAuth'
-import getValidationErrors from 'utils/getValidationErrors'
-import { useRegister } from 'hooks/useRegister'
+import React, {
+  useContext,
+  useRef,
+  useEffect,
+  useCallback,
+  useState,
+} from 'react'
 import {
   Style,
   Content,
@@ -23,6 +13,22 @@ import {
   SignupButton,
 } from './styles'
 
+import loginSchema from 'validations/login'
+import InputText from 'components/InputText/'
+import { useAuth } from 'hooks/useAuth'
+import { useTheme } from 'hooks/useTheme'
+import { useRegisterSlide } from 'hooks/useRegisterSlide'
+import getValidationErrors from 'utils/getValidationErrors'
+import Logo from 'assets/Logo'
+import * as Yup from 'yup'
+import anime from 'animejs'
+import Switch from 'react-switch'
+import { Form } from '@unform/web'
+import { useHistory } from 'react-router-dom'
+import { ThemeContext } from 'styled-components'
+import { FiUser, FiLock } from 'react-icons/fi'
+import { SubmitHandler, FormHandles } from '@unform/core'
+
 interface FormData {
   email: string
   password: string
@@ -30,14 +36,38 @@ interface FormData {
 
 const Login: React.FC = () => {
   const themeSwitchRef = useRef(null)
-  const loginRef = useRef(null)
   const history = useHistory()
   const contentRef = useRef(null)
   const loginFormRef = useRef<FormHandles>(null)
   const { themeState, setThemeState } = useTheme()
   const themes = useContext(ThemeContext)
   const { login } = useAuth()
-  const { register, setRegister } = useRegister()
+  const { registerSlide, setRegisterSlide } = useRegisterSlide()
+  const [showLogin, setShowLogin] = useState(true)
+  const [disabled, setDisabled] = useState(true)
+
+  useEffect(() => {
+    setDisabled(true)
+    setTimeout(() => {
+      setDisabled(false)
+    }, 2010)
+    registerSlide
+      ? setTimeout(() => {
+          setShowLogin(false)
+        }, 2000)
+      : setShowLogin(true)
+  }, [registerSlide])
+
+  useEffect(() => {
+    anime({
+      targets: contentRef.current,
+      translateX: [300, 0],
+      translateY: [-10, 0],
+      opacity: [0, 1],
+      duration: 2000,
+      easing: 'easeInOutSine',
+    })
+  }, [])
 
   const onLoginSubmit: SubmitHandler<FormData> = useCallback(
     async (data, { reset }, event) => {
@@ -58,66 +88,48 @@ const Login: React.FC = () => {
     [history, login]
   )
 
-  useEffect(() => {
-    anime({
-      targets: contentRef.current,
-      translateX: [300, 0],
-      translateY: [-10, 0],
-      opacity: [0, 1],
-      duration: 2000,
-      easing: 'easeInOutSine',
-    })
-  }, [])
+  const onSignupButtonClick = () => {
+    setRegisterSlide(true)
+  }
 
   return (
-    <Anime
-      in={!register}
-      appear={false}
-      duration={2010}
-      onExiting={{
-        easing: 'easeOutQuad',
-        translateX: [0, '-100vw'],
-      }}
-      onEntering={{
-        easing: 'easeOutQuad',
-        translateX: ['-98vw', 0],
-        duration: 1960,
-      }}
-    >
-      <Style ref={loginRef}>
-        <ThemeSwitch ref={themeSwitchRef}>
-          <span>Darkmode</span>
-          <Switch
-            onChange={() => setThemeState(!themeState)}
-            checked={themeState}
-            offColor={themes.primary}
-            offHandleColor={themes.secondary}
-            onColor={themes.primary}
-            onHandleColor={themes.secondary}
-            uncheckedIcon={false}
-            checkedIcon={false}
-            height={18}
-            width={35}
-          />
-        </ThemeSwitch>
-        <Content ref={contentRef}>
-          <Logo />
-          <Form ref={loginFormRef} onSubmit={onLoginSubmit}>
-            <InputText name='email' placeholder='E-mail' icon={FiUser} />
-            <InputText
-              name='password'
-              placeholder='Senha'
-              icon={FiLock}
-              type='password'
+    <>
+      {showLogin && (
+        <Style>
+          <ThemeSwitch ref={themeSwitchRef}>
+            <span>Darkmode</span>
+            <Switch
+              onChange={() => setThemeState(!themeState)}
+              checked={themeState}
+              offColor={themes.primary}
+              offHandleColor={themes.secondary}
+              onColor={themes.primary}
+              onHandleColor={themes.secondary}
+              uncheckedIcon={false}
+              checkedIcon={false}
+              height={18}
+              width={35}
             />
-            <LoginButton type='submit'>Entrar</LoginButton>
-          </Form>
-          <SignupButton onClick={() => setRegister(true)}>
-            Cadastrar
-          </SignupButton>
-        </Content>
-      </Style>
-    </Anime>
+          </ThemeSwitch>
+          <Content ref={contentRef}>
+            <Logo />
+            <Form ref={loginFormRef} onSubmit={onLoginSubmit}>
+              <InputText name='email' placeholder='E-mail' icon={FiUser} />
+              <InputText
+                name='password'
+                placeholder='Senha'
+                icon={FiLock}
+                type='password'
+              />
+              <LoginButton type='submit'>Entrar</LoginButton>
+            </Form>
+            <SignupButton disabled={disabled} onClick={onSignupButtonClick}>
+              Cadastrar
+            </SignupButton>
+          </Content>
+        </Style>
+      )}
+    </>
   )
 }
 export default Login

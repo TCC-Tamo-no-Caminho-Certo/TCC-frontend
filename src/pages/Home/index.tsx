@@ -1,23 +1,41 @@
 import React from 'react'
-import { useRegister } from 'hooks/useRegister'
-import { Style } from './styles'
-import Signup from './Signup'
-import Login from './Login'
+import { Style, Row } from './styles'
 import About from './About'
+import Login from './Login'
+import Signup from './Signup'
 import Subscribe from './Subscribe'
+import { useRegisterSlide } from 'hooks/useRegisterSlide'
+import Anime from '@mollycule/react-anime'
 
 const Home: React.FC = () => {
-  const { register } = useRegister()
+  const { registerSlide } = useRegisterSlide()
 
   return (
-    <Style register={register}>
-      <Login />
+    <Style>
+      <Anime
+        in={!registerSlide}
+        appear={false}
+        duration={2000}
+        easing='easeOutQuad'
+        onExiting={{
+          translateX: [0, '-100vw'],
+        }}
+        onEntering={{
+          easing: 'easeOutQuad',
+          translateX: ['-100vw', 0],
+        }}
+        unmountOnExit={false}
+      >
+        <Row registerSlide={registerSlide}>
+          <Login />
 
-      <Subscribe />
+          <Subscribe />
 
-      <Signup />
+          <Signup />
 
-      <About />
+          <About />
+        </Row>
+      </Anime>
     </Style>
   )
 }
