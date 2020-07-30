@@ -26,3 +26,4 @@ elseif branch == "master" then
     status = run("cp", "-rv ./landing/ /home/rgd/deploy/dist/landing/")
     setStatus(status)
 end
+--
