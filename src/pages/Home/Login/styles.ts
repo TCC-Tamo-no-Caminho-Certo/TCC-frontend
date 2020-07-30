@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import Button from 'components/Button/index'
 import fromTheme from 'utils/fromTheme'
 
 export const Style = styled.section`
@@ -42,10 +41,10 @@ export const Content = styled.div`
     align-items: center;
     flex-direction: column;
   }
-`
 
-export const LoginButton = styled(Button)`
-  margin-top: 20px;
+  form button {
+    margin-top: 20px;
+  }
 `
 
 export const Register = styled.div`
@@ -63,5 +62,36 @@ export const Register = styled.div`
     &:hover {
       transform: scale(1.09);
     }
+  }
+`
+
+export const Google = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  color: ${fromTheme('tertiary')};
+  border-bottom: solid 2px ${fromTheme('tertiary')};
+
+  img {
+    width: 25px;
+    margin-right: 10px;
+  }
+`
+
+export const Permanence = styled.label`
+  margin-top: 20px;
+  line-height: 40px;
+  border-bottom: 2px solid ${fromTheme('tertiary')};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 440px;
+  cursor: pointer;
+
+  input {
+    margin-right: 8px;
   }
 `

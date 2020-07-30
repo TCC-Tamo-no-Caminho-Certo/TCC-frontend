@@ -5,14 +5,23 @@ import React, {
   useCallback,
   useState,
 } from 'react'
-import { Style, Content, ThemeSwitch, LoginButton, Register } from './styles'
+import {
+  Style,
+  Content,
+  ThemeSwitch,
+  Register,
+  Google,
+  Permanence,
+} from './styles'
 import loginSchema from 'validations/login'
+import Button from 'components/Button'
 import InputText from 'components/InputText/'
 import { useAuth } from 'hooks/useAuth'
 import { useTheme } from 'hooks/useTheme'
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
 import getValidationErrors from 'utils/getValidationErrors'
 import Logo from 'assets/Logo'
+import google from 'assets/google.png'
 import * as Yup from 'yup'
 import anime from 'animejs'
 import Switch from 'react-switch'
@@ -106,6 +115,10 @@ const Login: React.FC = () => {
           </ThemeSwitch>
           <Content ref={contentRef}>
             <Logo />
+            <Google>
+              <img src={google} alt='google' />
+              Entrar com o Google
+            </Google>
             <Form ref={loginFormRef} onSubmit={onLoginSubmit}>
               <InputText name='email' placeholder='E-mail' icon={FiUser} />
               <InputText
@@ -114,8 +127,12 @@ const Login: React.FC = () => {
                 icon={FiLock}
                 type='password'
               />
-              <LoginButton type='submit'>Entrar</LoginButton>
+              <Button type='submit'>Efetuar Login</Button>
             </Form>
+            <Permanence htmlFor='permanence'>
+              <input type='checkbox' id='permanence' />
+              Permanecer conectado
+            </Permanence>
 
             <Register>
               Ainda não possue uma conta ?

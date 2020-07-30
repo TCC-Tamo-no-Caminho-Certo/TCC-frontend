@@ -11,14 +11,26 @@ import ReactTooltip from 'react-tooltip'
 import { useField } from '@unform/core'
 import { IconBaseProps } from 'react-icons'
 import { FcHighPriority } from 'react-icons/fc'
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string
+  type?: string
+  eye?: boolean
   icon?: ComponentType<IconBaseProps>
 }
 
-const InputText: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
+const InputText: React.FC<InputProps> = ({
+  name,
+  icon: Icon,
+  eye = false,
+  type,
+  ...rest
+}) => {
   const inputRef = useRef<HTMLInputElement>(null)
+  const [isFocused, setIsFocused] = useState(false)
+  const [isFilled, setIsFilled] = useState(false)
+  const [showInput, setShowInput] = useState(false)
   const {
     defaultValue,
     fieldName,
@@ -26,9 +38,6 @@ const InputText: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
     error,
     clearError,
   } = useField(name)
-
-  const [isFocused, setIsFocused] = useState(false)
-  const [isFilled, setIsFilled] = useState(false)
 
   const onInputFocus = useCallback(() => setIsFocused(true), [])
 
@@ -48,15 +57,15 @@ const InputText: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
 
   return (
     <Style
-      className='InputText'
       isFilled={isFilled}
       isFocused={isFocused}
       isErrored={!!error}
       hasIcon={!!Icon}
+      className='InputText'
+      id={name}
     >
       {error ? (
         <>
-          <FcHighPriority data-tip data-for={fieldName} />
           <ReactTooltip
             id={fieldName}
             className='alert'
@@ -66,6 +75,7 @@ const InputText: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
           >
             {error}
           </ReactTooltip>
+          <FcHighPriority data-for={fieldName} data-tip />
         </>
       ) : (
         Icon && <Icon />
@@ -76,8 +86,16 @@ const InputText: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
         onBlur={onInputBlur}
         ref={inputRef}
         defaultValue={defaultValue}
+        type={showInput ? 'text' : type}
         {...rest}
       />
+
+      {eye &&
+        (showInput ? (
+          <AiFillEyeInvisible onClick={() => setShowInput(false)} />
+        ) : (
+          <AiFillEye onClick={() => setShowInput(true)} />
+        ))}
     </Style>
   )
 }

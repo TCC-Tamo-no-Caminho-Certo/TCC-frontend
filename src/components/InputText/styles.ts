@@ -12,8 +12,8 @@ export const Style = styled.div<StyleProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 400px;
-  height: 38px;
+  width: 440px;
+  height: 44px;
   position: relative;
   border-radius: 10px;
   background-color: transparent;

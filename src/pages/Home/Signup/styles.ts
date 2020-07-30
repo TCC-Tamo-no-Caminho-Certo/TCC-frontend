@@ -9,12 +9,47 @@ export const Style = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   border-radius: 0 10px 10px 0;
-  background-color: ${fromTheme('secondary')};
   position: relative;
+  background-color: ${fromTheme('secondary')};
 
-  .InputText + .InputText {
-    margin-top: 20px;
+  hr {
+    border: none;
+    border-top: solid 1px ${fromTheme('tertiary')};
+  }
+
+  .InputText {
+    svg {
+      padding: 12px 0;
+    }
+    & + .InputText {
+      margin-top: 20px;
+    }
+  }
+
+  #name,
+  #surname {
+    svg {
+      padding: 10px 0;
+    }
+  }
+
+  #name {
+    border-radius: 10px 10px 0 0;
+    border-bottom: none;
+  }
+
+  #surname {
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    margin-top: 0px;
+  }
+
+  #password {
+    input + svg {
+      padding: 10px 0;
+    }
   }
 `
 
@@ -40,7 +75,6 @@ export const BackButton = styled.button`
   color: ${fromTheme('primary')};
 
   span {
-    font-family: 'Satisfy', cursive;
     line-height: 28px;
   }
 `

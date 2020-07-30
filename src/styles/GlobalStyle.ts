@@ -13,8 +13,9 @@ export default createGlobalStyle`
     font-size: 62.5%;
   }
   body {
-    background-color: ${fromTheme('primary')};
     font-size: 1.6rem;
+    background-color: ${fromTheme('primary')};
+    color: ${fromTheme('tertiary')}
   }
   a {
     color: ${fromTheme('primary')};

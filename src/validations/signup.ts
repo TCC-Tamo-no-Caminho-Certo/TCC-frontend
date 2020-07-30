@@ -2,8 +2,12 @@ import * as Yup from 'yup'
 
 const signupSchema = Yup.object({
   name: Yup.string()
-    .matches(/[a-z]+\s[a-z]+(\s[a-z]+)*/i, 'informe seu nome e sobrenome')
+    .matches(/^([a-z]|\s)+$/i, 'Informe um nome válido')
     .required('Você precisa informar seu nome'),
+
+  surname: Yup.string()
+    .matches(/^([a-z]|\s)+$/i, 'Informe um sobrenome válido')
+    .required('Você precisa informar seu sobrenome'),
 
   email: Yup.string()
     .email('O e-mail deve ser válido!')
