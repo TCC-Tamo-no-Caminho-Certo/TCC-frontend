@@ -5,14 +5,7 @@ import React, {
   useCallback,
   useState,
 } from 'react'
-import {
-  Style,
-  Content,
-  ThemeSwitch,
-  LoginButton,
-  SignupButton,
-} from './styles'
-
+import { Style, Content, ThemeSwitch, LoginButton, Register } from './styles'
 import loginSchema from 'validations/login'
 import InputText from 'components/InputText/'
 import { useAuth } from 'hooks/useAuth'
@@ -35,7 +28,6 @@ interface FormData {
 }
 
 const Login: React.FC = () => {
-  const themeSwitchRef = useRef(null)
   const history = useHistory()
   const contentRef = useRef(null)
   const loginFormRef = useRef<FormHandles>(null)
@@ -88,7 +80,7 @@ const Login: React.FC = () => {
     [history, login]
   )
 
-  const onSignupButtonClick = () => {
+  const onSignupClick = () => {
     setRegisterSlide(true)
   }
 
@@ -96,8 +88,8 @@ const Login: React.FC = () => {
     <>
       {showLogin && (
         <Style>
-          <ThemeSwitch ref={themeSwitchRef}>
-            <span>Darkmode</span>
+          <ThemeSwitch>
+            <label htmlFor='switch'>Darkmode</label>
             <Switch
               onChange={() => setThemeState(!themeState)}
               checked={themeState}
@@ -109,6 +101,7 @@ const Login: React.FC = () => {
               checkedIcon={false}
               height={18}
               width={35}
+              id='switch'
             />
           </ThemeSwitch>
           <Content ref={contentRef}>
@@ -123,13 +116,19 @@ const Login: React.FC = () => {
               />
               <LoginButton type='submit'>Entrar</LoginButton>
             </Form>
-            <SignupButton disabled={disabled} onClick={onSignupButtonClick}>
-              Cadastrar
-            </SignupButton>
+
+            <Register>
+              Ainda não possue uma conta ?
+              <br />
+              <button type='button' disabled={disabled} onClick={onSignupClick}>
+                Registre-se aqui!
+              </button>
+            </Register>
           </Content>
         </Style>
       )}
     </>
   )
 }
+
 export default Login

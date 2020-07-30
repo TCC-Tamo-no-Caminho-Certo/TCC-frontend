@@ -10,14 +10,35 @@ interface StyleProps {
 
 export const Style = styled.div<StyleProps>`
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 258px;
-  height: 30px;
-  border: none;
-  background-color: transparent;
+  justify-content: center;
+  width: 400px;
+  height: 38px;
   position: relative;
-  border-bottom: 2px solid ${fromTheme('tertiary')};
+  border-radius: 10px;
+  background-color: transparent;
+  border: solid 1px ${fromTheme('tertiary')};
+
+  svg {
+    height: 100%;
+    padding: 6px 0 6px 0;
+    width: 10%;
+    color: ${fromTheme('tertiary')};
+  }
+
+  input {
+    height: 100%;
+    padding: 0 4px;
+    border: none;
+    flex: 1;
+    background-color: transparent;
+    font-size: 1.6rem;
+    color: ${fromTheme('primary')};
+
+    &::placeholder {
+      color: ${fromTheme('tertiary')};
+    }
+  }
 
   .alert {
     opacity: 0.8;
@@ -30,30 +51,6 @@ export const Style = styled.div<StyleProps>`
     }
   }
 
-  & + div {
-    margin-top: 20px;
-  }
-
-  svg {
-    color: ${fromTheme('tertiary')};
-    height: 100%;
-    width: 10%;
-    padding: 2px;
-  }
-
-  input {
-    font-size: 1.1rem;
-    padding: 0 4px;
-    border: none;
-    background-color: transparent;
-    width: 90%;
-    height: 100%;
-    color: ${fromTheme('primary')};
-
-    &::placeholder {
-      color: ${fromTheme('tertiary')};
-    }
-  }
 
   ${({ isFocused }) =>
     isFocused &&

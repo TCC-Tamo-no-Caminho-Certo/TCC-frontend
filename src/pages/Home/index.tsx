@@ -16,6 +16,7 @@ const Home: React.FC = () => {
         in={!registerSlide}
         appear={false}
         duration={2000}
+        unmountOnExit={false}
         easing='easeOutQuad'
         onExiting={{
           translateX: [0, '-100vw'],
@@ -24,16 +25,15 @@ const Home: React.FC = () => {
           easing: 'easeOutQuad',
           translateX: ['-100vw', 0],
         }}
-        unmountOnExit={false}
       >
         <Row registerSlide={registerSlide}>
-          <Login />
+          <About />
 
-          <Subscribe />
+          <Login />
 
           <Signup />
 
-          <About />
+          <Subscribe />
         </Row>
       </Anime>
     </Style>

@@ -1,19 +1,21 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react'
-import { Style } from './styles'
+import { Style, BackButton, Text } from './styles'
 import signupSchema from 'validations/signup'
 import InputText from 'components/InputText/index'
-import SignupButton from 'components/Button'
+import Button from 'components/Button'
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
 import getValidationErrors from 'utils/getValidationErrors'
 import * as Yup from 'yup'
 import { Form } from '@unform/web'
 import { useHistory } from 'react-router-dom'
+import { RiArrowLeftSLine } from 'react-icons/ri'
 import { FormHandles, SubmitHandler } from '@unform/core'
 
 interface FormData {
   emai: string
   password: string
 }
+
 const Signup: React.FC = () => {
   const signupFormRef = useRef<FormHandles>(null)
   const history = useHistory()
@@ -59,15 +61,36 @@ const Signup: React.FC = () => {
     <>
       {showRegister && (
         <Style>
-          <button type='button' disabled={disabled} onClick={onBackButtonClick}>
-            Voltar
-          </button>
+          <BackButton
+            type='button'
+            disabled={disabled}
+            onClick={onBackButtonClick}
+          >
+            <RiArrowLeftSLine size={28} />
+            <span>Voltar</span>
+          </BackButton>
           <Form ref={signupFormRef} onSubmit={onSignupSubmit}>
-            <InputText name='name' placeholder='name' />
-            <InputText name='email' placeholder='email' />
-            <InputText name='password' placeholder='password' />
+            <InputText name='name' placeholder='Nome Completo' />
+            <Text>
+              Certifique-se de que corresponde ao nome no seu documento de
+              indentificação oficial
+            </Text>
+            <InputText name='password' placeholder='Data de nascimento' />
+            <InputText name='email' placeholder='E-mail' />
+            <Text>Enviaremos um e-mail para confirmação</Text>
+            <InputText name='password' placeholder='Senha' />
             <InputText name='confirm_password' placeholder='Confirmar Senha' />
-            <SignupButton type='submit'>Concluir Cadastro</SignupButton>
+            <Text>
+              <span>
+                Ao clicar Concordar e concluir, concordo com os{' '}
+                <a href='action'>Termos de uso</a>, os{' '}
+                <a href='action'>Termos de Serviço e Pagamentos</a>, a{' '}
+                <a href='action'>Política de Privacidade</a> e a{' '}
+                <a href='action'>Política de Não Discriminação</a> do Steams
+                Lab.
+              </span>
+            </Text>
+            <Button type='submit'>Concordar e concluir</Button>
           </Form>
         </Style>
       )}

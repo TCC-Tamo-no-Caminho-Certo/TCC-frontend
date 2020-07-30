@@ -4,33 +4,33 @@ import fromTheme from 'utils/fromTheme'
 
 export const Style = styled.section`
   grid-area: login;
-  width: 100%;
+  width: calc(100% + 1px);
   height: 100%;
   padding: 30px;
   display: flex;
+  position: relative;
   align-items: center;
+  border-radius: 10px 0 0 10px;
   justify-content: center;
   background-color: ${fromTheme('secondary')};
+
+  .InputText + .InputText {
+    margin-top: 20px;
+  }
 `
 
 export const ThemeSwitch = styled.div`
   position: absolute;
-  right: 10%;
-  top: 5%;
+  top: 30px;
+  right: 30px;
   display: flex;
   align-items: center;
   color: ${fromTheme('primary')};
+  font-size: 1.8rem;
 
-  span {
+  label {
     font-family: 'Satisfy', cursive;
-    display: block;
-    font-size: 1.2rem;
     margin-right: 20px;
-    transform: translateY(-1px);
-  }
-
-  @media screen and (min-width: 1200px) {
-    right: 3vw;
   }
 `
 
@@ -45,18 +45,23 @@ export const Content = styled.div`
 `
 
 export const LoginButton = styled(Button)`
-  background-image: none;
-  font-size: 1.1rem;
-  width: 120px;
-  height: 36px;
-  border-width: 0px;
-  border-radius: 5px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  background-color: #80535d;
-  color: ${fromTheme('secondary')};
   margin-top: 20px;
 `
 
-export const SignupButton = styled(Button)`
+export const Register = styled.div`
   margin-top: 20px;
+  text-align: center;
+  color: ${fromTheme('tertiary')};
+
+  button {
+    border: none;
+    text-decoration: underline;
+    background-color: transparent;
+    color: ${fromTheme('primary')};
+    transition: transform 2s;
+
+    &:hover {
+      transform: scale(1.09);
+    }
+  }
 `

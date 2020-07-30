@@ -48,6 +48,7 @@ const InputText: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
 
   return (
     <Style
+      className='InputText'
       isFilled={isFilled}
       isFocused={isFocused}
       isErrored={!!error}

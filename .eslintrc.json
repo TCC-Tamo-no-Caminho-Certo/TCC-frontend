@@ -45,7 +45,9 @@
     "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/explicit-function-return-type": "off",
     "import/prefer-default-export": "off",
+    "jsx-a11y/label-has-associated-control": "off",
     "import/order": "off",
+    "react/jsx-one-expression-per-line": "off",
     "react/jsx-filename-extension": [
       1,
       {
