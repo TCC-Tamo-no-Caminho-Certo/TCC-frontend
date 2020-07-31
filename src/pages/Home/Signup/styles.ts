@@ -30,12 +30,20 @@ export const DualInput = styled.div`
   #name {
     border-bottom: none;
     border-radius: 10px 10px 0 0;
+
+    .alert {
+      border-radius: 10px;
+    }
   }
 
   #surname {
     border-top: none;
     margin-top: 0px;
     border-radius: 0 0 10px 10px;
+
+    .alert {
+      border-radius: 10px;
+    }
   }
 `
 

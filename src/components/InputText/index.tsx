@@ -6,8 +6,7 @@ import React, {
   InputHTMLAttributes,
   ComponentType,
 } from 'react'
-import { Style } from './styles'
-import ReactTooltip from 'react-tooltip'
+import { Style, Tooltip } from './styles'
 import { useField } from '@unform/core'
 import { IconBaseProps } from 'react-icons'
 import { FcHighPriority } from 'react-icons/fc'
@@ -67,18 +66,11 @@ const InputText: React.FC<InputProps> = ({
       id={name}
     >
       {error ? (
-        <>
-          <ReactTooltip
-            id={fieldName}
-            className='alert'
-            place='top'
-            type='error'
-            effect='solid'
-          >
-            {error}
-          </ReactTooltip>
-          <FcHighPriority size={23} data-for={fieldName} data-tip />
-        </>
+        <Tooltip
+          content={error}
+          trigger={<FcHighPriority size={23} />}
+          position='top left'
+        />
       ) : (
         Icon && <Icon size={size} />
       )}
@@ -94,9 +86,9 @@ const InputText: React.FC<InputProps> = ({
 
       {eye &&
         (showInput ? (
-          <AiFillEyeInvisible onClick={() => setShowInput(false)} size={20} />
+          <AiFillEyeInvisible onClick={() => setShowInput(false)} size={22} />
         ) : (
-          <AiFillEye onClick={() => setShowInput(true)} size={20} />
+          <AiFillEye onClick={() => setShowInput(true)} size={22} />
         ))}
     </Style>
   )
