@@ -14,9 +14,30 @@ export const Style = styled.section`
   position: relative;
   background-color: ${fromTheme('secondary')};
 
+  form {
+    max-width: 440px;
+  }
+
   .InputText {
     & + .InputText {
       margin-top: 20px;
+    }
+  }
+`
+
+export const DatePicker = styled.label`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 0 10px;
+
+  #birth {
+    flex: 1;
+    margin-left: 20px;
+
+    svg {
+      width: 50%;
     }
   }
 `

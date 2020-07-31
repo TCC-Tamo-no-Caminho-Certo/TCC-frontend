@@ -2,16 +2,18 @@ import * as Yup from 'yup'
 
 const signupSchema = Yup.object({
   name: Yup.string()
-    .matches(/^([a-z]|\s)+$/i, 'Informe um nome válido')
-    .required('Você precisa informar seu nome'),
+    .matches(/^([a-z]|\s)+$/i, 'Informe um nome válido!')
+    .required('Você precisa informar seu nome!'),
 
   surname: Yup.string()
-    .matches(/^([a-z]|\s)+$/i, 'Informe um sobrenome válido')
-    .required('Você precisa informar seu sobrenome'),
+    .matches(/^([a-z]|\s)+$/i, 'Informe um sobrenome válido!')
+    .required('Você precisa informar seu sobrenome!'),
 
   email: Yup.string()
-    .email('O e-mail deve ser válido!')
-    .required('Você esqueceu do email!'),
+    .email('E-mail inválido!')
+    .required('É necessário informar o email!'),
+
+  birth: Yup.string().required('É necessário informar a data!'),
 
   password: Yup.string()
     .matches(
@@ -24,9 +26,9 @@ const signupSchema = Yup.object({
     .min(8, 'Sua senha deve conter mais que 8 caracteres')
     .required('Você precisa de uma senha!'),
 
-  confirm_password: Yup.string()
+  confirmPassword: Yup.string()
     .oneOf([Yup.ref('password')], 'As senhas não são iguais')
-    .required('Você precisa confirmar sua senha'),
+    .required('Você precisa confirmar sua senha!'),
 })
 
 export default signupSchema

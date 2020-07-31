@@ -2,12 +2,14 @@ import styled, { css } from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 import { Popup } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
+import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 
 interface StyleProps {
   isFocused: boolean
   isFilled: boolean
   isErrored: boolean
   hasIcon: boolean
+  hasDate: boolean
 }
 
 export const Style = styled.div<StyleProps>`
@@ -39,6 +41,24 @@ export const Style = styled.div<StyleProps>`
       color: ${fromTheme('tertiary')};
     }
   }
+
+  .date {
+    flex: 1;
+    height: 100%;
+
+    .date-input {
+      width: 112%;
+      text-align: left;
+      cursor: pointer;
+    }
+  }
+
+
+  ${({ hasDate }) =>
+    hasDate &&
+    css`
+      cursor: pointer;
+    `}
 
   ${({ isFocused }) =>
     isFocused &&
