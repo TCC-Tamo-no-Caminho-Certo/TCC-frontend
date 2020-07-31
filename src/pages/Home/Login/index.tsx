@@ -113,22 +113,34 @@ const Login: React.FC = () => {
               id='switch'
             />
           </ThemeSwitch>
+
           <Content ref={contentRef}>
             <Logo />
+
             <Google>
               <img src={google} alt='google' />
               Entrar com o Google
             </Google>
+
             <Form ref={loginFormRef} onSubmit={onLoginSubmit}>
-              <InputText name='email' placeholder='E-mail' icon={FiUser} />
+              <InputText
+                name='email'
+                placeholder='E-mail'
+                icon={FiUser}
+                size={23}
+              />
+
               <InputText
                 name='password'
                 placeholder='Senha'
                 icon={FiLock}
+                size={23}
                 type='password'
               />
+
               <Button type='submit'>Efetuar Login</Button>
             </Form>
+
             <Permanence htmlFor='permanence'>
               <input type='checkbox' id='permanence' />
               Permanecer conectado

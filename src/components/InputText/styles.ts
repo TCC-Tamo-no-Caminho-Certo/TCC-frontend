@@ -20,8 +20,6 @@ export const Style = styled.div<StyleProps>`
   border: solid 1px ${fromTheme('tertiary')};
 
   svg {
-    height: 100%;
-    padding: 6px 0 6px 0;
     width: 10%;
     color: ${fromTheme('tertiary')};
   }
@@ -42,11 +40,11 @@ export const Style = styled.div<StyleProps>`
 
   .alert {
     opacity: 0.8;
-    background-color: #cf3030;
+    background-color: ${fromTheme('primary')};
 
     &.place-top {
       &:after {
-        border-top-color: #cf3030;
+        border-top-color: ${fromTheme('primary')};
       }
     }
   }
@@ -80,4 +78,5 @@ export const Style = styled.div<StyleProps>`
         padding-left: 20px;
       }
     `}
+
 `

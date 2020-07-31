@@ -14,42 +14,28 @@ export const Style = styled.section`
   position: relative;
   background-color: ${fromTheme('secondary')};
 
+  .InputText {
+    & + .InputText {
+      margin-top: 20px;
+    }
+  }
+`
+
+export const DualInput = styled.div`
   hr {
     border: none;
     border-top: solid 1px ${fromTheme('tertiary')};
   }
 
-  .InputText {
-    svg {
-      padding: 12px 0;
-    }
-    & + .InputText {
-      margin-top: 20px;
-    }
-  }
-
-  #name,
-  #surname {
-    svg {
-      padding: 10px 0;
-    }
-  }
-
   #name {
-    border-radius: 10px 10px 0 0;
     border-bottom: none;
+    border-radius: 10px 10px 0 0;
   }
 
   #surname {
     border-top: none;
-    border-radius: 0 0 10px 10px;
     margin-top: 0px;
-  }
-
-  #password {
-    input + svg {
-      padding: 10px 0;
-    }
+    border-radius: 0 0 10px 10px;
   }
 `
 

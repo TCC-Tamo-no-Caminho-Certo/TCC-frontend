@@ -18,6 +18,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   type?: string
   eye?: boolean
   icon?: ComponentType<IconBaseProps>
+  size?: number
 }
 
 const InputText: React.FC<InputProps> = ({
@@ -25,6 +26,7 @@ const InputText: React.FC<InputProps> = ({
   icon: Icon,
   eye = false,
   type,
+  size,
   ...rest
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -75,10 +77,10 @@ const InputText: React.FC<InputProps> = ({
           >
             {error}
           </ReactTooltip>
-          <FcHighPriority data-for={fieldName} data-tip />
+          <FcHighPriority size={23} data-for={fieldName} data-tip />
         </>
       ) : (
-        Icon && <Icon />
+        Icon && <Icon size={size} />
       )}
 
       <input
@@ -92,9 +94,9 @@ const InputText: React.FC<InputProps> = ({
 
       {eye &&
         (showInput ? (
-          <AiFillEyeInvisible onClick={() => setShowInput(false)} />
+          <AiFillEyeInvisible onClick={() => setShowInput(false)} size={20} />
         ) : (
-          <AiFillEye onClick={() => setShowInput(true)} />
+          <AiFillEye onClick={() => setShowInput(true)} size={20} />
         ))}
     </Style>
   )

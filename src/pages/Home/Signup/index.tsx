@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react'
-import { Style, BackButton, Text } from './styles'
+import { Style, BackButton, Text, DualInput } from './styles'
 import signupSchema from 'validations/signup'
 import Button from 'components/Button'
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
@@ -75,32 +75,38 @@ const Signup: React.FC = () => {
           <Logo />
 
           <Form ref={signupFormRef} onSubmit={onSignupSubmit}>
-            <div>
+            <DualInput>
               <InputText
                 name='name'
                 className='name'
                 placeholder='Nome'
                 icon={MdPublic}
+                size={21}
               />
               <hr />
               <InputText
                 name='surname'
                 placeholder='Sobrenome'
                 icon={MdPublic}
+                size={21}
               />
-            </div>
+            </DualInput>
+
             <Text>
               Certifique-se de que corresponde ao nome no seu documento de
               indentificação oficial
             </Text>
+
             <InputText
               name='date'
               placeholder='Data de nascimento'
               icon={FaUserLock}
             />
+
             <InputText name='email' placeholder='E-mail' icon={FaUserLock} />
 
             <Text>Enviaremos um e-mail para confirmação</Text>
+
             <InputText
               name='password'
               placeholder='Senha'
@@ -108,12 +114,14 @@ const Signup: React.FC = () => {
               type='password'
               eye
             />
+
             <InputText
               type='password'
               name='confirm_password'
               placeholder='Confirmar Senha'
               icon={FaUserLock}
             />
+
             <Text>
               <span>
                 Ao clicar Concordar e concluir, concordo com os{' '}
@@ -124,6 +132,7 @@ const Signup: React.FC = () => {
                 Lab.
               </span>
             </Text>
+
             <Button type='submit'>Concordar e concluir</Button>
           </Form>
         </Style>
