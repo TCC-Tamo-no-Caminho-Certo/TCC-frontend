@@ -18,53 +18,27 @@ export const Style = styled.section`
     max-width: 440px;
   }
 
-  .InputText {
-    & + .InputText {
-      margin-top: 20px;
-    }
-  }
-`
-
-export const DatePicker = styled.label`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 10px;
-  padding: 0 10px;
-
-  #birth {
-    flex: 1;
-    margin-left: 20px;
-
-    svg {
-      width: 50%;
-    }
+  .InputText + .InputText,
+  #birthday + .InputText {
+    margin-top: 20px;
   }
 `
 
 export const DualInput = styled.div`
+  div:first-child {
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+  }
+
   hr {
     border: none;
     border-top: solid 1px ${fromTheme('tertiary')};
   }
 
-  #name {
-    border-bottom: none;
-    border-radius: 10px 10px 0 0;
-
-    .alert {
-      border-radius: 10px;
-    }
-  }
-
-  #surname {
+  hr + div {
     border-top: none;
     margin-top: 0px;
     border-radius: 0 0 10px 10px;
-
-    .alert {
-      border-radius: 10px;
-    }
   }
 `
 

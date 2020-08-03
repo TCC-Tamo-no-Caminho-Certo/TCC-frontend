@@ -2,6 +2,7 @@ import React, { useRef, useCallback, useState, useEffect } from 'react'
 import { Style, BackButton, Text, DualInput } from './styles'
 import signupSchema from 'validations/signup'
 import Button from 'components/Button'
+import DatePicker from 'components/DatePicker'
 import InputText from 'components/InputText/index'
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
 import getValidationErrors from 'utils/getValidationErrors'
@@ -19,7 +20,7 @@ interface FormData {
   name: string
   surname: string
   email: string
-  birth: string
+  birthday: string
   password: string
   confirmPassword: string
 }
@@ -53,7 +54,6 @@ const Signup: React.FC = () => {
       try {
         await signupSchema.validate(data, { abortEarly: false })
         signupFormRef.current?.setErrors({})
-        console.log(data)
         reset()
         history.push('/map')
       } catch (error) {
@@ -103,26 +103,28 @@ const Signup: React.FC = () => {
               indentificação oficial
             </Text>
 
+            <DatePicker name='birthday' icon={FaUserLock} />
+
             <InputText name='email' placeholder='E-mail' icon={FaUserLock} />
 
             <Text>Enviaremos um e-mail para confirmação</Text>
 
-            <InputText name='birth' icon={FaUserLock} date />
-
-            <InputText
-              name='password'
-              placeholder='Senha'
-              icon={FaUserLock}
-              type='password'
-              eye
-            />
-
-            <InputText
-              type='password'
-              name='confirmPassword'
-              placeholder='Confirmar Senha'
-              icon={FaUserLock}
-            />
+            <DualInput>
+              <InputText
+                name='password'
+                placeholder='Senha'
+                icon={FaUserLock}
+                type='password'
+                eye
+              />
+              <hr />
+              <InputText
+                type='password'
+                name='confirmPassword'
+                placeholder='Confirmar Senha'
+                icon={FaUserLock}
+              />
+            </DualInput>
 
             <Text>
               <span>
@@ -135,7 +137,7 @@ const Signup: React.FC = () => {
               </span>
             </Text>
 
-            <button type='submit'>Concordar e concluir</button>
+            <Button type='submit'>Concordar e concluir</Button>
           </Form>
         </Style>
       )}
