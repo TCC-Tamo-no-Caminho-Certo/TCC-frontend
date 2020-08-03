@@ -2,7 +2,7 @@
 if branch == "development" then
     status = run("npm", "install")
     setStatus(status)
-    status = run("npm", "run build")
+    status = run("npm", "run build --node-flags --max-old-space-size=512")
     setStatus(status)
     status = run("rm", "-rfv /home/rgd/deploy/dev/frontend/")
     setStatus(status)
@@ -15,7 +15,7 @@ if branch == "development" then
 elseif branch == "master" then
     status = run("npm", "install")
     setStatus(status)
-    status = run("npm", "run build")
+    status = run("npm", "run build --node-flags --max-old-space-size=512")
     setStatus(status)
     status = run("rm", "-rfv /home/rgd/deploy/dist/frontend/")
     setStatus(status)
