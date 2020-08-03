@@ -32,13 +32,7 @@ const InputText: React.FC<InputProps> = ({
   const [isFocused, setIsFocused] = useState(false)
   const [isFilled, setIsFilled] = useState(false)
   const [showInput, setShowInput] = useState(false)
-  const {
-    defaultValue,
-    fieldName,
-    registerField,
-    error,
-    clearError,
-  } = useField(name)
+  const { defaultValue, fieldName, registerField, error, clearError } = useField(name)
 
   const onInputFocus = useCallback(() => setIsFocused(true), [])
 

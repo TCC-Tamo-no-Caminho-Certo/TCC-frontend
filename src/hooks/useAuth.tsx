@@ -1,19 +1,27 @@
-import React, { createContext, useCallback, useContext, useState } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 import api from 'services/api'
 
 interface AuthStateData {
-  token: string
-  userInfo: object
+  success: string
 }
 
-interface LoginData {
+export interface LoginData {
   email: string
+  password: string
+}
+
+export interface RegisterData {
+  name: string
+  surname: string
+  email: string
+  birthday: string
   password: string
 }
 
 interface AuthContextData {
   authData: AuthStateData
   login(loginData: LoginData): Promise<void>
+  register(RegisterData: RegisterData): Promise<void>
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
@@ -21,29 +29,35 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 export const AuthProvider: React.FC = ({ children }) => {
   const [authData, setAuthData] = useState<AuthStateData>(
     (): AuthStateData => {
-      const token = localStorage.getItem('@SteamsLab:token')
-      const userInfo = localStorage.getItem('@SteamsLab:userInfo')
+      const success = localStorage.getItem('@SteamsLab:success')
 
-      if (token && userInfo) return { token, userInfo: JSON.parse(userInfo) }
+      if (success) return { success }
       return {} as AuthStateData
     }
   )
 
-  const login = useCallback(async ({ email, password }) => {
-    const response = await api.post('login', {
-      header: { Authorization: `Basic ${email}:${password}` },
+  const login = async ({ email, password }: LoginData) => {
+    const response = await api.post('login', { email, password })
+    const { success } = response.data
+    console.log(response.data)
+    localStorage.setItem('@SteamsLab:success', success)
+    setAuthData(success)
+  }
+
+  const register = async ({ name, surname, email, birthday, password }: RegisterData) => {
+    const response = await api.post('register', {
+      name,
+      surname,
+      email,
+      birthday,
+      password,
     })
 
-    const { token, userInfo } = response.data
-
-    localStorage.setItem('@SteamsLab:token', token)
-    localStorage.setItem('@SteamsLab:userInfo', userInfo)
-
-    setAuthData({ token, userInfo })
-  }, [])
+    console.log(response.data)
+  }
 
   return (
-    <AuthContext.Provider value={{ authData, login }}>
+    <AuthContext.Provider value={{ authData, login, register }}>
       {children}
     </AuthContext.Provider>
   )
