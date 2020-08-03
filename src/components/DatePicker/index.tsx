@@ -97,6 +97,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ name, size, icon: Icon }) => {
         maximumDate={maximumDate}
         locale={ptbr}
         calendarClassName='CalendarSize'
+        calendarPopperPosition='bottom'
       />
 
       <IoIosArrowDown />
