@@ -9,10 +9,7 @@ import React, {
 } from 'react'
 import { Style, Tooltip } from './styles'
 import datePTBR from 'utils/datePTBR'
-import DatePicker, {
-  DayValue,
-  RenderInputProps,
-} from 'react-modern-calendar-datepicker'
+import DatePicker, { DayValue, RenderInputProps } from 'react-modern-calendar-datepicker'
 import { useField } from '@unform/core'
 import { IconBaseProps } from 'react-icons'
 import { FcHighPriority } from 'react-icons/fc'
@@ -63,13 +60,7 @@ const InputText: React.FC<InputProps> = ({
   const dateRef = useRef<HTMLInputElement>(null)
   const [selectedDate, setSelectedDate] = useState<DayValue>(null)
   const themes = useContext(ThemeContext)
-  const {
-    defaultValue,
-    fieldName,
-    registerField,
-    error,
-    clearError,
-  } = useField(name)
+  const { defaultValue, fieldName, registerField, error, clearError } = useField(name)
 
   const formatInputDate = () => {
     if (selectedDate) {
@@ -147,6 +138,7 @@ const InputText: React.FC<InputProps> = ({
         </>
       ) : (
         <input
+          name={name}
           onFocus={onInputFocus}
           onBlur={onInputBlur}
           ref={inputRef}

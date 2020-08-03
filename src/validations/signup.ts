@@ -13,7 +13,7 @@ const signupSchema = Yup.object({
     .email('E-mail inválido!')
     .required('É necessário informar o email!'),
 
-  birth: Yup.string().required('É necessário informar a data!'),
+  // birth: Yup.string().required('É necessário informar a data!'),
 
   password: Yup.string()
     .matches(

@@ -1,22 +1,9 @@
-import React, {
-  useContext,
-  useRef,
-  useEffect,
-  useCallback,
-  useState,
-} from 'react'
-import {
-  Style,
-  Content,
-  ThemeSwitch,
-  Register,
-  Google,
-  Permanence,
-} from './styles'
+import React, { useContext, useRef, useEffect, useState } from 'react'
+import { Style, Content, ThemeSwitch, Register, Google, Permanence } from './styles'
 import loginSchema from 'validations/login'
 import Button from 'components/Button'
 import InputText from 'components/InputText/'
-import { useAuth } from 'hooks/useAuth'
+import { useAuth, LoginData } from 'hooks/useAuth'
 import { useTheme } from 'hooks/useTheme'
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
 import getValidationErrors from 'utils/getValidationErrors'
@@ -30,11 +17,6 @@ import { useHistory } from 'react-router-dom'
 import { ThemeContext } from 'styled-components'
 import { FiUser, FiLock } from 'react-icons/fi'
 import { SubmitHandler, FormHandles } from '@unform/core'
-
-interface FormData {
-  email: string
-  password: string
-}
 
 const Login: React.FC = () => {
   const history = useHistory()
@@ -65,29 +47,26 @@ const Login: React.FC = () => {
       translateX: [300, 0],
       translateY: [-10, 0],
       opacity: [0, 1],
-      duration: 2000,
+      duration: 900,
       easing: 'easeInOutSine',
     })
   }, [])
 
-  const onLoginSubmit: SubmitHandler<FormData> = useCallback(
-    async (data, { reset }, event) => {
-      event?.preventDefault()
-      try {
-        await loginSchema.validate(data, { abortEarly: false })
-        await login(data)
-        loginFormRef.current?.setErrors({})
-        reset()
-        history.push('/map')
-      } catch (error) {
-        if (error instanceof Yup.ValidationError) {
-          const errorList = getValidationErrors(error)
-          loginFormRef.current?.setErrors(errorList)
-        }
+  const onLoginSubmit: SubmitHandler<LoginData> = async (data, { reset }, event) => {
+    event?.preventDefault()
+    try {
+      await loginSchema.validate(data, { abortEarly: false })
+      loginFormRef.current?.setErrors({})
+      await login(data)
+      reset()
+      history.push('/map')
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        const errorList = getValidationErrors(error)
+        loginFormRef.current?.setErrors(errorList)
       }
-    },
-    [history, login]
-  )
+    }
+  }
 
   const onSignupClick = () => {
     setRegisterSlide(true)
@@ -123,12 +102,7 @@ const Login: React.FC = () => {
             </Google>
 
             <Form ref={loginFormRef} onSubmit={onLoginSubmit}>
-              <InputText
-                name='email'
-                placeholder='E-mail'
-                icon={FiUser}
-                size={23}
-              />
+              <InputText name='email' placeholder='E-mail' icon={FiUser} size={23} />
 
               <InputText
                 name='password'

@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Style, BackButton, Text, DualInput } from './styles'
 import signupSchema from 'validations/signup'
 import Button from 'components/Button'
@@ -14,15 +14,7 @@ import { FaUserLock } from 'react-icons/fa'
 import { RiArrowLeftSLine } from 'react-icons/ri'
 import { FormHandles, SubmitHandler } from '@unform/core'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
-
-interface FormData {
-  name: string
-  surname: string
-  email: string
-  birth: string
-  password: string
-  confirmPassword: string
-}
+import { useAuth, RegisterData } from '../../../hooks/useAuth'
 
 const Signup: React.FC = () => {
   const signupFormRef = useRef<FormHandles>(null)
@@ -30,6 +22,7 @@ const Signup: React.FC = () => {
   const { registerSlide, setRegisterSlide } = useRegisterSlide()
   const [showRegister, setShowRegister] = useState(false)
   const [disabled, setDisabled] = useState(true)
+  const { register } = useAuth()
 
   useEffect(() => {
     setDisabled(true)
@@ -47,40 +40,32 @@ const Signup: React.FC = () => {
     setRegisterSlide(false)
   }
 
-  const onSignupSubmit: SubmitHandler<FormData> = useCallback(
-    async (data, { reset }, event) => {
-      event?.preventDefault()
-      try {
-        await signupSchema.validate(data, { abortEarly: false })
-        signupFormRef.current?.setErrors({})
-        console.log(data)
-        reset()
-        history.push('/map')
-      } catch (error) {
-        if (error instanceof Yup.ValidationError) {
-          const errorList = getValidationErrors(error)
-          signupFormRef.current?.setErrors(errorList)
-        }
+  const handleSubmit: SubmitHandler<RegisterData> = async (data, { reset }, event) => {
+    event?.preventDefault()
+    try {
+      await signupSchema.validate(data, { abortEarly: false })
+      signupFormRef.current?.setErrors({})
+      await register({ ...data, birthday: '1999-11-17' })
+      setRegisterSlide(false)
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        const errorList = getValidationErrors(error)
+        signupFormRef.current?.setErrors(errorList)
       }
-    },
-    [history]
-  )
+    }
+  }
 
   return (
     <>
       {showRegister && (
         <Style>
-          <BackButton
-            type='button'
-            disabled={disabled}
-            onClick={onBackButtonClick}
-          >
+          <BackButton type='button' disabled={disabled} onClick={onBackButtonClick}>
             <RiArrowLeftSLine size={28} />
             <span>Voltar</span>
           </BackButton>
           <Logo />
 
-          <Form ref={signupFormRef} onSubmit={onSignupSubmit}>
+          <Form ref={signupFormRef} onSubmit={handleSubmit}>
             <DualInput>
               <InputText
                 name='name'
@@ -99,15 +84,15 @@ const Signup: React.FC = () => {
             </DualInput>
 
             <Text>
-              Certifique-se de que corresponde ao nome no seu documento de
-              indentificação oficial
+              Certifique-se de que corresponde ao nome no seu documento de indentificação
+              oficial
             </Text>
 
             <InputText name='email' placeholder='E-mail' icon={FaUserLock} />
 
             <Text>Enviaremos um e-mail para confirmação</Text>
 
-            <InputText name='birth' icon={FaUserLock} date />
+            <InputText name='birthday' value='1999-01-16' icon={FaUserLock} date />
 
             <InputText
               name='password'
@@ -130,12 +115,11 @@ const Signup: React.FC = () => {
                 <a href='action'>Termos de uso</a>, os{' '}
                 <a href='action'>Termos de Serviço e Pagamentos</a>, a{' '}
                 <a href='action'>Política de Privacidade</a> e a{' '}
-                <a href='action'>Política de Não Discriminação</a> do Steams
-                Lab.
+                <a href='action'>Política de Não Discriminação</a> do Steams Lab.
               </span>
             </Text>
 
-            <button type='submit'>Concordar e concluir</button>
+            <Button type='submit'>Concordar e concluir</Button>
           </Form>
         </Style>
       )}

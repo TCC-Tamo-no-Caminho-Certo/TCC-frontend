@@ -1,5 +1,4 @@
 import React, { ComponentType } from 'react'
-import { useAuth } from 'hooks/useAuth'
 import {
   RouteProps as RouterPropsDOM,
   Route as RouteDOM,
@@ -11,24 +10,19 @@ interface RouteProps extends RouterPropsDOM {
   component: ComponentType
 }
 
-const Route: React.FC<RouteProps> = ({
-  isPrivate = false,
-  component: Component,
-  ...rest
-}) => {
-  const { authData } = useAuth()
+const Route: React.FC<RouteProps> = ({ component: Component, ...rest }) => {
+  const access = localStorage.getItem('@SteamsLab:success')
 
   return (
     <RouteDOM
       {...rest}
-      render={({ location }) => {
-        return true ? (
+      render={() => {
+        return access ? (
           <Component />
         ) : (
           <Redirect
             to={{
-              pathname: isPrivate ? '/' : '/map',
-              state: { from: location },
+              pathname: '/',
             }}
           />
         )
