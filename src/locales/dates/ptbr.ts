@@ -58,15 +58,12 @@ export default {
   getToday(gregorainTodayObject: TodayObject): TodayObject {
     return gregorainTodayObject
   },
-
   toNativeDate(date: TodayObject): Date {
     return new Date(date.year, date.month - 1, date.day)
   },
-
   getMonthLength(date: TodayObject): number {
     return new Date(date.year, date.month, 0).getDate()
   },
-
   transformDigit(digit: string | number): string | number {
     return digit
   },
