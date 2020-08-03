@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
-export const Style = styled.button`
+const Style = styled.button`
   width: 440px;
   border-width: 0px;
   border-radius: 5px 0 5px 0;
@@ -16,3 +16,5 @@ export const Style = styled.button`
     transform: scale(1.06);
   }
 `
+
+export default Style

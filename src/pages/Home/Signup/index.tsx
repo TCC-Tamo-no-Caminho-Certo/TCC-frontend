@@ -1,29 +1,35 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Style, BackButton, Text, DualInput } from './styles'
+import Style, { BackButton, InfoText, DualInput } from './styles'
 import signupSchema from 'validations/signup'
 import Button from 'components/Button'
 import DatePicker from 'components/DatePicker'
 import InputText from 'components/InputText/index'
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
+import { useAuth } from 'hooks/useAuth'
 import getValidationErrors from 'utils/getValidationErrors'
 import { Logo } from 'assets/Logo'
 import * as Yup from 'yup'
 import { Form } from '@unform/web'
 import { MdPublic } from 'react-icons/md'
-import { useHistory } from 'react-router-dom'
 import { FaUserLock } from 'react-icons/fa'
 import { RiArrowLeftSLine } from 'react-icons/ri'
 import { FormHandles, SubmitHandler } from '@unform/core'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
-import { useAuth, RegisterData } from '../../../hooks/useAuth'
+
+export interface RegisterData {
+  name: string
+  surname: string
+  email: string
+  birthday: string
+  password: string
+}
 
 const Signup: React.FC = () => {
   const signupFormRef = useRef<FormHandles>(null)
-  const history = useHistory()
-  const { registerSlide, setRegisterSlide } = useRegisterSlide()
-  const [showRegister, setShowRegister] = useState(false)
   const [disabled, setDisabled] = useState(true)
+  const [showRegister, setShowRegister] = useState(false)
   const { register } = useAuth()
+  const { registerSlide, setRegisterSlide } = useRegisterSlide()
 
   useEffect(() => {
     setDisabled(true)
@@ -46,8 +52,9 @@ const Signup: React.FC = () => {
     try {
       await signupSchema.validate(data, { abortEarly: false })
       signupFormRef.current?.setErrors({})
-      await register({ ...data, birthday: '1999-11-17' })
+      await register({ ...data })
       setRegisterSlide(false)
+      reset()
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errorList = getValidationErrors(error)
@@ -64,6 +71,7 @@ const Signup: React.FC = () => {
             <RiArrowLeftSLine size={28} />
             <span>Voltar</span>
           </BackButton>
+
           <Logo />
 
           <Form ref={signupFormRef} onSubmit={handleSubmit}>
@@ -84,16 +92,16 @@ const Signup: React.FC = () => {
               />
             </DualInput>
 
-            <Text>
+            <InfoText>
               Certifique-se de que corresponde ao nome no seu documento de indentificação
               oficial
-            </Text>
+            </InfoText>
 
             <DatePicker name='birthday' icon={FaUserLock} />
 
             <InputText name='email' placeholder='E-mail' icon={FaUserLock} />
 
-            <Text>Enviaremos um e-mail para confirmação</Text>
+            <InfoText>Enviaremos um e-mail para confirmação</InfoText>
 
             <DualInput>
               <InputText
@@ -112,7 +120,7 @@ const Signup: React.FC = () => {
               />
             </DualInput>
 
-            <Text>
+            <InfoText>
               <span>
                 Ao clicar Concordar e concluir, concordo com os{' '}
                 <a href='action'>Termos de uso</a>, os{' '}
@@ -120,7 +128,7 @@ const Signup: React.FC = () => {
                 <a href='action'>Política de Privacidade</a> e a{' '}
                 <a href='action'>Política de Não Discriminação</a> do Steams Lab.
               </span>
-            </Text>
+            </InfoText>
 
             <Button type='submit'>Concordar e concluir</Button>
           </Form>

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
-export const Style = styled.section`
+const Style = styled.section`
   grid-area: about;
   width: 100%;
   height: 100%;
@@ -11,3 +11,5 @@ export const Style = styled.section`
   transition: width 1s;
   background-color: ${fromTheme('primary')};
 `
+
+export default Style

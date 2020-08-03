@@ -1,5 +1,5 @@
 import React, { useState, ComponentType, useContext } from 'react'
-import { Style } from './styles'
+import Style from './styles'
 import ptbr from 'locales/dates/ptbr'
 import { ErrorTooltip } from 'components/Tooltips'
 import ModernDatePicker, { DayValue } from 'react-modern-calendar-datepicker'

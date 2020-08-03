@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
-export const Style = styled.section`
+const Style = styled.section`
   grid-area: login;
   width: calc(100% + 1px);
   height: 100%;
@@ -95,3 +95,5 @@ export const Permanence = styled.label`
     margin-right: 8px;
   }
 `
+
+export default Style

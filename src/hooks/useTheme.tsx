@@ -31,7 +31,6 @@ export const ThemeProvider: React.FC = ({ children }) => {
 
 export const useTheme = (): Theme => {
   const themeState = useContext(ThemeContext)
-  if (!themeState)
-    throw new Error('useTheme must be used within an ThemeProvider')
+  if (!themeState) throw new Error('useTheme must be used within an ThemeProvider')
   return themeState
 }

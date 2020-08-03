@@ -8,7 +8,7 @@ interface StyleProps {
   hasIcon: boolean
 }
 
-export const Style = styled.div<StyleProps>`
+const Style = styled.div<StyleProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,3 +67,5 @@ export const Style = styled.div<StyleProps>`
       }
     `}
 `
+
+export default Style

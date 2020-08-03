@@ -1,11 +1,11 @@
 import styled from 'styled-components'
-import fromTheme from '../../utils/fromTheme'
+import fromTheme from 'utils/fromTheme'
 
 interface RowProps {
   registerSlide: string | boolean
 }
 
-export const Style = styled.div`
+const Style = styled.div`
   overflow: hidden;
 `
 
@@ -22,3 +22,5 @@ export const Row = styled.section<RowProps>`
     grid: 'about login signup subscribe' 100vh / 62vw 38vw 38vw 62vw;
   }
 `
+
+export default Style

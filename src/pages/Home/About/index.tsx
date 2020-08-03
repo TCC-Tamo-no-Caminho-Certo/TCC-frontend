@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { Style } from './styles'
+import Style from './styles'
 
 const About: React.FC = () => {
   const loginRef = useRef(null)

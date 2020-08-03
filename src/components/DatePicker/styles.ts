@@ -8,7 +8,7 @@ interface StyleProps {
   hasIcon: boolean
 }
 
-export const Style = styled.div<StyleProps>`
+const Style = styled.div<StyleProps>`
   width: 440px;
   height: 44px;
   display: flex;
@@ -32,7 +32,6 @@ export const Style = styled.div<StyleProps>`
       height: 100%;
       border: none;
       font-size: 1.6rem;
-
       color: ${fromTheme('primary')};
     }
   }
@@ -42,8 +41,8 @@ export const Style = styled.div<StyleProps>`
   }
 
   .Calendar.-noFocusOutline.-ltr {
-    border-radius: 20px;
     padding: 0;
+    border-radius: 20px;
   }
 
   .DatePicker__calendarArrow {
@@ -51,9 +50,9 @@ export const Style = styled.div<StyleProps>`
   }
 
   .Calendar__header {
-    background-color: ${fromTheme('tertiary')};
     padding: 10px;
     border-radius: 20px 20px 0px 0px;
+    background-color: ${fromTheme('tertiary')};
   }
 
   .Calendar__monthArrow {
@@ -130,3 +129,5 @@ export const Style = styled.div<StyleProps>`
       }
     `}
 `
+
+export default Style

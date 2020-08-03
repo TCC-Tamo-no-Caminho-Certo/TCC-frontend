@@ -1,5 +1,5 @@
 import React from 'react'
-import { Style, Row } from './styles'
+import Style, { Row } from './styles'
 import About from './About'
 import Login from './Login'
 import Signup from './Signup'

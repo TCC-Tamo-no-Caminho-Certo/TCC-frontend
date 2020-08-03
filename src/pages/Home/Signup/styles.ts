@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
-export const Style = styled.section`
+const Style = styled.section`
   grid-area: signup;
   width: 100%;
   min-height: 100%;
@@ -42,7 +42,7 @@ export const DualInput = styled.div`
   }
 `
 
-export const Text = styled.div`
+export const InfoText = styled.div`
   display: flex;
   align-items: center;
   text-align: left;
@@ -67,3 +67,5 @@ export const BackButton = styled.button`
     line-height: 28px;
   }
 `
+
+export default Style

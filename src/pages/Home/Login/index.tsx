@@ -1,11 +1,11 @@
 import React, { useContext, useRef, useEffect, useState } from 'react'
-import { Style, Content, ThemeSwitch, Register, Google, Permanence } from './styles'
+import Style, { Content, ThemeSwitch, Register, Google, Permanence } from './styles'
 import loginSchema from 'validations/login'
 import Button from 'components/Button'
 import InputText from 'components/InputText/'
-import { useAuth, LoginData } from 'hooks/useAuth'
 import { useTheme } from 'hooks/useTheme'
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
+import { useAuth } from 'hooks/useAuth'
 import getValidationErrors from 'utils/getValidationErrors'
 import Logo from 'assets/Logo'
 import google from 'assets/google.png'
@@ -17,6 +17,11 @@ import { useHistory } from 'react-router-dom'
 import { ThemeContext } from 'styled-components'
 import { FiUser, FiLock } from 'react-icons/fi'
 import { SubmitHandler, FormHandles } from '@unform/core'
+
+export interface LoginData {
+  email: string
+  password: string
+}
 
 const Login: React.FC = () => {
   const history = useHistory()
