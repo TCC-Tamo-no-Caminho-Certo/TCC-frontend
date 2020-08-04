@@ -45,12 +45,11 @@ const DatePicker: React.FC<DatePickerProps> = ({ name, size, icon: Icon }) => {
       name: fieldName,
       ref: ref.current,
       path: 'value',
-      clearValue: (input: any) => {
-        input.clear()
-      },
     })
 
-    const onInputFocus = () => setIsFocused(true)
+    const onInputFocus = () => {
+      setIsFocused(true)
+    }
 
     const onInputBlur = () => {
       setIsFocused(false)
@@ -68,6 +67,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ name, size, icon: Icon }) => {
 
     return (
       <input
+        readOnly
         ref={ref}
         type='text'
         placeholder='Data de nascimento'
@@ -93,6 +93,8 @@ const DatePicker: React.FC<DatePickerProps> = ({ name, size, icon: Icon }) => {
         onChange={setSelectedDate}
         colorPrimary={themes.primary}
         renderInput={renderCustomInput}
+        selectorStartingYear={minimumDate.year}
+        selectorEndingYear={present.year}
         minimumDate={minimumDate}
         maximumDate={maximumDate}
         locale={ptbr}

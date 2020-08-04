@@ -18,6 +18,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: ComponentType<IconBaseProps>
   size?: number
   eye?: boolean
+  pasteAndDrop?: boolean
 }
 
 const InputText: React.FC<InputProps> = ({
@@ -26,6 +27,7 @@ const InputText: React.FC<InputProps> = ({
   icon: Icon,
   size,
   eye = false,
+  pasteAndDrop = true,
   ...rest
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -67,6 +69,8 @@ const InputText: React.FC<InputProps> = ({
         onFocus={onInputFocus}
         defaultValue={defaultValue}
         type={showInput ? 'text' : type}
+        onPaste={event => pasteAndDrop || event?.preventDefault()}
+        onDrop={event => pasteAndDrop || event?.preventDefault()}
         {...rest}
       />
 

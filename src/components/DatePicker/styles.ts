@@ -88,16 +88,24 @@ const Style = styled.div<StyleProps>`
     text-decoration: none;
   }
 
-  .Calendar__section.-shown {
-    padding: 0 20px;
-  }
-
   .Calendar__day.-ltr {
     color: ${fromTheme('tertiary')};
   }
 
   .Calendar__day.-ltr.-selected {
     color: ${fromTheme('secondary')};
+  }
+
+  .Calendar__day.-ltr.-disabled {
+    display: none;
+  }
+
+  .Calendar__yearSelectorText:disabled {
+    color: #c53030 ;
+    opacity: 1;
+  }
+
+  .Calendar__yearSelector {
   }
 
   ${({ isFocused }) =>

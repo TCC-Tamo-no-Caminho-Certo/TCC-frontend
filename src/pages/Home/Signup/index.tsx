@@ -52,7 +52,8 @@ const Signup: React.FC = () => {
     try {
       await signupSchema.validate(data, { abortEarly: false })
       signupFormRef.current?.setErrors({})
-      await register({ ...data })
+      const birthday = data.birthday.replace(/\//g, '-')
+      await register({ ...data, birthday })
       setRegisterSlide(false)
       reset()
     } catch (error) {
@@ -113,6 +114,7 @@ const Signup: React.FC = () => {
               />
               <hr />
               <InputText
+                pasteAndDrop={false}
                 type='password'
                 name='confirmPassword'
                 placeholder='Confirmar Senha'
