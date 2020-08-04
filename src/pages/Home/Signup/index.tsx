@@ -52,7 +52,8 @@ const Signup: React.FC = () => {
     try {
       await signupSchema.validate(data, { abortEarly: false })
       signupFormRef.current?.setErrors({})
-      const birthday = data.birthday.replace(/\//g, '-')
+      const old = data.birthday.split('/')
+      const birthday = `${old[2]}-${old[1]}-${old[0]}`
       await register({ ...data, birthday })
       setRegisterSlide(false)
       reset()
