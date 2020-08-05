@@ -4,8 +4,8 @@ import loginSchema from 'validations/login'
 import Button from 'components/Button'
 import InputText from 'components/InputText/'
 import { useTheme } from 'hooks/useTheme'
-import { useRegisterSlide } from 'hooks/useRegisterSlide'
 import { useAuth } from 'hooks/useAuth'
+import { useRegisterSlide } from 'hooks/useRegisterSlide'
 import getValidationErrors from 'utils/getValidationErrors'
 import Logo from 'assets/Logo'
 import google from 'assets/google.png'
@@ -16,11 +16,13 @@ import { Form } from '@unform/web'
 import { useHistory } from 'react-router-dom'
 import { ThemeContext } from 'styled-components'
 import { FiUser, FiLock } from 'react-icons/fi'
+import { GoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { SubmitHandler, FormHandles } from '@unform/core'
 
 export interface LoginData {
   email: string
   password: string
+  captcha: string
 }
 
 const Login: React.FC = () => {
@@ -33,6 +35,7 @@ const Login: React.FC = () => {
   const { registerSlide, setRegisterSlide } = useRegisterSlide()
   const [showLogin, setShowLogin] = useState(true)
   const [disabled, setDisabled] = useState(true)
+  const [captchaToken, setCaptchaToken] = useState('')
 
   useEffect(() => {
     setDisabled(true)
@@ -62,7 +65,7 @@ const Login: React.FC = () => {
     try {
       await loginSchema.validate(data, { abortEarly: false })
       loginFormRef.current?.setErrors({})
-      await login(data)
+      await login({ ...data, captcha: captchaToken })
       reset()
       history.push('/map')
     } catch (error) {
@@ -116,6 +119,8 @@ const Login: React.FC = () => {
                 size={23}
                 type='password'
               />
+
+              <GoogleReCaptcha onVerify={token => setCaptchaToken(token)} />
 
               <Button type='submit'>Efetuar Login</Button>
             </Form>

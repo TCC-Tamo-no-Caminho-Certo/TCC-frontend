@@ -12,6 +12,7 @@ import * as Yup from 'yup'
 import { Form } from '@unform/web'
 import { MdPublic } from 'react-icons/md'
 import { FaUserLock } from 'react-icons/fa'
+import { GoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { RiArrowLeftSLine } from 'react-icons/ri'
 import { FormHandles, SubmitHandler } from '@unform/core'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
@@ -22,6 +23,7 @@ export interface RegisterData {
   email: string
   birthday: string
   password: string
+  captcha: string
 }
 
 const Signup: React.FC = () => {
@@ -30,6 +32,7 @@ const Signup: React.FC = () => {
   const [showRegister, setShowRegister] = useState(false)
   const { register } = useAuth()
   const { registerSlide, setRegisterSlide } = useRegisterSlide()
+  const [captchaToken, setCaptchaToken] = useState('')
 
   useEffect(() => {
     setDisabled(true)
@@ -53,7 +56,7 @@ const Signup: React.FC = () => {
       await signupSchema.validate(data, { abortEarly: false })
       signupFormRef.current?.setErrors({})
       const birthday = data.birthday.replace(/\//g, '-')
-      await register({ ...data, birthday })
+      await register({ ...data, birthday, captcha: captchaToken })
       setRegisterSlide(false)
       reset()
     } catch (error) {
@@ -122,6 +125,8 @@ const Signup: React.FC = () => {
               />
             </DualInput>
 
+            <GoogleReCaptcha onVerify={token => setCaptchaToken(token)} />
+
             <InfoText>
               <span>
                 Ao clicar Concordar e concluir, concordo com os{' '}
@@ -131,7 +136,6 @@ const Signup: React.FC = () => {
                 <a href='action'>Política de Não Discriminação</a> do Steams Lab.
               </span>
             </InfoText>
-
             <Button type='submit'>Concordar e concluir</Button>
           </Form>
         </Style>
