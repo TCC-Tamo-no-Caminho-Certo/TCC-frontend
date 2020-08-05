@@ -65,6 +65,7 @@ const Login: React.FC = () => {
     try {
       await loginSchema.validate(data, { abortEarly: false })
       loginFormRef.current?.setErrors({})
+      console.log({ ...data, captcha: captchaToken })
       await login({ ...data, captcha: captchaToken })
       reset()
       history.push('/map')
@@ -118,6 +119,7 @@ const Login: React.FC = () => {
                 icon={FiLock}
                 size={23}
                 type='password'
+                eye
               />
 
               <GoogleReCaptcha onVerify={token => setCaptchaToken(token)} />

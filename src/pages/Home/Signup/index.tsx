@@ -57,6 +57,7 @@ const Signup: React.FC = () => {
       signupFormRef.current?.setErrors({})
       const old = data.birthday.split('/')
       const birthday = `${old[2]}-${old[1]}-${old[0]}`
+      console.log({ ...data, birthday, captcha: captchaToken })
       await register({ ...data, birthday, captcha: captchaToken })
       setRegisterSlide(false)
       reset()
