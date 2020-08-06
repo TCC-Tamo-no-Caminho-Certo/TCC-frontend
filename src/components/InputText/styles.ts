@@ -6,32 +6,26 @@ interface StyleProps {
   isFilled: boolean
   isErrored: boolean
   hasIcon: boolean
+  hasEye: boolean
 }
 
 const Style = styled.div<StyleProps>`
+  height: 40px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 440px;
-  height: 44px;
-  position: relative;
   border-radius: 10px;
   background-color: transparent;
   border: solid 1px ${fromTheme('tertiary')};
 
   svg {
-    width: 10%;
-    color: ${fromTheme('tertiary')};
+    width: 15%;
   }
 
   input {
-    height: 100%;
-    padding: 0 4px;
-    border: none;
-    flex: 1;
     background-color: transparent;
-    font-size: 1.6rem;
+    border: none;
     color: ${fromTheme('primary')};
+    width: ${({ hasEye }) => (hasEye ? '70%' : '85%')};
 
     &::placeholder {
       color: ${fromTheme('tertiary')};
@@ -42,6 +36,7 @@ const Style = styled.div<StyleProps>`
     isFocused &&
     css`
       border-color: ${fromTheme('primary')};
+
       &,
       input::placeholder,
       svg {
@@ -65,7 +60,6 @@ const Style = styled.div<StyleProps>`
       input {
         padding-left: 20px;
       }
-    `}
-`
+    `}`
 
 export default Style

@@ -3,18 +3,38 @@ import fromTheme from 'utils/fromTheme'
 
 const Style = styled.section`
   grid-area: login;
+  min-width: 320px;
   width: calc(100% + 1px);
   height: 100%;
   padding: 30px;
   display: flex;
   position: relative;
   align-items: center;
-  border-radius: 10px 0 0 10px;
   justify-content: center;
   background-color: ${fromTheme('secondary')};
 
   .InputText + .InputText {
     margin-top: 20px;
+  }
+
+  .InputText,
+  .Permanence,
+  .Button {
+    min-width: 300px;
+    width: 80vw;
+    max-width: 400px;
+  }
+
+  @media screen and (min-width: 1200px) {
+    border-radius: 15px 0 0 15px;
+
+    .InputText,
+    .Permanence,
+    button {
+      min-width: 340px;
+      width: 22.9vw;
+      max-width: 400px;
+    }
   }
 `
 
@@ -48,6 +68,7 @@ export const Content = styled.div`
 `
 
 export const Register = styled.div`
+  font-size: 1.5rem;
   margin-top: 20px;
   text-align: center;
   color: ${fromTheme('tertiary')};
@@ -58,6 +79,7 @@ export const Register = styled.div`
     background-color: transparent;
     color: ${fromTheme('primary')};
     transition: transform 2s;
+    font-size: 1.5rem;
 
     &:hover {
       transform: scale(1.09);
@@ -66,10 +88,11 @@ export const Register = styled.div`
 `
 
 export const Google = styled.div`
+  font-size: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 8px;
+  padding: 10px 5px;
   margin-bottom: 20px;
   cursor: pointer;
   color: ${fromTheme('tertiary')};
@@ -81,14 +104,14 @@ export const Google = styled.div`
   }
 `
 
-export const Permanence = styled.label`
+export const Permanence = styled.label.attrs({ className: 'Permanence' })`
+  font-size: 1.5rem;
   margin-top: 20px;
   line-height: 40px;
   border-bottom: 2px solid ${fromTheme('tertiary')};
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 440px;
   cursor: pointer;
 
   input {

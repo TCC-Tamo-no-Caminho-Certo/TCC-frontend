@@ -9,7 +9,7 @@ import { IconBaseProps } from 'react-icons'
 import { IoIosArrowDown } from 'react-icons/io'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 
-interface DatePickerProps {
+interface InputDateProps {
   name: string
   size?: string
   icon?: ComponentType<IconBaseProps>
@@ -33,7 +33,7 @@ const maximumDate = {
   day: present.day,
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ name, size, icon: Icon }) => {
+const InputDate: React.FC<InputDateProps> = ({ name, size, icon: Icon }) => {
   const { fieldName, registerField, error, clearError } = useField(name)
   const [selectedDate, setSelectedDate] = useState<DayValue>(null)
   const [isFocused, setIsFocused] = useState(false)
@@ -85,8 +85,13 @@ const DatePicker: React.FC<DatePickerProps> = ({ name, size, icon: Icon }) => {
       isErrored={!!error}
       isFocused={isFocused}
       id={name}
+      className='InputDate'
     >
-      {error ? <ErrorTooltip content={error} /> : Icon && <Icon size={size} />}
+      {error ? (
+        <ErrorTooltip className='icon' content={error} />
+      ) : (
+        Icon && <Icon className='icon' size={size} />
+      )}
 
       <ModernDatePicker
         value={selectedDate}
@@ -99,12 +104,12 @@ const DatePicker: React.FC<DatePickerProps> = ({ name, size, icon: Icon }) => {
         maximumDate={maximumDate}
         locale={ptbr}
         calendarClassName='CalendarSize'
-        calendarPopperPosition='bottom'
+        calendarPopperPosition='top'
       />
 
-      <IoIosArrowDown />
+      <IoIosArrowDown className='icon' />
     </Style>
   )
 }
 
-export default DatePicker
+export default InputDate

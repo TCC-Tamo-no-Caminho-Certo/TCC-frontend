@@ -6,7 +6,7 @@ const About: React.FC = () => {
 
   return (
     <Style ref={loginRef}>
-      <h1>SOBRE</h1>
+      <h1>ABOUT</h1>
     </Style>
   )
 }

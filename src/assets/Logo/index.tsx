@@ -75,7 +75,7 @@ export const Logo: React.FC = () => {
   }, [logoAnimations, textAnimations])
 
   return (
-    <Style onClick={onClick}>
+    <Style onClick={onClick} className='Logo'>
       <svg
         xmlns='http://www.w3.org/2000/svg'
         width='66'

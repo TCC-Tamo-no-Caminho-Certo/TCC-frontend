@@ -2,7 +2,6 @@ import React, {
   useRef,
   useEffect,
   useState,
-  useCallback,
   InputHTMLAttributes,
   ComponentType,
 } from 'react'
@@ -36,14 +35,6 @@ const InputText: React.FC<InputProps> = ({
   const [showInput, setShowInput] = useState(false)
   const { defaultValue, fieldName, registerField, error, clearError } = useField(name)
 
-  const onInputFocus = useCallback(() => setIsFocused(true), [])
-
-  const onInputBlur = useCallback(() => {
-    setIsFocused(false)
-    setIsFilled(!!inputRef.current?.value)
-    clearError()
-  }, [clearError])
-
   useEffect(() => {
     registerField({
       name: fieldName,
@@ -52,14 +43,23 @@ const InputText: React.FC<InputProps> = ({
     })
   }, [fieldName, registerField])
 
+  const onInputFocus = () => setIsFocused(true)
+
+  const onInputBlur = () => {
+    setIsFocused(false)
+    setIsFilled(!!inputRef.current?.value)
+    clearError()
+  }
+
   return (
     <Style
+      id={name}
+      hasEye={eye}
       hasIcon={!!Icon}
       isFilled={isFilled}
       isErrored={!!error}
       isFocused={isFocused}
       className='InputText'
-      id={name}
     >
       {error ? <ErrorTooltip content={error} /> : Icon && <Icon size={size} />}
 

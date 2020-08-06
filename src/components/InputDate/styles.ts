@@ -11,9 +11,9 @@ interface StyleProps {
 const Style = styled.div<StyleProps>`
   width: 440px;
   height: 44px;
+  height: 40px;
   display: flex;
   align-items: center;
-  justify-content: center;
   border-radius: 10px;
   background-color: transparent;
   border: solid 1px ${fromTheme('tertiary')};
@@ -22,18 +22,38 @@ const Style = styled.div<StyleProps>`
     width: 10%;
   }
 
+  .icon {
+    width: 15%;
+  }
+
   .DatePicker {
-    flex: 1;
+    width: 70%;
     height: 100%;
 
     input {
-      background-color: transparent;
-      width: 111%;
+      font-size: 1.6rem;
+      width: 120%;
       height: 100%;
       border: none;
-      font-size: 1.6rem;
+      background-color: transparent;
       color: ${fromTheme('primary')};
     }
+  }
+
+  .Calendar__monthSelector.-open {
+    padding: 0;
+    height: 200px;
+  }
+
+  .Calendar__monthSelectorItemText {
+    padding: 5px;
+    margin: 0px;
+
+    font-size: 1.4rem;
+  }
+
+  .Calendar__monthYear.-show {
+    background-color: red;
   }
 
   .CalendarSize {
@@ -46,7 +66,7 @@ const Style = styled.div<StyleProps>`
   }
 
   .DatePicker__calendarArrow {
-    border-color:  transparent transparent ${fromTheme('tertiary')} transparent;
+    border-color: transparent transparent ${fromTheme('secondary')} transparent;
   }
 
   .Calendar__header {
@@ -59,14 +79,23 @@ const Style = styled.div<StyleProps>`
     background-image: url("data:image/svg+xml,%3Csvg width='14' height='24' viewBox='0 0 14 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.49998 1L12.5 12L1.49998 23' stroke='white' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
   }
 
+  .Calendar__monthArrowWrapper {
+    width: 25px;
+  }
+
   .Calendar__monthArrowWrapper.-right {
     padding: 0px;
     transform: rotate(180deg);
   }
 
+  .Calendar__monthText {
+    margin-right: 5%;
+  }
+
   .Calendar__monthText,
   .Calendar__yearText {
     color: ${fromTheme('secondary')};
+    width: 60%;
 
     &:hover {
       background-color: ${fromTheme('primary')};
@@ -76,6 +105,10 @@ const Style = styled.div<StyleProps>`
   .Calendar__monthArrowWrapper.-left {
     transform: rotate(360deg);
     padding: 0px;
+  }
+
+  .Calendar__monthSelectorItemText {
+    width: 30%;
   }
 
   .Calendar__weekDays {
@@ -101,8 +134,8 @@ const Style = styled.div<StyleProps>`
   }
 
   .Calendar__yearSelectorText:disabled {
-    color: #c53030 ;
     opacity: 1;
+    color: #c53030;
   }
 
   .Calendar__yearSelector {
@@ -112,6 +145,7 @@ const Style = styled.div<StyleProps>`
     isFocused &&
     css`
       border-color: ${fromTheme('primary')};
+
       &,
       input::placeholder,
       svg {
@@ -125,15 +159,6 @@ const Style = styled.div<StyleProps>`
       &,
       svg {
         color: ${fromTheme('primary')};
-      }
-    `}
-
-  ${({ hasIcon, isErrored }) =>
-    !hasIcon &&
-    !isErrored &&
-    css`
-      input {
-        padding-left: 20px;
       }
     `}
 `

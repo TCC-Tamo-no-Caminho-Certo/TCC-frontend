@@ -17,21 +17,15 @@ export const AuthProvider: React.FC = ({ children }) => {
     return success || ''
   })
 
-  const login = async ({ email, password }: LoginData) => {
-    const response = await api.post('login', { email, password })
+  const login = async (data: LoginData) => {
+    const response = await api.post('login', data)
     const { success } = response.data
     localStorage.setItem('@SteamsLab:success', success)
     setToken(success)
   }
 
-  const register = async ({ name, surname, email, birthday, password }: RegisterData) => {
-    await api.post('register', {
-      name,
-      surname,
-      email,
-      birthday,
-      password,
-    })
+  const register = async (data: RegisterData) => {
+    await api.post('register', data)
   }
 
   return (

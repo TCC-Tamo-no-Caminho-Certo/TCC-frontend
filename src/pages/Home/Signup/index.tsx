@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import Style, { BackButton, InfoText, DualInput } from './styles'
 import signupSchema from 'validations/signup'
 import Button from 'components/Button'
-import DatePicker from 'components/DatePicker'
+import DatePicker from 'components/InputDate'
 import InputText from 'components/InputText/index'
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
 import { useAuth } from 'hooks/useAuth'
@@ -75,6 +75,7 @@ const Signup: React.FC = () => {
         <Style>
           <BackButton type='button' disabled={disabled} onClick={onBackButtonClick}>
             <RiArrowLeftSLine size={28} />
+
             <span>Voltar</span>
           </BackButton>
 
@@ -89,7 +90,9 @@ const Signup: React.FC = () => {
                 icon={MdPublic}
                 size={21}
               />
+
               <hr />
+
               <InputText
                 name='surname'
                 placeholder='Sobrenome'
@@ -105,6 +108,8 @@ const Signup: React.FC = () => {
 
             <DatePicker name='birthday' icon={FaUserLock} />
 
+            <InfoText>Você precisa ter pelo menos 18 anos</InfoText>
+
             <InputText name='email' placeholder='E-mail' icon={FaUserLock} />
 
             <InfoText>Enviaremos um e-mail para confirmação</InfoText>
@@ -117,7 +122,9 @@ const Signup: React.FC = () => {
                 type='password'
                 eye
               />
+
               <hr />
+
               <InputText
                 pasteAndDrop={false}
                 type='password'
@@ -138,6 +145,7 @@ const Signup: React.FC = () => {
                 <a href='action'>Política de Não Discriminação</a> do Steams Lab.
               </span>
             </InfoText>
+
             <Button type='submit'>Concordar e concluir</Button>
           </Form>
         </Style>

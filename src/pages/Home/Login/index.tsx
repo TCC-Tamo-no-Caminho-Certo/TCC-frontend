@@ -8,6 +8,7 @@ import { useAuth } from 'hooks/useAuth'
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
 import getValidationErrors from 'utils/getValidationErrors'
 import Logo from 'assets/Logo'
+import sun from 'assets/sun.svg'
 import google from 'assets/google.png'
 import * as Yup from 'yup'
 import anime from 'animejs'
@@ -85,7 +86,7 @@ const Login: React.FC = () => {
     <>
       {showLogin && (
         <Style>
-          <ThemeSwitch>
+          {/* <ThemeSwitch>
             <label htmlFor='switch'>Darkmode</label>
             <Switch
               onChange={() => setThemeState(!themeState)}
@@ -100,7 +101,8 @@ const Login: React.FC = () => {
               width={35}
               id='switch'
             />
-          </ThemeSwitch>
+            <img src={sun} alt='theme switch' />
+          </ThemeSwitch> */}
 
           <Content ref={contentRef}>
             <Logo />
@@ -133,7 +135,7 @@ const Login: React.FC = () => {
             </Permanence>
 
             <Register>
-              Ainda não possue uma conta ?
+              Ainda não possui uma conta ?
               <br />
               <button type='button' disabled={disabled} onClick={onSignupClick}>
                 Registre-se aqui!

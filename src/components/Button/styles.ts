@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
 const Style = styled.button`
-  width: 440px;
   border-width: 0px;
   border-radius: 5px 0 5px 0;
   transition: transform 0.5s;
