@@ -4,16 +4,21 @@ const signupSchema = Yup.object({
   name: Yup.string()
     .matches(/^([A-z]|\s)+$/, 'Informe um nome válido!')
     .required('Você precisa informar seu nome!'),
+
   surname: Yup.string()
     .matches(/^([A-z]|\s)+$/, 'Informe um sobrenome válido!')
     .required('Você precisa informar seu sobrenome!'),
+
   email: Yup.string()
     .email('E-mail inválido!')
     .required('É necessário informar o email!'),
+
   birthday: Yup.string().required('É necessário informar a data!'),
+
   password: Yup.string()
     .matches(
       /^(?=.*[#?!@$%^&+{}()["';,°<>~=_/|\].-]).{8,}$/,
+
       'Sua senha deve conter um caractere especial'
     )
     .matches(/^(?=.*[A-Z]).{8,}$/, 'Sua senha deve conter uma letra maiúscula')
@@ -21,6 +26,7 @@ const signupSchema = Yup.object({
     .matches(/^(?=.*[0-9]).{8,}$/, 'Sua senha deve conter um número')
     .min(8, 'Sua senha deve conter mais que 8 caracteres')
     .required('Você precisa de uma senha!'),
+
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password')], 'As senhas não são iguais')
     .required('Você precisa confirmar sua senha!'),

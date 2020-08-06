@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+
 import fromTheme from 'utils/fromTheme'
 
 const Style = styled.section`
@@ -30,7 +31,7 @@ const Style = styled.section`
 
     .InputText,
     .Permanence,
-    button {
+    .Button {
       min-width: 340px;
       width: 22.9vw;
       max-width: 400px;
@@ -46,7 +47,6 @@ export const ThemeSwitch = styled.div`
   align-items: center;
   color: ${fromTheme('primary')};
   font-size: 1.8rem;
-
   label {
     font-family: 'Satisfy', cursive;
     margin-right: 20px;

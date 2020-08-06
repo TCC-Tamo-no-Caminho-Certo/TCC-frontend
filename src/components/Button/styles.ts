@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+
 import fromTheme from 'utils/fromTheme'
 
 const Style = styled.button`

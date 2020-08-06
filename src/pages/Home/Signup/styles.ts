@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+
 import fromTheme from 'utils/fromTheme'
 
 const Style = styled.section`
@@ -39,6 +40,16 @@ const Style = styled.section`
 
   @media screen and (min-width: 1200px) {
     border-radius: 0 15px 15px 0;
+
+    hr,
+    .Button,
+    .InputText,
+    .InputDate,
+    .InfoText {
+      min-width: 340px;
+      width: 22.9vw;
+      max-width: 400px;
+    }
   }
 `
 

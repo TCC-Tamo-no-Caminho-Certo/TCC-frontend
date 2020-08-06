@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react'
+
 import { Style } from './styles'
+
 import anime from 'animejs'
+
 import { ThemeContext } from 'styled-components'
 
 export const Logo: React.FC = () => {
@@ -15,6 +18,7 @@ export const Logo: React.FC = () => {
       rotate: -360,
       loop: true,
     })
+
     anime({
       targets: '#brown path',
       easing: 'easeInOutSine',
@@ -22,6 +26,7 @@ export const Logo: React.FC = () => {
       duration: 1000,
       delay: anime.stagger(300),
     })
+
     anime({
       targets: '#pink path',
       duration: 600,
@@ -40,6 +45,7 @@ export const Logo: React.FC = () => {
       translateX: [300, 0],
       delay: anime.stagger(300),
     })
+
     anime({
       targets: '#text',
       easing: 'easeInOutSine',
@@ -52,6 +58,7 @@ export const Logo: React.FC = () => {
 
   const onClick = useCallback(() => {
     setTextOn(!textOn)
+
     anime({
       targets: '#text path',
       easing: 'easeInOutSine',
@@ -60,6 +67,7 @@ export const Logo: React.FC = () => {
       translateX: 0,
       delay: anime.stagger(200),
     })
+
     anime({
       targets: '#brown path',
       easing: 'easeInOutSine',
@@ -71,6 +79,7 @@ export const Logo: React.FC = () => {
 
   useEffect(() => {
     logoAnimations()
+
     textAnimations()
   }, [logoAnimations, textAnimations])
 
@@ -91,6 +100,7 @@ export const Logo: React.FC = () => {
           <path d='M20.94 48.55a9.72 9.72 0 11-19.45.01 9.72 9.72 0 0119.45-.01z' />
           <path d='M42.72 60.77a9.72 9.72 0 11-19.45.01 9.72 9.72 0 0119.45 0z' />
         </g>
+
         <g id='pink' fill='#FF597D'>
           <path d='M32.22 41.98a2.6 2.6 0 10-5.2-.02 2.6 2.6 0 005.2.02z' />
           <path d='M38.96 41.97a2.6 2.6 0 10-5.18-.02 2.6 2.6 0 005.18.02z' />
@@ -100,6 +110,7 @@ export const Logo: React.FC = () => {
           <path d='M38.96 30.35a2.6 2.6 0 10-5.18-.02 2.6 2.6 0 005.18.02z' />
         </g>
       </svg>
+
       <svg
         xmlns='http://www.w3.org/2000/svg'
         width='159'

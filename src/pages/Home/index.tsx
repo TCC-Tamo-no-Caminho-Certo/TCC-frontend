@@ -28,6 +28,7 @@ const Home: React.FC = () => {
           }}
           onEntering={{
             easing: 'easeOutQuad',
+
             translateX: ['-100vw', 0],
           }}
         >

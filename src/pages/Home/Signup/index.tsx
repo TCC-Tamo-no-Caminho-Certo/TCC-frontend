@@ -15,30 +15,43 @@ import { FaUserLock } from 'react-icons/fa'
 import { GoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { RiArrowLeftSLine } from 'react-icons/ri'
 import { FormHandles, SubmitHandler } from '@unform/core'
+
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 
 export interface RegisterData {
   name: string
+
   surname: string
+
   email: string
+
   birthday: string
+
   password: string
+
   captcha: string
 }
 
 const Signup: React.FC = () => {
   const signupFormRef = useRef<FormHandles>(null)
+
   const [disabled, setDisabled] = useState(true)
+
   const [showRegister, setShowRegister] = useState(false)
+
   const { register } = useAuth()
+
   const { registerSlide, setRegisterSlide } = useRegisterSlide()
+
   const [captchaToken, setCaptchaToken] = useState('')
 
   useEffect(() => {
     setDisabled(true)
+
     setTimeout(() => {
       setDisabled(false)
     }, 2000)
+
     registerSlide
       ? setShowRegister(true)
       : setTimeout(() => {
@@ -52,18 +65,27 @@ const Signup: React.FC = () => {
 
   const handleSubmit: SubmitHandler<RegisterData> = async (data, { reset }, event) => {
     event?.preventDefault()
+
     try {
       await signupSchema.validate(data, { abortEarly: false })
+
       signupFormRef.current?.setErrors({})
+
       const old = data.birthday.split('/')
+
       const birthday = `${old[2]}-${old[1]}-${old[0]}`
+
       console.log({ ...data, birthday, captcha: captchaToken })
+
       await register({ ...data, birthday, captcha: captchaToken })
+
       setRegisterSlide(false)
+
       reset()
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errorList = getValidationErrors(error)
+
         signupFormRef.current?.setErrors(errorList)
       }
     }
@@ -102,7 +124,7 @@ const Signup: React.FC = () => {
             </DualInput>
 
             <InfoText>
-              Certifique-se de que corresponde ao nome no seu documento de indentificação
+              Certifique-se de que corresponde ao nome no seu documento de identificação
               oficial
             </InfoText>
 
@@ -138,7 +160,7 @@ const Signup: React.FC = () => {
 
             <InfoText>
               <span>
-                Ao clicar Concordar e concluir, concordo com os{' '}
+                Ao clicar em Concordar e concluir, concordo com os{' '}
                 <a href='action'>Termos de uso</a>, os{' '}
                 <a href='action'>Termos de Serviço e Pagamentos</a>, a{' '}
                 <a href='action'>Política de Privacidade</a> e a{' '}

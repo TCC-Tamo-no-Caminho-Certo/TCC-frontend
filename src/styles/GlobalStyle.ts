@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
+
 import fromTheme from 'utils/fromTheme'
 
 export default createGlobalStyle`
@@ -27,6 +28,7 @@ export default createGlobalStyle`
     &:hover {
       color: #408cff;
     }
+
   }
 
   ul {
@@ -37,4 +39,5 @@ export default createGlobalStyle`
     font-size: 1.6rem;
     cursor: pointer;
   }
+
 `

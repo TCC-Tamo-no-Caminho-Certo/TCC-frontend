@@ -9,6 +9,7 @@ const Routes: React.FC = () => {
     <BrowserRouter>
       <Switch>
         <Route path='/' component={Home} exact />
+
         <PrivateRoute path='/map' component={Map} />
       </Switch>
     </BrowserRouter>
