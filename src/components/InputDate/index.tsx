@@ -1,4 +1,4 @@
-import React, { useState, ComponentType, useContext } from 'react'
+import React, { useState, ComponentType, useContext, useEffect } from 'react'
 import Style from './styles'
 import ptbr from 'locales/dates/ptbr'
 import { ErrorTooltip } from 'components/Tooltips'
@@ -65,6 +65,11 @@ const InputDate: React.FC<InputDateProps> = ({ name, size, icon: Icon }) => {
         : ''
     }
 
+    const onFirstClick = () => {
+      const year: HTMLButtonElement | null = document.querySelector('.Calendar__yearText')
+      if (year && ref.current.value === '') year.click()
+    }
+
     return (
       <input
         readOnly
@@ -74,6 +79,7 @@ const InputDate: React.FC<InputDateProps> = ({ name, size, icon: Icon }) => {
         value={InputValue(selectedDate)}
         onBlur={onInputBlur}
         onFocus={onInputFocus}
+        onClick={onFirstClick}
       />
     )
   }

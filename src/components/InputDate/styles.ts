@@ -28,35 +28,26 @@ const Style = styled.div<StyleProps>`
 
   .DatePicker {
     width: 70%;
-
     height: 100%;
 
     input {
       font-size: 1.6rem;
-
       width: 120%;
-
       height: 100%;
-
       border: none;
-
       background-color: transparent;
-
       color: ${fromTheme('primary')};
     }
   }
 
   .Calendar__monthSelector.-open {
     padding: 0;
-
     height: 200px;
   }
 
   .Calendar__monthSelectorItemText {
     padding: 5px;
-
     margin: 0px;
-
     font-size: 1.4rem;
   }
 
@@ -70,7 +61,6 @@ const Style = styled.div<StyleProps>`
 
   .Calendar.-noFocusOutline.-ltr {
     padding: 0;
-
     border-radius: 20px;
   }
 
@@ -80,9 +70,7 @@ const Style = styled.div<StyleProps>`
 
   .Calendar__header {
     padding: 10px;
-
     border-radius: 20px 20px 0px 0px;
-
     background-color: ${fromTheme('tertiary')};
   }
 
@@ -96,7 +84,6 @@ const Style = styled.div<StyleProps>`
 
   .Calendar__monthArrowWrapper.-right {
     padding: 0px;
-
     transform: rotate(180deg);
   }
 
@@ -107,7 +94,6 @@ const Style = styled.div<StyleProps>`
   .Calendar__monthText,
   .Calendar__yearText {
     color: ${fromTheme('secondary')};
-
     width: 60%;
 
     &:hover {
@@ -117,7 +103,6 @@ const Style = styled.div<StyleProps>`
 
   .Calendar__monthArrowWrapper.-left {
     transform: rotate(360deg);
-
     padding: 0px;
   }
 
@@ -127,9 +112,7 @@ const Style = styled.div<StyleProps>`
 
   .Calendar__weekDays {
     padding: 0 20px 10px 20px;
-
     color: ${fromTheme('secondary')};
-
     background-color: ${fromTheme('tertiary')};
   }
 
@@ -151,11 +134,11 @@ const Style = styled.div<StyleProps>`
 
   .Calendar__yearSelectorText:disabled {
     opacity: 1;
-
     color: #c53030;
   }
 
-  .Calendar__yearSelector {
+  .Calendar__yearSelectorItem.-active .Calendar__yearSelectorText {
+    color: ${fromTheme('secondary')};
   }
 
   ${({ isFocused }) =>

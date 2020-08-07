@@ -20,38 +20,26 @@ import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 
 export interface RegisterData {
   name: string
-
   surname: string
-
   email: string
-
   birthday: string
-
   password: string
-
   captcha: string
 }
 
 const Signup: React.FC = () => {
   const signupFormRef = useRef<FormHandles>(null)
-
   const [disabled, setDisabled] = useState(true)
-
   const [showRegister, setShowRegister] = useState(false)
-
   const { register } = useAuth()
-
   const { registerSlide, setRegisterSlide } = useRegisterSlide()
-
   const [captchaToken, setCaptchaToken] = useState('')
 
   useEffect(() => {
     setDisabled(true)
-
     setTimeout(() => {
       setDisabled(false)
     }, 2000)
-
     registerSlide
       ? setShowRegister(true)
       : setTimeout(() => {

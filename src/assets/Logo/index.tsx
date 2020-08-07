@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react'
-
 import { Style } from './styles'
-
 import anime from 'animejs'
-
 import { ThemeContext } from 'styled-components'
 
 export const Logo: React.FC = () => {
