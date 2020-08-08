@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
+
 import { Popup } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 

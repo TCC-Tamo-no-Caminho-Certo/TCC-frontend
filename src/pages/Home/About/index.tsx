@@ -1,11 +1,9 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import Style from './styles'
 
 const About: React.FC = () => {
-  const loginRef = useRef(null)
-
   return (
-    <Style ref={loginRef}>
+    <Style>
       <h1>ABOUT</h1>
     </Style>
   )

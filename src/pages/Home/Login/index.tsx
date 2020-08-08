@@ -1,17 +1,20 @@
-import React, { /* useContext */ useRef, useEffect, useState, useCallback } from 'react'
-import Style, { /* ThemeSwitch */ Content, Register, Google, Permanence } from './styles'
-// import { useTheme } from 'hooks/useTheme'
-// import sun from 'assets/sun.svg'
-// import Switch from 'react-switch'
-// import { ThemeContext } from 'styled-components'
+import React, { useRef, useEffect, useState, useCallback } from 'react'
+import Style, { Register, Google, Permanence } from './styles'
+
 import loginSchema from 'validations/login'
+
 import Button from 'components/Button'
 import InputText from 'components/InputText/'
+import ThemeSwitch from 'components/ThemeSwitch'
+
 import { useAuth } from 'hooks/useAuth'
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
+
 import getValidationErrors from 'utils/getValidationErrors'
+
 import Logo from 'assets/Logo'
 import google from 'assets/google.png'
+
 import * as Yup from 'yup'
 import anime from 'animejs'
 import ReCAPTCHA from 'react-google-recaptcha'
@@ -27,58 +30,26 @@ export interface LoginData {
 }
 
 const Login: React.FC = () => {
-  // const { themeState, setThemeState } = useTheme()
-  // const themes = useContext(ThemeContext)
-  const history = useHistory()
-  const contentRef = useRef(null)
   const loginFormRef = useRef<FormHandles>(null)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
+  const contentRef = useRef(null)
+
+  const history = useHistory()
   const { login } = useAuth()
+
   const { registerSlide, setRegisterSlide } = useRegisterSlide()
   const [showLogin, setShowLogin] = useState(true)
   const [disabled, setDisabled] = useState(true)
 
-  const sliderAnimation = useCallback(() => {
-    setDisabled(true)
-    setTimeout(() => {
-      setDisabled(false)
-    }, 1000)
-
-    if (registerSlide) {
-      setTimeout(() => {
-        setShowLogin(false)
-      }, 1000)
-    } else setShowLogin(true)
-  }, [registerSlide])
-
-  const startAnimation = () => {
-    anime({
-      targets: contentRef.current,
-      translateX: [300, 0],
-      translateY: [-10, 0],
-      opacity: [0, 1],
-      duration: 900,
-      easing: 'easeInOutSine',
-    })
-  }
-
-  useEffect(() => {
-    sliderAnimation()
-  }, [sliderAnimation])
-
-  useEffect(() => {
-    startAnimation()
-  }, [])
+  const onRegisterClick = () => setRegisterSlide(true)
 
   const onLoginSubmit: SubmitHandler<LoginData> = async (data, { reset }, event) => {
     event?.preventDefault()
 
     try {
       let captchaToken
-      if (recaptchaRef.current) {
-        captchaToken = await recaptchaRef.current.executeAsync()
-      }
-
+      if (recaptchaRef.current) captchaToken = await recaptchaRef.current.executeAsync()
+      else throw new Error('recaptcha is equal null or undefined')
       await loginSchema.validate(data, { abortEarly: false })
 
       console.log('login:', { ...data, captcha: captchaToken })
@@ -95,9 +66,36 @@ const Login: React.FC = () => {
     }
   }
 
-  const onSignupClick = () => {
-    setRegisterSlide(true)
-  }
+  const contentAppearAnimation = () =>
+    anime({
+      targets: contentRef.current,
+      translateX: [300, 0],
+      translateY: [-10, 0],
+      opacity: [0, 1],
+      duration: 900,
+      easing: 'easeInOutSine',
+    })
+
+  const loginSliderAnimation = useCallback(() => {
+    setDisabled(true)
+    setTimeout(() => {
+      setDisabled(false)
+    }, 1000)
+
+    if (registerSlide) {
+      setTimeout(() => {
+        setShowLogin(false)
+      }, 1000)
+    } else setShowLogin(true)
+  }, [registerSlide])
+
+  useEffect(() => {
+    contentAppearAnimation()
+  }, [])
+
+  useEffect(() => {
+    loginSliderAnimation()
+  }, [loginSliderAnimation])
 
   return (
     <>
@@ -108,63 +106,43 @@ const Login: React.FC = () => {
       />
 
       {showLogin && (
-        <Style>
-          {/* <ThemeSwitch>
-            <label htmlFor='switch'>Darkmode</label>
+        <Style ref={contentRef}>
+          <ThemeSwitch />
 
-            <Switch
-              onChange={() => setThemeState(!themeState)}
-              checked={themeState}
-              offColor={themes.primary}
-              offHandleColor={themes.secondary}
-              onColor={themes.primary}
-              onHandleColor={themes.secondary}
-              uncheckedIcon={false}
-              checkedIcon={false}
-              height={18}
-              width={35}
-              id='switch'
+          <Logo />
+
+          <Google>
+            <img src={google} alt='google' />
+            Entrar com o Google
+          </Google>
+
+          <Form ref={loginFormRef} onSubmit={onLoginSubmit}>
+            <InputText name='email' placeholder='E-mail' icon={FiUser} size={23} />
+
+            <InputText
+              name='password'
+              placeholder='Senha'
+              icon={FiLock}
+              size={23}
+              type='password'
+              eye
             />
 
-            <img src={sun} alt='theme switch' />
-          </ThemeSwitch> */}
+            <Button type='submit'>Efetuar Login</Button>
+          </Form>
 
-          <Content ref={contentRef}>
-            <Logo />
+          <Permanence htmlFor='permanence'>
+            <input type='checkbox' id='permanence' />
+            Permanecer conectado
+          </Permanence>
 
-            <Google>
-              <img src={google} alt='google' />
-              Entrar com o Google
-            </Google>
-
-            <Form ref={loginFormRef} onSubmit={onLoginSubmit}>
-              <InputText name='email' placeholder='E-mail' icon={FiUser} size={23} />
-
-              <InputText
-                name='password'
-                placeholder='Senha'
-                icon={FiLock}
-                size={23}
-                type='password'
-                eye
-              />
-
-              <Button type='submit'>Efetuar Login</Button>
-            </Form>
-
-            <Permanence htmlFor='permanence'>
-              <input type='checkbox' id='permanence' />
-              Permanecer conectado
-            </Permanence>
-
-            <Register>
-              Ainda não possui uma conta ?
-              <br />
-              <button type='button' disabled={disabled} onClick={onSignupClick}>
-                Registre-se aqui!
-              </button>
-            </Register>
-          </Content>
+          <Register>
+            Ainda não possui uma conta ?
+            <br />
+            <button type='button' disabled={disabled} onClick={onRegisterClick}>
+              Registre-se aqui!
+            </button>
+          </Register>
         </Style>
       )}
     </>

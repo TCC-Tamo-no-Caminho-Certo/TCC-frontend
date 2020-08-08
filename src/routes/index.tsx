@@ -1,7 +1,10 @@
 import React from 'react'
+
 import Home from 'pages/Home'
 import Main from 'pages/Main'
+
 import PrivateRoute from 'routes/PrivateRoute'
+
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 const Routes: React.FC = () => {

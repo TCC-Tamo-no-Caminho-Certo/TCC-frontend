@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyledTooltipError } from './styles'
+
 import { PopupProps } from 'semantic-ui-react'
 import { FcHighPriority } from 'react-icons/fc'
 

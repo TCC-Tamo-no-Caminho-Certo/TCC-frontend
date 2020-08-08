@@ -1,13 +1,19 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react'
 import Style, { BackButton, InfoText, DualInput } from './styles'
+
 import signupSchema from 'validations/signup'
+
 import Button from 'components/Button'
+import InputText from 'components/InputText'
 import DatePicker from 'components/InputDate'
-import InputText from 'components/InputText/index'
-import { useRegisterSlide } from 'hooks/useRegisterSlide'
+
 import { useAuth } from 'hooks/useAuth'
+import { useRegisterSlide } from 'hooks/useRegisterSlide'
+
 import getValidationErrors from 'utils/getValidationErrors'
+
 import { Logo } from 'assets/Logo'
+
 import * as Yup from 'yup'
 import { Form } from '@unform/web'
 import { MdPublic } from 'react-icons/md'

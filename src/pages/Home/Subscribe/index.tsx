@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Style from './styles'
+
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
 
 const Subscribe: React.FC = () => {

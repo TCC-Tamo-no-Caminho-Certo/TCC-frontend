@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { ThemeProvider } from './useTheme'
 import { RegisterSlideProvider } from './useRegisterSlide'
 import { AuthProvider } from './useAuth'
