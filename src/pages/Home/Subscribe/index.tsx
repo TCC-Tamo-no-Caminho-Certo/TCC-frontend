@@ -4,8 +4,8 @@ import Style from './styles'
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
 
 const Subscribe: React.FC = () => {
-  const [showSubscribe, setShowSubscribe] = useState(false)
   const { registerSlide } = useRegisterSlide()
+  const [showSubscribe, setShowSubscribe] = useState(false)
 
   const SubscribeSliderAnimation = useCallback(() => {
     if (registerSlide) setShowSubscribe(true)

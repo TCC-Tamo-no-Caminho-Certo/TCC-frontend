@@ -29,7 +29,7 @@ const Home: React.FC = () => {
           translateX: ['-100vw', 0],
         }}
       >
-        <Row registerSlide={registerSlide}>
+        <Row>
           <About />
 
           <Login />

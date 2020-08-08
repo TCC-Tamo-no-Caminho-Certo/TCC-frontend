@@ -29,11 +29,11 @@ const ThemeSwitch: React.FC = () => {
 
       <g stroke={themes.tertiary} strokeWidth='3'>
         <path
-          fill={themeState ? themes.primary : themes.secondary}
+          fill={themeState ? themes.primary : 'none'}
           d='M23.625 24.625C23.625 18.25 19.375 14 13 14v21.25c6.375 0 10.625-4.25 10.625-10.625z'
         />
         <path
-          fill={themeState ? themes.secondary : themes.primary}
+          fill={themeState ? 'none' : themes.primary}
           d='M2 24.625C2 31 6.25 35.25 12.625 35.25V14C6.25 14 2 18.25 2 24.625z'
         />
       </g>

@@ -1,20 +1,15 @@
 import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
-interface RowProps {
-  registerSlide: string | boolean
-}
-
 const Style = styled.div``
 
-export const Row = styled.section<RowProps>`
+export const Row = styled.section`
   display: grid;
   background-color: ${fromTheme('primary')};
 
   grid:
-    'login signup' ${({ registerSlide }) =>
-      registerSlide ? 'minmax(100vh, auto)' : '100vh'}
-    'about subscribe' 100vh/ 100vw 100vw;
+    'login signup' minmax(100vh, auto)
+    'about subscribe' 100vh / 100vw 100vw;
 
   @media screen and (min-width: 1200px) {
     grid: 'about login signup subscribe' 100vh / 62vw 38vw 38vw 62vw;
