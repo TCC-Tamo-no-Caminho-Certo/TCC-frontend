@@ -8,11 +8,12 @@ const Subscribe: React.FC = () => {
   const { registerSlide } = useRegisterSlide()
 
   useEffect(() => {
-    registerSlide
-      ? setShowSubscribe(true)
-      : setTimeout(() => {
-          setShowSubscribe(false)
-        }, 2010)
+    if (registerSlide) setShowSubscribe(true)
+    else {
+      setTimeout(() => {
+        setShowSubscribe(false)
+      }, 1000)
+    }
   }, [registerSlide])
 
   return (

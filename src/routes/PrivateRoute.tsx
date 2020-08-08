@@ -12,7 +12,7 @@ const PrivateRoute: React.FC<RouteProps> = ({ component: Component, ...rest }) =
   return (
     <Route
       render={() => {
-        return true ? <Component /> : <Redirect to={{ pathname: '/' }} />
+        return token ? <Component /> : <Redirect to={{ pathname: '/' }} />
       }}
       {...rest}
     />

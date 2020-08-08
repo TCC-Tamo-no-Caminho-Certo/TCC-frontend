@@ -1,60 +1,57 @@
-import React, { useContext, useRef, useEffect, useState } from 'react'
-import Style, { Content, ThemeSwitch, Register, Google, Permanence } from './styles'
+import React, { /* useContext */ useRef, useEffect, useState, useCallback } from 'react'
+import Style, { /* ThemeSwitch */ Content, Register, Google, Permanence } from './styles'
+// import { useTheme } from 'hooks/useTheme'
+// import sun from 'assets/sun.svg'
+// import Switch from 'react-switch'
+// import { ThemeContext } from 'styled-components'
 import loginSchema from 'validations/login'
 import Button from 'components/Button'
 import InputText from 'components/InputText/'
-import { useTheme } from 'hooks/useTheme'
 import { useAuth } from 'hooks/useAuth'
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
 import getValidationErrors from 'utils/getValidationErrors'
 import Logo from 'assets/Logo'
-import sun from 'assets/sun.svg'
 import google from 'assets/google.png'
 import * as Yup from 'yup'
 import anime from 'animejs'
-import Switch from 'react-switch'
+import ReCAPTCHA from 'react-google-recaptcha'
 import { Form } from '@unform/web'
 import { useHistory } from 'react-router-dom'
-import { ThemeContext } from 'styled-components'
 import { FiUser, FiLock } from 'react-icons/fi'
-import { GoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { SubmitHandler, FormHandles } from '@unform/core'
 
 export interface LoginData {
   email: string
-
   password: string
-
   captcha: string
 }
 
 const Login: React.FC = () => {
+  // const { themeState, setThemeState } = useTheme()
+  // const themes = useContext(ThemeContext)
   const history = useHistory()
   const contentRef = useRef(null)
   const loginFormRef = useRef<FormHandles>(null)
-  const { themeState, setThemeState } = useTheme()
-  const themes = useContext(ThemeContext)
+  const recaptchaRef = useRef<ReCAPTCHA>(null)
   const { login } = useAuth()
   const { registerSlide, setRegisterSlide } = useRegisterSlide()
   const [showLogin, setShowLogin] = useState(true)
   const [disabled, setDisabled] = useState(true)
-  const [captchaToken, setCaptchaToken] = useState('')
 
-  useEffect(() => {
+  const sliderAnimation = useCallback(() => {
     setDisabled(true)
-
     setTimeout(() => {
       setDisabled(false)
-    }, 2010)
+    }, 1000)
 
-    registerSlide
-      ? setTimeout(() => {
-          setShowLogin(false)
-        }, 2000)
-      : setShowLogin(true)
+    if (registerSlide) {
+      setTimeout(() => {
+        setShowLogin(false)
+      }, 1000)
+    } else setShowLogin(true)
   }, [registerSlide])
 
-  useEffect(() => {
+  const startAnimation = () => {
     anime({
       targets: contentRef.current,
       translateX: [300, 0],
@@ -63,16 +60,31 @@ const Login: React.FC = () => {
       duration: 900,
       easing: 'easeInOutSine',
     })
+  }
+
+  useEffect(() => {
+    sliderAnimation()
+  }, [sliderAnimation])
+
+  useEffect(() => {
+    startAnimation()
   }, [])
 
   const onLoginSubmit: SubmitHandler<LoginData> = async (data, { reset }, event) => {
     event?.preventDefault()
 
     try {
+      let captchaToken
+      if (recaptchaRef.current) {
+        captchaToken = await recaptchaRef.current.executeAsync()
+      }
+
       await loginSchema.validate(data, { abortEarly: false })
+
+      console.log('login:', { ...data, captcha: captchaToken })
+      await login({ ...data, captcha: captchaToken as string })
+
       loginFormRef.current?.setErrors({})
-      console.log({ ...data, captcha: captchaToken })
-      await login({ ...data, captcha: captchaToken })
       reset()
       history.push('/map')
     } catch (error) {
@@ -89,6 +101,12 @@ const Login: React.FC = () => {
 
   return (
     <>
+      <ReCAPTCHA
+        ref={recaptchaRef}
+        size='invisible'
+        sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
+      />
+
       {showLogin && (
         <Style>
           {/* <ThemeSwitch>
@@ -130,8 +148,6 @@ const Login: React.FC = () => {
                 type='password'
                 eye
               />
-
-              <GoogleReCaptcha onVerify={token => setCaptchaToken(token)} />
 
               <Button type='submit'>Efetuar Login</Button>
             </Form>

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, useCallback } from 'react'
 import Style, { BackButton, InfoText, DualInput } from './styles'
 import signupSchema from 'validations/signup'
 import Button from 'components/Button'
@@ -12,10 +12,9 @@ import * as Yup from 'yup'
 import { Form } from '@unform/web'
 import { MdPublic } from 'react-icons/md'
 import { FaUserLock } from 'react-icons/fa'
-import { GoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { RiArrowLeftSLine } from 'react-icons/ri'
 import { FormHandles, SubmitHandler } from '@unform/core'
-
+import ReCAPTCHA from 'react-google-recaptcha'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 
 export interface RegisterData {
@@ -29,51 +28,53 @@ export interface RegisterData {
 
 const Signup: React.FC = () => {
   const signupFormRef = useRef<FormHandles>(null)
-  const [disabled, setDisabled] = useState(true)
-  const [showRegister, setShowRegister] = useState(false)
+  const recaptchaRef = useRef<ReCAPTCHA>(null)
   const { register } = useAuth()
   const { registerSlide, setRegisterSlide } = useRegisterSlide()
-  const [captchaToken, setCaptchaToken] = useState('')
+  const [showRegister, setShowRegister] = useState(false)
+  const [disabled, setDisabled] = useState(true)
 
-  useEffect(() => {
+  const sliderAnimation = useCallback(() => {
     setDisabled(true)
     setTimeout(() => {
       setDisabled(false)
-    }, 2000)
-    registerSlide
-      ? setShowRegister(true)
-      : setTimeout(() => {
-          setShowRegister(false)
-        }, 2010)
+    }, 1000)
+
+    if (registerSlide) setShowRegister(true)
+    else {
+      setTimeout(() => {
+        setShowRegister(false)
+      }, 1000)
+    }
   }, [registerSlide])
 
-  const onBackButtonClick = () => {
-    setRegisterSlide(false)
-  }
+  useEffect(() => {
+    sliderAnimation()
+  }, [sliderAnimation])
 
-  const handleSubmit: SubmitHandler<RegisterData> = async (data, { reset }, event) => {
+  const onSignupSubmit: SubmitHandler<RegisterData> = async (data, { reset }, event) => {
     event?.preventDefault()
 
     try {
+      let captchaToken
+      if (recaptchaRef.current) {
+        captchaToken = await recaptchaRef.current.executeAsync()
+      }
+
       await signupSchema.validate(data, { abortEarly: false })
 
-      signupFormRef.current?.setErrors({})
-
       const old = data.birthday.split('/')
-
       const birthday = `${old[2]}-${old[1]}-${old[0]}`
 
-      console.log({ ...data, birthday, captcha: captchaToken })
+      console.log('signup', { ...data, birthday, captcha: captchaToken })
+      await register({ ...data, birthday, captcha: captchaToken as string })
 
-      await register({ ...data, birthday, captcha: captchaToken })
-
-      setRegisterSlide(false)
-
+      signupFormRef.current?.setErrors({})
       reset()
+      setRegisterSlide(false)
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errorList = getValidationErrors(error)
-
         signupFormRef.current?.setErrors(errorList)
       }
     }
@@ -81,9 +82,19 @@ const Signup: React.FC = () => {
 
   return (
     <>
+      <ReCAPTCHA
+        ref={recaptchaRef}
+        size='invisible'
+        sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
+      />
+
       {showRegister && (
         <Style>
-          <BackButton type='button' disabled={disabled} onClick={onBackButtonClick}>
+          <BackButton
+            type='button'
+            disabled={disabled}
+            onClick={() => setRegisterSlide(false)}
+          >
             <RiArrowLeftSLine size={28} />
 
             <span>Voltar</span>
@@ -91,7 +102,7 @@ const Signup: React.FC = () => {
 
           <Logo />
 
-          <Form ref={signupFormRef} onSubmit={handleSubmit}>
+          <Form ref={signupFormRef} onSubmit={onSignupSubmit}>
             <DualInput>
               <InputText
                 name='name'
@@ -143,8 +154,6 @@ const Signup: React.FC = () => {
                 icon={FaUserLock}
               />
             </DualInput>
-
-            <GoogleReCaptcha onVerify={token => setCaptchaToken(token)} />
 
             <InfoText>
               <span>

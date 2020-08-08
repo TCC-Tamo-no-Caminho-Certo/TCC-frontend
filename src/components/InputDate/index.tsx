@@ -1,4 +1,4 @@
-import React, { useState, ComponentType, useContext, useEffect } from 'react'
+import React, { useState, ComponentType, useContext } from 'react'
 import Style from './styles'
 import ptbr from 'locales/dates/ptbr'
 import { ErrorTooltip } from 'components/Tooltips'

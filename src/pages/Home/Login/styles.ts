@@ -38,20 +38,6 @@ const Style = styled.section`
   }
 `
 
-export const ThemeSwitch = styled.div`
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  display: flex;
-  align-items: center;
-  color: ${fromTheme('primary')};
-  font-size: 1.8rem;
-  label {
-    font-family: 'Satisfy', cursive;
-    margin-right: 20px;
-  }
-`
-
 export const Content = styled.div`
   &,
   form {
@@ -118,4 +104,18 @@ export const Permanence = styled.label.attrs({ className: 'Permanence' })`
   }
 `
 
+// export const ThemeSwitch = styled.div`
+//   position: absolute;
+//   top: 30px;
+//   right: 30px;
+//   display: flex;
+//   align-items: center;
+//   color: ${fromTheme('primary')};
+//   font-size: 1.8rem;
+//
+//   label {
+//     font-family: 'Satisfy', cursive;
+//     margin-right: 20px;
+//   }
+// `
 export default Style
