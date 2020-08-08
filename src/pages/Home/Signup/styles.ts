@@ -18,15 +18,6 @@ const Style = styled.section`
     flex-direction: column;
   }
 
-  .InputText + .InputText,
-  .InputDate + .InputText {
-    margin-top: 20px;
-  }
-
-  .Logo {
-    margin: 50px 0 30px 0;
-  }
-
   hr,
   .Button,
   .InputText,
@@ -35,6 +26,20 @@ const Style = styled.section`
     min-width: 300px;
     width: 80vw;
     max-width: 400px;
+  }
+
+  .InputDate + .InputText {
+    margin-top: 20px;
+  }
+
+  .Logo {
+    margin: 50px 0 30px 0;
+  }
+
+  .ThemeSwitch {
+    position: absolute;
+    top: 30px;
+    right: 30px;
   }
 
   @media screen and (min-width: 1200px) {
@@ -50,6 +55,19 @@ const Style = styled.section`
       max-width: 400px;
     }
   }
+`
+
+export const BackButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 30px;
+  top: 25px;
+  padding: 5px;
+  border: none;
+  background-color: transparent;
+  color: ${fromTheme('primary')};
 `
 
 export const DualInput = styled.div`
@@ -81,23 +99,6 @@ export const InfoText = styled.div.attrs({
   text-align: left;
   padding: 5px 0 10px 5px;
   color: ${fromTheme('tertiary')};
-`
-
-export const BackButton = styled.button`
-  padding: 5px;
-  position: absolute;
-  left: 30px;
-  top: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  border: none;
-  color: ${fromTheme('primary')};
-
-  span {
-    line-height: 28px;
-  }
 `
 
 export default Style

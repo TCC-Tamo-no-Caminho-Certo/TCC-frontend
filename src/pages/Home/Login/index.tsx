@@ -32,7 +32,7 @@ export interface LoginData {
 const Login: React.FC = () => {
   const loginFormRef = useRef<FormHandles>(null)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
-  const contentRef = useRef(null)
+  const loginRef = useRef(null)
 
   const history = useHistory()
   const { login } = useAuth()
@@ -66,9 +66,9 @@ const Login: React.FC = () => {
     }
   }
 
-  const contentAppearAnimation = () =>
+  const loginAppearAnimation = () =>
     anime({
-      targets: contentRef.current,
+      targets: loginRef.current,
       translateX: [300, 0],
       translateY: [-10, 0],
       opacity: [0, 1],
@@ -90,7 +90,7 @@ const Login: React.FC = () => {
   }, [registerSlide])
 
   useEffect(() => {
-    contentAppearAnimation()
+    loginAppearAnimation()
   }, [])
 
   useEffect(() => {
@@ -106,7 +106,7 @@ const Login: React.FC = () => {
       />
 
       {showLogin && (
-        <Style ref={contentRef}>
+        <Style ref={loginRef}>
           <ThemeSwitch />
 
           <Logo />

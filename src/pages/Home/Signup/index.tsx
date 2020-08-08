@@ -5,7 +5,8 @@ import signupSchema from 'validations/signup'
 
 import Button from 'components/Button'
 import InputText from 'components/InputText'
-import DatePicker from 'components/InputDate'
+import InputDate from 'components/InputDate'
+import ThemeSwitch from 'components/ThemeSwitch'
 
 import { useAuth } from 'hooks/useAuth'
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
@@ -35,38 +36,20 @@ export interface RegisterData {
 const Signup: React.FC = () => {
   const signupFormRef = useRef<FormHandles>(null)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
+
   const { register } = useAuth()
+
   const { registerSlide, setRegisterSlide } = useRegisterSlide()
   const [showRegister, setShowRegister] = useState(false)
   const [disabled, setDisabled] = useState(true)
-
-  const sliderAnimation = useCallback(() => {
-    setDisabled(true)
-    setTimeout(() => {
-      setDisabled(false)
-    }, 1000)
-
-    if (registerSlide) setShowRegister(true)
-    else {
-      setTimeout(() => {
-        setShowRegister(false)
-      }, 1000)
-    }
-  }, [registerSlide])
-
-  useEffect(() => {
-    sliderAnimation()
-  }, [sliderAnimation])
 
   const onSignupSubmit: SubmitHandler<RegisterData> = async (data, { reset }, event) => {
     event?.preventDefault()
 
     try {
       let captchaToken
-      if (recaptchaRef.current) {
-        captchaToken = await recaptchaRef.current.executeAsync()
-      }
-
+      if (recaptchaRef.current) captchaToken = await recaptchaRef.current.executeAsync()
+      else throw new Error('recaptcha is equal null or undefined')
       await signupSchema.validate(data, { abortEarly: false })
 
       const old = data.birthday.split('/')
@@ -86,6 +69,24 @@ const Signup: React.FC = () => {
     }
   }
 
+  const loginSliderAnimation = useCallback(() => {
+    setDisabled(true)
+    setTimeout(() => {
+      setDisabled(false)
+    }, 1000)
+
+    if (registerSlide) setShowRegister(true)
+    else {
+      setTimeout(() => {
+        setShowRegister(false)
+      }, 1000)
+    }
+  }, [registerSlide])
+
+  useEffect(() => {
+    loginSliderAnimation()
+  }, [loginSliderAnimation])
+
   return (
     <>
       <ReCAPTCHA
@@ -102,9 +103,10 @@ const Signup: React.FC = () => {
             onClick={() => setRegisterSlide(false)}
           >
             <RiArrowLeftSLine size={28} />
-
-            <span>Voltar</span>
+            Voltar
           </BackButton>
+
+          <ThemeSwitch />
 
           <Logo />
 
@@ -133,7 +135,7 @@ const Signup: React.FC = () => {
               oficial
             </InfoText>
 
-            <DatePicker name='birthday' icon={FaUserLock} />
+            <InputDate name='birthday' icon={FaUserLock} />
 
             <InfoText>Você precisa ter pelo menos 18 anos</InfoText>
 
