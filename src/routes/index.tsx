@@ -1,6 +1,6 @@
 import React from 'react'
 import Home from 'pages/Home'
-import Map from 'pages/Map'
+import Main from 'pages/Main'
 import PrivateRoute from 'routes/PrivateRoute'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
@@ -10,7 +10,7 @@ const Routes: React.FC = () => {
       <Switch>
         <Route path='/' component={Home} exact />
 
-        <PrivateRoute path='/map' component={Map} />
+        <PrivateRoute path='/main' component={Main} />
       </Switch>
     </BrowserRouter>
   )

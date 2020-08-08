@@ -1,5 +1,4 @@
 import React, { useRef } from 'react'
-
 import Style from './styles'
 
 const About: React.FC = () => {

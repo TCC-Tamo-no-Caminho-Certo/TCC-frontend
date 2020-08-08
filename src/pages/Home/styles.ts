@@ -5,9 +5,7 @@ interface RowProps {
   registerSlide: string | boolean
 }
 
-const Style = styled.div`
-  overflow: hidden;
-`
+const Style = styled.div``
 
 export const Row = styled.section<RowProps>`
   display: grid;

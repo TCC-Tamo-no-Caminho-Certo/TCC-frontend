@@ -11,6 +11,7 @@ const signupSchema = Yup.object({
 
   email: Yup.string()
     .email('E-mail inválido!')
+    .matches(/^([\wÁ-ú]\.?)+@([\wÁ-ú]\.?)+\.([\wÁ-ú]\.?)+$/g, 'E-mail inválido!')
     .required('É necessário informar o email!'),
 
   birthday: Yup.string().required('É necessário informar a data!'),
@@ -18,7 +19,6 @@ const signupSchema = Yup.object({
   password: Yup.string()
     .matches(
       /^(?=.*[#?!@$%^&+{}()["';,°<>~=_/|\].-]).{8,}$/,
-
       'Sua senha deve conter um caractere especial'
     )
     .matches(/^(?=.*[A-Z]).{8,}$/, 'Sua senha deve conter uma letra maiúscula')
