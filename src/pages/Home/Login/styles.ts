@@ -27,11 +27,14 @@ const Style = styled.section`
 
   .InputText,
   .Permanence,
-  .Button,
   .Register {
     min-width: 300px;
     width: 80vw;
     max-width: 400px;
+  }
+
+  .Button {
+    width: 100%;
   }
 
   .ThemeSwitch {
@@ -45,7 +48,6 @@ const Style = styled.section`
 
     .InputText,
     .Permanence,
-    .Button,
     .Register {
       min-width: 340px;
       width: 22.9vw;
