@@ -11,8 +11,23 @@ const Style = styled.button`
   color: ${fromTheme('secondary')};
   background-color: ${fromTheme('primary')};
 
+  position: relative;
+
+  span {
+    position: absolute;
+    right: 25%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
   &:hover {
-    transform: scale(1.04);
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 475px) {
+    span {
+      right: 20%;
+    }
   }
 `
 

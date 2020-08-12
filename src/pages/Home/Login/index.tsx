@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react'
 import Style, { Register, Google, Permanence, Recaptcha } from './styles'
+import { Loader } from 'styles/GlobalStyle'
 
 import loginSchema from 'validations/login'
 
@@ -40,12 +41,15 @@ const Login: React.FC = () => {
   const { registerSlide, setRegisterSlide } = useRegisterSlide()
   const [showLogin, setShowLogin] = useState(true)
   const [disabled, setDisabled] = useState(true)
+  const [loadingLogin, setLoadingLogin] = useState(false)
 
-  const onRegisterClick = () => setRegisterSlide(true)
+  const onRegisterClick = () => {
+    setRegisterSlide(true)
+  }
 
   const onLoginSubmit: SubmitHandler<LoginData> = async (data, { reset }, event) => {
     event?.preventDefault()
-
+    setLoadingLogin(true)
     try {
       let captchaToken
       if (recaptchaRef.current) captchaToken = await recaptchaRef.current.executeAsync()
@@ -57,8 +61,10 @@ const Login: React.FC = () => {
 
       loginFormRef.current?.setErrors({})
       reset()
+      setLoadingLogin(false)
       history.push('/map')
     } catch (error) {
+      setLoadingLogin(false)
       if (error instanceof Yup.ValidationError) {
         const errorList = getValidationErrors(error)
         loginFormRef.current?.setErrors(errorList)
@@ -128,7 +134,10 @@ const Login: React.FC = () => {
               eye
             />
 
-            <Button type='submit'>Efetuar Login</Button>
+            <Button type='submit'>
+              <div>Efetuar Login</div>
+              <span>{loadingLogin && <Loader size='18px' border='3px' />}</span>
+            </Button>
           </Form>
 
           <Permanence htmlFor='permanence'>
