@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react'
-import Style, { BackButton, InfoText, DualInput } from './styles'
+import Style, { BackButton, InfoText, DualInput, Recaptcha } from './styles'
 
 import signupSchema from 'validations/signup'
 
@@ -15,13 +15,13 @@ import getValidationErrors from 'utils/getValidationErrors'
 
 import { Logo } from 'assets/Logo'
 
+import ReCAPTCHA from 'react-google-recaptcha'
 import * as Yup from 'yup'
 import { Form } from '@unform/web'
 import { MdPublic } from 'react-icons/md'
 import { FaUserLock } from 'react-icons/fa'
 import { RiArrowLeftSLine } from 'react-icons/ri'
 import { FormHandles, SubmitHandler } from '@unform/core'
-import ReCAPTCHA from 'react-google-recaptcha'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 
 export interface RegisterData {
@@ -89,7 +89,7 @@ const Signup: React.FC = () => {
 
   return (
     <>
-      <ReCAPTCHA
+      <Recaptcha
         ref={recaptchaRef}
         size='invisible'
         sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
@@ -119,8 +119,6 @@ const Signup: React.FC = () => {
                 icon={MdPublic}
                 size={21}
               />
-
-              <hr />
 
               <InputText
                 name='surname'
@@ -152,10 +150,7 @@ const Signup: React.FC = () => {
                 eye
               />
 
-              <hr />
-
               <InputText
-                pasteAndDrop={false}
                 type='password'
                 name='confirmPassword'
                 placeholder='Confirmar Senha'

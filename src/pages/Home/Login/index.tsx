@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react'
-import Style, { Register, Google, Permanence } from './styles'
+import Style, { Register, Google, Permanence, Recaptcha } from './styles'
 
 import loginSchema from 'validations/login'
 
@@ -15,9 +15,9 @@ import getValidationErrors from 'utils/getValidationErrors'
 import Logo from 'assets/Logo'
 import google from 'assets/google.png'
 
-import * as Yup from 'yup'
 import anime from 'animejs'
 import ReCAPTCHA from 'react-google-recaptcha'
+import * as Yup from 'yup'
 import { Form } from '@unform/web'
 import { useHistory } from 'react-router-dom'
 import { FiUser, FiLock } from 'react-icons/fi'
@@ -99,7 +99,7 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <ReCAPTCHA
+      <Recaptcha
         ref={recaptchaRef}
         size='invisible'
         sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'

@@ -75,26 +75,26 @@ const InputDate: React.FC<InputDateProps> = ({ name, size, icon: Icon }) => {
 
     return (
       <input
-        readOnly
-        ref={ref}
-        type='text'
         placeholder='Data de nascimento'
         value={InputValue(selectedDate)}
         onBlur={onInputBlur}
         onFocus={onInputFocus}
         onClick={onFirstClick}
+        ref={ref}
+        type='text'
+        readOnly
       />
     )
   }
 
   return (
     <Style
+      id={name}
       hasIcon={!!Icon}
       isFilled={isFilled}
+      className='InputDate'
       isErrored={!!error}
       isFocused={isFocused}
-      id={name}
-      className='InputDate'
     >
       {error ? (
         <ErrorTooltip className='icon' content={error} />
@@ -103,17 +103,18 @@ const InputDate: React.FC<InputDateProps> = ({ name, size, icon: Icon }) => {
       )}
 
       <ModernDatePicker
+        locale={ptbr}
         value={selectedDate}
-        onChange={setSelectedDate}
-        colorPrimary={themes.primary}
         renderInput={renderCustomInput}
-        selectorStartingYear={minimumDate.year}
-        selectorEndingYear={present.year}
+        onChange={setSelectedDate}
         minimumDate={minimumDate}
         maximumDate={maximumDate}
-        locale={ptbr}
-        calendarClassName='CalendarSize'
+        selectorEndingYear={present.year}
+        selectorStartingYear={minimumDate.year}
+        colorPrimary={themes.primary}
+        inputClassName='Input'
         calendarPopperPosition='top'
+        calendarClassName='CalendarSize'
       />
 
       <IoIosArrowDown className='icon' />

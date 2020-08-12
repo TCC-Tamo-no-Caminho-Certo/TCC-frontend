@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components'
-
 import fromTheme from 'utils/fromTheme'
 
 export default createGlobalStyle`
@@ -28,7 +27,6 @@ export default createGlobalStyle`
     &:hover {
       color: #408cff;
     }
-
   }
 
   ul {
@@ -40,4 +38,15 @@ export default createGlobalStyle`
     cursor: pointer;
   }
 
+  input, select, textarea {
+    &, &:hover, &:focus  {
+      box-shadow: 0 0 0 30px ${fromTheme('secondary')} inset;
+    }
+  }
+
+  input[type="checkbox"] {
+    &, &:focus, &:hover {
+      box-shadow: initial;
+    }
+  }
 `

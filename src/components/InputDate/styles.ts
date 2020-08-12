@@ -36,7 +36,10 @@ const Style = styled.div<StyleProps>`
       height: 100%;
       border: none;
       background-color: transparent;
-      color: ${fromTheme('primary')};
+
+      &::placeholder {
+        color: ${fromTheme('tertiary')};
+      }
     }
   }
 
@@ -146,8 +149,6 @@ const Style = styled.div<StyleProps>`
     css`
       border-color: ${fromTheme('primary')};
 
-      &,
-      input::placeholder,
       svg {
         color: ${fromTheme('primary')};
       }
@@ -156,8 +157,8 @@ const Style = styled.div<StyleProps>`
   ${({ isFilled }) =>
     isFilled &&
     css`
-      &,
-      svg {
+      svg,
+      input {
         color: ${fromTheme('primary')};
       }
     `}

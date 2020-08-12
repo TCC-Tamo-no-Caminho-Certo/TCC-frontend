@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
+import ReCAPTCHA from 'react-google-recaptcha'
+
 const Style = styled.section`
   grid-area: signup;
   min-width: 320px;
@@ -72,18 +74,10 @@ export const BackButton = styled.button`
 
 export const DualInput = styled.div`
   div:first-child {
-    border-bottom: none;
     border-radius: 10px 10px 0 0;
   }
 
-  hr {
-    border: none;
-    border-top: solid 1px ${fromTheme('tertiary')};
-  }
-
-  hr + div {
-    border-top: none;
-    margin-top: 0px;
+  div + div {
     border-radius: 0 0 10px 10px;
   }
 `
@@ -99,6 +93,10 @@ export const InfoText = styled.div.attrs({
   text-align: left;
   padding: 5px 0 10px 5px;
   color: ${fromTheme('tertiary')};
+`
+
+export const Recaptcha = styled(ReCAPTCHA)`
+  display: none;
 `
 
 export default Style

@@ -25,10 +25,12 @@ const Style = styled.div<StyleProps>`
     background-color: transparent;
     border: none;
     color: ${fromTheme('primary')};
+    -webkit-text-fill-color: ${fromTheme('primary')};
     width: ${({ hasEye }) => (hasEye ? '70%' : '85%')};
 
     &::placeholder {
       color: ${fromTheme('tertiary')};
+      -webkit-text-fill-color: ${fromTheme('tertiary')};
     }
   }
 
@@ -41,6 +43,20 @@ const Style = styled.div<StyleProps>`
       input::placeholder,
       svg {
         color: ${fromTheme('primary')};
+        -webkit-text-fill-color: ${fromTheme('primary')};
+      }
+    `}
+
+  ${({ isFocused }) =>
+    isFocused &&
+    css`
+      border-color: ${fromTheme('primary')};
+
+      &,
+      input::placeholder,
+      svg {
+        color: ${fromTheme('primary')};
+        -webkit-text-fill-color: ${fromTheme('primary')};
       }
     `}
 
@@ -50,6 +66,7 @@ const Style = styled.div<StyleProps>`
       &,
       svg {
         color: ${fromTheme('primary')};
+        -webkit-text-fill-color: ${fromTheme('primary')};
       }
     `}
 

@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
+import ReCAPTCHA from 'react-google-recaptcha'
+
 const Style = styled.section`
   grid-area: login;
   min-width: 320px;
@@ -81,6 +83,7 @@ export const Permanence = styled.label.attrs({ className: 'Permanence' })`
 
   input {
     margin-right: 8px;
+    border: solid red 1px;
   }
 `
 
@@ -91,15 +94,20 @@ export const Register = styled.div.attrs({ className: 'Register' })`
 
   button {
     border: none;
+    font-size: 1.5rem;
     text-decoration: underline;
     background-color: transparent;
-    color: ${fromTheme('primary')};
     transition: transform 2s;
-    font-size: 1.5rem;
+    color: ${fromTheme('primary')};
 
     &:hover {
       transform: scale(1.09);
     }
   }
 `
+
+export const Recaptcha = styled(ReCAPTCHA)`
+  display: none;
+`
+
 export default Style
