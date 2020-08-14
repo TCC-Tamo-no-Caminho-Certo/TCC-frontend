@@ -41,7 +41,7 @@ export const Logo: React.FC = () => {
       opacity: [0, 100],
       duration: 400,
       translateX: [300, 0],
-      delay: anime.stagger(300),
+      delay: anime.stagger(100),
     })
 
     anime({
