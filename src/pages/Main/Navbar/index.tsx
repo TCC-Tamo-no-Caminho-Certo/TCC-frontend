@@ -1,61 +1,84 @@
-import React, { useState, useCallback, useEffect } from 'react'
-import Style, { ProfileOpen, ProfileClosed, UserInfo, Logout, Edit } from './styles'
+import React, { useState, useCallback } from 'react'
+import Style, {
+  ProfileOpen,
+  ProfileClosed,
+  UserInfo,
+  Logout,
+  EditClosed,
+  EditOpen,
+  PhotoChange,
+} from './styles'
 
-import avatar from 'assets/avatar.jpg'
+import ContainerChange from './ContainerChange'
+
+import Button from 'components/Button'
+
+import gear from 'assets/gear.svg'
 import close from 'assets/close.svg'
+import avatar from 'assets/avatar.jpg'
+import upload from 'assets/upload.svg'
 
-import anime from 'animejs'
 import Anime from '@mollycule/react-anime'
 import { FiLogOut } from 'react-icons/fi'
-import { BsGear } from 'react-icons/bs'
 
 const Navbar: React.FC = () => {
-  const [profilePhoto, setProfilePhoto] = useState<string | boolean>('starting')
-  const [openProfile, setOpenProfile] = useState(false)
-  const [disabled, setDisabled] = useState(false)
+  const [profileClosed, setProfileClosed] = useState(true)
+  const [profileOpen, setProfileOpen] = useState(false)
+  const [editOpen, setEditOpen] = useState(false)
 
   const onProfileClick = useCallback(() => {
-    profilePhoto === 'starting' ? setProfilePhoto(true) : setProfilePhoto(!profilePhoto)
-    setOpenProfile(!openProfile)
-  }, [profilePhoto, openProfile])
+    setProfileClosed(!profileClosed)
+    setProfileOpen(!profileOpen)
+  }, [profileClosed, profileOpen])
 
-  const profilePhotoAnimation = useCallback(() => {
-    anime({
-      targets: '#profileButton',
-      translateY: [0, '-50%'],
-      duration: profilePhoto === 'starting' ? 1000 : 0,
-    })
-
-    if (profilePhoto !== 'starting') {
-      anime({
-        targets: '#profileButton',
-        translateX: profilePhoto ? [0, -235] : [-235, 0],
-        duration: profilePhoto ? 500 : 1000,
-        easing: 'easeInOutSine',
-      })
-    }
-  }, [profilePhoto])
-
-  useEffect(() => profilePhotoAnimation(), [profilePhotoAnimation])
-
-  useEffect(() => {
-    setDisabled(true)
-    setTimeout(() => {
-      setDisabled(false)
-    }, 1000)
-  }, [openProfile])
+  const onEditClosedClick = useCallback(() => {
+    setEditOpen(!editOpen)
+  }, [editOpen])
 
   return (
     <Style>
       <Anime
-        in={openProfile}
+        in={profileOpen}
         appear={false}
-        duration={500}
+        duration={300}
         easing='easeInOutSine'
-        onEntering={{ translateX: ['320px', 0], opacity: [0, 1] }}
-        onExiting={{ translateX: [0, '320px'], opacity: [1, 0] }}
+        onEntering={{ translateX: [editOpen ? 470 : 330, 0], opacity: 1 }}
+        onExiting={{ translateX: [0, editOpen ? 470 : 330], opacity: 1 }}
+        unmountOnExit={false}
       >
-        <ProfileOpen>
+        <ProfileOpen editOpen={editOpen}>
+          <Anime
+            in={editOpen}
+            appear={false}
+            duration={editOpen ? 400 : 200}
+            easing='easeInOutSine'
+            onEntering={{ width: [0, 460], height: [0, '50vh'], opacity: [0, 1] }}
+            onExiting={{ width: [460, 0], height: ['50vh', 0], opacity: [1, 0] }}
+          >
+            <EditOpen>
+              <hr />
+
+              <PhotoChange>
+                <img src={avatar} alt='profile' draggable='false' />
+
+                <Button>
+                  <img src={upload} alt='upload' />
+                  Alterar imagem
+                </Button>
+              </PhotoChange>
+
+              <ContainerChange label='Função:' value='Estudante' />
+
+              <ContainerChange label='Nome:' value='Miguel' />
+
+              <ContainerChange label='Sobrenome:' value='Miguel Andrade' />
+
+              <ContainerChange label='E-mail:' value='miguelandradebarreto2@gmail.com' />
+
+              <ContainerChange label='Data de nascimento:' value='19/08/2001' />
+            </EditOpen>
+          </Anime>
+
           <UserInfo>
             <span id='userRole'>Estudante</span>
             <span id='userName'>Miguel Andrade</span>
@@ -66,26 +89,32 @@ const Navbar: React.FC = () => {
             </button>
           </UserInfo>
 
-          <Edit>
-            <BsGear size={20} />
+          <EditClosed onClick={onEditClosedClick}>
+            <img src={gear} alt='edit profile' />
             <span>Editar perfil</span>
-          </Edit>
+          </EditClosed>
 
           <Logout>
-            <span>Logout</span>
-            <FiLogOut size={20} />
+            <FiLogOut size={18} />
           </Logout>
         </ProfileOpen>
       </Anime>
 
-      <ProfileClosed
-        id='profileButton'
-        type='button'
-        disabled={disabled}
-        onClick={onProfileClick}
+      <Anime
+        in={profileClosed}
+        appear={false}
+        duration={700}
+        easing='easeInOutSine'
+        onEntering={{ translateX: [-220, 0] }}
+        onExiting={{ translateX: [0, -220] }}
+        unmountOnExit={false}
       >
-        <img src={avatar} alt='profile' draggable='false' />
-      </ProfileClosed>
+        <ProfileClosed profileOpen={profileOpen} editOpen={editOpen}>
+          <button type='button' onClick={onProfileClick}>
+            <img src={avatar} alt='profile' draggable='false' />
+          </button>
+        </ProfileClosed>
+      </Anime>
     </Style>
   )
 }

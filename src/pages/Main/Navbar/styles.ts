@@ -1,78 +1,106 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import fromTheme from 'utils/fromTheme'
+
+interface ProfileOpenProps {
+  editOpen: boolean
+}
+
+interface ProfileClosedProps {
+  editOpen: boolean
+  profileOpen: boolean
+}
 
 const Style = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
+
   width: 100vw;
   max-width: 100%;
-  height: 120px;
+  height: 110px;
+  border-bottom: 1px solid red;
+
+  .ContainerChange + .ContainerChange {
+    margin-top: 10px;
+  }
 `
 
-export const ProfileClosed = styled.button`
+export const ProfileClosed = styled.div<ProfileClosedProps>`
   position: absolute;
   right: 20px;
-  margin-top: 10px;
-  top: 50%;
-  transform: translateY(50%);
+  top: 20px;
   border-radius: 50%;
-  border: none;
-  background-color: transparent;
 
   img {
-    width: 90px;
-    height: 90px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
+  }
+
+  button {
+    transition: transform 0.3s linear;
+
+    ${({ editOpen }) =>
+      editOpen &&
+      css`
+        transform: translateX(-140px);
+      `}
+
+    ${({ editOpen, profileOpen }) =>
+      editOpen &&
+      !profileOpen &&
+      css`
+        transform: translateX(0px);
+      `}
   }
 `
 
-export const ProfileOpen = styled.div`
+export const ProfileOpen = styled.div<ProfileOpenProps>`
   position: absolute;
-  right: 10px;
-  top: 10px;
-  display: grid;
-  grid:
-    '. info info' 70%
-    '. edit logout' 30% / 36% 32% 32%;
+  right: 5px;
+  top: 5px;
 
-  width: 350px;
-  height: 120px;
-  border-radius: 15px 0 15px 15px;
-  background-color: ${fromTheme('primary')};
   opacity: 0;
+  padding-left: 100px;
+  width: 320px;
+  height: 100px;
+  background-color: ${fromTheme('tertiary')};
 
-  img {
-    width: 12px;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
+  border-radius: 15px 0 15px 15px;
+
+  transition: all 0.3s linear;
+
+  ${({ editOpen }) =>
+    editOpen &&
+    css`
+      width: 460px;
+      border-radius: 15px 0 0 0;
+    `}
 `
 
 export const UserInfo = styled.div`
-  grid-area: info;
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
+  margin-top: 10px;
   cursor: default;
 
   span {
-    color: ${fromTheme('secondary')};
     text-align: left;
     line-height: 15px;
     width: 120px;
+    color: ${fromTheme('secondary')};
   }
 
   #close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
     border: none;
     background-color: transparent;
 
     img {
-      position: absolute;
-      top: 15px;
-      right: 20px;
+      width: 12px;
     }
   }
 
@@ -88,35 +116,92 @@ export const UserInfo = styled.div`
 
   #userActivity {
     line-height: 16px;
-    color: #00ff66;
+    color: #61ff8d;
     font-size: 1.2rem;
   }
 `
 
-export const Logout = styled.div`
-  grid-area: logout;
+export const Logout = styled.button`
   position: absolute;
-  right: 20px;
-  bottom: 15px;
+  right: 10px;
+  bottom: 10px;
+
   display: flex;
   align-items: center;
   color: ${fromTheme('secondary')};
-  cursor: pointer;
 
   span {
-    font-size: 1.3rem;
+    line-height: 18px;
+    font-size: 1.2rem;
     margin-right: 5px;
   }
 `
 
-export const Edit = styled(Logout)`
-  grid-area: edit;
+export const EditClosed = styled(Logout)`
   position: absolute;
-  left: 0;
+  left: 100px;
 
   span {
     margin-left: 5px;
     margin-right: 0px;
+  }
+`
+
+export const EditOpen = styled.div`
+  position: absolute;
+  top: 85px;
+  right: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  opacity: 0;
+  width: 460px;
+  height: 50vh;
+  border-radius: 0 0 0 15px;
+  padding-top: 15px;
+  color: ${fromTheme('secondary')};
+  background-color: ${fromTheme('tertiary')};
+
+  hr {
+    position: absolute;
+    top: 15px;
+    width: 90%;
+  }
+`
+
+export const PhotoChange = styled.div`
+  height: 96px;
+
+  &,
+  .Button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  > img {
+    margin-right: 10px;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+  }
+
+  .Button {
+    width: 150px;
+    height: 30px;
+    border-radius: 1px;
+    font-size: 1.4rem;
+    box-shadow: none;
+    transform: none;
+
+    img {
+      margin-right: 10px;
+      width: 15px;
+    }
   }
 `
 

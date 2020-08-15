@@ -21,13 +21,8 @@ const Home: React.FC = () => {
         duration={1000}
         unmountOnExit={false}
         easing='easeOutQuad'
-        onExiting={{
-          translateX: [0, '-100vw'],
-        }}
-        onEntering={{
-          easing: 'easeOutQuad',
-          translateX: ['-100vw', 0],
-        }}
+        onExiting={{ ranslateX: [0, '-100vw'] }}
+        onEntering={{ translateX: ['-100vw', 0] }}
       >
         <Row>
           <About />

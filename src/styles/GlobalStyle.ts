@@ -40,6 +40,8 @@ export default createGlobalStyle`
   }
 
   button {
+    background-color: transparent;
+    border: none;
     font-size: 1.6rem;
     cursor: pointer;
   }
