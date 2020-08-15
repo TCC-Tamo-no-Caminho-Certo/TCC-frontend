@@ -22,7 +22,6 @@ export default createGlobalStyle`
 
   body {
     font-size: 1.6rem;
-    background-color: ${fromTheme('primary')};
     color: ${fromTheme('tertiary')}
   }
 

@@ -7,7 +7,7 @@ const Style = styled.button`
   height: 45px;
   border-radius: 5px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  transition: transform 0.5s;
+  transition: transform 0.2s;
   color: ${fromTheme('secondary')};
   background-color: ${fromTheme('primary')};
 
@@ -21,7 +21,7 @@ const Style = styled.button`
   }
 
   &:hover {
-    transform: scale(1.02);
+    transform: scale(1.01);
   }
 
   @media (max-width: 475px) {

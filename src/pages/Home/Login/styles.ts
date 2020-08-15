@@ -22,8 +22,7 @@ const Style = styled.section`
 
   .InputText,
   .Button,
-  .Permanence,
-  .Register {
+  .Permanence {
     margin-top: 20px;
   }
 
@@ -89,21 +88,33 @@ export const Permanence = styled.label.attrs({ className: 'Permanence' })`
   }
 `
 
+export const ForgotPass = styled.div`
+  margin-top: 10px;
+  font-size: 1.4rem;
+  font-weight: bold;
+
+  &:hover {
+    color: ${fromTheme('tertiary')};
+  }
+`
+
 export const Register = styled.div.attrs({ className: 'Register' })`
   font-size: 1.5rem;
   text-align: center;
   color: ${fromTheme('tertiary')};
+  margin-top: 15px;
 
   button {
     border: none;
     font-size: 1.5rem;
     text-decoration: underline;
     background-color: transparent;
-    transition: transform 2s;
+    transition: transform 0.2s;
     color: ${fromTheme('primary')};
 
     &:hover {
-      transform: scale(1.09);
+      transform: scale(1.03);
+      filter: brightness(0.8);
     }
   }
 `

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react'
-import Style, { Register, Google, Permanence, Recaptcha } from './styles'
+import Style, { Register, Google, Permanence, Recaptcha, ForgotPass } from './styles'
 import { Loader } from 'styles/GlobalStyle'
 
 import loginSchema from 'validations/login'
@@ -20,7 +20,7 @@ import anime from 'animejs'
 import ReCAPTCHA from 'react-google-recaptcha'
 import * as Yup from 'yup'
 import { Form } from '@unform/web'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import { FiUser, FiLock } from 'react-icons/fi'
 import { SubmitHandler, FormHandles } from '@unform/core'
 
@@ -144,6 +144,10 @@ const Login: React.FC = () => {
             <input type='checkbox' id='permanence' />
             Permanecer conectado
           </Permanence>
+
+          <ForgotPass as={Link} to='/forgot-password'>
+            Esqueci minha senha
+          </ForgotPass>
 
           <Register>
             Ainda não possui uma conta ?
