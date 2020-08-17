@@ -19,12 +19,20 @@ export const Container = styled.article`
   box-shadow: 0 0 5px ${fromTheme('tertiary')};
   background: #f9f9f9;
 
-  div {
+  header {
     display: flex;
     justify-content: center;
     padding: 15px 0;
   }
+
+  @media (max-width: 425px) {
+    width: 100%;
+    box-shadow: none;
+    padding: 10% 0 0 0;
+    height: 100vh;
+  }
 `
+
 export const InputBlock = styled.section`
   width: 90%;
   margin: auto;
@@ -40,21 +48,73 @@ export const InputBlock = styled.section`
     text-align: center;
     font-style: italic;
   }
+`
 
-  button {
-    width: 100%;
-    height: 60px;
-    color: ${fromTheme('secondary')};
-    background-color: ${fromTheme('primary')};
-    border: none;
-    border-radius: 8px;
-    transition: all 0.2s;
+export const ConfirmToken = styled.section`
+  width: 90%;
+  margin: auto;
 
-    font: 700 1.8rem 'Archivo';
+  h3 {
+    font: 500 2rem 'Archivo';
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  div.reSendContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+  }
+
+  button.reSend {
+    margin: 15px;
+    font-weight: bold;
+    text-decoration: underline;
+    color: ${fromTheme('primary')};
 
     &:hover {
-      filter: brightness(1.1);
-      transform: scale(1.01);
+      color: ${fromTheme('tertiary')};
     }
+  }
+`
+
+export const Button = styled.button`
+  width: 100%;
+  height: 60px;
+  color: ${fromTheme('secondary')};
+  background-color: ${fromTheme('primary')};
+  border: none;
+  border-radius: 8px;
+  transition: all 0.2s;
+
+  font: 700 1.8rem 'Archivo';
+
+  &:hover {
+    filter: brightness(1.1);
+    transform: scale(1.01);
+  }
+
+  position: relative;
+
+  span {
+    position: absolute;
+    right: 25%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &:hover {
+    transform: scale(1.01);
+  }
+
+  @media (max-width: 425px) {
+    span {
+      right: 20%;
+    }
+
+    width: 90vw;
+    position: fixed;
+    bottom: 15px;
   }
 `
