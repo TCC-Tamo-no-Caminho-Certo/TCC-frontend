@@ -1,8 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 
 import { Form } from '@unform/web'
 import { FiUser, FiLock } from 'react-icons/fi'
 import { useHistory } from 'react-router-dom'
+import { SubmitHandler, FormHandles } from '@unform/core'
+
+import { emailSchema } from 'validations/forgotPassword'
+import getValidationErrors from 'utils/getValidationErrors'
+import * as Yup from 'yup'
 
 import Logo from '../../assets/Logo'
 import InputText from '../../components/InputText'
@@ -10,15 +15,35 @@ import InputText from '../../components/InputText'
 import { Loader } from '../../styles/GlobalStyle'
 import { Style, Container, InputBlock, ConfirmToken, Button } from './styles'
 
+interface Email {
+  email: String
+}
+
 const ForgotPassword: React.FC = () => {
   const [tokenIsSend, setTokenIsSend] = useState(false)
   const [confirmToken, setConfirmToken] = useState(false)
 
+  const emailRef = useRef<FormHandles>(null)
   const history = useHistory()
 
   function handleConfirmToken() {
     setConfirmToken(true)
     history.push('/change')
+  }
+
+  const handleEmailSubmit: SubmitHandler<Email> = async (data, { reset }, event) => {
+    event?.preventDefault()
+    try {
+      await emailSchema.validate(data, { abortEarly: false })
+      emailRef.current?.setErrors({})
+      setTokenIsSend(true)
+      reset()
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        const errorList = getValidationErrors(error)
+        emailRef.current?.setErrors(errorList)
+      }
+    }
   }
 
   return (
@@ -32,7 +57,7 @@ const ForgotPassword: React.FC = () => {
           <ConfirmToken>
             <Form onSubmit={() => {}}>
               <h3>Confirme o código enviado para o seu email</h3>
-              <InputText name='email' placeholder='Ex: 1234' icon={FiLock} size={23} />
+              <InputText name='email' placeholder='Código' icon={FiLock} size={23} />
 
               <div className='reSendContainer'>
                 <button className='reSend' type='button'>
@@ -52,7 +77,7 @@ const ForgotPassword: React.FC = () => {
           </ConfirmToken>
         ) : (
           <InputBlock>
-            <Form onSubmit={() => {}}>
+            <Form onSubmit={handleEmailSubmit} ref={emailRef}>
               <h3>Digite seu email para recuperar a senha</h3>
               <InputText name='email' placeholder='E-mail' icon={FiUser} size={23} />
               <p>
@@ -60,9 +85,7 @@ const ForgotPassword: React.FC = () => {
                 renovação da senha
               </p>
 
-              <Button type='submit' onClick={() => setTokenIsSend(true)}>
-                Enviar
-              </Button>
+              <Button type='submit'>Enviar</Button>
             </Form>
           </InputBlock>
         )}
