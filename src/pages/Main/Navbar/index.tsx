@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Style, {
   ProfileOpen,
   ProfileClosed,
@@ -25,9 +25,11 @@ import anime from 'animejs'
 const Navbar: React.FC = () => {
   const [profileOpen, setProfileOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
+  const [disabled, setDisabled] = useState(false)
 
-  const profileOpenToggle = () =>
+  const profileOpenToggle = () => {
     profileOpen ? setProfileOpen(false) : setProfileOpen(true)
+  }
 
   const EditOpenToggle = () => {
     if (editOpen) {
@@ -65,6 +67,13 @@ const Navbar: React.FC = () => {
     editOpen ? setEditOpen(false) : setEditOpen(true)
   }
 
+  useEffect(() => {
+    setDisabled(true)
+    setTimeout(() => {
+      setDisabled(false)
+    }, 550)
+  }, [editOpen, profileOpen])
+
   return (
     <Style>
       <Anime
@@ -83,7 +92,7 @@ const Navbar: React.FC = () => {
             duration={500}
             unmountOnExit={false}
             easing='easeInOutSine'
-            onEntering={{ height: [0, '50vh'], opacity: [0, 1] }}
+            onEntering={{ height: [0, '50vh'], opacity: [0, 1], delay: 200 }}
             onExiting={{ height: ['50vh', 0], opacity: [1, 0] }}
           >
             <EditOpen>
@@ -110,7 +119,7 @@ const Navbar: React.FC = () => {
             </EditOpen>
           </Anime>
 
-          <EditClosed onClick={EditOpenToggle}>
+          <EditClosed onClick={EditOpenToggle} disabled={disabled}>
             <img src={gear} alt='edit profile' />
             <span>Editar perfil</span>
           </EditClosed>
@@ -120,7 +129,12 @@ const Navbar: React.FC = () => {
             <span id='userName'>Miguel Andrade</span>
             <span id='userActivity'>Online</span>
 
-            <button id='close' type='button' onClick={profileOpenToggle}>
+            <button
+              id='close'
+              type='button'
+              onClick={profileOpenToggle}
+              disabled={disabled}
+            >
               <img src={close} draggable='false' alt='close profile' />
             </button>
           </UserInfo>
@@ -141,7 +155,7 @@ const Navbar: React.FC = () => {
         onExiting={{ translateX: editOpen ? [0, -360] : [0, -220] }}
       >
         <ProfileClosed>
-          <button type='button' onClick={profileOpenToggle}>
+          <button type='button' onClick={profileOpenToggle} disabled={disabled}>
             <img src={avatar} alt='profile' draggable='false' />
           </button>
         </ProfileClosed>
