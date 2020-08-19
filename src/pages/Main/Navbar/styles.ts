@@ -1,13 +1,10 @@
 import styled, { css } from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
-interface ProfileOpenProps {
-  editOpen: boolean
-}
-
-interface ProfileClosedProps {
-  editOpen: boolean
-  profileOpen: boolean
+interface AnimationStates {
+  editOpen?: boolean
+  profileOpen?: boolean
+  profileClosed?: boolean
 }
 
 const Style = styled.div`
@@ -25,7 +22,9 @@ const Style = styled.div`
   }
 `
 
-export const ProfileClosed = styled.div<ProfileClosedProps>`
+export const ProfileClosed = styled.div.attrs({
+  className: 'ProfileClosed',
+})`
   position: absolute;
   right: 20px;
   top: 20px;
@@ -36,46 +35,21 @@ export const ProfileClosed = styled.div<ProfileClosedProps>`
     height: 70px;
     border-radius: 50%;
   }
-
-  button {
-    transition: transform 0.3s linear;
-
-    ${({ editOpen }) =>
-      editOpen &&
-      css`
-        transform: translateX(-140px);
-      `}
-
-    ${({ editOpen, profileOpen }) =>
-      editOpen &&
-      !profileOpen &&
-      css`
-        transform: translateX(0px);
-      `}
-  }
 `
 
-export const ProfileOpen = styled.div<ProfileOpenProps>`
+export const ProfileOpen = styled.div.attrs({
+  className: 'ProfileOpen',
+})`
   position: absolute;
-  right: 5px;
+  right: -320px;
   top: 5px;
 
-  opacity: 0;
   padding-left: 100px;
   width: 320px;
   height: 100px;
   background-color: ${fromTheme('tertiary')};
 
   border-radius: 15px 0 15px 15px;
-
-  transition: all 0.3s linear;
-
-  ${({ editOpen }) =>
-    editOpen &&
-    css`
-      width: 460px;
-      border-radius: 15px 0 0 0;
-    `}
 `
 
 export const UserInfo = styled.div`
@@ -151,16 +125,16 @@ export const EditOpen = styled.div`
   position: absolute;
   top: 85px;
   right: 0;
+  opacity: 0;
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  opacity: 0;
   width: 460px;
   height: 50vh;
   border-radius: 0 0 0 15px;
-  padding-top: 15px;
+  padding-top: 10px;
   color: ${fromTheme('secondary')};
   background-color: ${fromTheme('tertiary')};
 
@@ -172,7 +146,9 @@ export const EditOpen = styled.div`
 `
 
 export const PhotoChange = styled.div`
-  height: 96px;
+  height: 70px;
+  padding: 0 85px;
+  margin: 20px 0;
 
   &,
   .Button {

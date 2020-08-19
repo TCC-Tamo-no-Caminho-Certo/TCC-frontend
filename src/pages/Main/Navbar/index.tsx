@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import Style, {
   ProfileOpen,
   ProfileClosed,
@@ -18,42 +18,73 @@ import close from 'assets/close.svg'
 import avatar from 'assets/avatar.jpg'
 import upload from 'assets/upload.svg'
 
-import Anime from '@mollycule/react-anime'
 import { FiLogOut } from 'react-icons/fi'
+import Anime from '@mollycule/react-anime'
+import anime from 'animejs'
 
 const Navbar: React.FC = () => {
-  const [profileClosed, setProfileClosed] = useState(true)
   const [profileOpen, setProfileOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
 
-  const onProfileClick = useCallback(() => {
-    setProfileClosed(!profileClosed)
-    setProfileOpen(!profileOpen)
-  }, [profileClosed, profileOpen])
+  const profileOpenToggle = () =>
+    profileOpen ? setProfileOpen(false) : setProfileOpen(true)
 
-  const onEditClosedClick = useCallback(() => {
-    setEditOpen(!editOpen)
-  }, [editOpen])
+  const EditOpenToggle = () => {
+    if (editOpen) {
+      anime({
+        targets: '.ProfileOpen',
+        easing: 'easeInOutSine',
+        duration: 300,
+        width: [460, 320],
+        delay: 500,
+      })
+
+      anime({
+        targets: '.ProfileClosed',
+        easing: 'easeInOutSine',
+        duration: 300,
+        translateX: [-360, -220],
+        delay: 500,
+      })
+    } else {
+      anime({
+        targets: '.ProfileOpen',
+        easing: 'easeInOutSine',
+        duration: 300,
+        width: [320, 460],
+      })
+
+      anime({
+        targets: '.ProfileClosed',
+        easing: 'easeInOutSine',
+        duration: 300,
+        translateX: [-220, -360],
+      })
+    }
+
+    editOpen ? setEditOpen(false) : setEditOpen(true)
+  }
 
   return (
     <Style>
       <Anime
         in={profileOpen}
         appear={false}
-        duration={300}
-        easing='easeInOutSine'
-        onEntering={{ translateX: [editOpen ? 470 : 330, 0], opacity: 1 }}
-        onExiting={{ translateX: [0, editOpen ? 470 : 330], opacity: 1 }}
+        duration={500}
         unmountOnExit={false}
+        easing='easeInOutSine'
+        onEntering={{ translateX: editOpen ? [140, -325] : [0, -325] }}
+        onExiting={{ translateX: editOpen ? [-325, 140] : [-325, 0] }}
       >
-        <ProfileOpen editOpen={editOpen}>
+        <ProfileOpen>
           <Anime
             in={editOpen}
             appear={false}
-            duration={editOpen ? 400 : 200}
+            duration={500}
+            unmountOnExit={false}
             easing='easeInOutSine'
-            onEntering={{ width: [0, 460], height: [0, '50vh'], opacity: [0, 1] }}
-            onExiting={{ width: [460, 0], height: ['50vh', 0], opacity: [1, 0] }}
+            onEntering={{ height: [0, '50vh'], opacity: [0, 1] }}
+            onExiting={{ height: ['50vh', 0], opacity: [1, 0] }}
           >
             <EditOpen>
               <hr />
@@ -79,20 +110,20 @@ const Navbar: React.FC = () => {
             </EditOpen>
           </Anime>
 
+          <EditClosed onClick={EditOpenToggle}>
+            <img src={gear} alt='edit profile' />
+            <span>Editar perfil</span>
+          </EditClosed>
+
           <UserInfo>
             <span id='userRole'>Estudante</span>
             <span id='userName'>Miguel Andrade</span>
             <span id='userActivity'>Online</span>
 
-            <button id='close' type='button' onClick={onProfileClick}>
+            <button id='close' type='button' onClick={profileOpenToggle}>
               <img src={close} draggable='false' alt='close profile' />
             </button>
           </UserInfo>
-
-          <EditClosed onClick={onEditClosedClick}>
-            <img src={gear} alt='edit profile' />
-            <span>Editar perfil</span>
-          </EditClosed>
 
           <Logout>
             <FiLogOut size={18} />
@@ -101,16 +132,16 @@ const Navbar: React.FC = () => {
       </Anime>
 
       <Anime
-        in={profileClosed}
+        in={!profileOpen}
         appear={false}
-        duration={700}
-        easing='easeInOutSine'
-        onEntering={{ translateX: [-220, 0] }}
-        onExiting={{ translateX: [0, -220] }}
+        duration={500}
         unmountOnExit={false}
+        easing='easeInOutSine'
+        onEntering={{ translateX: editOpen ? [-360, 0] : [-220, 0] }}
+        onExiting={{ translateX: editOpen ? [0, -360] : [0, -220] }}
       >
-        <ProfileClosed profileOpen={profileOpen} editOpen={editOpen}>
-          <button type='button' onClick={onProfileClick}>
+        <ProfileClosed>
+          <button type='button' onClick={profileOpenToggle}>
             <img src={avatar} alt='profile' draggable='false' />
           </button>
         </ProfileClosed>

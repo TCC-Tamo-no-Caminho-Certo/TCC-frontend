@@ -2,7 +2,7 @@ import React from 'react'
 
 import Home from 'pages/Home'
 import Main from 'pages/Main'
-import ForgotPassword from '../pages/ForgotPassword'
+import ForgotPassword from 'pages/ForgotPassword'
 
 import PrivateRoute from 'routes/PrivateRoute'
 
