@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 
-import Loader from 'styles/Loader'
-
-import InputText from 'components/InputText'
-
-import Logo from 'assets/Logo'
-
 import { Form } from '@unform/web'
+
 import { FiUser, FiLock } from 'react-icons/fi'
+
+import { useHistory } from 'react-router-dom'
+
+import Logo from '../../assets/Logo'
+
+import InputText from '../../components/InputText'
+
+import Loader from '../../styles/Loader'
 
 import { Style, Container, InputBlock, ConfirmToken, Button } from './styles'
 
@@ -15,6 +18,14 @@ const ForgotPassword: React.FC = () => {
   const [tokenIsSend, setTokenIsSend] = useState(false)
 
   const [confirmToken, setConfirmToken] = useState(false)
+
+  const history = useHistory()
+
+  function handleConfirmToken() {
+    setConfirmToken(true)
+
+    history.push('/change')
+  }
 
   return (
     <Style>
@@ -36,7 +47,7 @@ const ForgotPassword: React.FC = () => {
                 </button>
               </div>
 
-              <Button type='submit' onClick={() => setConfirmToken(true)}>
+              <Button type='submit' onClick={handleConfirmToken}>
                 Confirmar
                 {confirmToken && (
                   <span>
