@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Style, { Row } from './styles'
 
 import About from './About'
@@ -6,15 +6,27 @@ import Login from './Login'
 import Signup from './Signup'
 import Subscribe from './Subscribe'
 
+import Modal, { Atributes } from 'components/Modal'
+
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
 
 import Anime from '@mollycule/react-anime'
 
 const Home: React.FC = () => {
   const { registerSlide } = useRegisterSlide()
+  const [modalAtributes, setModalAtributes] = useState<Atributes>({ visible: false })
+
+  const modalChangeVisible = () => {
+    setModalAtributes({ visible: false })
+  }
+
+  const modal = (Atribute: Atributes) => {
+    setModalAtributes(Atribute)
+  }
 
   return (
     <Style>
+      <Modal atributes={modalAtributes} setVisible={modalChangeVisible} />
       <Anime
         in={!registerSlide}
         appear={false}
@@ -27,9 +39,9 @@ const Home: React.FC = () => {
         <Row>
           <About />
 
-          <Login />
+          <Login setModalVisible={modal} />
 
-          <Signup />
+          <Signup setModalVisible={modal} />
 
           <Subscribe />
         </Row>
