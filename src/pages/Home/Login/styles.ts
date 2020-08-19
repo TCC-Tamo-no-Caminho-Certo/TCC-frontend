@@ -18,11 +18,23 @@ const Style = styled.section`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
+    a {
+      font-size: 1.5rem;
+      text-decoration: underline;
+      transition: all 0.2s;
+      margin-top: 7px;
+      color: ${fromTheme('primary')};
+
+      &:hover {
+        font-size: 1.6rem;
+        transform: translateY(3px);
+      }
+    }
   }
 
   .InputText,
-  .Button,
-  .Permanence {
+  .Button {
     margin-top: 20px;
   }
 
@@ -77,9 +89,10 @@ export const Permanence = styled.label.attrs({ className: 'Permanence' })`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 7px;
   font-size: 1.5rem;
-  line-height: 40px;
   border-bottom: 2px solid ${fromTheme('tertiary')};
+  line-height: 40px;
   cursor: pointer;
 
   input {
@@ -88,33 +101,23 @@ export const Permanence = styled.label.attrs({ className: 'Permanence' })`
   }
 `
 
-export const ForgotPass = styled.div`
-  margin-top: 10px;
-  font-size: 1.4rem;
-  font-weight: bold;
-
-  &:hover {
-    color: ${fromTheme('tertiary')};
-  }
-`
-
 export const Register = styled.div.attrs({ className: 'Register' })`
   font-size: 1.5rem;
   text-align: center;
   color: ${fromTheme('tertiary')};
-  margin-top: 15px;
+  margin-top: 7px;
 
   button {
     border: none;
     font-size: 1.5rem;
-    text-decoration: underline;
     background-color: transparent;
-    transition: transform 0.2s;
+    text-decoration: underline;
+    transition: all 0.2s;
     color: ${fromTheme('primary')};
 
     &:hover {
-      transform: scale(1.03);
-      filter: brightness(0.8);
+      transform: translateY(3px);
+      font-size: 1.6rem;
     }
   }
 `

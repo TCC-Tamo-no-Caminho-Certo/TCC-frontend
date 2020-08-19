@@ -1,10 +1,12 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react'
-import Style, { Register, Google, Permanence, Recaptcha, ForgotPass } from './styles'
-import { Loader } from 'styles/GlobalStyle'
+import Style, { Register, Google, Permanence, Recaptcha } from './styles'
+
+import Loader from 'styles/Loader'
 
 import loginSchema from 'validations/login'
 
 import Button from 'components/Button'
+import Modal from 'components/Modal'
 import InputText from 'components/InputText/'
 import ThemeSwitch from 'components/ThemeSwitch'
 
@@ -110,18 +112,15 @@ const Login: React.FC = () => {
         size='invisible'
         sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
       />
-
+      <Modal />
       {showLogin && (
         <Style ref={loginRef}>
           <ThemeSwitch />
-
           <Logo />
-
           <Google>
             <img src={google} alt='google' />
             Entrar com o Google
           </Google>
-
           <Form ref={loginFormRef} onSubmit={onLoginSubmit}>
             <InputText name='email' placeholder='E-mail' icon={FiUser} size={23} />
 
@@ -140,14 +139,12 @@ const Login: React.FC = () => {
             </Button>
           </Form>
 
+          <Link to='/forgot-password'>Esqueci minha senha</Link>
+
           <Permanence htmlFor='permanence'>
             <input type='checkbox' id='permanence' />
             Permanecer conectado
           </Permanence>
-
-          <ForgotPass as={Link} to='/forgot-password'>
-            Esqueci minha senha
-          </ForgotPass>
 
           <Register>
             Ainda não possui uma conta ?

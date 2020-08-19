@@ -1,11 +1,6 @@
-import styled, { createGlobalStyle, keyframes } from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
 
 import fromTheme from 'utils/fromTheme'
-
-interface LoadingComponentProps {
-  border: string
-  size: string
-}
 
 export default createGlobalStyle`
   * {
@@ -21,17 +16,15 @@ export default createGlobalStyle`
   }
 
   body {
+
     font-size: 1.6rem;
-    color: ${fromTheme('tertiary')}
+    color: ${fromTheme('tertiary')};
+    background-color: ${fromTheme('primary')};
   }
 
   a {
     color: ${fromTheme('primary')};
     text-decoration: none;
-
-    &:hover {
-      color: #408cff;
-    }
   }
 
   ul {
@@ -56,22 +49,4 @@ export default createGlobalStyle`
       box-shadow: initial;
     }
   }
-`
-
-const spin = keyframes`
-  0% {
-    transform: rotate(0deg);
-    }
-  100% {
-    transform: rotate(360deg);
-    }
-`
-
-export const Loader = styled.div<LoadingComponentProps>`
-  border: ${props => props.border} solid ${fromTheme('tertiary')};
-  border-radius: 50%;
-  border-top: ${props => props.border} solid #fff;
-  width: ${props => props.size};
-  height: ${props => props.size};
-  animation: ${spin} 2s linear infinite;
 `

@@ -9,7 +9,7 @@ import InputText from 'components/InputText'
 import { Container, Style } from '../styles'
 import { PasswordBlock, ButtonPassword } from './styles'
 
-export default function ConfirmPassword() {
+const ConfirmPassword = () => {
   return (
     <Style>
       <Container>
@@ -45,3 +45,5 @@ export default function ConfirmPassword() {
     </Style>
   )
 }
+
+export default ConfirmPassword
