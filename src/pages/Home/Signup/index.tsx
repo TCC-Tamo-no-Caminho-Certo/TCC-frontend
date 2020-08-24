@@ -7,6 +7,7 @@ import Button from 'components/Button'
 import InputText from 'components/InputText'
 import InputDate from 'components/InputDate'
 import ThemeSwitch from 'components/ThemeSwitch'
+import { Atributes } from 'components/Modal'
 
 import { useAuth } from 'hooks/useAuth'
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
@@ -33,7 +34,11 @@ export interface RegisterData {
   captcha: string
 }
 
-const Signup: React.FC = () => {
+interface SignupProps {
+  setModalVisible: (Atribute: Atributes) => void
+}
+
+const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
   const signupFormRef = useRef<FormHandles>(null)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
 
@@ -45,7 +50,6 @@ const Signup: React.FC = () => {
 
   const onSignupSubmit: SubmitHandler<RegisterData> = async (data, { reset }, event) => {
     event?.preventDefault()
-
     try {
       let captchaToken
       if (recaptchaRef.current) captchaToken = await recaptchaRef.current.executeAsync()
@@ -55,16 +59,28 @@ const Signup: React.FC = () => {
       const old = data.birthday.split('/')
       const birthday = `${old[2]}-${old[1]}-${old[0]}`
 
-      console.log('signup', { ...data, birthday, captcha: captchaToken })
       await register({ ...data, birthday, captcha: captchaToken as string })
-
+      setModalVisible({
+        visible: true,
+        title: 'Sucesso!',
+        message:
+          'Agora só falta confirmar seu cadastro clicando no link que enviamos para o seu email',
+        color: '#13c47c',
+      })
       signupFormRef.current?.setErrors({})
-      reset()
       setRegisterSlide(false)
     } catch (error) {
+      console.log(error)
       if (error instanceof Yup.ValidationError) {
         const errorList = getValidationErrors(error)
         signupFormRef.current?.setErrors(errorList)
+      } else {
+        setModalVisible({
+          visible: true,
+          title: 'Erro!',
+          message: 'Verifique se o email já é cadastrado, e tente novamente',
+          color: '#e8423f',
+        })
       }
     }
   }
@@ -94,7 +110,6 @@ const Signup: React.FC = () => {
         size='invisible'
         sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
       />
-
       {showRegister && (
         <Style>
           <header>

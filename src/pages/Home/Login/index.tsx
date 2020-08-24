@@ -8,6 +8,7 @@ import loginSchema from 'validations/login'
 import Button from 'components/Button'
 import InputText from 'components/InputText/'
 import ThemeSwitch from 'components/ThemeSwitch'
+import { Atributes } from 'components/Modal'
 
 import { useAuth } from 'hooks/useAuth'
 import { useRegisterSlide } from 'hooks/useRegisterSlide'
@@ -31,7 +32,11 @@ export interface LoginData {
   captcha: string
 }
 
-const Login: React.FC = () => {
+interface LoginProps {
+  setModalVisible: (Atribute: Atributes) => void
+}
+
+const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
   const loginFormRef = useRef<FormHandles>(null)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
   const loginRef = useRef(null)
@@ -57,7 +62,6 @@ const Login: React.FC = () => {
       else throw new Error('recaptcha is equal null or undefined')
       await loginSchema.validate(data, { abortEarly: false })
 
-      console.log('login:', { ...data, captcha: captchaToken })
       await login({ ...data, captcha: captchaToken as string })
 
       loginFormRef.current?.setErrors({})
@@ -69,6 +73,14 @@ const Login: React.FC = () => {
       if (error instanceof Yup.ValidationError) {
         const errorList = getValidationErrors(error)
         loginFormRef.current?.setErrors(errorList)
+      } else {
+        setModalVisible({
+          visible: true,
+          title: 'Erro!',
+          message:
+            'Verifique se o email e senha estão corretos, ou se o cadastro já foi confirmado!',
+          color: '#e8423f',
+        })
       }
     }
   }
