@@ -5,25 +5,73 @@ import ReCAPTCHA from 'react-google-recaptcha'
 
 const Style = styled.section`
   grid-area: login;
+
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   min-width: 320px;
   width: calc(100% + 1px);
-  height: 100%;
-  padding: 30px;
-  position: relative;
+
   background-color: ${fromTheme('secondary')};
 
+  header {
+    position: absolute;
+    top: 20px;
+
+    width: 80%;
+    max-width: 1000px;
+    height: 33px;
+
+    .ThemeSwitch {
+      position: absolute;
+      right: 0;
+    }
+  }
+`
+
+export const Content = styled.div`
+  width: calc(100% - 1px);
+  height: 100%;
+  margin-top: 73px;
+
   &,
+  & > *,
   form {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+  }
+
+  & > * {
+    width: 80%;
+    max-width: 450px;
+    margin-bottom: 20px;
+
+    &:last-child {
+      margin: 0;
+    }
+  }
+
+  form {
+    > * {
+      width: 100%;
+      margin-bottom: 20px;
+
+      &:last-child {
+        margin: 0;
+      }
+    }
 
     a {
+      margin-top: 7px;
       font-size: 1.5rem;
       text-decoration: underline;
+
       transition: all 0.2s;
-      margin-top: 7px;
       color: ${fromTheme('primary')};
 
       &:hover {
@@ -33,51 +81,43 @@ const Style = styled.section`
     }
   }
 
-  .InputText,
-  .Button {
-    margin-top: 20px;
+  label {
+    flex-direction: row;
+
+    font-size: 1.5rem;
+    line-height: 40px;
+
+    cursor: pointer;
+    border-bottom: 2px solid ${fromTheme('tertiary')};
+
+    input {
+      margin-right: 8px;
+    }
   }
 
-  .InputText,
-  .Permanence,
-  .Register {
-    min-width: 300px;
-    width: 80vw;
-    max-width: 400px;
+  a {
+    margin-bottom: 5px;
   }
 
-  .Button {
-    width: 100%;
-  }
-
-  .ThemeSwitch {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-  }
-
-  @media screen and (min-width: 1200px) {
-    border-radius: 15px 0 0 15px;
-
-    .InputText,
-    .Permanence,
-    .Register {
-      min-width: 340px;
-      width: 22.9vw;
-      max-width: 400px;
+  @media screen and (min-height: 698px) {
+    form {
+      margin-top: 0;
     }
   }
 `
 
-export const Google = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.5rem;
+export const Google = styled.button.attrs({ type: 'button' })`
+  flex-direction: row;
+  width: auto;
   padding: 10px 5px;
+
   cursor: pointer;
   color: ${fromTheme('tertiary')};
   border-bottom: solid 2px ${fromTheme('tertiary')};
+
+  span {
+    font-size: 1.5rem;
+  }
 
   img {
     width: 25px;
@@ -85,40 +125,20 @@ export const Google = styled.div`
   }
 `
 
-export const Permanence = styled.label.attrs({ className: 'Permanence' })`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 7px;
-  font-size: 1.5rem;
-  border-bottom: 2px solid ${fromTheme('tertiary')};
-  line-height: 40px;
-  cursor: pointer;
-
-  input {
-    margin-right: 8px;
-    border: solid red 1px;
-  }
-`
-
-export const Register = styled.div.attrs({ className: 'Register' })`
+export const Register = styled.div`
   font-size: 1.5rem;
   text-align: center;
+  padding: 10px 0;
+
   color: ${fromTheme('tertiary')};
-  margin-top: 7px;
 
   button {
-    border: none;
     font-size: 1.5rem;
-    background-color: transparent;
     text-decoration: underline;
-    transition: all 0.2s;
-    color: ${fromTheme('primary')};
 
-    &:hover {
-      transform: translateY(3px);
-      font-size: 1.6rem;
-    }
+    border: none;
+    background-color: transparent;
+    color: ${fromTheme('primary')};
   }
 `
 

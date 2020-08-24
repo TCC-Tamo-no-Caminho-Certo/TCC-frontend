@@ -5,5 +5,12 @@ declare module 'styled-components' {
     primary: string
     secondary: string
     tertiary: string
+
+    calendarPrimary: string
+    calendarSecondary: string
+    calendarTertiary: string
+    calendarDisabled: string
+    calendarBackground: string
+    calendarHeader: string
   }
 }

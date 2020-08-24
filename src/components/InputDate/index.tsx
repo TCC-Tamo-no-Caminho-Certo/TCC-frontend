@@ -75,13 +75,13 @@ const InputDate: React.FC<InputDateProps> = ({ name, size, icon: Icon }) => {
 
     return (
       <input
+        type='text'
         placeholder='Data de nascimento'
+        ref={ref}
         value={InputValue(selectedDate)}
         onBlur={onInputBlur}
         onFocus={onInputFocus}
         onClick={onFirstClick}
-        ref={ref}
-        type='text'
         readOnly
       />
     )
@@ -112,12 +112,9 @@ const InputDate: React.FC<InputDateProps> = ({ name, size, icon: Icon }) => {
         selectorEndingYear={present.year}
         selectorStartingYear={minimumDate.year}
         colorPrimary={themes.primary}
-        inputClassName='Input'
-        calendarPopperPosition='top'
+        calendarPopperPosition='bottom'
         calendarClassName='CalendarSize'
       />
-
-      <IoIosArrowDown className='icon' />
     </Style>
   )
 }

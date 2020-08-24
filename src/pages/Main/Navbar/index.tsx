@@ -7,6 +7,8 @@ import Style, {
   EditClosed,
   EditOpen,
   PhotoChange,
+  MenuClosed,
+  MenuOpen,
 } from './styles'
 
 import ContainerChange from './ContainerChange'
@@ -17,6 +19,7 @@ import gear from 'assets/gear.svg'
 import close from 'assets/close.svg'
 import avatar from 'assets/avatar.jpg'
 import upload from 'assets/upload.svg'
+import hamburguer from 'assets/hamburguer.svg'
 
 import { FiLogOut } from 'react-icons/fi'
 import Anime from '@mollycule/react-anime'
@@ -26,6 +29,11 @@ const Navbar: React.FC = () => {
   const [profileOpen, setProfileOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
   const [disabled, setDisabled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  const menuOpenToggle = () => {
+    menuOpen ? setMenuOpen(false) : setMenuOpen(true)
+  }
 
   const profileOpenToggle = () => {
     profileOpen ? setProfileOpen(false) : setProfileOpen(true)
@@ -76,6 +84,12 @@ const Navbar: React.FC = () => {
 
   return (
     <Style>
+      {menuOpen && <MenuOpen />}
+
+      <MenuClosed type='button' onClick={menuOpenToggle}>
+        <img src={hamburguer} alt='menu' />
+      </MenuClosed>
+
       <Anime
         in={profileOpen}
         appear={false}
@@ -98,24 +112,29 @@ const Navbar: React.FC = () => {
             <EditOpen>
               <hr />
 
-              <PhotoChange>
-                <img src={avatar} alt='profile' draggable='false' />
+              <div className='scroll'>
+                <PhotoChange>
+                  <img src={avatar} alt='profile' draggable='false' />
 
-                <Button>
-                  <img src={upload} alt='upload' />
-                  Alterar imagem
-                </Button>
-              </PhotoChange>
+                  <Button>
+                    <img src={upload} alt='upload' />
+                    Alterar imagem
+                  </Button>
+                </PhotoChange>
 
-              <ContainerChange label='Função:' value='Estudante' />
+                <ContainerChange label='Função:' value='Estudante' />
 
-              <ContainerChange label='Nome:' value='Miguel' />
+                <ContainerChange label='Nome:' value='Miguel' />
 
-              <ContainerChange label='Sobrenome:' value='Miguel Andrade' />
+                <ContainerChange label='Sobrenome:' value='Miguel Andrade' />
 
-              <ContainerChange label='E-mail:' value='miguelandradebarreto2@gmail.com' />
+                <ContainerChange
+                  label='E-mail:'
+                  value='miguelandradebarreto2@gmail.com'
+                />
 
-              <ContainerChange label='Data de nascimento:' value='19/08/2001' />
+                <ContainerChange label='Data de nascimento:' value='19/08/2001' />
+              </div>
             </EditOpen>
           </Anime>
 
@@ -154,10 +173,8 @@ const Navbar: React.FC = () => {
         onEntering={{ translateX: editOpen ? [-360, 0] : [-220, 0] }}
         onExiting={{ translateX: editOpen ? [0, -360] : [0, -220] }}
       >
-        <ProfileClosed>
-          <button type='button' onClick={profileOpenToggle} disabled={disabled}>
-            <img src={avatar} alt='profile' draggable='false' />
-          </button>
+        <ProfileClosed type='button' onClick={profileOpenToggle} disabled={disabled}>
+          <img src={avatar} alt='profile' draggable='false' />
         </ProfileClosed>
       </Anime>
     </Style>

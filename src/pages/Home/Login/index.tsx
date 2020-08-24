@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react'
-import Style, { Register, Google, Permanence, Recaptcha } from './styles'
+import Style, { Content, Register, Google, Recaptcha } from './styles'
 
 import Loader from 'styles/Loader'
 
@@ -114,44 +114,49 @@ const Login: React.FC = () => {
 
       {showLogin && (
         <Style ref={loginRef}>
-          <ThemeSwitch />
-          <Logo />
-          <Google>
-            <img src={google} alt='google' />
-            Entrar com o Google
-          </Google>
-          <Form ref={loginFormRef} onSubmit={onLoginSubmit}>
-            <InputText name='email' placeholder='E-mail' icon={FiUser} size={23} />
+          <header>
+            <ThemeSwitch />
+          </header>
 
-            <InputText
-              name='password'
-              placeholder='Senha'
-              icon={FiLock}
-              size={23}
-              type='password'
-              eye
-            />
+          <Content>
+            <Google>
+              <img src={google} alt='google' />
+              <span>Entrar com o Google</span>
+            </Google>
 
-            <Button type='submit'>
-              <div>Efetuar Login</div>
-              <span>{loadingLogin && <Loader size='18px' border='3px' />}</span>
-            </Button>
-          </Form>
+            <Form ref={loginFormRef} onSubmit={onLoginSubmit}>
+              <InputText name='email' placeholder='E-mail' icon={FiUser} iconSize='65%' />
 
-          <Link to='/forgot-password'>Não consegue fazer login?</Link>
+              <InputText
+                name='password'
+                type='password'
+                placeholder='Senha'
+                icon={FiLock}
+                iconSize='65%'
+                eye
+              />
 
-          <Permanence htmlFor='permanence'>
-            <input type='checkbox' id='permanence' />
-            Permanecer conectado
-          </Permanence>
+              <Button type='submit'>
+                <div>Efetuar Login</div>
+                <span>{loadingLogin && <Loader size='18px' border='3px' />}</span>
+              </Button>
+            </Form>
 
-          <Register>
-            Ainda não possui uma conta ?
-            <br />
-            <button type='button' disabled={disabled} onClick={onRegisterClick}>
-              Registre-se aqui!
-            </button>
-          </Register>
+            <Link to='/forgot-password'>Não consegue fazer login?</Link>
+
+            <label htmlFor='permanence'>
+              <input type='checkbox' id='permanence' />
+              Permanecer conectado
+            </label>
+
+            <Register>
+              <span>Ainda não possui uma conta ?</span>
+
+              <button type='button' disabled={disabled} onClick={onRegisterClick}>
+                Registre-se aqui!
+              </button>
+            </Register>
+          </Content>
         </Style>
       )}
     </>

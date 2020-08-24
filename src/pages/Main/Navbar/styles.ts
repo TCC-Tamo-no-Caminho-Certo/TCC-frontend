@@ -1,11 +1,5 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
-
-interface AnimationStates {
-  editOpen?: boolean
-  profileOpen?: boolean
-  profileClosed?: boolean
-}
 
 const Style = styled.div`
   position: fixed;
@@ -22,7 +16,7 @@ const Style = styled.div`
   }
 `
 
-export const ProfileClosed = styled.div.attrs({
+export const ProfileClosed = styled.button.attrs({
   className: 'ProfileClosed',
 })`
   position: absolute;
@@ -127,10 +121,6 @@ export const EditOpen = styled.div`
   right: 0;
   opacity: 0;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
   width: 460px;
   height: 50vh;
   border-radius: 0 0 0 15px;
@@ -139,9 +129,27 @@ export const EditOpen = styled.div`
   background-color: ${fromTheme('tertiary')};
 
   hr {
+    border: none;
+    border-bottom: 1px solid ${fromTheme('secondary')};
     position: absolute;
     top: 15px;
-    width: 90%;
+    width: 440px;
+    height: 1px;
+  }
+
+  &,
+  .scroll {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .scroll {
+    width: 440px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 10px;
+    padding-bottom: 15px;
   }
 `
 
@@ -179,6 +187,31 @@ export const PhotoChange = styled.div`
       width: 15px;
     }
   }
+`
+
+export const MenuClosed = styled.button`
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 70px;
+  height: 70px;
+  border-bottom-right-radius: 15px;
+  background-color: ${fromTheme('tertiary')};
+
+  svg {
+    color: ${fromTheme('primary')};
+  }
+`
+
+export const MenuOpen = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  height: 100vh;
+  width: 320px;
+  background-color: ${fromTheme('tertiary')};
 `
 
 export default Style

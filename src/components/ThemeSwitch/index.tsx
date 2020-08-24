@@ -11,30 +11,25 @@ const ThemeSwitch: React.FC = () => {
 
   return (
     <Style
-      width='39'
-      height='51'
-      viewBox='0 0 50 63'
-      fill='none'
+      viewBox='0 0 42 42'
       xmlns='http://www.w3.org/2000/svg'
-      strokeLinecap='round'
-      strokeLinejoin='round'
       className='ThemeSwitch'
       onClick={() => setThemeState(!themeState)}
     >
-      <path
-        stroke={themes.tertiary}
-        strokeWidth='4'
-        d='M13 48.75V44.5M29.5322 41.9082l-3.0175-3.0175M36.375 25.375h-4.25M29.5322 8.84187l-3.0175 3.01753M13 6.25V2'
-      />
+      <g stroke='black' strokeWidth='3' strokeLinecap='round' strokeLinejoin='round'>
+        <path d='M21 40.25L21 36.75' />
+        <path d='M21 5.25L21 1.75' />
+        <path d='M34.6152 34.6152L32.1302 32.1302' />
+        <path d='M40.25 21L36.75 21' />
+        <path d='M34.6152 7.38512L32.1302 9.87012' />
 
-      <g stroke={themes.tertiary} strokeWidth='3'>
         <path
           fill={themeState ? themes.primary : 'none'}
-          d='M23.625 24.625C23.625 18.25 19.375 14 13 14v21.25c6.375 0 10.625-4.25 10.625-10.625z'
+          d='M29.75 21C29.75 15.75 26.25 12.25 21 12.25L21 29.75C26.25 29.75 29.75 26.25 29.75 21Z'
         />
         <path
           fill={themeState ? 'none' : themes.primary}
-          d='M2 24.625C2 31 6.25 35.25 12.625 35.25V14C6.25 14 2 18.25 2 24.625z'
+          d='M12.25 21C12.25 26.25 15.75 29.75 21 29.75L21 12.25C15.75 12.25 12.25 15.75 12.25 21Z'
         />
       </g>
     </Style>

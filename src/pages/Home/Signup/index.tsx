@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react'
-import Style, { BackButton, InfoText, DualInput, Recaptcha } from './styles'
+import Style, { DualInput, Recaptcha } from './styles'
 
 import signupSchema from 'validations/signup'
 
@@ -97,49 +97,45 @@ const Signup: React.FC = () => {
 
       {showRegister && (
         <Style>
-          <BackButton
-            type='button'
-            disabled={disabled}
-            onClick={() => setRegisterSlide(false)}
-          >
-            <RiArrowLeftSLine size={28} />
-            Voltar
-          </BackButton>
+          <header>
+            <button
+              type='button'
+              disabled={disabled}
+              onClick={() => setRegisterSlide(false)}
+            >
+              <RiArrowLeftSLine />
+              <span>Voltar</span>
+            </button>
 
-          <ThemeSwitch />
-
-          <Logo />
+            <ThemeSwitch />
+          </header>
 
           <Form ref={signupFormRef} onSubmit={onSignupSubmit}>
+            {/* <Logo /> */}
+
             <DualInput>
-              <InputText
-                name='name'
-                className='name'
-                placeholder='Nome'
-                icon={MdPublic}
-                size={21}
-              />
+              <InputText name='name' placeholder='Nome' iconSize='50%' icon={MdPublic} />
 
               <InputText
                 name='surname'
                 placeholder='Sobrenome'
                 icon={MdPublic}
-                size={21}
+                iconSize='50%'
               />
             </DualInput>
 
-            <InfoText>
+            <span>
               Certifique-se de que corresponde ao nome no seu documento de identificação
               oficial
-            </InfoText>
+            </span>
 
             <InputDate name='birthday' icon={FaUserLock} />
 
-            <InfoText>Você precisa ter pelo menos 18 anos</InfoText>
+            <span>Você precisa ter pelo menos 18 anos</span>
 
             <InputText name='email' placeholder='E-mail' icon={FaUserLock} />
 
-            <InfoText>Enviaremos um e-mail para confirmação</InfoText>
+            <span>Enviaremos um e-mail para confirmação</span>
 
             <DualInput>
               <InputText
@@ -158,15 +154,13 @@ const Signup: React.FC = () => {
               />
             </DualInput>
 
-            <InfoText>
-              <span>
-                Ao clicar em Concordar e concluir, concordo com os{' '}
-                <a href='action'>Termos de uso</a>, os{' '}
-                <a href='action'>Termos de Serviço e Pagamentos</a>, a{' '}
-                <a href='action'>Política de Privacidade</a> e a{' '}
-                <a href='action'>Política de Não Discriminação</a> do Steams Lab.
-              </span>
-            </InfoText>
+            <span>
+              Ao clicar em Concordar e concluir, concordo com os{' '}
+              <a href='action'>Termos de uso</a>, os{' '}
+              <a href='action'>Termos de Serviço e Pagamentos</a>, a{' '}
+              <a href='action'>Política de Privacidade</a> e a{' '}
+              <a href='action'>Política de Não Discriminação</a> do Steams Lab.
+            </span>
 
             <Button type='submit'>Concordar e concluir</Button>
           </Form>

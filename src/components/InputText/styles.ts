@@ -7,18 +7,26 @@ interface StyleProps {
   isErrored: boolean
   hasIcon: boolean
   hasEye: boolean
+  eyeSize?: string
+  iconSize?: string
 }
 
 const Style = styled.div<StyleProps>`
-  height: 40px;
   display: flex;
   align-items: center;
+
+  height: 40px;
   border-radius: 10px;
   background-color: transparent;
   border: solid 1px ${fromTheme('tertiary')};
 
   svg {
     width: 15%;
+    height: ${({ iconSize }) => iconSize};
+  }
+
+  input + svg {
+    height: ${({ eyeSize }) => eyeSize};
   }
 
   input {
