@@ -51,10 +51,10 @@ const ForgotPassword: React.FC = () => {
     event?.preventDefault()
     setConfirmToken(true)
     try {
-      await api.post('confirm-reset-token', data)
+      await api.post('reset-password', data)
       localStorage.setItem('reset-password-token', data.token)
       setConfirmToken(false)
-      history.push('/change')
+      history.push('/reset-password')
     } catch (error) {
       setConfirmToken(false)
       console.log(error)

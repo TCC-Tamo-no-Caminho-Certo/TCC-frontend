@@ -27,22 +27,20 @@ const ConfirmPassword: React.FC = () => {
     token = path[2]
   }, [])
 
-  const handleResetPassSubmit: SubmitHandler<ResetPassword> = async (
-    data,
-    { reset },
-    event
-  ) => {
+  const handleResetPassSubmit: SubmitHandler<ResetPassword> = async (data, { reset }, event) => {
     event?.preventDefault()
     try {
       const resetToken = token || localStorage.getItem('reset-password-token')
       // eslint-disable-next-line no-param-reassign
       data.token = resetToken
       await api.post('reset-password', data)
+      alert('Senha alterada')
       history.push('/')
     } catch (error) {
       console.log(error)
     }
   }
+
   return (
     <Style>
       <Container>

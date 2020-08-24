@@ -7,9 +7,8 @@ import 'semantic-ui-css/semantic.min.css'
 export const StyledTooltipError = styled(Popup)`
   font-size: 1.3rem !important;
   border-radius: 10px !important;
-  opacity: 0.94 !important;
   border: none !important;
-  color: ${fromTheme('secondary')}!important;
+  color: white !important;
 
   &,
   &:before {
@@ -21,3 +20,4 @@ export const StyledTooltipError = styled(Popup)`
     margin-left: 5% !important;
   }
 `
+// rgba(255, 0, 0, 0.8)

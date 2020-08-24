@@ -25,19 +25,13 @@ export const AuthProvider: React.FC = ({ children }) => {
     const { success } = response.data
     localStorage.setItem('@SteamsLab:success', success)
     setToken(success)
-    console.log('response/login:', response)
   }
 
   const register = async (data: RegisterData) => {
-    const response = await api.post('register', data)
-    console.log('response/register:', response)
+    await api.post('register', data)
   }
 
-  return (
-    <AuthContext.Provider value={{ token, login, register }}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={{ token, login, register }}>{children}</AuthContext.Provider>
 }
 
 export function useAuth(): AuthContextData {
