@@ -128,10 +128,7 @@ const Navbar: React.FC = () => {
 
                 <ContainerChange label='Sobrenome:' value='Miguel Andrade' />
 
-                <ContainerChange
-                  label='E-mail:'
-                  value='miguelandradebarreto2@gmail.com'
-                />
+                <ContainerChange label='E-mail:' value='miguelandradebarreto2@gmail.com' />
 
                 <ContainerChange label='Data de nascimento:' value='19/08/2001' />
               </div>
@@ -148,12 +145,7 @@ const Navbar: React.FC = () => {
             <span id='userName'>Miguel Andrade</span>
             <span id='userActivity'>Online</span>
 
-            <button
-              id='close'
-              type='button'
-              onClick={profileOpenToggle}
-              disabled={disabled}
-            >
+            <button id='close' type='button' onClick={profileOpenToggle} disabled={disabled}>
               <img src={close} draggable='false' alt='close profile' />
             </button>
           </UserInfo>

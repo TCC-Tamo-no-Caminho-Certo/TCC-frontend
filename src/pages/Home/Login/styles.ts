@@ -35,7 +35,6 @@ const Style = styled.section`
 export const Content = styled.div`
   width: calc(100% - 1px);
   height: 100%;
-  margin-top: 73px;
 
   &,
   & > *,
@@ -57,6 +56,8 @@ export const Content = styled.div`
   }
 
   form {
+    margin-top: 73px;
+
     > * {
       width: 100%;
       margin-bottom: 20px;
