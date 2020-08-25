@@ -35,6 +35,7 @@ const Style = styled.div`
       align-items: center;
 
       height: 100%;
+
       color: ${fromTheme('primary')};
 
       svg {
@@ -45,8 +46,8 @@ const Style = styled.div`
       }
 
       span {
-        transform: translateX(-48%);
         line-height: 100%;
+        transform: translateX(-48%);
       }
     }
   }
@@ -70,11 +71,15 @@ const Style = styled.div`
       width: 100%;
       max-width: 530px;
     }
+
+    .Logo {
+      margin-bottom: 20px;
+    }
   }
 
-  @media screen and (min-height: 698px) {
+  @media screen and (min-height: 700px) {
     form {
-      margin-top: 0;
+      margin: 0;
     }
   }
 

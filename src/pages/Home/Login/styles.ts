@@ -35,6 +35,7 @@ const Style = styled.section`
 export const Content = styled.div`
   width: calc(100% - 1px);
   height: 100%;
+  margin-top: 73px;
 
   &,
   & > *,
@@ -56,8 +57,6 @@ export const Content = styled.div`
   }
 
   form {
-    margin-top: 73px;
-
     > * {
       width: 100%;
       margin-bottom: 20px;
@@ -100,7 +99,7 @@ export const Content = styled.div`
     margin-bottom: 5px;
   }
 
-  @media screen and (min-height: 698px) {
+  @media screen and (min-height: 700px) {
     form {
       margin-top: 0;
     }
@@ -109,12 +108,13 @@ export const Content = styled.div`
 
 export const Google = styled.button.attrs({ type: 'button' })`
   flex-direction: row;
+
   width: auto;
   padding: 10px 5px;
 
-  cursor: pointer;
   color: ${fromTheme('tertiary')};
   border-bottom: solid 2px ${fromTheme('tertiary')};
+  cursor: pointer;
 
   span {
     font-size: 1.5rem;
@@ -127,18 +127,19 @@ export const Google = styled.button.attrs({ type: 'button' })`
 `
 
 export const Register = styled.div`
-  font-size: 1.5rem;
   text-align: center;
+
+  font-size: 1.5rem;
   padding: 10px 0;
 
   color: ${fromTheme('tertiary')};
 
   button {
     font-size: 1.5rem;
-    text-decoration: underline;
 
     border: none;
     background-color: transparent;
+    text-decoration: underline;
     color: ${fromTheme('primary')};
   }
 `

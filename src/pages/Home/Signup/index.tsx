@@ -110,15 +110,13 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
         size='invisible'
         sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
       />
+
       {showRegister && (
         <Style>
           <header>
-            <button
-              type='button'
-              disabled={disabled}
-              onClick={() => setRegisterSlide(false)}
-            >
+            <button type='button' disabled={disabled} onClick={() => setRegisterSlide(false)}>
               <RiArrowLeftSLine />
+
               <span>Voltar</span>
             </button>
 
@@ -126,22 +124,16 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
           </header>
 
           <Form ref={signupFormRef} onSubmit={onSignupSubmit}>
-            {/* <Logo /> */}
+            <Logo />
 
             <DualInput>
-              <InputText name='name' placeholder='Nome' iconSize='50%' icon={MdPublic} />
+              <InputText name='name' placeholder='Nome' icon={MdPublic} iconSize='50%' />
 
-              <InputText
-                name='surname'
-                placeholder='Sobrenome'
-                icon={MdPublic}
-                iconSize='50%'
-              />
+              <InputText name='surname' placeholder='Sobrenome' icon={MdPublic} iconSize='50%' />
             </DualInput>
 
             <span>
-              Certifique-se de que corresponde ao nome no seu documento de identificação
-              oficial
+              Certifique-se de que corresponde ao nome no seu documento de identificação oficial
             </span>
 
             <InputDate name='birthday' icon={FaUserLock} />
@@ -155,26 +147,25 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
             <DualInput>
               <InputText
                 name='password'
+                type='password'
                 placeholder='Senha'
                 icon={FaUserLock}
-                type='password'
                 eye
               />
 
               <InputText
-                type='password'
                 name='confirmPassword'
+                type='password'
                 placeholder='Confirmar Senha'
                 icon={FaUserLock}
               />
             </DualInput>
 
             <span>
-              Ao clicar em Concordar e concluir, concordo com os{' '}
-              <a href='action'>Termos de uso</a>, os{' '}
-              <a href='action'>Termos de Serviço e Pagamentos</a>, a{' '}
-              <a href='action'>Política de Privacidade</a> e a{' '}
-              <a href='action'>Política de Não Discriminação</a> do Steams Lab.
+              Ao clicar em Concordar e concluir, concordo com os <a href='.'>Termos de uso</a>
+              ,os <a href='.'>Termos de Serviço e Pagamentos</a>, a{' '}
+              <a href='.'>Política de Privacidade</a> e a{' '}
+              <a href='.'>Política de Não Discriminação</a> do Steams Lab.
             </span>
 
             <Button type='submit'>Concordar e concluir</Button>
