@@ -1,5 +1,8 @@
 import React, { ComponentType, useEffect, useState } from 'react'
 
+import Logo from 'assets/Logo'
+import fromTheme from 'utils/fromTheme'
+
 import { RouteProps as RouterPropsDOM, Route, useHistory } from 'react-router-dom'
 import api from 'services/api'
 
@@ -26,11 +29,23 @@ const PrivateRoute: React.FC<RouteProps> = ({ component: Component, ...rest }) =
         history.push('/')
       }
     }
-    getAccess()
+    setTimeout(getAccess, 2000)
   }, [token, history])
 
   if (!access) {
-    return null
+    return (
+      <div
+        style={{
+          height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: `${fromTheme('secondary')}`,
+        }}
+      >
+        <Logo />
+      </div>
+    )
   }
 
   return <Route component={Component} {...rest} />
