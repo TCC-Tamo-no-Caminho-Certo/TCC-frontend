@@ -131,8 +131,6 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
           </header>
 
           <Content>
-            <Logo />
-
             <Google>
               <img src={google} alt='google' />
               <span>Entrar com o Google</span>

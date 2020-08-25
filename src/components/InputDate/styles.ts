@@ -145,6 +145,10 @@ const Style = styled.div<StyleProps>`
       color: ${fromTheme('calendarDisabled')}!important;
       opacity: 1;
     }
+
+    &:hover {
+      background-color: ${fromTheme('calendarPrimary')}!important;
+    }
   }
 
   .Calendar__day.-ltr {

@@ -113,7 +113,7 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
 
       {showRegister && (
         <Style>
-          <header>
+          <nav>
             <button type='button' disabled={disabled} onClick={() => setRegisterSlide(false)}>
               <RiArrowLeftSLine />
 
@@ -121,11 +121,9 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
             </button>
 
             <ThemeSwitch />
-          </header>
+          </nav>
 
           <Form ref={signupFormRef} onSubmit={onSignupSubmit}>
-            <Logo />
-
             <DualInput>
               <InputText name='name' placeholder='Nome' icon={MdPublic} iconSize='50%' />
 

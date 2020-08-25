@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useEffect,
-  useState,
-  InputHTMLAttributes,
-  ComponentType,
-} from 'react'
+import React, { useRef, useEffect, useState, InputHTMLAttributes, ComponentType } from 'react'
 import Style from './styles'
 
 import { ErrorTooltip } from 'components/Tooltips/index'

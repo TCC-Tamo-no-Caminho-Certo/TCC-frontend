@@ -5,6 +5,8 @@ const dark: DefaultTheme = {
   secondary: '#18191A',
   tertiary: '#383838',
 
+  white: '#FCFCFC',
+
   calendarPrimary: '#ec5878',
   calendarSecondary: '#FCFCFC',
   calendarTertiary: '#FCFCFC',

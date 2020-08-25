@@ -14,6 +14,7 @@ const Style = styled.section`
 
   min-width: 320px;
   width: calc(100% + 1px);
+  padding-top: 73px;
 
   background-color: ${fromTheme('secondary')};
 
@@ -32,10 +33,29 @@ const Style = styled.section`
   }
 `
 
+export const Register = styled.div`
+  text-align: center;
+
+  padding: 10px 0;
+
+  color: ${fromTheme('tertiary')};
+
+  &,
+  button {
+    font-size: calc(1.2rem + 0.5vh);
+  }
+
+  button {
+    border: none;
+    background-color: transparent;
+    text-decoration: underline;
+    color: ${fromTheme('primary')};
+  }
+`
+
 export const Content = styled.div`
   width: calc(100% - 1px);
   height: 100%;
-  margin-top: 73px;
 
   &,
   & > *,
@@ -49,7 +69,7 @@ export const Content = styled.div`
   & > * {
     width: 80%;
     max-width: 450px;
-    margin-bottom: 20px;
+    margin-bottom: 2.5vh;
 
     &:last-child {
       margin: 0;
@@ -59,32 +79,32 @@ export const Content = styled.div`
   form {
     > * {
       width: 100%;
-      margin-bottom: 20px;
+      margin-bottom: 2.5vh;
 
       &:last-child {
         margin: 0;
       }
     }
+  }
 
-    a {
-      margin-top: 7px;
-      font-size: 1.5rem;
-      text-decoration: underline;
+  a {
+    margin-top: 7px;
+    font-size: calc(1.5rem + 0.2vh);
 
-      transition: all 0.2s;
-      color: ${fromTheme('primary')};
+    text-decoration: underline;
+    transition: all 0.2s;
+    color: ${fromTheme('primary')};
 
-      &:hover {
-        font-size: 1.6rem;
-        transform: translateY(3px);
-      }
+    &:hover {
+      font-size: 1.6rem;
+      transform: translateY(3px);
     }
   }
 
   label {
     flex-direction: row;
 
-    font-size: 1.5rem;
+    font-size: calc(1.5rem + 0.2vh);
     line-height: 40px;
 
     cursor: pointer;
@@ -97,6 +117,15 @@ export const Content = styled.div`
 
   a {
     margin-bottom: 5px;
+    font-size: calc(1.2rem + 0.5vh);
+  }
+
+  .InputText,
+  .Button,
+  label {
+    min-height: 35px;
+    height: 5vh;
+    font-size: calc(1.3rem + 0.5vh);
   }
 
   @media screen and (min-height: 700px) {
@@ -117,30 +146,12 @@ export const Google = styled.button.attrs({ type: 'button' })`
   cursor: pointer;
 
   span {
-    font-size: 1.5rem;
+    font-size: calc(1.2rem + 0.5vh);
   }
 
   img {
     width: 25px;
     margin-right: 10px;
-  }
-`
-
-export const Register = styled.div`
-  text-align: center;
-
-  font-size: 1.5rem;
-  padding: 10px 0;
-
-  color: ${fromTheme('tertiary')};
-
-  button {
-    font-size: 1.5rem;
-
-    border: none;
-    background-color: transparent;
-    text-decoration: underline;
-    color: ${fromTheme('primary')};
   }
 `
 

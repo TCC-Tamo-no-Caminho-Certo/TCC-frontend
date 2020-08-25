@@ -5,6 +5,8 @@ const light: DefaultTheme = {
   secondary: '#FCFCFC',
   tertiary: '#80535D',
 
+  white: '#FCFCFC',
+
   calendarPrimary: '#FF6D8D',
   calendarSecondary: '#FCFCFC',
   calendarTertiary: '#80535D',

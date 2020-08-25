@@ -15,8 +15,8 @@ const Style = styled.div<StyleProps>`
   display: flex;
   align-items: center;
 
-  height: 40px;
   border-radius: 10px;
+
   background-color: transparent;
   border: solid 1px ${fromTheme('tertiary')};
 
@@ -41,6 +41,8 @@ const Style = styled.div<StyleProps>`
       -webkit-text-fill-color: ${fromTheme('tertiary')};
     }
   }
+
+
 
   ${({ isFocused }) =>
     isFocused &&

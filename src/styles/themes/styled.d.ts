@@ -6,6 +6,8 @@ declare module 'styled-components' {
     secondary: string
     tertiary: string
 
+    white: string
+
     calendarPrimary: string
     calendarSecondary: string
     calendarTertiary: string

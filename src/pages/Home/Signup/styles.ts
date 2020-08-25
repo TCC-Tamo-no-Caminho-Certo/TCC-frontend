@@ -14,10 +14,11 @@ const Style = styled.div`
   flex-direction: column;
 
   min-width: 320px;
+  padding: 73px 0 73px 0;
 
   background-color: ${fromTheme('secondary')};
 
-  header {
+  nav {
     position: absolute;
     top: 20px;
 
@@ -25,10 +26,9 @@ const Style = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    min-width: 300px;
     width: 80%;
     max-width: 1000px;
-    height: 33px;
+    height: 4vh;
 
     button {
       display: flex;
@@ -39,16 +39,23 @@ const Style = styled.div`
       color: ${fromTheme('primary')};
 
       svg {
-        min-width: 33px;
-        min-height: 33px;
-        padding: 5px;
+        min-width: calc(33px + 0.8vh);
+        min-height: calc(20px + 0.8vh);
+
         transform: translateX(-40%);
       }
 
       span {
+        font-size: calc(1.3rem + 0.5vh);
         line-height: 100%;
         transform: translateX(-48%);
       }
+    }
+
+    .ThemeSwitch {
+      min-width: 33px;
+      min-height: 33px;
+      height: 100%;
     }
   }
 
@@ -58,39 +65,25 @@ const Style = styled.div`
     align-items: center;
     flex-direction: column;
 
-    min-width: 300px;
     width: 80%;
-    margin: 73px 0 20px 0;
 
     > span {
-      font-size: 1.5rem;
-      margin: 10px 0;
+      font-size: calc(1.3rem + 0.5vh);
+      margin: 1.25vh 0;
     }
 
     > * {
       width: 100%;
       max-width: 530px;
     }
-
-    .Logo {
-      margin-bottom: 20px;
-    }
   }
 
-  @media screen and (min-height: 700px) {
-    form {
-      margin: 0;
-    }
-  }
-
-  @media screen and (min-height: 900px) {
-    form {
-      font-size: 1.7rem;
-
-      > span {
-        font-size: 1.6rem;
-      }
-    }
+  .InputText,
+  .Button,
+  .InputDate {
+    min-height: 35px;
+    height: 5vh;
+    font-size: calc(1.3rem + 0.5vh);
   }
 `
 
