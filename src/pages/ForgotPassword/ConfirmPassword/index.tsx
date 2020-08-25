@@ -50,7 +50,7 @@ const ConfirmPassword: React.FC = () => {
 
         <PasswordBlock>
           <Form onSubmit={handleResetPassSubmit}>
-            <h3>Digite sua nova senha</h3>
+            <h2>Digite sua nova senha</h2>
             <InputText
               name='password'
               type='password'
@@ -59,7 +59,7 @@ const ConfirmPassword: React.FC = () => {
               icon={FiLock}
               size={23}
             />
-            <h3>Confirme sua nova senha</h3>
+            <h2>Confirme sua nova senha</h2>
             <InputText
               eye
               type='password'

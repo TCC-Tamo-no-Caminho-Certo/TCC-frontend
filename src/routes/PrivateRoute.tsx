@@ -1,10 +1,19 @@
 import React, { ComponentType, useEffect, useState } from 'react'
+import styled from 'styled-components'
 
 import Logo from 'assets/Logo'
 import fromTheme from 'utils/fromTheme'
 
 import { RouteProps as RouterPropsDOM, Route, useHistory } from 'react-router-dom'
 import api from 'services/api'
+
+const Container = styled.div`
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${fromTheme('secondary')};
+`
 
 interface RouteProps extends RouterPropsDOM {
   component: ComponentType
@@ -34,17 +43,9 @@ const PrivateRoute: React.FC<RouteProps> = ({ component: Component, ...rest }) =
 
   if (!access) {
     return (
-      <div
-        style={{
-          height: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: `${fromTheme('secondary')}`,
-        }}
-      >
+      <Container>
         <Logo />
-      </div>
+      </Container>
     )
   }
 
