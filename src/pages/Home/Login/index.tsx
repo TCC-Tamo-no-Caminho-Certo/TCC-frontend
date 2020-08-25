@@ -61,10 +61,13 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
     setLoadingLogin(true)
     try {
       let captchaToken
-      if (recaptchaRef.current) captchaToken = await recaptchaRef.current.executeAsync()
-      else throw new Error('recaptcha is equal null or undefined')
-      await loginSchema.validate(data, { abortEarly: false })
+      if (recaptchaRef.current) {
+        captchaToken = await recaptchaRef.current.executeAsync()
+      } else {
+        throw new Error('recaptcha is equal null or undefined')
+      }
 
+      await loginSchema.validate(data, { abortEarly: false })
       await login({ ...data, captcha: captchaToken as string, remember: hasRemember })
 
       loginFormRef.current?.setErrors({})

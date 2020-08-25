@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
+import ReCAPTCHA from 'react-google-recaptcha'
+
 export const Style = styled.main`
   width: 100vw;
   height: 100vh;
@@ -15,7 +17,7 @@ export const Container = styled.article`
   padding: 20px 15px 40px;
   border-radius: 10px;
   box-shadow: 0 0 5px ${fromTheme('tertiary')};
-  background: #f9f9f9;
+  background: ${fromTheme('secondary')};
 
   header {
     display: flex;
@@ -80,7 +82,7 @@ export const ConfirmToken = styled.section`
 export const Button = styled.button`
   width: 100%;
   height: 60px;
-  color: ${fromTheme('secondary')};
+  color: white;
   background-color: ${fromTheme('primary')};
   border: none;
   border-radius: 8px;
@@ -114,4 +116,8 @@ export const Button = styled.button`
     position: fixed;
     bottom: 15px;
   }
+`
+
+export const Recaptcha = styled(ReCAPTCHA)`
+  display: none;
 `

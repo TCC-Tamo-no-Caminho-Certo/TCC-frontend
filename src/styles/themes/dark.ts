@@ -3,7 +3,7 @@ import { DefaultTheme } from 'styled-components'
 const dark: DefaultTheme = {
   primary: '#ec5878',
   secondary: '#18191A',
-  tertiary: '#383838',
+  tertiary: '#484848',
 
   calendarPrimary: '#ec5878',
   calendarSecondary: '#FCFCFC',
