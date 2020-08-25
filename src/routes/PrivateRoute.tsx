@@ -1,24 +1,39 @@
-import React, { ComponentType } from 'react'
+import React, { ComponentType, useEffect, useState } from 'react'
 
-import { useAuth } from 'hooks/useAuth'
-
-import { RouteProps as RouterPropsDOM, Route, Redirect } from 'react-router-dom'
+import { RouteProps as RouterPropsDOM, Route, useHistory } from 'react-router-dom'
+import api from 'services/api'
 
 interface RouteProps extends RouterPropsDOM {
   component: ComponentType
 }
 
 const PrivateRoute: React.FC<RouteProps> = ({ component: Component, ...rest }) => {
-  const { token } = useAuth()
+  const token = localStorage.getItem('@SLab_ac_token')
+  const [access, setAccess] = useState<boolean>(false)
 
-  return (
-    <Route
-      render={() => {
-        return true ? <Component /> : <Redirect to={{ pathname: '/' }} />
-      }}
-      {...rest}
-    />
-  )
+  const history = useHistory()
+
+  useEffect(() => {
+    async function getAccess() {
+      try {
+        const response = await api.get('validate-session', {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        })
+        setAccess(response.data.success)
+      } catch (e) {
+        history.push('/')
+      }
+    }
+    getAccess()
+  }, [token, history])
+
+  if (!access) {
+    return null
+  }
+
+  return <Route component={Component} {...rest} />
 }
 
 export default PrivateRoute

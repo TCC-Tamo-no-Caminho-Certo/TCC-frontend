@@ -25,11 +25,16 @@ import { FiLogOut } from 'react-icons/fi'
 import Anime from '@mollycule/react-anime'
 import anime from 'animejs'
 
+import { useHistory } from 'react-router-dom'
+import api from 'services/api'
+
 const Navbar: React.FC = () => {
   const [profileOpen, setProfileOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
   const [disabled, setDisabled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+
+  const history = useHistory()
 
   const menuOpenToggle = () => {
     menuOpen ? setMenuOpen(false) : setMenuOpen(true)
@@ -82,6 +87,16 @@ const Navbar: React.FC = () => {
     }, 550)
   }, [editOpen, profileOpen])
 
+  const onLogoutClick = async () => {
+    const token = localStorage.getItem('@SLab_ac_token')
+    await api.get('logout', {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    })
+    history.push('/')
+  }
+
   return (
     <Style>
       {menuOpen && <MenuOpen />}
@@ -128,10 +143,7 @@ const Navbar: React.FC = () => {
 
                 <ContainerChange label='Sobrenome:' value='Miguel Andrade' />
 
-                <ContainerChange
-                  label='E-mail:'
-                  value='miguelandradebarreto2@gmail.com'
-                />
+                <ContainerChange label='E-mail:' value='miguelandradebarreto2@gmail.com' />
 
                 <ContainerChange label='Data de nascimento:' value='19/08/2001' />
               </div>
@@ -148,17 +160,12 @@ const Navbar: React.FC = () => {
             <span id='userName'>Miguel Andrade</span>
             <span id='userActivity'>Online</span>
 
-            <button
-              id='close'
-              type='button'
-              onClick={profileOpenToggle}
-              disabled={disabled}
-            >
+            <button id='close' type='button' onClick={profileOpenToggle} disabled={disabled}>
               <img src={close} draggable='false' alt='close profile' />
             </button>
           </UserInfo>
 
-          <Logout>
+          <Logout onClick={onLogoutClick}>
             <FiLogOut size={18} />
           </Logout>
         </ProfileOpen>
