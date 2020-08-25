@@ -3,13 +3,15 @@ import fromTheme from 'utils/fromTheme'
 
 const Style = styled.section`
   grid-area: about;
-  min-width: 320px;
-  width: 100%;
-  height: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: width 1s;
+
+  min-width: 320px;
+  width: 100%;
+  height: 100%;
+
   color: ${fromTheme('secondary')};
   background-color: ${fromTheme('primary')};
 `
