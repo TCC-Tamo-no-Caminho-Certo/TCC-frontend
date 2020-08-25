@@ -15,18 +15,24 @@ const Style = styled.div<StyleProps>`
   display: flex;
   align-items: center;
 
+  min-height: 35px;
+  height: 5vh;
+  font-size: calc(1.3rem + 0.5vh);
   border-radius: 10px;
 
   background-color: transparent;
   border: solid 1px ${fromTheme('tertiary')};
 
+
   svg {
     width: 15%;
     height: ${({ iconSize }) => iconSize};
+    color: ${fromTheme('tertiary')};
   }
 
   input + svg {
     height: ${({ eyeSize }) => eyeSize};
+    color: ${fromTheme('tertiary')};
   }
 
   input {
@@ -51,7 +57,8 @@ const Style = styled.div<StyleProps>`
 
       &,
       input::placeholder,
-      svg {
+      svg,
+      input + svg {
         color: ${fromTheme('primary')};
         -webkit-text-fill-color: ${fromTheme('primary')};
       }

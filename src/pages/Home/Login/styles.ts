@@ -48,7 +48,7 @@ export const Register = styled.div`
   button {
     border: none;
     background-color: transparent;
-    text-decoration: underline;
+
     color: ${fromTheme('primary')};
   }
 `
@@ -88,17 +88,9 @@ export const Content = styled.div`
   }
 
   a {
-    margin-top: 7px;
     font-size: calc(1.5rem + 0.2vh);
 
-    text-decoration: underline;
-    transition: all 0.2s;
     color: ${fromTheme('primary')};
-
-    &:hover {
-      font-size: 1.6rem;
-      transform: translateY(3px);
-    }
   }
 
   label {
