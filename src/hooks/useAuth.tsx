@@ -22,9 +22,10 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const login = async (data: LoginData) => {
     const response = await api.post('login', data)
-    const { success } = response.data
-    localStorage.setItem('@SteamsLab:success', success)
-    setToken(success)
+
+    const { access_token } = response.data
+    localStorage.setItem('@SLab_ac_token', access_token)
+    setToken(access_token)
   }
 
   const register = async (data: RegisterData) => {

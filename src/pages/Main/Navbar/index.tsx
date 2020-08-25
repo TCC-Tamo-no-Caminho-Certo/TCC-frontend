@@ -25,11 +25,16 @@ import { FiLogOut } from 'react-icons/fi'
 import Anime from '@mollycule/react-anime'
 import anime from 'animejs'
 
+import { useHistory } from 'react-router-dom'
+import api from 'services/api'
+
 const Navbar: React.FC = () => {
   const [profileOpen, setProfileOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
   const [disabled, setDisabled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+
+  const history = useHistory()
 
   const menuOpenToggle = () => {
     menuOpen ? setMenuOpen(false) : setMenuOpen(true)
@@ -81,6 +86,16 @@ const Navbar: React.FC = () => {
       setDisabled(false)
     }, 550)
   }, [editOpen, profileOpen])
+
+  const onLogoutClick = async () => {
+    const token = localStorage.getItem('@SLab_ac_token')
+    await api.get('logout', {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    })
+    history.push('/')
+  }
 
   return (
     <Style>
@@ -150,7 +165,7 @@ const Navbar: React.FC = () => {
             </button>
           </UserInfo>
 
-          <Logout>
+          <Logout onClick={onLogoutClick}>
             <FiLogOut size={18} />
           </Logout>
         </ProfileOpen>

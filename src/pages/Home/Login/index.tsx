@@ -30,6 +30,7 @@ export interface LoginData {
   email: string
   password: string
   captcha: string
+  remember?: boolean
 }
 
 interface LoginProps {
@@ -37,6 +38,8 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
+  let hasRemember: boolean
+
   const loginFormRef = useRef<FormHandles>(null)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
   const loginRef = useRef(null)
@@ -62,7 +65,7 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
       else throw new Error('recaptcha is equal null or undefined')
       await loginSchema.validate(data, { abortEarly: false })
 
-      await login({ ...data, captcha: captchaToken as string })
+      await login({ ...data, captcha: captchaToken as string, remember: hasRemember })
 
       loginFormRef.current?.setErrors({})
       reset()
@@ -83,6 +86,10 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
         })
       }
     }
+  }
+
+  const rememberStatus = (e: any) => {
+    hasRemember = e.target.checked
   }
 
   const loginAppearAnimation = () =>
@@ -157,7 +164,7 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
             <Link to='/forgot-password'>Não consegue fazer login?</Link>
 
             <label htmlFor='permanence'>
-              <input type='checkbox' id='permanence' />
+              <input type='checkbox' id='permanence' onChange={rememberStatus} />
               Permanecer conectado
             </label>
 
