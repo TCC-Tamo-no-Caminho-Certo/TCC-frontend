@@ -3,9 +3,10 @@ import { DefaultTheme } from 'styled-components'
 const dark: DefaultTheme = {
   primary: '#EC5878',
   secondary: '#18191A',
-  tertiary: '#404040',
+  tertiary: '#606060',
+  quaternary: '#303030',
 
-  white: '#FCFCFC',
+  white: '#EFEFEF',
 
   calendarPrimary: '#EC5878',
   calendarSecondary: '#FCFCFC',

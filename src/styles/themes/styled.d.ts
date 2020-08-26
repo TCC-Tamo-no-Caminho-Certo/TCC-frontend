@@ -5,6 +5,7 @@ declare module 'styled-components' {
     primary: string
     secondary: string
     tertiary: string
+    quaternary: string
 
     white: string
 

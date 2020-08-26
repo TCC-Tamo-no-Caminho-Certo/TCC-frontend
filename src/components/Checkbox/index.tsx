@@ -50,7 +50,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ name, ...rest }) => {
       .add({ cy: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] })
       .add({ cx: [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0] })
       .add({ cy: [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0] })
-  }, [])
+  }, [stringName])
 
   return (
     <Style className='Checkbox' id={`${name}Checkbox`} onClick={onCheckBoxClick}>

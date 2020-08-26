@@ -21,30 +21,33 @@ const Style = styled.div<StyleProps>`
   border-radius: 10px;
 
   background-color: transparent;
-  border: solid 1px ${fromTheme('tertiary')};
+  border: solid 1px ${fromTheme('quaternary')};
 
 
   svg {
     width: 15%;
     height: ${({ iconSize }) => iconSize};
-    color: ${fromTheme('tertiary')};
+
+    color: ${fromTheme('quaternary')};
   }
 
   input + svg {
     height: ${({ eyeSize }) => eyeSize};
-    color: ${fromTheme('tertiary')};
+
+    color: ${fromTheme('quaternary')};
   }
 
   input {
-    background-color: transparent;
     border: none;
-    color: ${fromTheme('primary')};
-    -webkit-text-fill-color: ${fromTheme('primary')};
     width: ${({ hasEye }) => (hasEye ? '70%' : '85%')};
 
+    background-color: transparent;
+    color: ${fromTheme('primary')};
+    -webkit-text-fill-color: ${fromTheme('primary')};
+
     &::placeholder {
-      color: ${fromTheme('tertiary')};
-      -webkit-text-fill-color: ${fromTheme('tertiary')};
+      color: ${fromTheme('quaternary')};
+      -webkit-text-fill-color: ${fromTheme('quaternary')};
     }
   }
 

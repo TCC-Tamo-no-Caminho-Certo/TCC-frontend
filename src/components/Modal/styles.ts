@@ -5,11 +5,11 @@ interface Props {
   color: string
 }
 
-const Colors = {
-  alert: '#fc952b',
-  error: '#e8423f',
-  success: '#13c47c',
-}
+// const Colors = {
+//   alert: '#fc952b',
+//   error: '#e8423f',
+//   success: '#13c47c',
+// }
 
 export const Container = styled.div`
   width: 101vw;
