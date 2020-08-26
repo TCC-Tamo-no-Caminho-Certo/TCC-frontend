@@ -13,7 +13,7 @@ import Style, {
 
 import ContainerChange from './ContainerChange'
 
-import Button from 'components/Button'
+import Button from 'components/Forms/Button'
 
 import gear from 'assets/gear.svg'
 import close from 'assets/close.svg'

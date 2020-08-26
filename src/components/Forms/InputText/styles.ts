@@ -35,6 +35,10 @@ const Style = styled.div<StyleProps>`
     height: ${({ eyeSize }) => eyeSize};
 
     color: ${fromTheme('quaternary')};
+
+    &:hover {
+      color: ${fromTheme('primary')};
+    }
   }
 
   input {

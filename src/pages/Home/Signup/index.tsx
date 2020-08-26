@@ -3,9 +3,9 @@ import Style, { DualInput, Recaptcha } from './styles'
 
 import signupSchema from 'validations/signup'
 
-import Button from 'components/Button'
-import InputText from 'components/InputText'
-import InputDate from 'components/InputDate'
+import Button from 'components/Forms/Button'
+import InputText from 'components/Forms/InputText'
+import InputDate from 'components/Forms/InputDate'
 import ThemeSwitch from 'components/ThemeSwitch'
 import { Atributes } from 'components/Modal'
 

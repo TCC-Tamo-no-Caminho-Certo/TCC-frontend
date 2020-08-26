@@ -5,8 +5,9 @@ import Loader from 'styles/Loader'
 
 import loginSchema from 'validations/login'
 
-import Button from 'components/Button'
-import InputText from 'components/InputText/'
+import Button from 'components/Forms/Button'
+import InputText from 'components/Forms/InputText/'
+import Checkbox from 'components/Forms/Checkbox'
 import ThemeSwitch from 'components/ThemeSwitch'
 import { Atributes } from 'components/Modal'
 
@@ -24,7 +25,7 @@ import { Form } from '@unform/web'
 import { useHistory, Link } from 'react-router-dom'
 import { FiUser, FiLock } from 'react-icons/fi'
 import { SubmitHandler, FormHandles } from '@unform/core'
-import Checkbox from '../../../components/Checkbox/index'
+
 
 export interface LoginData {
   email: string

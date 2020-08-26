@@ -5,7 +5,7 @@ import { FiLock } from 'react-icons/fi'
 
 import api from 'services/api'
 import Logo from 'assets/Logo'
-import InputText from 'components/InputText'
+import InputText from 'components/Forms/InputText'
 
 import { Container, Style } from '../styles'
 import { PasswordBlock, ButtonPassword } from './styles'

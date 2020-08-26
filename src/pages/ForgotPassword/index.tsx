@@ -20,7 +20,7 @@ import api from 'services/api'
 
 import Logo from 'assets/Logo'
 
-import InputText from 'components/InputText'
+import InputText from 'components/Forms/InputText'
 
 import Loader from 'styles/Loader'
 
