@@ -93,20 +93,6 @@ export const Content = styled.div`
     color: ${fromTheme('primary')};
   }
 
-  label {
-    flex-direction: row;
-
-    font-size: calc(1.5rem + 0.2vh);
-    line-height: 40px;
-
-    cursor: pointer;
-    border-bottom: 2px solid ${fromTheme('tertiary')};
-
-    input {
-      margin-right: 8px;
-    }
-  }
-
   a {
     margin-bottom: 5px;
     font-size: calc(1.2rem + 0.5vh);
@@ -114,7 +100,7 @@ export const Content = styled.div`
 
   .InputText,
   .Button,
-  label {
+  > label {
     min-height: 35px;
     height: 5vh;
     font-size: calc(1.3rem + 0.5vh);
@@ -124,6 +110,23 @@ export const Content = styled.div`
     form {
       margin-top: 0;
     }
+  }
+`
+
+export const Permanence = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+
+  height: 40px;
+
+  cursor: pointer;
+  border-bottom: 2px solid ${fromTheme('tertiary')};
+
+  label {
+    margin-left: 8px;
+    font-size: calc(1.5rem + 0.2vh);
   }
 `
 

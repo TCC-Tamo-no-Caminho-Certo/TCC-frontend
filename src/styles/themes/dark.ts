@@ -1,13 +1,13 @@
 import { DefaultTheme } from 'styled-components'
 
 const dark: DefaultTheme = {
-  primary: '#ec5878',
+  primary: '#EC5878',
   secondary: '#18191A',
   tertiary: '#404040',
 
   white: '#FCFCFC',
 
-  calendarPrimary: '#ec5878',
+  calendarPrimary: '#EC5878',
   calendarSecondary: '#FCFCFC',
   calendarTertiary: '#FCFCFC',
   calendarHeader: '#303030',

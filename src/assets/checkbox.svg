@@ -1,0 +1,15 @@
+      <svg
+        width='15'
+        height='15'
+        viewBox='0 0 15 15'
+        fill='none'
+        xmlns='http://www.w3.org/2000/svg'
+      >
+        <rect x='0.5' y='0.5' width='14' height='14' stroke='url(#radial)' />
+        <defs>
+          <radialGradient id='radial' cx='0' cy='0' r='1'>
+            <stop stopColor='#FF597D' />
+            <stop offset='1' stopColor='#6E4850' />
+          </radialGradient>
+        </defs>
+      </svg>

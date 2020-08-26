@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react'
-import Style, { Content, Register, Google, Recaptcha } from './styles'
+import Style, { Content, Register, Google, Recaptcha, Permanence } from './styles'
 
 import Loader from 'styles/Loader'
 
@@ -15,7 +15,6 @@ import { useRegisterSlide } from 'hooks/useRegisterSlide'
 
 import getValidationErrors from 'utils/getValidationErrors'
 
-import Logo from 'assets/Logo'
 import google from 'assets/google.png'
 
 import anime from 'animejs'
@@ -25,6 +24,7 @@ import { Form } from '@unform/web'
 import { useHistory, Link } from 'react-router-dom'
 import { FiUser, FiLock } from 'react-icons/fi'
 import { SubmitHandler, FormHandles } from '@unform/core'
+import Checkbox from '../../../components/Checkbox/index'
 
 export interface LoginData {
   email: string
@@ -38,8 +38,6 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
-  let hasRemember: boolean
-
   const loginFormRef = useRef<FormHandles>(null)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
   const loginRef = useRef(null)
@@ -59,6 +57,9 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
   const onLoginSubmit: SubmitHandler<LoginData> = async (data, { reset }, event) => {
     event?.preventDefault()
     setLoadingLogin(true)
+
+    console.log(data)
+
     try {
       let captchaToken
       if (recaptchaRef.current) {
@@ -68,7 +69,7 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
       }
 
       await loginSchema.validate(data, { abortEarly: false })
-      await login({ ...data, captcha: captchaToken as string, remember: hasRemember })
+      await login({ ...data, captcha: captchaToken as string })
 
       loginFormRef.current?.setErrors({})
       reset()
@@ -89,10 +90,6 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
         })
       }
     }
-  }
-
-  const rememberStatus = (e: any) => {
-    hasRemember = e.target.checked
   }
 
   const loginAppearAnimation = () =>
@@ -162,14 +159,14 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
                 <div>Efetuar Login</div>
                 <span>{loadingLogin && <Loader size='18px' border='3px' />}</span>
               </Button>
+
+              <Permanence>
+                <Checkbox name='remember' />
+                <label htmlFor='remember'>Permanecer conectado</label>
+              </Permanence>
             </Form>
 
             <Link to='/forgot-password'>Não consegue fazer login?</Link>
-
-            <label htmlFor='permanence'>
-              <input type='checkbox' id='permanence' onChange={rememberStatus} />
-              Permanecer conectado
-            </label>
 
             <Register>
               <span>Ainda não possui uma conta ?</span>

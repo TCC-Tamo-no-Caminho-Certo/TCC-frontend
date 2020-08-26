@@ -34,11 +34,7 @@ const InputText: React.FC<InputProps> = ({
   const { defaultValue, fieldName, registerField, error, clearError } = useField(name)
 
   useEffect(() => {
-    registerField({
-      name: fieldName,
-      ref: inputRef.current,
-      path: 'value',
-    })
+    registerField({ name: fieldName, ref: inputRef.current, path: 'value' })
   }, [fieldName, registerField])
 
   const onInputFocus = () => setIsFocused(true)

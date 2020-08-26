@@ -50,6 +50,7 @@
     "jsx-a11y/label-has-associated-control": "off",
     "no-unused-expressions": "off",
     "import/order": "off",
+    "import/no-unresolved": "off",
     "react/jsx-filename-extension": [
       1,
       {

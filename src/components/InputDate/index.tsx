@@ -9,7 +9,7 @@ import ModernDatePicker, { DayValue } from 'react-modern-calendar-datepicker'
 import { useField } from '@unform/core'
 import { ThemeContext } from 'styled-components'
 import { IconBaseProps } from 'react-icons'
-import { IoIosArrowDown } from 'react-icons/io'
+
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 
 interface InputDateProps {

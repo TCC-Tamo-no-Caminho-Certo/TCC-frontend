@@ -14,8 +14,6 @@ import { useRegisterSlide } from 'hooks/useRegisterSlide'
 
 import getValidationErrors from 'utils/getValidationErrors'
 
-import { Logo } from 'assets/Logo'
-
 import ReCAPTCHA from 'react-google-recaptcha'
 import * as Yup from 'yup'
 import { Form } from '@unform/web'
