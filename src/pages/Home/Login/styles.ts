@@ -122,7 +122,7 @@ export const Permanence = styled.div`
   height: 40px;
 
   cursor: pointer;
-  border-bottom: 2px solid ${fromTheme('tertiary')};
+  border-bottom: 2px solid ${fromTheme('quinary')};
 
   label {
     margin-left: 8px;
@@ -137,7 +137,7 @@ export const Google = styled.button.attrs({ type: 'button' })`
   padding: 10px 5px;
 
   color: ${fromTheme('tertiary')};
-  border-bottom: solid 2px ${fromTheme('tertiary')};
+  border-bottom: solid 2px ${fromTheme('quinary')};
   cursor: pointer;
 
   span {

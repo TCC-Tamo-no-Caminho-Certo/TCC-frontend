@@ -5,7 +5,7 @@ const Style = styled.div``
 
 export const Row = styled.section`
   display: grid;
-  background-color: ${fromTheme('primary')};
+  background-color: ${fromTheme('quinary')};
 
   grid:
     'login signup' minmax(100vh, auto)

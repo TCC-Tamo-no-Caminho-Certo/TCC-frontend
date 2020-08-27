@@ -3,8 +3,9 @@ import { DefaultTheme } from 'styled-components'
 const dark: DefaultTheme = {
   primary: '#EC5878',
   secondary: '#18191A',
-  tertiary: '#606060',
-  quaternary: '#303030',
+  tertiary: '#e5e5e5',
+  quaternary: '#5a5a5a',
+  quinary: '#50393e',
 
   white: '#EFEFEF',
 
