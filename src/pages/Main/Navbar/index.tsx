@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
     anime({
       targets: 'path',
       easing: 'linear',
-      duration: 500,
+      duration: 100,
       d: menuOpen
         ? `
         M ${-totalHeight},${totalHeight / 2}
@@ -34,6 +34,14 @@ const Navbar: React.FC = () => {
       `,
     })
 
+    // anime({
+    //   targets: '#profile',
+    //   easing: 'linear',
+    //   duration: 100,
+    //   translateY: '-50%',
+    //   translateX: menuOpen ? [0, -200] : [-200, 0],
+    // })
+
     setMenuOpen(!menuOpen)
   }
 
@@ -46,7 +54,7 @@ const Navbar: React.FC = () => {
       Teste
       <Profile>
         <AnimationShape id='svg'>
-          <svg>
+          <svg viewBox='0 0 320 100'>
             <path
               fill='#80535D'
               d={`
@@ -58,7 +66,7 @@ const Navbar: React.FC = () => {
           </svg>
         </AnimationShape>
 
-        <button type='button' onClick={menuOpenToggle}>
+        <button id='profile' type='button' onClick={menuOpenToggle}>
           <img src={avatar} alt='profile' draggable='false' />
         </button>
       </Profile>

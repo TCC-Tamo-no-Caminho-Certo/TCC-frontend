@@ -11,6 +11,7 @@ export interface Atributes {
 
 interface ModalProps {
   atributes: Atributes
+
   setVisible: () => void
 }
 
@@ -26,6 +27,7 @@ const Modal: React.FC<ModalProps> = ({ atributes, setVisible }) => {
 
             <section>
               <p>{atributes.message}</p>
+
               <button onClick={setVisible} type='button'>
                 Ok
               </button>

@@ -10,6 +10,7 @@ const Style = styled.div`
   justify-content: space-between;
   align-items: center;
 
+  background-color: red;
   width: 100vw;
   height: 100px;
 `
@@ -50,7 +51,7 @@ export const Profile = styled.div`
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    right: 20px;
+    right: 30px;
 
     width: 70px;
     height: 70px;

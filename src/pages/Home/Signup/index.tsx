@@ -158,8 +158,8 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
             </DualInput>
 
             <span>
-              Ao clicar em Concordar e concluir, concordo com os <a href='.'>Termos de uso</a>
-              ,os <a href='.'>Termos de Serviço e Pagamentos</a>, a{' '}
+              Ao clicar em Concordar e concluir, concordo com os <a href='.'>Termos de uso</a>, os{' '}
+              <a href='.'>Termos de Serviço e Pagamentos</a>, a{' '}
               <a href='.'>Política de Privacidade</a> e a{' '}
               <a href='.'>Política de Não Discriminação</a> do Steams Lab.
             </span>

@@ -16,11 +16,13 @@ const Style = styled.div<StyleProps>`
   border-radius: 10px;
 
   background-color: transparent;
-  border: solid 1px ${fromTheme('tertiary')};
+  border: solid 1px ${fromTheme('quaternary')};
 
   .icon {
     width: 15%;
     height: 40%;
+
+    color: ${fromTheme('quaternary')};
   }
 
   .DatePicker {
@@ -36,7 +38,7 @@ const Style = styled.div<StyleProps>`
       background-color: transparent;
 
       &::placeholder {
-        color: ${fromTheme('tertiary')};
+        color: ${fromTheme('quaternary')};
       }
     }
   }
@@ -153,6 +155,11 @@ const Style = styled.div<StyleProps>`
 
   .Calendar__day.-ltr {
     color: ${fromTheme('calendarTertiary')};
+
+    &:hover {
+      background-color: ${fromTheme('primary')} !important;
+      color: ${fromTheme('calendarSecondary')} !important;
+    }
   }
 
   .Calendar__day.-ltr.-selected {
@@ -197,16 +204,20 @@ const Style = styled.div<StyleProps>`
   ${({ isFocused }) =>
     isFocused &&
     css`
-      border-color: ${fromTheme('calendarPrimary')};
-
-      svg {
-        color: ${fromTheme('calendarPrimary')};
+      .icon {
+        color: ${fromTheme('primary')};
       }
+
+      border-color: ${fromTheme('calendarPrimary')};
     `}
 
   ${({ isFilled }) =>
     isFilled &&
     css`
+      .icon {
+        color: ${fromTheme('primary')};
+      }
+
       svg,
       input {
         color: ${fromTheme('calendarPrimary')};
