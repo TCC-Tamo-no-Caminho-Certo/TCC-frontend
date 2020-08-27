@@ -10,6 +10,8 @@ import * as Yup from 'yup'
 import { emailSchema } from 'validations/forgotPassword'
 import getValidationErrors from 'utils/getValidationErrors'
 
+import { RiArrowLeftSLine } from 'react-icons/ri'
+
 import api from 'services/api'
 import Logo from 'assets/Logo'
 
@@ -17,7 +19,7 @@ import InputText from 'components/Forms/InputText'
 import Loader from 'styles/Loader'
 import Modal, { Atributes } from 'components/Modal'
 
-import { Style, Container, InputBlock, ConfirmToken, Button, Recaptcha } from './styles'
+import { Style, Container, InputBlock, ConfirmToken, Button, Recaptcha, BackButton } from './styles'
 
 interface Email {
   email: string
@@ -101,6 +103,11 @@ const ForgotPassword: React.FC = () => {
       <Modal atributes={modalAtributes} setVisible={handleModalVisible} />
 
       <Style>
+        <BackButton onClick={() => history.goBack()}>
+          <RiArrowLeftSLine size={30} />
+          <span>Voltar</span>
+        </BackButton>
+
         <Container>
           <header>
             <Logo />

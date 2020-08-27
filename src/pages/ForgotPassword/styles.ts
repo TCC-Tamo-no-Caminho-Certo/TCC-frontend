@@ -9,7 +9,30 @@ export const Style = styled.main`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   background-color: ${fromTheme('secondary')};
+`
+export const BackButton = styled.button`
+  display: flex;
+  align-items: center;
+
+  position: absolute;
+  top: 3%;
+  left: 1%;
+
+  color: ${fromTheme('primary')};
+  transition: all 0.2s;
+
+  &:hover {
+    color: ${fromTheme('tertiary')};
+  }
+
+  @media (max-width: 500px) {
+    top: 1%;
+    span {
+      display: none;
+    }
+  }
 `
 
 export const Container = styled.article`
