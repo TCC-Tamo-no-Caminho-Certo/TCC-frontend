@@ -1,36 +1,26 @@
 import React, { useState, useRef } from 'react'
 
 import { Form } from '@unform/web'
-
 import { FiUser, FiLock } from 'react-icons/fi'
-
 import { useHistory } from 'react-router-dom'
-
 import { SubmitHandler, FormHandles } from '@unform/core'
-
 import ReCAPTCHA from 'react-google-recaptcha'
-
 import * as Yup from 'yup'
 
 import { emailSchema } from 'validations/forgotPassword'
-
 import getValidationErrors from 'utils/getValidationErrors'
 
 import api from 'services/api'
-
 import Logo from 'assets/Logo'
 
 import InputText from 'components/Forms/InputText'
-
 import Loader from 'styles/Loader'
-
 import Modal, { Atributes } from 'components/Modal'
 
 import { Style, Container, InputBlock, ConfirmToken, Button, Recaptcha } from './styles'
 
 interface Email {
   email: string
-
   captcha: string
 }
 
@@ -40,13 +30,10 @@ interface Token {
 
 const ForgotPassword: React.FC = () => {
   const [tokenIsSend, setTokenIsSend] = useState(false)
-
   const [confirmToken, setConfirmToken] = useState(false)
-
   const [modalAtributes, setModalAtributes] = useState<Atributes>({ visible: false })
 
   const emailRef = useRef<FormHandles>(null)
-
   const recaptchaRef = useRef<ReCAPTCHA>(null)
 
   const history = useHistory()
@@ -60,7 +47,6 @@ const ForgotPassword: React.FC = () => {
 
     try {
       let captchaToken
-
       if (recaptchaRef.current) {
         captchaToken = await recaptchaRef.current.executeAsync()
       } else {
@@ -68,9 +54,7 @@ const ForgotPassword: React.FC = () => {
       }
 
       await emailSchema.validate(data, { abortEarly: false })
-
       emailRef.current?.setErrors({})
-
       await api.post('forgot-password', { ...data, captcha: captchaToken as string })
 
       setTokenIsSend(true)
@@ -79,16 +63,12 @@ const ForgotPassword: React.FC = () => {
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errorList = getValidationErrors(error)
-
         emailRef.current?.setErrors(errorList)
       } else {
         setModalAtributes({
           visible: true,
-
           message: 'Email não cadastrado em nossa plataforma',
-
           title: 'Erro',
-
           color: '#e8423f',
         })
       }
@@ -97,20 +77,15 @@ const ForgotPassword: React.FC = () => {
 
   const handleTokenSubmit: SubmitHandler<Token> = async (data, { reset }, event) => {
     event?.preventDefault()
-
     setConfirmToken(true)
 
     try {
       await api.post('reset-password', data)
-
       localStorage.setItem('reset-password-token', data.token)
-
       setConfirmToken(false)
-
       history.push('/reset-password')
     } catch (error) {
       setConfirmToken(false)
-
       console.log(error)
     }
   }
