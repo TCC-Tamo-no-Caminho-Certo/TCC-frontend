@@ -31,7 +31,6 @@ const ConfirmPassword: React.FC = () => {
     event?.preventDefault()
     try {
       const resetToken = token || localStorage.getItem('reset-password-token')
-      // eslint-disable-next-line no-param-reassign
       data.token = resetToken
       await api.post('reset-password', data)
       alert('Senha alterada')

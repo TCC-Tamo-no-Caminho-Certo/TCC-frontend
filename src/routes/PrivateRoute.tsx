@@ -20,28 +20,29 @@ interface RouteProps extends RouterPropsDOM {
 }
 
 const PrivateRoute: React.FC<RouteProps> = ({ component: Component, ...rest }) => {
-  const token = localStorage.getItem('@SLab_ac_token')
-  const [access, setAccess] = useState<boolean>(false)
+  // const token = localStorage.getItem('@SLab_ac_token')
+  // const [access, setAccess] = useState<boolean>(false)
 
-  const history = useHistory()
+  // const history = useHistory()
 
-  useEffect(() => {
-    async function getAccess() {
-      try {
-        const response = await api.get('validate-session', {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        })
-        setAccess(response.data.success)
-      } catch (e) {
-        history.push('/')
-      }
-    }
-    setTimeout(getAccess, 2000)
-  }, [token, history])
+  // useEffect(() => {
+  //   async function getAccess() {
+  //     try {
+  //       const response = await api.get('validate-session', {
+  //         headers: {
+  //           authorization: `Bearer ${token}`,
+  //         },
+  //       })
 
-  if (!access) {
+  //       setAccess(response.data.success)
+  //     } catch (e) {
+  //       history.push('/')
+  //     }
+  //   }
+  //   setTimeout(getAccess, 2000)
+  // }, [token, history])
+
+  if (false) {
     return (
       <Container>
         <Logo />
