@@ -12,8 +12,8 @@ const Style = styled.section`
   width: 100%;
   height: 100%;
 
-  color: ${fromTheme('secondary')};
-  background-color: ${fromTheme('quinary')};
+  color: ${fromTheme('white')};
+  background-color: ${fromTheme('background')};
 `
 
 export default Style

@@ -7,6 +7,8 @@ const light: DefaultTheme = {
   quaternary: '#80535D',
   quinary: '#80535D',
 
+  background: '#FF6D8D',
+
   white: '#FCFCFC',
 
   calendarPrimary: '#FF6D8D',

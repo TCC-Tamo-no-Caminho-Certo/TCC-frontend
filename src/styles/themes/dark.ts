@@ -7,6 +7,8 @@ const dark: DefaultTheme = {
   quaternary: '#5a5a5a',
   quinary: '#50393e',
 
+  background: '#50393e',
+
   white: '#EFEFEF',
 
   calendarPrimary: '#EC5878',

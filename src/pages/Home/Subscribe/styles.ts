@@ -13,7 +13,7 @@ const Style = styled.section`
   height: 100%;
 
   color: ${fromTheme('white')};
-  background-color: ${fromTheme('quinary')};
+  background-color: ${fromTheme('background')};
 `
 
 export default Style

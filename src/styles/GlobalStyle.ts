@@ -18,12 +18,12 @@ export default createGlobalStyle`
   body {
     font-size: 1.6rem;
     color: ${fromTheme('tertiary')};
-    background-color: ${fromTheme('quinary')};
+    background-color: ${fromTheme('background')};
 
 
     ::-webkit-scrollbar {
       width: 12px;
-      background-color: ${fromTheme('tertiary')};
+      background-color: ${fromTheme('quaternary')};
     }
 
     ::-webkit-scrollbar-track {

@@ -60,7 +60,7 @@ const Profile: React.FC = () => {
         >
           <svg>
             <path
-              fill={theme.tertiary}
+              fill={theme.quaternary}
               d={`M${cxRight},${cyTop} a 0,0 0 1,1 0,0 a 0,0 0 1,1 0,0`}
             />
           </svg>

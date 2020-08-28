@@ -8,6 +8,8 @@ declare module 'styled-components' {
     quaternary: string
     quinary: string
 
+    background: string
+
     white: string
 
     calendarPrimary: string
