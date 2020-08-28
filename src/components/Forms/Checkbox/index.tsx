@@ -60,7 +60,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ name, ...rest }) => {
         <defs>
           <radialGradient id={stringName} cx='0' cy='0' r='1'>
             <stop stopColor={theme.primary} />
-            <stop offset='1' stopColor={theme.tertiary} />
+            <stop offset='1' stopColor={theme.quaternary} />
           </radialGradient>
         </defs>
 
