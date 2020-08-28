@@ -114,6 +114,10 @@ const Style = styled.div<StyleProps>`
     border-color: transparent transparent ${fromTheme('calendarHeader')} transparent;
   }
 
+  .CalendarSize {
+    background-color: ${fromTheme('calendarBackground')};
+  }
+
   .Calendar__section.-shown,
   .Calendar__monthSelector.-open,
   .Calendar__yearSelector.-open,
@@ -187,6 +191,16 @@ const Style = styled.div<StyleProps>`
   .Calendar__yearSelectorText:disabled {
     opacity: 1;
     color: ${fromTheme('calendarDisabled')}!important;
+  }
+
+  .Calendar__yearText.-activeBackground,
+  .Calendar__monthText.-activeBackground {
+    background-color: ${fromTheme('calendarPrimary')} !important;
+  }
+
+  .Calendar__yearText,
+  .Calendar__monthText {
+    background-color: transparent;
   }
 
   @media screen and (min-height: 900px) {

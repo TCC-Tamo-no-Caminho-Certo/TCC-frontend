@@ -18,12 +18,12 @@ export default createGlobalStyle`
   body {
     font-size: 1.6rem;
     color: ${fromTheme('tertiary')};
-    background-color: ${fromTheme('primary')};
+    background-color: ${fromTheme('quinary')};
   }
 
   a {
-    color: ${fromTheme('primary')};
     text-decoration: none;
+    color: ${fromTheme('primary')};
   }
 
   ul {

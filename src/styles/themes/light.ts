@@ -5,6 +5,7 @@ const light: DefaultTheme = {
   secondary: '#FCFCFC',
   tertiary: '#80535D',
   quaternary: '#80535D',
+  quinary: '#FF6D8D',
 
   white: '#FCFCFC',
 

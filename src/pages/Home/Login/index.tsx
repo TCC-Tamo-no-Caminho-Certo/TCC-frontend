@@ -26,7 +26,6 @@ import { useHistory, Link } from 'react-router-dom'
 import { FiUser, FiLock } from 'react-icons/fi'
 import { SubmitHandler, FormHandles } from '@unform/core'
 
-
 export interface LoginData {
   email: string
   password: string

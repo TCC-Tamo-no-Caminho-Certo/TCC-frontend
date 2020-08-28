@@ -14,7 +14,7 @@ const Style = styled.section`
 
   min-width: 320px;
   width: calc(100% + 1px);
-  padding-top: 73px;
+  padding: 73px 0px;
 
   background-color: ${fromTheme('secondary')};
 
@@ -36,7 +36,7 @@ const Style = styled.section`
 export const Register = styled.div`
   text-align: center;
 
-  padding: 10px 0;
+  padding: 0 10px;
 
   color: ${fromTheme('tertiary')};
 
