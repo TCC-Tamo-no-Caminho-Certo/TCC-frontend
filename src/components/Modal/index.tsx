@@ -11,7 +11,6 @@ export interface Atributes {
 
 interface ModalProps {
   atributes: Atributes
-
   setVisible: () => void
 }
 

@@ -33,6 +33,7 @@ interface Token {
 const ForgotPassword: React.FC = () => {
   const [tokenIsSend, setTokenIsSend] = useState(false)
   const [confirmToken, setConfirmToken] = useState(false)
+  const [userEmail, setUserEmail] = useState<Email>()
   const [modalAtributes, setModalAtributes] = useState<Atributes>({ visible: false })
 
   const emailRef = useRef<FormHandles>(null)
@@ -48,6 +49,9 @@ const ForgotPassword: React.FC = () => {
     event?.preventDefault()
 
     try {
+      await emailSchema.validate(data, { abortEarly: false })
+      emailRef.current?.setErrors({})
+      setUserEmail(data)
       let captchaToken
       if (recaptchaRef.current) {
         captchaToken = await recaptchaRef.current.executeAsync()
@@ -55,12 +59,8 @@ const ForgotPassword: React.FC = () => {
         throw new Error('recaptcha is equal null or undefined')
       }
 
-      await emailSchema.validate(data, { abortEarly: false })
-      emailRef.current?.setErrors({})
       await api.post('forgot-password', { ...data, captcha: captchaToken as string })
-
       setTokenIsSend(true)
-
       reset()
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
@@ -82,13 +82,53 @@ const ForgotPassword: React.FC = () => {
     setConfirmToken(true)
 
     try {
-      await api.post('reset-password', data)
+      let captchaToken
+      if (recaptchaRef.current) {
+        captchaToken = await recaptchaRef.current.executeAsync()
+      } else {
+        throw new Error('recaptcha is equal null or undefined')
+      }
+
+      await api.post('reset-password', { ...data, captcha: captchaToken as string })
       localStorage.setItem('reset-password-token', data.token)
       setConfirmToken(false)
       history.push('/reset-password')
     } catch (error) {
       setConfirmToken(false)
-      console.log(error)
+      setModalAtributes({
+        visible: true,
+        title: 'Erro',
+        message: 'Token Inválido',
+        color: '#e8423f',
+      })
+    }
+  }
+
+  const handleTokenResent = async () => {
+    try {
+      let captchaToken
+      if (recaptchaRef.current) {
+        captchaToken = await recaptchaRef.current.executeAsync()
+      } else {
+        throw new Error('recaptcha is equal null or undefined')
+      }
+
+      console.log(userEmail)
+
+      await api.post('forgot-password', { ...userEmail, captcha: captchaToken as string })
+      setModalAtributes({
+        visible: true,
+        title: 'Sucesso',
+        message: 'Código reenviado!',
+        color: '#13c47c',
+      })
+    } catch (e) {
+      setModalAtributes({
+        visible: true,
+        title: 'Erro',
+        message: 'Algo inesperado ocorreu',
+        color: '#e8423f',
+      })
     }
   }
 
@@ -120,8 +160,8 @@ const ForgotPassword: React.FC = () => {
 
                 <InputText name='token' placeholder='Código' icon={FiLock} />
 
-                <div className='reSendContainer'>
-                  <button className='reSend' type='button'>
+                <div className='resendContainer'>
+                  <button className='resend' type='button' onClick={handleTokenResent}>
                     Envie novamente
                   </button>
                 </div>

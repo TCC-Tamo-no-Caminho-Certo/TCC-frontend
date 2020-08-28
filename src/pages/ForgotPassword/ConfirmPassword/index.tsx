@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 import { Form } from '@unform/web'
 import { FiLock } from 'react-icons/fi'
@@ -6,10 +6,18 @@ import { FiLock } from 'react-icons/fi'
 import api from 'services/api'
 import Logo from 'assets/Logo'
 import InputText from 'components/Forms/InputText'
+import Modal, { Atributes } from 'components/Modal'
 
-import { Container, Style } from '../styles'
+import ReCAPTCHA from 'react-google-recaptcha'
+import { Container, Style, Recaptcha } from '../styles'
+
 import { PasswordBlock, ButtonPassword } from './styles'
-import { SubmitHandler } from '@unform/core'
+
+import { passwordSchema } from 'validations/forgotPassword'
+import getValidationErrors from 'utils/getValidationErrors'
+import * as Yup from 'yup'
+
+import { SubmitHandler, FormHandles } from '@unform/core'
 import { useHistory } from 'react-router-dom'
 
 interface ResetPassword {
@@ -18,6 +26,11 @@ interface ResetPassword {
 }
 
 const ConfirmPassword: React.FC = () => {
+  const [modalAtributes, setModalAtributes] = useState<Atributes>({ visible: false })
+
+  const recaptchaRef = useRef<ReCAPTCHA>(null)
+  const passwordRef = useRef<FormHandles>(null)
+
   const history = useHistory()
   let token: string
 
@@ -27,52 +40,85 @@ const ConfirmPassword: React.FC = () => {
     token = path[2]
   }, [])
 
+  const handleModalVisible = () => {
+    setModalAtributes({ visible: false })
+    history.push('/')
+  }
+
   const handleResetPassSubmit: SubmitHandler<ResetPassword> = async (data, { reset }, event) => {
     event?.preventDefault()
     try {
+      await passwordSchema.validate(data, { abortEarly: false })
+      passwordRef.current?.setErrors({})
       const resetToken = token || localStorage.getItem('reset-password-token')
+      // eslint-disable-next-line
       data.token = resetToken
-      await api.post('reset-password', data)
-      alert('Senha alterada')
-      history.push('/')
+
+      let captchaToken
+      if (recaptchaRef.current) {
+        captchaToken = await recaptchaRef.current.executeAsync()
+      } else {
+        throw new Error('recaptcha is equal null or undefined')
+      }
+
+      await api.post('reset-password', { ...data, captcha: captchaToken as string })
+      reset()
+      setModalAtributes({
+        visible: true,
+        title: 'Sucesso',
+        message: 'Senha Alterada',
+        color: '#13c47c',
+      })
     } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        const errorList = getValidationErrors(error)
+        passwordRef.current?.setErrors(errorList)
+      }
       console.log(error)
     }
   }
 
   return (
-    <Style>
-      <Container>
-        <header>
-          <Logo />
-        </header>
+    <>
+      <Recaptcha
+        ref={recaptchaRef}
+        size='invisible'
+        sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
+      />
+      <Modal atributes={modalAtributes} setVisible={handleModalVisible} />
+      <Style>
+        <Container>
+          <header>
+            <Logo />
+          </header>
 
-        <PasswordBlock>
-          <Form onSubmit={handleResetPassSubmit}>
-            <h2>Digite sua nova senha</h2>
-            <InputText
-              name='password'
-              type='password'
-              placeholder='Senha'
-              eye
-              icon={FiLock}
-              size={23}
-            />
-            <h2>Confirme sua nova senha</h2>
-            <InputText
-              eye
-              type='password'
-              name='confirm_password'
-              placeholder='Confirmar senha'
-              icon={FiLock}
-              size={23}
-            />
+          <PasswordBlock>
+            <Form onSubmit={handleResetPassSubmit} ref={passwordRef}>
+              <h2>Digite sua nova senha</h2>
+              <InputText
+                name='password'
+                type='password'
+                placeholder='Senha'
+                eye
+                icon={FiLock}
+                size={23}
+              />
+              <h2>Confirme sua nova senha</h2>
+              <InputText
+                eye
+                type='password'
+                name='confirmPassword'
+                placeholder='Confirmar senha'
+                icon={FiLock}
+                size={23}
+              />
 
-            <ButtonPassword type='submit'> Redefinir</ButtonPassword>
-          </Form>
-        </PasswordBlock>
-      </Container>
-    </Style>
+              <ButtonPassword type='submit'> Redefinir</ButtonPassword>
+            </Form>
+          </PasswordBlock>
+        </Container>
+      </Style>
+    </>
   )
 }
 
