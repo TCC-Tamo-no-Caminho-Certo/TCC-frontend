@@ -23,7 +23,6 @@ export default createGlobalStyle`
 
     ::-webkit-scrollbar {
       width: 12px;
-
       background-color: ${fromTheme('tertiary')};
     }
 
@@ -32,9 +31,14 @@ export default createGlobalStyle`
     }
 
     ::-webkit-scrollbar-thumb {
-      box-shadow: inset 0 0 10px 10px rgba(255, 255, 255, 0.90);
+      box-shadow: inset 0 0 10px 1px rgba(255,255,255,0.8);
       border: solid 2px transparent;
-      border-radius: 1px;
+      border-radius: 4px;
+
+
+      &:hover {
+        box-shadow: inset 0 0 10px 1px rgba(255,255,255,1);
+      }
     }
   }
 

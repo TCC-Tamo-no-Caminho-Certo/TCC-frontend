@@ -7,7 +7,7 @@ const Style = styled.div`
   width: 100vw;
   height: 200vh;
 
-  background-color: ${fromTheme('primary')};
+  background-color: ${fromTheme('white')};
 `
 
 export default Style
