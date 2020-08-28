@@ -2,9 +2,9 @@ import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
 const Style = styled.div`
-  display: flex;
-  flex-direction: column;
+  position: relative;
 
+  width: 100vw;
   height: 200vh;
 
   background-color: ${fromTheme('primary')};

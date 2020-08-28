@@ -1,49 +1,109 @@
-import React, { useState } from 'react'
-import Style, { AnimationShape } from './styles'
+import React, { useState, useEffect, useContext } from 'react'
+import Style, { AnimationShape, ProfileOpen, UserInfo, Logout, Edit } from './styles'
 
 import avatar from 'assets/avatar.jpg'
 
+import close from 'assets/close.svg'
+import gear from 'assets/gear.svg'
+
+import anime from 'animejs'
 import Anime from '@mollycule/react-anime'
+import { ThemeContext } from 'styled-components'
+import { FiLogOut as LogoutIcon } from 'react-icons/fi'
 
 const Profile: React.FC = () => {
-  const totalWidth = document.getElementById('svg')?.clientWidth as number
-  const totalHeight = document.getElementById('svg')?.clientHeight as number
+  const theme = useContext(ThemeContext)
+
+  const totalWidth = document.getElementById('AnimationShape')?.clientWidth as number
+  const totalHeight = document.getElementById('AnimationShape')?.clientHeight as number
   const offset = 5
   const cyTop = 50 + offset
   const cxRight = totalWidth - 65 + offset
 
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
+
+  useEffect(() => {
+    anime({ targets: '#profileButton', duration: 0, translateY: '-50%' })
+  }, [])
+
+  useEffect(() => {
+    anime({
+      targets: ['#closeButton', '.UserInfo span', '.Edit', '.Logout'],
+      easing: 'easeInOutSine',
+      duration: 400,
+      delay: anime.stagger(100),
+      translateX: [100, 0],
+      opacity: [0, 1],
+    })
+  }, [profileOpen])
 
   return (
     <Style>
-      <AnimationShape id='svg'>
+      <AnimationShape id='AnimationShape'>
         <Anime
-          in={menuOpen}
+          in={profileOpen}
           appear={false}
           duration={300}
           easing='linear'
           onEntering={{
-            targets: 'path',
+            targets: '#AnimationShape path',
             fillOpacity: '1',
             d: `M${-totalHeight}, ${totalHeight / 2} a${totalWidth},${totalWidth} 0 1,1 ${
               totalWidth * 2
             },0a ${totalWidth},${totalWidth} 0 1,1 ${totalWidth * -2},0`,
           }}
           onExiting={{
-            targets: 'path',
+            targets: '#AnimationShape path',
             fillOpacity: '0',
             d: `M${cxRight},${cyTop} a 0,0 0 1,1 0,0 a 0,0 0 1,1 0,0`,
           }}
         >
           <svg>
-            <path fill='#80535D' d={`M${cxRight},${cyTop} a 0,0 0 1,1 0,0 a 0,0 0 1,1 0,0`} />
+            <path
+              fill={theme.tertiary}
+              d={`M${cxRight},${cyTop} a 0,0 0 1,1 0,0 a 0,0 0 1,1 0,0`}
+            />
           </svg>
         </Anime>
       </AnimationShape>
 
-      <button onClick={() => setMenuOpen(!menuOpen)} id='profile' type='button'>
-        <img src={avatar} alt='profile' draggable='false' />
-      </button>
+      <Anime
+        in={!profileOpen}
+        appear={false}
+        duration={500}
+        unmountOnExit={false}
+        easing='easeInOutSine'
+        onEntering={{ translateX: [-200, 0] }}
+        onExiting={{ translateX: [0, -200] }}
+      >
+        <button type='button' id='profileButton' onClick={() => setProfileOpen(!profileOpen)}>
+          <img src={avatar} id='profileImage' alt='profile' draggable='false' />
+        </button>
+      </Anime>
+
+      {profileOpen && (
+        <ProfileOpen>
+          <Edit>
+            <img src={gear} alt='edit profile' />
+            <span>Editar perfil</span>
+          </Edit>
+
+          <UserInfo>
+            <span id='userRole'>Estudante</span>
+            <span id='userName'>Miguel Andrade</span>
+            <span id='userActivity'>Online</span>
+          </UserInfo>
+
+          <Logout>
+            <span>Logout</span>
+            <LogoutIcon size={18} />
+          </Logout>
+
+          <button type='button' id='closeButton' onClick={() => setProfileOpen(!profileOpen)}>
+            <img src={close} draggable='false' alt='close profile' />
+          </button>
+        </ProfileOpen>
+      )}
     </Style>
   )
 }

@@ -19,6 +19,23 @@ export default createGlobalStyle`
     font-size: 1.6rem;
     color: ${fromTheme('tertiary')};
     background-color: ${fromTheme('quinary')};
+
+
+    ::-webkit-scrollbar {
+      width: 12px;
+
+      background-color: ${fromTheme('tertiary')};
+    }
+
+    ::-webkit-scrollbar-track {
+      border-radius: 1px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      box-shadow: inset 0 0 10px 10px rgba(255, 255, 255, 0.90);
+      border: solid 2px transparent;
+      border-radius: 1px;
+    }
   }
 
   a {
