@@ -83,14 +83,14 @@ export const ConfirmToken = styled.section`
     text-align: center;
   }
 
-  div.reSendContainer {
+  div.resendContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 15px;
   }
 
-  button.reSend {
+  button.resend {
     margin: 15px;
     font-weight: bold;
     text-decoration: underline;
