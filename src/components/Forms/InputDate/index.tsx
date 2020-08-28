@@ -18,12 +18,12 @@ interface InputDateProps {
   icon?: ComponentType<IconBaseProps>
 }
 
-const date = new Date()
+const actualDate = new Date()
 
 const present = {
-  year: date.getFullYear(),
-  month: date.getMonth(),
-  day: date.getDate(),
+  year: actualDate.getFullYear(),
+  month: actualDate.getMonth(),
+  day: actualDate.getDate(),
 }
 
 const minimumDate = {
