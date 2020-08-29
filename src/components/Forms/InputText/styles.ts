@@ -2,13 +2,16 @@ import styled, { css } from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
 interface StyleProps {
+  hasIcon: boolean
+  hasEye: boolean
+
   isFocused: boolean
   isFilled: boolean
   isErrored: boolean
-  hasIcon: boolean
-  hasEye: boolean
-  eyeSize?: string
+
   iconSize?: string
+  eyeSize?: string
+  errorSize?: string
 }
 
 const Style = styled.div<StyleProps>`
@@ -22,24 +25,6 @@ const Style = styled.div<StyleProps>`
 
   background-color: transparent;
   border: solid 1px ${fromTheme('quaternary')};
-
-
-  svg {
-    width: 15%;
-    height: ${({ iconSize }) => iconSize};
-
-    color: ${fromTheme('quaternary')};
-  }
-
-  input + svg {
-    height: ${({ eyeSize }) => eyeSize};
-
-    color: ${fromTheme('quaternary')};
-
-    &:hover {
-      color: ${fromTheme('primary')};
-    }
-  }
 
   input {
     border: none;
@@ -55,7 +40,23 @@ const Style = styled.div<StyleProps>`
     }
   }
 
+  .icon, .eyeIcon, .errorIcon {
+    width: 15%;
 
+    color: ${fromTheme('quaternary')};
+  }
+
+  .icon {
+    height: ${({ iconSize }) => iconSize};
+  }
+
+  .eyeIcon {
+    height: ${({ eyeSize }) => eyeSize};
+  }
+
+  .errorIcon {
+    height: ${({ errorSize }) => errorSize};
+  }
 
   ${({ isFocused }) =>
     isFocused &&
@@ -64,8 +65,8 @@ const Style = styled.div<StyleProps>`
 
       &,
       input::placeholder,
-      svg,
-      input + svg {
+      .icon,
+      .eyeIcon {
         color: ${fromTheme('primary')};
         -webkit-text-fill-color: ${fromTheme('primary')};
       }
@@ -78,7 +79,7 @@ const Style = styled.div<StyleProps>`
 
       &,
       input::placeholder,
-      svg {
+      .icon {
         color: ${fromTheme('primary')};
         -webkit-text-fill-color: ${fromTheme('primary')};
       }
@@ -88,7 +89,7 @@ const Style = styled.div<StyleProps>`
     isFilled &&
     css`
       &,
-      svg {
+      .icon {
         color: ${fromTheme('primary')};
         -webkit-text-fill-color: ${fromTheme('primary')};
       }

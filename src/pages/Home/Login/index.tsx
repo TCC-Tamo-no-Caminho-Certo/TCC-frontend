@@ -23,7 +23,8 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import * as Yup from 'yup'
 import { Form } from '@unform/web'
 import { useHistory, Link } from 'react-router-dom'
-import { FiUser, FiLock } from 'react-icons/fi'
+import { FiLock } from 'react-icons/fi'
+import { AiOutlineMail } from 'react-icons/ai'
 import { SubmitHandler, FormHandles } from '@unform/core'
 
 export interface LoginData {
@@ -144,7 +145,7 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
             </Google>
 
             <Form ref={loginFormRef} onSubmit={onLoginSubmit}>
-              <InputText name='email' placeholder='E-mail' icon={FiUser} iconSize='65%' />
+              <InputText name='email' placeholder='E-mail' icon={AiOutlineMail} iconSize='65%' />
 
               <InputText
                 name='password'

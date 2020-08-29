@@ -10,21 +10,27 @@ import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string
   type?: string
+
   icon?: ComponentType<IconBaseProps>
   eye?: boolean
   pasteAndDrop?: boolean
+
   iconSize?: string
   eyeSize?: string
+  errorSize?: string
 }
 
 const InputText: React.FC<InputProps> = ({
   name,
   type,
+
   icon: Icon,
   eye = false,
   pasteAndDrop = true,
+
   eyeSize = '55%',
   iconSize = '40%',
+  errorSize = '55%',
   ...rest
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -55,9 +61,10 @@ const InputText: React.FC<InputProps> = ({
       isFocused={isFocused}
       eyeSize={eyeSize}
       iconSize={iconSize}
+      errorSize={errorSize}
       className='InputText'
     >
-      {error ? <ErrorTooltip content={error} /> : Icon && <Icon />}
+      {error ? <ErrorTooltip content={error} /> : Icon && <Icon className='icon' />}
 
       <input
         ref={inputRef}
@@ -72,9 +79,9 @@ const InputText: React.FC<InputProps> = ({
 
       {eye &&
         (showInput ? (
-          <AiFillEyeInvisible onClick={() => setShowInput(false)} />
+          <AiFillEyeInvisible onClick={() => setShowInput(false)} className='eyeIcon' />
         ) : (
-          <AiFillEye onClick={() => setShowInput(true)} />
+          <AiFillEye onClick={() => setShowInput(true)} className='eyeIcon' />
         ))}
     </Style>
   )

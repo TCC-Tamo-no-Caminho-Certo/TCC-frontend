@@ -4,10 +4,11 @@ import { StyledTooltipError } from './styles'
 import { PopupProps } from 'semantic-ui-react'
 import { FcHighPriority } from 'react-icons/fc'
 
-export const ErrorTooltip: React.FC<PopupProps> = ({ className, ...rest }) => {
+export const ErrorTooltip: React.FC<PopupProps> = ({ className = 'errorIcon', ...rest }) => {
   return (
     <StyledTooltipError
-      trigger={<FcHighPriority size={22} className={className} />}
+      trigger={<FcHighPriority className={className} />}
+      className='ErrorTooltip'
       position='top left'
       {...rest}
     />

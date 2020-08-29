@@ -2,10 +2,14 @@ import styled, { css } from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
 interface StyleProps {
+  hasIcon: boolean
+
   isFocused: boolean
   isFilled: boolean
   isErrored: boolean
-  hasIcon: boolean
+
+  iconSize?: string
+  errorSize?: string
 }
 
 const Style = styled.div<StyleProps>`
@@ -18,11 +22,19 @@ const Style = styled.div<StyleProps>`
   background-color: transparent;
   border: solid 1px ${fromTheme('quaternary')};
 
-  .icon {
+  .icon,
+  .errorIcon {
     width: 15%;
-    height: 40%;
 
     color: ${fromTheme('quaternary')};
+  }
+
+  .icon {
+    height: ${({ iconSize }) => iconSize};
+  }
+
+  .errorIcon {
+    height: ${({ errorSize }) => errorSize};
   }
 
   .DatePicker {

@@ -14,8 +14,10 @@ import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 
 interface InputDateProps {
   name: string
-  size?: string
   icon?: ComponentType<IconBaseProps>
+
+  iconSize?: string
+  errorSize?: string
 }
 
 const actualDate = new Date()
@@ -38,7 +40,13 @@ const maximumDate = {
   day: present.day,
 }
 
-const InputDate: React.FC<InputDateProps> = ({ name, size, icon: Icon }) => {
+const InputDate: React.FC<InputDateProps> = ({
+  name,
+  icon: Icon,
+
+  iconSize = '40%',
+  errorSize = '55%',
+}) => {
   const { fieldName, registerField, error, clearError } = useField(name)
   const [selectedDate, setSelectedDate] = useState<DayValue>(null)
   const [isFocused, setIsFocused] = useState(false)
@@ -93,16 +101,14 @@ const InputDate: React.FC<InputDateProps> = ({ name, size, icon: Icon }) => {
     <Style
       id={name}
       hasIcon={!!Icon}
-      isFilled={isFilled}
-      className='InputDate'
       isErrored={!!error}
+      isFilled={isFilled}
       isFocused={isFocused}
+      iconSize={iconSize}
+      errorSize={errorSize}
+      className='InputDate'
     >
-      {error ? (
-        <ErrorTooltip className='icon' content={error} />
-      ) : (
-        Icon && <Icon className='icon' size={size} />
-      )}
+      {error ? <ErrorTooltip content={error} /> : Icon && <Icon className='icon' />}
 
       <ModernDatePicker
         locale={ptbr}

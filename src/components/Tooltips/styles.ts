@@ -20,4 +20,3 @@ export const StyledTooltipError = styled(Popup)`
     margin-left: 5% !important;
   }
 `
-// rgba(255, 0, 0, 0.8)
