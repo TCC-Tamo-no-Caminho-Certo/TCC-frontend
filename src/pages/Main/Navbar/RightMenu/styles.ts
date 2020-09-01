@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
+import { Link } from 'react-router-dom'
 
 export const AnimationShape = styled.div`
   svg {
@@ -118,7 +119,7 @@ export const Logout = styled.button.attrs({ className: 'Logout' })`
   }
 `
 
-export const Edit = styled.button.attrs({ className: 'Edit' })`
+export const Edit = styled(Link).attrs({ className: 'Edit' })`
   position: absolute;
   left: 110px;
   bottom: 10px;

@@ -1,12 +1,12 @@
 import React from 'react'
 import Style from './styles'
 
-import Profile from './Profile'
+import RightMenu from './RightMenu'
 
 const Navbar: React.FC = () => {
   return (
     <Style>
-      <Profile />
+      <RightMenu />
     </Style>
   )
 }

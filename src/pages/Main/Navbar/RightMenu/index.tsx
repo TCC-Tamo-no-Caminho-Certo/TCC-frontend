@@ -11,7 +11,7 @@ import Anime from '@mollycule/react-anime'
 import { ThemeContext } from 'styled-components'
 import { FiLogOut as LogoutIcon } from 'react-icons/fi'
 
-const Profile: React.FC = () => {
+const RightMenu: React.FC = () => {
   const theme = useContext(ThemeContext)
 
   const totalWidth = document.getElementById('AnimationShape')?.clientWidth as number
@@ -83,7 +83,7 @@ const Profile: React.FC = () => {
 
       {profileOpen && (
         <ProfileOpen>
-          <Edit>
+          <Edit to='/profile'>
             <img src={gear} alt='edit profile' />
             <span>Editar perfil</span>
           </Edit>
@@ -108,4 +108,4 @@ const Profile: React.FC = () => {
   )
 }
 
-export default Profile
+export default RightMenu

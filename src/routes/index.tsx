@@ -2,6 +2,7 @@ import React from 'react'
 
 import Home from 'pages/Home'
 import Main from 'pages/Main'
+import Profile from 'pages/Profile'
 import ForgotPassword from '../pages/ForgotPassword'
 import ConfirmPassword from '../pages/ForgotPassword/ConfirmPassword'
 
@@ -17,6 +18,7 @@ const Routes: React.FC = () => {
 
         <Route path='/forgot-password' component={ForgotPassword} />
         <Route path='/reset-password' component={ConfirmPassword} />
+        <Route path='/profile' component={Profile} />
 
         <PrivateRoute path='/map' component={Main} />
       </Switch>
