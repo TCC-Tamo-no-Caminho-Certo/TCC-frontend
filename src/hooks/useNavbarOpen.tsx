@@ -7,7 +7,7 @@ interface RegisterSlide {
 
 const NavbarOpenContext = createContext({} as RegisterSlide)
 
-export const RegisterSlideProvider: React.FC = ({ children }) => {
+export const NavbarOpenProvider: React.FC = ({ children }) => {
   const [navbarOpen, setNavbarOpen] = useState(false)
 
   return (
@@ -17,7 +17,7 @@ export const RegisterSlideProvider: React.FC = ({ children }) => {
   )
 }
 
-export const useRegisterSlide = (): RegisterSlide => {
+export const useNavbarOpen = (): RegisterSlide => {
   const navbarOpen = useContext(NavbarOpenContext)
   if (!navbarOpen)
     throw new Error('useNavbarOpen must be used within an NavbarOpenContext.Provider')

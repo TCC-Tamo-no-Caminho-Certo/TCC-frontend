@@ -1,10 +1,14 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import fromTheme from 'utils/fromTheme'
 
-const Style = styled.div`
+interface StyleProps {
+  navbarOpen: boolean
+}
+
+const Style = styled.div<StyleProps>`
   position: absolute;
-  left: 72px;
+  left: ${navbarOpen => (navbarOpen ? '210px' : '72px')};
   top: 0;
 
   display: flex;
@@ -12,11 +16,21 @@ const Style = styled.div`
   justify-content: center;
   flex-direction: column;
 
-  width: calc(100vw - 72px);
   height: 100vh;
 
   background-color: green;
   color: ${fromTheme('white')};
+
+  ${({ navbarOpen }) =>
+    navbarOpen
+      ? css`
+          width: calc(100vw - 102px);
+          left: 210px;
+        `
+      : css`
+          width: calc(100vw - 72px);
+          left: 72px;
+        `};
 `
 
 export default Style

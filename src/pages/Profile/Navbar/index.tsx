@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import Style, { NavbarBackground } from './styles'
+
+import { useNavbarOpen } from 'hooks/useNavbarOpen'
 
 import home from 'assets/ProfileNavbar/home.svg'
 import security from 'assets/ProfileNavbar/security.svg'
@@ -17,92 +19,113 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ selected }) => {
-  const [minimizeMenu, setMinimizeMenu] = useState<boolean | string>('starting')
+  const { navbarOpen, setNavbarOpen } = useNavbarOpen()
   const themes = useContext(ThemeContext)
 
   function onMenuButtonClick() {
-    minimizeMenu === 'starting' ? setMinimizeMenu(true) : setMinimizeMenu(!minimizeMenu)
+    if (!navbarOpen) {
+      anime({
+        targets: '#navbarList li div',
+        easing: 'easeInOutSine',
+        duration: 500,
+        opacity: [0, 1],
+        translateX: [-20, 0],
+        delay: anime.stagger(50),
+      })
+
+      anime({
+        targets: ['#navbarBackground', '#navbarList li'],
+        easing: 'linear',
+        duration: 200,
+        width: [72, 210],
+      })
+
+      anime({
+        targets: '#first',
+        easing: 'linear',
+        duration: 200,
+        translateY: 13.5,
+        rotate: '-45deg',
+      })
+
+      anime({
+        targets: '#second',
+        easing: 'linear',
+        duration: 200,
+        opacity: [1, 0],
+      })
+
+      anime({
+        targets: '#third',
+        easing: 'linear',
+        duration: 200,
+        translateY: -13.5,
+        translateX: '50%',
+        rotate: '45deg',
+      })
+    } else {
+      anime({
+        targets: ['#navbarBackground', '#navbarList li'],
+        easing: 'linear',
+        duration: 200,
+        width: [210, 72],
+      })
+
+      anime({
+        targets: '#first',
+        easing: 'linear',
+        duration: 200,
+        translateY: 0,
+        rotate: 0,
+      })
+
+      anime({
+        targets: '#second',
+        easing: 'linear',
+        duration: 200,
+        opacity: [0, 1],
+      })
+
+      anime({
+        targets: '#third',
+        easing: 'linear',
+        duration: 200,
+        translateY: 0,
+        translateX: 0,
+        rotate: 0,
+      })
+    }
+
+    setNavbarOpen(!navbarOpen)
   }
 
   useEffect(() => {
-    if (minimizeMenu !== 'starting') {
-      if (minimizeMenu) {
-        anime({
-          targets: '#navbarList li a span',
-          easing: 'easeInOutSine',
-          duration: 500,
-          opacity: [0, 1],
-          translateX: [-20, 0],
-          delay: anime.stagger(50),
-        })
+    if (navbarOpen) {
+      anime({
+        targets: '#first',
+        duration: 0,
+        translateY: 13.5,
+        rotate: '-45deg',
+      })
 
-        anime({
-          targets: ['#navbarBackground', '#navbarList li'],
-          easing: 'linear',
-          duration: 200,
-          width: [72, 210],
-        })
+      anime({
+        targets: '#second',
+        duration: 0,
+        opacity: 0,
+      })
 
-        anime({
-          targets: '#first',
-          easing: 'linear',
-          duration: 200,
-          translateY: 13.5,
-          rotate: '-45deg',
-        })
-
-        anime({
-          targets: '#second',
-          easing: 'linear',
-          duration: 200,
-          opacity: [1, 0],
-        })
-
-        anime({
-          targets: '#third',
-          easing: 'linear',
-          duration: 200,
-          translateY: -13.5,
-          translateX: '50%',
-          rotate: '45deg',
-        })
-      } else {
-        anime({
-          targets: ['#navbarBackground', '#navbarList li'],
-          easing: 'linear',
-          duration: 200,
-          width: [210, 72],
-        })
-
-        anime({
-          targets: '#first',
-          easing: 'linear',
-          duration: 200,
-          translateY: 0,
-          rotate: 0,
-        })
-
-        anime({
-          targets: '#second',
-          easing: 'linear',
-          duration: 200,
-          opacity: [0, 1],
-        })
-
-        anime({
-          targets: '#third',
-          easing: 'linear',
-          duration: 200,
-          translateY: 0,
-          translateX: 0,
-          rotate: 0,
-        })
-      }
+      anime({
+        targets: '#third',
+        duration: 0,
+        translateY: -13.5,
+        translateX: '50%',
+        rotate: '45deg',
+      })
     }
-  }, [minimizeMenu])
+  }, [])
 
   return (
-    <Style selected={selected} minimizeMenu={minimizeMenu}>
+    <Style selected={selected} navbarOpen={navbarOpen}>
       <NavbarBackground id='navbarBackground' />
 
       <ul id='navbarList'>
@@ -125,42 +148,42 @@ const Navbar: React.FC<NavbarProps> = ({ selected }) => {
         <li id='home'>
           <Link to='profile'>
             <img src={home} alt='Home' />
-            {minimizeMenu === true && <span>Home</span>}
+            <div>{navbarOpen && <span>Home</span>}</div>
           </Link>
         </li>
 
         <li id='editProfile'>
           <Link to='editProfile'>
             <img src={editProfile} alt='Editar Perfil' />
-            {minimizeMenu === true && <span>Editar Perfil</span>}
+            <div>{navbarOpen && <span>Editar Perfil</span>}</div>
           </Link>
         </li>
 
         <li id='security'>
           <Link to='security'>
             <img src={security} alt='Segurança' />
-            {minimizeMenu === true && <span>Segurança</span>}
+            <div>{navbarOpen && <span>Segurança</span>}</div>
           </Link>
         </li>
 
         <li id='customization'>
           <Link to='customization'>
             <img src={customization} alt='Personalização' />
-            {minimizeMenu === true && <span>Personalização</span>}
+            <div>{navbarOpen && <span>Personalização</span>}</div>
           </Link>
         </li>
 
         <li id='financial'>
           <Link to='financial'>
             <img src={financial} alt='Personalização' />
-            {minimizeMenu === true && <span>Financeiro</span>}
+            <div>{navbarOpen && <span>Financeiro</span>}</div>
           </Link>
         </li>
 
         <li id='historic'>
           <Link to='historic'>
             <img src={historic} alt='Histórico' />
-            {minimizeMenu === true && <span>Histórico</span>}
+            <div>{navbarOpen && <span>Histórico</span>}</div>
           </Link>
         </li>
       </ul>

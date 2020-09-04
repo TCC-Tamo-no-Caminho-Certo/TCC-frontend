@@ -3,7 +3,7 @@ import fromTheme from 'utils/fromTheme'
 
 interface NavbarProps {
   selected: string
-  minimizeMenu: string | boolean
+  navbarOpen: boolean
 }
 
 export const NavbarBackground = styled.div`
@@ -15,7 +15,7 @@ export const NavbarBackground = styled.div`
 
 const Style = styled.nav<NavbarProps>`
   ${NavbarBackground} {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 1;
@@ -73,6 +73,21 @@ const Style = styled.nav<NavbarProps>`
       background-color: ${fromTheme('tertiary')};
     }
   `}
+
+  ${({ navbarOpen, selected }) =>
+    navbarOpen
+      ? css`
+          ${`#${selected} a`} {
+            background-color: ${fromTheme('tertiary')};
+            width: 210px;
+          }
+        `
+      : css`
+          ${`#${selected} a`} {
+            background-color: ${fromTheme('tertiary')};
+            width: 72px;
+          }
+        `}
 `
 
 export default Style
