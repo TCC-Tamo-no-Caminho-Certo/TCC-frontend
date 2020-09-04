@@ -1,111 +1,92 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-import ReCAPTCHA from 'react-google-recaptcha'
 import fromTheme from 'utils/fromTheme'
+
+interface NavbarProps {
+  selected: string
+  minimizeMenu: string | boolean
+}
 
 const Style = styled.div`
   position: relative;
 
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-direction: column;
 
   min-width: 320px;
   min-height: 100vh;
   padding: 73px 0 73px 0;
 
   background-color: ${fromTheme('secondary')};
+`
 
-  nav {
-    position: absolute;
-    top: 20px;
+export const NavbarBackground = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  width: 72px;
+  height: 100vh;
 
-    width: 80%;
-    max-width: 1000px;
-    height: 4vh;
+  background-color: ${fromTheme('primary')};
+`
 
-    button {
+export const Navbar = styled.nav<NavbarProps>`
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 72px;
+  height: 100vh;
+
+  ul {
+    li button {
+      position: relative;
+      z-index: 1;
+
       display: flex;
       align-items: center;
 
-      height: 100%;
-
-      color: ${fromTheme('primary')};
-
-      svg {
-        min-width: calc(33px + 0.8vh);
-        min-height: calc(20px + 0.8vh);
-
-        transform: translateX(-40%);
-      }
+      width: 100%;
+      height: 70px;
+      padding: 0 24px;
 
       span {
-        font-size: calc(1.3rem + 0.5vh);
-        line-height: 100%;
-        transform: translateX(-48%);
+        white-space: nowrap;
+        margin-left: 24px;
+        line-height: 70px;
       }
-    }
 
-    .ThemeSwitch {
-      min-width: 33px;
-      min-height: 33px;
-      height: 100%;
+      img,
+      span {
+        color: ${fromTheme('secondary')};
+      }
     }
   }
 
-  form {
+  #menuButton button {
     display: flex;
-    justify-content: center;
     align-items: center;
-    flex-direction: column;
+    justify-content: start;
 
-    width: 80%;
+    height: 70px;
+    padding: 0 24px;
 
-    > span {
-      font-size: calc(1.3rem + 0.5vh);
-      margin: 1.25vh 0;
-    }
+    background-color: transparent;
 
-    > * {
-      width: 100%;
-      max-width: 530px;
-
-      & + div {
-        margin-top: 20px;
-      }
-    }
-
-    .Button {
-      margin-top: 20px;
+    svg {
+      overflow: visible;
     }
   }
 
-  .InputText,
-  .Button,
-  .InputDate {
-    min-height: 35px;
-    height: 5vh;
-    font-size: calc(1.3rem + 0.5vh);
-  }
-`
-
-export const DualInput = styled.div`
-  div:first-child {
-    border-radius: 10px 10px 0 0;
-  }
-
-  div + div {
-    border-radius: 0 0 10px 10px;
-  }
-`
-
-export const Recaptcha = styled(ReCAPTCHA)`
-  display: none;
+  ${({ selected }) => css`
+    ${`#${selected} button`} {
+      background-color: ${fromTheme('tertiary')};
+    }
+  `}
 `
 
 export default Style

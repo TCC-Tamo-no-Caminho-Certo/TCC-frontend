@@ -47,8 +47,8 @@ export default createGlobalStyle`
     color: ${fromTheme('primary')};
   }
 
-  ul {
-    list-style: none;
+  li {
+    list-style-type: none;
   }
 
   button {

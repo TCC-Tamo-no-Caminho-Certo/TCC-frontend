@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 export const AnimationShape = styled.div`
   svg {
-    border-radius: 16px 0 0 16px;
+    border-radius: 0 0 0 16px;
     width: 100%;
     height: 100%;
   }

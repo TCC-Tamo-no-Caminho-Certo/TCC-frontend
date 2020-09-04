@@ -1,86 +1,167 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react'
-import Style, { DualInput, Recaptcha } from './styles'
+import React, { useState, useEffect, useContext } from 'react'
+import Style, { Navbar, NavbarBackground } from './styles'
 
-import signupSchema from 'validations/signup'
+import home from 'assets/ProfileNavbar/home.svg'
+import editProfile from 'assets/ProfileNavbar/editProfile.svg'
+import security from 'assets/ProfileNavbar/security.svg'
+import customization from 'assets/ProfileNavbar/customization.svg'
+import financial from 'assets/ProfileNavbar/financial.svg'
+import historic from 'assets/ProfileNavbar/historic.svg'
 
-import Button from 'components/Forms/Button'
-import InputText from 'components/Forms/InputText'
-import InputDate from 'components/Forms/InputDate'
-import ThemeSwitch from 'components/ThemeSwitch'
-
-import getValidationErrors from 'utils/getValidationErrors'
-
-import * as Yup from 'yup'
-import { Form } from '@unform/web'
-import { MdPublic } from 'react-icons/md'
-import { FaUserLock } from 'react-icons/fa'
-import { RiArrowLeftSLine } from 'react-icons/ri'
-import { FormHandles, SubmitHandler } from '@unform/core'
-import 'react-modern-calendar-datepicker/lib/DatePicker.css'
-
-export interface RegisterData {
-  name: string
-  surname: string
-  email: string
-  birthday: string
-  password: string
-  captcha: string
-}
+import anime from 'animejs'
+import { ThemeContext } from 'styled-components'
 
 const Profile: React.FC = () => {
-  const signupFormRef = useRef<FormHandles>(null)
+  const [minimizeMenu, setMinimizeMenu] = useState<boolean | string>('starting')
+  const [selected, setSelected] = useState('home')
+  const themes = useContext(ThemeContext)
 
-  const onProfileSubmit: SubmitHandler<RegisterData> = async (data, { reset }, event) => {
-    event?.preventDefault()
+  function onMenuButtonClick() {
+    minimizeMenu === 'starting' ? setMinimizeMenu(true) : setMinimizeMenu(!minimizeMenu)
+  }
 
-    try {
-      await signupSchema.validate(data, { abortEarly: false })
+  useEffect(() => {
+    if (minimizeMenu !== 'starting') {
+      if (minimizeMenu) {
+        anime({
+          targets: '#navbarList li button span',
+          easing: 'easeInOutSine',
+          duration: 500,
+          opacity: [0, 1],
+          translateX: [-20, 0],
+          delay: anime.stagger(50),
+        })
 
-      signupFormRef.current?.setErrors({})
-    } catch (error) {
-      if (error instanceof Yup.ValidationError) {
-        const errorList = getValidationErrors(error)
-        signupFormRef.current?.setErrors(errorList)
+        anime({
+          targets: ['#navbarBackground', '#navbarList li', `#${selected}`],
+          easing: 'linear',
+          duration: 200,
+          width: [72, 210],
+        })
+
+        anime({
+          targets: '#first',
+          easing: 'linear',
+          duration: 200,
+          translateY: 13.5,
+          rotate: '-45deg',
+        })
+
+        anime({
+          targets: '#second',
+          easing: 'linear',
+          duration: 200,
+          opacity: [1, 0],
+        })
+
+        anime({
+          targets: '#third',
+          easing: 'linear',
+          duration: 200,
+          translateY: -13.5,
+          translateX: '50%',
+          rotate: '45deg',
+        })
+      } else {
+        anime({
+          targets: ['#navbarBackground', '#navbarList li'],
+          easing: 'linear',
+          duration: 200,
+          width: [210, 72],
+        })
+
+        anime({
+          targets: '#first',
+          easing: 'linear',
+          duration: 200,
+          translateY: 0,
+          rotate: 0,
+        })
+
+        anime({
+          targets: '#second',
+          easing: 'linear',
+          duration: 200,
+          opacity: [0, 1],
+        })
+
+        anime({
+          targets: '#third',
+          easing: 'linear',
+          duration: 200,
+          translateY: 0,
+          translateX: 0,
+          rotate: 0,
+        })
       }
     }
-  }
+  }, [minimizeMenu])
 
   return (
     <Style>
-      <nav>
-        <button type='button'>
-          <RiArrowLeftSLine />
+      <Navbar selected={selected} minimizeMenu={minimizeMenu}>
+        <NavbarBackground id='navbarBackground' />
 
-          <span>Voltar</span>
-        </button>
+        <ul id='navbarList'>
+          <li id='menuButton'>
+            <button type='button' onClick={onMenuButtonClick}>
+              <svg
+                width='24'
+                height='17'
+                viewBox='0 0 24 17'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <rect id='first' width='24' height='3' fill={themes.white} />
+                <rect id='second' y='7' width='24' height='3' fill={themes.white} />
+                <rect id='third' y='14' width='24' height='3' fill={themes.white} />
+              </svg>
+            </button>
+          </li>
 
-        <ThemeSwitch />
-      </nav>
+          <li id='home'>
+            <button type='button' onClick={() => setSelected('home')}>
+              <img src={home} alt='Home' />
+              {minimizeMenu === true && <span>Home</span>}
+            </button>
+          </li>
 
-      <Form ref={signupFormRef} onSubmit={onProfileSubmit}>
-        <DualInput>
-          <InputText name='name' placeholder='Nome' icon={MdPublic} iconSize='50%' />
+          <li id='editProfile'>
+            <button type='button' onClick={() => setSelected('editProfile')}>
+              <img src={editProfile} alt='Editar Perfil' />
+              {minimizeMenu === true && <span>Editar Perfil</span>}
+            </button>
+          </li>
 
-          <InputText name='surname' placeholder='Sobrenome' icon={MdPublic} iconSize='50%' />
-        </DualInput>
+          <li id='security'>
+            <button type='button' onClick={() => setSelected('security')}>
+              <img src={security} alt='Segurança' />
+              {minimizeMenu === true && <span>Segurança</span>}
+            </button>
+          </li>
 
-        <InputDate name='birthday' icon={FaUserLock} />
+          <li id='customization'>
+            <button type='button' onClick={() => setSelected('customization')}>
+              <img src={customization} alt='Personalização' />
+              {minimizeMenu === true && <span>Personalização</span>}
+            </button>
+          </li>
 
-        <InputText name='email' placeholder='E-mail' icon={FaUserLock} />
+          <li id='financial'>
+            <button type='button' onClick={() => setSelected('financial')}>
+              <img src={financial} alt='Personalização' />
+              {minimizeMenu === true && <span>Financeiro</span>}
+            </button>
+          </li>
 
-        <DualInput>
-          <InputText name='password' type='password' placeholder='Senha' icon={FaUserLock} eye />
-
-          <InputText
-            name='confirmPassword'
-            type='password'
-            placeholder='Confirmar Senha'
-            icon={FaUserLock}
-          />
-        </DualInput>
-
-        <Button type='submit'>Concordar e concluir</Button>
-      </Form>
+          <li id='historic'>
+            <button type='button' onClick={() => setSelected('historic')}>
+              <img src={historic} alt='Histórico' />
+              {minimizeMenu === true && <span>Histórico</span>}
+            </button>
+          </li>
+        </ul>
+      </Navbar>
     </Style>
   )
 }
