@@ -1,19 +1,19 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import Style from './styles'
 
-import { useRegisterSlide } from 'hooks/useRegisterSlide'
+import { useHomeSlider } from 'hooks/useHomeSlider'
 
 const About: React.FC = () => {
-  const { registerSlide } = useRegisterSlide()
+  const { homeSlider } = useHomeSlider()
   const [showAbout, setShowAbout] = useState(true)
 
   const loginSliderAnimation = useCallback(() => {
-    if (registerSlide) {
+    if (homeSlider) {
       setTimeout(() => {
         setShowAbout(false)
       }, 1000)
     } else setShowAbout(true)
-  }, [registerSlide])
+  }, [homeSlider])
 
   useEffect(() => loginSliderAnimation(), [loginSliderAnimation])
 

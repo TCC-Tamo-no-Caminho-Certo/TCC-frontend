@@ -15,7 +15,7 @@ const Style = styled.div`
   width: calc(100vw - 72px);
   height: 100vh;
 
-  background-color: blue;
+  background-color: green;
   color: ${fromTheme('white')};
 `
 

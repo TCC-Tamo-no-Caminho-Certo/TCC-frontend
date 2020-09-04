@@ -1,14 +1,14 @@
 import React from 'react'
 
 import { ThemeProvider } from './useTheme'
-import { RegisterSlideProvider } from './useRegisterSlide'
+import { HomeSliderProvider } from './useHomeSlider'
 import { AuthProvider } from './useAuth'
 
 const GlobalProvider: React.FC = ({ children }) => {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <RegisterSlideProvider>{children}</RegisterSlideProvider>
+        <HomeSliderProvider>{children}</HomeSliderProvider>
       </AuthProvider>
     </ThemeProvider>
   )

@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import Style from './styles'
 
-import { useRegisterSlide } from 'hooks/useRegisterSlide'
+import { useHomeSlider } from 'hooks/useHomeSlider'
 
 const Subscribe: React.FC = () => {
-  const { registerSlide } = useRegisterSlide()
+  const { homeSlider } = useHomeSlider()
   const [showSubscribe, setShowSubscribe] = useState(false)
 
   const SubscribeSliderAnimation = useCallback(() => {
-    if (registerSlide) setShowSubscribe(true)
+    if (homeSlider) setShowSubscribe(true)
     else {
       setTimeout(() => {
         setShowSubscribe(false)
       }, 1000)
     }
-  }, [registerSlide])
+  }, [homeSlider])
 
   useEffect(() => SubscribeSliderAnimation(), [SubscribeSliderAnimation])
 

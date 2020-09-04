@@ -8,12 +8,12 @@ import Subscribe from './Subscribe'
 
 import Modal, { Atributes } from 'components/Modal'
 
-import { useRegisterSlide } from 'hooks/useRegisterSlide'
+import { useHomeSlider } from 'hooks/useHomeSlider'
 
 import Anime from '@mollycule/react-anime'
 
 const Home: React.FC = () => {
-  const { registerSlide } = useRegisterSlide()
+  const { homeSlider } = useHomeSlider()
   const [modalAtributes, setModalAtributes] = useState<Atributes>({ visible: false })
 
   const modalChangeVisible = () => {
@@ -28,7 +28,7 @@ const Home: React.FC = () => {
     <Style>
       <Modal atributes={modalAtributes} setVisible={modalChangeVisible} />
       <Anime
-        in={!registerSlide}
+        in={!homeSlider}
         appear={false}
         duration={1000}
         unmountOnExit={false}

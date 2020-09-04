@@ -12,7 +12,7 @@ import ThemeSwitch from 'components/ThemeSwitch'
 import { Atributes } from 'components/Modal'
 
 import { useAuth } from 'hooks/useAuth'
-import { useRegisterSlide } from 'hooks/useRegisterSlide'
+import { useHomeSlider } from 'hooks/useHomeSlider'
 
 import getValidationErrors from 'utils/getValidationErrors'
 
@@ -46,13 +46,13 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
   const history = useHistory()
   const { login } = useAuth()
 
-  const { registerSlide, setRegisterSlide } = useRegisterSlide()
+  const { homeSlider, setHomeSlider } = useHomeSlider()
   const [showLogin, setShowLogin] = useState(true)
   const [disabled, setDisabled] = useState(true)
   const [loadingLogin, setLoadingLogin] = useState(false)
 
   const onRegisterClick = () => {
-    setRegisterSlide(true)
+    setHomeSlider(true)
   }
 
   const onLoginSubmit: SubmitHandler<LoginData> = async (data, { reset }, event) => {
@@ -109,12 +109,12 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
       setDisabled(false)
     }, 1000)
 
-    if (registerSlide) {
+    if (homeSlider) {
       setTimeout(() => {
         setShowLogin(false)
       }, 1000)
     } else setShowLogin(true)
-  }, [registerSlide])
+  }, [homeSlider])
 
   useEffect(() => {
     loginAppearAnimation()

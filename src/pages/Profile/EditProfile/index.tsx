@@ -1,12 +1,12 @@
 import React from 'react'
 import Style from './styles'
 
-import Navbar from './Navbar'
+import Navbar from '../Navbar'
 
-const Profile: React.FC = () => {
+const EditProfile: React.FC = () => {
   return (
     <>
-      <Navbar selected='home' />
+      <Navbar selected='editProfile' />
       <Style>
         <h1>Profile</h1>
       </Style>
@@ -14,4 +14,4 @@ const Profile: React.FC = () => {
   )
 }
 
-export default Profile
+export default EditProfile

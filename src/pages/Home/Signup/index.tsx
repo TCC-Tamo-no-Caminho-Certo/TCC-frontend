@@ -10,7 +10,7 @@ import ThemeSwitch from 'components/ThemeSwitch'
 import { Atributes } from 'components/Modal'
 
 import { useAuth } from 'hooks/useAuth'
-import { useRegisterSlide } from 'hooks/useRegisterSlide'
+import { useHomeSlider } from 'hooks/useHomeSlider'
 
 import getValidationErrors from 'utils/getValidationErrors'
 
@@ -42,7 +42,7 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
 
   const { register } = useAuth()
 
-  const { registerSlide, setRegisterSlide } = useRegisterSlide()
+  const { homeSlider, setHomeSlider } = useHomeSlider()
   const [showRegister, setShowRegister] = useState(false)
   const [disabled, setDisabled] = useState(true)
 
@@ -66,7 +66,7 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
         color: '#13c47c',
       })
       signupFormRef.current?.setErrors({})
-      setRegisterSlide(false)
+      setHomeSlider(false)
     } catch (error) {
       console.log(error)
       if (error instanceof Yup.ValidationError) {
@@ -89,13 +89,13 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
       setDisabled(false)
     }, 1000)
 
-    if (registerSlide) setShowRegister(true)
+    if (homeSlider) setShowRegister(true)
     else {
       setTimeout(() => {
         setShowRegister(false)
       }, 1000)
     }
-  }, [registerSlide])
+  }, [homeSlider])
 
   useEffect(() => {
     loginSliderAnimation()
@@ -112,7 +112,7 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
       {showRegister && (
         <Style>
           <nav>
-            <button type='button' disabled={disabled} onClick={() => setRegisterSlide(false)}>
+            <button type='button' disabled={disabled} onClick={() => setHomeSlider(false)}>
               <RiArrowLeftSLine />
 
               <span>Voltar</span>
