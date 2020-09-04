@@ -21,6 +21,9 @@ const Style = styled.div<StyleProps>`
   background-color: green;
   color: ${fromTheme('white')};
 
+  transition: all 300ms;
+  transition-property: left, width;
+
   ${({ navbarOpen }) =>
     navbarOpen
       ? css`

@@ -78,13 +78,13 @@ const Style = styled.nav<NavbarProps>`
     navbarOpen
       ? css`
           ${`#${selected} a`} {
-            background-color: ${fromTheme('tertiary')};
+            transition: all 700ms;
             width: 210px;
           }
         `
       : css`
           ${`#${selected} a`} {
-            background-color: ${fromTheme('tertiary')};
+            transition: all 200ms;
             width: 72px;
           }
         `}
