@@ -27,7 +27,7 @@ const Style = styled.div<StyleProps>`
   ${({ navbarOpen }) =>
     navbarOpen
       ? css`
-          width: calc(100vw - 102px);
+          width: calc(100vw - 210px);
           left: 210px;
         `
       : css`
