@@ -1,20 +1,29 @@
 import React from 'react'
-import Style from './styles'
+import Style, { Cover } from './styles'
 
-import Navbar from '../Navbar'
+import ProfileSection from '../ProfileSection'
 
-import { useNavbarOpen } from 'hooks/useNavbarOpen'
+import ContainerChange from 'components/ContainerChange/index'
+
+import avatar from 'assets/avatarEditProfile.png'
 
 const EditProfile: React.FC = () => {
-  const { navbarOpen } = useNavbarOpen()
-
   return (
-    <>
-      <Navbar selected='editProfile' />
-      <Style navbarOpen={navbarOpen}>
-        <h1>Profile</h1>
+    <ProfileSection selected='editProfile'>
+      <Style>
+        <Cover>
+          <img src={avatar} alt='avatar' />
+        </Cover>
+
+        <form>
+          <ContainerChange label='Nome' value='Miguel' />
+          <ContainerChange label='Sobrenome' value='Andrade' />
+          <ContainerChange label='E-mail' value='miguelandradebarreto2@gmail.com' />
+          <ContainerChange label='Nascimento' value='19/08/2001' />
+          <ContainerChange label='Senha' value='**********' />
+        </form>
       </Style>
-    </>
+    </ProfileSection>
   )
 }
 

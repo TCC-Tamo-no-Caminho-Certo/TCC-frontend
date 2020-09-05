@@ -1,39 +1,39 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
 import fromTheme from 'utils/fromTheme'
 
-interface StyleProps {
-  navbarOpen: boolean
-}
+const Style = styled.div`
+  background-color: ${fromTheme('secondary')};
+  color: ${fromTheme('tertiary')};
 
-const Style = styled.div<StyleProps>`
-  position: absolute;
-  left: ${navbarOpen => (navbarOpen ? '210px' : '72px')};
-  top: 0;
+  form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+    margin-top: 100px;
+  }
 
-  height: 100vh;
+  .ContainerChange {
+    margin-top: 20px;
+  }
+`
 
-  background-color: green;
-  color: ${fromTheme('white')};
+export const Cover = styled.div`
+  position: relative;
 
-  transition: all 300ms;
-  transition-property: left, width;
+  width: 100%;
+  height: 210px;
+  margin-bottom: 85px;
 
-  ${({ navbarOpen }) =>
-    navbarOpen
-      ? css`
-          width: calc(100vw - 210px);
-          left: 210px;
-        `
-      : css`
-          width: calc(100vw - 72px);
-          left: 72px;
-        `};
+  background-color: ${fromTheme('tertiary')};
+
+  img {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+  }
 `
 
 export default Style

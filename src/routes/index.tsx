@@ -7,6 +7,10 @@ import ForgotPassword from 'pages/ForgotPassword'
 
 import Profile from 'pages/Profile'
 import EditProfile from 'pages/Profile/EditProfile'
+// import Customization from 'pages/Profile/Customization'
+// import Financial from 'pages/Profile/Financial'
+// import Historic from 'pages/Profile/Historic'
+// import Security from 'pages/Profile/Security'
 
 import PrivateRoute from 'routes/PrivateRoute'
 
@@ -24,6 +28,10 @@ const Routes: React.FC = () => {
 
         <Route path='/profile' component={Profile} />
         <Route path='/editProfile' component={EditProfile} />
+        {/* <Route path='/security' component={Security} />
+        <Route path='/customization' component={Customization} />
+        <Route path='/financial' component={Financial} />
+        <Route path='/historic' component={Historic} /> */}
       </Switch>
     </BrowserRouter>
   )

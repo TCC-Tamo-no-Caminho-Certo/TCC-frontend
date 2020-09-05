@@ -2,14 +2,14 @@ import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
 const Style = styled.div`
-  width: 400px;
-  min-height: 43px;
+  width: 647px;
+  height: 53px;
   font-size: 1.5rem;
   border-radius: 5px;
-  border: solid 1px ${fromTheme('secondary')};
+  border: solid 1px ${fromTheme('tertiary')};
 
   display: grid;
-  grid: 'labels value change' 100%/90px 220px 90px;
+  grid: 'labels value change' 100%/15% 70% 15%;
 
   div {
     display: flex;

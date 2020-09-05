@@ -1,20 +1,15 @@
 import React from 'react'
 import Style from './styles'
 
-import Navbar from './Navbar'
-
-import { useNavbarOpen } from 'hooks/useNavbarOpen'
+import ProfileSection from './ProfileSection'
 
 const Profile: React.FC = () => {
-  const { navbarOpen } = useNavbarOpen()
-
   return (
-    <>
-      <Navbar selected='home' />
-      <Style navbarOpen={navbarOpen}>
+    <ProfileSection selected='home'>
+      <Style>
         <h1>Profile</h1>
       </Style>
-    </>
+    </ProfileSection>
   )
 }
 

@@ -1,6 +1,8 @@
 import React from 'react'
 import Style, { Label, Value, Change } from './styles'
 
+import editPencil from 'assets/editPencil.svg'
+
 interface ContainerChangeProps {
   label: string
   value: string
@@ -16,7 +18,7 @@ const ContainerChange: React.FC<ContainerChangeProps> = ({ label, value }) => {
         <span>{value}</span>
       </Value>
       <Change>
-        <span>Alterar</span>
+        <img src={editPencil} alt='edit' />
       </Change>
     </Style>
   )

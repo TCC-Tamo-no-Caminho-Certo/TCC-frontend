@@ -6,14 +6,30 @@ interface NavbarProps {
   navbarOpen: boolean
 }
 
-export const NavbarBackground = styled.div`
-  width: 72px;
+interface ContentProps {
+  navbarOpen: boolean
+}
+
+interface NavbarBackgroundProps {
+  navbarOpen: boolean
+}
+
+export const NavbarBackground = styled.div<NavbarBackgroundProps>`
   height: 100vh;
 
   background-color: ${fromTheme('primary')};
+
+  ${({ navbarOpen }) =>
+    navbarOpen
+      ? css`
+          width: 210px;
+        `
+      : css`
+          width: 72px;
+        `}
 `
 
-const Style = styled.nav<NavbarProps>`
+export const Navbar = styled.nav<NavbarProps>`
   ${NavbarBackground} {
     position: fixed;
     top: 0;
@@ -53,41 +69,27 @@ const Style = styled.nav<NavbarProps>`
     }
   }
 
-  #menuButton button {
-    display: flex;
-    align-items: center;
-    justify-content: start;
-
-    height: 70px;
-    padding: 0 24px;
-
-    background-color: transparent;
-
-    svg {
-      overflow: visible;
-    }
-  }
-
   ${({ selected }) => css`
     ${`#${selected} a`} {
       background-color: ${fromTheme('tertiary')};
     }
   `}
-
-  ${({ navbarOpen, selected }) =>
-    navbarOpen
-      ? css`
-          ${`#${selected} a`} {
-            transition: all 700ms;
-            width: 210px;
-          }
-        `
-      : css`
-          ${`#${selected} a`} {
-            transition: all 200ms;
-            width: 72px;
-          }
-        `}
 `
+
+export const Content = styled.section<ContentProps>`
+  position: absolute;
+  top: 0;
+  left: ${({ navbarOpen }) => (navbarOpen ? '210px' : '72px')};
+
+  width: ${({ navbarOpen }) => (navbarOpen ? 'calc(100vw - 210px)' : 'calc(100vw - 72px)')};
+  height: 100vh;
+
+  > div {
+    width: 100%;
+    height: 100%;
+  }
+`
+
+const Style = styled.section``
 
 export default Style
