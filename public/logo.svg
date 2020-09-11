@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="66" height="72" fill="none">
+    <g id="brown" stroke="#80535D" stroke-width="3">
+        <path d="M64.5 48.55a9.72 9.72 0 11-19.45.01 9.72 9.72 0 0119.45-.01z" stroke-dasharray="61.112674713134766" style="stroke-dashoffset: 0px"></path>
+        <path d="M64.5 23.45a9.72 9.72 0 11-19.45 0 9.72 9.72 0 0119.45 0z" stroke-dasharray="61.112640380859375" style="stroke-dashoffset: 0px"></path>
+        <path d="M42.72 11.23a9.72 9.72 0 11-19.45 0 9.72 9.72 0 0119.45 0z" stroke-dasharray="61.112606048583984" style="stroke-dashoffset: 0px"></path>
+        <path d="M20.94 23.45a9.72 9.72 0 11-19.45 0 9.72 9.72 0 0119.45 0z" stroke-dasharray="61.112571716308594" style="stroke-dashoffset: 0px"></path>
+        <path d="M20.94 48.55a9.72 9.72 0 11-19.45.01 9.72 9.72 0 0119.45-.01z" stroke-dasharray="61.11265563964844" style="stroke-dashoffset: 0px"></path>
+        <path d="M42.72 60.77a9.72 9.72 0 11-19.45.01 9.72 9.72 0 0119.45 0z" stroke-dasharray="61.113136291503906" style="stroke-dashoffset: 0px"></path>
+    </g>
+    <g id="pink" fill="#FF597D">
+        <path d="M32.22 41.98a2.6 2.6 0 10-5.2-.02 2.6 2.6 0 005.2.02z" style="transform: translateY(0px)"></path>
+        <path d="M38.96 41.97a2.6 2.6 0 10-5.18-.02 2.6 2.6 0 005.18.02z" style="transform: translateY(0px)"></path>
+        <path d="M42.33 36.16a2.6 2.6 0 10-5.18-.03 2.6 2.6 0 005.18.03z" style="transform: translateY(0px)"></path>
+        <path d="M28.85 36.16a2.6 2.6 0 10-5.18-.03 2.6 2.6 0 005.18.03z" style="transform: translateY(0px)"></path>
+        <path d="M32.22 30.35a2.6 2.6 0 10-5.19-.03 2.6 2.6 0 005.2.03z" style="transform: translateY(0px)"></path>
+        <path d="M38.96 30.35a2.6 2.6 0 10-5.18-.02 2.6 2.6 0 005.18.02z" style="transform: translateY(0px)"></path>
+    </g>
+</svg>
