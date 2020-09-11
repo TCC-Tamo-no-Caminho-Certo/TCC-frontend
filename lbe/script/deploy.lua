@@ -47,7 +47,7 @@ function copyFiles(client, remoteFolder, localFolder)
     local files = Directory.getFiles(localFolder, "*.*", SearchOption.AllDirectories)
     for fileCount = 1, #files do
         if Path.getExtension(files[fileCount]) == ".map" then
-            print("[SteamsLab] Ignoring map file '" .. filePath .. "'...\n")
+            print("[SteamsLab] Ignoring map file '" .. files[fileCount] .. "'...\n")
             goto continue
         end
         do
