@@ -123,9 +123,21 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
 
           <Form ref={signupFormRef} onSubmit={onSignupSubmit}>
             <DualInput>
-              <InputText name='name' placeholder='Nome' icon={MdPublic} iconSize='50%' />
+              <InputText
+                name='name'
+                placeholder='Nome'
+                icon={MdPublic}
+                iconSize='50%'
+                autoComplete='given-name'
+              />
 
-              <InputText name='surname' placeholder='Sobrenome' icon={MdPublic} iconSize='50%' />
+              <InputText
+                name='surname'
+                placeholder='Sobrenome'
+                icon={MdPublic}
+                iconSize='50%'
+                autoComplete='family-name'
+              />
             </DualInput>
 
             <span>
@@ -136,7 +148,7 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
 
             <span>Você precisa ter pelo menos 18 anos</span>
 
-            <InputText name='email' placeholder='E-mail' icon={FaUserLock} />
+            <InputText name='email' placeholder='E-mail' icon={FaUserLock} autoComplete='email' />
 
             <span>Enviaremos um e-mail para confirmação</span>
 
@@ -147,6 +159,7 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
                 placeholder='Senha'
                 icon={FaUserLock}
                 eye
+                autoComplete='new-password'
               />
 
               <InputText
@@ -154,6 +167,7 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
                 type='password'
                 placeholder='Confirmar Senha'
                 icon={FaUserLock}
+                autoComplete='new-password'
               />
             </DualInput>
 
