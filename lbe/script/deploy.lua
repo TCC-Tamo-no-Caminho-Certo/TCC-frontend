@@ -46,15 +46,22 @@ end
 function copyFiles(client, remoteFolder, localFolder)
     local files = Directory.getFiles(localFolder, "*.*", SearchOption.AllDirectories)
     for fileCount = 1, #files do
-        filePath = Path.getRelativePath(localFolder, files[fileCount])
-        filePath = string.gsub(filePath, "\\", "/")
-        filePath = Path.combine(remoteFolder, filePath)
-        filePath = string.gsub(filePath, "\\", "/")
-        print("[SteamsLab] Uploading file '" .. filePath .. "'...\n")
-        local fileStream = FileStream.New(files[fileCount], FileMode.Open, FileAccess.Read, FileShare.Read)
-        client.uploadFile(fileStream, filePath)
-        fileStream.close()
-        fileStream.dispose()
+        if Path.getExtension(files[fileCount]) == ".map" then
+            print("[SteamsLab] Ignoring map file '" .. files[fileCount] .. "'...\n")
+            goto continue
+        end
+        do
+            filePath = Path.getRelativePath(localFolder, files[fileCount])
+            filePath = string.gsub(filePath, "\\", "/")
+            filePath = Path.combine(remoteFolder, filePath)
+            filePath = string.gsub(filePath, "\\", "/")
+            print("[SteamsLab] Uploading file '" .. filePath .. "'...\n")
+            local fileStream = FileStream.New(files[fileCount], FileMode.Open, FileAccess.Read, FileShare.Read)
+            client.uploadFile(fileStream, filePath)
+            fileStream.close()
+            fileStream.dispose()
+        end
+        ::continue::
     end
 end
 

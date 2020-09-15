@@ -145,7 +145,13 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
             </Google>
 
             <Form ref={loginFormRef} onSubmit={onLoginSubmit}>
-              <InputText name='email' placeholder='E-mail' icon={AiOutlineMail} iconSize='65%' />
+              <InputText
+                name='email'
+                placeholder='E-mail'
+                icon={AiOutlineMail}
+                iconSize='65%'
+                autoComplete='email'
+              />
 
               <InputText
                 name='password'
@@ -154,6 +160,7 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
                 icon={FiLock}
                 iconSize='65%'
                 eye
+                autoComplete='current-password'
               />
 
               <Button type='submit'>
