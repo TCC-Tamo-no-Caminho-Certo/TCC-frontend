@@ -25,6 +25,13 @@ const Hamburger: React.FC<HamburgerProps> = ({ state, onClick, ...rest }) => {
       })
 
       anime({
+        targets: '#second',
+        easing: 'linear',
+        duration: 200,
+        opacity: [1, 0],
+      })
+
+      anime({
         targets: '#third',
         easing: 'linear',
         duration: 200,
@@ -39,6 +46,13 @@ const Hamburger: React.FC<HamburgerProps> = ({ state, onClick, ...rest }) => {
         duration: 200,
         translateY: 0,
         rotate: 0,
+      })
+
+      anime({
+        targets: '#second',
+        easing: 'linear',
+        duration: 200,
+        opacity: [0, 1],
       })
 
       anime({

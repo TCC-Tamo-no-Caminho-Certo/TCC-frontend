@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { NavbarBackground, Content, Navbar } from './styles'
 
 import Li, { LiProps } from './Li'
@@ -23,7 +23,7 @@ const LeftMenuPage: React.FC<LeftMenuPageProps> = ({
 }) => {
   const { navbarOpen, setNavbarOpen } = useNavbarOpen()
 
-  const onMenuButtonClick = useCallback(() => {
+  function onMenuButtonClick() {
     setNavbarOpen(!navbarOpen)
 
     if (navbarOpen) {
@@ -66,7 +66,7 @@ const LeftMenuPage: React.FC<LeftMenuPageProps> = ({
         left: width,
       })
     }
-  }, [navbarOpen, width, setNavbarOpen])
+  }
 
   return (
     <>

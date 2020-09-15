@@ -48,16 +48,20 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
 
   const onSignupSubmit: SubmitHandler<RegisterData> = async (data, { reset }, event) => {
     event?.preventDefault()
+
     try {
       let captchaToken
+
       if (recaptchaRef.current) captchaToken = await recaptchaRef.current.executeAsync()
       else throw new Error('recaptcha is equal null or undefined')
+
       await signupSchema.validate(data, { abortEarly: false })
 
       const old = data.birthday.split('/')
       const birthday = `${old[2]}-${old[1]}-${old[0]}`
 
       await register({ ...data, birthday, captcha: captchaToken as string })
+
       setModalVisible({
         visible: true,
         title: 'Sucesso!',
@@ -65,12 +69,15 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
           'Agora só falta confirmar seu cadastro clicando no link que enviamos para o seu email',
         color: '#13c47c',
       })
+
       signupFormRef.current?.setErrors({})
       setHomeSlider(false)
     } catch (error) {
       console.log(error)
+
       if (error instanceof Yup.ValidationError) {
         const errorList = getValidationErrors(error)
+
         signupFormRef.current?.setErrors(errorList)
       } else {
         setModalVisible({

@@ -73,16 +73,9 @@ export const Navbar = styled.nav<NavbarProps>`
   }
 `
 
-export const Content = styled.section<ContentProps>`
+export const Content = styled.div<ContentProps>`
   position: absolute;
   top: 0;
-  height: 100vh;
-  width: 100%;
-
-  > div {
-    width: 100%;
-    height: 100%;
-  }
 
   ${({ navbarOpen, openWidth }) =>
     navbarOpen

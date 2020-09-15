@@ -75,7 +75,7 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
       loginFormRef.current?.setErrors({})
       reset()
       setLoadingLogin(false)
-      history.push('/map')
+      history.push('/main')
     } catch (error) {
       setLoadingLogin(false)
       if (error instanceof Yup.ValidationError) {

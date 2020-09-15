@@ -2,19 +2,22 @@ import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
 const Style = styled.div`
-  width: 647px;
-  height: 53px;
-  font-size: 1.5rem;
-  border-radius: 5px;
-  border: solid 1px ${fromTheme('tertiary')};
-
   display: grid;
-  grid: 'labels value change' 100%/15% 70% 15%;
+  grid: 'labels value change' 100%/20% 65% 15%;
+
+  font-size: 1.5rem;
+  height: 40px;
+  width: 500px;
+
+  border-radius: 5px;
+  border: solid 2px ${fromTheme('tertiary')};
+  color: ${fromTheme('tertiary')};
 
   div {
     display: flex;
     justify-content: center;
     align-items: center;
+
     padding: 2px;
 
     span {
