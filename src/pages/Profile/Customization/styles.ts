@@ -8,8 +8,8 @@ const Style = styled.div`
   justify-content: center;
   flex-direction: column;
 
-  background-color: blue;
-  color: ${fromTheme('white')};
+  background-color: ${fromTheme('secondary')};
+  color: ${fromTheme('primary')};
 `
 
 export default Style

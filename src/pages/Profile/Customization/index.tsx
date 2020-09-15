@@ -4,14 +4,14 @@ import Style from './styles'
 import LeftMenuPage from 'components/LeftMenuPage'
 import ulData from '../ulData'
 
-const EditProfile: React.FC = () => {
+const Customization: React.FC = () => {
   return (
-    <LeftMenuPage ulData={ulData} selected='editProfile'>
+    <LeftMenuPage ulData={ulData} selected='customization'>
       <Style>
-        <h1>EditProfile</h1>
+        <h1>Customization</h1>
       </Style>
     </LeftMenuPage>
   )
 }
 
-export default EditProfile
+export default Customization

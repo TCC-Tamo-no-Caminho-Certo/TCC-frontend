@@ -1,9 +1,8 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useLayoutEffect } from 'react'
 import Style from './styles'
 
 import anime from 'animejs'
 import { ThemeContext } from 'styled-components'
-import Anime from '@mollycule/react-anime'
 
 interface HamburgerProps {
   state?: boolean
@@ -16,7 +15,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ state, onClick, ...rest }) => {
   function onHamburgerClick() {
     onClick()
 
-    if (!state) {
+    if (state) {
       anime({
         targets: '#first',
         easing: 'linear',
@@ -53,8 +52,8 @@ const Hamburger: React.FC<HamburgerProps> = ({ state, onClick, ...rest }) => {
     }
   }
 
-  useEffect(() => {
-    if (state) {
+  useLayoutEffect(() => {
+    if (!state) {
       anime({
         targets: '#first',
         easing: 'linear',
@@ -102,7 +101,14 @@ const Hamburger: React.FC<HamburgerProps> = ({ state, onClick, ...rest }) => {
       >
         <rect id='first' width='24' height='3' fill={themes.white} />
 
-        <rect id='second' y='7' width='24' height='3' fill={themes.white} opacity={state ? 0 : 1} />
+        <rect
+          id='second'
+          y='7'
+          width='24'
+          height='3'
+          fill={themes.white}
+          opacity={!state ? 0 : 1}
+        />
 
         <rect id='third' y='14' width='24' height='3' fill={themes.white} />
       </svg>
