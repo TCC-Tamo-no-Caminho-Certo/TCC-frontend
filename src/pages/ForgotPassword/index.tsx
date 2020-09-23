@@ -13,7 +13,7 @@ import getValidationErrors from 'utils/getValidationErrors'
 import { RiArrowLeftSLine } from 'react-icons/ri'
 
 import api from 'services/api'
-import Logo from 'assets/Logo'
+import Logo from 'styles/Logo'
 
 import InputText from 'components/Forms/InputText'
 import Loader from 'styles/Loader'

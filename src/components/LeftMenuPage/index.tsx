@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { NavbarBackground, Content, Navbar } from './styles'
 
 import Li, { LiProps } from './Li'

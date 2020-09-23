@@ -1,17 +1,16 @@
 import styled from 'styled-components'
-import fromTheme from 'utils/fromTheme'
 
-const Style = styled.div`
+const Style = styled.div.attrs({ className: 'ChangeSetter' })`
   display: grid;
   grid: 'labels value change' 100%/20% 65% 15%;
 
   font-size: 1.5rem;
   height: 40px;
   width: 500px;
-
   border-radius: 5px;
-  border: solid 2px ${fromTheme('tertiary')};
-  color: ${fromTheme('tertiary')};
+
+  border: solid 2px #50393e;
+  color: #50393e;
 
   div {
     display: flex;
@@ -31,14 +30,13 @@ const Style = styled.div`
 export const Label = styled.div`
   grid-area: labels;
 `
-
 export const Value = styled.div`
   grid-area: value;
 `
 
 export const Change = styled.div`
   grid-area: change;
-  color: ${fromTheme('primary')};
+  color: #ff6d8d;
 `
 
 export default Style

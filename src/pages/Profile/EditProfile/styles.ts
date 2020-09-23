@@ -2,37 +2,36 @@ import styled from 'styled-components'
 
 import fromTheme from 'utils/fromTheme'
 
+const Card = styled.div.attrs({ className: 'Card' })`
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  width: 550px;
+  height: 650px;
+  border-radius: 16px;
+  padding: 60px 20px 20px 20px;
+
+  background-color: ${fromTheme('secondary')};
+`
+
 const Style = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
   height: 100vh;
 
   background-color: ${fromTheme('tertiary')};
   color: ${fromTheme('tertiary')};
 
-  .Slider {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 
-    height: 700px;
-    width: 100%;
-
-    overflow: visible !important;
+  ${Card} + ${Card} {
+    margin-left: 60px;
   }
-`
-
-const Card = styled.div`
-  display: flex !important;
-  align-items: center !important;
-  flex-direction: column;
-
-  width: 550px !important;
-  height: 650px;
-  border-radius: 16px;
-  margin-left: 50%;
-  transform: translateX(-50%);
-
-  background-color: ${fromTheme('secondary')};
 `
 
 export const Personal = styled(Card)`
@@ -47,7 +46,10 @@ export const Header = styled.div`
   align-items: center;
   justify-content: center;
 
-  width: 100%;
+  position: absolute;
+  top: 0;
+
+  width: 550px;
   height: 40px;
   border-radius: 16px 16px 0 0;
 

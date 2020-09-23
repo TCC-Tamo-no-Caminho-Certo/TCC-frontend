@@ -4,7 +4,7 @@ import { Form } from '@unform/web'
 import { FiLock } from 'react-icons/fi'
 
 import api from 'services/api'
-import Logo from 'assets/Logo'
+import Logo from 'styles/Logo'
 import InputText from 'components/Forms/InputText'
 import Modal, { Atributes } from 'components/Modal'
 

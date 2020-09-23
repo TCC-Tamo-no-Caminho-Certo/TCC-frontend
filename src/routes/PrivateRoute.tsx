@@ -1,7 +1,7 @@
 import React, { ComponentType, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import Logo from 'assets/Logo'
+import Logo from 'styles/Logo'
 import fromTheme from 'utils/fromTheme'
 
 import { RouteProps as RouterPropsDOM, Route, useHistory } from 'react-router-dom'
