@@ -26,8 +26,6 @@ const Style = styled.div`
   height: 100vh;
 
   background-color: ${fromTheme('tertiary')};
-  color: ${fromTheme('tertiary')};
-
 
   ${Card} + ${Card} {
     margin-left: 60px;

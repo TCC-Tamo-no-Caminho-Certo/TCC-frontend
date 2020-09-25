@@ -7,7 +7,7 @@ import { SubmitHandler, FormHandles } from '@unform/core'
 import ReCAPTCHA from 'react-google-recaptcha'
 import * as Yup from 'yup'
 
-import { emailSchema } from 'validations/forgotPassword'
+import { emailSchema } from 'utils/validations/forgotPassword'
 import getValidationErrors from 'utils/getValidationErrors'
 
 import { RiArrowLeftSLine } from 'react-icons/ri'

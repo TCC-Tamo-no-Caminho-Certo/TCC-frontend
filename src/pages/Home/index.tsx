@@ -27,6 +27,7 @@ const Home: React.FC = () => {
   return (
     <Style>
       <Modal atributes={modalAtributes} setVisible={modalChangeVisible} />
+
       <Anime
         in={!homeSlider}
         appear={false}

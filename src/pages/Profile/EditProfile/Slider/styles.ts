@@ -11,6 +11,7 @@ export const Animation = styled(animated.div)``
 
 const Style = styled(animated.div)<StyleProps>`
   flex-direction: column;
+  border: solid green 1px;
 
   &,
   .sliderWrapper {

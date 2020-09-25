@@ -1,15 +1,16 @@
 import styled, { css } from 'styled-components'
+
 import fromTheme from 'utils/fromTheme'
+
+interface NavbarBackoundProps {
+  openWidth: number
+  navbarOpen: boolean
+}
 
 interface NavbarProps {
   selected: string
   navbarOpen: boolean
   openWidth: number
-}
-
-interface NavbarBackoundProps {
-  openWidth: number
-  navbarOpen: boolean
 }
 
 interface ContentProps {
@@ -21,6 +22,7 @@ export const NavbarBackground = styled.div<NavbarBackoundProps>`
   height: 100vh;
 
   background-color: ${fromTheme('primary')};
+  transition: width 300ms ease-in-out;
 
   ${({ navbarOpen, openWidth }) =>
     navbarOpen
@@ -48,20 +50,37 @@ export const Navbar = styled.nav<NavbarProps>`
     flex-direction: column;
 
     height: 100vh;
+    transition: width 300ms ease-in-out;
+
+    li {
+      a {
+        display: flex;
+        align-items: center;
+
+        width: 100%;
+        height: 70px;
+        padding: 0 24px;
+
+        div {
+          margin-left: 24px;
+
+          color: white;
+          white-space: nowrap;
+        }
+      }
+    }
 
     .Hamburger {
       width: 72px;
       height: 70px;
     }
-  }
 
-  ${({ selected }) => css`
-    ${`#${selected} a`} {
-      background-color: ${fromTheme('tertiary')};
-    }
-  `}
+    ${({ selected }) => css`
+      ${`#${selected} a`} {
+        background-color: ${fromTheme('tertiary')};
+      }
+    `}
 
-  ul, .Li {
     ${({ navbarOpen, openWidth }) =>
       navbarOpen
         ? css`
@@ -77,6 +96,8 @@ export const Content = styled.div<ContentProps>`
   position: absolute;
   top: 0;
 
+  transition: all 300ms ease-in-out;
+
   ${({ navbarOpen, openWidth }) =>
     navbarOpen
       ? css`
@@ -88,9 +109,3 @@ export const Content = styled.div<ContentProps>`
           left: 72px;
         `}
 `
-
-export const Li = styled.li``
-
-const Style = styled.section``
-
-export default Style

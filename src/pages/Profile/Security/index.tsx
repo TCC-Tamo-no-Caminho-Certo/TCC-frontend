@@ -2,11 +2,11 @@ import React from 'react'
 import Style from './styles'
 
 import LeftMenuPage from 'components/LeftMenuPage'
-import ulData from '../ulData'
+import navbarList from '../navbarList'
 
 const Security: React.FC = () => {
   return (
-    <LeftMenuPage ulData={ulData} selected='security'>
+    <LeftMenuPage ulData={navbarList} selected='security'>
       <Style>
         <h1>Security</h1>
       </Style>

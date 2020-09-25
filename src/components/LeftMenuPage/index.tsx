@@ -1,93 +1,67 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavbarBackground, Content, Navbar } from './styles'
-
-import Li, { LiProps } from './Li'
 
 import Hamburger from 'components/Hamburger'
 
-import { useNavbarOpen } from 'hooks/useNavbarOpen'
-
 import anime from 'animejs'
+import { Link } from 'react-router-dom'
+
+interface LiProps {
+  icon?: string
+  label: string
+  to: string
+}
 
 interface LeftMenuPageProps {
   selected?: string
-  width?: number
+  openWidth?: number
+  closedWidth?: number
   ulData: LiProps[]
 }
 
 const LeftMenuPage: React.FC<LeftMenuPageProps> = ({
   selected = 'home',
-  width = 210,
+  openWidth = 210,
+  closedWidth = 72,
   ulData,
   children,
 }) => {
-  const { navbarOpen, setNavbarOpen } = useNavbarOpen()
+  const [navbarOpen, setNavbarOpen] = useState(false)
 
   function onMenuButtonClick() {
     setNavbarOpen(!navbarOpen)
 
-    if (navbarOpen) {
-      anime({
-        targets: ['#navbarBackground', '.Li'],
-        duration: 200,
-        easing: 'easeInOutSine',
-        width: [width, 72],
-      })
-
-      anime({
-        targets: '.Content',
-        easing: 'linear',
-        duration: 200,
-        width: 'calc(-72px + 100vw)',
-        left: 72,
-      })
-    } else {
-      anime({
-        targets: '#navbarList a div',
-        duration: 200,
-        easing: 'linear',
-        translateX: [-10, 0],
-        opacity: [0, 1],
-        delay: anime.stagger(100),
-      })
-
-      anime({
-        targets: ['#navbarBackground', '.Li'],
-        duration: 200,
-        easing: 'easeInOutSine',
-        width: [72, width],
-      })
-
-      anime({
-        targets: '.Content',
-        easing: 'linear',
-        duration: 200,
-        width: `calc(-${width}px + 100vw)`,
-        left: width,
-      })
-    }
+    anime({
+      targets: '.label',
+      easing: 'easeInOutSine',
+      duration: 300,
+      translateX: !navbarOpen ? [-closedWidth, 0] : [0, -closedWidth],
+      opacity: !navbarOpen ? [0, 1] : [1, 0],
+      delay: anime.stagger(50),
+    })
   }
 
   return (
     <>
-      <Navbar selected={selected} navbarOpen={navbarOpen} openWidth={width}>
-        <NavbarBackground
-          className='navbar'
-          id='navbarBackground'
-          navbarOpen={navbarOpen}
-          openWidth={width}
-        />
+      <Navbar selected={selected} navbarOpen={navbarOpen} openWidth={openWidth}>
+        <NavbarBackground navbarOpen={navbarOpen} openWidth={openWidth} />
 
-        <ul className='navbar'>
+        <ul>
           <Hamburger state={!navbarOpen} onClick={onMenuButtonClick} />
 
           {ulData.map(liData => (
-            <Li key={liData.to} icon={liData.icon} label={liData.label} to={liData.to} />
+            <li id={liData.to} key={liData.to}>
+              <Link to={liData.to}>
+                <img src={liData.icon} alt='icon' />
+
+                <div className='label'>{navbarOpen && <span>{liData.label}</span>}</div>
+              </Link>
+            </li>
           ))}
         </ul>
       </Navbar>
 
-      <Content className='Content' navbarOpen={navbarOpen} openWidth={width}>
+      <Content navbarOpen={navbarOpen} openWidth={openWidth}>
         {children}
       </Content>
     </>
