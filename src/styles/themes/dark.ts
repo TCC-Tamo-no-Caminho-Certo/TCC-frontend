@@ -1,6 +1,6 @@
-import { DefaultTheme } from 'styled-components'
+const dark = {
+  name: 'dark',
 
-const dark: DefaultTheme = {
   primary: '#EC5878',
   secondary: '#18191A',
   tertiary: '#e5e5e5',

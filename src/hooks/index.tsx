@@ -1,6 +1,8 @@
 import React from 'react'
 
-import { ThemeProvider } from './useTheme'
+import { Provider } from 'react-redux'
+import store from 'store'
+
 import { HomeSliderProvider } from './useHomeSlider'
 import { AuthProvider } from './useAuth'
 import { NavbarOpenProvider } from './useNavbarOpen'
@@ -8,7 +10,7 @@ import { MasterCardPositionProvider } from './useMasterCardPosition'
 
 const GlobalProvider: React.FC = ({ children }) => {
   return (
-    <ThemeProvider>
+    <Provider store={store}>
       <AuthProvider>
         <HomeSliderProvider>
           <NavbarOpenProvider>
@@ -16,7 +18,7 @@ const GlobalProvider: React.FC = ({ children }) => {
           </NavbarOpenProvider>
         </HomeSliderProvider>
       </AuthProvider>
-    </ThemeProvider>
+    </Provider>
   )
 }
 

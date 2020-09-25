@@ -1,8 +1,12 @@
-import React, { useContext, useState, useEffect, useRef, InputHTMLAttributes } from 'react'
+import React, { useState, useEffect, useRef, InputHTMLAttributes } from 'react'
 import Style from './styles'
 
 import anime from 'animejs'
-import { ThemeContext } from 'styled-components'
+
+import { RootState } from 'store'
+import { useSelector } from 'react-redux'
+import { ThemeAttributes } from 'styles/themes/styled'
+
 import { useField } from '@unform/core'
 
 interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -11,7 +15,7 @@ interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const Checkbox: React.FC<CheckboxProps> = ({ name, ...rest }) => {
   const stringName = `${name}Radial`
-  const theme = useContext(ThemeContext)
+  const theme = useSelector<RootState, ThemeAttributes>(state => state.theme)
   const [checked, setChecked] = useState(false)
 
   const checkBoxRef = useRef<HTMLInputElement>(null)
