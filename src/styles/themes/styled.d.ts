@@ -1,22 +1,20 @@
-import 'styled-components'
+export interface ThemeAttributes {
+  name: string,
 
-declare module 'styled-components' {
-  export interface DefaultTheme {
-    primary: string
-    secondary: string
-    tertiary: string
-    quaternary: string
-    quinary: string
+  primary: string
+  secondary: string
+  tertiary: string
+  quaternary: string
+  quinary: string
 
-    background: string
+  background: string
 
-    white: string
+  white: string
 
-    calendarPrimary: string
-    calendarSecondary: string
-    calendarTertiary: string
-    calendarDisabled: string
-    calendarBackground: string
-    calendarHeader: string
-  }
+  calendarPrimary: string
+  calendarSecondary: string
+  calendarTertiary: string
+  calendarDisabled: string
+  calendarBackground: string
+  calendarHeader: string
 }
