@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react'
 import Style, { DualInput, Recaptcha } from './styles'
 
-import signupSchema from 'validations/signup'
+import signupSchema from 'utils/validations/signup'
 
 import Button from 'components/Forms/Button'
 import InputText from 'components/Forms/InputText'

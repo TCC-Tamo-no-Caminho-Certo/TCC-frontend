@@ -13,7 +13,7 @@ import { Container, Style, Recaptcha } from '../styles'
 
 import { PasswordBlock, ButtonPassword } from './styles'
 
-import { passwordSchema } from 'validations/forgotPassword'
+import { passwordSchema } from 'utils/validations/forgotPassword'
 import getValidationErrors from 'utils/getValidationErrors'
 import * as Yup from 'yup'
 

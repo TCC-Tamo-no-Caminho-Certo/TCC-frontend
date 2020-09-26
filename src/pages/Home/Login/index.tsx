@@ -3,7 +3,7 @@ import Style, { Content, Register, Google, Recaptcha, Permanence } from './style
 
 import Loader from 'styles/Loader'
 
-import loginSchema from 'validations/login'
+import loginSchema from 'utils/validations/login'
 
 import Button from 'components/Forms/Button'
 import InputText from 'components/Forms/InputText/'

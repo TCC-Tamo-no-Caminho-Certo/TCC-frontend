@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, SetStateAction, Dispatch } from 'react'
 import Style, { Dot } from './styles'
-
-import { useMasterCardPosition } from 'hooks/useMasterCardPosition'
 
 import { useSpring } from 'react-spring'
 
@@ -11,6 +9,8 @@ interface DotsProps {
   size?: number
   gap?: number
   limits: number
+  position: number
+  setPosition: Dispatch<SetStateAction<number>>
 }
 
 const Dots: React.FC<DotsProps> = ({
@@ -19,8 +19,9 @@ const Dots: React.FC<DotsProps> = ({
   size = 16,
   gap = 20,
   limits,
+  position,
+  setPosition,
 }) => {
-  const { masterCardPosition, setMasterCardPosition } = useMasterCardPosition()
   const [move, setMove] = useState('')
   const maxMove = size + gap
 
@@ -78,8 +79,8 @@ const Dots: React.FC<DotsProps> = ({
   }))
 
   const leftClick = () => {
-    if (masterCardPosition < limits) {
-      setMasterCardPosition(masterCardPosition + 1)
+    if (position < limits) {
+      setPosition(position + 1)
       setMove('left')
       onLeftClick()
 
@@ -132,8 +133,8 @@ const Dots: React.FC<DotsProps> = ({
   }
 
   const rightClick = () => {
-    if (masterCardPosition > -limits) {
-      setMasterCardPosition(masterCardPosition - 1)
+    if (position > -limits) {
+      setPosition(position - 1)
       setMove('right')
       onRightClick()
 
@@ -195,10 +196,7 @@ const Dots: React.FC<DotsProps> = ({
         {' '}
       </Dot>
 
-      <Dot
-        style={center}
-        onClick={() => (move !== 'left' ? leftClick() : rightClick())}
-      >
+      <Dot style={center} onClick={() => (move !== 'left' ? leftClick() : rightClick())}>
         {' '}
       </Dot>
 
