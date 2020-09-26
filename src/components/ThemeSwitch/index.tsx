@@ -1,8 +1,7 @@
 import React from 'react'
 import Style from './styles'
 
-import { RootState, ThemeActions, ThemeState } from 'store'
-import { useSelector, useDispatch } from 'react-redux'
+import { RootState, ThemeActions, ThemeState, useSelector, useDispatch } from 'store'
 
 const ThemeSwitch: React.FC = () => {
   const dispatch = useDispatch()

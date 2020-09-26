@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import Style, { AnimationShape, ProfileOpen, UserInfo, Logout, Edit } from './styles'
 
 import avatar from 'assets/avatar.jpg'
@@ -8,11 +8,11 @@ import gear from 'assets/gear.svg'
 
 import anime from 'animejs'
 import Anime from '@mollycule/react-anime'
-import { ThemeContext } from 'styled-components'
+import { RootState, ThemeState, useSelector } from 'store'
 import { FiLogOut as LogoutIcon } from 'react-icons/fi'
 
 const RightMenu: React.FC = () => {
-  const theme = useContext(ThemeContext)
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const totalWidth = document.getElementById('AnimationShape')?.clientWidth as number
   const totalHeight = document.getElementById('AnimationShape')?.clientHeight as number
@@ -82,13 +82,13 @@ const RightMenu: React.FC = () => {
       </Anime>
 
       {profileOpen && (
-        <ProfileOpen>
+        <ProfileOpen theme={theme}>
           <Edit to='/profile'>
             <img src={gear} alt='edit profile' />
             <span>Editar perfil</span>
           </Edit>
 
-          <UserInfo>
+          <UserInfo theme={theme}>
             <span id='userRole'>Estudante</span>
             <span id='userName'>Miguel Andrade</span>
             <span id='userActivity'>Online</span>

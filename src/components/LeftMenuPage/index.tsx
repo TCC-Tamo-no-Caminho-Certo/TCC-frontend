@@ -6,6 +6,9 @@ import Li, { LiProps } from './Li'
 import Hamburger from 'components/Hamburger'
 
 import { useNavbarOpen } from 'hooks/useNavbarOpen'
+import { useSelector, RootState, ThemeState } from 'store'
+
+
 
 import anime from 'animejs'
 
@@ -22,6 +25,7 @@ const LeftMenuPage: React.FC<LeftMenuPageProps> = ({
   children,
 }) => {
   const { navbarOpen, setNavbarOpen } = useNavbarOpen()
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   function onMenuButtonClick() {
     setNavbarOpen(!navbarOpen)
@@ -70,8 +74,9 @@ const LeftMenuPage: React.FC<LeftMenuPageProps> = ({
 
   return (
     <>
-      <Navbar selected={selected} navbarOpen={navbarOpen} openWidth={width}>
+      <Navbar theme={theme} selected={selected} navbarOpen={navbarOpen} openWidth={width}>
         <NavbarBackground
+          theme={theme}
           className='navbar'
           id='navbarBackground'
           navbarOpen={navbarOpen}

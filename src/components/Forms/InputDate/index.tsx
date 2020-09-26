@@ -1,4 +1,4 @@
-import React, { useState, ComponentType, useContext } from 'react'
+import React, { useState, ComponentType } from 'react'
 import Style from './styles'
 
 import ptbr from 'locales/dates/ptbr'
@@ -7,7 +7,7 @@ import { ErrorTooltip } from 'components/Tooltips'
 
 import ModernDatePicker, { DayValue } from 'react-modern-calendar-datepicker'
 import { useField } from '@unform/core'
-import { ThemeContext } from 'styled-components'
+import { useSelector, RootState, ThemeState } from 'store'
 import { IconBaseProps } from 'react-icons'
 
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
@@ -51,7 +51,7 @@ const InputDate: React.FC<InputDateProps> = ({
   const [selectedDate, setSelectedDate] = useState<DayValue>(null)
   const [isFocused, setIsFocused] = useState(false)
   const [isFilled, setIsFilled] = useState(false)
-  const themes = useContext(ThemeContext)
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const renderCustomInput = ({ ref }: any) => {
     registerField({
@@ -100,6 +100,7 @@ const InputDate: React.FC<InputDateProps> = ({
   return (
     <Style
       id={name}
+      theme={theme}
       hasIcon={!!Icon}
       isErrored={!!error}
       isFilled={isFilled}
@@ -119,7 +120,7 @@ const InputDate: React.FC<InputDateProps> = ({
         maximumDate={maximumDate}
         selectorEndingYear={present.year}
         selectorStartingYear={minimumDate.year}
-        colorPrimary={themes.primary}
+        colorPrimary={theme.primary}
         calendarPopperPosition='bottom'
         calendarClassName='CalendarSize'
       />

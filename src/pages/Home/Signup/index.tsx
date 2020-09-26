@@ -11,6 +11,7 @@ import { Atributes } from 'components/Modal'
 
 import { useAuth } from 'hooks/useAuth'
 import { useHomeSlider } from 'hooks/useHomeSlider'
+import { useSelector, RootState, ThemeState } from 'store'
 
 import getValidationErrors from 'utils/getValidationErrors'
 
@@ -45,6 +46,7 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
   const { homeSlider, setHomeSlider } = useHomeSlider()
   const [showRegister, setShowRegister] = useState(false)
   const [disabled, setDisabled] = useState(true)
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const onSignupSubmit: SubmitHandler<RegisterData> = async (data, { reset }, event) => {
     event?.preventDefault()
@@ -117,7 +119,7 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
       />
 
       {showRegister && (
-        <Style>
+        <Style theme={theme}>
           <nav>
             <button type='button' disabled={disabled} onClick={() => setHomeSlider(false)}>
               <RiArrowLeftSLine />

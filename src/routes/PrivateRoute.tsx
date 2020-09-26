@@ -21,7 +21,7 @@ interface RouteProps extends RouterPropsDOM {
 
 const PrivateRoute: React.FC<RouteProps> = ({ component: Component, ...rest }) => {
   // const token = localStorage.getItem('@SLab_ac_token')
-  // const [access, setAccess] = useState<boolean>(false)
+  // let access = false
 
   // const history = useHistory()
 
@@ -34,7 +34,7 @@ const PrivateRoute: React.FC<RouteProps> = ({ component: Component, ...rest }) =
   //         },
   //       })
 
-  //       setAccess(response.data.success)
+  //       access = response.data.success
   //     } catch (e) {
   //       history.push('/')
   //     }
@@ -42,7 +42,7 @@ const PrivateRoute: React.FC<RouteProps> = ({ component: Component, ...rest }) =
   //   setTimeout(getAccess, 2000)
   // }, [token, history])
 
-  if (false) {
+  if (/*!access*/false) {
     return (
       <Container>
         <Logo />

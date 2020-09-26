@@ -1,6 +1,8 @@
 import React from 'react'
 
 import { Container, ModalBox } from './styles'
+import { useSelector, RootState, ThemeState } from 'store'
+
 
 export interface Atributes {
   message?: string
@@ -15,11 +17,12 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ atributes, setVisible }) => {
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   return (
     <>
       {atributes.visible && (
         <Container>
-          <ModalBox color={atributes.color || '#ccc'}>
+          <ModalBox theme={theme} color={atributes.color || '#ccc'}>
             <header>
               <h1>{atributes.title}</h1>
             </header>

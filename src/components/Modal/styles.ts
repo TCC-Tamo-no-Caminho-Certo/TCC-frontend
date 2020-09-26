@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
 interface Props {
+  theme: any
   color: string
 }
 

@@ -3,11 +3,14 @@ import Style from './styles'
 
 import LeftMenuPage from 'components/LeftMenuPage'
 import ulData from '../ulData'
+import { useSelector, RootState, ThemeState } from 'store'
 
 const Customization: React.FC = () => {
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+
   return (
     <LeftMenuPage ulData={ulData} selected='customization'>
-      <Style>
+      <Style theme={theme}>
         <h1>Customization</h1>
       </Style>
     </LeftMenuPage>

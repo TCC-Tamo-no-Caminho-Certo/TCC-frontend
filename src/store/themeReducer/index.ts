@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import dark from 'styles/themes/dark'
-import light from 'styles/themes/light'
+import { light, dark } from 'styles/themes'
 
 const localTheme = localStorage.getItem('theme')
 

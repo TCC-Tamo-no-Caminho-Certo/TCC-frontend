@@ -6,12 +6,15 @@ import Routes from 'routes/index'
 
 import GlobalContext from 'hooks'
 
+import store from 'store'
+
 const App: React.FC = () => {
+  const theme = store.getState().theme
   return (
     <GlobalContext>
       <Routes />
 
-      <GlobalStyle />
+      <GlobalStyle theme={theme} />
     </GlobalContext>
   )
 }

@@ -2,12 +2,16 @@ import styled, { css } from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
 interface NavbarProps {
+  theme: any
+
   selected: string
   navbarOpen: boolean
   openWidth: number
 }
 
 interface NavbarBackoundProps {
+  theme: any
+
   openWidth: number
   navbarOpen: boolean
 }

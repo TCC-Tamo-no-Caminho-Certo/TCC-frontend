@@ -13,6 +13,7 @@ import { Atributes } from 'components/Modal'
 
 import { useAuth } from 'hooks/useAuth'
 import { useHomeSlider } from 'hooks/useHomeSlider'
+import { useSelector, RootState, ThemeState } from 'store'
 
 import getValidationErrors from 'utils/getValidationErrors'
 
@@ -50,6 +51,7 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
   const [showLogin, setShowLogin] = useState(true)
   const [disabled, setDisabled] = useState(true)
   const [loadingLogin, setLoadingLogin] = useState(false)
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const onRegisterClick = () => {
     setHomeSlider(true)
@@ -133,13 +135,13 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
       />
 
       {showLogin && (
-        <Style ref={loginRef}>
+        <Style theme={theme} ref={loginRef}>
           <header>
             <ThemeSwitch />
           </header>
 
-          <Content>
-            <Google>
+          <Content theme={theme}>
+            <Google theme={theme}>
               <img src={google} alt='google' />
               <span>Entrar com o Google</span>
             </Google>
@@ -168,7 +170,7 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
                 <span>{loadingLogin && <Loader size='18px' border='3px' />}</span>
               </Button>
 
-              <Permanence>
+              <Permanence theme={theme}>
                 <Checkbox name='remember' />
                 <label htmlFor='remember'>Permanecer conectado</label>
               </Permanence>
@@ -176,7 +178,7 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
 
             <Link to='/forgot-password'>Não consegue fazer login?</Link>
 
-            <Register>
+            <Register theme={theme}>
               <span>Ainda não possui uma conta ?</span>
 
               <button type='button' disabled={disabled} onClick={onRegisterClick}>

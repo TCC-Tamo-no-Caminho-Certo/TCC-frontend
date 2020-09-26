@@ -7,6 +7,8 @@ import { useField } from '@unform/core'
 import { IconBaseProps } from 'react-icons'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 
+import { useSelector, RootState, ThemeState } from 'store'
+
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string
   type?: string
@@ -37,6 +39,7 @@ const InputText: React.FC<InputProps> = ({
   const [isFocused, setIsFocused] = useState(false)
   const [isFilled, setIsFilled] = useState(false)
   const [showInput, setShowInput] = useState(false)
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const { defaultValue, fieldName, registerField, error, clearError } = useField(name)
 
   useEffect(() => {
@@ -54,6 +57,7 @@ const InputText: React.FC<InputProps> = ({
   return (
     <Style
       id={name}
+      theme={theme}
       hasEye={eye}
       hasIcon={!!Icon}
       isFilled={isFilled}

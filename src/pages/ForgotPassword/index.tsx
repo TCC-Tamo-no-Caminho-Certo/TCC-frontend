@@ -3,6 +3,7 @@ import React, { useState, useRef } from 'react'
 import { Form } from '@unform/web'
 import { FiUser, FiLock } from 'react-icons/fi'
 import { useHistory } from 'react-router-dom'
+import { useSelector, RootState, ThemeState } from 'store'
 import { SubmitHandler, FormHandles } from '@unform/core'
 import ReCAPTCHA from 'react-google-recaptcha'
 import * as Yup from 'yup'
@@ -35,6 +36,7 @@ const ForgotPassword: React.FC = () => {
   const [confirmToken, setConfirmToken] = useState(false)
   const [userEmail, setUserEmail] = useState<Email>()
   const [modalAtributes, setModalAtributes] = useState<Atributes>({ visible: false })
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const emailRef = useRef<FormHandles>(null)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
@@ -142,19 +144,19 @@ const ForgotPassword: React.FC = () => {
 
       <Modal atributes={modalAtributes} setVisible={handleModalVisible} />
 
-      <Style>
-        <BackButton onClick={() => history.goBack()}>
+      <Style theme={theme}>
+        <BackButton theme={theme} onClick={() => history.goBack()}>
           <RiArrowLeftSLine size={30} />
           <span>Voltar</span>
         </BackButton>
 
-        <Container>
+        <Container theme={theme}>
           <header>
             <Logo />
           </header>
 
           {tokenIsSend ? (
-            <ConfirmToken>
+            <ConfirmToken theme={theme}>
               <Form onSubmit={handleTokenSubmit}>
                 <h3>Confirme o código enviado para o seu email</h3>
 
@@ -166,7 +168,7 @@ const ForgotPassword: React.FC = () => {
                   </button>
                 </div>
 
-                <Button type='submit'>
+                <Button theme={theme} type='submit'>
                   Confirmar
                   {confirmToken && (
                     <span>

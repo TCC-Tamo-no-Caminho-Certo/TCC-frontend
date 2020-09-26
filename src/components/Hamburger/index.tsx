@@ -1,8 +1,9 @@
-import React, { useContext, useLayoutEffect } from 'react'
+import React, { useLayoutEffect } from 'react'
 import Style from './styles'
 
 import anime from 'animejs'
-import { ThemeContext } from 'styled-components'
+import { RootState, ThemeState, useSelector } from 'store'
+
 
 interface HamburgerProps {
   state?: boolean
@@ -10,7 +11,7 @@ interface HamburgerProps {
 }
 
 const Hamburger: React.FC<HamburgerProps> = ({ state, onClick, ...rest }) => {
-  const themes = useContext(ThemeContext)
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   function onHamburgerClick() {
     onClick()
@@ -113,18 +114,18 @@ const Hamburger: React.FC<HamburgerProps> = ({ state, onClick, ...rest }) => {
         fill='none'
         xmlns='http://www.w3.org/2000/svg'
       >
-        <rect id='first' width='24' height='3' fill={themes.white} />
+        <rect id='first' width='24' height='3' fill={theme.white} />
 
         <rect
           id='second'
           y='7'
           width='24'
           height='3'
-          fill={themes.white}
+          fill={theme.white}
           opacity={!state ? 0 : 1}
         />
 
-        <rect id='third' y='14' width='24' height='3' fill={themes.white} />
+        <rect id='third' y='14' width='24' height='3' fill={theme.white} />
       </svg>
     </Style>
   )

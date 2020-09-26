@@ -1,4 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import { useSelector, useDispatch } from 'react-redux'
 
 import authReducer from './authReducer'
 import themeReducer from './themeReducer'
@@ -19,5 +20,7 @@ export const ThemeActions = themeReducer.actions
 export interface ThemeState extends ThemeAttributes {} 
 
 export const authActions = authReducer.actions
+
+export { useSelector, useDispatch }
 
 export default store

@@ -1,7 +1,11 @@
 import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
-const Style = styled.button`
+interface StyleProps {
+  theme: any
+}
+
+const Style = styled.button<StyleProps>`
   height: 45px;
   border-radius: 5px;
   transition: transform 0.2s;

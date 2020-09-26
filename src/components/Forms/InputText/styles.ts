@@ -2,6 +2,8 @@ import styled, { css } from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
 interface StyleProps {
+  theme: any
+  
   hasIcon: boolean
   hasEye: boolean
 

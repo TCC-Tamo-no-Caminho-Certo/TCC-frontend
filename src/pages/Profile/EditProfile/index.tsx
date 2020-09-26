@@ -6,10 +6,14 @@ import ulData from '../ulData'
 
 import LeftMenuPage from 'components/LeftMenuPage'
 
+import { useSelector, RootState, ThemeState } from 'store'
+
 const EditProfile: React.FC = () => {
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+
   return (
     <LeftMenuPage ulData={ulData} selected='editProfile'>
-      <Style>
+      <Style theme={theme}>
         <Slider />
       </Style>
     </LeftMenuPage>

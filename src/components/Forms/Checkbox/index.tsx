@@ -3,9 +3,7 @@ import Style from './styles'
 
 import anime from 'animejs'
 
-import { RootState } from 'store'
-import { useSelector } from 'react-redux'
-import { ThemeAttributes } from 'styles/themes/styled'
+import { RootState, useSelector, ThemeState } from 'store'
 
 import { useField } from '@unform/core'
 
@@ -15,7 +13,7 @@ interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const Checkbox: React.FC<CheckboxProps> = ({ name, ...rest }) => {
   const stringName = `${name}Radial`
-  const theme = useSelector<RootState, ThemeAttributes>(state => state.theme)
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const [checked, setChecked] = useState(false)
 
   const checkBoxRef = useRef<HTMLInputElement>(null)
