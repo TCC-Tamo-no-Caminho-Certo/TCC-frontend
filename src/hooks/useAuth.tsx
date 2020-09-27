@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState } from 'react'
 
-import api from 'services/api'
-
 import { LoginData } from 'pages/Home/Login'
 import { RegisterData } from 'pages/Home/Signup'
+
+import api from 'services/api'
 
 interface AuthContextData {
   token: string

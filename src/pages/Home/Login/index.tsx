@@ -3,7 +3,14 @@ import Style, { Content, Register, Google, Recaptcha, Permanence } from './style
 
 import Loader from 'styles/Loader'
 
+import google from 'assets/google.png'
+
 import loginSchema from 'utils/validations/login'
+import getValidationErrors from 'utils/getValidationErrors'
+
+import { useAuth } from 'hooks/useAuth'
+import { useHomeSlider } from 'hooks/useHomeSlider'
+import { useSelector, RootState, ThemeState } from 'store'
 
 import Button from 'components/Forms/Button'
 import InputText from 'components/Forms/InputText/'
@@ -11,21 +18,13 @@ import Checkbox from 'components/Forms/Checkbox'
 import ThemeSwitch from 'components/ThemeSwitch'
 import { Atributes } from 'components/Modal'
 
-import { useAuth } from 'hooks/useAuth'
-import { useHomeSlider } from 'hooks/useHomeSlider'
-import { useSelector, RootState, ThemeState } from 'store'
-
-import getValidationErrors from 'utils/getValidationErrors'
-
-import google from 'assets/google.png'
-
+import * as Yup from 'yup'
 import anime from 'animejs'
 import ReCAPTCHA from 'react-google-recaptcha'
-import * as Yup from 'yup'
 import { Form } from '@unform/web'
-import { useHistory, Link } from 'react-router-dom'
 import { FiLock } from 'react-icons/fi'
 import { AiOutlineMail } from 'react-icons/ai'
+import { useHistory, Link } from 'react-router-dom'
 import { SubmitHandler, FormHandles } from '@unform/core'
 
 export interface LoginData {

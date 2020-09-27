@@ -1,24 +1,24 @@
 import React, { useEffect, useState, useRef } from 'react'
-
-import { Form } from '@unform/web'
-import { FiLock } from 'react-icons/fi'
-
-import api from 'services/api'
-import Logo from 'styles/Logo'
-import InputText from 'components/Forms/InputText'
-import Modal, { Atributes } from 'components/Modal'
-
-import ReCAPTCHA from 'react-google-recaptcha'
-import { Container, Style, Recaptcha } from '../styles'
-
 import { PasswordBlock, ButtonPassword } from './styles'
+
+import Style, { Container, Recaptcha } from '../styles'
+
+import Logo from 'styles/Logo'
 
 import { passwordSchema } from 'utils/validations/forgotPassword'
 import getValidationErrors from 'utils/getValidationErrors'
-import * as Yup from 'yup'
 
-import { SubmitHandler, FormHandles } from '@unform/core'
+import api from 'services/api'
+
+import InputText from 'components/Forms/InputText'
+import Modal, { Atributes } from 'components/Modal'
+
+import * as Yup from 'yup'
+import ReCAPTCHA from 'react-google-recaptcha'
+import { Form } from '@unform/web'
+import { FiLock } from 'react-icons/fi'
 import { useHistory } from 'react-router-dom'
+import { SubmitHandler, FormHandles } from '@unform/core'
 
 interface ResetPassword {
   password: string

@@ -1,24 +1,28 @@
 import styled from 'styled-components'
+
 import fromTheme from 'utils/fromTheme'
 
 import ReCAPTCHA from 'react-google-recaptcha'
 
-export const Style = styled.main`
-  width: 100vw;
-  height: 100vh;
+const Style = styled.main`
+  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+
+  width: 100vw;
+  height: 100vh;
+
   background-color: ${fromTheme('secondary')};
 `
 export const BackButton = styled.button`
-  display: flex;
-  align-items: center;
-
   position: absolute;
   top: 3%;
   left: 1%;
+
+  display: flex;
+  align-items: center;
 
   color: ${fromTheme('primary')};
   transition: all 0.2s;
@@ -39,20 +43,23 @@ export const Container = styled.article`
   width: min(90%, 500px);
   padding: 20px 15px 40px;
   border-radius: 10px;
+
   box-shadow: 0 0 5px ${fromTheme('tertiary')};
   background: ${fromTheme('secondary')};
 
   header {
     display: flex;
     justify-content: center;
+
     padding: 15px 0;
   }
 
   @media (max-width: 425px) {
     width: 100%;
-    box-shadow: none;
-    padding: 10% 0 0 0;
     height: 100vh;
+    padding: 10% 0 0 0;
+
+    box-shadow: none;
   }
 `
 
@@ -87,13 +94,15 @@ export const ConfirmToken = styled.section`
     display: flex;
     justify-content: center;
     align-items: center;
+
     padding: 15px;
   }
 
   button.resend {
     margin: 15px;
-    font-weight: bold;
+
     text-decoration: underline;
+    font-weight: bold;
     color: ${fromTheme('primary')};
 
     &:hover {
@@ -105,12 +114,13 @@ export const ConfirmToken = styled.section`
 export const Button = styled.button`
   width: 100%;
   height: 60px;
-  color: white;
-  background-color: ${fromTheme('primary')};
-  border: none;
-  border-radius: 8px;
   transition: all 0.2s;
   font: 700 1.8rem 'Archivo';
+
+  color: white;
+  border: none;
+  border-radius: 8px;
+  background-color: ${fromTheme('primary')};
 
   &:hover {
     filter: brightness(1.1);
@@ -131,16 +141,19 @@ export const Button = styled.button`
   }
 
   @media (max-width: 425px) {
+    position: fixed;
+
+    width: 90vw;
+    bottom: 15px;
+
     span {
       right: 20%;
     }
-
-    width: 90vw;
-    position: fixed;
-    bottom: 15px;
   }
 `
 
 export const Recaptcha = styled(ReCAPTCHA)`
   display: none;
 `
+
+export default Style

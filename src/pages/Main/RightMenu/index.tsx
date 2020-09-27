@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import Style, { AnimationShape, ProfileOpen, UserInfo, Logout, Edit } from './styles'
 
 import avatar from 'assets/avatar.jpg'
-
 import close from 'assets/close.svg'
 import gear from 'assets/gear.svg'
 
+import { RootState, ThemeState, useSelector } from 'store'
+
 import anime from 'animejs'
 import Anime from '@mollycule/react-anime'
-import { RootState, ThemeState, useSelector } from 'store'
 import { FiLogOut as LogoutIcon } from 'react-icons/fi'
 
 const RightMenu: React.FC = () => {

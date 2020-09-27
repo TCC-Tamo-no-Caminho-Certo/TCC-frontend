@@ -14,9 +14,11 @@ const ChangeSetter: React.FC<ChangeSetterProps> = ({ label, value }) => {
       <Label>
         <span>{label}</span>
       </Label>
+
       <Value>
         <span>{value}</span>
       </Value>
+
       <Change>
         <img src={editPencil} alt='edit' />
       </Change>

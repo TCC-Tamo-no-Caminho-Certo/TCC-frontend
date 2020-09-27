@@ -1,5 +1,7 @@
 import styled from 'styled-components'
+
 import fromTheme from 'utils/fromTheme'
+
 import { Link } from 'react-router-dom'
 
 export const AnimationShape = styled.div`

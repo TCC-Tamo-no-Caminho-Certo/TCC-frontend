@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef, InputHTMLAttributes } from 'react'
 import Style from './styles'
 
-import anime from 'animejs'
-
 import { RootState, useSelector, ThemeState } from 'store'
 
+import anime from 'animejs'
 import { useField } from '@unform/core'
 
 interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {

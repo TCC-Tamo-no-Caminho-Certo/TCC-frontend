@@ -1,8 +1,9 @@
 import styled, { css } from 'styled-components'
+
 import fromTheme from 'utils/fromTheme'
 
 interface StyleProps {
-  theme:any
+  theme: any
 
   hasIcon: boolean
 

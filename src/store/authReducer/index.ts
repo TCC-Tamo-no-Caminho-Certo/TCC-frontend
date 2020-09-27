@@ -4,11 +4,12 @@ const localAuth = localStorage.getItem('@SLab_ac_token')
 
 const authReducer = createSlice({
   name: 'auth',
-  initialState: localAuth === 'false' || !localAuth ? false : true,
+  initialState: !(localAuth === 'false' || !localAuth),
+
   reducers: {
     authorize: state => true,
-    logout: state => false
-  }
+    logout: state => false,
+  },
 })
 
 export default authReducer

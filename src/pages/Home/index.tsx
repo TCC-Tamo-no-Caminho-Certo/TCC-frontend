@@ -6,10 +6,10 @@ import Login from './Login'
 import Signup from './Signup'
 import Subscribe from './Subscribe'
 
-import Modal, { Atributes } from 'components/Modal'
-
 import { useHomeSlider } from 'hooks/useHomeSlider'
 import { useSelector, RootState, ThemeState } from 'store'
+
+import Modal, { Atributes } from 'components/Modal'
 
 import Anime from '@mollycule/react-anime'
 
@@ -17,11 +17,11 @@ const Home: React.FC = () => {
   const { homeSlider } = useHomeSlider()
   const [modalAtributes, setModalAtributes] = useState<Atributes>({ visible: false })
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
-  
+
   const modalChangeVisible = () => {
     setModalAtributes({ visible: false })
   }
-  
+
   const modal = (Atribute: Atributes) => {
     setModalAtributes(Atribute)
   }

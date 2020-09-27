@@ -1,14 +1,14 @@
 import React from 'react'
-import { Container } from './styles'
+import Style from './styles'
 
-import { Header } from '../index'
+import { Header } from '../styles'
 import ChangeSetter from '../ChangeSetter'
 
 import avatar from 'assets/avatar.jpg'
 
 const Professor: React.FC = () => {
   return (
-    <Container>
+    <Style>
       <Header>Dados do professor</Header>
 
       <img src={avatar} alt='avatar' />
@@ -20,7 +20,7 @@ const Professor: React.FC = () => {
         <ChangeSetter label='Nascimento:' value='19/08/2001' />
         <ChangeSetter label='Senha:' value='**********' />
       </form>
-    </Container>
+    </Style>
   )
 }
 

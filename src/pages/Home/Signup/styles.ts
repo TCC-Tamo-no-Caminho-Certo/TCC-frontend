@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 
-import ReCAPTCHA from 'react-google-recaptcha'
 import fromTheme from 'utils/fromTheme'
+
+import ReCAPTCHA from 'react-google-recaptcha'
 
 const Style = styled.div`
   grid-area: signup;

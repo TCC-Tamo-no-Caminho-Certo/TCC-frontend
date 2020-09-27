@@ -1,8 +1,7 @@
 import React from 'react'
-
 import { Container, ModalBox } from './styles'
-import { useSelector, RootState, ThemeState } from 'store'
 
+import { useSelector, RootState, ThemeState } from 'store'
 
 export interface Atributes {
   message?: string

@@ -1,10 +1,11 @@
 import React from 'react'
 
-import { Provider } from 'react-redux'
-import store from 'store'
-
 import { HomeSliderProvider } from './useHomeSlider'
 import { AuthProvider } from './useAuth'
+
+import store from 'store'
+
+import { Provider } from 'react-redux'
 
 const GlobalProvider: React.FC = ({ children }) => {
   return (

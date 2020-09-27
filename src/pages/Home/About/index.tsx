@@ -8,7 +8,7 @@ const About: React.FC = () => {
   const { homeSlider } = useHomeSlider()
   const [showAbout, setShowAbout] = useState(true)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
-  
+
   const loginSliderAnimation = useCallback(() => {
     if (homeSlider) {
       setTimeout(() => {

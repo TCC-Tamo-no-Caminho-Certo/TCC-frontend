@@ -4,8 +4,8 @@ import Style, { Animation } from './styles'
 import Dots from './Dots'
 import Professor from './Cards/Professor'
 
-import { useSprings } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
+import { useSprings } from 'react-spring'
 
 const cards = ['personal', 'student', 'professor', 'clear']
 

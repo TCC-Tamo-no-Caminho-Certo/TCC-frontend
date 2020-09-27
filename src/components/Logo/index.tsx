@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useContext, useCallback } from 'react'
 import Style from './styles'
 
-import { useSelector, RootState, ThemeState } from 'store'
-
 import anime from 'animejs'
+import { ThemeContext } from 'styled-components'
 
 export const Logo: React.FC = () => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const theme = useContext(ThemeContext)
   const [textOn, setTextOn] = useState(true)
 
   const logoAnimations = useCallback(() => {

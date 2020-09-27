@@ -1,11 +1,13 @@
-import React, { ComponentType, useEffect, useState } from 'react'
+import React, { ComponentType, useEffect } from 'react'
 import styled from 'styled-components'
 
 import Logo from 'styles/Logo'
+
 import fromTheme from 'utils/fromTheme'
 
-import { RouteProps as RouterPropsDOM, Route, useHistory } from 'react-router-dom'
 import api from 'services/api'
+
+import { RouteProps as RouterPropsDOM, Route, useHistory } from 'react-router-dom'
 
 const Container = styled.div`
   height: 100vh;
@@ -20,10 +22,10 @@ interface RouteProps extends RouterPropsDOM {
 }
 
 const PrivateRoute: React.FC<RouteProps> = ({ component: Component, ...rest }) => {
-  // const token = localStorage.getItem('@SLab_ac_token')
-  // let access = false
+  const token = localStorage.getItem('@SLab_ac_token')
+  const access = false
 
-  // const history = useHistory()
+  const history = useHistory()
 
   // useEffect(() => {
   //   async function getAccess() {
@@ -42,7 +44,7 @@ const PrivateRoute: React.FC<RouteProps> = ({ component: Component, ...rest }) =
   //   setTimeout(getAccess, 2000)
   // }, [token, history])
 
-  if (/*!access*/false) {
+  if (/*! access */ false) {
     return (
       <Container>
         <Logo />

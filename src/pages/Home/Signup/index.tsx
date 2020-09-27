@@ -2,6 +2,11 @@ import React, { useRef, useState, useEffect, useCallback } from 'react'
 import Style, { DualInput, Recaptcha } from './styles'
 
 import signupSchema from 'utils/validations/signup'
+import getValidationErrors from 'utils/getValidationErrors'
+
+import { useAuth } from 'hooks/useAuth'
+import { useHomeSlider } from 'hooks/useHomeSlider'
+import { useSelector, RootState, ThemeState } from 'store'
 
 import Button from 'components/Forms/Button'
 import InputText from 'components/Forms/InputText'
@@ -9,14 +14,8 @@ import InputDate from 'components/Forms/InputDate'
 import ThemeSwitch from 'components/ThemeSwitch'
 import { Atributes } from 'components/Modal'
 
-import { useAuth } from 'hooks/useAuth'
-import { useHomeSlider } from 'hooks/useHomeSlider'
-import { useSelector, RootState, ThemeState } from 'store'
-
-import getValidationErrors from 'utils/getValidationErrors'
-
-import ReCAPTCHA from 'react-google-recaptcha'
 import * as Yup from 'yup'
+import ReCAPTCHA from 'react-google-recaptcha'
 import { Form } from '@unform/web'
 import { MdPublic } from 'react-icons/md'
 import { FaUserLock } from 'react-icons/fa'

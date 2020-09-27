@@ -1,9 +1,9 @@
 import React, { useLayoutEffect } from 'react'
 import Style from './styles'
 
-import anime from 'animejs'
 import { RootState, ThemeState, useSelector } from 'store'
 
+import anime from 'animejs'
 
 interface HamburgerProps {
   state?: boolean
@@ -11,7 +11,7 @@ interface HamburgerProps {
 }
 
 const Hamburger: React.FC<HamburgerProps> = ({ state, onClick, ...rest }) => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const theme = useSelector<RootState, ThemeState>(storeState => storeState.theme)
 
   function onHamburgerClick() {
     onClick()
@@ -116,14 +116,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ state, onClick, ...rest }) => {
       >
         <rect id='first' width='24' height='3' fill={theme.white} />
 
-        <rect
-          id='second'
-          y='7'
-          width='24'
-          height='3'
-          fill={theme.white}
-          opacity={!state ? 0 : 1}
-        />
+        <rect id='second' y='7' width='24' height='3' fill={theme.white} opacity={!state ? 0 : 1} />
 
         <rect id='third' y='14' width='24' height='3' fill={theme.white} />
       </svg>

@@ -1,26 +1,27 @@
 import React, { useState, useRef } from 'react'
 
-import { Form } from '@unform/web'
-import { FiUser, FiLock } from 'react-icons/fi'
-import { useHistory } from 'react-router-dom'
-import { useSelector, RootState, ThemeState } from 'store'
-import { SubmitHandler, FormHandles } from '@unform/core'
-import ReCAPTCHA from 'react-google-recaptcha'
-import * as Yup from 'yup'
+import Loader from 'styles/Loader'
+import Logo from 'styles/Logo'
 
 import { emailSchema } from 'utils/validations/forgotPassword'
 import getValidationErrors from 'utils/getValidationErrors'
 
-import { RiArrowLeftSLine } from 'react-icons/ri'
-
 import api from 'services/api'
-import Logo from 'styles/Logo'
+
+import { useSelector, RootState, ThemeState } from 'store'
 
 import InputText from 'components/Forms/InputText'
-import Loader from 'styles/Loader'
 import Modal, { Atributes } from 'components/Modal'
 
-import { Style, Container, InputBlock, ConfirmToken, Button, Recaptcha, BackButton } from './styles'
+import * as Yup from 'yup'
+import ReCAPTCHA from 'react-google-recaptcha'
+import { Form } from '@unform/web'
+import { useHistory } from 'react-router-dom'
+import { FiUser, FiLock } from 'react-icons/fi'
+import { RiArrowLeftSLine } from 'react-icons/ri'
+import { SubmitHandler, FormHandles } from '@unform/core'
+
+import Style, { Container, InputBlock, ConfirmToken, Button, Recaptcha, BackButton } from './styles'
 
 interface Email {
   email: string

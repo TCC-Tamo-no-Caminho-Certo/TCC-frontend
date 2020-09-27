@@ -4,6 +4,7 @@ import { Button } from '../styles'
 
 export const PasswordBlock = styled.div`
   width: 90%;
+
   margin: auto;
 `
 

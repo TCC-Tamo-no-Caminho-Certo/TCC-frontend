@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { NavbarBackground, Content, Navbar } from './styles'
 
-import Hamburger from 'components/Hamburger'
-
 import { useSelector, RootState, ThemeState } from 'store'
+
+import Hamburger from 'components/Hamburger'
 
 import anime from 'animejs'
 import { Link } from 'react-router-dom'

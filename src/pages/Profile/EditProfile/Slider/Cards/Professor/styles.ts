@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
-import { Card } from '../index'
+import { Card } from '../styles'
 
-export const Container = styled(Card)`
+const Style = styled(Card)`
   > img {
     width: 128px;
     height: 128px;
@@ -14,3 +14,5 @@ export const Container = styled(Card)`
     margin-bottom: 24px;
   }
 `
+
+export default Style
