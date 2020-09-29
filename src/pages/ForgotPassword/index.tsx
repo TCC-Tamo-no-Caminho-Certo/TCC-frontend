@@ -11,7 +11,7 @@ import api from 'services/api'
 import { useSelector, RootState, ThemeState } from 'store'
 
 import InputText from 'components/Forms/InputText'
-import Modal, { Atributes } from 'components/Modal'
+import Modal, { ModalAttributes } from 'components/Modal'
 
 import * as Yup from 'yup'
 import ReCAPTCHA from 'react-google-recaptcha'
@@ -21,7 +21,7 @@ import { FiUser, FiLock } from 'react-icons/fi'
 import { RiArrowLeftSLine } from 'react-icons/ri'
 import { SubmitHandler, FormHandles } from '@unform/core'
 
-import Style, { Container, InputBlock, ConfirmToken, Button, Recaptcha, BackButton } from './styles'
+import Style, { InputBlock, ConfirmToken, Recaptcha } from './styles'
 
 interface Email {
   email: string
@@ -36,7 +36,7 @@ const ForgotPassword: React.FC = () => {
   const [tokenIsSend, setTokenIsSend] = useState(false)
   const [confirmToken, setConfirmToken] = useState(false)
   const [userEmail, setUserEmail] = useState<Email>()
-  const [modalAtributes, setModalAtributes] = useState<Atributes>({ visible: false })
+  const [modalAttributes, setModalAttributes] = useState<ModalAttributes>({ visible: false })
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const emailRef = useRef<FormHandles>(null)
@@ -44,8 +44,8 @@ const ForgotPassword: React.FC = () => {
 
   const history = useHistory()
 
-  const handleModalVisible = () => {
-    setModalAtributes({ visible: false })
+  const handleModalOKClick = () => {
+    setModalAttributes({ visible: false })
   }
 
   const handleEmailSubmit: SubmitHandler<Email> = async (data, { reset }, event) => {
@@ -70,7 +70,7 @@ const ForgotPassword: React.FC = () => {
         const errorList = getValidationErrors(error)
         emailRef.current?.setErrors(errorList)
       } else {
-        setModalAtributes({
+        setModalAttributes({
           visible: true,
           message: 'Email não cadastrado em nossa plataforma',
           title: 'Erro',
@@ -98,7 +98,7 @@ const ForgotPassword: React.FC = () => {
       history.push('/reset-password')
     } catch (error) {
       setConfirmToken(false)
-      setModalAtributes({
+      setModalAttributes({
         visible: true,
         title: 'Erro',
         message: 'Token Inválido',
@@ -119,14 +119,14 @@ const ForgotPassword: React.FC = () => {
       console.log(userEmail)
 
       await api.post('forgot-password', { ...userEmail, captcha: captchaToken as string })
-      setModalAtributes({
+      setModalAttributes({
         visible: true,
         title: 'Sucesso',
         message: 'Código reenviado!',
         color: '#13c47c',
       })
     } catch (e) {
-      setModalAtributes({
+      setModalAttributes({
         visible: true,
         title: 'Erro',
         message: 'Algo inesperado ocorreu',
@@ -143,15 +143,15 @@ const ForgotPassword: React.FC = () => {
         sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
       />
 
-      <Modal atributes={modalAtributes} setVisible={handleModalVisible} />
+      <Modal {...modalAttributes} onOKClick={handleModalOKClick} />
 
       <Style theme={theme}>
-        <BackButton theme={theme} onClick={() => history.goBack()}>
+        <button className='backButton' onClick={() => history.goBack()}>
           <RiArrowLeftSLine size={30} />
           <span>Voltar</span>
-        </BackButton>
+        </button>
 
-        <Container theme={theme}>
+        <article>
           <header>
             <Logo />
           </header>
@@ -169,14 +169,14 @@ const ForgotPassword: React.FC = () => {
                   </button>
                 </div>
 
-                <Button theme={theme} type='submit'>
+                <button className='submit' type='submit'>
                   Confirmar
                   {confirmToken && (
                     <span>
                       <Loader size='18px' border='3px' />
                     </span>
                   )}
-                </Button>
+                </button>
               </Form>
             </ConfirmToken>
           ) : (
@@ -191,11 +191,11 @@ const ForgotPassword: React.FC = () => {
                   da senha
                 </p>
 
-                <Button type='submit'>Enviar</Button>
+                <button className='submit' type='submit'>Enviar</button>
               </Form>
             </InputBlock>
           )}
-        </Container>
+        </article>
       </Style>
     </>
   )

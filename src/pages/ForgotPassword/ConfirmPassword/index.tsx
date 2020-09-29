@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { PasswordBlock, ButtonPassword } from './styles'
 
-import Style, { Container, Recaptcha } from '../styles'
+import { PasswordBlock } from './styles'
+import Style, { Recaptcha } from '../styles'
 
 import Logo from 'styles/Logo'
 
@@ -11,7 +11,7 @@ import getValidationErrors from 'utils/getValidationErrors'
 import api from 'services/api'
 
 import InputText from 'components/Forms/InputText'
-import Modal, { Atributes } from 'components/Modal'
+import Modal, { ModalAttributes } from 'components/Modal'
 
 import * as Yup from 'yup'
 import ReCAPTCHA from 'react-google-recaptcha'
@@ -26,7 +26,7 @@ interface ResetPassword {
 }
 
 const ConfirmPassword: React.FC = () => {
-  const [modalAtributes, setModalAtributes] = useState<Atributes>({ visible: false })
+  const [modalAttributes, setModalAttributes] = useState<ModalAttributes>({ visible: false })
 
   const recaptchaRef = useRef<ReCAPTCHA>(null)
   const passwordRef = useRef<FormHandles>(null)
@@ -40,8 +40,8 @@ const ConfirmPassword: React.FC = () => {
     token = path[2]
   }, [])
 
-  const handleModalVisible = () => {
-    setModalAtributes({ visible: false })
+  const handleModalOKClick = () => {
+    setModalAttributes({ visible: false })
     history.push('/')
   }
 
@@ -63,7 +63,7 @@ const ConfirmPassword: React.FC = () => {
 
       await api.post('reset-password', { ...data, captcha: captchaToken as string })
       reset()
-      setModalAtributes({
+      setModalAttributes({
         visible: true,
         title: 'Sucesso',
         message: 'Senha Alterada',
@@ -85,9 +85,9 @@ const ConfirmPassword: React.FC = () => {
         size='invisible'
         sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
       />
-      <Modal atributes={modalAtributes} setVisible={handleModalVisible} />
+      <Modal {...modalAttributes} onOKClick={handleModalOKClick} />
       <Style>
-        <Container>
+        <article>
           <header>
             <Logo />
           </header>
@@ -113,10 +113,10 @@ const ConfirmPassword: React.FC = () => {
                 size={23}
               />
 
-              <ButtonPassword type='submit'> Redefinir</ButtonPassword>
+              <button type='submit'> Redefinir</button>
             </Form>
           </PasswordBlock>
-        </Container>
+        </article>
       </Style>
     </>
   )

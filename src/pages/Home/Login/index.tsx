@@ -16,7 +16,7 @@ import Button from 'components/Forms/Button'
 import InputText from 'components/Forms/InputText/'
 import Checkbox from 'components/Forms/Checkbox'
 import ThemeSwitch from 'components/ThemeSwitch'
-import { Atributes } from 'components/Modal'
+import { ModalAttributes } from 'components/Modal'
 
 import * as Yup from 'yup'
 import anime from 'animejs'
@@ -35,7 +35,7 @@ export interface LoginData {
 }
 
 interface LoginProps {
-  setModalVisible: (Atribute: Atributes) => void
+  setModalVisible: (Atribute: ModalAttributes) => void
 }
 
 const Login: React.FC<LoginProps> = ({ setModalVisible }) => {

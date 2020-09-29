@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
 interface Props {
-  theme: any
   color: string
 }
 
@@ -13,7 +12,7 @@ interface Props {
 //   success: '#13c47c',
 // }
 
-export const Container = styled.div`
+export const Style = styled.div`
   width: 101vw;
   height: 101vh;
 
@@ -25,44 +24,46 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
-export const ModalBox = styled.div<Props>`
-  width: min(350px, 80vw);
-  border: 2px solid #ccc;
+  
+  div {
+    width: min(350px, 80vw);
+    border: 2px solid #ccc;
 
-  background: ${fromTheme('secondary')};
-  border-radius: 15px;
-  text-align: center;
+    background: ${fromTheme('secondary')};
+    border-radius: 15px;
+    text-align: center;
 
-  header {
-    color: ${props => props.color};
-    padding: 10px;
-    border-bottom: 1px solid #aaa;
+    header {
+      color: ${props => props.color};
+      padding: 10px;
+      border-bottom: 1px solid #aaa;
 
-    h1 {
-      font-weight: 600;
-    }
-  }
-
-  section {
-    p {
-      text-align: center;
-
-      padding: 20px;
+      h1 {
+        font-weight: 600;
+      }
     }
 
-    button {
-      margin-bottom: 10px;
-      font: 500 1.6rem 'Archivo';
-      padding: 8px 30px;
-      border-radius: 5px;
-      background: ${fromTheme('primary')};
-      color: ${fromTheme('secondary')};
+    section {
+      p {
+        text-align: center;
 
-      &:hover {
-        filter: brightness(1.1);
+        padding: 20px;
+      }
+
+      button {
+        margin-bottom: 10px;
+        font: 500 1.6rem 'Archivo';
+        padding: 8px 30px;
+        border-radius: 5px;
+        background: ${fromTheme('primary')};
+        color: ${fromTheme('secondary')};
+
+        &:hover {
+          filter: brightness(1.1);
+        }
       }
     }
   }
 `
-// ${props => props.color};
+
+Style.displayName = 'Style'

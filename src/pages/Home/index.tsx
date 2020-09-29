@@ -9,26 +9,26 @@ import Subscribe from './Subscribe'
 import { useHomeSlider } from 'hooks/useHomeSlider'
 import { useSelector, RootState, ThemeState } from 'store'
 
-import Modal, { Atributes } from 'components/Modal'
+import Modal, { ModalAttributes } from 'components/Modal'
 
 import Anime from '@mollycule/react-anime'
 
 const Home: React.FC = () => {
   const { homeSlider } = useHomeSlider()
-  const [modalAtributes, setModalAtributes] = useState<Atributes>({ visible: false })
+  const [modalAttributes, setModalAttributes] = useState<ModalAttributes>({ visible: false })
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const modalChangeVisible = () => {
-    setModalAtributes({ visible: false })
+    setModalAttributes({ visible: false })
   }
 
-  const modal = (Atribute: Atributes) => {
-    setModalAtributes(Atribute)
+  const setModal = (Atribute: ModalAttributes) => {
+    setModalAttributes(Atribute)
   }
 
   return (
     <Style>
-      <Modal atributes={modalAtributes} setVisible={modalChangeVisible} />
+      <Modal {...modalAttributes} onOKClick={modalChangeVisible} />
 
       <Anime
         in={!homeSlider}
@@ -42,9 +42,9 @@ const Home: React.FC = () => {
         <Row theme={theme}>
           <About />
 
-          <Login setModalVisible={modal} />
+          <Login setModalVisible={setModal} />
 
-          <Signup setModalVisible={modal} />
+          <Signup setModalVisible={setModal} />
 
           <Subscribe />
         </Row>

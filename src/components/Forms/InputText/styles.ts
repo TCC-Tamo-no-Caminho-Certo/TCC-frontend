@@ -3,8 +3,6 @@ import styled, { css } from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
 interface StyleProps {
-  theme: any
-
   hasIcon: boolean
   hasEye: boolean
 
@@ -70,19 +68,6 @@ const Style = styled.div<StyleProps>`
       input::placeholder,
       .icon,
       .eyeIcon {
-        color: ${fromTheme('primary')};
-        -webkit-text-fill-color: ${fromTheme('primary')};
-      }
-    `}
-
-  ${({ isFocused }) =>
-    isFocused &&
-    css`
-      border-color: ${fromTheme('primary')};
-
-      &,
-      input::placeholder,
-      .icon {
         color: ${fromTheme('primary')};
         -webkit-text-fill-color: ${fromTheme('primary')};
       }

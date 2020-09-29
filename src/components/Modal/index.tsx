@@ -1,40 +1,37 @@
 import React from 'react'
-import { Container, ModalBox } from './styles'
+import { Style } from './styles'
 
 import { useSelector, RootState, ThemeState } from 'store'
 
-export interface Atributes {
+export interface ModalAttributes {
   message?: string
   visible: boolean
   title?: string
   color?: string
+  onOKClick?: () => void
 }
 
-interface ModalProps {
-  atributes: Atributes
-  setVisible: () => void
-}
-
-const Modal: React.FC<ModalProps> = ({ atributes, setVisible }) => {
+const Modal: React.FC<ModalAttributes> = ({ message, visible, title, color, onOKClick }) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  if (!onOKClick) throw new Error('onOKClick function not provided to the modal!')
   return (
     <>
-      {atributes.visible && (
-        <Container>
-          <ModalBox theme={theme} color={atributes.color || '#ccc'}>
+      {visible && (
+        <Style theme={theme} color={color || '#ccc'}>
+          <div>
             <header>
-              <h1>{atributes.title}</h1>
+              <h1>{title}</h1>
             </header>
 
             <section>
-              <p>{atributes.message}</p>
+              <p>{message}</p>
 
-              <button onClick={setVisible} type='button'>
+              <button onClick={onOKClick} type='button'>
                 Ok
               </button>
             </section>
-          </ModalBox>
-        </Container>
+          </div>
+        </Style>
       )}
     </>
   )

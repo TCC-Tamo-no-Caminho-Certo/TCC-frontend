@@ -15,51 +15,93 @@ const Style = styled.main`
   height: 100vh;
 
   background-color: ${fromTheme('secondary')};
-`
-export const BackButton = styled.button`
-  position: absolute;
-  top: 3%;
-  left: 1%;
 
-  display: flex;
-  align-items: center;
+  article {
+    width: min(90%, 500px);
+    padding: 20px 15px 40px;
+    border-radius: 10px;
 
-  color: ${fromTheme('primary')};
-  transition: all 0.2s;
+    box-shadow: 0 0 5px ${fromTheme('tertiary')};
+    background: ${fromTheme('secondary')};
 
-  &:hover {
-    color: ${fromTheme('tertiary')};
+    header {
+      display: flex;
+      justify-content: center;
+
+      padding: 15px 0;
+    }
+
+    @media (max-width: 425px) {
+      width: 100%;
+      height: 100vh;
+      padding: 10% 0 0 0;
+
+      box-shadow: none;
+    }    
   }
 
-  @media (max-width: 500px) {
-    top: 1%;
+  button.submit {
+    width: 100%;
+    height: 60px;
+    transition: all 0.2s;
+    font: 700 1.8rem 'Archivo';
+
+    color: white;
+    border: none;
+    border-radius: 8px;
+    background-color: ${fromTheme('primary')};
+
+    &:hover {
+      filter: brightness(1.1);
+      transform: scale(1.01);
+    }
+
+    position: relative;
+
     span {
-      display: none;
+      position: absolute;
+      right: 25%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &:hover {
+      transform: scale(1.01);
+    }
+
+    @media (max-width: 425px) {
+      position: fixed;
+
+      width: 90vw;
+      bottom: 15px;
+
+      span {
+        right: 20%;
+      }
     }
   }
-`
 
-export const Container = styled.article`
-  width: min(90%, 500px);
-  padding: 20px 15px 40px;
-  border-radius: 10px;
+  button.backButton {
+    position: absolute;
+    top: 3%;
+    left: 1%;
 
-  box-shadow: 0 0 5px ${fromTheme('tertiary')};
-  background: ${fromTheme('secondary')};
-
-  header {
     display: flex;
-    justify-content: center;
+    align-items: center;
 
-    padding: 15px 0;
-  }
+    color: ${fromTheme('primary')};
+    transition: all 0.2s;
 
-  @media (max-width: 425px) {
-    width: 100%;
-    height: 100vh;
-    padding: 10% 0 0 0;
+    &:hover {
+      color: ${fromTheme('tertiary')};
+    }
 
-    box-shadow: none;
+    @media (max-width: 500px) {
+      top: 1%;
+      span {
+        display: none;
+      }
+    }
   }
 `
 
@@ -111,49 +153,12 @@ export const ConfirmToken = styled.section`
   }
 `
 
-export const Button = styled.button`
-  width: 100%;
-  height: 60px;
-  transition: all 0.2s;
-  font: 700 1.8rem 'Archivo';
-
-  color: white;
-  border: none;
-  border-radius: 8px;
-  background-color: ${fromTheme('primary')};
-
-  &:hover {
-    filter: brightness(1.1);
-    transform: scale(1.01);
-  }
-
-  position: relative;
-
-  span {
-    position: absolute;
-    right: 25%;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  &:hover {
-    transform: scale(1.01);
-  }
-
-  @media (max-width: 425px) {
-    position: fixed;
-
-    width: 90vw;
-    bottom: 15px;
-
-    span {
-      right: 20%;
-    }
-  }
-`
-
 export const Recaptcha = styled(ReCAPTCHA)`
   display: none;
 `
+
+Style.displayName = 'Style'
+InputBlock.displayName = 'Input Block'
+ConfirmToken.displayName = 'Confirm Token'
 
 export default Style
