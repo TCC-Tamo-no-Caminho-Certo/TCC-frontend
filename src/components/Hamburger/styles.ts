@@ -11,6 +11,7 @@ export const MotionRect = styled(motion.rect).attrs({
 
 const Style = styled.button.attrs({
   type: 'button',
+  className: 'Hamburger',
 })`
   width: 72px;
   height: 70px;
