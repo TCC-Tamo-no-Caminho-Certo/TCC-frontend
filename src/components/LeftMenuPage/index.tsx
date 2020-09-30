@@ -50,7 +50,7 @@ const LeftMenuPage: React.FC<LeftMenuPageProps> = ({
         <NavbarBackground theme={theme} navbarOpen={navbarOpen} openWidth={openWidth} />
 
         <ul>
-          <Hamburger state={!navbarOpen} onClick={onMenuButtonClick} />
+          <Hamburger toggle={onMenuButtonClick} />
 
           {ulData.map(liData => (
             <li id={liData.to} key={liData.to}>

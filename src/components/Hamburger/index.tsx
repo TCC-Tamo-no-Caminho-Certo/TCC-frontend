@@ -1,124 +1,60 @@
-import React, { useLayoutEffect } from 'react'
-import Style from './styles'
+import React from 'react'
+import Style, { MotionRect } from './styles'
 
-import { RootState, ThemeState, useSelector } from 'store'
-
-import anime from 'animejs'
+import { useCycle } from 'framer-motion'
 
 interface HamburgerProps {
-  state?: boolean
-  onClick(): void
+  toggle(): void
 }
 
-const Hamburger: React.FC<HamburgerProps> = ({ state, onClick, ...rest }) => {
-  const theme = useSelector<RootState, ThemeState>(storeState => storeState.theme)
+const Hamburger: React.FC<HamburgerProps> = ({ toggle }) => {
+  const [closed, setClosed] = useCycle(true, false)
 
   function onHamburgerClick() {
-    onClick()
-
-    if (state) {
-      anime({
-        targets: '#first',
-        easing: 'linear',
-        duration: 200,
-        translateY: 13.5,
-        rotate: '-45deg',
-      })
-
-      anime({
-        targets: '#second',
-        easing: 'linear',
-        duration: 200,
-        opacity: [1, 0],
-      })
-
-      anime({
-        targets: '#third',
-        easing: 'linear',
-        duration: 200,
-        translateY: -13.5,
-        translateX: '50%',
-        rotate: '45deg',
-      })
-    } else {
-      anime({
-        targets: '#first',
-        easing: 'linear',
-        duration: 200,
-        translateY: 0,
-        rotate: 0,
-      })
-
-      anime({
-        targets: '#second',
-        easing: 'linear',
-        duration: 200,
-        opacity: [0, 1],
-      })
-
-      anime({
-        targets: '#third',
-        easing: 'linear',
-        duration: 200,
-        translateY: 0,
-        translateX: 0,
-        rotate: 0,
-      })
-    }
+    setClosed()
+    toggle()
   }
 
-  useLayoutEffect(() => {
-    if (!state) {
-      anime({
-        targets: '#first',
-        easing: 'linear',
-        duration: 0,
-        translateY: 13.5,
-        rotate: '-45deg',
-      })
+  const first = {
+    open: { rotate: 45, y: 7 },
+    closed: { rotate: 0, y: 0 },
+  }
 
-      anime({
-        targets: '#third',
-        easing: 'linear',
-        duration: 0,
-        translateY: -13.5,
-        translateX: '50%',
-        rotate: '45deg',
-      })
-    } else {
-      anime({
-        targets: '#first',
-        easing: 'linear',
-        duration: 0,
-        translateY: 0,
-        rotate: 0,
-      })
+  const second = {
+    open: { x: 12, y: 0, width: 0 },
+    closed: { x: 0, y: 0, width: 24 },
+  }
 
-      anime({
-        targets: '#third',
-        easing: 'linear',
-        duration: 0,
-        translateY: 0,
-        translateX: 0,
-        rotate: 0,
-      })
-    }
-  }, [state])
+  const third = {
+    open: { rotate: -45, y: -7 },
+    closed: { rotate: 0, y: 0 },
+  }
+
+  const spring = { type: 'spring', stiffness: 200, damping: 30 }
 
   return (
-    <Style onClick={onHamburgerClick} {...rest}>
-      <svg
-        width='24'
-        height='17'
-        viewBox='0 0 24 17'
-        fill='none'
-        xmlns='http://www.w3.org/2000/svg'
-      >
-        <rect id='first' width='24' height='3' fill={theme.white} />
+    <Style onClick={onHamburgerClick}>
+      <svg width='24' height='17' xmlns='http://www.w3.org/2000/svg'>
+        <MotionRect
+          y='0'
+          variants={first}
+          animate={closed ? 'closed' : 'open'}
+          transition={spring}
+        />
 
-        <rect id='second' y='7' width='24' height='3' fill={theme.white} opacity={!state ? 0 : 1} />
+        <MotionRect
+          y='7'
+          variants={second}
+          animate={closed ? 'closed' : 'open'}
+          transition={spring}
+        />
 
-        <rect id='third' y='14' width='24' height='3' fill={theme.white} />
+        <MotionRect
+          y='14'
+          variants={third}
+          animate={closed ? 'closed' : 'open'}
+          transition={spring}
+        />
       </svg>
     </Style>
   )

@@ -70,11 +70,6 @@ export const Navbar = styled.nav<NavbarProps>`
       }
     }
 
-    .Hamburger {
-      width: 72px;
-      height: 70px;
-    }
-
     ${({ selected }) => css`
       ${`#${selected} a`} {
         background-color: ${fromTheme('tertiary')};
