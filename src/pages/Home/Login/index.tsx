@@ -166,7 +166,7 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
 
               <Button type='submit'>
                 <div>Efetuar Login</div>
-                <span>{loadingLogin && <Loader size='18px' border='3px' />}</span>
+                <span>{loadingLogin && <Loader />}</span>
               </Button>
 
               <Permanence theme={theme}>

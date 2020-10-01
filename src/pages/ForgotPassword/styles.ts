@@ -2,8 +2,6 @@ import styled from 'styled-components'
 
 import fromTheme from 'utils/fromTheme'
 
-import ReCAPTCHA from 'react-google-recaptcha'
-
 const Style = styled.main`
   position: relative;
 
@@ -40,14 +38,37 @@ const Style = styled.main`
     }    
   }
 
+  section {
+    width: 90%;
+    margin: auto;
+
+    h3, h2 {
+      font: 500 2rem 'Archivo';
+    }
+
+    h3 {
+      margin-top: 10px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    p {
+      margin-top: 30px;
+      margin-bottom: 0px;
+      text-align: center;
+      font-style: italic;
+    }
+  }
+
   button.submit {
     width: 100%;
-    height: 60px;
+    height: 55px;
     transition: all 0.2s;
     font: 700 1.8rem 'Archivo';
 
     color: white;
     border: none;
+    margin-top: 30px;
     border-radius: 8px;
     background-color: ${fromTheme('primary')};
 
@@ -60,8 +81,8 @@ const Style = styled.main`
 
     span {
       position: absolute;
-      right: 25%;
-      top: 50%;
+      right: 10%;
+      top: calc(50% - 9px);
       transform: translateY(-50%);
     }
 
@@ -105,42 +126,16 @@ const Style = styled.main`
   }
 `
 
-export const InputBlock = styled.section`
-  width: 90%;
-  margin: auto;
-
-  h3 {
-    font: 500 2rem 'Archivo';
-    margin-bottom: 20px;
-    text-align: center;
-  }
-
-  p {
-    margin: 30px 0;
-    text-align: center;
-    font-style: italic;
-  }
-`
-
 export const ConfirmToken = styled.section`
-  width: 90%;
-  margin: auto;
-
-  h3 {
-    font: 500 2rem 'Archivo';
-    margin-bottom: 20px;
-    text-align: center;
-  }
-
-  div.resendContainer {
+  form.resendContainer {
     display: flex;
     justify-content: center;
     align-items: center;
 
-    padding: 15px;
+    padding: 15px 15px 0px 15px;
   }
 
-  button.resend {
+  .resendContainer button {
     margin: 15px;
 
     text-decoration: underline;
@@ -153,12 +148,7 @@ export const ConfirmToken = styled.section`
   }
 `
 
-export const Recaptcha = styled(ReCAPTCHA)`
-  display: none;
-`
-
 Style.displayName = 'Style'
-InputBlock.displayName = 'Input Block'
 ConfirmToken.displayName = 'Confirm Token'
 
 export default Style

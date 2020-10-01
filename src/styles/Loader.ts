@@ -1,28 +1,25 @@
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 
 import fromTheme from 'utils/fromTheme'
 
-interface LoadingComponentProps {
-  border: string
-
-  size: string
-}
-
-const spin = keyframes`
-  0% {
-    transform: rotate(0deg);
-    }
-  100% {
-    transform: rotate(360deg);
-    }`
-
-const Loader = styled.div<LoadingComponentProps>`
-  border: ${props => props.border} solid ${fromTheme('quaternary')};
+const Loader = styled.span`
+  border: 3px solid ${fromTheme('quaternary')};
   border-radius: 50%;
-  border-top: ${props => props.border} solid #fff;
-  width: ${props => props.size};
-  height: ${props => props.size};
-  animation: ${spin} 2s linear infinite;
+  border-top: 3px solid #fff;
+  width: 18px;
+  height: 18px;
+  animation: spin 2s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 `
+
+Loader.displayName = 'Loader'
 
 export default Loader
