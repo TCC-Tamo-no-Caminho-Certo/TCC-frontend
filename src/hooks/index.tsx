@@ -3,17 +3,21 @@ import React from 'react'
 import { HomeSliderProvider } from './useHomeSlider'
 import { AuthProvider } from './useAuth'
 
-import store from 'store'
+import GlobalStyle from 'styles/GlobalStyle'
 
-import { Provider } from 'react-redux'
+import { useSelector, RootState, ThemeState } from 'store'
 
 const GlobalProvider: React.FC = ({ children }) => {
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+
   return (
-    <Provider store={store}>
+    <>
+      <GlobalStyle theme={theme} />
+
       <AuthProvider>
         <HomeSliderProvider>{children}</HomeSliderProvider>
       </AuthProvider>
-    </Provider>
+    </>
   )
 }
 

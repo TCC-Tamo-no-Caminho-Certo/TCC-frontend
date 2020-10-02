@@ -58,7 +58,7 @@ export default createGlobalStyle`
     cursor: pointer;
   }
 
-  input, select, textarea {
+  select, textarea {
     &, &:hover, &:focus  {
       box-shadow: 0 0 0 30px ${fromTheme('secondary')} inset;
     }
