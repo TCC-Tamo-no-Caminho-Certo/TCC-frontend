@@ -89,12 +89,7 @@ export const Content = styled.div`
   }
 
   a {
-    font-size: calc(1.5rem + 0.2vh);
-
     color: ${fromTheme('primary')};
-  }
-
-  a {
     margin-bottom: 5px;
     font-size: calc(1.2rem + 0.5vh);
   }
@@ -122,7 +117,6 @@ export const Permanence = styled.div`
 
   height: 40px;
 
-  cursor: pointer;
   border-bottom: 2px solid ${fromTheme('quinary')};
 
   label {

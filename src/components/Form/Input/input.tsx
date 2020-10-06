@@ -66,7 +66,6 @@ const Input: FC<InputProps> = ({
   const inputRef = useRef<HTMLInputElement>(null)
   const [error, setError] = useState<string>()
   const [showInput, setShowInput] = useState(false)
-  const [isFocused, setIsFocused] = useState(false)
   const [isFilled, setIsFilled] = useState(false)
 
 
@@ -74,10 +73,7 @@ const Input: FC<InputProps> = ({
     _setref({ input: inputRef, setError })
   }, [_setref])
 
-  const onInputFocus = () => setIsFocused(true)
-
   const onInputBlur = () => {
-    setIsFocused(false)
     setIsFilled(!!inputRef.current?.value)
     setError(undefined)
   }
@@ -89,44 +85,15 @@ const Input: FC<InputProps> = ({
 
   return (
     <>
-      {!rest.hidden ? (
-        <Style
-          theme={theme}
-          hasEye={!!eye}
-          hasIcon={!!Icon}
-          isFilled={isFilled}
-          isErrored={!!error}
-          isFocused={isFocused}
-        >
-          {error ? <ErrorTooltip content={error} /> : Icon && <Icon className='icon' />}
-          <input
-            ref={inputRef}
-            type={
-              eye
-                ? type === 'password'
-                  ? showInput
-                    ? 'text'
-                    : type
-                  : showInput
-                  ? type
-                  : 'password'
-                : type
-            }
-            onSubmit={valueHandler}
-            onFocus={onInputFocus}
-            onBlur={onInputBlur}
-            onPaste={event => pasteAndDrop || event?.preventDefault()}
-            onDrop={event => pasteAndDrop || event?.preventDefault()}
-            {...rest}
-          />
-          {eye &&
-            (showInput ? (
-              <AiFillEyeInvisible onClick={() => setShowInput(false)} className='eyeIcon' />
-            ) : (
-              <AiFillEye onClick={() => setShowInput(true)} className='eyeIcon' />
-            ))}
-        </Style>
-      ) : (
+      <Style
+        theme={theme}
+        hasEye={!!eye}
+        hasIcon={!!Icon}
+        isFilled={isFilled}
+        isErrored={!!error}
+        hidden={rest.hidden}
+      >
+        {error ? <ErrorTooltip content={error} /> : Icon && <Icon className='icon' />}
         <input
           ref={inputRef}
           type={
@@ -141,13 +108,18 @@ const Input: FC<InputProps> = ({
               : type
           }
           onSubmit={valueHandler}
-          onFocus={onInputFocus}
           onBlur={onInputBlur}
           onPaste={event => pasteAndDrop || event?.preventDefault()}
           onDrop={event => pasteAndDrop || event?.preventDefault()}
           {...rest}
         />
-      )}
+        {eye &&
+          (showInput ? (
+            <AiFillEyeInvisible onClick={() => setShowInput(false)} className='eyeIcon' />
+          ) : (
+            <AiFillEye onClick={() => setShowInput(true)} className='eyeIcon' />
+          ))}
+      </Style>
     </>
   )
 }

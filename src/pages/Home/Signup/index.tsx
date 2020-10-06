@@ -111,12 +111,6 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
 
   return (
     <>
-      <Recaptcha
-        ref={recaptchaRef}
-        size='invisible'
-        sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
-      />
-
       {showRegister && (
         <Style theme={theme}>
           <nav>
@@ -130,6 +124,12 @@ const Signup: React.FC<SignupProps> = ({ setModalVisible }) => {
           </nav>
 
           <Form ref={signupFormRef} onSubmit={onSignupSubmit}>
+            <Recaptcha
+              ref={recaptchaRef}
+              size='invisible'
+              sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
+            />
+
             <DualInput>
               <InputText
                 name='name'

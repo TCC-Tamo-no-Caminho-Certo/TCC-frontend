@@ -7,13 +7,13 @@ interface StyleProps {
   hasIcon: boolean
   hasEye: boolean
 
-  isFocused: boolean
+  hidden?: boolean
   isFilled: boolean
   isErrored: boolean
 }
 
 export const Style = styled.div<StyleProps>`
-  display: flex;
+  display: ${({ hidden }) => hidden ? 'none' : 'flex'};
   align-items: center;
 
   min-height: 35px;
@@ -47,19 +47,17 @@ export const Style = styled.div<StyleProps>`
     color: ${fromTheme('quaternary')};
   }
 
-  ${({ isFocused }) =>
-    isFocused &&
-    css`
-      border-color: ${fromTheme('primary')};
+  &:focus-within {
+    border-color: ${fromTheme('primary')};
 
-      &,
-      input::placeholder,
-      .icon,
-      .eyeIcon {
-        color: ${fromTheme('primary')};
-        -webkit-text-fill-color: ${fromTheme('primary')};
-      }
-    `}
+    &,
+    input::placeholder,
+    .icon,
+    .eyeIcon {
+      color: ${fromTheme('primary')};
+      -webkit-text-fill-color: ${fromTheme('primary')};
+    }
+  }
 
   ${({ isFilled }) =>
     isFilled &&

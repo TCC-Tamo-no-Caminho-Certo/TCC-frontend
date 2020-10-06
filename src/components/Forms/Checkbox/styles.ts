@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 const Style = styled.div`
   position: relative;
+  cursor: pointer;
 
   width: 16px;
   height: 16px;

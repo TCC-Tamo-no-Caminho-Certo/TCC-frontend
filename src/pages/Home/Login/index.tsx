@@ -35,7 +35,7 @@ export interface LoginData {
 }
 
 interface LoginProps {
-  setModalVisible: (Atribute: ModalAttributes) => void
+  setModalVisible: (Attribute: ModalAttributes) => void
 }
 
 const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
@@ -127,11 +127,6 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
 
   return (
     <>
-      <Recaptcha
-        ref={recaptchaRef}
-        size='invisible'
-        sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
-      />
 
       {showLogin && (
         <Style theme={theme} ref={loginRef}>
@@ -146,6 +141,12 @@ const Login: React.FC<LoginProps> = ({ setModalVisible }) => {
             </Google>
 
             <Form ref={loginFormRef} onSubmit={onLoginSubmit}>
+              <Recaptcha
+                ref={recaptchaRef}
+                size='invisible'
+                sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
+              />
+              
               <InputText
                 name='email'
                 placeholder='E-mail'

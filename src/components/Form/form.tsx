@@ -8,9 +8,9 @@ import React, {
   useState,
 } from 'react'
 import { useSelector, RootState, ThemeState } from 'store'
+import Input, { InputProps, Ref } from './Input/input'
 import { ObjectSchema, ValidationError } from 'yup'
-import Input, { InputProps, Ref } from './input'
-import { ReCAPTCHA, captcha } from './style'
+import { ReCAPTCHA, captcha } from './Input/style'
 import Button from './button'
 import axios from 'axios'
 
@@ -116,7 +116,7 @@ const Form: FC<Props> = ({
         if (child.type === Input)
           return cloneElement(child, { key: child.props.name, theme, _setref: setRef })
         else if (child.type === Button)
-          return loaderFB ? cloneElement(child, { theme, _loader: showLoader }) : child
+          return loaderFB ? cloneElement(child, { key: 'loader', theme, _loader: showLoader }) : child
         return child
       })}
     </form>

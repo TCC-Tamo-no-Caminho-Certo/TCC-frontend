@@ -1,5 +1,5 @@
 import Form from './form'
-import Input from './input'
 import Button from './button'
+import Input from './Input/input'
 
 export { Form, Input, Button }

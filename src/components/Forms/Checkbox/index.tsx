@@ -54,7 +54,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ name, ...rest }) => {
   }, [stringName])
 
   return (
-    <Style className='Checkbox' id={`${name}Checkbox`} onClick={onCheckBoxClick}>
+    <Style id={`${name}Checkbox`} onClick={onCheckBoxClick}>
       <svg viewBox='0 0 15 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
         <rect x='0.5' y='0.5' width='14' height='14' stroke={`url(#${stringName})`} />
 
