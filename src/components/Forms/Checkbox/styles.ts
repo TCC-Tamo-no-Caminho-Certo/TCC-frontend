@@ -17,9 +17,11 @@ const Style = styled.div`
   }
 
   input {
-    z-index: 1;
+    z-index: 2;
+    transform: translateX(-200%);
 
-    display: none;
+    /* z-index: 1;
+    display: none; */
   }
 `
 

@@ -109,6 +109,7 @@ const FormLogin: React.FC = () => {
 
             <Permanence theme={theme}>
               <Checkbox name='remember' />
+              <Checkbox name='rememberTwo' />
               <label htmlFor='remember'>Permanecer conectado</label>
             </Permanence>
           </Form>
