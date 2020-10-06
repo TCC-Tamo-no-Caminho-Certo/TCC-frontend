@@ -2,19 +2,17 @@ import styled from 'styled-components'
 
 import fromTheme from 'utils/fromTheme'
 
-const Style = styled.section`
-  grid-area: about;
-
+const Style = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 
   min-width: 320px;
-  width: 100%;
-  height: 100%;
+  width: 62vw;
+  height: 100vh;
 
   color: ${fromTheme('white')};
-  background-color: ${fromTheme('background')};
+  background-color: ${fromTheme('tertiary')};
 `
 
 export default Style

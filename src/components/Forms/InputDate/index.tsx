@@ -11,7 +11,7 @@ import ModernDatePicker, { DayValue } from 'react-modern-calendar-datepicker'
 import { useField } from '@unform/core'
 import { IconBaseProps } from 'react-icons'
 
-import 'react-modern-calendar-datepicker/lib/DatePicker.css'
+import '../../../../node_modules/react-modern-calendar-datepicker/lib/DatePicker.css'
 
 interface InputDateProps {
   name: string

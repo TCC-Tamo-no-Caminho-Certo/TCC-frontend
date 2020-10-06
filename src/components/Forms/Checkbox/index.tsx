@@ -3,20 +3,39 @@ import Style from './styles'
 
 import { RootState, useSelector, ThemeState } from 'store'
 
-import anime from 'animejs'
 import { useField } from '@unform/core'
+import { motion } from 'framer-motion'
 
 interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string
 }
 
 const Checkbox: React.FC<CheckboxProps> = ({ name, ...rest }) => {
-  const stringName = `${name}Radial`
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
-  const [checked, setChecked] = useState(false)
-
   const checkBoxRef = useRef<HTMLInputElement>(null)
   const { fieldName, registerField } = useField(name)
+  const [checked, setChecked] = useState(false)
+
+  const pathAnimation = {
+    check: {
+      pathLength: 0,
+      transition: {
+        type: 'tween',
+        duration: 0.2,
+      },
+    },
+    unCheck: {
+      pathLength: 1,
+      transition: {
+        type: 'tween',
+        duration: 0.4,
+      },
+    },
+  }
+
+  function onCheckboxClick() {
+    setChecked(!checked)
+  }
 
   useEffect(() => {
     registerField({
@@ -26,49 +45,32 @@ const Checkbox: React.FC<CheckboxProps> = ({ name, ...rest }) => {
     })
   }, [fieldName, registerField])
 
-  function onCheckBoxClick() {
-    const checkedAnimation = anime.timeline({
-      targets: `#${name}Path`,
-      duration: 300,
-      easing: 'easeInOutSine',
-    })
-
-    checked
-      ? checkedAnimation.add({ d: 'M3 6' })
-      : checkedAnimation.add({ d: ['M3 6', 'M3 6 l3 4', 'M3 6 l3 4 l7 -6'] })
-
-    setChecked(!checked)
-  }
-
-  useEffect(() => {
-    anime
-      .timeline({
-        targets: `#${stringName}`,
-        loop: true,
-        duration: 1000,
-      })
-      .add({ cx: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] })
-      .add({ cy: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] })
-      .add({ cx: [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0] })
-      .add({ cy: [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0] })
-  }, [stringName])
-
   return (
-    <Style id={`${name}Checkbox`} onClick={onCheckBoxClick}>
+    <Style className='Checkbox' onClick={onCheckboxClick}>
       <svg viewBox='0 0 15 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
-        <rect x='0.5' y='0.5' width='14' height='14' stroke={`url(#${stringName})`} />
+        <rect x='0.5' y='0.5' width='14' height='14' stroke='url(#checkboxRadial)' />
 
         <defs>
-          <radialGradient id={stringName} cx='0' cy='0' r='1'>
+          <motion.radialGradient
+            animate={{ cx: [0, 1, 1, 0, 0], cy: [0, 0, 1, 1, 0] }}
+            transition={{ type: 'tween', duration: 3, repeat: Infinity }}
+            id='checkboxRadial'
+            r='1'
+          >
             <stop stopColor={theme.primary} />
             <stop offset='1' stopColor={theme.quaternary} />
-          </radialGradient>
+          </motion.radialGradient>
         </defs>
 
-        <path id={`${name}Path`} d='M3 6' stroke={`url(#${stringName})`} />
+        <motion.path
+          d='M3 6 l3 4 l7 -6'
+          variants={pathAnimation}
+          animate={!checked ? 'check' : 'unCheck'}
+          stroke='url(#checkboxRadial)'
+        />
       </svg>
 
-      <input name={name} id={name} ref={checkBoxRef} type='checkbox' checked={checked} {...rest} />
+      <input ref={checkBoxRef} name={name} id={name} type='checkbox' checked={checked} {...rest} />
     </Style>
   )
 }
