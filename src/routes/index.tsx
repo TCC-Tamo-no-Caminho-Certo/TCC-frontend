@@ -26,7 +26,7 @@ const Routes: React.FC = () => {
   return (
     <>
       <AnimatePresence initial={false}>
-        <Switch location={location} key={location.key}>
+        <Switch location={location} key={location.pathname}>
           {homeRoutes.map(route => (
             <Route
               key={route.path}
@@ -44,6 +44,7 @@ const Routes: React.FC = () => {
       </AnimatePresence>
 
       <Switch>
+        <Route path='/' exact component={Home} />
         <Route path='/forgot-password' component={ForgotPassword} />
         <Route path='/reset-password' component={ConfirmPassword} />
 

@@ -35,14 +35,15 @@ const Style = styled.main`
       padding: 10% 0 0 0;
 
       box-shadow: none;
-    }    
+    }
   }
 
   section {
     width: 90%;
     margin: auto;
 
-    h3, h2 {
+    h3,
+    h2 {
       font: 500 2rem 'Archivo';
     }
 

@@ -1,5 +1,6 @@
 import authReducer from './authReducer'
 import themeReducer from './themeReducer'
+import home from './home'
 
 import { ThemeAttributes } from 'styles/themes/styled'
 
@@ -9,15 +10,19 @@ import { useSelector, useDispatch } from 'react-redux'
 const rootReducer = combineReducers({
   auth: authReducer.reducer,
   theme: themeReducer.reducer,
+  home: home.reducer,
 })
 
 const store = configureStore({
-  reducer: rootReducer
+  reducer: rootReducer,
 })
+
+// Home
+export const HomeActions = home.actions
 
 // Theme
 export const ThemeActions = themeReducer.actions
-export type ThemeState = ThemeAttributes 
+export type ThemeState = ThemeAttributes
 
 // Auth
 export const authActions = authReducer.actions

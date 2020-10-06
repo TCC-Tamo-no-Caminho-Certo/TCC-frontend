@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import Style, { Content, Register, Google, Recaptcha, Permanence } from './styles'
 
 import google from 'assets/google.png'
@@ -7,7 +7,7 @@ import loginSchema from 'utils/validations/login'
 import getValidationErrors from 'utils/getValidationErrors'
 
 import { useAuth } from 'hooks/useAuth'
-import { useSelector, RootState, ThemeState } from 'store'
+import { useDispatch, useSelector, RootState, ThemeState, HomeActions } from 'store'
 
 import Button from 'components/Forms/Button'
 import InputText from 'components/Forms/InputText/'
@@ -30,6 +30,7 @@ export interface LoginData {
 }
 
 const FormLogin: React.FC = () => {
+  const dispatch = useDispatch()
   const loginFormRef = useRef<FormHandles>(null)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
   const loginRef = useRef(null)
@@ -38,6 +39,15 @@ const FormLogin: React.FC = () => {
   const { login } = useAuth()
 
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
+
+  function onSignupClick() {
+    history.push('/signup')
+    dispatch(HomeActions.changeState(true))
+  }
+
+  function onForgotClick() {
+    dispatch(HomeActions.changeState(false))
+  }
 
   const onLoginSubmit: SubmitHandler<LoginData> = async (data, { reset }, event) => {
     event?.preventDefault()
@@ -114,12 +124,16 @@ const FormLogin: React.FC = () => {
             </Permanence>
           </Form>
 
-          <Link to='/forgot-password'>Não consegue fazer login?</Link>
+          <Link to='/forgot-password' onClick={onForgotClick}>
+            Não consegue fazer login?
+          </Link>
 
           <Register theme={theme}>
             <span>Ainda não possui uma conta ?</span>
 
-            <Link to='/signup'>Registre-se aqui!</Link>
+            <button type='button' onClick={onSignupClick}>
+              Registre-se aqui!
+            </button>
           </Register>
         </Content>
       </Style>
