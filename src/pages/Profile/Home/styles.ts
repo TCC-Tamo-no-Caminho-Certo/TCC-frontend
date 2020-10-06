@@ -2,11 +2,10 @@ import styled from 'styled-components'
 
 import { motion } from 'framer-motion'
 
-const Style = styled(motion.section)`
-  position: absolute;
-  top: 0;
+const Style = styled(motion.li)`
+  height: 100vh;
 
-  display: flex;
+  background-color: black;
 `
 
 export default Style

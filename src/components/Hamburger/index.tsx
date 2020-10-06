@@ -40,6 +40,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle }) => {
           variants={first}
           animate={closed ? 'closed' : 'open'}
           transition={spring}
+          initial={false}
         />
 
         <MotionRect
@@ -47,6 +48,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle }) => {
           variants={second}
           animate={closed ? 'closed' : 'open'}
           transition={spring}
+          initial={false}
         />
 
         <MotionRect
@@ -54,6 +56,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle }) => {
           variants={third}
           animate={closed ? 'closed' : 'open'}
           transition={spring}
+          initial={false}
         />
       </svg>
     </Style>

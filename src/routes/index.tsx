@@ -1,27 +1,56 @@
+/* eslint-disable react/no-children-prop */
 import React from 'react'
-
-import Home from 'pages/Home'
-import Map from 'pages/Main/Map'
-import ConfirmPassword from 'pages/ForgotPassword/ConfirmPassword'
-import ForgotPassword from 'pages/ForgotPassword'
-import Profile from 'pages/Profile'
-
 import PrivateRoute from 'routes/PrivateRoute'
 
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import Home from 'pages/Home'
+import Login from 'pages/Home/Login'
+import Signup from 'pages/Home/Signup'
+import ConfirmPassword from 'pages/ForgotPassword/ConfirmPassword'
+import ForgotPassword from 'pages/ForgotPassword'
+
+import Profile from 'pages/Profile'
+
+import Map from 'pages/Main/Map'
+
+import { Route, Switch, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 
 const Routes: React.FC = () => {
+  const location = useLocation()
+
+  const homeRoutes = [
+    { path: '/', exact: true, slider: () => <Login />, restOfHome: () => <Home /> },
+    { path: '/signup', slider: () => <Signup />, restOfHome: () => <Home /> },
+  ]
+
   return (
-    <BrowserRouter>
+    <>
+      <AnimatePresence initial={false}>
+        <Switch location={location} key={location.key}>
+          {homeRoutes.map(route => (
+            <Route
+              key={route.path}
+              path={route.path}
+              exact={route.exact}
+              children={() => (
+                <>
+                  <route.slider />
+                  <route.restOfHome />
+                </>
+              )}
+            />
+          ))}
+        </Switch>
+      </AnimatePresence>
+
       <Switch>
-        <Route path='/' component={Home} exact />
         <Route path='/forgot-password' component={ForgotPassword} />
         <Route path='/reset-password' component={ConfirmPassword} />
 
         <PrivateRoute path='/main' component={Map} />
-        <PrivateRoute path='/profile' component={Profile} />
+        <Route path='/profile' component={Profile} />
       </Switch>
-    </BrowserRouter>
+    </>
   )
 }
 

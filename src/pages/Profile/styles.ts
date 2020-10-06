@@ -4,9 +4,14 @@ import fromTheme from 'utils/fromTheme'
 
 import { motion } from 'framer-motion'
 
-export const Navbar = styled(motion.nav)`
-  width: 300px;
+export const Content = styled(motion.ul)`
+  overflow: hidden;
+`
+
+export const Sidebar = styled(motion.nav)`
   height: 100vh;
+
+  background-color: ${fromTheme('primary')};
 
   .Hamburger {
     width: 72px;
@@ -14,6 +19,10 @@ export const Navbar = styled(motion.nav)`
   }
 
   ul {
+    position: fixed;
+    top: 0;
+    left: 0;
+
     width: 100%;
 
     li {
@@ -39,12 +48,7 @@ export const Navbar = styled(motion.nav)`
   }
 `
 
-export const Content = styled.div`
-  width: 100%;
-  overflow: hidden;
-`
-
-const Style = styled.div`
+const Style = styled(motion.section)`
   display: flex;
 `
 

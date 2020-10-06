@@ -6,13 +6,15 @@ import GlobalContext from 'hooks'
 
 import store from 'store'
 import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
 
 const App: React.FC = () => {
-
   return (
     <Provider store={store}>
       <GlobalContext>
-        <Routes />
+        <BrowserRouter>
+          <Routes />
+        </BrowserRouter>
       </GlobalContext>
     </Provider>
   )

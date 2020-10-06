@@ -1,79 +1,105 @@
 /* eslint-disable react/no-children-prop */
 import React from 'react'
-import Style, { Content, Navbar } from './styles'
+import Style, { Content, Sidebar } from './styles'
 
+import { useSelector, RootState, ThemeState } from 'store'
+
+import ProfileHome from './Home'
 import EditProfile from './EditProfile'
+
+import Hamburger from 'components/Hamburger'
 
 import home from 'assets/ProfileNavbar/home.svg'
 import editProfile from 'assets/ProfileNavbar/editProfile.svg'
 
-import { useSelector, RootState, ThemeState } from 'store'
-
-import Hamburger from 'components/Hamburger'
-
+import { Link, Switch, Route, useLocation } from 'react-router-dom'
 import { useCycle } from 'framer-motion'
-import { Link, Route, Switch } from 'react-router-dom'
-
-const routes = [
-  {
-    path: '/profile',
-    exact: true,
-    content: () => <h2>Profile</h2>,
-    icon: home,
-    label: 'Perfil',
-    alt: 'profile',
-  },
-  {
-    path: '/profile/editProfile',
-    content: () => <EditProfile />,
-    icon: editProfile,
-    label: 'Editar perfil',
-    alt: 'editProfile',
-  },
-]
 
 const Profile: React.FC = () => {
+  const location = useLocation()
+
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const [closed, setClosed] = useCycle(true, false)
+
+  const cycleNavbar = () => (closed ? 'closed' : 'open')
+  const cycleContent = () => (closed ? 'open' : 'closed')
 
   const navbar = {
     open: {
       width: 210,
+      transition: {
+        type: 'tween',
+        duration: 0.2,
+      },
     },
-
     closed: {
       width: 72,
+      transition: {
+        type: 'tween',
+        duration: 0.2,
+      },
     },
   }
+
+  const content = {
+    open: {
+      width: 'calc(100vw - 72px)',
+      transition: {
+        type: 'tween',
+        duration: 0.2,
+      },
+    },
+    closed: {
+      width: 'calc(100vw - 210px)',
+      transition: {
+        type: 'tween',
+        duration: 0.2,
+      },
+    },
+  }
+
+  const profileRoutes = [
+    {
+      path: '/profile',
+      icon: home,
+      exact: true,
+      label: 'Perfil',
+      content: () => <ProfileHome />,
+    },
+    {
+      path: '/profile/editProfile',
+      icon: editProfile,
+      label: 'Editar Perfil',
+      content: () => <EditProfile />,
+    },
+  ]
 
   function onToggle() {
     setClosed()
   }
 
-  const cycle = () => (closed ? 'closed' : 'open')
-
   return (
     <Style>
-      <Navbar theme={theme} variants={navbar} initial={false} animate={cycle()}>
-        <Hamburger toggle={onToggle} />
-
+      <Sidebar theme={theme} variants={navbar} initial={false} animate={cycleNavbar()}>
         <ul>
-          {routes.map(route => (
+          <Hamburger toggle={onToggle} />
+
+          {profileRoutes.map(route => (
             <li>
               <Link to={route.path}>
                 <button type='button'>
-                  <img src={route.icon} alt={route.alt} />
+                  <img src={route.icon} alt={route.path} />
                   {!closed && <span>{route.label}</span>}
                 </button>
               </Link>
             </li>
           ))}
         </ul>
-      </Navbar>
+      </Sidebar>
 
-      <Content>
-        <Switch>
-          {routes.map(route => (
+      <Content variants={content} initial={false} animate={cycleContent()}>
+        <Switch location={location} key={location.key}>
+          {profileRoutes.map(route => (
             <Route
               key={route.path}
               path={route.path}

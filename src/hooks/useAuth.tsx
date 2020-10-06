@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react'
 
-import { LoginData } from 'pages/Home/Login'
-import { RegisterData } from 'pages/Home/Signup'
+import { LoginData } from 'pages/Home/Login/FormLogin'
+import { RegisterData } from 'pages/Home/Signup/FormSignup'
 
 import api from 'services/api'
 
