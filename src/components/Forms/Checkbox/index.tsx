@@ -62,12 +62,21 @@ const Checkbox: React.FC<CheckboxProps> = ({ name, ...rest }) => {
           d='M3 6 l3 4 l7 -6'
           initial='unCheck'
           variants={pathAnimation}
+          initial='unCheck'
           animate={!checked ? 'check' : 'unCheck'}
           stroke='url(#checkboxRadial)'
         />
       </svg>
 
-      <input ref={checkBoxRef} name={name} id={name} type='checkbox' checked={checked} readOnly {...rest} />
+      <input
+        ref={checkBoxRef}
+        name={name}
+        id={name}
+        type='checkbox'
+        checked={checked}
+        readOnly
+        {...rest}
+      />
     </Style>
   )
 }

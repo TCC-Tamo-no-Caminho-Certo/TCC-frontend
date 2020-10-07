@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 const Style = styled(motion.section)`
   position: absolute;
   top: 0;
+
   display: flex;
 `
 

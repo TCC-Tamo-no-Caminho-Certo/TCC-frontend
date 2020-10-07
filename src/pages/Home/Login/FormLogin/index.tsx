@@ -7,7 +7,6 @@ import loginSchema from 'utils/validations/login'
 
 import { useSelector, RootState, ThemeState } from 'store'
 
-import Checkbox from 'components/Forms/Checkbox'
 import ThemeSwitch from 'components/ThemeSwitch'
 
 import { FiLock } from 'react-icons/fi'

@@ -16,7 +16,6 @@ import { RiArrowLeftSLine } from 'react-icons/ri'
 import Style, { ConfirmToken } from './styles'
 
 const ForgotPassword: React.FC = () => {
-
   const [userEmail, setUserEmail] = useState<string>()
   const [tokenIsSend, setTokenIsSend] = useState(false)
   const [modalAttributes, setModalAttributes] = useState<ModalAttributes>({ visible: false })
@@ -25,14 +24,14 @@ const ForgotPassword: React.FC = () => {
   const history = useHistory()
 
   const handleEmailSubmit = (result: any) => {
-    result.success ?
-    setTokenIsSend(true) :
-    setModalAttributes({
-      visible: true,
-      message: 'Email não cadastrado em nossa plataforma',
-      title: 'Erro',
-      color: '#e8423f',
-    })
+    result.success
+      ? setTokenIsSend(true)
+      : setModalAttributes({
+          visible: true,
+          message: 'Email não cadastrado em nossa plataforma',
+          title: 'Erro',
+          color: '#e8423f',
+        })
   }
 
   const handleTokenSubmit = (result: any) => {
@@ -50,20 +49,19 @@ const ForgotPassword: React.FC = () => {
   }
 
   const handleTokenResent = (result: any) => {
-    result.success ?
-    setModalAttributes({
-        visible: true,
-        title: 'Sucesso',
-        message: 'Código reenviado!',
-        color: '#13c47c',
-      })
-    :
-    setModalAttributes({
-        visible: true,
-        title: 'Erro',
-        message: 'Algo inesperado ocorreu',
-        color: '#e8423f',
-      })
+    result.success
+      ? setModalAttributes({
+          visible: true,
+          title: 'Sucesso',
+          message: 'Código reenviado!',
+          color: '#13c47c',
+        })
+      : setModalAttributes({
+          visible: true,
+          title: 'Erro',
+          message: 'Algo inesperado ocorreu',
+          color: '#e8423f',
+        })
   }
 
   return (
@@ -71,8 +69,9 @@ const ForgotPassword: React.FC = () => {
       <Modal {...modalAttributes} onOKClick={() => setModalAttributes({ visible: false })} />
 
       <Style theme={theme}>
-        <button className='backButton' onClick={() => history.goBack()}>
+        <button type='button' className='backButton' onClick={() => history.push('/')}>
           <RiArrowLeftSLine size={30} />
+
           <span>Voltar</span>
         </button>
 
@@ -91,14 +90,26 @@ const ForgotPassword: React.FC = () => {
                 <Button className='submit'>Confirmar</Button>
               </Form>
 
-              <Form className='resendContainer' cb={handleTokenResent} path='forgot-password' captcha>
-                <Input name='email' hidden value={userEmail}></Input>
+              <Form
+                className='resendContainer'
+                cb={handleTokenResent}
+                path='forgot-password'
+                captcha
+              >
+                <Input name='email' hidden value={userEmail} />
+
                 <Button>Envie novamente</Button>
               </Form>
             </ConfirmToken>
           ) : (
             <section>
-              <Form cb={handleEmailSubmit} valSchema={emailSchema} path='forgot-password' loaderFB captcha>
+              <Form
+                cb={handleEmailSubmit}
+                valSchema={emailSchema}
+                path='forgot-password'
+                loaderFB
+                captcha
+              >
                 <h3>Digite seu email para recuperar a senha</h3>
 
                 <Input name='email' placeholder='E-mail' icon={FiUser} handleValue={setUserEmail} />

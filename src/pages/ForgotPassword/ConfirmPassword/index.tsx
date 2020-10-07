@@ -14,7 +14,6 @@ import { useHistory } from 'react-router-dom'
 import { FiLock } from 'react-icons/fi'
 
 const ConfirmPassword: React.FC = () => {
-
   const [modalAttributes, setModalAttributes] = useState<ModalAttributes>({ visible: false })
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
@@ -30,7 +29,7 @@ const ConfirmPassword: React.FC = () => {
     history.push('/')
   }
 
-  const handleResetPassSubmit =  (data: any) => {
+  const handleResetPassSubmit = (data: any) => {
     setModalAttributes({
       visible: true,
       title: 'Sucesso',
@@ -49,15 +48,16 @@ const ConfirmPassword: React.FC = () => {
           </header>
 
           <section>
-            <Form cb={handleResetPassSubmit} valSchema={passwordSchema} path='reset-password' addData={{ token }} loaderFB captcha>
+            <Form
+              cb={handleResetPassSubmit}
+              valSchema={passwordSchema}
+              path='reset-password'
+              addData={{ token }}
+              loaderFB
+              captcha
+            >
               <h2>Digite sua nova senha</h2>
-              <Input
-                name='password'
-                type='password'
-                placeholder='Senha'
-                icon={FiLock}
-                eye
-              />
+              <Input name='password' type='password' placeholder='Senha' icon={FiLock} eye />
               <h2>Confirme sua nova senha</h2>
               <Input
                 name='confirmPassword'
