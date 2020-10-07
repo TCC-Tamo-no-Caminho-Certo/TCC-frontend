@@ -1,7 +1,8 @@
 import React from 'react'
 import { Style } from './styles'
 
-import { useSelector, RootState, ThemeState } from 'store'
+import { ThemeState } from 'store/Theme'
+import { useSelector, RootState } from 'store'
 
 export interface ModalAttributes {
   message?: string

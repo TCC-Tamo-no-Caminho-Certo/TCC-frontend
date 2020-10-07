@@ -36,8 +36,6 @@
     }
   },
   "rules": {
-    "camelcase": "off",
-    "prettier/prettier": "error",
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
@@ -46,11 +44,14 @@
     "react/prop-types": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "import/prefer-default-export": "off",
-    "jsx-a11y/label-has-associated-control": "off",
+    "react/no-children-prop": "off",
     "no-unused-expressions": "off",
-    "import/order": "off",
+    "no-param-reassign": "off",
+    "import/prefer-default-export": "off",
     "import/no-unresolved": "off",
+    "import/order": "off",
+    "prettier/prettier": "error",
+    "jsx-a11y/label-has-associated-control": "off",
     "react/jsx-filename-extension": [
       1,
       {

@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
+import Style, { ConfirmToken } from './styles'
 
 import Logo from 'styles/Logo'
 
 import { emailSchema } from 'utils/validations/forgotPassword'
 
-import { useSelector, RootState, ThemeState } from 'store'
+import { ThemeState } from 'store/Theme'
+import { useSelector, RootState } from 'store'
 
 import { Form, Input, Button } from 'components/Form'
 import Modal, { ModalAttributes } from 'components/Modal'
@@ -12,8 +14,6 @@ import Modal, { ModalAttributes } from 'components/Modal'
 import { useHistory } from 'react-router-dom'
 import { FiUser, FiLock } from 'react-icons/fi'
 import { RiArrowLeftSLine } from 'react-icons/ri'
-
-import Style, { ConfirmToken } from './styles'
 
 const ForgotPassword: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string>()

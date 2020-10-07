@@ -2,14 +2,13 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const localUserConfig = localStorage.getItem('-----')
 
-const themeReducer = createSlice({
+const User = createSlice({
   name: 'userConfig',
-
   initialState: localUserConfig,
-
   reducers: {
-    changeTheme: state => {},
+    changeTheme: state => '',
   },
 })
 
-export default themeReducer
+export const UserActions = User.actions
+export default User

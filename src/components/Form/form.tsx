@@ -7,42 +7,71 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { useSelector, RootState, ThemeState } from 'store'
+
+import { ThemeState } from 'store/Theme'
+import { useSelector, RootState } from 'store'
+
 import Input, { InputProps, Ref } from './Input/input'
+
 import { ObjectSchema, ValidationError } from 'yup'
+
 import { ReCAPTCHA, captcha } from './Input/style'
+
 import Button from './button'
+
 import axios from 'axios'
 
 interface Props extends HTMLProps<HTMLFormElement> {
   children: (ReactElement<InputProps> | ReactElement)[] | ReactElement<InputProps>
+
   path: string
+
   token?: string
+
   captcha?: boolean
+
   loaderFB?: boolean
+
   valSchema?: ObjectSchema
+
   addData?: { [key: string]: string }
+
   cb?: (resData: any) => void
 }
 
 /**
+
  *
+
  * @param children -must be an input
+
  */
+
 const Form: FC<Props> = ({
   children,
+
   path,
+
   token,
+
   loaderFB,
+
   valSchema,
+
   addData,
+
   captcha,
+
   cb,
+
   ...rest
 }) => {
   // const auxChildren: any = Array.isArray(children) ? children : [children]
+
   const data: any = { ...addData }
+
   const refs: Ref[] = []
+
   let haveErrors = false
 
   const [showLoader, setShowLoader] = useState(false)
@@ -73,6 +102,7 @@ const Form: FC<Props> = ({
       if (error instanceof ValidationError) {
         error.inner.forEach(errorElement => {
           const index = refs.findIndex(value => value.input.current?.name === errorElement.path)
+
           refs[index].setError(errorElement.message)
         })
       } else {
@@ -85,7 +115,9 @@ const Form: FC<Props> = ({
     try {
       const { data: resData } = await axios.post(
         `http://dev.steamslab.com/api/${path}`,
+
         data,
+
         token ? { headers: { authorization: `Berear ${token}` } } : undefined
       )
 
@@ -97,45 +129,61 @@ const Form: FC<Props> = ({
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
+
     // console.log(refs)
+
     loaderFB && setShowLoader(true)
 
     setData()
+
     await validate()
+
     data.captcha = captcha && (await recaptchaRef.current!.executeAsync())
+
     // !haveErrors && (await submit(cb))
+
     loaderFB && setShowLoader(false)
+
     console.log(data)
   }
 
-  const checkChildren = (elements: (ReactElement<InputProps> | ReactElement)[] | ReactElement<InputProps> | ReactElement) => {
+  const checkChildren = (
+    elements: (ReactElement<InputProps> | ReactElement)[] | ReactElement<InputProps> | ReactElement
+  ) => {
     // if (!Array.isArray(elements)) {
+
     //   const child = elements.props?.children
+
     //   if (!child) return elements
 
     //   if (child.type === Input)
+
     //     return cloneElement(child, { key: child.props.name, theme, _setref: setRef })
 
     //   else if (child.type === Button)
+
     //     return loaderFB ? cloneElement(child, { key: 'loader', theme, _loader: showLoader }) : child
 
     //   else if (child.props.children)
+
     //     return checkChildren(child.props.children)
 
     //   return child
+
     // }
+
     const auxChildren: any = Array.isArray(elements) ? elements : [elements]
 
     return auxChildren.map((child: ReactElement<InputProps> | ReactElement) => {
-
       if (child.type === Input)
         return cloneElement(child, { key: child.props.name, theme, _setref: setRef })
 
-      else if (child.type === Button)
+      if (child.type === Button)
         return loaderFB ? cloneElement(child, { key: 'loader', theme, _loader: showLoader }) : child
 
-      else if (child.props?.children) {
+      if (child.props?.children) {
         const result = checkChildren(child.props.children)
+
         return cloneElement(child, { key: Math.random(), children: result })
       }
 
@@ -152,7 +200,8 @@ const Form: FC<Props> = ({
           sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
         />
       )}
-      { checkChildren(children) }
+
+      {checkChildren(children)}
     </form>
   )
 }

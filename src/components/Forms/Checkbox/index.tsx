@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, InputHTMLAttributes } from 'react'
 import Style from './styles'
 
-import { RootState, useSelector, ThemeState } from 'store'
+import { ThemeState } from 'store/Theme'
+import { RootState, useSelector } from 'store'
 
 import { useField } from '@unform/core'
 import { motion } from 'framer-motion'
@@ -62,7 +63,6 @@ const Checkbox: React.FC<CheckboxProps> = ({ name, ...rest }) => {
           d='M3 6 l3 4 l7 -6'
           initial='unCheck'
           variants={pathAnimation}
-          initial='unCheck'
           animate={!checked ? 'check' : 'unCheck'}
           stroke='url(#checkboxRadial)'
         />

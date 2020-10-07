@@ -3,16 +3,18 @@ import Style from './styles'
 
 import signupSchema from 'utils/validations/signup'
 
-import { useSelector, RootState, ThemeState } from 'store'
+import { ThemeState } from 'store/Theme'
+import { HomeActions } from 'store/Home'
+import { useDispatch, useSelector, RootState } from 'store'
 
 import ThemeSwitch from 'components/ThemeSwitch'
 
-import { Form, Input, Button } from 'components/Form'
+import { Link } from 'react-router-dom'
 import { MdPublic } from 'react-icons/md'
 import { FaUserLock } from 'react-icons/fa'
 import { RiArrowLeftSLine } from 'react-icons/ri'
+import { Form, Input, Button } from 'components/Form'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
-import { Link } from 'react-router-dom'
 
 export interface RegisterData {
   name: string
@@ -24,14 +26,13 @@ export interface RegisterData {
 }
 
 const FormSignup: React.FC = () => {
-
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const dispatch = useDispatch()
 
   const onSignupSubmit = (resData: any) => {
-      // const old = data.birthday.split('/')
-      // const birthday = `${old[2]}-${old[1]}-${old[0]}`
-
-      // ADD BIRTHDAY
+    // const old = data.birthday.split('/')
+    // const birthday = `${old[2]}-${old[1]}-${old[0]}`
+    // ADD BIRTHDAY
   }
 
   return (
@@ -40,7 +41,9 @@ const FormSignup: React.FC = () => {
         <button type='button'>
           <RiArrowLeftSLine />
 
-          <Link to='/'>Voltar</Link>
+          <Link to='/' onClick={() => dispatch(HomeActions.animation(true))}>
+            Voltar
+          </Link>
         </button>
 
         <ThemeSwitch />
@@ -55,12 +58,7 @@ const FormSignup: React.FC = () => {
           autoComplete='given-name'
         />
 
-        <Input
-          name='surname'
-          placeholder='Sobrenome'
-          icon={MdPublic}
-          autoComplete='family-name'
-        />
+        <Input name='surname' placeholder='Sobrenome' icon={MdPublic} autoComplete='family-name' />
 
         <span>
           Certifique-se de que corresponde ao nome no seu documento de identificação oficial
@@ -94,9 +92,8 @@ const FormSignup: React.FC = () => {
 
         <span>
           Ao clicar em Concordar e concluir, concordo com os <a href='.'>Termos de uso</a>, os{' '}
-          <a href='.'>Termos de Serviço e Pagamentos</a>, a{' '}
-          <a href='.'>Política de Privacidade</a> e a{' '}
-          <a href='.'>Política de Não Discriminação</a> do Steams Lab.
+          <a href='.'>Termos de Serviço e Pagamentos</a>, a <a href='.'>Política de Privacidade</a>{' '}
+          e a <a href='.'>Política de Não Discriminação</a> do Steams Lab.
         </span>
 
         <Button>Concordar e concluir</Button>

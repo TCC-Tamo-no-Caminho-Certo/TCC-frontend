@@ -1,10 +1,11 @@
 import { light, dark } from 'styles/themes'
+import { ThemeAttributes } from 'styles/themes/styled'
 
 import { createSlice } from '@reduxjs/toolkit'
 
 const localTheme = localStorage.getItem('theme')
 
-const themeReducer = createSlice({
+const Theme = createSlice({
   name: 'theme',
   initialState: localTheme === 'light' || !localTheme ? light : dark,
   reducers: {
@@ -15,4 +16,6 @@ const themeReducer = createSlice({
   },
 })
 
-export default themeReducer
+export type ThemeState = ThemeAttributes
+export const ThemeActions = Theme.actions
+export default Theme

@@ -1,7 +1,8 @@
 import React from 'react'
 import { StyledTooltipError } from './styles'
 
-import { useSelector, RootState, ThemeState } from 'store'
+import { ThemeState } from 'store/Theme'
+import { useSelector, RootState } from 'store'
 
 import { PopupProps } from 'semantic-ui-react'
 import { FcHighPriority } from 'react-icons/fc'

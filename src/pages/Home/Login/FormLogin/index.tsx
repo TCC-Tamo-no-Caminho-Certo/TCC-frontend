@@ -1,11 +1,13 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import Style, { Content, Register, Google, Permanence } from './styles'
 
 import google from 'assets/google.png'
 
 import loginSchema from 'utils/validations/login'
 
-import { useSelector, RootState, ThemeState } from 'store'
+import { ThemeState } from 'store/Theme'
+import { HomeActions } from 'store/Home'
+import { useSelector, useDispatch, RootState } from 'store'
 
 import ThemeSwitch from 'components/ThemeSwitch'
 
@@ -22,14 +24,12 @@ export interface LoginData {
 }
 
 const FormLogin: React.FC = () => {
-  const loginRef = useRef(null)
-
-  const history = useHistory()
-
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const history = useHistory()
+  const dispatch = useDispatch()
 
   return (
-    <Style theme={theme} ref={loginRef}>
+    <Style theme={theme}>
       <header>
         <ThemeSwitch />
       </header>
@@ -40,13 +40,14 @@ const FormLogin: React.FC = () => {
           <span>Entrar com o Google</span>
         </Google>
 
-        <Form cb={(resData: any) => history.push('/main')} valSchema={loginSchema} path='login' loaderFB captcha>
-          <Input
-            name='email'
-            placeholder='E-mail'
-            icon={AiOutlineMail}
-            autoComplete='email'
-          />
+        <Form
+          cb={() => history.push('/main')}
+          valSchema={loginSchema}
+          path='login'
+          loaderFB
+          captcha
+        >
+          <Input name='email' placeholder='E-mail' icon={AiOutlineMail} autoComplete='email' />
 
           <Input
             name='password'
@@ -63,17 +64,21 @@ const FormLogin: React.FC = () => {
 
           <Permanence theme={theme}>
             <Input type='checkbox' name='remember' />
-            <Input type='checkbox' name='rememberTwo' />
+
             <label htmlFor='remember'>Permanecer conectado</label>
           </Permanence>
         </Form>
 
-        <Link to='/forgot-password'>Não consegue fazer login?</Link>
+        <Link to='/forgot-password' onClick={() => dispatch(HomeActions.animation(false))}>
+          Não consegue fazer login?
+        </Link>
 
         <Register theme={theme}>
           <span>Ainda não possui uma conta ?</span>
 
-          <Link to='/signup'>Registre-se aqui!</Link>
+          <Link to='/signup' onClick={() => dispatch(HomeActions.animation(true))}>
+            Registre-se aqui!
+          </Link>
         </Register>
       </Content>
     </Style>

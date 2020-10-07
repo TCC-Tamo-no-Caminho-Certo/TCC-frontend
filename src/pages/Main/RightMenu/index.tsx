@@ -5,7 +5,8 @@ import avatar from 'assets/avatar.jpg'
 import close from 'assets/close.svg'
 import gear from 'assets/gear.svg'
 
-import { RootState, ThemeState, useSelector } from 'store'
+import { ThemeState } from 'store/Theme'
+import { RootState, useSelector } from 'store'
 
 import anime from 'animejs'
 import Anime from '@mollycule/react-anime'

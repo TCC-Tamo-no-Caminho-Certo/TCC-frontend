@@ -3,7 +3,8 @@ import Style from './styles'
 
 import RightMenu from '../RightMenu'
 
-import { useSelector, RootState, ThemeState } from 'store'
+import { ThemeState } from 'store/Theme'
+import { useSelector, RootState } from 'store'
 
 const Map: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)

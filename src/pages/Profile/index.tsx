@@ -2,7 +2,8 @@
 import React from 'react'
 import Style, { Content, Sidebar } from './styles'
 
-import { useSelector, RootState, ThemeState } from 'store'
+import { ThemeState } from 'store/Theme'
+import { useSelector, RootState } from 'store'
 
 import ProfileHome from './Home'
 import EditProfile from './EditProfile'

@@ -1,10 +1,10 @@
 import React from 'react'
 
-import Routes from 'routes/index'
-
-import GlobalContext from 'hooks'
+import Routes from 'routes'
 
 import store from 'store'
+import GlobalContext from 'hooks'
+
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 

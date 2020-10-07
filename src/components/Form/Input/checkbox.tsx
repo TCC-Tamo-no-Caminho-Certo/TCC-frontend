@@ -1,13 +1,15 @@
 import React, { FC } from 'react'
 
+import { ThemeState } from 'store/Theme'
+import { RootState, useSelector } from 'store'
+
 import { motion } from 'framer-motion'
-import { RootState, useSelector, ThemeState } from 'store'
 
 interface Props {
   checked: boolean
 }
 
-const Checkbox:FC<Props> = ({ checked }) => {
+const Checkbox: FC<Props> = ({ checked }) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const pathAnimation = {
@@ -18,6 +20,7 @@ const Checkbox:FC<Props> = ({ checked }) => {
         duration: 0.2,
       },
     },
+
     unCheck: {
       pathLength: 1,
       transition: {
@@ -39,6 +42,7 @@ const Checkbox:FC<Props> = ({ checked }) => {
           r='1'
         >
           <stop stopColor={theme?.primary} />
+
           <stop offset='1' stopColor={theme?.quaternary} />
         </motion.radialGradient>
       </defs>

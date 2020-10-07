@@ -1,4 +1,4 @@
-import React, { ComponentType, useEffect } from 'react'
+import React, { ComponentType } from 'react'
 import styled from 'styled-components'
 
 import Logo from 'styles/Logo'

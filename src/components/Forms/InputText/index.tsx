@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState, InputHTMLAttributes, ComponentType } from 'react'
 import Style from './styles'
 
-import { useSelector, RootState, ThemeState } from 'store'
+import { ThemeState } from 'store/Theme'
+import { useSelector, RootState } from 'store'
 
 import { ErrorTooltip } from 'components/Tooltips/index'
 

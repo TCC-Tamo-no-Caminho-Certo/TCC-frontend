@@ -74,16 +74,19 @@ export const Content = styled.div`
 
   form {
     button {
+      position: relative;
+
       width: 100%;
       height: 5vh;
       min-height: 35px;
+
+      margin-top: 30px;
       transition: all 0.2s;
-      font: 700 1.8rem 'Archivo';
       font-size: calc(1.3rem + 0.5vh);
+      font: 700 1.8rem 'Archivo';
 
       color: white;
       border: none;
-      margin-top: 30px;
       border-radius: 8px;
       background-color: ${fromTheme('primary')};
 
@@ -92,12 +95,11 @@ export const Content = styled.div`
         transform: scale(1.01);
       }
 
-      position: relative;
-
       span {
         position: absolute;
         right: 10%;
         top: calc(50% - 9px);
+
         transform: translateY(-50%);
       }
     }
@@ -113,9 +115,10 @@ export const Content = styled.div`
   }
 
   a {
-    color: ${fromTheme('primary')};
     margin-bottom: 5px;
     font-size: calc(1.2rem + 0.5vh);
+
+    color: ${fromTheme('primary')};
   }
 
   @media screen and (min-height: 700px) {
@@ -147,9 +150,9 @@ export const Google = styled.button.attrs({ type: 'button' })`
   width: auto;
   padding: 10px 5px;
 
+  cursor: pointer;
   color: ${fromTheme('tertiary')};
   border-bottom: solid 2px ${fromTheme('quinary')};
-  cursor: pointer;
 
   span {
     font-size: calc(1.2rem + 0.5vh);

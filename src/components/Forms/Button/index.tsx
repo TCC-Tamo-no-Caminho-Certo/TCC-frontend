@@ -1,7 +1,8 @@
 import React, { ButtonHTMLAttributes } from 'react'
 import Style from './styles'
 
-import { useSelector, RootState, ThemeState } from 'store'
+import { ThemeState } from 'store/Theme'
+import { useSelector, RootState } from 'store'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>
 

@@ -5,7 +5,8 @@ import ptbr from 'locales/dates/ptbr'
 
 import { ErrorTooltip } from 'components/Tooltips'
 
-import { useSelector, RootState, ThemeState } from 'store'
+import { ThemeState } from 'store/Theme'
+import { useSelector, RootState } from 'store'
 
 import ModernDatePicker, { DayValue } from 'react-modern-calendar-datepicker'
 import { useField } from '@unform/core'
