@@ -79,6 +79,32 @@ export const Style = styled.div<StyleProps>`
   `}
 `
 
+export const CheckboxStyle = styled.div<StyleProps>`
+  position: relative;
+  cursor: pointer;
+
+  width: 16px;
+  height: 16px;
+
+  input,
+  svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+  }
+
+  input {
+    z-index: 2;
+    transform: translateX(-200%);
+
+    /* z-index: 1;
+    display: none; */
+  }
+`
+
 export const ReCAPTCHA = styled(captcha)`
   display: none;
 `
@@ -86,4 +112,5 @@ export const ReCAPTCHA = styled(captcha)`
 export { captcha }
 
 ReCAPTCHA.displayName = 'ReCAPTCHA'
+CheckboxStyle.displayName = 'Style'
 Style.displayName = 'Style'

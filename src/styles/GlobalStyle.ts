@@ -55,7 +55,10 @@ export default createGlobalStyle`
     background-color: transparent;
     border: none;
     font-size: 1.6rem;
-    cursor: pointer;
+  }
+
+  button, label, input[type="checkbox"] {
+    cursor: pointer
   }
 
   select, textarea {

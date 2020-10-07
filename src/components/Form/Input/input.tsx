@@ -11,8 +11,9 @@ import React, {
 
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import { ErrorTooltip } from 'components/Tooltips/index'
+import { Style, CheckboxStyle } from './style'
 import { IconBaseProps } from 'react-icons'
-import { Style } from './style'
+import Checkbox from './checkbox'
 
 type Types =
   | 'button'
@@ -58,6 +59,7 @@ const Input: FC<InputProps> = ({
   eye,
   type,
   theme,
+  className,
   handleValue,
   icon: Icon,
   pasteAndDrop,
@@ -67,7 +69,7 @@ const Input: FC<InputProps> = ({
   const [error, setError] = useState<string>()
   const [showInput, setShowInput] = useState(false)
   const [isFilled, setIsFilled] = useState(false)
-
+  const [checked, setChecked] = useState(false)
 
   useEffect(() => {
     _setref({ input: inputRef, setError })
@@ -83,44 +85,48 @@ const Input: FC<InputProps> = ({
     handleValue && handleValue(inputRef.current?.value)
   }
 
+  const InputStyle = type === 'checkbox' ? CheckboxStyle : Style
+
   return (
-    <>
-      <Style
-        theme={theme}
-        hasEye={!!eye}
-        hasIcon={!!Icon}
-        isFilled={isFilled}
-        isErrored={!!error}
-        hidden={rest.hidden}
-      >
-        {error ? <ErrorTooltip content={error} /> : Icon && <Icon className='icon' />}
-        <input
-          ref={inputRef}
-          type={
-            eye
-              ? type === 'password'
-                ? showInput
-                  ? 'text'
-                  : type
-                : showInput
-                ? type
-                : 'password'
-              : type
-          }
-          onSubmit={valueHandler}
-          onBlur={onInputBlur}
-          onPaste={event => pasteAndDrop || event?.preventDefault()}
-          onDrop={event => pasteAndDrop || event?.preventDefault()}
-          {...rest}
-        />
-        {eye &&
-          (showInput ? (
-            <AiFillEyeInvisible onClick={() => setShowInput(false)} className='eyeIcon' />
-          ) : (
-            <AiFillEye onClick={() => setShowInput(true)} className='eyeIcon' />
-          ))}
-      </Style>
-    </>
+    <InputStyle
+    theme={theme}
+    hasEye={!!eye}
+    hasIcon={!!Icon}
+    isFilled={isFilled}
+    isErrored={!!error}
+    hidden={rest.hidden}
+    className={className}
+    {...{onClick: type === 'checkbox' ? () => setChecked(!checked) : undefined}}
+    >
+      {error ? <ErrorTooltip content={error} /> : Icon && <Icon className='icon' />}
+      {type === 'checkbox' && <Checkbox checked={checked} />}
+      <input
+        ref={inputRef}
+        id={rest.name}
+        type={
+          eye
+            ? type === 'password'
+              ? showInput
+                ? 'text'
+                : type
+              : showInput
+              ? type
+              : 'password'
+            : type
+        }
+        onSubmit={valueHandler}
+        onBlur={onInputBlur}
+        onPaste={event => pasteAndDrop || event?.preventDefault()}
+        onDrop={event => pasteAndDrop || event?.preventDefault()}
+        {...rest}
+      />
+      {eye &&
+        (showInput ? (
+          <AiFillEyeInvisible onClick={() => setShowInput(false)} className='eyeIcon' />
+        ) : (
+          <AiFillEye onClick={() => setShowInput(true)} className='eyeIcon' />
+        ))}
+    </InputStyle>
   )
 }
 

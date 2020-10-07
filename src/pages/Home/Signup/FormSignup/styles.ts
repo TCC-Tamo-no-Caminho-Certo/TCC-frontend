@@ -2,8 +2,6 @@ import styled from 'styled-components'
 
 import fromTheme from 'utils/fromTheme'
 
-import ReCAPTCHA from 'react-google-recaptcha'
-
 const Style = styled.div`
   display: flex;
   justify-content: center;
@@ -69,6 +67,44 @@ const Style = styled.div`
 
     width: 80%;
 
+    button {
+      width: 100%;
+      height: 5vh;
+      min-height: 35px;
+      transition: all 0.2s;
+      font: 700 1.8rem 'Archivo';
+      font-size: calc(1.3rem + 0.5vh);
+
+      color: white;
+      border: none;
+      margin-top: 30px;
+      border-radius: 8px;
+      background-color: ${fromTheme('primary')};
+
+      &:hover {
+        filter: brightness(1.1);
+        transform: scale(1.01);
+      }
+
+      position: relative;
+
+      span {
+        position: absolute;
+        right: 10%;
+        top: calc(50% - 9px);
+        transform: translateY(-50%);
+      }
+    }
+
+    .dual {
+      border-radius: 10px 10px 0 0;
+
+      & + div {
+        border-top: 1px solid transparent;
+        border-radius: 0 0 10px 10px;
+      }
+    }
+
     > span {
       font-size: calc(1.3rem + 0.5vh);
       margin: 1.25vh 0;
@@ -79,28 +115,6 @@ const Style = styled.div`
       max-width: 530px;
     }
   }
-
-  .InputText,
-  .Button,
-  .InputDate {
-    min-height: 35px;
-    height: 5vh;
-    font-size: calc(1.3rem + 0.5vh);
-  }
-`
-
-export const DualInput = styled.div`
-  div:first-child {
-    border-radius: 10px 10px 0 0;
-  }
-
-  div + div {
-    border-radius: 0 0 10px 10px;
-  }
-`
-
-export const Recaptcha = styled(ReCAPTCHA)`
-  display: none;
 `
 
 export default Style

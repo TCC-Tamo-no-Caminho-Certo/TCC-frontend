@@ -86,10 +86,6 @@ const Style = styled.main`
       transform: translateY(-50%);
     }
 
-    &:hover {
-      transform: scale(1.01);
-    }
-
     @media (max-width: 425px) {
       position: fixed;
 

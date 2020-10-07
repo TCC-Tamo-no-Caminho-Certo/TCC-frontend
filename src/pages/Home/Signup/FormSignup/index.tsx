@@ -1,25 +1,16 @@
-import React, { useRef } from 'react'
-import Style, { DualInput, Recaptcha } from './styles'
+import React from 'react'
+import Style from './styles'
 
 import signupSchema from 'utils/validations/signup'
-import getValidationErrors from 'utils/getValidationErrors'
-
-import { useAuth } from 'hooks/useAuth'
 
 import { useSelector, RootState, ThemeState } from 'store'
 
-import Button from 'components/Forms/Button'
-import InputText from 'components/Forms/InputText'
-import InputDate from 'components/Forms/InputDate'
 import ThemeSwitch from 'components/ThemeSwitch'
 
-import * as Yup from 'yup'
-import ReCAPTCHA from 'react-google-recaptcha'
-import { Form } from '@unform/web'
+import { Form, Input, Button } from 'components/Form'
 import { MdPublic } from 'react-icons/md'
 import { FaUserLock } from 'react-icons/fa'
 import { RiArrowLeftSLine } from 'react-icons/ri'
-import { FormHandles, SubmitHandler } from '@unform/core'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 import { Link } from 'react-router-dom'
 
@@ -33,119 +24,84 @@ export interface RegisterData {
 }
 
 const FormSignup: React.FC = () => {
-  const signupFormRef = useRef<FormHandles>(null)
-  const recaptchaRef = useRef<ReCAPTCHA>(null)
-
-  const { register } = useAuth()
 
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
-  const onSignupSubmit: SubmitHandler<RegisterData> = async (data, { reset }, event) => {
-    event?.preventDefault()
+  const onSignupSubmit = (resData: any) => {
+      // const old = data.birthday.split('/')
+      // const birthday = `${old[2]}-${old[1]}-${old[0]}`
 
-    try {
-      let captchaToken
-
-      if (recaptchaRef.current) captchaToken = await recaptchaRef.current.executeAsync()
-      else throw new Error('recaptcha is equal null or undefined')
-
-      await signupSchema.validate(data, { abortEarly: false })
-
-      const old = data.birthday.split('/')
-      const birthday = `${old[2]}-${old[1]}-${old[0]}`
-
-      await register({ ...data, birthday, captcha: captchaToken as string })
-
-      signupFormRef.current?.setErrors({})
-    } catch (error) {
-      if (error instanceof Yup.ValidationError) {
-        const errorList = getValidationErrors(error)
-
-        signupFormRef.current?.setErrors(errorList)
-      }
-    }
+      // ADD BIRTHDAY
   }
 
   return (
-    <>
-      <Recaptcha
-        ref={recaptchaRef}
-        size='invisible'
-        sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
-      />
+    <Style theme={theme}>
+      <nav>
+        <button type='button'>
+          <RiArrowLeftSLine />
 
-      <Style theme={theme}>
-        <nav>
-          <button type='button'>
-            <RiArrowLeftSLine />
+          <Link to='/'>Voltar</Link>
+        </button>
 
-            <Link to='/'>Voltar</Link>
-          </button>
+        <ThemeSwitch />
+      </nav>
 
-          <ThemeSwitch />
-        </nav>
+      <Form valSchema={signupSchema} path='register' loaderFB captcha>
+        <Input
+          className='dual'
+          name='name'
+          placeholder='Nome'
+          icon={MdPublic}
+          autoComplete='given-name'
+        />
 
-        <Form ref={signupFormRef} onSubmit={onSignupSubmit}>
-          <DualInput>
-            <InputText
-              name='name'
-              placeholder='Nome'
-              icon={MdPublic}
-              iconSize='50%'
-              autoComplete='given-name'
-            />
+        <Input
+          name='surname'
+          placeholder='Sobrenome'
+          icon={MdPublic}
+          autoComplete='family-name'
+        />
 
-            <InputText
-              name='surname'
-              placeholder='Sobrenome'
-              icon={MdPublic}
-              iconSize='50%'
-              autoComplete='family-name'
-            />
-          </DualInput>
+        <span>
+          Certifique-se de que corresponde ao nome no seu documento de identificação oficial
+        </span>
 
-          <span>
-            Certifique-se de que corresponde ao nome no seu documento de identificação oficial
-          </span>
+        {/* <InputDate name='birthday' icon={FaUserLock} /> */}
 
-          <InputDate name='birthday' icon={FaUserLock} />
+        <span>Você precisa ter pelo menos 18 anos</span>
 
-          <span>Você precisa ter pelo menos 18 anos</span>
+        <Input name='email' placeholder='E-mail' icon={FaUserLock} autoComplete='email' />
 
-          <InputText name='email' placeholder='E-mail' icon={FaUserLock} autoComplete='email' />
+        <span>Enviaremos um e-mail para confirmação</span>
 
-          <span>Enviaremos um e-mail para confirmação</span>
+        <Input
+          className='dual'
+          name='password'
+          type='password'
+          placeholder='Senha'
+          autoComplete='new-password'
+          icon={FaUserLock}
+          eye
+        />
 
-          <DualInput>
-            <InputText
-              name='password'
-              type='password'
-              placeholder='Senha'
-              icon={FaUserLock}
-              eye
-              autoComplete='new-password'
-            />
+        <Input
+          name='confirmPassword'
+          type='password'
+          placeholder='Confirmar Senha'
+          icon={FaUserLock}
+          autoComplete='new-password'
+        />
 
-            <InputText
-              name='confirmPassword'
-              type='password'
-              placeholder='Confirmar Senha'
-              icon={FaUserLock}
-              autoComplete='new-password'
-            />
-          </DualInput>
+        <span>
+          Ao clicar em Concordar e concluir, concordo com os <a href='.'>Termos de uso</a>, os{' '}
+          <a href='.'>Termos de Serviço e Pagamentos</a>, a{' '}
+          <a href='.'>Política de Privacidade</a> e a{' '}
+          <a href='.'>Política de Não Discriminação</a> do Steams Lab.
+        </span>
 
-          <span>
-            Ao clicar em Concordar e concluir, concordo com os <a href='.'>Termos de uso</a>, os{' '}
-            <a href='.'>Termos de Serviço e Pagamentos</a>, a{' '}
-            <a href='.'>Política de Privacidade</a> e a{' '}
-            <a href='.'>Política de Não Discriminação</a> do Steams Lab.
-          </span>
-
-          <Button type='submit'>Concordar e concluir</Button>
-        </Form>
-      </Style>
-    </>
+        <Button>Concordar e concluir</Button>
+      </Form>
+    </Style>
   )
 }
 

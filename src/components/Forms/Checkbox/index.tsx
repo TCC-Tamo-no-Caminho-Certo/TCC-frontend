@@ -33,10 +33,6 @@ const Checkbox: React.FC<CheckboxProps> = ({ name, ...rest }) => {
     },
   }
 
-  function onCheckboxClick() {
-    setChecked(!checked)
-  }
-
   useEffect(() => {
     registerField({
       name: fieldName,
@@ -46,7 +42,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ name, ...rest }) => {
   }, [fieldName, registerField])
 
   return (
-    <Style className='Checkbox' onClick={onCheckboxClick}>
+    <Style className='Checkbox' onClick={() => setChecked(!checked)}>
       <svg viewBox='0 0 15 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
         <rect x='0.5' y='0.5' width='14' height='14' stroke='url(#checkboxRadial)' />
 
@@ -64,13 +60,14 @@ const Checkbox: React.FC<CheckboxProps> = ({ name, ...rest }) => {
 
         <motion.path
           d='M3 6 l3 4 l7 -6'
+          initial='unCheck'
           variants={pathAnimation}
           animate={!checked ? 'check' : 'unCheck'}
           stroke='url(#checkboxRadial)'
         />
       </svg>
 
-      <input ref={checkBoxRef} name={name} id={name} type='checkbox' checked={checked} {...rest} />
+      <input ref={checkBoxRef} name={name} id={name} type='checkbox' checked={checked} readOnly {...rest} />
     </Style>
   )
 }

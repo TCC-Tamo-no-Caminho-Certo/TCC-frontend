@@ -40,7 +40,7 @@ const Form: FC<Props> = ({
   cb,
   ...rest
 }) => {
-  const auxChildren: any = Array.isArray(children) ? children : [children]
+  // const auxChildren: any = Array.isArray(children) ? children : [children]
   const data: any = { ...addData }
   const refs: Ref[] = []
   let haveErrors = false
@@ -56,7 +56,12 @@ const Form: FC<Props> = ({
   }
 
   const setData = () => {
-    refs.forEach(ref => (data[ref.input.current!.name] = ref.input.current?.value))
+    refs.forEach(ref => {
+      data[ref.input.current!.name] =
+        ref.input.current?.type === 'checkbox'
+          ? ref.input.current?.checked
+          : ref.input.current?.value
+    })
   }
 
   const validate = async () => {
@@ -98,9 +103,44 @@ const Form: FC<Props> = ({
     setData()
     await validate()
     data.captcha = captcha && (await recaptchaRef.current!.executeAsync())
-    !haveErrors && (await submit(cb))
+    // !haveErrors && (await submit(cb))
     loaderFB && setShowLoader(false)
-    // console.log(data)
+    console.log(data)
+  }
+
+  const checkChildren = (elements: (ReactElement<InputProps> | ReactElement)[] | ReactElement<InputProps> | ReactElement) => {
+    // if (!Array.isArray(elements)) {
+    //   const child = elements.props?.children
+    //   if (!child) return elements
+
+    //   if (child.type === Input)
+    //     return cloneElement(child, { key: child.props.name, theme, _setref: setRef })
+
+    //   else if (child.type === Button)
+    //     return loaderFB ? cloneElement(child, { key: 'loader', theme, _loader: showLoader }) : child
+
+    //   else if (child.props.children)
+    //     return checkChildren(child.props.children)
+
+    //   return child
+    // }
+    const auxChildren: any = Array.isArray(elements) ? elements : [elements]
+
+    return auxChildren.map((child: ReactElement<InputProps> | ReactElement) => {
+
+      if (child.type === Input)
+        return cloneElement(child, { key: child.props.name, theme, _setref: setRef })
+
+      else if (child.type === Button)
+        return loaderFB ? cloneElement(child, { key: 'loader', theme, _loader: showLoader }) : child
+
+      else if (child.props?.children) {
+        const result = checkChildren(child.props.children)
+        return cloneElement(child, { key: Math.random(), children: result })
+      }
+
+      return child
+    })
   }
 
   return (
@@ -112,13 +152,7 @@ const Form: FC<Props> = ({
           sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
         />
       )}
-      {auxChildren.map((child: ReactElement<InputProps> | ReactElement) => {
-        if (child.type === Input)
-          return cloneElement(child, { key: child.props.name, theme, _setref: setRef })
-        else if (child.type === Button)
-          return loaderFB ? cloneElement(child, { key: 'loader', theme, _loader: showLoader }) : child
-        return child
-      })}
+      { checkChildren(children) }
     </form>
   )
 }

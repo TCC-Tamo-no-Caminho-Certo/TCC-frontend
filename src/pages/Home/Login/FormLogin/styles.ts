@@ -2,8 +2,6 @@ import styled from 'styled-components'
 
 import fromTheme from 'utils/fromTheme'
 
-import ReCAPTCHA from 'react-google-recaptcha'
-
 const Style = styled.div`
   display: flex;
   justify-content: center;
@@ -75,7 +73,36 @@ export const Content = styled.div`
   }
 
   form {
-    > * {
+    button {
+      width: 100%;
+      height: 5vh;
+      min-height: 35px;
+      transition: all 0.2s;
+      font: 700 1.8rem 'Archivo';
+      font-size: calc(1.3rem + 0.5vh);
+
+      color: white;
+      border: none;
+      margin-top: 30px;
+      border-radius: 8px;
+      background-color: ${fromTheme('primary')};
+
+      &:hover {
+        filter: brightness(1.1);
+        transform: scale(1.01);
+      }
+
+      position: relative;
+
+      span {
+        position: absolute;
+        right: 10%;
+        top: calc(50% - 9px);
+        transform: translateY(-50%);
+      }
+    }
+
+    & > * {
       width: 100%;
       margin-bottom: 2.5vh;
 
@@ -86,22 +113,9 @@ export const Content = styled.div`
   }
 
   a {
-    font-size: calc(1.5rem + 0.2vh);
-
     color: ${fromTheme('primary')};
-  }
-
-  a {
     margin-bottom: 5px;
     font-size: calc(1.2rem + 0.5vh);
-  }
-
-  .InputText,
-  .Button,
-  > label {
-    min-height: 35px;
-    height: 5vh;
-    font-size: calc(1.3rem + 0.5vh);
   }
 
   @media screen and (min-height: 700px) {
@@ -119,7 +133,6 @@ export const Permanence = styled.div`
 
   height: 40px;
 
-  cursor: pointer;
   border-bottom: 2px solid ${fromTheme('quinary')};
 
   label {
@@ -148,8 +161,6 @@ export const Google = styled.button.attrs({ type: 'button' })`
   }
 `
 
-export const Recaptcha = styled(ReCAPTCHA)`
-  display: none;
-`
-
 export default Style
+
+Permanence.displayName = 'Permanence'
