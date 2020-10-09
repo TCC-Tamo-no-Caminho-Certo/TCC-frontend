@@ -13,7 +13,8 @@ import { Link } from 'react-router-dom'
 import { MdPublic } from 'react-icons/md'
 import { FaUserLock } from 'react-icons/fa'
 import { RiArrowLeftSLine } from 'react-icons/ri'
-import { Form, Input, Button } from 'components/Form'
+import { Form, Input, InputDate, Button } from 'components/Form'
+
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 
 export interface RegisterData {
@@ -28,12 +29,6 @@ export interface RegisterData {
 const FormSignup: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const dispatch = useDispatch()
-
-  const onSignupSubmit = (resData: any) => {
-    // const old = data.birthday.split('/')
-    // const birthday = `${old[2]}-${old[1]}-${old[0]}`
-    // ADD BIRTHDAY
-  }
 
   return (
     <Style theme={theme}>
@@ -64,7 +59,7 @@ const FormSignup: React.FC = () => {
           Certifique-se de que corresponde ao nome no seu documento de identificação oficial
         </span>
 
-        {/* <InputDate name='birthday' icon={FaUserLock} /> */}
+        <InputDate name='birthday' icon={FaUserLock} />
 
         <span>Você precisa ter pelo menos 18 anos</span>
 

@@ -13,11 +13,10 @@ import Hamburger from 'components/Hamburger'
 import home from 'assets/ProfileNavbar/home.svg'
 import editProfile from 'assets/ProfileNavbar/editProfile.svg'
 
-import { Link, Switch, Route, useLocation } from 'react-router-dom'
+import { Link, Switch, Route } from 'react-router-dom'
 import { useCycle } from 'framer-motion'
 
 const Profile: React.FC = () => {
-  const location = useLocation()
 
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const [closed, setClosed] = useCycle(true, false)
@@ -99,7 +98,7 @@ const Profile: React.FC = () => {
       </Sidebar>
 
       <Content variants={content} initial={false} animate={cycleContent()}>
-        <Switch location={location} key={location.key}>
+        <Switch>
           {profileRoutes.map(route => (
             <Route
               key={route.path}

@@ -20,7 +20,6 @@ const Checkbox: FC<Props> = ({ checked }) => {
         duration: 0.2,
       },
     },
-
     unCheck: {
       pathLength: 1,
       transition: {

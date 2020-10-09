@@ -9,10 +9,11 @@ const Style = styled(Card)`
     border-radius: 50%;
   }
 
-  > *,
-  form .ChangeSetter {
+  > *, form .ChangeSetter {
     margin-bottom: 24px;
   }
+
+  box-shadow: 0 0 20px #000;
 `
 
 export default Style

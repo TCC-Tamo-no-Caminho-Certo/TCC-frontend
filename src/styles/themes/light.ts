@@ -1,17 +1,17 @@
 const light = {
   name: 'light',
 
-  primary: '#FF6D8D',
+  primary: 'palevioletred',
   secondary: '#FCFCFC',
   tertiary: '#50393e',
   quaternary: '#80535D',
   quinary: '#80535D',
 
-  background: '#FF6D8D',
+  background: 'palevioletred',
 
   white: '#FCFCFC',
 
-  calendarPrimary: '#FF6D8D',
+  calendarPrimary: 'palevioletred',
   calendarSecondary: '#FCFCFC',
   calendarTertiary: '#50393e',
   calendarHeader: '#80535D',

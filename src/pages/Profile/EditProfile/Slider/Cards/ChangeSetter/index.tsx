@@ -1,14 +1,16 @@
 import React from 'react'
+import { Input } from 'components/Form'
 import Style, { Label, Value, Change } from './styles'
 
 import editPencil from 'assets/editPencil.svg'
 
 interface ChangeSetterProps {
   label: string
+  name: string
   value: string
 }
 
-const ChangeSetter: React.FC<ChangeSetterProps> = ({ label, value }) => {
+const ChangeSetter: React.FC<ChangeSetterProps> = ({ label, name, value }) => {
   return (
     <Style>
       <Label>
@@ -16,11 +18,11 @@ const ChangeSetter: React.FC<ChangeSetterProps> = ({ label, value }) => {
       </Label>
 
       <Value>
-        <span>{value}</span>
+        <Input name={name} defaultValue={value} noStyle />
       </Value>
 
       <Change>
-        <img src={editPencil} alt='edit' />
+        <img src={editPencil} alt='edit/cancel' />
       </Change>
     </Style>
   )

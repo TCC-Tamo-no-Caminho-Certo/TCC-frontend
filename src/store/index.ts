@@ -1,5 +1,5 @@
 import Auth from './Auth'
-import Theme from './Theme'
+import Theme,  { ThemeState } from './Theme'
 import Home from './Home'
 
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
@@ -17,5 +17,9 @@ const store = configureStore({
 
 export type RootState = ReturnType<typeof rootReducer>
 export { useSelector, useDispatch }
+
+// Types
+
+export type { ThemeState }
 
 export default store

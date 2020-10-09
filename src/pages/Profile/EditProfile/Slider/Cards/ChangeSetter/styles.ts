@@ -18,25 +18,41 @@ const Style = styled.div.attrs({ className: 'ChangeSetter' })`
     align-items: center;
 
     padding: 2px;
-
-    span {
-      text-align: center;
-      overflow-wrap: break-word;
-      min-width: 100%;
-    }
   }
 `
 
 export const Label = styled.div`
   grid-area: labels;
 `
+
 export const Value = styled.div`
   grid-area: value;
+
+  span {
+    cursor: pointer;
+  }
+
+  div, input, span {
+    font-size: inherit;
+    font-family: inherit;
+    color: inherit;
+    text-align: center;
+    overflow-wrap: break-word;
+    min-width: 100%;
+    padding: 0;
+  }
 `
 
 export const Change = styled.div`
   grid-area: change;
-  color: #ff6d8d;
+  img {
+    cursor: pointer;
+  }
 `
 
 export default Style
+
+Style.displayName = 'Style'
+Label.displayName = 'Label'
+Value.displayName = 'Value'
+Change.displayName = 'Change'
