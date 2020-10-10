@@ -1,8 +1,6 @@
 import React, {
-  FC,
   forwardRef,
   RefObject,
-  HTMLProps,
   ComponentType,
   FormEvent,
   FocusEvent,
@@ -46,7 +44,7 @@ export interface Ref {
   setError: (value: string) => void
 }
 
-export interface InputProps extends HTMLProps<HTMLInputElement> {
+export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   theme?: any
   type?: Types
   eye?: boolean
@@ -76,20 +74,22 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
   const [isFilled, setIsFilled] = useState(false)
   const [checked, setChecked] = useState(false)
 
+  const auxRef = ref as RefObject<HTMLInputElement> || inputRef
+
   useEffect(() => {
-    _setref({ input: ref as RefObject<HTMLInputElement> || inputRef, setError })
+    _setref({ input: auxRef, setError })
   }, [_setref])
 
   const onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
     onBlur && onBlur(e)
-    setIsFilled(!!inputRef.current?.value)
+    setIsFilled(!!auxRef.current?.value)
     setError(undefined)
   }
 
   const valueHandler = (e: FormEvent) => {
     e.preventDefault()
 
-    handleValue && handleValue(inputRef.current?.value)
+    handleValue && handleValue(auxRef.current?.value)
   }
 
   const InputStyle = noStyle ? Style : type === 'checkbox' ? CheckboxStyle : StInput

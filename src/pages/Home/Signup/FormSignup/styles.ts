@@ -67,7 +67,7 @@ const Style = styled.div`
 
     width: 80%;
 
-    button {
+    & > button {
       width: 100%;
       height: 5vh;
       min-height: 35px;
@@ -105,12 +105,12 @@ const Style = styled.div`
       }
     }
 
-    > span {
+    & > span {
       font-size: calc(1.3rem + 0.5vh);
       margin: 1.25vh 0;
     }
 
-    > * {
+    & > * {
       width: 100%;
       max-width: 530px;
     }

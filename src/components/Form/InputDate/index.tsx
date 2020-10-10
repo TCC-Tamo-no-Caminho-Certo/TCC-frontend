@@ -7,7 +7,6 @@ import Input, { InputProps } from '../Input'
 import Style from './styles'
 
 import DatePicker, { DayValue } from 'react-modern-calendar-datepicker'
-
 import '../../../../node_modules/react-modern-calendar-datepicker/lib/DatePicker.css'
 
 interface InputDateProps extends InputProps {
@@ -46,14 +45,11 @@ const InputDate: React.FC<InputDateProps> = ({
   const renderCustomInput = ({ ref }: any) => {
 
     const InputValue = (date: DayValue) => {
-      const result = date
+      return date
         ? `${date.day < 10 ? `0${date.day}` : date.day}/${
             date.month < 10 ? `0${date.month}` : date.month
           }/${date.year}`
         : ''
-
-        const old = result.split('/')
-        return old.length === 1 ? '' : `${old[2]}-${old[1]}-${old[0]}`
     }
 
     const onClick = () => {

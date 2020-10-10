@@ -11,7 +11,20 @@ const Style = styled.div`
     padding: 0;
   }
 
+  .Calendar {
+    --cl-color-primary: ${fromTheme('calendarPrimary')}!important;
+    --cl-color-disabled: ${fromTheme('calendarDisabled')}!important;
+    --cl-color-primary-light: ${fromTheme('white')}!important;
+
+    box-shadow: 0 0 10px 5px #bbb;
+  }
+
   .Calendar__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: ${fromTheme('calendarHeader')};
+    border-bottom: solid 2px ${fromTheme('calendarHeader')};
     padding: 10px;
     border-radius: 20px 20px 0px 0px;
 
@@ -37,6 +50,7 @@ const Style = styled.div`
   .Calendar__weekDays {
     margin: 0;
     padding: 0 20px 10px 20px;
+    background-color: ${fromTheme('calendarHeader')};
 
     .Calendar__weekDay {
       text-decoration: none;
@@ -63,6 +77,7 @@ const Style = styled.div`
   }
 
   .CalendarSize {
+    background-color: ${fromTheme('calendarBackground')};
     font-size: 8px !important;
   }
 
@@ -78,17 +93,14 @@ const Style = styled.div`
     border-color: transparent transparent ${fromTheme('calendarHeader')} transparent;
   }
 
-  .CalendarSize {
-    background-color: ${fromTheme('calendarBackground')};
-  }
-
   .Calendar__section.-shown, .Calendar__monthSelector.-open, .Calendar__yearSelector.-open, .Calendar.-noFocusOutline.-ltr {
     background-image: none;
     background-color: ${fromTheme('calendarBackground')};
   }
 
   .Calendar__monthText, .Calendar__yearText, .Calendar__weekDay {
-    color: ${fromTheme('calendarSecondary')};
+    color: ${fromTheme('white')};
+    background-color: transparent;
 
     &:hover {
       background-color: transparent;
@@ -97,10 +109,6 @@ const Style = styled.div`
 
   .Calendar__monthArrow {
     background-image: url("data:image/svg+xml,%3Csvg width='14' height='24' viewBox='0 0 14 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.49998 1L12.5 12L1.49998 23' stroke='white' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
-  }
-
-  .Calendar__weekDays {
-    background-color: ${fromTheme('calendarHeader')};
   }
 
   .Calendar__yearSelectorText {
@@ -112,6 +120,7 @@ const Style = styled.div`
     }
 
     &:hover {
+      color: ${fromTheme('white')};
       background-color: ${fromTheme('calendarPrimary')}!important;
     }
   }
@@ -126,24 +135,15 @@ const Style = styled.div`
   }
 
   .Calendar__day.-ltr.-selected {
-    color: ${fromTheme('calendarSecondary')};
+    color: ${fromTheme('white')};
   }
 
   .Calendar__day.-ltr.-disabled {
     display: none;
   }
 
-  .Calendar__monthSelectorItem .Calendar__monthSelectorItemText {
-    color: ${fromTheme('calendarTertiary')};
-  }
-
   .Calendar__monthSelectorItem.-active .Calendar__monthSelectorItemText {
-    color: ${fromTheme('calendarSecondary')};
-  }
-
-  .Calendar__header {
-    background-color: ${fromTheme('calendarHeader')};
-    border-bottom: solid 2px ${fromTheme('calendarHeader')};
+    color: ${fromTheme('white')};
   }
 
   .Calendar__monthSelectorItemText:disabled, .Calendar__yearSelectorText:disabled {
@@ -153,10 +153,6 @@ const Style = styled.div`
 
   .Calendar__yearText.-activeBackground, .Calendar__monthText.-activeBackground {
     background-color: ${fromTheme('calendarPrimary')} !important;
-  }
-
-  .Calendar__yearText, .Calendar__monthText {
-    background-color: transparent;
   }
 
   @media screen and (min-height: 900px) {

@@ -30,6 +30,7 @@ interface Props extends HTMLProps<HTMLFormElement> {
   loaderFB?: boolean
   valSchema?: ObjectSchema
   addData?: { [key: string]: string }
+  changeData?: (data: any) => void
   cb?: (resData: any) => void
 }
 
@@ -45,6 +46,7 @@ const Form: FC<Props> = ({
   loaderFB,
   valSchema,
   addData,
+  changeData,
   captcha,
   cb,
 
@@ -101,12 +103,15 @@ const Form: FC<Props> = ({
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
-    console.log(refs)
+    // console.log(refs)
     loaderFB && setShowLoader(true)
+
     setData()
+    changeData && changeData(data)
     await validate()
     if (captcha) data.captcha = (await recaptchaRef.current!.executeAsync())
     // !haveErrors && (await submit(cb))
+
     loaderFB && setShowLoader(false)
     console.log(data)
   }
