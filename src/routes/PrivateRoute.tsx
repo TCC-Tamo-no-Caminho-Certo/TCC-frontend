@@ -1,11 +1,9 @@
-import React, { ComponentType } from 'react'
+import React, { ComponentType, useEffect } from 'react'
 import styled from 'styled-components'
 
 import Logo from 'styles/Logo'
-
 import fromTheme from 'utils/fromTheme'
-
-import api from 'services/api'
+import validateSession from 'services/validateSession'
 
 import { RouteProps as RouterPropsDOM, Route, useHistory } from 'react-router-dom'
 
@@ -22,34 +20,19 @@ interface RouteProps extends RouterPropsDOM {
 }
 
 const PrivateRoute: React.FC<RouteProps> = ({ component: Component, ...rest }) => {
-  const token = localStorage.getItem('@SLab_ac_token')
-  const access = false
+  let access = false
 
   const history = useHistory()
 
-  // useEffect(() => {
-  //   async function getAccess() {
-  //     try {
-  //       const response = await api.get('validate-session', {
-  //         headers: {
-  //           authorization: `Bearer ${token}`,
-  //         },
-  //       })
+  useEffect(() => {
+    validateSession().then(response => {
+      // console.log(response)
+      access = response
+    })
+  }, [])
 
-  //       access = response.data.success
-  //     } catch (e) {
-  //       history.push('/')
-  //     }
-  //   }
-  //   setTimeout(getAccess, 2000)
-  // }, [token, history])
-
-  if (/*! access */ false) {
-    return (
-      <Container>
-        <Logo />
-      </Container>
-    )
+  if (!access) {
+    history.push('/')
   }
 
   return <Route component={Component} {...rest} />
