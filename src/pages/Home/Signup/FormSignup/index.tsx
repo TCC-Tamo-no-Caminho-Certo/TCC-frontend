@@ -15,8 +15,6 @@ import { FaUserLock } from 'react-icons/fa'
 import { RiArrowLeftSLine } from 'react-icons/ri'
 import { Form, Input, InputDate, Button } from 'components/Form'
 
-import 'react-modern-calendar-datepicker/lib/DatePicker.css'
-
 export interface RegisterData {
   name: string
   surname: string
