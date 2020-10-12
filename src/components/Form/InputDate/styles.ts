@@ -16,7 +16,7 @@ const Style = styled.div`
     --cl-color-disabled: ${fromTheme('calendarDisabled')}!important;
     --cl-color-primary-light: ${fromTheme('white')}!important;
 
-    box-shadow: 0 0 10px 5px #bbb;
+    box-shadow: 0 0 10px 5px #555;
   }
 
   .Calendar__header {
@@ -58,7 +58,7 @@ const Style = styled.div`
   }
 
   .Calendar__monthSelector.-open, .Calendar__yearSelector.-open {
-    transform: translateY(1em);
+    border-radius: 30px 30px 20px 20px;
   }
 
   .Calendar__yearSelectorWrapper, .Calendar__yearSelectorWrapper.-faded {
@@ -79,10 +79,6 @@ const Style = styled.div`
   .CalendarSize {
     background-color: ${fromTheme('calendarBackground')};
     font-size: 8px !important;
-  }
-
-  .Calendar__section {
-    padding-top: 5%;
   }
 
   .Calendar__sectionWrapper {
