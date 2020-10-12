@@ -9,7 +9,7 @@ import ForgotPassword from 'pages/ForgotPassword'
 
 import Profile from 'pages/Profile'
 
-import Map from 'pages/Main/Map'
+import ComponentMap from 'pages/Main/Map'
 
 import { Route, Switch, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
@@ -43,11 +43,10 @@ const Routes: React.FC = () => {
       </AnimatePresence>
 
       <Switch>
-        <Route path='/' exact component={Home} />
         <Route path='/forgot-password' component={ForgotPassword} />
         <Route path='/reset-password' component={ConfirmPassword} />
 
-        <PrivateRoute path='/main' component={Map} />
+        <PrivateRoute path='/main' component={ComponentMap} />
         <Route path='/profile' component={Profile} />
       </Switch>
     </>
