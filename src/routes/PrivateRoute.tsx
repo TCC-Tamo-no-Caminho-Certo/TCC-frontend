@@ -1,7 +1,8 @@
-import React, { ComponentType, useEffect } from 'react'
+import React, { ComponentType, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import Logo from 'styles/Logo'
+
 import fromTheme from 'utils/fromTheme'
 import validateSession from 'services/validateSession'
 
@@ -20,20 +21,23 @@ interface RouteProps extends RouterPropsDOM {
 }
 
 const PrivateRoute: React.FC<RouteProps> = ({ component: Component, ...rest }) => {
-  let access = false
+  const [access, setAccess] = useState(false)
+  // let access = false
 
   const history = useHistory()
 
   useEffect(() => {
     validateSession().then(response => {
-      // console.log(response)
-      access = response
+      console.log('response', response)
+      setAccess(response)
+
+      // if (!response) {
+      //   history.push('/')
+      // }
     })
   }, [])
 
-  if (!access) {
-    history.push('/')
-  }
+  // return <>{access && <Route component={Component} {...rest} />}</>
 
   return <Route component={Component} {...rest} />
 }

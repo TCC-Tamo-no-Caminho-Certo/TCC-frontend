@@ -15,9 +15,7 @@ const GlobalProvider: React.FC = ({ children }) => {
     <>
       <GlobalStyle theme={theme} />
 
-      <AuthProvider>
-        <HomeSliderProvider>{children}</HomeSliderProvider>
-      </AuthProvider>
+      <HomeSliderProvider>{children}</HomeSliderProvider>
     </>
   )
 }
