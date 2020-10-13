@@ -166,4 +166,8 @@ export const Google = styled.button.attrs({ type: 'button' })`
 
 export default Style
 
+Style.displayName = 'Style'
+Google.displayName = 'Google'
+Content.displayName = 'Content'
+Register.displayName = 'Register'
 Permanence.displayName = 'Permanence'

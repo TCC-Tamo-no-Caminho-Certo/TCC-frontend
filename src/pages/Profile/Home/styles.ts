@@ -9,3 +9,5 @@ const Style = styled(motion.li)`
 `
 
 export default Style
+
+Style.displayName = 'Style'

@@ -11,3 +11,5 @@ const Style = styled.main`
 `
 
 export default Style
+
+Style.displayName = 'Style'

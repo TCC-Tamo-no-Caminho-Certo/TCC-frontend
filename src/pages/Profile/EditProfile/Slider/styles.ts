@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { animated } from 'react-spring'
 
 interface StyleProps {
-  cardWidth: string
+  cardwidth: string
   gap: string
 }
 
@@ -23,7 +23,7 @@ const Style = styled(animated.div)<StyleProps>`
 
   ${Animation} {
     height: 100%;
-    width: ${({ cardWidth }) => cardWidth};
+    width: ${({ cardwidth }) => cardwidth};
   }
 
   ${Animation} + ${Animation} {

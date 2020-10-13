@@ -10,3 +10,5 @@ const Style = styled(motion.section)`
 `
 
 export default Style
+
+Style.displayName = 'Style'

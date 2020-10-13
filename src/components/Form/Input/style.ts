@@ -159,5 +159,5 @@ export { captcha }
 
 ReCAPTCHA.displayName = 'ReCAPTCHA'
 CheckboxStyle.displayName = 'Style'
-StInput.displayName = 'StInput'
+StInput.displayName = 'Style'
 Style.displayName = 'Style'

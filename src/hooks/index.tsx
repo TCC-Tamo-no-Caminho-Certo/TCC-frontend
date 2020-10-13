@@ -1,8 +1,5 @@
 import React from 'react'
 
-import { HomeSliderProvider } from './useHomeSlider'
-import { AuthProvider } from './useAuth'
-
 import GlobalStyle from 'styles/GlobalStyle'
 
 import { ThemeState } from 'store/Theme'
@@ -14,8 +11,7 @@ const GlobalProvider: React.FC = ({ children }) => {
   return (
     <>
       <GlobalStyle theme={theme} />
-
-      <HomeSliderProvider>{children}</HomeSliderProvider>
+      {children}
     </>
   )
 }

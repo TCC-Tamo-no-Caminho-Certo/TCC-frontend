@@ -53,3 +53,7 @@ const Style = styled(motion.section)`
 `
 
 export default Style
+
+Style.displayName = 'Style'
+Content.displayName = 'Content'
+Sidebar.displayName = 'Sidebar'

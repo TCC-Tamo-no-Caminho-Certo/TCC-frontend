@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Style, { Animation } from './styles'
 
 import Dots from './Dots'
-import Professor from './Cards/Professor'
+import Card from './Card'
 
 import { useDrag } from 'react-use-gesture'
 import { useSprings } from 'react-spring'
@@ -51,42 +51,42 @@ const Slider: React.FC<SliderProps> = ({ cardWidth = 550, cardsQuant = 3, gap = 
   )
 
   return (
-    <Style gap={`${gap}px`} cardWidth={`${cardWidth}px`}>
+    <Style gap={`${gap}px`} cardwidth={`${cardWidth}px`}>
       <div className='sliderWrapper'>
         {springs.map((props, index) => {
           switch (index) {
             case 0:
               return (
                 <Animation key={cards[index]} {...bind()} style={props}>
-                  <Professor />
+                  <Card headerText='Dados do professor' type='Professor' />
                 </Animation>
               )
 
             case 1:
               return (
                 <Animation key={cards[index]} {...bind()} style={props}>
-                  <Professor />
+                  <Card headerText='Dados do professor' type='Professor' />
                 </Animation>
               )
 
             case 2:
               return (
                 <Animation key={cards[index]} {...bind()} style={props}>
-                  <Professor />
+                  <Card headerText='Dados do professor' type='Professor' />
                 </Animation>
               )
 
             case 3:
               return (
                 <Animation key={cards[index]} {...bind()} style={props}>
-                  <Professor />
+                  <Card headerText='Dados do professor' type='Professor' />
                 </Animation>
               )
 
             default:
               return (
                 <Animation key={cards[index]} {...bind()} style={props}>
-                  <Professor />
+                  <Card headerText='Dados do professor' type='Professor' />
                 </Animation>
               )
           }

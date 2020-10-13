@@ -137,3 +137,10 @@ export const Edit = styled(Link).attrs({ className: 'Edit' })`
 `
 
 export default Style
+
+AnimationShape.displayName = 'AnimationShape'
+ProfileOpen.displayName = 'ProfileOpen'
+UserInfo.displayName = 'UserInfo'
+Logout.displayName = 'Logout'
+Style.displayName = 'Style'
+Edit.displayName = 'Edit'

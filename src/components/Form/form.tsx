@@ -121,7 +121,7 @@ const Form: FC<Props> = ({
   ) => {
     const children: any = Array.isArray(elements) ? elements : [elements]
     
-    return children.map((child: ReactElement<InputProps> | ReactElement) => {
+    return children.map((child: ReactElement<InputProps> | ReactElement, i: number) => {
       if (child.type === Input || child.type === InpuDate)
         return cloneElement(child, { key: child.props.name, theme, _setref: setRef })
 
@@ -130,7 +130,7 @@ const Form: FC<Props> = ({
 
       if (child.props?.children) {
         const result = checkChildren(child.props.children)
-        return cloneElement(child, { key: Math.random() * Math.random(), children: result })
+        return cloneElement(child, { key: child.key || `${i} ${child.type} ${Math.random()}`, children: result })
       }
 
       return child

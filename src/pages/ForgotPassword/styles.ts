@@ -146,6 +146,6 @@ export const ConfirmToken = styled.section`
 `
 
 Style.displayName = 'Style'
-ConfirmToken.displayName = 'Confirm Token'
+ConfirmToken.displayName = 'ConfirmToken'
 
 export default Style
