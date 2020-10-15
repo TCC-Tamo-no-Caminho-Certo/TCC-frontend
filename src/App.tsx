@@ -3,19 +3,19 @@ import React from 'react'
 import Routes from 'routes'
 
 import store from 'store'
-import GlobalContext from 'hooks'
 
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
+import GlobalStyle from 'styles/GlobalStyle'
+
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <GlobalContext>
-        <BrowserRouter>
-          <Routes />
-        </BrowserRouter>
-      </GlobalContext>
+      <GlobalStyle theme={store.getState().theme} />
+      <BrowserRouter>
+        <Routes />
+      </BrowserRouter>
     </Provider>
   )
 }
