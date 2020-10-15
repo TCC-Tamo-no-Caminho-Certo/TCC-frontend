@@ -84,8 +84,8 @@ const Profile: React.FC = () => {
         <ul>
           <Hamburger toggle={onToggle} />
 
-          {profileRoutes.map(route => (
-            <li>
+          {profileRoutes.map((route, i) => (
+            <li key={i}>
               <Link to={route.path}>
                 <button type='button'>
                   <img src={route.icon} alt={route.path} />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import ptbr from 'locales/dates/ptbr'
+import ptbr from 'utils/locales/dates/ptbr'
 
 import Input, { InputProps } from '../Input'
 

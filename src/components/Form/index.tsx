@@ -1,6 +1,6 @@
 import Form from './form'
 import Input from './Input'
-import Button from './button'
+import Button from './button/button'
 import InputDate from './InputDate'
 
 export { Form, Input, InputDate, Button }

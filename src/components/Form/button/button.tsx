@@ -1,6 +1,6 @@
 import React, { FC, HTMLProps } from 'react'
 
-import Loader from 'styles/Loader'
+import Loader from 'components/Form/button/Loader'
 
 interface Props extends HTMLProps<HTMLButtonElement> {
   theme?: { [s: string]: string }

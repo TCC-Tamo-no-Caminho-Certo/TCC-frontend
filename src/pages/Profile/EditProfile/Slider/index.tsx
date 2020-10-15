@@ -58,35 +58,35 @@ const Slider: React.FC<SliderProps> = ({ cardWidth = 550, cardsQuant = 3, gap = 
             case 0:
               return (
                 <Animation key={cards[index]} {...bind()} style={props}>
-                  <Card headerText='Dados do professor' type='Professor' />
+                  <Card headerText='Dados do professor' type='professor' />
                 </Animation>
               )
 
             case 1:
               return (
                 <Animation key={cards[index]} {...bind()} style={props}>
-                  <Card headerText='Dados do professor' type='Professor' />
+                  <Card headerText='Dados do professor' type='professor' />
                 </Animation>
               )
 
             case 2:
               return (
                 <Animation key={cards[index]} {...bind()} style={props}>
-                  <Card headerText='Dados do professor' type='Professor' />
+                  <Card headerText='Dados do professor' type='professor' />
                 </Animation>
               )
 
             case 3:
               return (
                 <Animation key={cards[index]} {...bind()} style={props}>
-                  <Card headerText='Dados do professor' type='Professor' />
+                  <Card headerText='Dados do professor' type='professor' />
                 </Animation>
               )
 
             default:
               return (
                 <Animation key={cards[index]} {...bind()} style={props}>
-                  <Card headerText='Dados do professor' type='Professor' />
+                  <Card headerText='Dados do professor' type='professor' />
                 </Animation>
               )
           }

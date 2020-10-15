@@ -18,12 +18,12 @@ import { ObjectSchema, ValidationError } from 'yup'
 
 import { ReCAPTCHA, captcha } from './Input/style'
 
-import Button from './button'
+import Button from './button/button'
 
 import axios from 'axios'
 
 interface Props extends HTMLProps<HTMLFormElement> {
-  children: (ReactElement<InputProps> | ReactElement)[] | ReactElement<InputProps>
+  children: (ReactElement<InputProps> | ReactElement | ReactElement[])[] | ReactElement<InputProps>
   path: string
   token?: string
   captcha?: boolean
@@ -36,7 +36,7 @@ interface Props extends HTMLProps<HTMLFormElement> {
 
 /**
  *
- * @param children -must be an input
+ * @param children -must have an input
  */
 
 const Form: FC<Props> = ({
@@ -116,9 +116,7 @@ const Form: FC<Props> = ({
     console.log(data)
   }
 
-  const checkChildren = (
-    elements: (ReactElement<InputProps> | ReactElement)[] | ReactElement<InputProps> | ReactElement
-  ) => {
+  const checkChildren = (elements: (ReactElement<InputProps> | ReactElement | ReactElement[])[] | ReactElement<InputProps> | ReactElement) => {
     const children: any = Array.isArray(elements) ? elements : [elements]
     
     return children.map((child: ReactElement<InputProps> | ReactElement, i: number) => {

@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import Style, { ConfirmToken } from './styles'
 
-import Logo from 'styles/Logo'
 
 import { emailSchema } from 'utils/validations/forgotPassword'
 
 import { ThemeState } from 'store/Theme'
 import { useSelector, RootState } from 'store'
 
+import Logo from 'components/Logo'
 import { Form, Input, Button } from 'components/Form'
 import Modal, { ModalAttributes } from 'components/Modal'
 

@@ -1,8 +1,6 @@
 import React, { ComponentType, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import Logo from 'styles/Logo'
-
 import fromTheme from 'utils/fromTheme'
 import validateSession from 'services/validateSession'
 

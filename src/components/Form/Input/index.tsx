@@ -78,7 +78,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
 
   useEffect(() => {
     _setref({ input: auxRef, setError })
-  }, [_setref])
+  }, [_setref, auxRef])
 
   const onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
     onBlur && onBlur(e)

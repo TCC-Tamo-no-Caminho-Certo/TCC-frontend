@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import Style from '../styles'
 
-import Logo from 'styles/Logo'
 
 import { passwordSchema } from 'utils/validations/forgotPassword'
 
 import { ThemeState } from 'store/Theme'
 import { useSelector, RootState } from 'store'
 
-import Modal, { ModalAttributes } from 'components/Modal'
+import Logo from 'components/Logo'
 import { Form, Input, Button } from 'components/Form'
+import Modal, { ModalAttributes } from 'components/Modal'
 
 import { useHistory } from 'react-router-dom'
 import { FiLock } from 'react-icons/fi'

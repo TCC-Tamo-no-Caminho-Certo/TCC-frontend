@@ -1,7 +1,7 @@
 import React, { useState, ComponentType } from 'react'
 import Style from './styles'
 
-import ptbr from 'locales/dates/ptbr'
+import ptbr from 'utils/locales/dates/ptbr'
 
 import { ErrorTooltip } from 'components/Tooltips'
 
