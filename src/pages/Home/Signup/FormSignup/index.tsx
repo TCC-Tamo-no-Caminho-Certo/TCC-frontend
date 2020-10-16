@@ -3,8 +3,8 @@ import Style from './styles'
 
 import signupSchema from 'utils/validations/signup'
 
-import { ThemeState } from 'store/Theme'
-import { HomeActions } from 'store/Home'
+import { ThemeState } from 'store/theme'
+import { HomeActions } from 'store/home'
 import { useDispatch, useSelector, RootState } from 'store'
 
 import ThemeSwitch from 'components/ThemeSwitch'

@@ -5,7 +5,7 @@ import avatar from 'assets/avatar.jpg'
 import close from 'assets/close.svg'
 import gear from 'assets/gear.svg'
 
-import { ThemeState } from 'store/Theme'
+import { ThemeState } from 'store/theme'
 import { RootState, useSelector } from 'store'
 
 import anime from 'animejs'

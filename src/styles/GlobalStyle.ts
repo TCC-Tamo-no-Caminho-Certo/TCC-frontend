@@ -21,16 +21,16 @@ export default createGlobalStyle`
     background-color: ${fromTheme('background')};
 
 
-    ::-webkit-scrollbar {
+    &::-webkit-scrollbar {
       width: 12px;
       background-color: ${fromTheme('quaternary')};
     }
 
-    ::-webkit-scrollbar-track {
+    &::-webkit-scrollbar-track {
       border-radius: 1px;
     }
 
-    ::-webkit-scrollbar-thumb {
+    &::-webkit-scrollbar-thumb {
       box-shadow: inset 0 0 10px 1px rgba(255,255,255,0.8);
       border: solid 2px transparent;
       border-radius: 4px;
@@ -44,7 +44,6 @@ export default createGlobalStyle`
 
   a {
     text-decoration: none;
-    color: ${fromTheme('primary')};
   }
 
   li {
@@ -59,12 +58,6 @@ export default createGlobalStyle`
 
   button, label, input[type="checkbox"] {
     cursor: pointer
-  }
-
-  select, textarea {
-    &, &:hover, &:focus  {
-      box-shadow: 0 0 0 30px ${fromTheme('secondary')} inset;
-    }
   }
 
   input[type="checkbox"] {

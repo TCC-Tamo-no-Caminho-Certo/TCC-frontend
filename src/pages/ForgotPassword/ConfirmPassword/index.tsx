@@ -4,7 +4,7 @@ import Style from '../styles'
 
 import { passwordSchema } from 'utils/validations/forgotPassword'
 
-import { ThemeState } from 'store/Theme'
+import { ThemeState } from 'store/theme'
 import { useSelector, RootState } from 'store'
 
 import Logo from 'components/Logo'

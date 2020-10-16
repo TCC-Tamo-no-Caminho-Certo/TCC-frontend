@@ -1,7 +1,7 @@
 import React from 'react'
 import Style from './styles'
 
-import { ThemeState } from 'store/Theme'
+import { ThemeState } from 'store/theme'
 import { useSelector, RootState } from 'store'
 
 const About: React.FC = () => {

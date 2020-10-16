@@ -5,8 +5,8 @@ import google from 'assets/google.png'
 
 import loginSchema from 'utils/validations/login'
 
-import { ThemeState } from 'store/Theme'
-import { HomeActions } from 'store/Home'
+import { ThemeState } from 'store/theme'
+import { HomeActions } from 'store/home'
 import { useSelector, useDispatch, RootState } from 'store'
 
 import ThemeSwitch from 'components/ThemeSwitch'

@@ -34,7 +34,7 @@ const Card: React.FC<Props> = ({ headerText, type }) => {
   ])
 
   useEffect(() => {
-    const getUserData = async (type: Types) => {
+    const getUserData = async () => {
       const user = {
         name: 'test',
         surname: 'asd',
@@ -61,8 +61,8 @@ const Card: React.FC<Props> = ({ headerText, type }) => {
       setData(dataTypes[type])
     }
 
-    getUserData(type)
-  }, [])
+    getUserData()
+  }, [type])
 
   return (
     <Style>

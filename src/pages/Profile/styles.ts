@@ -19,7 +19,7 @@ export const Sidebar = styled(motion.nav)`
   }
 
   ul {
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
 

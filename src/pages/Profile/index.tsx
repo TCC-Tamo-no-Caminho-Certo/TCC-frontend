@@ -2,7 +2,7 @@
 import React from 'react'
 import Style, { Content, Sidebar } from './styles'
 
-import { ThemeState } from 'store/Theme'
+import { ThemeState } from 'store/theme'
 import { useSelector, RootState } from 'store'
 
 import ProfileHome from './Home'
@@ -67,7 +67,7 @@ const Profile: React.FC = () => {
       content: () => <ProfileHome />,
     },
     {
-      path: '/profile/editProfile',
+      path: '/profile/edit-profile',
       icon: editProfile,
       label: 'Editar Perfil',
       content: () => <EditProfile />,

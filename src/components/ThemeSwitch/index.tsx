@@ -1,7 +1,7 @@
 import React from 'react'
 import Style from './styles'
 
-import { ThemeActions, ThemeState } from 'store/Theme'
+import { ThemeActions, ThemeState } from 'store/theme'
 import { RootState, useSelector, useDispatch } from 'store'
 
 const ThemeSwitch: React.FC = () => {

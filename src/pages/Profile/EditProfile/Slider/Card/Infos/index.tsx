@@ -23,7 +23,7 @@ const Professor: React.FC<Props> = ({ userData }) => {
         <Style key={i}>
           <Label><label htmlFor={info.inputname}>{info.label}</label></Label>
           <Value><Input name={info.inputname} defaultValue={info.dontShow ? `*********` : info.value} noStyle /></Value>
-          <Change><img src={editPencil} alt='edit' /></Change>
+          <Change><label htmlFor={info.inputname}><img src={editPencil} alt='edit' /></label></Change>
         </Style>
       ))}
 

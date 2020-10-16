@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 
-import { ThemeState } from 'store/Theme'
+import { ThemeState } from 'store/theme'
 import { RootState, useSelector } from 'store'
 
 import { motion } from 'framer-motion'

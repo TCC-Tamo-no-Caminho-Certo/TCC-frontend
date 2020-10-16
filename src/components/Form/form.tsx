@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react'
 
-import { ThemeState } from 'store/Theme'
+import { ThemeState } from 'store/theme'
 import { useSelector, RootState } from 'store'
 
 import Input, { InputProps, Ref } from './Input'

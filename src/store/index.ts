@@ -1,5 +1,5 @@
-import Theme, { ThemeState } from './Theme'
-import Home from './Home'
+import Theme, { ThemeState } from './theme'
+import Home from './home'
 
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 
