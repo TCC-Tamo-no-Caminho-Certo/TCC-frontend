@@ -1,4 +1,6 @@
-const dark = {
+import { ThemeAttributes } from './'
+
+const dark: ThemeAttributes = {
   name: 'dark',
 
   primary: '#EC5878',

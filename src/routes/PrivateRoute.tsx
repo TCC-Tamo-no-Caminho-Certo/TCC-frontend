@@ -2,7 +2,7 @@ import React, { ComponentType, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import fromTheme from 'utils/fromTheme'
-import validateSession from 'services/validateSession'
+import validateSession from 'utils/validateSession'
 
 import { RouteProps as RouterPropsDOM, Route, useHistory } from 'react-router-dom'
 
