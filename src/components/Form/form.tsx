@@ -8,19 +8,18 @@ import React, {
   useState,
 } from 'react'
 
+import api from 'services/api'
 import { ThemeState } from 'store/theme'
 import { useSelector, RootState } from 'store'
 
-import Input, { InputProps, Ref } from './Input'
 import InpuDate from './InputDate'
+import Button from './button/button'
+import Input, { InputProps, Ref } from './Input'
 
 import { ObjectSchema, ValidationError } from 'yup'
 
 import { ReCAPTCHA, captcha } from './Input/style'
 
-import Button from './button/button'
-
-import axios from 'axios'
 
 interface Props extends HTMLProps<HTMLFormElement> {
   children: (ReactElement<InputProps> | ReactElement | ReactElement[])[] | ReactElement<InputProps>
@@ -90,14 +89,12 @@ const Form: FC<Props> = ({
   }
 
   const submit = async (cb?: (data: any) => void) => {
-    try {
-      const { data: resData } = await axios.post(
-        `http://dev.steamslab.com/api/${path}`, data, token ? { headers: { authorization: `Berear ${token}` } } : undefined
-      )
-      cb && cb(resData)
-    } catch (error) {
-      cb && cb(error.response.data)
-    }
+    const resData = await api.post(
+      `http://dev.steamslab.com/api/${path}`,
+      data,
+      token ? { headers: { authorization: `Berear ${token}` } } : undefined
+    )
+    cb && cb(resData)
   }
 
   const handleSubmit = async (e: FormEvent) => {
