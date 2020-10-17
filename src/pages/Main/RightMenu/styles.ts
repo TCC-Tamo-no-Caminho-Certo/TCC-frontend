@@ -2,82 +2,33 @@ import styled from 'styled-components'
 
 import fromTheme from 'utils/fromTheme'
 
-import { Link } from 'react-router-dom'
+interface EditOpenProps {
+  height: string
+  width: string
+}
 
-export const AnimationShape = styled.div`
-  svg {
-    border-radius: 0 0 0 16px;
-    width: 100%;
-    height: 100%;
-  }
-`
+interface StyleProps {
+  width: string
+}
 
-export const Style = styled.div`
+export const Background = styled.svg`
   position: absolute;
   top: 0;
   right: 0;
 
-  &,
-  ${AnimationShape} {
-    width: 320px;
-    height: 100px;
-  }
-
-  #profileButton {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 30px;
-
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    margin: 0;
-    z-index: 1;
-
-    &,
-    img {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-    }
-  }
-`
-
-export const ProfileOpen = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
-
-  span,
-  svg {
-    color: ${fromTheme('secondary')};
-  }
-
-  #closeButton {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
+  overflow: visible;
 `
 
 export const UserInfo = styled.div.attrs({ className: 'UserInfo' })`
-  position: absolute;
-  top: 10px;
-  left: 110px;
-
   display: flex;
   flex-direction: column;
+
+  margin-left: 16px;
 
   cursor: default;
 
   span {
-    width: 120px;
-    line-height: 15px;
-
+    line-height: 16px;
     text-align: left;
   }
 
@@ -97,45 +48,105 @@ export const UserInfo = styled.div.attrs({ className: 'UserInfo' })`
     line-height: 16px;
     font-size: 1.2rem;
 
-    color: #61ff8d;
+    color: #00ff66;
+
+    svg {
+      margin: 0 4px 2px 0;
+    }
   }
 `
 
-export const Logout = styled.button.attrs({ className: 'Logout' })`
+export const EditOpen = styled.div<EditOpenProps>`
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+  top: 112px;
+  right: 0;
+
+  padding: 16px;
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
+
+  hr {
+    position: absolute;
+    top: 0;
+    left: 16px;
+    width: calc(100% - 32px);
+    border: solid 1px ${fromTheme('white')};
+  }
+
+  ul {
+    li a {
+      display: flex;
+      justify-items: center;
+
+      font-size: 1.4rem;
+
+      color: ${fromTheme('white')};
+
+      img {
+        margin-right: 16px;
+      }
+    }
+
+    li + li {
+      margin-top: 16px;
+    }
+  }
+
+  button {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+
+    display: flex;
+
+    color: ${fromTheme('white')};
+
+    div {
+      font-size: 1.5rem;
+      line-height: 15px;
+    }
+
+    img {
+      margin-left: 8px;
+    }
+  }
+`
+
+const Style = styled.div<StyleProps>`
+  position: absolute;
+  top: 0;
+  right: 0;
 
   display: flex;
   align-items: center;
 
-  span {
-    line-height: 18px;
-    font-size: 1.2rem;
-    margin-right: 5px;
+  width: ${({ width }) => width};
+  height: 104px;
+
+  #avatar {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    margin-left: 16px;
   }
-`
 
-export const Edit = styled(Link).attrs({ className: 'Edit' })`
-  position: absolute;
-  left: 110px;
-  bottom: 10px;
+  #gear {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
 
-  display: flex;
-  align-items: center;
+    width: 16px;
+    height: 16px;
+  }
 
+  a,
+  svg,
   span {
-    line-height: 18px;
-    font-size: 1.2rem;
-    margin-left: 5px;
+    color: ${fromTheme('white')};
   }
 `
 
 export default Style
 
-AnimationShape.displayName = 'AnimationShape'
-ProfileOpen.displayName = 'ProfileOpen'
 UserInfo.displayName = 'UserInfo'
-Logout.displayName = 'Logout'
 Style.displayName = 'Style'
-Edit.displayName = 'Edit'

@@ -9,12 +9,7 @@ import { useSelector, RootState } from 'store'
 const Map: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
-  return (
-    <Style theme={theme}>
-      <RightMenu />
-      Mapa
-    </Style>
-  )
+  return <Style theme={theme}>Mapa</Style>
 }
 
 export default Map

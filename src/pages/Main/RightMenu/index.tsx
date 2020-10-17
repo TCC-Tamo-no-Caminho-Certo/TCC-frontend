@@ -1,111 +1,103 @@
-import React, { useState, useEffect } from 'react'
-import Style, { AnimationShape, ProfileOpen, UserInfo, Logout, Edit } from './styles'
+import React from 'react'
+import Style, { UserInfo, Background, EditOpen } from './styles'
 
-import avatar from 'assets/avatar.jpg'
-import close from 'assets/close.svg'
 import gear from 'assets/gear.svg'
+import avatar from 'assets/avatar.jpg'
+import editProfile from 'assets/ProfileNavbar/editProfile.svg'
+import logout from 'assets/EditOpen/logout.svg'
+import change from 'assets/EditOpen/change.svg'
 
 import { ThemeState } from 'store/theme'
 import { RootState, useSelector } from 'store'
-
-import anime from 'animejs'
-import Anime from '@mollycule/react-anime'
-import { FiLogOut as LogoutIcon } from 'react-icons/fi'
+import { motion, useCycle } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 const RightMenu: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const [editOpen, toggle] = useCycle(false, true)
 
-  const totalWidth = document.getElementById('AnimationShape')?.clientWidth as number
-  const totalHeight = document.getElementById('AnimationShape')?.clientHeight as number
-  const offset = 5
-  const cyTop = 50 + offset
-  const cxRight = totalWidth - 65 + offset
+  const width = 300
+  const closedHeight = 112
+  const editHeight = 127 + closedHeight
 
-  const [profileOpen, setProfileOpen] = useState(false)
+  const cycle = () => (editOpen ? 'open' : 'closed')
 
-  useEffect(() => {
-    anime({ targets: '#profileButton', duration: 0, translateY: '-50%' })
-  }, [])
+  function onGearClick() {
+    toggle()
+  }
 
-  useEffect(() => {
-    anime({
-      targets: ['#closeButton', '.UserInfo span', '.Edit', '.Logout'],
-      easing: 'easeInOutSine',
-      duration: 400,
-      delay: anime.stagger(100),
-      translateX: [100, 0],
-      opacity: [0, 1],
-    })
-  }, [profileOpen])
+  const pathAnimation = {
+    closed: {
+      d: `M0,8 C0,3.5 3.5,0 8,0 H${width} V${closedHeight} H8 C3.5,${closedHeight} 0,${
+        closedHeight - 4
+      } 0,${closedHeight - 8} V8Z`,
+      transition: {
+        type: 'tween',
+        duration: 0.2,
+      },
+    },
+    open: {
+      d: `M0,8 C0,3.5 3.5,0 8,0 H${width} V${editHeight} H8 C3.5,${editHeight} 0,${
+        editHeight - 4
+      } 0,${editHeight - 8} V8Z`,
+      transition: {
+        type: 'tween',
+        duration: 0.2,
+      },
+    },
+  }
 
   return (
-    <Style>
-      <AnimationShape id='AnimationShape'>
-        <Anime
-          in={profileOpen}
-          appear={false}
-          duration={300}
-          easing='linear'
-          onEntering={{
-            targets: '#AnimationShape path',
-            fillOpacity: '1',
-            d: `M${-totalHeight}, ${totalHeight / 2} a${totalWidth},${totalWidth} 0 1,1 ${
-              totalWidth * 2
-            },0a ${totalWidth},${totalWidth} 0 1,1 ${totalWidth * -2},0`,
-          }}
-          onExiting={{
-            targets: '#AnimationShape path',
-            fillOpacity: '0',
-            d: `M${cxRight},${cyTop} a 0,0 0 1,1 0,0 a 0,0 0 1,1 0,0`,
-          }}
-        >
-          <svg>
-            <path
-              fill={theme.quaternary}
-              d={`M${cxRight},${cyTop} a 0,0 0 1,1 0,0 a 0,0 0 1,1 0,0`}
-            />
-          </svg>
-        </Anime>
-      </AnimationShape>
+    <>
+      <Background width={`${width}px`} height={`${editHeight}px`}>
+        <motion.path initial={false} variants={pathAnimation} animate={cycle()} fill='#6E4850' />
+      </Background>
 
-      <Anime
-        in={!profileOpen}
-        appear={false}
-        duration={500}
-        unmountOnExit={false}
-        easing='easeInOutSine'
-        onEntering={{ translateX: [-200, 0] }}
-        onExiting={{ translateX: [0, -200] }}
-      >
-        <button type='button' id='profileButton' onClick={() => setProfileOpen(!profileOpen)}>
-          <img src={avatar} id='profileImage' alt='profile' draggable='false' />
+      <Style width={`${width}px`} theme={theme}>
+        <img src={avatar} alt='avatar' id='avatar' />
+
+        <UserInfo theme={theme}>
+          <span id='userRole'>Estudante</span>
+          <span id='userName'>Miguel Andrade</span>
+
+          <span id='userActivity'>
+            <svg width='5' height='5' xmlns='http://www.w3.org/2000/svg'>
+              <circle cx='2.5' cy='2.5' r='2.5' fill='#00FF66' />
+            </svg>
+            Online
+          </span>
+        </UserInfo>
+
+        <button type='button' onClick={onGearClick}>
+          <img src={gear} alt='edit profile' id='gear' />
         </button>
-      </Anime>
+      </Style>
 
-      {profileOpen && (
-        <ProfileOpen theme={theme}>
-          <Edit to='/profile'>
-            <img src={gear} alt='edit profile' />
-            <span>Editar perfil</span>
-          </Edit>
+      {editOpen && (
+        <EditOpen width={`${width}px`} height={`${editHeight - closedHeight}px`} theme={theme}>
+          <hr />
 
-          <UserInfo theme={theme}>
-            <span id='userRole'>Estudante</span>
-            <span id='userName'>Miguel Andrade</span>
-            <span id='userActivity'>Online</span>
-          </UserInfo>
+          <ul>
+            <li>
+              <Link to='/editProfile'>
+                <img src={editProfile} alt='Edit Profile' /> Editar perfil
+              </Link>
+            </li>
+            <li>
+              <Link to='/editProfile'>
+                <img src={change} alt='Edit Profile' />
+                Alternar perfil
+              </Link>
+            </li>
+          </ul>
 
-          <Logout>
-            <span>Logout</span>
-            <LogoutIcon size={18} />
-          </Logout>
-
-          <button type='button' id='closeButton' onClick={() => setProfileOpen(!profileOpen)}>
-            <img src={close} draggable='false' alt='close profile' />
+          <button type='button'>
+            <div>Sair</div>
+            <img src={logout} alt='Logout' />
           </button>
-        </ProfileOpen>
+        </EditOpen>
       )}
-    </Style>
+    </>
   )
 }
 

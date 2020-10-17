@@ -22,7 +22,7 @@ const Content: React.FC<ContentProps> = ({ routes }) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const open = useSelector<RootState>(({ sidebar }) => sidebar.open)
 
-  const cycle = () => (!open ? 'closed' : 'open')
+  const cycle = () => (open ? 'closed' : 'open')
 
   const content = {
     open: {

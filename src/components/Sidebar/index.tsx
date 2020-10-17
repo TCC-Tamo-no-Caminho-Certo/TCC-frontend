@@ -53,7 +53,7 @@ const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
             <Link to={route.path}>
               <button type='button'>
                 <img src={route.icon} alt={route.path} />
-                {!open && <span>{route.label}</span>}
+                {open && <span>{route.label}</span>}
               </button>
             </Link>
           </li>
