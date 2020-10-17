@@ -1,21 +1,15 @@
 import React from 'react'
-import Style, { Content, SidebarStyle } from './styles'
+import Style from './styles'
+
+import { RouteProps } from './Content'
 
 import { ThemeState } from 'store/theme'
-import { useSelector, RootState } from 'store'
+import { SidebarActions } from 'store/sidebar'
+import { useSelector, useDispatch, RootState } from 'store'
 
 import Hamburger from 'components/Hamburger'
 
-import { Link, Switch, Route } from 'react-router-dom'
-import { useCycle } from 'framer-motion'
-
-interface RouteProps {
-  path: string
-  icon?: string
-  exact?: boolean
-  label?: string
-  content(): JSX.Element
-}
+import { Link } from 'react-router-dom'
 
 interface SidebarProps {
   routes: RouteProps[]
@@ -23,10 +17,10 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
-  const [closed, setClosed] = useCycle(true, false)
+  const open = useSelector<RootState>(({ sidebar }) => sidebar.open)
+  const dispatch = useDispatch()
 
-  const cycleNavbar = () => (closed ? 'closed' : 'open')
-  const cycleContent = () => (closed ? 'open' : 'closed')
+  const cycle = () => (open ? 'closed' : 'open')
 
   const navbar = {
     open: {
@@ -45,58 +39,26 @@ const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
     },
   }
 
-  const content = {
-    open: {
-      width: 'calc(100vw - 72px)',
-      transition: {
-        type: 'tween',
-        duration: 0.2,
-      },
-    },
-    closed: {
-      width: 'calc(100vw - 210px)',
-      transition: {
-        type: 'tween',
-        duration: 0.2,
-      },
-    },
-  }
-
   function onToggle() {
-    setClosed()
+    dispatch(SidebarActions.openSidebar(!open))
   }
 
   return (
-    <Style>
-      <SidebarStyle theme={theme} variants={navbar} initial={false} animate={cycleNavbar()}>
-        <ul>
-          <Hamburger toggle={onToggle} />
+    <Style theme={theme} variants={navbar} initial={false} animate={cycle()}>
+      <ul>
+        <Hamburger toggle={onToggle} />
 
-          {routes.map(route => (
-            <li key={route.path}>
-              <Link to={route.path}>
-                <button type='button'>
-                  <img src={route.icon} alt={route.path} />
-                  {!closed && <span>{route.label}</span>}
-                </button>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </SidebarStyle>
-
-      <Content variants={content} initial={false} animate={cycleContent()}>
-        <Switch>
-          {routes.map(route => (
-            <Route
-              key={route.path}
-              path={route.path}
-              exact={route.exact}
-              children={<route.content />}
-            />
-          ))}
-        </Switch>
-      </Content>
+        {routes.map(route => (
+          <li key={route.path}>
+            <Link to={route.path}>
+              <button type='button'>
+                <img src={route.icon} alt={route.path} />
+                {!open && <span>{route.label}</span>}
+              </button>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </Style>
   )
 }

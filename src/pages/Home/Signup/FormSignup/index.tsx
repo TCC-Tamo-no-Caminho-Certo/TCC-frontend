@@ -42,7 +42,16 @@ const FormSignup: React.FC = () => {
         <ThemeSwitch />
       </nav>
 
-      <Form valSchema={signupSchema} path='register' changeData={(data) => {const old = data.birthday.split('/'); data.birthday = `${old[2]}-${old[1]}-${old[0]}`}} loaderFB captcha>
+      <Form
+        valSchema={signupSchema}
+        path='register'
+        changeData={data => {
+          const old = data.birthday.split('/')
+          data.birthday = `${old[2]}-${old[1]}-${old[0]}`
+        }}
+        loaderFB
+        captcha
+      >
         <Input
           className='dual'
           name='name'

@@ -4,11 +4,9 @@ import fromTheme from 'utils/fromTheme'
 
 import { motion } from 'framer-motion'
 
-export const Content = styled(motion.ul)`
-  overflow: hidden;
-`
+const Style = styled(motion.nav)`
+  position: fixed;
 
-export const SidebarStyle = styled(motion.nav)`
   height: 100vh;
 
   background-color: ${fromTheme('primary')};
@@ -48,12 +46,6 @@ export const SidebarStyle = styled(motion.nav)`
   }
 `
 
-const Style = styled(motion.section)`
-  display: flex;
-`
-
 export default Style
 
-Style.displayName = 'Style'
-Content.displayName = 'Content'
-SidebarStyle.displayName = 'Sidebar'
+Style.displayName = 'Sidebar-Style'

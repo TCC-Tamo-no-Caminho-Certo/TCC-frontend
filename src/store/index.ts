@@ -1,13 +1,13 @@
 import Theme, { ThemeState } from './theme'
+import Sidebar from './sidebar'
 import Home from './home'
 
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 
-export { useSelector, useDispatch } from 'react-redux'
-
 const rootReducer = combineReducers({
   theme: Theme.reducer,
   home: Home.reducer,
+  sidebar: Sidebar.reducer,
 })
 
 const store = configureStore({
@@ -20,3 +20,5 @@ export type RootState = ReturnType<typeof rootReducer>
 export type { ThemeState }
 
 export default store
+
+export { useSelector, useDispatch } from 'react-redux'

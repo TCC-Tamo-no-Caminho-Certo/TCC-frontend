@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Map from './Map'
-import EditProfile from '../Profile/EditProfile'
 
 import home from 'assets/ProfileNavbar/home.svg'
 import editProfile from 'assets/ProfileNavbar/editProfile.svg'

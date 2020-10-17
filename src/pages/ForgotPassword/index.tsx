@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Style, { ConfirmToken } from './styles'
 
-
 import { emailSchema } from 'utils/validations/forgotPassword'
 
 import { ThemeState } from 'store/theme'

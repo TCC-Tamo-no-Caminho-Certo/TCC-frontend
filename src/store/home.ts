@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const Home = createSlice({
-  name: 'home',
+  name: 'sidebar',
   initialState: {
     animate: false,
   },
+
   reducers: {
     animation(state, action: PayloadAction<boolean>) {
       state.animate = action.payload
@@ -13,4 +14,5 @@ const Home = createSlice({
 })
 
 export const HomeActions = Home.actions
+
 export default Home

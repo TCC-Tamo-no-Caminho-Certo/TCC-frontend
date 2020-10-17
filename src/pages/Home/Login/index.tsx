@@ -7,7 +7,6 @@ import { useSelector, RootState } from 'store'
 
 const Login: React.FC = () => {
   const animate = useSelector<RootState>(state => state.home.animate)
-  console.log(animate)
 
   const loginAnimation = {
     start: {
