@@ -18,11 +18,6 @@ export const Style = styled.div`
   right: 0;
 
   &,
-  > * {
-    margin-right: 12px;
-  }
-
-  &,
   ${AnimationShape} {
     width: 320px;
     height: 100px;

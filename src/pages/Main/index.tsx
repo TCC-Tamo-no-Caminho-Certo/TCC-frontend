@@ -1,7 +1,7 @@
 import React from 'react'
 
-import ProfileHome from './Home'
-import EditProfile from './EditProfile'
+import Map from './Map'
+import EditProfile from '../Profile/EditProfile'
 
 import home from 'assets/ProfileNavbar/home.svg'
 import editProfile from 'assets/ProfileNavbar/editProfile.svg'
@@ -11,17 +11,17 @@ import Sidebar from 'components/Sidebar'
 const Profile: React.FC = () => {
   const profileRoutes = [
     {
-      path: '/profile',
-      icon: home,
+      path: '/main',
       exact: true,
-      label: 'Perfil',
-      content: () => <ProfileHome />,
+      icon: home,
+      label: 'Mapa',
+      content: () => <Map />,
     },
     {
-      path: '/profile/edit-profile',
+      path: '/main/projects',
       icon: editProfile,
-      label: 'Editar Perfil',
-      content: () => <EditProfile />,
+      label: 'Projetos',
+      content: () => <Map />,
     },
   ]
 

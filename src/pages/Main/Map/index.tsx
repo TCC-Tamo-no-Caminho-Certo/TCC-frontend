@@ -12,6 +12,7 @@ const Map: React.FC = () => {
   return (
     <Style theme={theme}>
       <RightMenu />
+      Mapa
     </Style>
   )
 }

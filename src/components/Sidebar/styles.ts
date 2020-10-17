@@ -8,7 +8,7 @@ export const Content = styled(motion.ul)`
   overflow: hidden;
 `
 
-export const Sidebar = styled(motion.nav)`
+export const SidebarStyle = styled(motion.nav)`
   height: 100vh;
 
   background-color: ${fromTheme('primary')};
@@ -56,4 +56,4 @@ export default Style
 
 Style.displayName = 'Style'
 Content.displayName = 'Content'
-Sidebar.displayName = 'Sidebar'
+SidebarStyle.displayName = 'Sidebar'
