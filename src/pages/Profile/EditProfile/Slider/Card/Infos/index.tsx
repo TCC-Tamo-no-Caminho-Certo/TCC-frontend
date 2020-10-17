@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Style, { Label, Value, Change } from './styles'
+import { Style, Label, Value, Change } from './styles'
 
 import { Form, Input, Button } from 'components/Form'
 import editPencil from 'assets/editPencil.svg'
@@ -16,7 +16,7 @@ interface Props {
   userData: Info[]
 }
 
-const Professor: React.FC<Props> = ({ userData }) => {
+const Infos: React.FC<Props> = ({ userData }) => {
   return (
     <Form path=''>
       {userData.map((info: Info, i) => (
@@ -27,9 +27,9 @@ const Professor: React.FC<Props> = ({ userData }) => {
         </Style>
       ))}
 
-      <Button>Submit</Button>
+      <Button>Salvar</Button>
     </Form>
   )
 }
 
-export default Professor
+export default Infos

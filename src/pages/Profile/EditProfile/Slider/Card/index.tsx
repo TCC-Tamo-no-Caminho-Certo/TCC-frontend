@@ -9,6 +9,7 @@ type Professor = Info[]
 type Proponent = Info[]
 type Student = Info[]
 type Admin = Info[]
+type User = Info[]
 
 interface DataTypes {
   professor: Professor
