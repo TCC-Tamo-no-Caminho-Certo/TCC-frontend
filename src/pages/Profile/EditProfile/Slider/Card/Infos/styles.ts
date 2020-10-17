@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const Style = styled.div.attrs({ className: 'ChangeSetter' })`
+export const Style = styled.div.attrs({ className: 'ChangeSetter' })`
   display: grid;
   grid: 'labels value change' 100%/20% 65% 15%;
 
@@ -49,8 +49,6 @@ export const Change = styled.div`
     cursor: pointer;
   }
 `
-
-export default Style
 
 Style.displayName = 'Style'
 Label.displayName = 'Label'

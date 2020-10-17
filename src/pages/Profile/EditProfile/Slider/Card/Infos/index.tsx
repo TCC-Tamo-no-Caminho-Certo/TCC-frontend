@@ -1,18 +1,14 @@
 import React from 'react'
 
-import Style, { Label, Value, Change } from './styles'
+import { Style, Label, Value, Change } from './styles'
 
 import { Form, Input, Button } from 'components/Form'
-
 import editPencil from 'assets/editPencil.svg'
 
 export interface Info {
   label: string
-
   value: string
-
   inputname: string
-
   dontShow?: boolean
 }
 
@@ -20,15 +16,14 @@ interface Props {
   userData: Info[]
 }
 
-const Professor: React.FC<Props> = ({ userData }) => {
+const Infos: React.FC<Props> = ({ userData }) => {
   return (
     <Form path=''>
-      {userData.map((info: Info, i) => (
-        <Style key={i}>
+      {userData.map((info: Info) => (
+        <Style key={info.label}>
           <Label>
             <label htmlFor={info.inputname}>{info.label}</label>
           </Label>
-
           <Value>
             <Input
               name={info.inputname}
@@ -36,7 +31,6 @@ const Professor: React.FC<Props> = ({ userData }) => {
               noStyle
             />
           </Value>
-
           <Change>
             <label htmlFor={info.inputname}>
               <img src={editPencil} alt='edit' />
@@ -45,9 +39,9 @@ const Professor: React.FC<Props> = ({ userData }) => {
         </Style>
       ))}
 
-      <Button>Submit</Button>
+      <Button>Salvar</Button>
     </Form>
   )
 }
 
-export default Professor
+export default Infos

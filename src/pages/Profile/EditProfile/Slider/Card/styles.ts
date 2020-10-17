@@ -41,6 +41,21 @@ const Style = styled.div`
   > *, form .ChangeSetter {
     margin-bottom: 24px;
   }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  form > button {
+    width: 65%;
+    height: 40px;
+    color: #eee;
+    background-color: #ff6d8d;
+    border-radius: 15px;
+  }
 `
 
 export default Style
