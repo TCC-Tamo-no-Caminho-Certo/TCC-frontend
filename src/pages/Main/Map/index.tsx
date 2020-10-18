@@ -1,8 +1,6 @@
 import React from 'react'
 import Style from './styles'
 
-import RightMenu from '../RightMenu'
-
 import { ThemeState } from 'store/theme'
 import { useSelector, RootState } from 'store'
 

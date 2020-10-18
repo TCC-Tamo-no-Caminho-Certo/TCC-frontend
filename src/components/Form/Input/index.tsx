@@ -8,37 +8,14 @@ import React, {
   useState,
   useEffect,
 } from 'react'
-import Style, { StInput, CheckboxStyle } from './style'
+import { Field, CheckboxStyle, DefaultInput } from './styles'
 
-import Checkbox from './checkbox'
+import Checkbox from './Checkbox'
+
 import { ErrorTooltip } from 'components/Tooltips/index'
 
 import { IconBaseProps } from 'react-icons'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
-
-type Types =
-  | 'button'
-  | 'checkbox'
-  | 'color'
-  | 'date'
-  | 'datetime-local'
-  | 'email'
-  | 'file'
-  | 'hidden'
-  | 'image'
-  | 'month'
-  | 'number'
-  | 'password'
-  | 'radio'
-  | 'range'
-  | 'reset'
-  | 'search'
-  | 'submit'
-  | 'tel'
-  | 'text'
-  | 'time'
-  | 'url'
-  | 'week'
 
 export interface Ref {
   input: RefObject<HTMLInputElement>
@@ -46,9 +23,8 @@ export interface Ref {
 }
 
 export interface InputProps extends React.HTMLProps<HTMLInputElement> {
-  theme?: any
-  type?: Types
   eye?: boolean
+  theme?: any
   noStyle?: boolean
   pasteAndDrop?: boolean
   icon?: ComponentType<IconBaseProps>
@@ -64,7 +40,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       type,
       theme,
       onBlur,
-      noStyle,
+      noStyle = false,
       className,
       handleValue,
       icon: Icon,
@@ -95,7 +71,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       handleValue && handleValue(auxRef.current?.value)
     }
 
-    const InputStyle = noStyle ? Style : type === 'checkbox' ? CheckboxStyle : StInput
+    const setInputStyle = () => {
+      if (noStyle) return DefaultInput
+      if (type === 'checkbox') return CheckboxStyle
+      return Field
+    }
+
+    const InputStyle = setInputStyle()
 
     return (
       <InputStyle
@@ -115,17 +97,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           ref={ref || inputRef}
           id={rest.name}
-          type={
-            eye
-              ? type === 'password'
-                ? showInput
-                  ? 'text'
-                  : type
-                : showInput
-                ? type
-                : 'password'
-              : type
-          }
           onSubmit={valueHandler}
           onBlur={onInputBlur}
           onPaste={event => pasteAndDrop || event?.preventDefault()}

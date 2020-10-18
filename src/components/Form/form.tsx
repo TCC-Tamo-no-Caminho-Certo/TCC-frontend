@@ -7,11 +7,11 @@ import React, {
   useRef,
   useState,
 } from 'react'
+import { ReCaptcha, captcha as Captcha } from './styles'
 
 import InpuDate from './InputDate'
 import Button from './Button'
 import Input, { InputProps, Ref } from './Input'
-import { ReCAPTCHA, captcha } from './Input/style'
 
 import api from 'services/api'
 
@@ -47,7 +47,6 @@ const Form: FC<Props> = ({
   changeData,
   captcha,
   cb,
-
   ...rest
 }) => {
   const data: any = { ...addData }
@@ -55,7 +54,7 @@ const Form: FC<Props> = ({
   let haveErrors = false
 
   const [showLoader, setShowLoader] = useState(false)
-  const recaptchaRef = useRef<captcha>(null)
+  const recaptchaRef = useRef<Captcha>(null)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const setRef = (input: Ref) => {
@@ -143,7 +142,7 @@ const Form: FC<Props> = ({
   return (
     <form onSubmit={handleSubmit} noValidate {...rest}>
       {captcha && (
-        <ReCAPTCHA
+        <ReCaptcha
           ref={recaptchaRef}
           size='invisible'
           sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
