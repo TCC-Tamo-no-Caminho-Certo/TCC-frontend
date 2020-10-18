@@ -20,7 +20,7 @@ const Infos: React.FC<Props> = ({ userData }) => {
   return (
     <Form path=''>
       {userData.map((info: Info) => (
-        <Style key={info.label}>
+        <Style key={info.inputname}>
           <Label>
             <label htmlFor={info.inputname}>{info.label}</label>
           </Label>

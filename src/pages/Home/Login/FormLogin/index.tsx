@@ -3,10 +3,13 @@ import Style, { Content, Register, Google, Permanence } from './styles'
 
 import google from 'assets/google.png'
 
+import api from 'services/api'
+
 import loginSchema from 'utils/validations/login'
 
 import { ThemeState } from 'store/theme'
 import { HomeActions } from 'store/home'
+import { UserActions } from 'store/user'
 import { useSelector, useDispatch, RootState } from 'store'
 
 import ThemeSwitch from 'components/ThemeSwitch'
@@ -28,6 +31,19 @@ const FormLogin: React.FC = () => {
   const history = useHistory()
   const dispatch = useDispatch()
 
+  const handleSubmit = async (resData: any) => {
+    localStorage.setItem('@SLab_ac_token', resData.access_token)
+
+    const { user } = await api.get('user/get', {
+      headers: {
+        authorization: `Bearer ${resData.access_token}`,
+      },
+    })
+
+    dispatch(UserActions.userInfo(user))
+    history.push('/main')
+  }
+
   return (
     <Style theme={theme}>
       <header>
@@ -40,13 +56,7 @@ const FormLogin: React.FC = () => {
           <span>Entrar com o Google</span>
         </Google>
 
-        <Form
-          cb={() => history.push('/main')}
-          valSchema={loginSchema}
-          path='login'
-          loaderFB
-          captcha
-        >
+        <Form cb={handleSubmit} valSchema={loginSchema} path='login' loaderFB captcha>
           <Input name='email' placeholder='E-mail' icon={AiOutlineMail} autoComplete='email' />
 
           <Input

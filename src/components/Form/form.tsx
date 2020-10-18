@@ -20,7 +20,6 @@ import { ObjectSchema, ValidationError } from 'yup'
 
 import { ReCAPTCHA, captcha } from './Input/style'
 
-
 interface Props extends HTMLProps<HTMLFormElement> {
   children: (ReactElement<InputProps> | ReactElement | ReactElement[])[] | ReactElement<InputProps>
   path: string
@@ -65,7 +64,8 @@ const Form: FC<Props> = ({
 
   const setData = () => {
     refs.forEach(ref => {
-      data[ref.input.current!.name] = ref.input.current?.type === 'checkbox'
+      data[ref.input.current!.name] =
+        ref.input.current?.type === 'checkbox'
           ? ref.input.current?.checked
           : ref.input.current?.value
     })
@@ -106,16 +106,21 @@ const Form: FC<Props> = ({
     setData()
     changeData && changeData(data)
     await validate()
-    if (captcha) data.captcha = (await recaptchaRef.current!.executeAsync())
-    // !haveErrors && (await submit(cb))
+    if (captcha) data.captcha = await recaptchaRef.current!.executeAsync()
+    !haveErrors && (await submit(cb))
 
     loaderFB && setShowLoader(false)
     console.log(data)
   }
 
-  const checkChildren = (elements: (ReactElement<InputProps> | ReactElement | ReactElement[])[] | ReactElement<InputProps> | ReactElement) => {
+  const checkChildren = (
+    elements:
+      | (ReactElement<InputProps> | ReactElement | ReactElement[])[]
+      | ReactElement<InputProps>
+      | ReactElement
+  ) => {
     const children: any = Array.isArray(elements) ? elements : [elements]
-    
+
     return children.map((child: ReactElement<InputProps> | ReactElement, i: number) => {
       if (child.type === Input || child.type === InpuDate)
         return cloneElement(child, { key: child.props.name, theme, _setref: setRef })
@@ -125,7 +130,10 @@ const Form: FC<Props> = ({
 
       if (child.props?.children) {
         const result = checkChildren(child.props.children)
-        return cloneElement(child, { key: child.key || `${i} ${child.type} ${Math.random()}`, children: result })
+        return cloneElement(child, {
+          key: child.key || `${i} ${child.type} ${Math.random()}`,
+          children: result,
+        })
       }
 
       return child
