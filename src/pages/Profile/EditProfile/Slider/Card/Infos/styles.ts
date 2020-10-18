@@ -1,6 +1,40 @@
 import styled from 'styled-components'
 
-export const Style = styled.div.attrs({ className: 'ChangeSetter' })`
+export const Label = styled.div`
+  grid-area: labels;
+`
+
+export const Value = styled.div`
+  grid-area: value;
+
+  span {
+    cursor: pointer;
+  }
+
+  div,
+  input,
+  span {
+    min-width: 100%;
+    padding: 0;
+
+    font-size: inherit;
+    font-family: inherit;
+    text-align: center;
+    overflow-wrap: break-word;
+
+    color: inherit;
+  }
+`
+
+export const Change = styled.div`
+  grid-area: change;
+
+  img {
+    cursor: pointer;
+  }
+`
+
+const Style = styled.div.attrs({ className: 'ChangeSetter' })`
   display: grid;
   grid: 'labels value change' 100%/20% 65% 15%;
 
@@ -21,36 +55,9 @@ export const Style = styled.div.attrs({ className: 'ChangeSetter' })`
   }
 `
 
-export const Label = styled.div`
-  grid-area: labels;
-`
+export default Style
 
-export const Value = styled.div`
-  grid-area: value;
-
-  span {
-    cursor: pointer;
-  }
-
-  div, input, span {
-    font-size: inherit;
-    font-family: inherit;
-    color: inherit;
-    text-align: center;
-    overflow-wrap: break-word;
-    min-width: 100%;
-    padding: 0;
-  }
-`
-
-export const Change = styled.div`
-  grid-area: change;
-  img {
-    cursor: pointer;
-  }
-`
-
-Style.displayName = 'Style'
-Label.displayName = 'Label'
-Value.displayName = 'Value'
-Change.displayName = 'Change'
+Label.displayName = 'Label-Style'
+Value.displayName = 'Value-Style'
+Change.displayName = 'Change-Style'
+Style.displayName = 'Infos-Style'

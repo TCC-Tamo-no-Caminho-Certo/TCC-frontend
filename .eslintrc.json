@@ -36,22 +36,27 @@
     }
   },
   "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "prettier/prettier": "error",
+    "no-nested-ternary": "warn",
+    "no-empty-function": "off",
+    "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-props-no-spreading": "off",
     "react/prop-types": "off",
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
     "react/no-children-prop": "off",
     "no-unused-expressions": "off",
     "no-param-reassign": "off",
     "import/prefer-default-export": "off",
     "import/no-unresolved": "off",
     "import/order": "off",
-    "prettier/prettier": "error",
     "jsx-a11y/label-has-associated-control": "off",
+    "@typescript-eslint/no-empty-function": [
+      "off"
+    ],
     "react/jsx-filename-extension": [
       1,
       {

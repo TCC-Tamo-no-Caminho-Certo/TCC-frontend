@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Style, Label, Value, Change } from './styles'
+import Style, { Label, Value, Change } from './styles'
 
 import { Form, Input, Button } from 'components/Form'
 import editPencil from 'assets/editPencil.svg'

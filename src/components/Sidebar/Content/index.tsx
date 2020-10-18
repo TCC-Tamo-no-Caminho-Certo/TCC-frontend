@@ -1,9 +1,8 @@
 import React from 'react'
-import Style from './styles'
 
-import { ThemeState } from 'store/theme'
 import { useSelector, RootState } from 'store'
 
+import { motion } from 'framer-motion'
 import { Switch, Route } from 'react-router-dom'
 
 export interface RouteProps {
@@ -19,7 +18,6 @@ interface ContentProps {
 }
 
 const Content: React.FC<ContentProps> = ({ routes }) => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const open = useSelector<RootState>(({ sidebar }) => sidebar.open)
 
   const cycle = () => (open ? 'closed' : 'open')
@@ -44,7 +42,7 @@ const Content: React.FC<ContentProps> = ({ routes }) => {
   }
 
   return (
-    <Style theme={theme} variants={content} initial={false} animate={cycle()}>
+    <motion.section variants={content} initial={false} animate={cycle()}>
       <Switch>
         {routes.map(route => (
           <Route
@@ -55,7 +53,7 @@ const Content: React.FC<ContentProps> = ({ routes }) => {
           />
         ))}
       </Switch>
-    </Style>
+    </motion.section>
   )
 }
 

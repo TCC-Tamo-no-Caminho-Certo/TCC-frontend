@@ -1,4 +1,4 @@
-import { ThemeAttributes } from './'
+import { ThemeAttributes } from '.'
 
 const dark: ThemeAttributes = {
   name: 'dark',

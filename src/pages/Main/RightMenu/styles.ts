@@ -148,5 +148,7 @@ const Style = styled.div<StyleProps>`
 
 export default Style
 
-UserInfo.displayName = 'UserInfo'
-Style.displayName = 'Style'
+Background.displayName = 'Background-Style'
+UserInfo.displayName = 'UserInfo-Style'
+EditOpen.displayName = 'EditOpen-Style'
+Style.displayName = 'RightMenu-Style'

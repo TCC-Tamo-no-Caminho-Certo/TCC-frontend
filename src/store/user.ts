@@ -5,10 +5,12 @@ const localUserConfig = localStorage.getItem('-----')
 const User = createSlice({
   name: 'userConfig',
   initialState: localUserConfig,
+
   reducers: {
-    storeInfo: state => '',
+    storeInfo: () => '',
   },
 })
 
 export const UserActions = User.actions
+
 export default User

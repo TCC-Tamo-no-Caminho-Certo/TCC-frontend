@@ -2,17 +2,7 @@ import styled from 'styled-components'
 
 import fromTheme from 'utils/fromTheme'
 
-interface Props {
-  color: string
-}
-
-// const Colors = {
-//   alert: '#fc952b',
-//   error: '#e8423f',
-//   success: '#13c47c',
-// }
-
-export const Style = styled.div`
+const Style = styled.div`
   width: 101vw;
   height: 101vh;
 
@@ -24,7 +14,7 @@ export const Style = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   div {
     width: min(350px, 80vw);
     border: 2px solid #ccc;
@@ -66,4 +56,6 @@ export const Style = styled.div`
   }
 `
 
-Style.displayName = 'Style'
+export default Style
+
+Style.displayName = 'Modal-Style'

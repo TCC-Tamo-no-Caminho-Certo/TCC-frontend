@@ -1,16 +1,17 @@
 import React from 'react'
 import Style, { UserInfo, Background, EditOpen } from './styles'
 
-import gear from 'assets/gear.svg'
-import avatar from 'assets/avatar.jpg'
-import editProfile from 'assets/ProfileNavbar/editProfile.svg'
-import logout from 'assets/EditOpen/logout.svg'
-import change from 'assets/EditOpen/change.svg'
-
 import { ThemeState } from 'store/theme'
 import { RootState, useSelector } from 'store'
-import { motion, useCycle } from 'framer-motion'
+
+import gear from 'assets/gear.svg'
+import avatar from 'assets/avatar.jpg'
+import logout from 'assets/EditOpen/logout.svg'
+import change from 'assets/EditOpen/change.svg'
+import editProfile from 'assets/ProfileNavbar/editProfile.svg'
+
 import { Link } from 'react-router-dom'
+import { motion, useCycle } from 'framer-motion'
 
 const RightMenu: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)

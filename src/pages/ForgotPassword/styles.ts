@@ -2,6 +2,28 @@ import styled from 'styled-components'
 
 import fromTheme from 'utils/fromTheme'
 
+export const ConfirmToken = styled.section`
+  form.resendContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 15px 15px 0px 15px;
+  }
+
+  .resendContainer button {
+    margin: 15px;
+
+    text-decoration: underline;
+    font-weight: bold;
+    color: ${fromTheme('primary')};
+
+    &:hover {
+      color: ${fromTheme('tertiary')};
+    }
+  }
+`
+
 const Style = styled.main`
   position: relative;
 
@@ -123,29 +145,7 @@ const Style = styled.main`
   }
 `
 
-export const ConfirmToken = styled.section`
-  form.resendContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 15px 15px 0px 15px;
-  }
-
-  .resendContainer button {
-    margin: 15px;
-
-    text-decoration: underline;
-    font-weight: bold;
-    color: ${fromTheme('primary')};
-
-    &:hover {
-      color: ${fromTheme('tertiary')};
-    }
-  }
-`
-
-Style.displayName = 'Style'
-ConfirmToken.displayName = 'ConfirmToken'
-
 export default Style
+
+Style.displayName = 'ForgotPassword-Style'
+ConfirmToken.displayName = 'ConfirmToken-Style'

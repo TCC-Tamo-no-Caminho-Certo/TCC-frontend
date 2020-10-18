@@ -4,7 +4,7 @@ import fromTheme from 'utils/fromTheme'
 
 import { motion } from 'framer-motion'
 
-const Style = styled(motion.li)`
+const Style = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,4 +22,4 @@ const Style = styled(motion.li)`
 
 export default Style
 
-Style.displayName = 'Style'
+Style.displayName = 'EditProfile-Style'

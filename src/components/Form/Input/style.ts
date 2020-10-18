@@ -11,65 +11,6 @@ interface StyleProps {
   isErrored: boolean
 }
 
-export const Style = styled.div<StyleProps>`
-  display: ${({ hidden }) => (hidden ? 'none' : 'flex')};
-  align-items: center;
-  min-height: 35px;
-  height: 4.5vh;
-
-  font-size: calc(1.3rem + 0.5vh);
-  border-radius: 10px;
-  background-color: transparent;
-
-  input {
-    border: none;
-    border-radius: ${({ hasEye, hasIcon }) => hasEye && hasIcon ? '0px' : hasEye ? '0px 0px 10px 10px' : hasIcon ? '10px 10px 0px 0px' : '10px'};
-    height: 100%;
-    width: ${({ hasEye, hasIcon }) => hasEye && hasIcon ? '70%' : hasEye || hasIcon ? '85%' : '100%'};
-
-    background-color: transparent;
-    color: ${fromTheme('primary')};
-    -webkit-text-fill-color: ${fromTheme('primary')};
-
-    &::placeholder {
-      color: ${fromTheme('quaternary')};
-      -webkit-text-fill-color: ${fromTheme('quaternary')};
-    }
-  }
-
-  .icon, .eyeIcon, .errorIcon {
-    width: 15%;
-    height: 100%;
-    padding: 9px 0;
-    color: ${fromTheme('quaternary')};
-  }
-
-  &:focus-within {
-    border-color: ${fromTheme('primary')};
-
-    &, input::placeholder, .icon, .eyeIcon {
-      color: ${fromTheme('primary')};
-      -webkit-text-fill-color: ${fromTheme('primary')};
-    }
-  }
-  
-  ${({ isFilled }) => isFilled && css`
-    &, .icon {
-      color: ${fromTheme('primary')};
-      -webkit-text-fill-color: ${fromTheme('primary')};
-    }`
-  }
-
-  ${({ hasIcon, isErrored }) =>
-    !hasIcon &&
-    !isErrored &&
-    css`
-      input {
-        padding-left: 20px;
-      }
-    `}
-`
-
 export const StInput = styled.div<StyleProps>`
   display: ${({ hidden }) => (hidden ? 'none' : 'flex')};
   align-items: center;
@@ -83,9 +24,17 @@ export const StInput = styled.div<StyleProps>`
 
   input {
     border: none;
-    border-radius: ${({ hasEye, hasIcon }) => hasEye && hasIcon ? '0px' : hasEye ? '0px 0px 10px 10px' : hasIcon ? '10px 10px 0px 0px' : '10px'};
+    border-radius: ${({ hasEye, hasIcon }) =>
+      hasEye && hasIcon
+        ? '0px'
+        : hasEye
+        ? '0px 0px 10px 10px'
+        : hasIcon
+        ? '10px 10px 0px 0px'
+        : '10px'};
     height: 100%;
-    width: ${({ hasEye, hasIcon }) => hasEye && hasIcon ? '70%' : hasEye || hasIcon ? '85%' : '100%'};
+    width: ${({ hasEye, hasIcon }) =>
+      hasEye && hasIcon ? '70%' : hasEye || hasIcon ? '85%' : '100%'};
 
     background-color: transparent;
     color: ${fromTheme('primary')};
@@ -98,7 +47,9 @@ export const StInput = styled.div<StyleProps>`
     }
   }
 
-  .icon, .eyeIcon, .errorIcon {
+  .icon,
+  .eyeIcon,
+  .errorIcon {
     width: 15%;
     height: 100%;
     padding: 9px 0;
@@ -108,15 +59,20 @@ export const StInput = styled.div<StyleProps>`
   &:focus-within {
     border-color: ${fromTheme('primary')};
 
-    &, input::placeholder, .icon, .eyeIcon {
+    &,
+    input::placeholder,
+    .icon,
+    .eyeIcon {
       color: ${fromTheme('primary')};
       -webkit-text-fill-color: ${fromTheme('primary')};
     }
   }
 
   ${({ isFilled }) =>
-    isFilled && css`
-      &, .icon {
+    isFilled &&
+    css`
+      &,
+      .icon {
         color: ${fromTheme('primary')};
         -webkit-text-fill-color: ${fromTheme('primary')};
       }
@@ -138,7 +94,8 @@ export const CheckboxStyle = styled.div<StyleProps>`
   width: 16px;
   height: 16px;
 
-  input, svg {
+  input,
+  svg {
     position: absolute;
     left: 0;
     top: 0;
@@ -155,9 +112,85 @@ export const ReCAPTCHA = styled(captcha)`
   display: none;
 `
 
-export { captcha }
+const Style = styled.div<StyleProps>`
+  display: ${({ hidden }) => (hidden ? 'none' : 'flex')};
+  align-items: center;
+  min-height: 35px;
+  height: 4.5vh;
 
-ReCAPTCHA.displayName = 'ReCAPTCHA'
-CheckboxStyle.displayName = 'Style'
-StInput.displayName = 'Style'
-Style.displayName = 'Style'
+  font-size: calc(1.3rem + 0.5vh);
+  border-radius: 10px;
+  background-color: transparent;
+
+  input {
+    border: none;
+    border-radius: ${({ hasEye, hasIcon }) =>
+      hasEye && hasIcon
+        ? '0px'
+        : hasEye
+        ? '0px 0px 10px 10px'
+        : hasIcon
+        ? '10px 10px 0px 0px'
+        : '10px'};
+    height: 100%;
+    width: ${({ hasEye, hasIcon }) =>
+      hasEye && hasIcon ? '70%' : hasEye || hasIcon ? '85%' : '100%'};
+
+    background-color: transparent;
+    color: ${fromTheme('primary')};
+    -webkit-text-fill-color: ${fromTheme('primary')};
+
+    &::placeholder {
+      color: ${fromTheme('quaternary')};
+      -webkit-text-fill-color: ${fromTheme('quaternary')};
+    }
+  }
+
+  .icon,
+  .eyeIcon,
+  .errorIcon {
+    width: 15%;
+    height: 100%;
+    padding: 9px 0;
+    color: ${fromTheme('quaternary')};
+  }
+
+  &:focus-within {
+    border-color: ${fromTheme('primary')};
+
+    &,
+    input::placeholder,
+    .icon,
+    .eyeIcon {
+      color: ${fromTheme('primary')};
+      -webkit-text-fill-color: ${fromTheme('primary')};
+    }
+  }
+
+  ${({ isFilled }) =>
+    isFilled &&
+    css`
+      &,
+      .icon {
+        color: ${fromTheme('primary')};
+        -webkit-text-fill-color: ${fromTheme('primary')};
+      }
+    `}
+
+  ${({ hasIcon, isErrored }) =>
+    !hasIcon &&
+    !isErrored &&
+    css`
+      input {
+        padding-left: 20px;
+      }
+    `}
+`
+
+export { captcha }
+export default Style
+
+ReCAPTCHA.displayName = 'ReCAPTCHA-Style'
+CheckboxStyle.displayName = 'Checkbox-Style'
+StInput.displayName = 'StInput-Style'
+Style.displayName = 'Input-Style'

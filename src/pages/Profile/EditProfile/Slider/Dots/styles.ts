@@ -30,3 +30,6 @@ const Style = styled.div.attrs({ className: 'Dots' })<StyleProps>`
 `
 
 export default Style
+
+Dot.displayName = 'Dot-Style'
+Style.displayName = 'Dots-Style'

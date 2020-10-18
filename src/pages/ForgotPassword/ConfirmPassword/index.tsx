@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Style from '../styles'
 
-
 import { passwordSchema } from 'utils/validations/forgotPassword'
 
 import { ThemeState } from 'store/theme'
@@ -21,7 +20,7 @@ const ConfirmPassword: React.FC = () => {
   const history = useHistory()
 
   const path = window.location.pathname.split('/')
-  // eslint-disable-next-line
+
   const token = path[2] || localStorage.getItem('reset-password-token')
   if (!token) throw new Error('No token provided')
 
@@ -30,7 +29,7 @@ const ConfirmPassword: React.FC = () => {
     history.push('/')
   }
 
-  const handleResetPassSubmit = (data: any) => {
+  const handleResetPassSubmit = () => {
     setModalAttributes({
       visible: true,
       title: 'Sucesso',
