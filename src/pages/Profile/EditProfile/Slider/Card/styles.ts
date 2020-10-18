@@ -27,18 +27,20 @@ const Style = styled.div`
   width: 100%;
   padding: 60px 20px 20px 20px;
   border-radius: 16px;
+  user-select: none;
 
   background-color: white;
   box-shadow: 0px 10px 25px -10px rgba(0, 0, 0, 0.2);
-  user-select: none;
-  
+
   > img {
     width: 128px;
     height: 128px;
+
     border-radius: 50%;
   }
 
-  > *, form .ChangeSetter {
+  > *,
+  form .ChangeSetter {
     margin-bottom: 24px;
   }
 
@@ -48,17 +50,18 @@ const Style = styled.div`
     align-items: center;
     justify-content: center;
   }
-  
+
   form > button {
     width: 65%;
     height: 40px;
+    border-radius: 15px;
+
     color: #eee;
     background-color: #ff6d8d;
-    border-radius: 15px;
   }
 `
 
 export default Style
 
-Style.displayName = 'Style'
-Header.displayName = 'Header'
+Header.displayName = 'Header-Style'
+Style.displayName = 'Card-Style'

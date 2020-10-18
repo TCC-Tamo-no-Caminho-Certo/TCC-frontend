@@ -21,3 +21,5 @@ export const StyledTooltipError = styled(Popup)`
     margin-left: 5% !important;
   }
 `
+
+StyledTooltipError.displayName = 'TooltipError-Style'

@@ -8,36 +8,14 @@ import React, {
   useState,
   useEffect,
 } from 'react'
+import { Field, CheckboxStyle, DefaultInput } from './styles'
 
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import Checkbox from './Checkbox'
+
 import { ErrorTooltip } from 'components/Tooltips/index'
-import { Style, StInput, CheckboxStyle } from './style'
-import { IconBaseProps } from 'react-icons'
-import Checkbox from './checkbox'
 
-type Types =
-  | 'button'
-  | 'checkbox'
-  | 'color'
-  | 'date'
-  | 'datetime-local'
-  | 'email'
-  | 'file'
-  | 'hidden'
-  | 'image'
-  | 'month'
-  | 'number'
-  | 'password'
-  | 'radio'
-  | 'range'
-  | 'reset'
-  | 'search'
-  | 'submit'
-  | 'tel'
-  | 'text'
-  | 'time'
-  | 'url'
-  | 'week'
+import { IconBaseProps } from 'react-icons'
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 
 export interface Ref {
   input: RefObject<HTMLInputElement>
@@ -45,9 +23,8 @@ export interface Ref {
 }
 
 export interface InputProps extends React.HTMLProps<HTMLInputElement> {
-  theme?: any
-  type?: Types
   eye?: boolean
+  theme?: any
   noStyle?: boolean
   pasteAndDrop?: boolean
   icon?: ComponentType<IconBaseProps>
@@ -55,90 +32,88 @@ export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   _setref?: (ref: Ref) => void
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(({
-  _setref = t => {},
-  eye,
-  type,
-  theme,
-  onBlur,
-  noStyle,
-  className,
-  handleValue,
-  icon: Icon,
-  pasteAndDrop,
-  ...rest
-}, ref) => {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [error, setError] = useState<string>()
-  const [showInput, setShowInput] = useState(false)
-  const [isFilled, setIsFilled] = useState(false)
-  const [checked, setChecked] = useState(false)
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      _setref = () => {},
+      eye,
+      type,
+      theme,
+      onBlur,
+      noStyle = false,
+      className,
+      handleValue,
+      icon: Icon,
+      pasteAndDrop,
+      ...rest
+    },
+    ref
+  ) => {
+    const inputRef = useRef<HTMLInputElement>(null)
+    const auxRef = (ref as RefObject<HTMLInputElement>) || inputRef
+    const [error, setError] = useState<string>()
+    const [showInput, setShowInput] = useState(false)
+    const [isFilled, setIsFilled] = useState(false)
+    const [checked, setChecked] = useState(false)
 
-  const auxRef = ref as RefObject<HTMLInputElement> || inputRef
+    useEffect(() => {
+      _setref({ input: auxRef, setError })
+    }, [_setref, auxRef])
 
-  useEffect(() => {
-    _setref({ input: auxRef, setError })
-  }, [_setref, auxRef])
+    const onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
+      onBlur && onBlur(e)
+      setIsFilled(!!auxRef.current?.value)
+      setError(undefined)
+    }
 
-  const onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
-    onBlur && onBlur(e)
-    setIsFilled(!!auxRef.current?.value)
-    setError(undefined)
+    const valueHandler = (e: FormEvent) => {
+      e.preventDefault()
+      handleValue && handleValue(auxRef.current?.value)
+    }
+
+    const setInputStyle = () => {
+      if (noStyle) return DefaultInput
+      if (type === 'checkbox') return CheckboxStyle
+      return Field
+    }
+
+    const InputStyle = setInputStyle()
+
+    return (
+      <InputStyle
+        theme={theme}
+        hasEye={!!eye}
+        hasIcon={!!Icon}
+        isFilled={isFilled}
+        isErrored={!!error}
+        hidden={rest.hidden}
+        className={className}
+        {...{ onClick: type === 'checkbox' ? () => setChecked(!checked) : undefined }}
+      >
+        {error ? <ErrorTooltip content={error} /> : Icon && <Icon className='icon' />}
+
+        {type === 'checkbox' && !noStyle && <Checkbox checked={checked} />}
+
+        <input
+          ref={ref || inputRef}
+          id={rest.name}
+          onSubmit={valueHandler}
+          onBlur={onInputBlur}
+          onPaste={event => pasteAndDrop || event?.preventDefault()}
+          onDrop={event => pasteAndDrop || event?.preventDefault()}
+          {...rest}
+        />
+
+        {eye &&
+          (showInput ? (
+            <AiFillEyeInvisible onClick={() => setShowInput(false)} className='eyeIcon' />
+          ) : (
+            <AiFillEye onClick={() => setShowInput(true)} className='eyeIcon' />
+          ))}
+      </InputStyle>
+    )
   }
-
-  const valueHandler = (e: FormEvent) => {
-    e.preventDefault()
-
-    handleValue && handleValue(auxRef.current?.value)
-  }
-
-  const InputStyle = noStyle ? Style : type === 'checkbox' ? CheckboxStyle : StInput
-
-  return (
-    <InputStyle
-      theme={theme}
-      hasEye={!!eye}
-      hasIcon={!!Icon}
-      isFilled={isFilled}
-      isErrored={!!error}
-      hidden={rest.hidden}
-      className={className}
-      {...{ onClick: type === 'checkbox' ? () => setChecked(!checked) : undefined }}
-    >
-      {error ? <ErrorTooltip content={error} /> : Icon && <Icon className='icon' />}
-
-      {type === 'checkbox' && !noStyle && <Checkbox checked={checked} />}
-
-      <input
-        ref={ref || inputRef}
-        id={rest.name}
-        type={
-          eye
-            ? type === 'password'
-              ? showInput
-                ? 'text'
-                : type
-              : showInput
-              ? type
-              : 'password'
-            : type
-        }
-        onSubmit={valueHandler}
-        onBlur={onInputBlur}
-        onPaste={event => pasteAndDrop || event?.preventDefault()}
-        onDrop={event => pasteAndDrop || event?.preventDefault()}
-        {...rest}
-      />
-
-      {eye &&
-        (showInput ? (
-          <AiFillEyeInvisible onClick={() => setShowInput(false)} className='eyeIcon' />
-        ) : (
-          <AiFillEye onClick={() => setShowInput(true)} className='eyeIcon' />
-        ))}
-    </InputStyle>
-  )
-})
+)
 
 export default Input
 

@@ -32,3 +32,6 @@ const Style = styled(animated.div)<StyleProps>`
 `
 
 export default Style
+
+Animation.displayName = 'Animation-Style'
+Style.displayName = 'Slider-Style'

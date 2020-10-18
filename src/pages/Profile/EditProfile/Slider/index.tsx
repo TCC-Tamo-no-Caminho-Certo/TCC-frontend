@@ -22,7 +22,8 @@ const Slider: React.FC<SliderProps> = ({ cardWidth = 550, cardsQuant = 3, gap = 
 
   const limits = cardsQuant % 2 === 0 ? cardsQuant / 2 : (cardsQuant - 1) / 2
 
-  const maxLimit = cardsQuant % 2 === 0 ? totalMove * ((cardsQuant - 2) / 2) : totalMove * ((cardsQuant - 1) / 2)
+  const maxLimit =
+    cardsQuant % 2 === 0 ? totalMove * ((cardsQuant - 2) / 2) : totalMove * ((cardsQuant - 1) / 2)
 
   const springs = useSprings(
     cardsQuant,
@@ -41,7 +42,7 @@ const Slider: React.FC<SliderProps> = ({ cardWidth = 550, cardsQuant = 3, gap = 
       }
 
       if (position === maxLimit && swpx === 1) setPosition(maxLimit)
-      
+
       if (position === -maxLimit && swpx === -1) setPosition(-maxLimit)
     },
     {

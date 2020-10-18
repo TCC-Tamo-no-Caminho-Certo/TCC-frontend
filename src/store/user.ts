@@ -16,14 +16,18 @@ const initialState = {
 
 const User = createSlice({
   name: 'userConfig',
+
   initialState,
+
   reducers: {
     userInfo: (state, action) => {
       console.log('USER_DATE', action.payload)
+
       return action.payload
     },
   },
 })
 
 export const UserActions = User.actions
+
 export default User

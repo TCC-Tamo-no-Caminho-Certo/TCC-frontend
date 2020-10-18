@@ -22,3 +22,6 @@ const Style = styled.button.attrs({
 `
 
 export default Style
+
+MotionRect.displayName = 'Rect-Style'
+Style.displayName = 'Hamburger-Style'

@@ -7,18 +7,18 @@ import React, {
   useRef,
   useState,
 } from 'react'
+import { ReCaptcha, captcha as Captcha } from './styles'
+
+import InpuDate from './InputDate'
+import Button from './Button'
+import Input, { InputProps, Ref } from './Input'
 
 import api from 'services/api'
+
 import { ThemeState } from 'store/theme'
 import { useSelector, RootState } from 'store'
 
-import InpuDate from './InputDate'
-import Button from './button/button'
-import Input, { InputProps, Ref } from './Input'
-
 import { ObjectSchema, ValidationError } from 'yup'
-
-import { ReCAPTCHA, captcha } from './Input/style'
 
 interface Props extends HTMLProps<HTMLFormElement> {
   children: (ReactElement<InputProps> | ReactElement | ReactElement[])[] | ReactElement<InputProps>
@@ -47,7 +47,6 @@ const Form: FC<Props> = ({
   changeData,
   captcha,
   cb,
-
   ...rest
 }) => {
   const data: any = { ...addData }
@@ -55,7 +54,7 @@ const Form: FC<Props> = ({
   let haveErrors = false
 
   const [showLoader, setShowLoader] = useState(false)
-  const recaptchaRef = useRef<captcha>(null)
+  const recaptchaRef = useRef<Captcha>(null)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const setRef = (input: Ref) => {
@@ -107,7 +106,7 @@ const Form: FC<Props> = ({
     changeData && changeData(data)
     await validate()
     if (captcha) data.captcha = await recaptchaRef.current!.executeAsync()
-    !haveErrors && (await submit(cb))
+    // !haveErrors && (await submit(cb))
 
     loaderFB && setShowLoader(false)
     console.log(data)
@@ -143,7 +142,7 @@ const Form: FC<Props> = ({
   return (
     <form onSubmit={handleSubmit} noValidate {...rest}>
       {captcha && (
-        <ReCAPTCHA
+        <ReCaptcha
           ref={recaptchaRef}
           size='invisible'
           sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'

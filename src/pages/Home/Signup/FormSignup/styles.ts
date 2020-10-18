@@ -119,4 +119,4 @@ const Style = styled.div`
 
 export default Style
 
-Style.displayName = 'Style'
+Style.displayName = 'FormSignup-Style'

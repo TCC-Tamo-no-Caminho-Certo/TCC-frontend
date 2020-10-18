@@ -8,6 +8,7 @@ async function validateToken(): Promise<boolean> {
       authorization: `Bearer ${token}`,
     },
   })
+
   return response.success
 }
 

@@ -2,33 +2,6 @@ import styled from 'styled-components'
 
 import fromTheme from 'utils/fromTheme'
 
-const Style = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  min-width: 320px;
-  width: calc(38vw + 1px);
-  height: 100vh;
-  padding: 73px 0px;
-
-  background-color: ${fromTheme('secondary')};
-
-  header {
-    position: absolute;
-    top: 20px;
-
-    width: 30%;
-    max-width: 1000px;
-    height: 33px;
-
-    .ThemeSwitch {
-      position: absolute;
-      right: 0;
-    }
-  }
-`
-
 export const Register = styled.div`
   text-align: center;
 
@@ -164,10 +137,37 @@ export const Google = styled.button.attrs({ type: 'button' })`
   }
 `
 
+const Style = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-width: 320px;
+  width: calc(38vw + 1px);
+  height: 100vh;
+  padding: 73px 0px;
+
+  background-color: ${fromTheme('secondary')};
+
+  header {
+    position: absolute;
+    top: 20px;
+
+    width: 30%;
+    max-width: 1000px;
+    height: 33px;
+
+    .ThemeSwitch {
+      position: absolute;
+      right: 0;
+    }
+  }
+`
+
 export default Style
 
-Style.displayName = 'Style'
-Google.displayName = 'Google'
-Content.displayName = 'Content'
-Register.displayName = 'Register'
-Permanence.displayName = 'Permanence'
+Register.displayName = 'Register-Style'
+Content.displayName = 'Content-Style'
+Permanence.displayName = 'Permanence-Style'
+Google.displayName = 'Google-Style'
+Style.displayName = 'FormLogin-Style'

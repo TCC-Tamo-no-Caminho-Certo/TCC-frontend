@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import fromTheme from 'utils/fromTheme'
 
 const Style = styled.div`
-
   .DatePicker {
     width: 100%;
     height: 4.5vh;
@@ -15,7 +14,6 @@ const Style = styled.div`
     --cl-color-primary: ${fromTheme('calendarPrimary')}!important;
     --cl-color-disabled: ${fromTheme('calendarDisabled')}!important;
     --cl-color-primary-light: ${fromTheme('white')}!important;
-
     box-shadow: 0 0 10px 5px #555;
   }
 
@@ -27,8 +25,8 @@ const Style = styled.div`
     border-bottom: solid 2px ${fromTheme('calendarHeader')};
     padding: 10px;
     border-radius: 20px 20px 0px 0px;
-
-    .Calendar__monthText, .Calendar__yearText {
+    .Calendar__monthText,
+    .Calendar__yearText {
       width: 60%;
     }
 
@@ -51,18 +49,20 @@ const Style = styled.div`
     margin: 0;
     padding: 0 20px 10px 20px;
     background-color: ${fromTheme('calendarHeader')};
-
     .Calendar__weekDay {
       text-decoration: none;
     }
   }
 
-  .Calendar__monthSelector.-open, .Calendar__yearSelector.-open {
+  .Calendar__monthSelector.-open,
+  .Calendar__yearSelector.-open {
     border-radius: 30px 30px 20px 20px;
   }
 
-  .Calendar__yearSelectorWrapper, .Calendar__yearSelectorWrapper.-faded {
-    &::before, &::after {
+  .Calendar__yearSelectorWrapper,
+  .Calendar__yearSelectorWrapper.-faded {
+    &::before,
+    &::after {
       display: none;
     }
   }
@@ -89,15 +89,19 @@ const Style = styled.div`
     border-color: transparent transparent ${fromTheme('calendarHeader')} transparent;
   }
 
-  .Calendar__section.-shown, .Calendar__monthSelector.-open, .Calendar__yearSelector.-open, .Calendar.-noFocusOutline.-ltr {
+  .Calendar__section.-shown,
+  .Calendar__monthSelector.-open,
+  .Calendar__yearSelector.-open,
+  .Calendar.-noFocusOutline.-ltr {
     background-image: none;
     background-color: ${fromTheme('calendarBackground')};
   }
 
-  .Calendar__monthText, .Calendar__yearText, .Calendar__weekDay {
+  .Calendar__monthText,
+  .Calendar__yearText,
+  .Calendar__weekDay {
     color: ${fromTheme('white')};
     background-color: transparent;
-
     &:hover {
       background-color: transparent;
     }
@@ -109,7 +113,6 @@ const Style = styled.div`
 
   .Calendar__yearSelectorText {
     color: ${fromTheme('calendarTertiary')};
-
     &:disabled {
       color: ${fromTheme('calendarDisabled')}!important;
       opacity: 1;
@@ -123,7 +126,6 @@ const Style = styled.div`
 
   .Calendar__day.-ltr {
     color: ${fromTheme('calendarTertiary')};
-
     &:hover {
       background-color: ${fromTheme('primary')} !important;
       color: ${fromTheme('calendarSecondary')} !important;
@@ -142,12 +144,14 @@ const Style = styled.div`
     color: ${fromTheme('white')};
   }
 
-  .Calendar__monthSelectorItemText:disabled, .Calendar__yearSelectorText:disabled {
+  .Calendar__monthSelectorItemText:disabled,
+  .Calendar__yearSelectorText:disabled {
     opacity: 1;
     color: ${fromTheme('calendarDisabled')}!important;
   }
 
-  .Calendar__yearText.-activeBackground, .Calendar__monthText.-activeBackground {
+  .Calendar__yearText.-activeBackground,
+  .Calendar__monthText.-activeBackground {
     background-color: ${fromTheme('calendarPrimary')} !important;
   }
 
@@ -156,7 +160,8 @@ const Style = styled.div`
       font-size: 10px !important;
     }
 
-    .Calendar__monthSelector.-open, .Calendar__yearSelector.-open {
+    .Calendar__monthSelector.-open,
+    .Calendar__yearSelector.-open {
       margin-top: 1%;
       padding-bottom: 10%;
     }
@@ -165,4 +170,4 @@ const Style = styled.div`
 
 export default Style
 
-Style.displayName = 'Style'
+Style.displayName = 'InputDate-Style'
