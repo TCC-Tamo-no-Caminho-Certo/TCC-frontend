@@ -7,13 +7,15 @@ import { ThemeState } from 'store/theme'
 import { HomeActions } from 'store/home'
 import { useDispatch, useSelector, RootState } from 'store'
 
+import Logo from 'components/Logo'
 import ThemeSwitch from 'components/ThemeSwitch'
+import { Form, Input, InputDate, Button } from 'components/Form'
 
 import { Link } from 'react-router-dom'
 import { MdPublic } from 'react-icons/md'
 import { FaUserLock } from 'react-icons/fa'
 import { RiArrowLeftSLine } from 'react-icons/ri'
-import { Form, Input, InputDate, Button } from 'components/Form'
+
 
 export interface RegisterData {
   name: string
@@ -41,6 +43,8 @@ const FormSignup: React.FC = () => {
 
         <ThemeSwitch />
       </nav>
+
+      <Logo />
 
       <Form
         valSchema={signupSchema}

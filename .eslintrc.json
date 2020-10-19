@@ -39,11 +39,11 @@
     "react-hooks/rules-of-hooks": "error",
     "prettier/prettier": "error",
     "no-nested-ternary": "warn",
-    "no-empty-function": "off",
     "react-hooks/exhaustive-deps": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "no-empty-function": "off",
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-explicit-any": "off",
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-props-no-spreading": "off",
     "react/prop-types": "off",
@@ -52,7 +52,6 @@
     "no-param-reassign": "off",
     "import/prefer-default-export": "off",
     "import/no-unresolved": "off",
-    "import/order": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "@typescript-eslint/no-empty-function": [
       "off"

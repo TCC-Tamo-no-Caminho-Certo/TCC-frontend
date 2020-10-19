@@ -14,17 +14,18 @@ const Checkbox: FC<Props> = ({ checked }) => {
 
   const pathAnimation = {
     check: {
-      pathLength: 0,
-      transition: {
-        type: 'tween',
-        duration: 0.2,
-      },
-    },
-    unCheck: {
       pathLength: 1,
       transition: {
         type: 'tween',
         duration: 0.4,
+      },
+    },
+    unCheck: {
+      d: 'M3 6 l3 4 l7 -6',
+      pathLength: 0,
+      transition: {
+        type: 'tween',
+        duration: 0.2,
       },
     },
   }
@@ -47,10 +48,10 @@ const Checkbox: FC<Props> = ({ checked }) => {
       </defs>
 
       <motion.path
-        d='M3 6 l3 4 l7 -6'
-        initial='unCheck'
+        d=''
+        initial={false}
         variants={pathAnimation}
-        animate={!checked ? 'check' : 'unCheck'}
+        animate={checked ? 'check' : 'unCheck'}
         stroke='url(#checkboxRadial)'
       />
     </svg>

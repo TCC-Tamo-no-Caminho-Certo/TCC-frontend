@@ -77,6 +77,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       return Field
     }
 
+    const hiddenInput = () => {
+      if (eye) return showInput ? 'text' : 'password'
+
+      return type
+    }
+
     const InputStyle = setInputStyle()
 
     return (
@@ -97,17 +103,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           ref={ref || inputRef}
           id={rest.name}
-          type={
-            eye
-              ? type === 'password'
-                ? showInput
-                  ? 'text'
-                  : type
-                : showInput
-                ? type
-                : 'password'
-              : type
-          }
+          type={hiddenInput()}
           onSubmit={valueHandler}
           onBlur={onInputBlur}
           onPaste={event => pasteAndDrop || event?.preventDefault()}

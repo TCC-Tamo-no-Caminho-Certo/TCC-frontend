@@ -53,7 +53,6 @@ export const Content = styled.div`
       height: 5vh;
       min-height: 35px;
 
-      margin-top: 30px;
       transition: all 0.2s;
       font-size: calc(1.3rem + 0.5vh);
       font: 700 1.8rem 'Archivo';

@@ -115,6 +115,10 @@ const Style = styled.div`
       max-width: 530px;
     }
   }
+
+  .Logo {
+    margin-bottom: 22px;
+  }
 `
 
 export default Style

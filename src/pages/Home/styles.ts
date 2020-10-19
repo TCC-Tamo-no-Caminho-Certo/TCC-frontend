@@ -1,10 +1,8 @@
 import styled from 'styled-components'
 
 const Style = styled.main`
-  margin-top: 100vh;
-
-  width: 200vw;
-  height: 200vh;
+  position: absolute;
+  top: 100vh;
 
   color: white;
   background-color: green;

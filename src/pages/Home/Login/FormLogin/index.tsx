@@ -1,7 +1,7 @@
 import React from 'react'
 import Style, { Content, Register, Google, Permanence } from './styles'
 
-import google from 'assets/google.png'
+
 
 import api from 'services/api'
 
@@ -14,10 +14,13 @@ import { useSelector, useDispatch, RootState } from 'store'
 
 import ThemeSwitch from 'components/ThemeSwitch'
 
+import google from 'assets/google.png'
+
 import { FiLock } from 'react-icons/fi'
 import { AiOutlineMail } from 'react-icons/ai'
 import { useHistory, Link } from 'react-router-dom'
 import { Form, Input, Button } from 'components/Form'
+import Logo from 'components/Logo'
 
 export interface LoginData {
   email: string
@@ -52,6 +55,8 @@ const FormLogin: React.FC = () => {
       </header>
 
       <Content theme={theme}>
+        <Logo />
+
         <Google theme={theme}>
           <img src={google} alt='google' />
           <span>Entrar com o Google</span>

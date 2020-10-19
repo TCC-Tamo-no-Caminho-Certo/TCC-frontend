@@ -24,7 +24,7 @@ const Routes: React.FC = () => {
 
   return (
     <>
-      <AnimatePresence initial>
+      <AnimatePresence initial={false}>
         <Switch location={location} key={location.pathname}>
           {homeRoutes.map(route => (
             <Route
