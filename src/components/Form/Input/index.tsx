@@ -8,14 +8,13 @@ import React, {
   useState,
   useEffect,
 } from 'react'
-import { Field, CheckboxStyle, DefaultInput } from './styles'
-
-import Checkbox from './Checkbox'
 
 import { ErrorTooltip } from 'components/Tooltips/index'
 
 import { IconBaseProps } from 'react-icons'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import Checkbox from './Checkbox'
+import { Field, CheckboxStyle, DefaultInput } from './styles'
 
 export interface Ref {
   input: RefObject<HTMLInputElement>
@@ -104,8 +103,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref || inputRef}
           id={rest.name}
           type={hiddenInput()}
-          onSubmit={valueHandler}
           onBlur={onInputBlur}
+          onSubmit={valueHandler}
+          {...{ readOnly: type === 'checkbox' ? true : undefined }}
+          {...{ checked: type === 'checkbox' ? checked : undefined }}
           onPaste={event => pasteAndDrop || event?.preventDefault()}
           onDrop={event => pasteAndDrop || event?.preventDefault()}
           {...rest}
