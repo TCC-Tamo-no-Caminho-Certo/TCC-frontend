@@ -7,8 +7,8 @@ const Loader = styled.span`
   height: 18px;
   border-radius: 50%;
 
-  border-top: 3px solid #fff;
   border: 3px solid ${fromTheme('quaternary')};
+  border-top: 3px solid #fff;
   animation: spin 2s linear infinite;
 
   @keyframes spin {

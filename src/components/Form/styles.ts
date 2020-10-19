@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
-import captcha, { ReCAPTCHA } from 'react-google-recaptcha'
+import captcha from 'react-google-recaptcha'
 
-export const ReCaptcha = styled(ReCAPTCHA)`
+export const ReCaptcha = styled(captcha)`
   display: none;
 `
 
