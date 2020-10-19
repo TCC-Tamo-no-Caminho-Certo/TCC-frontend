@@ -20,6 +20,9 @@ export default createGlobalStyle`
     color: ${fromTheme('tertiary')};
     background-color: ${fromTheme('background')};
 
+    input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    }
 
     &::-webkit-scrollbar {
       width: 12px;

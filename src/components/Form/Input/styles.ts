@@ -12,8 +12,8 @@ interface StyleProps {
 
 function setBorderRadius(hasEye: boolean, hasIcon: boolean) {
   if (hasEye && hasIcon) return '0px'
-  if (hasEye) return '0px 0px 10px 10px'
-  if (hasIcon) return '10px 10px 0px 0px'
+  if (hasEye) return '10px 0px 0px 10px'
+  if (hasIcon) return '0px 10px 10px 0px'
   return '10px'
 }
 

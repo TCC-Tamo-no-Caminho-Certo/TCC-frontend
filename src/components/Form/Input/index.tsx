@@ -97,6 +97,17 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           ref={ref || inputRef}
           id={rest.name}
+          type={
+            eye
+              ? type === 'password'
+                ? showInput
+                  ? 'text'
+                  : type
+                : showInput
+                ? type
+                : 'password'
+              : type
+          }
           onSubmit={valueHandler}
           onBlur={onInputBlur}
           onPaste={event => pasteAndDrop || event?.preventDefault()}

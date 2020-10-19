@@ -31,17 +31,18 @@ const FormLogin: React.FC = () => {
   const history = useHistory()
   const dispatch = useDispatch()
 
-  const handleSubmit = async (resData: any) => {
+  const handleSubmit = (resData: any) => {
     localStorage.setItem('@SLab_ac_token', resData.access_token)
-
-    const { user } = await api.get('user/get', {
-      headers: {
-        authorization: `Bearer ${resData.access_token}`,
-      },
-    })
-
-    dispatch(UserActions.userInfo(user))
-    history.push('/main')
+    api
+      .get('user/get', {
+        headers: {
+          authorization: `Bearer ${resData.access_token}`,
+        },
+      })
+      .then(res => {
+        dispatch(UserActions.userInfo(res.user))
+        history.push('/main')
+      })
   }
 
   return (
