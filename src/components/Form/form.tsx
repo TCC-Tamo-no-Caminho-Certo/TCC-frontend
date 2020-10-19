@@ -7,18 +7,15 @@ import React, {
   useRef,
   useState,
 } from 'react'
+import api from 'services/api'
+import { ThemeState } from 'store/theme'
+import { useSelector, RootState } from 'store'
+import { ObjectSchema, ValidationError } from 'yup'
 import { ReCaptcha, captcha as Captcha } from './styles'
 
 import InpuDate from './InputDate'
 import Button from './Button'
 import Input, { InputProps, Ref } from './Input'
-
-import api from 'services/api'
-
-import { ThemeState } from 'store/theme'
-import { useSelector, RootState } from 'store'
-
-import { ObjectSchema, ValidationError } from 'yup'
 
 interface Props extends HTMLProps<HTMLFormElement> {
   children: (ReactElement<InputProps> | ReactElement | ReactElement[])[] | ReactElement<InputProps>
