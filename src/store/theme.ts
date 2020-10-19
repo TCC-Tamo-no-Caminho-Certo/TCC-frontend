@@ -1,4 +1,4 @@
-import { light, dark, ThemeAttributes } from 'styles/themes'
+import { dark, light, ThemeAttributes } from 'styles/themes'
 
 import { createSlice } from '@reduxjs/toolkit'
 

@@ -40,8 +40,10 @@
     "prettier/prettier": "error",
     "no-nested-ternary": "warn",
     "react-hooks/exhaustive-deps": "warn",
-    "@typescript-eslint/no-explicit-any": "warn",
+    "import/no-useless-path-segments": "off",
+    "import/order": "off",
     "no-empty-function": "off",
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "react/jsx-one-expression-per-line": "off",
@@ -51,7 +53,6 @@
     "no-unused-expressions": "off",
     "no-param-reassign": "off",
     "import/prefer-default-export": "off",
-    "import/no-unresolved": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "@typescript-eslint/no-empty-function": [
       "off"

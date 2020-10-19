@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import Style, { Header } from './styles'
 
 import Data, { Info } from './Infos'
 
-import Style, { Header } from './styles'
 import avatar from 'assets/avatar.jpg'
 
 type Professor = Info[]

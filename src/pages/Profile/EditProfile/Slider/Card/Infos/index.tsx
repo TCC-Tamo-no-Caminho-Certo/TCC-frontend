@@ -1,9 +1,9 @@
 import React from 'react'
+import Style, { Change, Label, Value } from './styles'
 
-import Style, { Label, Value, Change } from './styles'
-
-import { Form, Input, Button } from 'components/Form'
 import editPencil from 'assets/editPencil.svg'
+
+import { Button, Form, Input } from 'components/Form'
 
 export interface Info {
   label: string

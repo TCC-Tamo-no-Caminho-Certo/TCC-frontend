@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import axios, { AxiosRequestConfig } from 'axios'
 
 const request = axios.create({
   baseURL: 'http://dev.steamslab.com/api/',
 })
 
-interface Data { [k: string]: any }
+interface Data {
+  [k: string]: any
+}
 
 const api = {
   /**
@@ -29,7 +32,7 @@ const api = {
     } catch (error) {
       return error.response.data
     }
-  }
+  },
 }
 
 export default api

@@ -1,26 +1,24 @@
 import React from 'react'
-import Style, { Content, Register, Google, Permanence } from './styles'
-
-
-
-import api from 'services/api'
+import Style, { Content, Google, Permanence, Register } from './styles'
 
 import loginSchema from 'utils/validations/login'
 
-import { ThemeState } from 'store/theme'
-import { HomeActions } from 'store/home'
-import { UserActions } from 'store/user'
-import { useSelector, useDispatch, RootState } from 'store'
+import api from 'services/api'
 
-import ThemeSwitch from 'components/ThemeSwitch'
+import { RootState, useDispatch, useSelector } from 'store'
+import { HomeActions } from 'store/home'
+import { ThemeState } from 'store/theme'
+import { UserActions } from 'store/user'
 
 import google from 'assets/google.png'
 
-import { FiLock } from 'react-icons/fi'
-import { AiOutlineMail } from 'react-icons/ai'
-import { useHistory, Link } from 'react-router-dom'
-import { Form, Input, Button } from 'components/Form'
+import { Button, Form, Input } from 'components/Form'
 import Logo from 'components/Logo'
+import ThemeSwitch from 'components/ThemeSwitch'
+
+import { AiOutlineMail } from 'react-icons/ai'
+import { FiLock } from 'react-icons/fi'
+import { Link, useHistory } from 'react-router-dom'
 
 export interface LoginData {
   email: string

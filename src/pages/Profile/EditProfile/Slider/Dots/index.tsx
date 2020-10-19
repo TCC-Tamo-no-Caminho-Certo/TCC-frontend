@@ -1,4 +1,4 @@
-import React, { useState, SetStateAction, Dispatch } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import Style, { Dot } from './styles'
 
 import { useSpring } from 'react-spring'

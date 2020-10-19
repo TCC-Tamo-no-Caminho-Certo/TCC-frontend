@@ -3,7 +3,7 @@ import User from './user'
 import Sidebar from './sidebar'
 import Home from './home'
 
-import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
 const rootReducer = combineReducers({
   user: User.reducer,

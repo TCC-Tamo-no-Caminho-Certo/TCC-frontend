@@ -1,18 +1,17 @@
 import React from 'react'
+
 import PrivateRoute from 'routes/PrivateRoute'
 
+import ForgotPassword from 'pages/ForgotPassword'
+import ConfirmPassword from 'pages/ForgotPassword/ConfirmPassword'
 import Home from 'pages/Home'
 import Login from 'pages/Home/Login'
 import Signup from 'pages/Home/Signup'
-import ConfirmPassword from 'pages/ForgotPassword/ConfirmPassword'
-import ForgotPassword from 'pages/ForgotPassword'
-
+import Main from 'pages/Main'
 import Profile from 'pages/Profile'
 
-import Main from 'pages/Main'
-
-import { Route, Switch, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
+import { Route, Switch, useLocation } from 'react-router-dom'
 
 const Routes: React.FC = () => {
   const location = useLocation()

@@ -5,17 +5,16 @@ import signupSchema from 'utils/validations/signup'
 
 import { ThemeState } from 'store/theme'
 import { HomeActions } from 'store/home'
-import { useDispatch, useSelector, RootState } from 'store'
+import { RootState, useDispatch, useSelector } from 'store'
 
 import Logo from 'components/Logo'
 import ThemeSwitch from 'components/ThemeSwitch'
-import { Form, Input, InputDate, Button } from 'components/Form'
+import { Button, Form, Input, InputDate } from 'components/Form'
 
-import { Link } from 'react-router-dom'
-import { MdPublic } from 'react-icons/md'
 import { FaUserLock } from 'react-icons/fa'
+import { MdPublic } from 'react-icons/md'
 import { RiArrowLeftSLine } from 'react-icons/ri'
-
+import { Link } from 'react-router-dom'
 
 export interface RegisterData {
   name: string

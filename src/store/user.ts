@@ -16,7 +16,6 @@ const initialState = {
 
 const User = createSlice({
   name: 'userConfig',
-
   initialState,
 
   reducers: {
