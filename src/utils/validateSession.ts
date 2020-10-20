@@ -1,6 +1,6 @@
 import api from '../services/api'
 
-async function validateToken(): Promise<boolean> {
+async function validateSession(): Promise<boolean> {
   const token = localStorage.getItem('@SLab_ac_token')
 
   const response = await api.get('validate-session', {
@@ -12,4 +12,4 @@ async function validateToken(): Promise<boolean> {
   return response.success
 }
 
-export default validateToken
+export default validateSession

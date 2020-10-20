@@ -3,12 +3,9 @@ import Style, { Content, Google, Permanence, Register } from './styles'
 
 import loginSchema from 'utils/validations/login'
 
-import api from 'services/api'
-
 import { RootState, useDispatch, useSelector } from 'store'
 import { HomeActions } from 'store/home'
 import { ThemeState } from 'store/theme'
-import { UserActions } from 'store/user'
 
 import google from 'assets/google.png'
 
@@ -34,16 +31,7 @@ const FormLogin: React.FC = () => {
 
   const handleSubmit = (resData: any) => {
     localStorage.setItem('@SLab_ac_token', resData.access_token)
-    api
-      .get('user/get', {
-        headers: {
-          authorization: `Bearer ${resData.access_token}`,
-        },
-      })
-      .then(res => {
-        dispatch(UserActions.userInfo(res.user))
-        history.push('/main')
-      })
+    history.push('/main')
   }
 
   return (
