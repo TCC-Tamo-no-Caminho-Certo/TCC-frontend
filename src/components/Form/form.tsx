@@ -1,21 +1,18 @@
 import React, {
-  FC,
-  HTMLProps,
-  FormEvent,
-  ReactElement,
-  cloneElement,
-  useRef,
-  useState,
+    cloneElement, FC, FormEvent, HTMLProps, ReactElement, useRef, useState
 } from 'react'
-import api from 'services/api'
-import { ThemeState } from 'store/theme'
-import { useSelector, RootState } from 'store'
-import { ObjectSchema, ValidationError } from 'yup'
-import { ReCaptcha, captcha as Captcha } from './styles'
+import { captcha as Captcha, ReCaptcha } from './styles'
 
 import InpuDate from './InputDate'
 import Button from './Button'
 import Input, { InputProps, Ref } from './Input'
+
+import api from 'services/api'
+
+import { ThemeState } from 'store/theme'
+import { RootState, useSelector } from 'store'
+
+import { ObjectSchema, ValidationError } from 'yup'
 
 interface Props extends HTMLProps<HTMLFormElement> {
   children: (ReactElement<InputProps> | ReactElement | ReactElement[])[] | ReactElement<InputProps>
@@ -103,7 +100,7 @@ const Form: FC<Props> = ({
     changeData && changeData(data)
     await validate()
     if (captcha) data.captcha = await recaptchaRef.current!.executeAsync()
-    // !haveErrors && (await submit(cb))
+    !haveErrors && (await submit(cb))
 
     loaderFB && setShowLoader(false)
     console.log(data)

@@ -3,6 +3,9 @@ import Style, { Header } from './styles'
 
 import Data, { Info } from './Infos'
 
+import { RootState, useSelector } from 'store'
+import { UserState } from 'store/user'
+
 import avatar from 'assets/avatar.jpg'
 
 type Professor = Info[]
@@ -26,44 +29,26 @@ interface Props {
 }
 
 const Card: React.FC<Props> = ({ headerText, type }) => {
-  const [data, setData] = useState<Info[]>([
-    { label: '', value: '', inputname: '1' },
-    { label: '', value: '', inputname: '2' },
-    { label: '', value: '', inputname: '3' },
-    { label: '', value: '', inputname: '4' },
-    { label: '', value: '', inputname: '5' },
-  ])
+  const user = useSelector<RootState, UserState>(state => state.user)
 
-  useEffect(() => {
-    const getUserData = async () => {
-      const user = {
-        name: 'test',
-        surname: 'asd',
-        email: 'teste@gmail.com',
-        birthday: '17/11/1999',
-        password: 'sadasdasdasd',
-      }
+  const getUserData = () => {
+    const professor: Professor = [
+      { label: 'Nome:', inputname: 'name', value: user.name },
+      { label: 'Sobrenome:', inputname: 'surname', value: user.surname },
+      { label: 'E-mail:', inputname: 'email', value: user.email },
+      { label: 'Nascimento:', inputname: 'birthday', value: user.birthday },
+      { label: 'Senha:', inputname: 'password', value: user.password, dontShow: true },
+    ]
 
-      const professor: Professor = [
-        { label: 'Nome:', inputname: 'name', value: user.name },
-        { label: 'Sobrenome:', inputname: 'surname', value: user.surname },
-        { label: 'E-mail:', inputname: 'email', value: user.email },
-        { label: 'Nascimento:', inputname: 'birthday', value: user.birthday },
-        { label: 'Senha:', inputname: 'password', value: user.password, dontShow: true },
-      ]
-
-      const dataTypes: DataTypes = {
-        professor,
-        // proponent,
-        // student,
-        // admin
-      }
-
-      setData(dataTypes[type])
+    const dataTypes: DataTypes = {
+      professor,
+      // proponent,
+      // student,
+      // admin
     }
 
-    getUserData()
-  }, [type])
+    return dataTypes[type]
+  }
 
   return (
     <Style>
@@ -71,7 +56,7 @@ const Card: React.FC<Props> = ({ headerText, type }) => {
 
       <img src={avatar} alt='avatar' draggable={false} />
 
-      <Data userData={data} />
+      <Data userData={getUserData()} />
     </Style>
   )
 }

@@ -80,7 +80,7 @@ const RightMenu: React.FC = () => {
 
           <ul>
             <li>
-              <Link to='/editProfile'>
+              <Link to='/profile/edit-profile'>
                 <img src={editProfile} alt='Edit Profile' /> Editar perfil
               </Link>
             </li>

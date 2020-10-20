@@ -7,7 +7,7 @@ import { Button, Form, Input } from 'components/Form'
 
 export interface Info {
   label: string
-  value: string
+  value: string | number
   inputname: string
   dontShow?: boolean
 }

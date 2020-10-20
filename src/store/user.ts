@@ -1,12 +1,25 @@
+/* eslint-disable camelcase */
 import { createSlice } from '@reduxjs/toolkit'
 
-// const localUserConfig = localStorage.getItem('-----')
+export interface UserState {
+  user_id: number
+  name: string
+  surname: string
+  email: string
+  password: number
+  avatar: string
+  birthday: string
+  role: string
+  created_at: string
+  updated_at: string
+}
 
-const initialState = {
+const initialState: UserState = {
   user_id: 0,
   name: '',
   surname: '',
   email: '',
+  password: 1,
   avatar: '',
   birthday: '',
   role: '',
