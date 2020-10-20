@@ -1,6 +1,6 @@
-import styled, { css } from 'styled-components'
-
 import fromTheme from 'utils/fromTheme'
+
+import styled, { css } from 'styled-components'
 
 interface StyleProps {
   hasIcon: boolean
@@ -24,7 +24,68 @@ function setWidth(hasEye: boolean, hasIcon: boolean) {
 }
 
 export const DefaultInput = styled.div<StyleProps>`
-  display: none;
+  display: ${({ hidden }) => (hidden ? 'none' : 'flex')};
+  align-items: center;
+  min-height: 35px;
+  height: 4.5vh;
+  font-size: calc(1.3rem + 0.5vh);
+  border-radius: 10px;
+  background-color: transparent;
+
+  ${({ hasEye, hasIcon }) => css`
+    input {
+      height: 100%;
+      border: none;
+      border-radius: ${setBorderRadius(hasEye, hasIcon)};
+      width: ${setWidth(hasEye, hasIcon)};
+      background-color: transparent;
+      color: ${fromTheme('primary')};
+      -webkit-text-fill-color: ${fromTheme('primary')};
+      &::placeholder {
+        color: ${fromTheme('quaternary')};
+        -webkit-text-fill-color: ${fromTheme('quaternary')};
+      }
+    }
+  `}
+
+  .icon,
+  .eyeIcon,
+  .errorIcon {
+    width: 15%;
+    height: 100%;
+    padding: 9px 0;
+    color: ${fromTheme('quaternary')};
+  }
+
+  &:focus-within {
+    border-color: ${fromTheme('primary')};
+    &,
+    input::placeholder,
+    .icon,
+    .eyeIcon {
+      color: ${fromTheme('primary')};
+      -webkit-text-fill-color: ${fromTheme('primary')};
+    }
+  }
+
+  ${({ isFilled }) =>
+    isFilled &&
+    css`
+      &,
+      .icon {
+        color: ${fromTheme('primary')};
+        -webkit-text-fill-color: ${fromTheme('primary')};
+      }
+    `}
+
+  ${({ hasIcon, isErrored }) =>
+    !hasIcon &&
+    !isErrored &&
+    css`
+      input {
+        padding-left: 20px;
+      }
+    `}
 `
 
 export const Field = styled.div<StyleProps>`
