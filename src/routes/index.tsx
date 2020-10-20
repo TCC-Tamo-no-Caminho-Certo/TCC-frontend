@@ -38,15 +38,18 @@ const Routes: React.FC = () => {
               )}
             />
           ))}
-          <Route path='/forgot-password' component={ForgotPassword} />
-          <Route path='/reset-password' component={ConfirmPassword} />
-
-          <PrivateRoute>
-            <Route path='/main' component={Main} />
-            <Route path='/profile' component={Profile} />
-          </PrivateRoute>
         </Switch>
       </AnimatePresence>
+
+      <Switch>
+        <Route path='/forgot-password' component={ForgotPassword} />
+        <Route path='/reset-password' component={ConfirmPassword} />
+
+        <PrivateRoute>
+          <Route path='/main' component={Main} />
+          <Route path='/profile' component={Profile} />
+        </PrivateRoute>
+      </Switch>
     </Logged>
   )
 }
