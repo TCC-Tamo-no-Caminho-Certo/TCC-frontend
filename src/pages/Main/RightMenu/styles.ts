@@ -1,8 +1,8 @@
-import styled from 'styled-components'
-
 import fromTheme from 'utils/fromTheme'
 
-interface EditOpenProps {
+import styled from 'styled-components'
+
+interface RightMenuOpenProps {
   height: string
   width: string
 }
@@ -15,6 +15,7 @@ export const Background = styled.svg`
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 1;
 
   overflow: visible;
 `
@@ -56,10 +57,11 @@ export const UserInfo = styled.div.attrs({ className: 'UserInfo' })`
   }
 `
 
-export const EditOpen = styled.div<EditOpenProps>`
+export const RightMenuOpen = styled.div<RightMenuOpenProps>`
   position: absolute;
   top: 112px;
   right: 0;
+  z-index: 2;
 
   padding: 16px;
   width: ${({ width }) => width};
@@ -116,12 +118,23 @@ const Style = styled.div<StyleProps>`
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 2;
 
   display: flex;
   align-items: center;
 
   width: ${({ width }) => width};
   height: 104px;
+
+  * {
+    z-index: 2;
+  }
+
+  a,
+  svg,
+  span {
+    color: ${fromTheme('white')};
+  }
 
   #avatar {
     border-radius: 50%;
@@ -132,17 +145,10 @@ const Style = styled.div<StyleProps>`
 
   #gear {
     position: absolute;
-    bottom: 16px;
     right: 16px;
-
+    top: 73px;
     width: 16px;
     height: 16px;
-  }
-
-  a,
-  svg,
-  span {
-    color: ${fromTheme('white')};
   }
 `
 
@@ -150,5 +156,5 @@ export default Style
 
 Background.displayName = 'Background-Style'
 UserInfo.displayName = 'UserInfo-Style'
-EditOpen.displayName = 'EditOpen-Style'
+RightMenuOpen.displayName = 'RightMenuOpen-Style'
 Style.displayName = 'RightMenu-Style'

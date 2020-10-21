@@ -6,14 +6,14 @@ import { RootState, useSelector } from 'store'
 
 import Content from 'components/Sidebar/Content'
 
-const Map: React.FC = () => {
+const Projects: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   return (
     <Content>
-      <Style theme={theme}>Map</Style>
+      <Style theme={theme}>Projects</Style>
     </Content>
   )
 }
 
-export default Map
+export default Projects

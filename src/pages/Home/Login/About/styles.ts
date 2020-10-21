@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-
 import fromTheme from 'utils/fromTheme'
+
+import styled from 'styled-components'
 
 const Style = styled.div`
   display: flex;
@@ -8,11 +8,15 @@ const Style = styled.div`
   align-items: center;
 
   min-width: 320px;
-  width: 62vw;
+  width: 100vw;
   height: 100vh;
 
   color: ${fromTheme('white')};
   background-color: ${fromTheme('tertiary')};
+
+  @media screen and (min-width: 1000px) {
+    width: 62vw;
+  }
 `
 
 export default Style

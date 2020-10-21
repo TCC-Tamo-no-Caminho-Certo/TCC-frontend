@@ -1,13 +1,13 @@
 import React from 'react'
-import Style, { Background, EditOpen, UserInfo } from './styles'
+import Style, { Background, RightMenuOpen, UserInfo } from './styles'
 
 import { RootState, useSelector } from 'store'
 import { ThemeState } from 'store/theme'
 
 import gear from 'assets/gear.svg'
-import logout from 'assets/EditOpen/logout.svg'
+import logout from 'assets/RightMenuOpen/logout.svg'
 import avatar from 'assets/avatar.jpg'
-import change from 'assets/EditOpen/change.svg'
+import change from 'assets/RightMenuOpen/change.svg'
 import editProfile from 'assets/ProfileNavbar/editProfile.svg'
 
 import { motion, useCycle } from 'framer-motion'
@@ -75,7 +75,7 @@ const RightMenu: React.FC = () => {
       </Style>
 
       {editOpen && (
-        <EditOpen width={`${width}px`} height={`${editHeight - closedHeight}px`} theme={theme}>
+        <RightMenuOpen width={`${width}px`} height={`${editHeight - closedHeight}px`} theme={theme}>
           <hr />
 
           <ul>
@@ -96,7 +96,7 @@ const RightMenu: React.FC = () => {
             <div>Sair</div>
             <img src={logout} alt='Logout' />
           </button>
-        </EditOpen>
+        </RightMenuOpen>
       )}
     </>
   )

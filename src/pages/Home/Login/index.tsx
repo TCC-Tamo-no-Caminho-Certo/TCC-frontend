@@ -3,7 +3,8 @@ import Style from './styles'
 
 import FormLogin from './FormLogin'
 import About from './About'
-import { useSelector, RootState } from 'store'
+
+import { RootState, useSelector } from 'store'
 
 const Login: React.FC = () => {
   const animate = useSelector<RootState>(state => state.home.animate)

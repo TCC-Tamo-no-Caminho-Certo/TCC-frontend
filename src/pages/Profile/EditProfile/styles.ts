@@ -1,10 +1,9 @@
-import styled from 'styled-components'
-
 import fromTheme from 'utils/fromTheme'
 
 import { motion } from 'framer-motion'
+import styled from 'styled-components'
 
-const Style = styled(motion.div)`
+const Style = styled(motion.section)`
   display: flex;
   justify-content: center;
   align-items: center;

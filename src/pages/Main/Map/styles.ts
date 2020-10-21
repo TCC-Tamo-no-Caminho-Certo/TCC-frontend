@@ -3,11 +3,15 @@ import fromTheme from 'utils/fromTheme'
 import styled from 'styled-components'
 
 const Style = styled.div`
-  position: relative;
-  width: 100vw;
-  height: 200vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  background-color: ${fromTheme('white')};
+  width: 100vw;
+  height: 100vh;
+
+  background-color: ${fromTheme('tertiary')};
+  color: white;
 `
 
 export default Style

@@ -8,8 +8,9 @@ import Home from 'pages/Home'
 import Login from 'pages/Home/Login'
 import Signup from 'pages/Home/Signup'
 
-import { AnimatePresence } from 'framer-motion'
 import Logged from 'hoc/Logged'
+
+import { AnimatePresence } from 'framer-motion'
 import { Route, Switch, useLocation } from 'react-router-dom'
 
 const Routes: React.FC = () => {
@@ -22,25 +23,25 @@ const Routes: React.FC = () => {
 
   return (
     <Logged>
-      <AnimatePresence initial={false}>
-        <Switch location={location} key={location.pathname}>
-          {homeRoutes.map(route => (
-            <Route
-              key={route.path}
-              path={route.path}
-              exact={route.exact}
-              children={() => (
-                <>
-                  <route.slider />
-                  <route.restOfHome />
-                </>
-              )}
-            />
-          ))}
-        </Switch>
-      </AnimatePresence>
-
       <Switch>
+        <AnimatePresence initial={false}>
+          <Switch location={location} key={location.pathname}>
+            {homeRoutes.map(route => (
+              <Route
+                key={route.path}
+                path={route.path}
+                exact={route.exact}
+                children={() => (
+                  <>
+                    <route.slider />
+                    <route.restOfHome />
+                  </>
+                )}
+              />
+            ))}
+          </Switch>
+        </AnimatePresence>
+
         <Route path='/forgot-password' component={ForgotPassword} />
         <Route path='/reset-password' component={ConfirmPassword} />
         <Route path='/session' component={PrivateRoute} />

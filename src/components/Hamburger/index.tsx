@@ -30,7 +30,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle }) => {
     closed: { rotate: 0, y: 0 },
   }
 
-  const spring = { type: 'spring', stiffness: 200, damping: 30 }
+  const transition = { type: 'tween', duration: 0.2 }
 
   return (
     <Style onClick={onHamburgerClick}>
@@ -39,7 +39,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle }) => {
           y='0'
           variants={first}
           animate={closed ? 'closed' : 'open'}
-          transition={spring}
+          transition={transition}
           initial={false}
         />
 
@@ -47,7 +47,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle }) => {
           y='7'
           variants={second}
           animate={closed ? 'closed' : 'open'}
-          transition={spring}
+          transition={transition}
           initial={false}
         />
 
@@ -55,7 +55,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle }) => {
           y='14'
           variants={third}
           animate={closed ? 'closed' : 'open'}
-          transition={spring}
+          transition={transition}
           initial={false}
         />
       </svg>

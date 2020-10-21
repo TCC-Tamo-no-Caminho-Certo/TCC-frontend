@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-
 import fromTheme from 'utils/fromTheme'
+
+import styled from 'styled-components'
 
 const Style = styled.div`
   display: flex;
@@ -8,7 +8,8 @@ const Style = styled.div`
   align-items: center;
   flex-direction: column;
 
-  width: 38vw;
+  min-width: 320px;
+  width: 100vw;
   height: 100vh;
   padding: 73px 0 73px 0;
 
@@ -118,6 +119,10 @@ const Style = styled.div`
 
   .Logo {
     margin-bottom: 22px;
+  }
+
+  @media screen and (min-width: 1000px) {
+    width: 38vw;
   }
 `
 

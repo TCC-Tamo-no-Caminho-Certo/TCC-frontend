@@ -59,13 +59,18 @@
           "disableSort": true
         },
         {
-          "regex": "^assets",
+          "regex": "^hoc",
           "orderLevel": 10,
           "disableSort": true
         },
         {
-          "regex": "^components",
+          "regex": "^assets",
           "orderLevel": 11,
+          "disableSort": true
+        },
+        {
+          "regex": "^components",
+          "orderLevel": 12,
           "disableSort": true
         }
       ]
