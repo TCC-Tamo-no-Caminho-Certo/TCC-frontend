@@ -24,25 +24,25 @@ const Routes: React.FC = () => {
 
   return (
     <Logged>
-      <AnimatePresence initial={false}>
-        <Switch location={location} key={location.pathname}>
-          {homeRoutes.map(route => (
-            <Route
-              key={route.path}
-              path={route.path}
-              exact={route.exact}
-              children={() => (
-                <>
-                  <route.slider />
-                  <route.restOfHome />
-                </>
-              )}
-            />
-          ))}
-        </Switch>
-      </AnimatePresence>
-
       <Switch>
+        <AnimatePresence initial={false}>
+          <Switch location={location} key={location.pathname}>
+            {homeRoutes.map(route => (
+              <Route
+                key={route.path}
+                path={route.path}
+                exact={route.exact}
+                children={() => (
+                  <>
+                    <route.slider />
+                    <route.restOfHome />
+                  </>
+                )}
+              />
+            ))}
+          </Switch>
+        </AnimatePresence>
+
         <Route path='/forgot-password' component={ForgotPassword} />
         <Route path='/reset-password' component={ConfirmPassword} />
 
