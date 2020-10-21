@@ -1,13 +1,46 @@
 import React from 'react'
-import Style from './styles'
 
-import { ThemeState } from 'store/theme'
-import { RootState, useSelector } from 'store'
+import Login from './Login'
+import Signup from './Signup'
+import RestOfHome from './RestOfHome'
 
-const Home: React.FC = () => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+import { AnimatePresence } from 'framer-motion'
+import { Route, Switch, useLocation } from 'react-router-dom'
 
-  return <Style theme={theme}>Rest of Home</Style>
+const Profile: React.FC = () => {
+  const location = useLocation()
+
+  const homeRoutes = [
+    {
+      path: '/home',
+      exact: true,
+      component: () => <Login />,
+    },
+    {
+      path: '/home/signup',
+      exact: false,
+      component: () => <Signup />,
+    },
+  ]
+
+  return (
+    <>
+      <AnimatePresence initial={false}>
+        <Switch location={location} key={location.pathname}>
+          {homeRoutes.map(route => (
+            <Route
+              path={route.path}
+              key={route.path}
+              exact={route.exact}
+              component={route.component}
+            />
+          ))}
+        </Switch>
+      </AnimatePresence>
+
+      <RestOfHome />
+    </>
+  )
 }
 
-export default Home
+export default Profile

@@ -13,6 +13,7 @@ import { Route, useHistory } from 'react-router-dom'
 const PrivateRoute: React.FC = () => {
   const history = useHistory()
   const dispatch = useDispatch()
+
   const { validated } = useSelector<RootState, UserState>(state => state.user)
 
   useEffect(() => {
@@ -21,11 +22,13 @@ const PrivateRoute: React.FC = () => {
 
     // const token = localStorage.getItem('@SLab_ac_token')
     // api
+
     //   .get('user/get', {
     //     headers: {
     //       authorization: `Bearer ${token}`,
     //     },
     //   })
+
     //   .then(res => {
     //     dispatch(UserActions.setUserInfo(res.user))
     //   })
@@ -36,6 +39,7 @@ const PrivateRoute: React.FC = () => {
   return (
     <>
       <Route path='/session/main' component={Main} />
+
       <Route path='/session/profile' component={Profile} />
     </>
   )

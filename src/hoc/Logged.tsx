@@ -19,9 +19,12 @@ const Logged: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     validateSession().then(response => {
       console.log('a')
+
       setFirstTime(false)
+
       if (response) {
         dispatch(UserActions.setValidated(true))
+
         history.push('/session/main')
       }
     })

@@ -82,7 +82,7 @@ const FormLogin: React.FC = () => {
         <Register theme={theme}>
           <span>Ainda não possui uma conta ?</span>
 
-          <Link to='/signup' onClick={() => dispatch(HomeActions.animation(true))}>
+          <Link to='/home/signup' onClick={() => dispatch(HomeActions.animation(true))}>
             Registre-se aqui!
           </Link>
         </Register>
