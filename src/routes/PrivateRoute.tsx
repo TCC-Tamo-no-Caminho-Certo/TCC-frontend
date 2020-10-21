@@ -16,7 +16,6 @@ const PrivateRoute: React.FC = () => {
   const { validated } = useSelector<RootState, UserState>(state => state.user)
 
   useEffect(() => {
-    console.log('t', validated)
     validated || history.push('/')
 
     const token = localStorage.getItem('@SLab_ac_token')
@@ -29,7 +28,7 @@ const PrivateRoute: React.FC = () => {
       .then(res => {
         dispatch(UserActions.setUserInfo(res.user))
       })
-  }, [validated, history])
+  }, [validated, history, dispatch])
 
   if (!validated) return <></>
 
