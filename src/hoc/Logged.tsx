@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 
 import validateSession from 'utils/validateSession'
 
+import { useDispatch } from 'store'
+import { UserActions } from 'store/user'
+
 import { useHistory } from 'react-router-dom'
 
 interface Props {
@@ -10,14 +13,19 @@ interface Props {
 
 const Logged: React.FC<Props> = ({ children }) => {
   const [firstTime, setFirstTime] = useState(true)
+  const dispatch = useDispatch()
   const history = useHistory()
 
   useEffect(() => {
     validateSession().then(response => {
+      console.log('a')
       setFirstTime(false)
-      response && history.push('/main')
+      if (response) {
+        dispatch(UserActions.setValidated(true))
+        history.push('/session/main')
+      }
     })
-  }, [history])
+  }, [history, dispatch])
 
   return <>{firstTime || children}</>
 }

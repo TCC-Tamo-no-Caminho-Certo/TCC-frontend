@@ -12,14 +12,14 @@ import Content from 'components/Sidebar/Content'
 const Profile: React.FC = () => {
   const profileRoutes = [
     {
-      path: '/profile',
+      path: '/session/profile',
       icon: home,
       exact: true,
       label: 'Perfil',
       content: () => <ProfileHome />,
     },
     {
-      path: '/profile/edit-profile',
+      path: '/session/profile/edit-profile',
       icon: editProfile,
       label: 'Editar Perfil',
       content: () => <EditProfile />,

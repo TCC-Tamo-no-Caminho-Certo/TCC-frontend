@@ -1,12 +1,11 @@
 /* eslint-disable camelcase */
 import { createSlice } from '@reduxjs/toolkit'
 
-export interface UserState {
+interface UserInfo {
   user_id: number
   name: string
   surname: string
   email: string
-  password: number
   avatar: string
   birthday: string
   role: string
@@ -14,17 +13,24 @@ export interface UserState {
   updated_at: string
 }
 
+export interface UserState {
+  validated: boolean
+  info: UserInfo
+}
+
 const initialState: UserState = {
-  user_id: 0,
-  name: '',
-  surname: '',
-  email: '',
-  password: 1,
-  avatar: '',
-  birthday: '',
-  role: '',
-  created_at: '',
-  updated_at: '',
+  validated: false,
+  info: {
+    user_id: 0,
+    name: '',
+    surname: '',
+    email: '',
+    avatar: '',
+    birthday: '',
+    role: '',
+    created_at: '',
+    updated_at: '',
+  },
 }
 
 const User = createSlice({
@@ -32,11 +38,8 @@ const User = createSlice({
   initialState,
 
   reducers: {
-    userInfo: (state, action) => {
-      console.log('USER_DATE', action.payload)
-
-      return action.payload
-    },
+    setUserInfo: (state, action) => ({ validated: state.validated, info: action.payload }),
+    setValidated: (state, action) => ({ validated: action.payload, info: state.info }),
   },
 })
 

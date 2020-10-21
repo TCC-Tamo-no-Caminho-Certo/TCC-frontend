@@ -1,16 +1,15 @@
 import React from 'react'
 
+import PrivateRoute from './PrivateRoute'
+
 import ForgotPassword from 'pages/ForgotPassword'
 import ConfirmPassword from 'pages/ForgotPassword/ConfirmPassword'
 import Home from 'pages/Home'
 import Login from 'pages/Home/Login'
 import Signup from 'pages/Home/Signup'
-import Main from 'pages/Main'
-import Profile from 'pages/Profile'
 
 import { AnimatePresence } from 'framer-motion'
 import Logged from 'hoc/Logged'
-import PrivateRoute from 'hoc/PrivateRoute'
 import { Route, Switch, useLocation } from 'react-router-dom'
 
 const Routes: React.FC = () => {
@@ -38,15 +37,14 @@ const Routes: React.FC = () => {
               )}
             />
           ))}
-          <Route path='/forgot-password' component={ForgotPassword} />
-          <Route path='/reset-password' component={ConfirmPassword} />
-
-          <PrivateRoute>
-            <Route path='/main' component={Main} />
-            <Route path='/profile' component={Profile} />
-          </PrivateRoute>
         </Switch>
       </AnimatePresence>
+
+      <Switch>
+        <Route path='/forgot-password' component={ForgotPassword} />
+        <Route path='/reset-password' component={ConfirmPassword} />
+        <Route path='/session' component={PrivateRoute} />
+      </Switch>
     </Logged>
   )
 }

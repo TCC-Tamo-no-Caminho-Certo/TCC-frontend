@@ -13,9 +13,9 @@ const api = {
   /**
    * Returns the data of an API request.
    */
-  post: async (path: string, data?: Data, header?: AxiosRequestConfig) => {
+  post: async (path: string, data?: Data, config?: AxiosRequestConfig) => {
     try {
-      const res = await request.post(path, data, header)
+      const res = await request.post(path, data, config)
       return res.data
     } catch (error) {
       return error.response.data
@@ -25,9 +25,9 @@ const api = {
   /**
    * Returns the data of an API request.
    */
-  get: async (path: string, header?: AxiosRequestConfig) => {
+  get: async (path: string, config?: AxiosRequestConfig) => {
     try {
-      const res = await request.get(path, header)
+      const res = await request.get(path, config)
       return res.data
     } catch (error) {
       return error.response.data

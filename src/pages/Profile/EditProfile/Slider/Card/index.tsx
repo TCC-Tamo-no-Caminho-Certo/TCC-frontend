@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Style, { Header } from './styles'
 
 import Data, { Info } from './Infos'
@@ -29,7 +29,7 @@ interface Props {
 }
 
 const Card: React.FC<Props> = ({ headerText, type }) => {
-  const user = useSelector<RootState, UserState>(state => state.user)
+  const { info: user } = useSelector<RootState, UserState>(state => state.user)
 
   const getUserData = () => {
     const professor: Professor = [
@@ -37,7 +37,7 @@ const Card: React.FC<Props> = ({ headerText, type }) => {
       { label: 'Sobrenome:', inputname: 'surname', value: user.surname },
       { label: 'E-mail:', inputname: 'email', value: user.email },
       { label: 'Nascimento:', inputname: 'birthday', value: user.birthday },
-      { label: 'Senha:', inputname: 'password', value: user.password, dontShow: true },
+      { label: 'Senha:', inputname: 'password', value: 10, dontShow: true },
     ]
 
     const dataTypes: DataTypes = {

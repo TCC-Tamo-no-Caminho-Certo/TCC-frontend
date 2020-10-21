@@ -4,6 +4,7 @@ import Style, { Content, Google, Permanence, Register } from './styles'
 import loginSchema from 'utils/validations/login'
 
 import { RootState, useDispatch, useSelector } from 'store'
+import { UserActions } from 'store/user'
 import { HomeActions } from 'store/home'
 import { ThemeState } from 'store/theme'
 
@@ -30,8 +31,11 @@ const FormLogin: React.FC = () => {
   const dispatch = useDispatch()
 
   const handleSubmit = (resData: any) => {
-    localStorage.setItem('@SLab_ac_token', resData.access_token)
-    history.push('/main')
+    if (resData.success) {
+      localStorage.setItem('@SLab_ac_token', resData.access_token)
+      dispatch(UserActions.setValidated(true))
+      history.push('/session/main')
+    }
   }
 
   return (

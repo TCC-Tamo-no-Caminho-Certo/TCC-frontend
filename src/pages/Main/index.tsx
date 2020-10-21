@@ -1,25 +1,25 @@
 import React from 'react'
 
 import Map from './Map'
+import RightMenu from './RightMenu'
 
 import home from 'assets/ProfileNavbar/home.svg'
 import editProfile from 'assets/ProfileNavbar/editProfile.svg'
 
 import Sidebar from 'components/Sidebar'
 import Content from 'components/Sidebar/Content'
-import RightMenu from './RightMenu'
 
 const Profile: React.FC = () => {
   const profileRoutes = [
     {
-      path: '/main',
+      path: '/session/main',
       exact: true,
       icon: home,
       label: 'Mapa',
       content: () => <Map />,
     },
     {
-      path: '/main/projects',
+      path: '/session/main/projects',
       icon: editProfile,
       label: 'Projetos',
       content: () => <Map />,
