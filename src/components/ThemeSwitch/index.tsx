@@ -2,7 +2,7 @@ import React from 'react'
 import Style from './styles'
 
 import { ThemeActions, ThemeState } from 'store/theme'
-import { RootState, useSelector, useDispatch } from 'store'
+import { RootState, useDispatch, useSelector } from 'store'
 
 const ThemeSwitch: React.FC = () => {
   const dispatch = useDispatch()

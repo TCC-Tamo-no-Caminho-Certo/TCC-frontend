@@ -8,9 +8,10 @@ import Signup from 'pages/Home/Signup'
 import Main from 'pages/Main'
 import Profile from 'pages/Profile'
 
-import { AnimatePresence } from 'framer-motion'
 import Logged from 'hoc/Logged'
 import PrivateRoute from 'hoc/PrivateRoute'
+
+import { AnimatePresence } from 'framer-motion'
 import { Route, Switch, useLocation } from 'react-router-dom'
 
 const Routes: React.FC = () => {

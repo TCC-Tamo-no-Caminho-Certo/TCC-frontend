@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Style, { Header } from './styles'
 
 import Data, { Info } from './Infos'
