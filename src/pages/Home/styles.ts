@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 const Style = styled.main`
   position: absolute;
-  top: 100vh;
+  top: 200vh;
 
   display: flex;
   align-items: center;
@@ -16,6 +16,10 @@ const Style = styled.main`
 
   color: ${fromTheme('secondary')};
   background-color: ${fromTheme('tertiary')};
+
+  @media screen and (min-width: 1000px) {
+    top: 100vh;
+  }
 `
 
 export default Style

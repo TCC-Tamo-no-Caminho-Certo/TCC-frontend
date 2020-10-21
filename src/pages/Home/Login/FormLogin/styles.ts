@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-
 import fromTheme from 'utils/fromTheme'
+
+import styled from 'styled-components'
 
 export const Register = styled.div`
   text-align: center;
@@ -137,12 +137,14 @@ export const Google = styled.button.attrs({ type: 'button' })`
 `
 
 const Style = styled.div`
+  position: relative;
+
   display: flex;
   justify-content: center;
   align-items: center;
 
   min-width: 320px;
-  width: calc(38vw + 1px);
+  width: 100vw;
   height: 100vh;
   padding: 73px 0px;
 
@@ -160,6 +162,10 @@ const Style = styled.div`
       position: absolute;
       right: 0;
     }
+  }
+
+  @media screen and (min-width: 1000px) {
+    width: calc(38vw + 1px);
   }
 `
 
