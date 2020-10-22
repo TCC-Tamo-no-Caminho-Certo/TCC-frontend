@@ -8,29 +8,26 @@ import api from 'services/api'
 import { UserActions, UserState } from 'store/user'
 import { RootState, useDispatch, useSelector } from 'store'
 
-import { Route, Switch, useHistory } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
-const PrivateRoute: React.FC = () => {
-  const history = useHistory()
+const PrivateRoutes: React.FC = () => {
   const dispatch = useDispatch()
   const { validated } = useSelector<RootState, UserState>(state => state.user)
 
   useEffect(() => {
-    validated || history.push('/')
-
-    const token = localStorage.getItem('@SLab_ac_token')
-    api
-      .get('user/get', {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      })
-      .then(res => {
-        dispatch(UserActions.setUserInfo(res.user))
-      })
-  }, [validated, history, dispatch])
-
-  if (!validated) return <></>
+    if (validated) {
+      const token = localStorage.getItem('@SLab_ac_token')
+      api
+        .get('user/get', {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        })
+        .then(res => {
+          dispatch(UserActions.setUserInfo(res.user))
+        })
+    }
+  }, [validated, dispatch])
 
   return (
     <Switch>
@@ -40,4 +37,4 @@ const PrivateRoute: React.FC = () => {
   )
 }
 
-export default PrivateRoute
+export default PrivateRoutes

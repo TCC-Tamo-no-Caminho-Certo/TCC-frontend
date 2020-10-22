@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import PrivateRoute from './PrivateRoute'
+import PrivateRoutes from './PrivateRoutes'
 
 import ForgotPassword from 'pages/ForgotPassword'
 import ConfirmPassword from 'pages/ForgotPassword/ConfirmPassword'
@@ -24,9 +24,12 @@ const Routes: React.FC = () => {
     validateSession().then(response => {
       if (response) {
         dispatch(UserActions.setValidated(true))
-        setFirstTime(false)
-        location.pathname === '/' && history.push('/session/main')
+        if (location.pathname === '/' || location.pathname === '/home')
+          history.push('/session/main')
+      } else if (location.pathname.split('/')[1] === 'session') {
+        history.push('/')
       }
+      setFirstTime(false)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, history])
@@ -43,7 +46,7 @@ const Routes: React.FC = () => {
       <Route path='/forgot-password' component={ForgotPassword} />
       <Route path='/reset-password' component={ConfirmPassword} />
 
-      <Route path='/session' component={PrivateRoute} />
+      <Route path='/session' component={PrivateRoutes} />
     </Switch>
   )
 }
