@@ -4,6 +4,9 @@ import Style, { Background, RightMenuOpen, UserInfo } from './styles'
 import { RootState, useSelector } from 'store'
 import { ThemeState } from 'store/theme'
 
+import api from 'services/api'
+import { useHistory, Link } from 'react-router-dom'
+
 import gear from 'assets/gear.svg'
 import logout from 'assets/RightMenuOpen/logout.svg'
 import avatar from 'assets/avatar.jpg'
@@ -11,11 +14,11 @@ import change from 'assets/RightMenuOpen/change.svg'
 import editProfile from 'assets/ProfileNavbar/editProfile.svg'
 
 import { motion, useCycle } from 'framer-motion'
-import { Link } from 'react-router-dom'
 
 const RightMenu: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const [editOpen, toggle] = useCycle(false, true)
+  const history = useHistory()
 
   const width = 300
   const closedHeight = 112
@@ -25,6 +28,16 @@ const RightMenu: React.FC = () => {
 
   function onGearClick() {
     toggle()
+  }
+
+  const onLogoutClick = async () => {
+    const token = localStorage.getItem('@SLab_ac_token')
+    await api.get('logout', {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    })
+    history.push('/')
   }
 
   const pathAnimation = {
@@ -92,7 +105,7 @@ const RightMenu: React.FC = () => {
             </li>
           </ul>
 
-          <button type='button'>
+          <button type='button' onClick={onLogoutClick}>
             <div>Sair</div>
             <img src={logout} alt='Logout' />
           </button>
