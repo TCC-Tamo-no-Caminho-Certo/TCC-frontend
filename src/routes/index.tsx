@@ -14,7 +14,7 @@ import { useDispatch } from 'store'
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom'
 
 const Routes: React.FC = () => {
-  const [firstTime, setFirstTime] = useState(true)
+  const [loading, setLoading] = useState(true)
 
   const location = useLocation()
   const dispatch = useDispatch()
@@ -29,12 +29,12 @@ const Routes: React.FC = () => {
       } else if (location.pathname.split('/')[1] === 'session') {
         history.push('/')
       }
-      setFirstTime(false)
+      setLoading(false)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, history])
 
-  if (firstTime) return <></>
+  if (loading) return <></>
 
   return (
     <Switch>
