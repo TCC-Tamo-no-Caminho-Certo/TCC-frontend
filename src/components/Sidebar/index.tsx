@@ -1,11 +1,13 @@
 import React from 'react'
-import Style from './styles'
+import Style, { BackButton } from './styles'
 
 import { ThemeState } from 'store/theme'
 import { SidebarActions } from 'store/sidebar'
 import { RootState, useDispatch, useSelector } from 'store'
 
 import Hamburger from 'components/Hamburger'
+
+import { RiArrowLeftSLine } from 'react-icons/ri'
 
 import { NavLink } from 'react-router-dom'
 
@@ -17,9 +19,10 @@ export interface RouteProps {
 
 interface SidebarProps {
   routes: RouteProps[]
+  goBack?: boolean
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
+const Sidebar: React.FC<SidebarProps> = ({ routes, goBack }) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const open = useSelector<RootState>(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
@@ -62,6 +65,17 @@ const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
           </li>
         ))}
       </ul>
+
+      {goBack && (
+        <BackButton>
+          <NavLink to='/session/main'>
+            <button type='button'>
+              <RiArrowLeftSLine color='white' size={32} />
+              {open && <span>Voltar</span>}
+            </button>
+          </NavLink>
+        </BackButton>
+      )}
     </Style>
   )
 }

@@ -46,6 +46,29 @@ const Style = styled(motion.nav)`
   }
 `
 
+export const BackButton = styled.div`
+  position: absolute;
+  bottom: 0;
+
+  padding: 24px;
+
+  width: 100%;
+  height: 72px;
+
+  button {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+
+    span {
+      padding: 0 14px;
+      white-space: nowrap;
+      color: white;
+    }
+  }
+`
+
 export default Style
 
 Style.displayName = 'Sidebar-Style'
