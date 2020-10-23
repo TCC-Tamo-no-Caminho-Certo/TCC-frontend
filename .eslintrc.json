@@ -55,6 +55,13 @@
     "import/prefer-default-export": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "@typescript-eslint/no-empty-function": "off",
+    "max-len": [
+      "error",
+      {
+        "code": 100,
+        "tabWidth": 2
+      }
+    ],
     "react/jsx-filename-extension": [
       1,
       {

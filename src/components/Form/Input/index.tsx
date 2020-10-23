@@ -1,20 +1,20 @@
 import React, {
+  ComponentType,
+  FocusEvent,
+  FormEvent,
   forwardRef,
   RefObject,
-  ComponentType,
-  FormEvent,
-  FocusEvent,
+  useEffect,
   useRef,
   useState,
-  useEffect,
 } from 'react'
+import { CheckboxStyle, DefaultInput, Field } from './styles'
 
 import { ErrorTooltip } from 'components/Tooltips/index'
 
 import { IconBaseProps } from 'react-icons'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
-import Checkbox from './Checkbox'
-import { Field, CheckboxStyle, DefaultInput } from './styles'
+import Checkbox from '../Checkbox'
 
 export interface Ref {
   input: RefObject<HTMLInputElement>
@@ -43,7 +43,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       className,
       handleValue,
       icon: Icon,
-      pasteAndDrop,
+      pasteAndDrop = true,
       ...rest
     },
     ref
@@ -56,7 +56,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const [checked, setChecked] = useState(false)
 
     useEffect(() => {
-      _setref({ input: auxRef, setError })
+      _setref({
+        input: auxRef,
+        setError,
+      })
     }, [_setref, auxRef])
 
     const onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
@@ -93,7 +96,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         isErrored={!!error}
         hidden={rest.hidden}
         className={className}
-        {...{ onClick: type === 'checkbox' ? () => setChecked(!checked) : undefined }}
+        {...{
+          onClick: type === 'checkbox' ? () => setChecked(!checked) : undefined,
+        }}
       >
         {error ? <ErrorTooltip content={error} /> : Icon && <Icon className='icon' />}
 
@@ -105,10 +110,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           type={hiddenInput()}
           onBlur={onInputBlur}
           onSubmit={valueHandler}
-          {...{ readOnly: type === 'checkbox' ? true : undefined }}
-          {...{ checked: type === 'checkbox' ? checked : undefined }}
           onPaste={event => pasteAndDrop || event?.preventDefault()}
           onDrop={event => pasteAndDrop || event?.preventDefault()}
+          {...{
+            readOnly: type === 'checkbox' ? true : undefined,
+          }}
+          {...{
+            checked: type === 'checkbox' ? checked : undefined,
+          }}
           {...rest}
         />
 
@@ -116,7 +125,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           (showInput ? (
             <AiFillEyeInvisible onClick={() => setShowInput(false)} className='eyeIcon' />
           ) : (
-            <AiFillEye onClick={() => setShowInput(true)} className='eyeIcon' />
+            <AiFillEye className='eyeIcon' onClick={() => setShowInput(true)} />
           ))}
       </InputStyle>
     )

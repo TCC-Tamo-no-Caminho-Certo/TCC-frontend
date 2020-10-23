@@ -27,7 +27,8 @@ interface Props extends HTMLProps<HTMLFormElement> {
   path: string
   token?: string
   captcha?: boolean
-  loaderFB?: boolean
+
+  loading?: boolean
   valSchema?: ObjectSchema
   addData?: { [key: string]: string }
   changeData?: (data: any) => void
@@ -43,7 +44,7 @@ const Form: FC<Props> = ({
   children,
   path,
   token,
-  loaderFB,
+  loading,
   valSchema,
   addData,
   changeData,
@@ -104,7 +105,8 @@ const Form: FC<Props> = ({
     e.preventDefault()
 
     // console.log(refs)
-    loaderFB && setShowLoader(true)
+
+    loading && setShowLoader(true)
 
     setData()
     changeData && changeData(data)
@@ -112,7 +114,7 @@ const Form: FC<Props> = ({
     if (captcha) data.captcha = await recaptchaRef.current!.executeAsync()
     !haveErrors && (await submit(callback))
 
-    loaderFB && setShowLoader(false)
+    loading && setShowLoader(false)
     console.log(data)
   }
 
@@ -134,7 +136,7 @@ const Form: FC<Props> = ({
           })
 
         if (child.type === Button)
-          return loaderFB
+          return loading
             ? cloneElement(child, { key: 'loader', theme, _loader: showLoader })
             : child
 

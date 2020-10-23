@@ -56,7 +56,7 @@ const FormLogin: React.FC = () => {
           callback={handleSubmit}
           valSchema={loginSchema}
           path='login'
-          loaderFB
+          loading
           captcha
         >
           <Input

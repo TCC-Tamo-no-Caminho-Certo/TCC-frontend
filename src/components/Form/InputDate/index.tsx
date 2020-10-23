@@ -36,6 +36,7 @@ const InputDate: React.FC<InputDateProps> = ({
   theme,
   icon: Icon,
   _setref,
+  placeholder,
   ...rest
 }) => {
   const [selectedDate, setSelectedDate] = useState<DayValue>(null)
@@ -65,11 +66,11 @@ const InputDate: React.FC<InputDateProps> = ({
         icon={Icon}
         theme={theme}
         onClick={onClick}
-        placeholder='Data de nascimento'
+        placeholder={placeholder}
         value={InputValue(selectedDate)}
+        _setref={_setref}
         readOnly
         {...rest}
-        _setref={_setref}
       />
     )
   }

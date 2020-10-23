@@ -93,7 +93,7 @@ const ForgotPassword: React.FC = () => {
               <Form
                 callback={handleTokenSubmit}
                 path='reset-password'
-                loaderFB
+                loading
                 captcha
               >
                 <h3>Confirme o código enviado para o seu email</h3>
@@ -120,7 +120,7 @@ const ForgotPassword: React.FC = () => {
                 callback={handleEmailSubmit}
                 valSchema={emailSchema}
                 path='forgot-password'
-                loaderFB
+                loading
                 captcha
               >
                 <h3>Digite seu email para recuperar a senha</h3>

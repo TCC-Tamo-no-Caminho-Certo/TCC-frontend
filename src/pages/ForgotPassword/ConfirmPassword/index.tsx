@@ -55,7 +55,7 @@ const ConfirmPassword: React.FC = () => {
               valSchema={passwordSchema}
               path='reset-password'
               addData={{ token }}
-              loaderFB
+              loading
               captcha
             >
               <h2>Digite sua nova senha</h2>

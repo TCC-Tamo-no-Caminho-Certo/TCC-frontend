@@ -55,7 +55,7 @@ const FormSignup: React.FC = () => {
           const old = data.birthday.split('/')
           data.birthday = `${old[2]}-${old[1]}-${old[0]}`
         }}
-        loaderFB
+        loading
         captcha
       >
         <Input
@@ -78,7 +78,11 @@ const FormSignup: React.FC = () => {
           identificação oficial
         </span>
 
-        <InputDate name='birthday' icon={FaUserLock} />
+        <InputDate
+          name='birthday'
+          placeholder='Data de nascimento'
+          icon={FaUserLock}
+        />
 
         <span>Você precisa ter pelo menos 18 anos</span>
 
