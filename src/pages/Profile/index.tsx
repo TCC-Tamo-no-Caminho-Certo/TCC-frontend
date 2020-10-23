@@ -33,7 +33,7 @@ const Profile: React.FC = () => {
 
   return (
     <>
-      <Sidebar routes={profileRoutes} goBack />
+      <Sidebar routes={profileRoutes} goBack noScroll />
 
       <AnimatePresence exitBeforeEnter initial={false}>
         <Switch location={location} key={location.pathname}>

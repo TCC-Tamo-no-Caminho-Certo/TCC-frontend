@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Style, { BackButton } from './styles'
 
 import { ThemeState } from 'store/theme'
@@ -9,7 +9,7 @@ import Hamburger from 'components/Hamburger'
 
 import { RiArrowLeftSLine } from 'react-icons/ri'
 
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation, useParams } from 'react-router-dom'
 
 export interface RouteProps {
   icon: string
@@ -20,15 +20,23 @@ export interface RouteProps {
 interface SidebarProps {
   routes: RouteProps[]
   goBack?: boolean
+  noScroll?: boolean
+}
+interface ParamsType {
+  id: string
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ routes, goBack }) => {
+const Sidebar: React.FC<SidebarProps> = ({ routes, goBack, noScroll }) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const open = useSelector<RootState>(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
 
   const cycle = () => (open ? 'open' : 'closed')
   const onToggle = () => dispatch(SidebarActions.openSidebar(!open))
+
+  const height = window.innerHeight
+  const { id }: ParamsType = useParams()
+  const { pathname } = useLocation()
 
   const navbar = {
     open: {
@@ -43,6 +51,13 @@ const Sidebar: React.FC<SidebarProps> = ({ routes, goBack }) => {
     },
   }
 
+  useEffect(() => {
+    if (!noScroll) {
+      const searchArray = routes.map((route, index) => (route.path === pathname ? index : 0))
+      window.scrollTo(0, height * searchArray.indexOf(1))
+    }
+  }, [id, pathname, routes, height, noScroll])
+
   return (
     <Style
       theme={theme}
@@ -54,9 +69,12 @@ const Sidebar: React.FC<SidebarProps> = ({ routes, goBack }) => {
       <ul>
         <Hamburger toggle={onToggle} />
 
-        {routes.map(route => (
+        {routes.map((route, index) => (
           <li key={route.path}>
-            <NavLink to={route.path}>
+            <NavLink
+              to={route.path}
+              onClick={() => !noScroll && window.scrollTo(0, height * index)}
+            >
               <button type='button'>
                 <img src={route.icon} alt={route.path} />
                 {open && <span>{route.label}</span>}

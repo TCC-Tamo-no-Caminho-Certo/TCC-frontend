@@ -11,13 +11,7 @@ import validateSession from 'utils/validateSession'
 import { UserActions } from 'store/user'
 import { useDispatch } from 'store'
 
-import {
-  Redirect,
-  Route,
-  Switch,
-  useHistory,
-  useLocation,
-} from 'react-router-dom'
+import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom'
 
 const Routes: React.FC = () => {
   const [loading, setLoading] = useState(true)
