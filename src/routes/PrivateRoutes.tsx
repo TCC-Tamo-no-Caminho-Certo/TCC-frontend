@@ -16,13 +16,11 @@ const PrivateRoutes: React.FC = () => {
   const token = localStorage.getItem('@SLab_ac_token')
 
   api
-
     .get('user/get', {
       headers: {
         authorization: `Bearer ${token}`,
       },
     })
-
     .then(res => {
       dispatch(UserActions.setUserInfo(res.user))
     })

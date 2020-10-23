@@ -6,15 +6,16 @@ import React, {
   RefObject,
   useEffect,
   useRef,
-  useState
+  useState,
 } from 'react'
 import { CheckboxStyle, DefaultInput, Field } from './styles'
+
+import Checkbox from '../Checkbox'
 
 import { ErrorTooltip } from 'components/Tooltips/index'
 
 import { IconBaseProps } from 'react-icons'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
-import Checkbox from '../Checkbox'
 
 export interface Ref {
   input: RefObject<HTMLInputElement>
@@ -100,7 +101,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           onClick: type === 'checkbox' ? () => setChecked(!checked) : undefined,
         }}
       >
-        {error ? <ErrorTooltip content={error} /> : Icon && <Icon className='icon' />}
+        {error ? (
+          <ErrorTooltip content={error} />
+        ) : (
+          Icon && <Icon className='icon' />
+        )}
 
         {type === 'checkbox' && !noStyle && <Checkbox checked={checked} />}
 
@@ -123,7 +128,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
         {eye &&
           (showInput ? (
-            <AiFillEyeInvisible onClick={() => setShowInput(false)} className='eyeIcon' />
+            <AiFillEyeInvisible
+              onClick={() => setShowInput(false)}
+              className='eyeIcon'
+            />
           ) : (
             <AiFillEye className='eyeIcon' onClick={() => setShowInput(true)} />
           ))}

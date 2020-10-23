@@ -5,6 +5,7 @@
   "importStringConfiguration.numberOfEmptyLinesAfterAllImports": 1,
   "importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 100,
   "importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne",
+  "importSorter.importStringConfiguration.trailingComma": "es5",
   "sortConfiguration": {
     "customOrderingRules": {
       "rules": [
@@ -20,7 +21,7 @@
           "disableSort": true
         },
         {
-          "regex": "^./",
+          "regex": "^./|^../",
           "orderLevel": 2,
           "disableSort": true
         },
