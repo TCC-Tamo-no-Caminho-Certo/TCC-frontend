@@ -101,8 +101,7 @@ const Form: FC<Props> = ({
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-
-    console.log(refs)
+    // console.log(refs)
 
     loading && setShowLoader(true)
 

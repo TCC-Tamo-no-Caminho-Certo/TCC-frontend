@@ -1,12 +1,20 @@
 import React from 'react'
-import Style, { Header } from './styles'
-
-import Data, { Info } from './Infos'
+import Style, { Change, Content, Header, Label, Value } from './styles'
 
 import { RootState, useSelector } from 'store'
 import { UserState } from 'store/user'
 
 import avatar from 'assets/avatar.jpg'
+import editPencil from 'assets/editPencil.svg'
+
+import { Button, Form, Input } from 'components/Form'
+
+export interface Info {
+  label: string
+  value: string | number
+  inputname: string
+  dontShow?: boolean
+}
 
 type Professor = Info[]
 type Proponent = Info[]
@@ -29,7 +37,7 @@ interface Props {
 }
 
 const Card: React.FC<Props> = ({ headerText, type }) => {
-  const { info: user } = useSelector<RootState, UserState>(state => state.user)
+  const user = useSelector<RootState, UserState>(state => state.user)
 
   const getUserData = () => {
     const professor: Professor = [
@@ -56,7 +64,29 @@ const Card: React.FC<Props> = ({ headerText, type }) => {
 
       <img src={avatar} alt='avatar' draggable={false} />
 
-      <Data userData={getUserData()} />
+      <Form path=''>
+        {getUserData().map((info: Info) => (
+          <Content key={info.inputname}>
+            <Label>
+              <label htmlFor={info.inputname}>{info.label}</label>
+            </Label>
+            <Value>
+              <Input
+                name={info.inputname}
+                defaultValue={info.dontShow ? `*********` : info.value}
+                noStyle
+              />
+            </Value>
+            <Change>
+              <label htmlFor={info.inputname}>
+                <img src={editPencil} alt='edit' />
+              </label>
+            </Change>
+          </Content>
+        ))}
+
+        <button type='submit'>Salvar</button>
+      </Form>
     </Style>
   )
 }

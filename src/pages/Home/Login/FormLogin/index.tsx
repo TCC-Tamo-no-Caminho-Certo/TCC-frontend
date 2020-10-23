@@ -4,7 +4,6 @@ import Style, { Content, Google, Permanence, Register } from './styles'
 import loginSchema from 'utils/validations/login'
 
 import { RootState, useDispatch, useSelector } from 'store'
-import { UserActions } from 'store/user'
 import { HomeActions } from 'store/home'
 import { ThemeState } from 'store/theme'
 
@@ -33,7 +32,6 @@ const FormLogin: React.FC = () => {
   const handleSubmit = (resData: any) => {
     if (resData.success) {
       localStorage.setItem('@SLab_ac_token', resData.access_token)
-      dispatch(UserActions.setValidated(true))
       history.push('/session/main')
     }
   }
@@ -52,19 +50,8 @@ const FormLogin: React.FC = () => {
           <span>Entrar com o Google</span>
         </Google>
 
-        <Form
-          callback={handleSubmit}
-          valSchema={loginSchema}
-          path='login'
-          loading
-          captcha
-        >
-          <Input
-            name='email'
-            placeholder='E-mail'
-            icon={AiOutlineMail}
-            autoComplete='email'
-          />
+        <Form callback={handleSubmit} valSchema={loginSchema} path='login' loading captcha>
+          <Input name='email' placeholder='E-mail' icon={AiOutlineMail} autoComplete='email' />
 
           <Input
             name='password'
@@ -86,20 +73,14 @@ const FormLogin: React.FC = () => {
           </Permanence>
         </Form>
 
-        <Link
-          to='/forgot-password'
-          onClick={() => dispatch(HomeActions.animation(false))}
-        >
+        <Link to='/forgot-password' onClick={() => dispatch(HomeActions.animation(false))}>
           Não consegue fazer login?
         </Link>
 
         <Register theme={theme}>
           <span>Ainda não possui uma conta ?</span>
 
-          <Link
-            to='/home/signup'
-            onClick={() => dispatch(HomeActions.animation(true))}
-          >
+          <Link to='/home/signup' onClick={() => dispatch(HomeActions.animation(true))}>
             Registre-se aqui!
           </Link>
         </Register>

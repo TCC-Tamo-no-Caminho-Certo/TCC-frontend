@@ -8,22 +8,17 @@ import Home from 'pages/Home'
 
 import validateSession from 'utils/validateSession'
 
-import { UserActions } from 'store/user'
-import { useDispatch } from 'store'
-
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom'
 
 const Routes: React.FC = () => {
   const [loading, setLoading] = useState(true)
 
   const location = useLocation()
-  const dispatch = useDispatch()
   const history = useHistory()
 
   useEffect(() => {
     validateSession().then(response => {
       if (response) {
-        dispatch(UserActions.setValidated(true))
         location.pathname.split('/')[1] !== 'session' && history.push('/session/main')
       } else if (location.pathname.split('/')[1] === 'session') {
         history.push('/')
@@ -31,7 +26,7 @@ const Routes: React.FC = () => {
       setLoading(false)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, history])
+  }, [])
 
   if (loading) return <></>
 
