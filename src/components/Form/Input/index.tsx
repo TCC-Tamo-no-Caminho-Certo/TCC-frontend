@@ -6,7 +6,7 @@ import React, {
   RefObject,
   useEffect,
   useRef,
-  useState,
+  useState
 } from 'react'
 import { CheckboxStyle, DefaultInput, Field } from './styles'
 

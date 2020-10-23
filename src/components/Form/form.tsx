@@ -102,15 +102,15 @@ const Form: FC<Props> = ({
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
-    // console.log(refs)
+    console.log(refs)
 
     loading && setShowLoader(true)
 
     setData()
     changeData && changeData(data)
     await validate()
-    if (captcha) data.captcha = await recaptchaRef.current!.executeAsync()
-    !haveErrors && (await submit(callback))
+    if (captcha) data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
+    // !haveErrors && (await submit(callback))
 
     loading && setShowLoader(false)
     console.log(data)
@@ -142,6 +142,8 @@ const Form: FC<Props> = ({
           children: result,
         })
       }
+
+      if (Array.isArray(child)) return checkChildren(child)
 
       return child
     })

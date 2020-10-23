@@ -77,15 +77,6 @@ export const DefaultInput = styled.div<StyleProps>`
         -webkit-text-fill-color: ${fromTheme('primary')};
       }
     `}
-
-  ${({ hasIcon, isErrored }) =>
-    !hasIcon &&
-    !isErrored &&
-    css`
-      input {
-        padding-left: 20px;
-      }
-    `}
 `
 
 export const Field = styled.div<StyleProps>`
