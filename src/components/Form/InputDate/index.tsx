@@ -31,7 +31,13 @@ const maximumDate = {
   day: present.day,
 }
 
-const InputDate: React.FC<InputDateProps> = ({ name, theme, icon: Icon, _setref, ...rest }) => {
+const InputDate: React.FC<InputDateProps> = ({
+  name,
+  theme,
+  icon: Icon,
+  _setref,
+  ...rest
+}) => {
   const [selectedDate, setSelectedDate] = useState<DayValue>(null)
 
   const renderCustomInput = ({ ref }: any) => {
@@ -44,7 +50,9 @@ const InputDate: React.FC<InputDateProps> = ({ name, theme, icon: Icon, _setref,
     }
 
     const onClick = () => {
-      const year: HTMLButtonElement | null = document.querySelector('.Calendar__yearText')
+      const year: HTMLButtonElement | null = document.querySelector(
+        '.Calendar__yearText'
+      )
 
       if (year && ref.current.value === '') year.click()
     }

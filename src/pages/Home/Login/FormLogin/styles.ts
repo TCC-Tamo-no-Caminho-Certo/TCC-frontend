@@ -154,7 +154,7 @@ const Style = styled.div`
     position: absolute;
     top: 20px;
 
-    width: 30%;
+    width: 70%;
     max-width: 1000px;
     height: 33px;
 

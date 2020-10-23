@@ -1,8 +1,10 @@
 {
   "generalConfiguration.sortOnBeforeSave": true,
   "importStringConfiguration": {
+    "tabSize": 2,
     "hasSemicolon": false,
-    "maximumNumberOfImportExpressionsPerLine.count": 100
+    "numberOfEmptyLinesAfterAllImports": 1,
+    "maximumNumberOfImportExpressionsPerLine.count": 80
   },
   "sortConfiguration": {
     "customOrderingRules": {

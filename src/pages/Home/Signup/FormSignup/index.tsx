@@ -35,7 +35,10 @@ const FormSignup: React.FC = () => {
         <button type='button'>
           <RiArrowLeftSLine />
 
-          <Link to='/home' onClick={() => dispatch(HomeActions.animation(true))}>
+          <Link
+            to='/home'
+            onClick={() => dispatch(HomeActions.animation(true))}
+          >
             Voltar
           </Link>
         </button>
@@ -63,17 +66,28 @@ const FormSignup: React.FC = () => {
           autoComplete='given-name'
         />
 
-        <Input name='surname' placeholder='Sobrenome' icon={MdPublic} autoComplete='family-name' />
+        <Input
+          name='surname'
+          placeholder='Sobrenome'
+          icon={MdPublic}
+          autoComplete='family-name'
+        />
 
         <span>
-          Certifique-se de que corresponde ao nome no seu documento de identificação oficial
+          Certifique-se de que corresponde ao nome no seu documento de
+          identificação oficial
         </span>
 
         <InputDate name='birthday' icon={FaUserLock} />
 
         <span>Você precisa ter pelo menos 18 anos</span>
 
-        <Input name='email' placeholder='E-mail' icon={FaUserLock} autoComplete='email' />
+        <Input
+          name='email'
+          placeholder='E-mail'
+          icon={FaUserLock}
+          autoComplete='email'
+        />
 
         <span>Enviaremos um e-mail para confirmação</span>
 
@@ -96,9 +110,11 @@ const FormSignup: React.FC = () => {
         />
 
         <span>
-          Ao clicar em Concordar e concluir, concordo com os <a href='.'>Termos de uso</a>, os{' '}
-          <a href='.'>Termos de Serviço e Pagamentos</a>, a <a href='.'>Política de Privacidade</a>{' '}
-          e a <a href='.'>Política de Não Discriminação</a> do Steams Lab.
+          Ao clicar em Concordar e concluir, concordo com os{' '}
+          <a href='.'>Termos de uso</a>, os{' '}
+          <a href='.'>Termos de Serviço e Pagamentos</a>, a{' '}
+          <a href='.'>Política de Privacidade</a> e a{' '}
+          <a href='.'>Política de Não Discriminação</a> do Steams Lab.
         </span>
 
         <Button>Concordar e concluir</Button>

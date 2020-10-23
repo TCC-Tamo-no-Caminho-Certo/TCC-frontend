@@ -17,7 +17,9 @@ import { RiArrowLeftSLine } from 'react-icons/ri'
 const ForgotPassword: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string>()
   const [tokenIsSend, setTokenIsSend] = useState(false)
-  const [modalAttributes, setModalAttributes] = useState<ModalAttributes>({ visible: false })
+  const [modalAttributes, setModalAttributes] = useState<ModalAttributes>({
+    visible: false,
+  })
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const history = useHistory()
@@ -65,10 +67,17 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <>
-      <Modal {...modalAttributes} onOKClick={() => setModalAttributes({ visible: false })} />
+      <Modal
+        {...modalAttributes}
+        onOKClick={() => setModalAttributes({ visible: false })}
+      />
 
       <Style theme={theme}>
-        <button type='button' className='backButton' onClick={() => history.push('/')}>
+        <button
+          type='button'
+          className='backButton'
+          onClick={() => history.push('/')}
+        >
           <RiArrowLeftSLine size={30} />
 
           <span>Voltar</span>
@@ -81,7 +90,12 @@ const ForgotPassword: React.FC = () => {
 
           {tokenIsSend ? (
             <ConfirmToken theme={theme}>
-              <Form cb={handleTokenSubmit} path='reset-password' loaderFB captcha>
+              <Form
+                callback={handleTokenSubmit}
+                path='reset-password'
+                loaderFB
+                captcha
+              >
                 <h3>Confirme o código enviado para o seu email</h3>
 
                 <Input name='token' placeholder='Código' icon={FiLock} />
@@ -91,7 +105,7 @@ const ForgotPassword: React.FC = () => {
 
               <Form
                 className='resendContainer'
-                cb={handleTokenResent}
+                callback={handleTokenResent}
                 path='forgot-password'
                 captcha
               >
@@ -103,7 +117,7 @@ const ForgotPassword: React.FC = () => {
           ) : (
             <section>
               <Form
-                cb={handleEmailSubmit}
+                callback={handleEmailSubmit}
                 valSchema={emailSchema}
                 path='forgot-password'
                 loaderFB
@@ -111,11 +125,16 @@ const ForgotPassword: React.FC = () => {
               >
                 <h3>Digite seu email para recuperar a senha</h3>
 
-                <Input name='email' placeholder='E-mail' icon={FiUser} handleValue={setUserEmail} />
+                <Input
+                  name='email'
+                  placeholder='E-mail'
+                  icon={FiUser}
+                  handleValue={setUserEmail}
+                />
 
                 <p>
-                  Enviaremos uma email para o seguinte endereço contendo instruções para renovação
-                  da senha
+                  Enviaremos uma email para o seguinte endereço contendo
+                  instruções para renovação da senha
                 </p>
 
                 <Button className='submit'>Enviar</Button>

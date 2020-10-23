@@ -52,8 +52,19 @@ const FormLogin: React.FC = () => {
           <span>Entrar com o Google</span>
         </Google>
 
-        <Form cb={handleSubmit} valSchema={loginSchema} path='login' loaderFB captcha>
-          <Input name='email' placeholder='E-mail' icon={AiOutlineMail} autoComplete='email' />
+        <Form
+          callback={handleSubmit}
+          valSchema={loginSchema}
+          path='login'
+          loaderFB
+          captcha
+        >
+          <Input
+            name='email'
+            placeholder='E-mail'
+            icon={AiOutlineMail}
+            autoComplete='email'
+          />
 
           <Input
             name='password'
@@ -75,14 +86,20 @@ const FormLogin: React.FC = () => {
           </Permanence>
         </Form>
 
-        <Link to='/forgot-password' onClick={() => dispatch(HomeActions.animation(false))}>
+        <Link
+          to='/forgot-password'
+          onClick={() => dispatch(HomeActions.animation(false))}
+        >
           Não consegue fazer login?
         </Link>
 
         <Register theme={theme}>
           <span>Ainda não possui uma conta ?</span>
 
-          <Link to='/home/signup' onClick={() => dispatch(HomeActions.animation(true))}>
+          <Link
+            to='/home/signup'
+            onClick={() => dispatch(HomeActions.animation(true))}
+          >
             Registre-se aqui!
           </Link>
         </Register>

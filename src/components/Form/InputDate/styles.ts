@@ -86,7 +86,8 @@ const Style = styled.div`
   }
 
   .DatePicker__calendarArrow {
-    border-color: transparent transparent ${fromTheme('calendarHeader')} transparent;
+    border-color: transparent transparent ${fromTheme('calendarHeader')}
+      transparent;
   }
 
   .Calendar__section.-shown,

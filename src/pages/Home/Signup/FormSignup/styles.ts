@@ -23,7 +23,7 @@ const Style = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    width: 30%;
+    width: 70%;
     max-width: 1000px;
     height: 4vh;
 
@@ -123,6 +123,10 @@ const Style = styled.div`
 
   @media screen and (min-width: 1000px) {
     width: 38vw;
+
+    nav {
+      width: 30%;
+    }
   }
 `
 
