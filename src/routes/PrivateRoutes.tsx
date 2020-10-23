@@ -24,6 +24,8 @@ const PrivateRoutes: React.FC = () => {
       dispatch(UserActions.setUserInfo(res.user))
     })
 
+  window.history.pushState(null, '', document.URL)
+
   return (
     <Switch>
       <Route path='/session/main' component={Main} />

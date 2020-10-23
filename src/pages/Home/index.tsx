@@ -23,6 +23,8 @@ const Profile: React.FC = () => {
     },
   ]
 
+  window.history.pushState(null, '', document.URL)
+
   return (
     <>
       <AnimatePresence initial={false}>

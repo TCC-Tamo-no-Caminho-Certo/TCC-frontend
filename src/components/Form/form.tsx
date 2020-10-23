@@ -57,7 +57,9 @@ const Form: FC<Props> = ({
 
   const setData = () => {
     refs.forEach(ref => {
-      data[ref.input.current!.name] =
+      if (!ref.input.current) throw new Error('Form setData error!')
+
+      data[ref.input.current.name] =
         ref.input.current?.type === 'checkbox'
           ? ref.input.current?.checked
           : ref.input.current?.value

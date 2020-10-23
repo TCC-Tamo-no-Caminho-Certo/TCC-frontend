@@ -24,8 +24,7 @@ const Routes: React.FC = () => {
     validateSession().then(response => {
       if (response) {
         dispatch(UserActions.setValidated(true))
-        if (location.pathname === '/' || location.pathname === '/home')
-          history.push('/session/main')
+        location.pathname.split('/')[1] !== 'session' && history.push('/session/main')
       } else if (location.pathname.split('/')[1] === 'session') {
         history.push('/')
       }
