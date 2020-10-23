@@ -44,8 +44,8 @@ const Form: FC<Props> = ({
   token,
   loading,
   valSchema,
-  addData,
   changeData,
+  addData,
   captcha,
   callback,
   ...rest
