@@ -3,7 +3,10 @@ import * as Yup from 'yup'
 export const emailSchema = Yup.object({
   email: Yup.string()
     .email('O e-mail deve ser válido!')
-    .matches(/^(\w\.?)+@(\w\.?)+\.(\w\.?)+$/, 'E-mail inválido, verifique novamente!')
+    .matches(
+      /^(\w\.?)+@(\w\.?)+\.(\w\.?)+$/,
+      'E-mail inválido, verifique novamente!'
+    )
     .required('Você esqueceu de informar o email!'),
 })
 

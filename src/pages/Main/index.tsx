@@ -9,14 +9,10 @@ import editProfile from 'assets/ProfileNavbar/editProfile.svg'
 
 import Sidebar from 'components/Sidebar'
 
-import { AnimatePresence } from 'framer-motion'
-import { Route, Switch, useLocation } from 'react-router-dom'
-
 const Profile: React.FC = () => {
-  const location = useLocation()
   const profileRoutes = [
     {
-      path: '/session/main',
+      path: '/session/main/map',
       exact: true,
       icon: home,
       label: 'Mapa',
@@ -36,18 +32,8 @@ const Profile: React.FC = () => {
 
       <RightMenu />
 
-      <AnimatePresence exitBeforeEnter initial={false}>
-        <Switch location={location} key={location.pathname}>
-          {profileRoutes.map(route => (
-            <Route
-              path={route.path}
-              key={route.path}
-              exact={route.exact}
-              component={route.component}
-            />
-          ))}
-        </Switch>
-      </AnimatePresence>
+      <Map />
+      <Projects />
     </>
   )
 }

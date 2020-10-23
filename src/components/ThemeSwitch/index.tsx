@@ -15,7 +15,12 @@ const ThemeSwitch: React.FC = () => {
       className='ThemeSwitch'
       onClick={() => dispatch(ThemeActions.changeTheme())}
     >
-      <g strokeWidth='3' strokeLinecap='round' strokeLinejoin='round' stroke={theme.quaternary}>
+      <g
+        strokeWidth='3'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        stroke={theme.quaternary}
+      >
         <path d='M21 40.25L21 36.75' />
         <path d='M21 5.25L21 1.75' />
         <path d='M34.6152 34.6152L32.1302 32.1302' />

@@ -32,7 +32,13 @@ const Checkbox: FC<Props> = ({ checked }) => {
 
   return (
     <svg viewBox='0 0 15 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
-      <rect x='0.5' y='0.5' width='14' height='14' stroke='url(#checkboxRadial)' />
+      <rect
+        x='0.5'
+        y='0.5'
+        width='14'
+        height='14'
+        stroke='url(#checkboxRadial)'
+      />
 
       <defs>
         <motion.radialGradient

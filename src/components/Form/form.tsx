@@ -1,5 +1,11 @@
 import React, {
-    cloneElement, FC, FormEvent, HTMLProps, ReactElement, useRef, useState
+  cloneElement,
+  FC,
+  FormEvent,
+  HTMLProps,
+  ReactElement,
+  useRef,
+  useState
 } from 'react'
 import { captcha as Captcha, ReCaptcha } from './styles'
 
@@ -19,11 +25,12 @@ interface Props extends HTMLProps<HTMLFormElement> {
   path: string
   token?: string
   captcha?: boolean
-  loaderFB?: boolean
+
+  loading?: boolean
   valSchema?: ObjectSchema
   addData?: { [key: string]: string }
   changeData?: (data: any) => void
-  cb?: (resData: any) => void
+  callback?: (resData: any) => void
 }
 
 /**
@@ -35,12 +42,12 @@ const Form: FC<Props> = ({
   children,
   path,
   token,
-  loaderFB,
+  loading,
   valSchema,
   addData,
   changeData,
   captcha,
-  cb,
+  callback,
   ...rest
 }) => {
   const data: any = { ...addData }
@@ -96,15 +103,16 @@ const Form: FC<Props> = ({
     e.preventDefault()
 
     // console.log(refs)
-    loaderFB && setShowLoader(true)
+
+    loading && setShowLoader(true)
 
     setData()
     changeData && changeData(data)
     await validate()
     if (captcha) data.captcha = await recaptchaRef.current!.executeAsync()
-    !haveErrors && (await submit(cb))
+    !haveErrors && (await submit(callback))
 
-    loaderFB && setShowLoader(false)
+    loading && setShowLoader(false)
     console.log(data)
   }
 
@@ -114,14 +122,18 @@ const Form: FC<Props> = ({
       | ReactElement<InputProps>
       | ReactElement
   ) => {
-    const children: any = Array.isArray(elements) ? elements : [elements]
+    const childrenCheck: any = Array.isArray(elements) ? elements : [elements]
 
-    return children.map((child: ReactElement<InputProps> | ReactElement, i: number) => {
+    return childrenCheck.map((child: ReactElement<InputProps> | ReactElement, i: number) => {
       if (child.type === Input || child.type === InpuDate)
-        return cloneElement(child, { key: child.props.name, theme, _setref: setRef })
+        return cloneElement(child, {
+          key: child.props.name,
+          theme,
+          _setref: setRef,
+        })
 
       if (child.type === Button)
-        return loaderFB ? cloneElement(child, { key: 'loader', theme, _loader: showLoader }) : child
+        return loading ? cloneElement(child, { key: 'loader', theme, _loader: showLoader }) : child
 
       if (child.props?.children) {
         const result = checkChildren(child.props.children)

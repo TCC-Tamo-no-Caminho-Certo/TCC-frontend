@@ -14,7 +14,6 @@
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
-  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -35,6 +34,7 @@
       "typescript": {}
     }
   },
+  "parser": "@typescript-eslint/parser",
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "prettier/prettier": "error",
@@ -54,8 +54,13 @@
     "no-param-reassign": "off",
     "import/prefer-default-export": "off",
     "jsx-a11y/label-has-associated-control": "off",
-    "@typescript-eslint/no-empty-function": [
-      "off"
+    "@typescript-eslint/no-empty-function": "off",
+    "max-len": [
+      "error",
+      {
+        "code": 100,
+        "tabWidth": 2
+      }
     ],
     "react/jsx-filename-extension": [
       1,
