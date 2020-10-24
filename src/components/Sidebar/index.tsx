@@ -7,8 +7,8 @@ import { RootState, useDispatch, useSelector } from 'store'
 
 import Hamburger from 'components/Hamburger'
 
+import { AnimatePresence, motion } from 'framer-motion'
 import { RiArrowLeftSLine } from 'react-icons/ri'
-
 import { NavLink, useLocation, useParams } from 'react-router-dom'
 
 export interface RouteProps {
@@ -38,16 +38,40 @@ const Sidebar: React.FC<SidebarProps> = ({ routes, goBack, noScroll }) => {
   const { id }: ParamsType = useParams()
   const { pathname } = useLocation()
 
-  const navbar = {
+  const ul = {
     open: {
       width: 210,
+      transition: {
+        type: 'tween',
+        duration: 0.2,
+        staggerChildren: 0.1,
+      },
     },
     closed: {
       width: 72,
+      transition: {
+        type: 'tween',
+        duration: 0.2,
+        staggerChildren: 0,
+      },
     },
-    transition: {
-      type: 'tween',
-      duration: 0.2,
+  }
+
+  const ulSpan = {
+    open: {
+      opacity: [0, 1],
+      x: [-24, 0],
+      transition: {
+        type: 'tween',
+        duration: 0.4,
+      },
+    },
+    closed: {
+      opacity: [1, 0],
+      transition: {
+        type: 'tween',
+        duration: 0.1,
+      },
     },
   }
 
@@ -59,16 +83,10 @@ const Sidebar: React.FC<SidebarProps> = ({ routes, goBack, noScroll }) => {
   }, [id, pathname, routes, height, noScroll])
 
   return (
-    <Style
-      theme={theme}
-      variants={navbar}
-      transition={navbar.transition}
-      initial={false}
-      animate={cycle()}
-    >
-      <ul>
-        <Hamburger toggle={onToggle} />
+    <Style theme={theme}>
+      <Hamburger toggle={onToggle} />
 
+      <motion.ul variants={ul} animate={cycle()}>
         {routes.map((route, index) => (
           <li key={route.path}>
             <NavLink
@@ -77,12 +95,19 @@ const Sidebar: React.FC<SidebarProps> = ({ routes, goBack, noScroll }) => {
             >
               <button type='button'>
                 <img src={route.icon} alt={route.path} />
-                {open && <span>{route.label}</span>}
+
+                <AnimatePresence>
+                  {open && (
+                    <motion.span key={route.label} variants={ulSpan}>
+                      {route.label}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </button>
             </NavLink>
           </li>
         ))}
-      </ul>
+      </motion.ul>
 
       {goBack && (
         <BackButton>

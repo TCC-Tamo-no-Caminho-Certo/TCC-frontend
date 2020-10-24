@@ -1,9 +1,8 @@
 import fromTheme from 'utils/fromTheme'
 
-import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
-const Style = styled(motion.nav)`
+const Style = styled.nav`
   position: fixed;
   z-index: 1;
 
@@ -38,6 +37,7 @@ const Style = styled(motion.nav)`
         }
 
         span {
+          opacity: 0;
           white-space: nowrap;
           color: ${fromTheme('secondary')};
         }

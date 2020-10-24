@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import Style from './styles'
 
+import '../../../../node_modules/react-modern-calendar-datepicker/lib/DatePicker.css'
+import Input, { InputProps } from '../Input'
+
 import ptbr from 'utils/locales/dates/ptbr'
 
 import DatePicker, { DayValue } from 'react-modern-calendar-datepicker'
-import '../../../../node_modules/react-modern-calendar-datepicker/lib/DatePicker.css'
-import Input, { InputProps } from '../Input'
 
 interface InputDateProps extends InputProps {
   name: string
@@ -31,7 +32,13 @@ const maximumDate = {
   day: present.day,
 }
 
-const InputDate: React.FC<InputDateProps> = ({ name, theme, icon: Icon, _setref, ...rest }) => {
+const InputDate: React.FC<InputDateProps> = ({
+  name,
+  theme,
+  icon: Icon,
+  _setref,
+  ...rest
+}) => {
   const [selectedDate, setSelectedDate] = useState<DayValue>(null)
 
   const renderCustomInput = ({ ref }: any) => {
@@ -44,7 +51,9 @@ const InputDate: React.FC<InputDateProps> = ({ name, theme, icon: Icon, _setref,
     }
 
     const onClick = () => {
-      const year: HTMLButtonElement | null = document.querySelector('.Calendar__yearText')
+      const year: HTMLButtonElement | null = document.querySelector(
+        '.Calendar__yearText'
+      )
 
       if (year && ref.current.value === '') year.click()
     }

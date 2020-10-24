@@ -1,11 +1,10 @@
 import React from 'react'
 import Style, { Background, RightMenuOpen, UserInfo } from './styles'
 
+import api from 'services/api'
+
 import { RootState, useSelector } from 'store'
 import { ThemeState } from 'store/theme'
-
-import api from 'services/api'
-import { useHistory, Link } from 'react-router-dom'
 
 import gear from 'assets/gear.svg'
 import logout from 'assets/RightMenuOpen/logout.svg'
@@ -13,7 +12,8 @@ import avatar from 'assets/avatar.jpg'
 import change from 'assets/RightMenuOpen/change.svg'
 import editProfile from 'assets/ProfileNavbar/editProfile.svg'
 
-import { motion, useCycle } from 'framer-motion'
+import { AnimatePresence, motion, useCycle } from 'framer-motion'
+import { Link, useHistory } from 'react-router-dom'
 
 const RightMenu: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
@@ -61,6 +61,77 @@ const RightMenu: React.FC = () => {
     },
   }
 
+  const rightMenuOpenAnimation = {
+    open: {
+      transition: {
+        type: 'tween',
+        duration: 0.2,
+        staggerChildren: 0.1,
+      },
+    },
+    closed: {
+      transition: {
+        type: 'tween',
+        duration: 0.2,
+        staggerChildren: 0,
+      },
+    },
+  }
+
+  const hrAnimation = {
+    open: {
+      opacity: [0, 1],
+
+      transition: {
+        type: 'tween',
+        duration: 0.4,
+      },
+    },
+    closed: {
+      opacity: [1, 0],
+      transition: {
+        type: 'tween',
+        duration: 0.1,
+      },
+    },
+  }
+
+  const liAnimation = {
+    open: {
+      opacity: [0, 1],
+      x: [16, 0],
+      transition: {
+        type: 'tween',
+        duration: 0.4,
+      },
+    },
+    closed: {
+      opacity: [1, 0],
+      transition: {
+        type: 'tween',
+        duration: 0.1,
+      },
+    },
+  }
+
+  const logoutAnimation = {
+    open: {
+      opacity: [0, 1],
+      y: [-16, 0],
+      transition: {
+        type: 'tween',
+        duration: 0.4,
+      },
+    },
+    closed: {
+      opacity: [1, 0],
+      transition: {
+        type: 'tween',
+        duration: 0.1,
+      },
+    },
+  }
+
   return (
     <>
       <Background width={`${width}px`} height={`${editHeight}px`}>
@@ -85,32 +156,47 @@ const RightMenu: React.FC = () => {
         <button type='button' onClick={onGearClick}>
           <img src={gear} alt='edit profile' id='gear' />
         </button>
+
+        <AnimatePresence>
+          {editOpen && (
+            <RightMenuOpen
+              width={`${width}px`}
+              height={`${editHeight - closedHeight}px`}
+              theme={theme}
+              variants={rightMenuOpenAnimation}
+              animate='open'
+              exit='close'
+            >
+              <ul>
+                <motion.hr variants={hrAnimation} />
+
+                <motion.li key='Edit Profile' variants={liAnimation}>
+                  <Link to='/session/profile/edit-profile'>
+                    <img src={editProfile} alt='Edit Profile' /> Editar perfil
+                  </Link>
+                </motion.li>
+
+                <motion.li key='Switch Perfil' variants={liAnimation}>
+                  <Link to='/editProfile'>
+                    <img src={change} alt='Switch Perfil' />
+                    Alternar perfil
+                  </Link>
+                </motion.li>
+              </ul>
+
+              <motion.button
+                type='button'
+                onClick={onLogoutClick}
+                variants={logoutAnimation}
+                animate='open'
+              >
+                <div>Sair</div>
+                <img src={logout} alt='Logout' />
+              </motion.button>
+            </RightMenuOpen>
+          )}
+        </AnimatePresence>
       </Style>
-
-      {editOpen && (
-        <RightMenuOpen width={`${width}px`} height={`${editHeight - closedHeight}px`} theme={theme}>
-          <hr />
-
-          <ul>
-            <li>
-              <Link to='/session/profile/edit-profile'>
-                <img src={editProfile} alt='Edit Profile' /> Editar perfil
-              </Link>
-            </li>
-            <li>
-              <Link to='/editProfile'>
-                <img src={change} alt='Edit Profile' />
-                Alternar perfil
-              </Link>
-            </li>
-          </ul>
-
-          <button type='button' onClick={onLogoutClick}>
-            <div>Sair</div>
-            <img src={logout} alt='Logout' />
-          </button>
-        </RightMenuOpen>
-      )}
     </>
   )
 }

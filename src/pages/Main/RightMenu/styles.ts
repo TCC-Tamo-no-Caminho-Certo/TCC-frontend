@@ -1,5 +1,6 @@
 import fromTheme from 'utils/fromTheme'
 
+import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
 interface RightMenuOpenProps {
@@ -12,7 +13,7 @@ interface StyleProps {
 }
 
 export const Background = styled.svg`
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   z-index: 1;
@@ -57,7 +58,7 @@ export const UserInfo = styled.div.attrs({ className: 'UserInfo' })`
   }
 `
 
-export const RightMenuOpen = styled.div<RightMenuOpenProps>`
+export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
   position: absolute;
   top: 112px;
   right: 0;
@@ -71,11 +72,19 @@ export const RightMenuOpen = styled.div<RightMenuOpenProps>`
     position: absolute;
     top: 0;
     left: 16px;
+
     width: calc(100% - 32px);
-    border: solid 1px ${fromTheme('white')};
+    height: 2px;
+
+    border: none;
+    background-color: ${fromTheme('white')};
   }
 
   ul {
+    & > * {
+      opacity: 0;
+    }
+
     li a {
       display: flex;
       justify-items: center;
@@ -102,6 +111,7 @@ export const RightMenuOpen = styled.div<RightMenuOpenProps>`
     display: flex;
 
     color: ${fromTheme('white')};
+    opacity: 0;
 
     div {
       font-size: 1.5rem;
@@ -115,7 +125,7 @@ export const RightMenuOpen = styled.div<RightMenuOpenProps>`
 `
 
 const Style = styled.div<StyleProps>`
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   z-index: 2;
