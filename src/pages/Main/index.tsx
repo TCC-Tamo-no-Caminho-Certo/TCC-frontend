@@ -4,8 +4,8 @@ import Map from './Map'
 import RightMenu from './RightMenu'
 import Projects from './Projects/index'
 
-import home from 'assets/ProfileNavbar/home.svg'
-import editProfile from 'assets/ProfileNavbar/editProfile.svg'
+import map from 'assets/MainSidebar/map.svg'
+import projects from 'assets/MainSidebar/projects.svg'
 
 import Sidebar from 'components/Sidebar'
 
@@ -13,16 +13,13 @@ const Profile: React.FC = () => {
   const profileRoutes = [
     {
       path: '/session/main/map',
-      exact: true,
-      icon: home,
+      icon: map,
       label: 'Mapa',
-      component: () => <Map />,
     },
     {
       path: '/session/main/projects',
-      icon: editProfile,
+      icon: projects,
       label: 'Projetos',
-      component: () => <Projects />,
     },
   ]
 

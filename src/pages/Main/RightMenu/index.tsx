@@ -10,7 +10,7 @@ import gear from 'assets/gear.svg'
 import logout from 'assets/RightMenuOpen/logout.svg'
 import avatar from 'assets/avatar.jpg'
 import change from 'assets/RightMenuOpen/change.svg'
-import editProfile from 'assets/ProfileNavbar/editProfile.svg'
+import editProfile from 'assets/ProfileSidebar/editProfile.svg'
 
 import { AnimatePresence, motion, useCycle } from 'framer-motion'
 import { Link, useHistory } from 'react-router-dom'

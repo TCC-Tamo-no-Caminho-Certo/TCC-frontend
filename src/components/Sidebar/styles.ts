@@ -1,6 +1,10 @@
 import fromTheme from 'utils/fromTheme'
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+
+interface ListItemProps {
+  bottom?: boolean
+}
 
 const Style = styled.nav`
   position: fixed;
@@ -33,7 +37,11 @@ const Style = styled.nav`
         width: 100%;
 
         img {
-          padding: 24px;
+          width: 24px;
+          height: 24px;
+          margin: 24px;
+
+          color: #fff;
         }
 
         span {
@@ -46,27 +54,14 @@ const Style = styled.nav`
   }
 `
 
-export const BackButton = styled.div`
-  position: absolute;
-  bottom: 0;
-
-  padding: 24px;
-
-  width: 100%;
-  height: 72px;
-
-  button {
-    display: flex;
-    align-items: center;
-
-    width: 100%;
-
-    span {
-      padding: 0 14px;
-      white-space: nowrap;
-      color: white;
-    }
-  }
+export const ListItem = styled.li<ListItemProps>`
+  ${({ bottom }) =>
+    bottom &&
+    css`
+      position: fixed;
+      bottom: 0;
+      left: 0;
+    `}
 `
 
 export default Style
