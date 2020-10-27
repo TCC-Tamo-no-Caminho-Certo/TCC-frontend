@@ -1,9 +1,12 @@
 import fromTheme from 'utils/fromTheme'
 
-import { motion } from 'framer-motion'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-const Style = styled(motion.nav)`
+interface ListItemProps {
+  bottom?: boolean
+}
+
+const Style = styled.nav`
   position: fixed;
   z-index: 1;
 
@@ -34,10 +37,15 @@ const Style = styled(motion.nav)`
         width: 100%;
 
         img {
-          padding: 24px;
+          width: 24px;
+          height: 24px;
+          margin: 24px;
+
+          color: #fff;
         }
 
         span {
+          opacity: 0;
           white-space: nowrap;
           color: ${fromTheme('secondary')};
         }
@@ -46,27 +54,14 @@ const Style = styled(motion.nav)`
   }
 `
 
-export const BackButton = styled.div`
-  position: absolute;
-  bottom: 0;
-
-  padding: 24px;
-
-  width: 100%;
-  height: 72px;
-
-  button {
-    display: flex;
-    align-items: center;
-
-    width: 100%;
-
-    span {
-      padding: 0 14px;
-      white-space: nowrap;
-      color: white;
-    }
-  }
+export const ListItem = styled.li<ListItemProps>`
+  ${({ bottom }) =>
+    bottom &&
+    css`
+      position: fixed;
+      bottom: 0;
+      left: 0;
+    `}
 `
 
 export default Style

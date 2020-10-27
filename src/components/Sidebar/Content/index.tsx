@@ -8,9 +8,7 @@ const Content: React.FC = ({ children }) => {
   const open = useSelector<RootState>(({ sidebar }) => sidebar.open)
 
   const content = {
-    initial: {
-      y: '-100vh',
-    },
+    initial: {},
     animateOpen: {
       y: 0,
       x: '210px',
@@ -21,9 +19,7 @@ const Content: React.FC = ({ children }) => {
       x: '72px',
       width: 'calc(100vw - 72px)',
     },
-    exit: {
-      y: '100vh',
-    },
+    exit: {},
     transition: {
       type: 'tween',
       duration: 0.2,
