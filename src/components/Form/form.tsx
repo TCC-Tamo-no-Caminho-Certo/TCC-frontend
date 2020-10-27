@@ -21,7 +21,7 @@ import { RootState, useSelector } from 'store'
 import { ObjectSchema, ValidationError } from 'yup'
 
 interface Props extends HTMLProps<HTMLFormElement> {
-  children: (ReactElement<InputProps> | ReactElement | ReactElement[])[] | ReactElement<InputProps>
+  children: (ReactElement | ReactElement[])[] | ReactElement
   path: string
   token?: string
   captcha?: boolean
@@ -114,12 +114,7 @@ const Form: FC<Props> = ({
     console.log(data)
   }
 
-  const checkChildren = (
-    elements:
-      | (ReactElement<InputProps> | ReactElement | ReactElement[])[]
-      | ReactElement<InputProps>
-      | ReactElement
-  ) => {
+  const checkChildren = (elements: (ReactElement | ReactElement[])[] | ReactElement) => {
     const childrenCheck: any = Array.isArray(elements) ? elements : [elements]
 
     return childrenCheck.map((child: ReactElement<InputProps> | ReactElement, i: number) => {
@@ -147,6 +142,8 @@ const Form: FC<Props> = ({
     })
   }
 
+  const newChildren = checkChildren(children)
+
   return (
     <form onSubmit={handleSubmit} noValidate {...rest}>
       {captcha && (
@@ -157,7 +154,7 @@ const Form: FC<Props> = ({
         />
       )}
 
-      {checkChildren(children)}
+      {newChildren}
     </form>
   )
 }

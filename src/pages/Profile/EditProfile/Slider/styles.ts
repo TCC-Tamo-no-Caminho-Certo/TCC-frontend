@@ -29,13 +29,8 @@ const Style = styled(animated.div)<StyleProps>`
     margin-left: ${({ gap }) => gap};
   }
 
-
   div > img {
-    width: 128px;
-    height: 128px;
-
     margin-bottom: 24px;
-    border-radius: 50%;
   }
 
   > *,
@@ -122,6 +117,27 @@ export const Change = styled.div`
 
   & > img {
     cursor: pointer;
+  }
+`
+
+export const ConfirmModal = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.75);
+
+  & > div {
+    height: 60%;
+    width: 45%;
+    border-radius: 20px;
   }
 `
 

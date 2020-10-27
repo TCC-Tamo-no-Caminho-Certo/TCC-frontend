@@ -7,7 +7,7 @@ import RestOfHome from './RestOfHome'
 import { AnimatePresence } from 'framer-motion'
 import { Route, Switch, useLocation } from 'react-router-dom'
 
-const Profile: React.FC = () => {
+const Home: React.FC = () => {
   const location = useLocation()
 
   const homeRoutes = [
@@ -45,4 +45,4 @@ const Profile: React.FC = () => {
   )
 }
 
-export default Profile
+export default Home

@@ -24,6 +24,7 @@ const Style = styled.nav`
     top: 0;
     left: 0;
 
+    height: 100%;
     width: 100%;
 
     li {
@@ -58,8 +59,8 @@ export const ListItem = styled.li<ListItemProps>`
   ${({ bottom }) =>
     bottom &&
     css`
-      position: fixed;
-      bottom: 0;
+      position: absolute;
+      bottom: 72px;
       left: 0;
     `}
 `

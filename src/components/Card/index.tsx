@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import Style, { Header } from './styles'
 
 interface Props {
-  children: (ReactElement | ReactElement[])[]
+  children: (ReactElement | ReactElement[])[] | ReactElement
   headerText: string
 }
 

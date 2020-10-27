@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Style, { Animation, Change, Content, Label, Value } from './styles'
+import Style, { Animation, Change, ConfirmModal, Content, Label, Value } from './styles'
 
 import Dots from './Dots'
 
@@ -11,6 +11,7 @@ import { UserState } from 'store/user'
 import avatar from 'assets/avatar.jpg'
 import editPencil from 'assets/editPencil.svg'
 
+import Avatar from 'components/User/Avatar'
 import Card from 'components/Card'
 import { Button, Form, Input } from 'components/Form'
 
@@ -30,6 +31,7 @@ const Slider: React.FC<SliderProps> = ({ cardWidth = 550, cardsQuant = 3, gap = 
 
   const [viewPosition, setViewPosition] = useState(0)
   const [position, setPosition] = useState(0)
+  const [save, setSave] = useState(false)
 
   const totalMove = cardWidth + gap
 
@@ -103,9 +105,9 @@ const Slider: React.FC<SliderProps> = ({ cardWidth = 550, cardsQuant = 3, gap = 
                 return (
                   <Animation key={cards[index]} {...bind()} style={props}>
                     <Card headerText='Dados do usuário'>
-                      <img src={avatar} alt='avatar' draggable={false} />
+                      <Avatar size={128} src={avatar} alt='avatar' draggable={false} />
 
-                      {inputs('professor')}
+                      {inputs(user.role === 'baseUser' ? 'baseUser' : 'user')}
                     </Card>
                   </Animation>
                 )
@@ -113,7 +115,7 @@ const Slider: React.FC<SliderProps> = ({ cardWidth = 550, cardsQuant = 3, gap = 
               case 2:
                 return (
                   <Animation key={cards[index]} {...bind()} style={props}>
-                    <Card headerText='Dados do estudante'>{inputs('professor')}</Card>
+                    <Card headerText='Dados do estudante'>{inputs('student')}</Card>
                   </Animation>
                 )
 
@@ -136,7 +138,20 @@ const Slider: React.FC<SliderProps> = ({ cardWidth = 550, cardsQuant = 3, gap = 
             }
           })}
         </div>
-        <button type='submit'>Salvar</button>
+
+        {save ? (
+          <ConfirmModal>
+            <Card headerText='Confirme sua senha'>
+              <Button>Confirmar</Button>
+            </Card>
+          </ConfirmModal>
+        ) : (
+          <></>
+        )}
+
+        <button type='button' onClick={() => setSave(true)}>
+          Salvar
+        </button>
       </Form>
 
       <Dots
