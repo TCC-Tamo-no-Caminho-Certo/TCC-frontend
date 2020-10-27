@@ -11,7 +11,7 @@ import React, {
 
 import Button from './Button'
 import Input, { InputProps, Ref } from './Input'
-import InpuDate from './InputDate'
+import InputDate from './InputDate'
 
 import api from 'services/api'
 
@@ -21,9 +21,7 @@ import { RootState, useSelector } from 'store'
 import { ObjectSchema, ValidationError } from 'yup'
 
 interface Props extends HTMLProps<HTMLFormElement> {
-  children:
-    | (ReactElement<InputProps> | ReactElement | ReactElement[])[]
-    | ReactElement<InputProps>
+  children: (ReactElement<InputProps> | ReactElement | ReactElement[])[] | ReactElement<InputProps>
   path: string
   token?: string
   captcha?: boolean
@@ -82,9 +80,7 @@ const Form: FC<Props> = ({
 
       if (error instanceof ValidationError) {
         error.inner.forEach(errorElement => {
-          const index = refs.findIndex(
-            value => value.input.current?.name === errorElement.path
-          )
+          const index = refs.findIndex(value => value.input.current?.name === errorElement.path)
           refs[index].setError(errorElement.message)
         })
       } else {
@@ -111,8 +107,7 @@ const Form: FC<Props> = ({
     setData()
     changeData && changeData(data)
     await validate()
-    if (captcha)
-      data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
+    if (captcha) data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
     // !haveErrors && (await submit(callback))
 
     loading && setShowLoader(false)
@@ -127,33 +122,29 @@ const Form: FC<Props> = ({
   ) => {
     const childrenCheck: any = Array.isArray(elements) ? elements : [elements]
 
-    return childrenCheck.map(
-      (child: ReactElement<InputProps> | ReactElement, i: number) => {
-        if (child.type === Input || child.type === InpuDate)
-          return cloneElement(child, {
-            key: child.props.name,
-            theme,
-            _setref: setRef,
-          })
+    return childrenCheck.map((child: ReactElement<InputProps> | ReactElement, i: number) => {
+      if (child.type === Input || child.type === InputDate)
+        return cloneElement(child, {
+          key: child.props.name,
+          theme,
+          _setref: setRef,
+        })
 
-        if (child.type === Button)
-          return loading
-            ? cloneElement(child, { key: 'loader', theme, _loader: showLoader })
-            : child
+      if (child.type === Button)
+        return loading ? cloneElement(child, { key: 'loader', theme, _loader: showLoader }) : child
 
-        if (child.props?.children) {
-          const result = checkChildren(child.props.children)
-          return cloneElement(child, {
-            key: child.key || `${i} ${child.type} ${Math.random()}`,
-            children: result,
-          })
-        }
-
-        if (Array.isArray(child)) return checkChildren(child)
-
-        return child
+      if (child.props?.children) {
+        const result = checkChildren(child.props.children)
+        return cloneElement(child, {
+          key: child.key || `${i} ${child.type} ${Math.random()}`,
+          children: result,
+        })
       }
-    )
+
+      if (Array.isArray(child)) return checkChildren(child)
+
+      return child
+    })
   }
 
   return (

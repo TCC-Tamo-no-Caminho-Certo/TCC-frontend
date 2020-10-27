@@ -101,11 +101,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           onClick: type === 'checkbox' ? () => setChecked(!checked) : undefined,
         }}
       >
-        {error ? (
-          <ErrorTooltip content={error} />
-        ) : (
-          Icon && <Icon className='icon' />
-        )}
+        {error ? <ErrorTooltip content={error} /> : Icon && <Icon className='icon' />}
 
         {type === 'checkbox' && !noStyle && <Checkbox checked={checked} />}
 
@@ -128,10 +124,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
         {eye &&
           (showInput ? (
-            <AiFillEyeInvisible
-              onClick={() => setShowInput(false)}
-              className='eyeIcon'
-            />
+            <AiFillEyeInvisible onClick={() => setShowInput(false)} className='eyeIcon' />
           ) : (
             <AiFillEye className='eyeIcon' onClick={() => setShowInput(true)} />
           ))}

@@ -1,8 +1,18 @@
 import React, { useState } from 'react'
-import Style, { Animation } from './styles'
+import Style, { Animation, Change, Content, Label, Value } from './styles'
 
 import Dots from './Dots'
-import Card from './Card'
+
+import formatUpdateUser, { Info, Types } from 'utils/formatUpdateUser'
+
+import { RootState, useSelector } from 'store'
+import { UserState } from 'store/user'
+
+import avatar from 'assets/avatar.jpg'
+import editPencil from 'assets/editPencil.svg'
+
+import Card from 'components/Card'
+import { Button, Form, Input } from 'components/Form'
 
 import { useSprings } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
@@ -16,8 +26,11 @@ interface SliderProps {
 }
 
 const Slider: React.FC<SliderProps> = ({ cardWidth = 550, cardsQuant = 3, gap = 250 }) => {
-  const [position, setPosition] = useState(0)
+  const user = useSelector<RootState, UserState>(state => state.user)
+
   const [viewPosition, setViewPosition] = useState(0)
+  const [position, setPosition] = useState(0)
+
   const totalMove = cardWidth + gap
 
   const limits = cardsQuant % 2 === 0 ? cardsQuant / 2 : (cardsQuant - 1) / 2
@@ -51,48 +64,80 @@ const Slider: React.FC<SliderProps> = ({ cardWidth = 550, cardsQuant = 3, gap = 
     }
   )
 
+  const inputs = (type: Types) => {
+    return formatUpdateUser(user, type).map((info: Info) => (
+      <Content key={info.inputname}>
+        <Label>
+          <label htmlFor={info.inputname}>{info.label}</label>
+        </Label>
+        <Value>
+          <Input
+            name={info.inputname}
+            defaultValue={info.dontShow ? `*********` : info.value}
+            noStyle
+          />
+        </Value>
+        <Change>
+          <label htmlFor={info.inputname}>
+            <img src={editPencil} alt='edit' />
+          </label>
+        </Change>
+      </Content>
+    ))
+  }
+
   return (
     <Style gap={`${gap}px`} cardwidth={`${cardWidth}px`}>
-      <div className='sliderWrapper'>
-        {springs.map((props, index) => {
-          switch (index) {
-            case 0:
-              return (
-                <Animation key={cards[index]} {...bind()} style={props}>
-                  <Card headerText='Dados do professor' type='professor' />
-                </Animation>
-              )
+      <Form path=''>
+        <div className='sliderWrapper'>
+          {springs.map((props, index) => {
+            switch (index) {
+              case 0:
+                return (
+                  <Animation key={cards[index]} {...bind()} style={props}>
+                    <Card headerText='Dados do professor'>{inputs('professor')}</Card>
+                  </Animation>
+                )
 
-            case 1:
-              return (
-                <Animation key={cards[index]} {...bind()} style={props}>
-                  <Card headerText='Dados do professor' type='professor' />
-                </Animation>
-              )
+              case 1:
+                return (
+                  <Animation key={cards[index]} {...bind()} style={props}>
+                    <Card headerText='Dados do usuário'>
+                      <img src={avatar} alt='avatar' draggable={false} />
 
-            case 2:
-              return (
-                <Animation key={cards[index]} {...bind()} style={props}>
-                  <Card headerText='Dados do professor' type='professor' />
-                </Animation>
-              )
+                      {inputs('professor')}
+                    </Card>
+                  </Animation>
+                )
 
-            case 3:
-              return (
-                <Animation key={cards[index]} {...bind()} style={props}>
-                  <Card headerText='Dados do professor' type='professor' />
-                </Animation>
-              )
+              case 2:
+                return (
+                  <Animation key={cards[index]} {...bind()} style={props}>
+                    <Card headerText='Dados do estudante'>{inputs('professor')}</Card>
+                  </Animation>
+                )
 
-            default:
-              return (
-                <Animation key={cards[index]} {...bind()} style={props}>
-                  <Card headerText='Dados do professor' type='professor' />
-                </Animation>
-              )
-          }
-        })}
-      </div>
+              case 3:
+                return (
+                  <Animation key={cards[index]} {...bind()} style={props}>
+                    <Card headerText='Dados do professor'>{inputs('professor')}</Card>
+                  </Animation>
+                )
+
+              default:
+                return (
+                  <Animation key={cards[index]} {...bind()} style={props}>
+                    <Card headerText='Dados do professor'>
+                      <img src={avatar} alt='avatar' draggable={false} />
+                      {inputs('professor')}
+                    </Card>
+                  </Animation>
+                )
+            }
+          })}
+        </div>
+        <button type='submit'>Salvar</button>
+      </Form>
 
       <Dots
         onRightClick={() => setPosition(prev => prev - totalMove)}
