@@ -9,8 +9,9 @@ export const ConfirmModal = styled.div`
   align-items: center;
 
   position: fixed;
-  left: 0;
   top: 0;
+  left: 0;
+
   z-index: 3;
 
   height: 100%;
@@ -19,9 +20,11 @@ export const ConfirmModal = styled.div`
   background-color: rgba(0, 0, 0, 0.75);
 
   & > div {
-    height: 60%;
-    width: 45%;
+    height: 600px;
+    width: 550px;
     border-radius: 20px;
+
+    position: sticky;
   }
 `
 
@@ -95,8 +98,7 @@ const Style = styled(motion.section)`
   flex-direction: column;
 
   height: 100vh;
-  overflow: hidden;
-
+  position: relative;
   background-color: ${fromTheme('tertiary')};
 
   .Card + .Card {

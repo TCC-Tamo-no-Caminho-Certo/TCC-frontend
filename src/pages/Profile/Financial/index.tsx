@@ -10,11 +10,9 @@ const Financial: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   return (
-    <Content>
-      <Style theme={theme}>
-        <h1>Financial</h1>
-      </Style>
-    </Content>
+    <Style theme={theme}>
+      <h1>Financial</h1>
+    </Style>
   )
 }
 

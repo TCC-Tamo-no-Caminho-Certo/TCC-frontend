@@ -5,7 +5,6 @@ import EditProfile from './EditProfile'
 import Historic from './Historic'
 import Financial from './Financial'
 import Customization from './Customization'
-import { ConfirmModal } from './EditProfile/styles'
 
 import home from 'assets/ProfileSidebar/home.svg'
 import editProfile from 'assets/ProfileSidebar/editProfile.svg'
@@ -15,6 +14,7 @@ import customization from 'assets/ProfileSidebar/customization.svg'
 import map from 'assets/MainSidebar/map.svg'
 
 import Sidebar from 'components/Sidebar'
+import Content from 'components/Sidebar/Content'
 
 const Profile: React.FC = () => {
   const profileRoutes = [
@@ -54,11 +54,14 @@ const Profile: React.FC = () => {
   return (
     <>
       <Sidebar routes={profileRoutes} />
-      <ProfileHome />
-      <EditProfile />
-      <Financial />
-      <Historic />
-      <Customization />
+
+      <Content>
+        <ProfileHome />
+        <EditProfile />
+        <Financial />
+        <Historic />
+        <Customization />
+      </Content>
     </>
   )
 }

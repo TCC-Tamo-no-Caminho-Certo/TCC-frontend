@@ -62,29 +62,27 @@ const EditProfile: React.FC = () => {
   ]
 
   return (
-    <Content>
-      <Style theme={theme}>
-        <Form path=''>
-          <Slider width={550} gap={200} gapVertical={100}>
-            {containers}
-          </Slider>
+    <Style theme={theme}>
+      <Form path=''>
+        <Slider width={550} gap={200} gapVertical={100}>
+          {containers}
+        </Slider>
 
-          {save ? (
-            <ConfirmModal>
-              <Card headerText='Confirme sua senha'>
-                <Button>Confirmar</Button>
-              </Card>
-            </ConfirmModal>
-          ) : (
-            <></>
-          )}
+        {save ? (
+          <ConfirmModal>
+            <Card headerText='Confirme sua senha'>
+              <Button>Confirmar</Button>
+            </Card>
+          </ConfirmModal>
+        ) : (
+          <></>
+        )}
 
-          <button id='saveButton' type='button' onClick={() => setSave(true)}>
-            Salvar
-          </button>
-        </Form>
-      </Style>
-    </Content>
+        <button id='saveButton' type='button' onClick={() => setSave(true)}>
+          Salvar
+        </button>
+      </Form>
+    </Style>
   )
 }
 
