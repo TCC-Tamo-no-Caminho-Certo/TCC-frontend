@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-
 import fromTheme from 'utils/fromTheme'
+
+import styled from 'styled-components'
 
 const Style = styled.div`
   .DatePicker {
@@ -14,7 +14,7 @@ const Style = styled.div`
     --cl-color-primary: ${fromTheme('calendarPrimary')}!important;
     --cl-color-disabled: ${fromTheme('calendarDisabled')}!important;
     --cl-color-primary-light: ${fromTheme('white')}!important;
-    box-shadow: 0 0 10px 5px #555;
+    box-shadow: 8px 8px 7px 4px rgba(0, 0, 0, 0.49);
   }
 
   .Calendar__header {
@@ -86,8 +86,7 @@ const Style = styled.div`
   }
 
   .DatePicker__calendarArrow {
-    border-color: transparent transparent ${fromTheme('calendarHeader')}
-      transparent;
+    border-color: transparent transparent ${fromTheme('calendarHeader')} transparent;
   }
 
   .Calendar__section.-shown,

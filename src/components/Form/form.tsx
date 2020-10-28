@@ -131,7 +131,7 @@ const Form: FC<Props> = ({
       if (child.props?.children) {
         const result = checkChildren(child.props.children)
         return cloneElement(child, {
-          key: child.key || `${i} ${child.type} ${Math.random()}`,
+          key: child.key || `${i} ${child.props}`,
           children: result,
         })
       }

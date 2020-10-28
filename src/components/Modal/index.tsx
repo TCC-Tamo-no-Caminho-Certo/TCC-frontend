@@ -2,7 +2,7 @@ import React from 'react'
 import Style from './styles'
 
 import { ThemeState } from 'store/theme'
-import { useSelector, RootState } from 'store'
+import { RootState, useSelector } from 'store'
 
 export interface ModalAttributes {
   message?: string
@@ -15,6 +15,7 @@ export interface ModalAttributes {
 const Modal: React.FC<ModalAttributes> = ({ message, visible, title, color, onOKClick }) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   if (!onOKClick) throw new Error('onOKClick function not provided to the modal!')
+
   return (
     <>
       {visible && (

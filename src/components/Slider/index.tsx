@@ -1,25 +1,18 @@
 import React, { useState } from 'react'
 import Style, { Container } from './styles'
 
-import Dots from 'components/Dots'
+import Dots from './Dots'
 
 import { motion } from 'framer-motion'
 
 interface SliderProps {
   children: React.ReactElement[]
-  containersNames: string[]
   width: number
   gap: number
   gapVertical?: number
 }
 
-const Slider: React.FC<SliderProps> = ({
-  children: containers,
-  containersNames,
-  gap,
-  width,
-  gapVertical = gap,
-}) => {
+const Slider: React.FC<SliderProps> = ({ children: containers, gap, width, gapVertical = gap }) => {
   const [makeLeftMove, setMakeLeftMove] = useState(false)
   const [makeRightMove, setMakeRightMove] = useState(false)
   const [xValue, setXValue] = useState(0)
@@ -62,16 +55,19 @@ const Slider: React.FC<SliderProps> = ({
         dragConstraints={{ left: 0, right: 0 }}
         onDragEnd={onDragged}
       >
-        {containers.map((container, index) => (
-          <Container
-            key={containersNames[index]}
-            width={`${width}px`}
-            animate={{ x: xValue }}
-            transition={{ type: 'tween', duration: 0.5 }}
-          >
-            {container}
-          </Container>
-        ))}
+        {containers.map(container => {
+          if (!container.key) throw new Error('the children must have a key')
+          return (
+            <Container
+              key={`${container.key}`}
+              width={`${width}px`}
+              animate={{ x: xValue }}
+              transition={{ type: 'tween', duration: 0.5 }}
+            >
+              {container}
+            </Container>
+          )
+        })}
       </motion.ul>
 
       <Dots

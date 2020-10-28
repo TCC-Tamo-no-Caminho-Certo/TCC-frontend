@@ -20,11 +20,35 @@ export const ConfirmModal = styled.div`
   background-color: rgba(0, 0, 0, 0.75);
 
   & > div {
-    height: 600px;
-    width: 550px;
+    height: 35%;
+    width: 25%;
+    padding: 0;
     border-radius: 20px;
+    justify-content: center;
 
-    position: sticky;
+    > div {
+      width: 75%;
+    }
+
+    button {
+      background-color: ${fromTheme('primary')};
+      color: ${fromTheme('white')};
+      border-radius: 10px;
+      width: 40%;
+      height: 100%;
+    }
+
+    > .buttons {
+      height: 10%;
+      width: 80%;
+      display: flex;
+      justify-content: space-around;
+      margin-top: 10%;
+
+      & + button {
+        margin-right: 20px;
+      }
+    }
   }
 `
 
@@ -44,9 +68,9 @@ export const Value = styled.div`
     cursor: pointer;
   }
 
-  div,
+  & > div,
   input,
-  span {
+  & > span {
     min-width: 100%;
     padding: 0;
 
@@ -84,7 +108,7 @@ export const InfoChanger = styled.div.attrs({ className: 'InfoChanger' })`
   border: solid 2px #50393e;
   color: #50393e;
 
-  div {
+  & > div {
     display: flex;
     justify-content: center;
     align-items: center;

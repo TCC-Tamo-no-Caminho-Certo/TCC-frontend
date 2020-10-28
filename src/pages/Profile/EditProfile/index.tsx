@@ -10,7 +10,7 @@ import { UserState } from 'store/user'
 import editPencil from 'assets/editPencil.svg'
 import avatar from 'assets/avatar.jpg'
 
-import { Button, Form, Input } from 'components/Form'
+import { Button, Form, Input, InputDate } from 'components/Form'
 import Card from 'components/Card'
 import Avatar from 'components/User/Avatar'
 import Slider from 'components/Slider'
@@ -29,11 +29,21 @@ const EditProfile: React.FC = () => {
         </Label>
 
         <Value>
-          <Input
-            name={info.inputname}
-            defaultValue={info.dontShow ? `*********` : info.value}
-            noStyle
-          />
+          {info.inputname === 'birthday' ? (
+            <InputDate
+              name={info.inputname}
+              placeholder={info.dontShow ? `*********` : ''}
+              value={info.dontShow ? '' : info.value}
+              noStyle
+            />
+          ) : (
+            <Input
+              name={info.inputname}
+              placeholder={info.dontShow ? `*********` : ''}
+              defaultValue={info.dontShow ? '' : info.value}
+              noStyle
+            />
+          )}
         </Value>
 
         <Change>
@@ -48,7 +58,6 @@ const EditProfile: React.FC = () => {
   const containers = [
     <Card key='Personal' headerText='Dados Pessoais'>
       <Avatar size={128} src={avatar} />
-
       {inputs(user.role === 'baseUser' ? 'baseUser' : 'user')}
     </Card>,
 
@@ -61,21 +70,32 @@ const EditProfile: React.FC = () => {
     </Card>,
   ]
 
-  const containersNames = ['Personal', 'Professor', 'Student']
-
   return (
     <Style theme={theme}>
-      <h2>Editar Perfil</h2>
-
-      <Form path=''>
-        <Slider width={550} gap={200} gapVertical={60} containersNames={containersNames}>
+      <Form
+        path='user/update'
+        changeData={data => {
+          const old = data.birthday.split('/')
+          data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
+        }}
+        loading
+        captcha
+      >
+        <Slider width={550} gap={200} gapVertical={100}>
           {containers}
         </Slider>
 
         {save ? (
-          <ConfirmModal>
+          <ConfirmModal theme={theme}>
             <Card headerText='Confirme sua senha'>
-              <Button>Confirmar</Button>
+              <Input name='password' placeholder='Confirme sua senha' eye />
+              <div className='buttons'>
+                <button type='button' onClick={() => setSave(false)}>
+                  Cancelar
+                </button>
+
+                <Button>Confirmar</Button>
+              </div>
             </Card>
           </ConfirmModal>
         ) : (

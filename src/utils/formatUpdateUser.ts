@@ -28,7 +28,7 @@ const formatUpdateUser = (userData: any, type: Types) => {
     { label: 'Sobrenome:', inputname: 'surname', value: userData.surname },
     { label: 'E-mail:', inputname: 'email', value: userData.email },
     { label: 'Nascimento:', inputname: 'birthday', value: userData.birthday },
-    { label: 'Senha:', inputname: 'password', value: 10, dontShow: true },
+    // { label: 'Senha:', inputname: 'new_password', value: 10, dontShow: true },
   ]
   const user: Data = [...baseUser]
 

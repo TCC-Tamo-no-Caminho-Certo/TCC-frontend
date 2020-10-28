@@ -21,6 +21,7 @@ interface SidebarProps {
   routes: RouteProps[]
   noScroll?: boolean
 }
+
 interface ParamsType {
   id: string
 }
