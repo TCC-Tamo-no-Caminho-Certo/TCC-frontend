@@ -10,11 +10,10 @@ import { UserState } from 'store/user'
 import editPencil from 'assets/editPencil.svg'
 import avatar from 'assets/avatar.jpg'
 
-import { Button, Form, Input } from 'components/Form'
+import { Button, Form, Input, InputDate } from 'components/Form'
 import Card from 'components/Card'
 import Avatar from 'components/User/Avatar'
 import Slider from 'components/Slider'
-import Content from 'components/Sidebar/Content'
 
 const EditProfile: React.FC = () => {
   const user = useSelector<RootState, UserState>(state => state.user)
@@ -30,11 +29,21 @@ const EditProfile: React.FC = () => {
         </Label>
 
         <Value>
-          <Input
-            name={info.inputname}
-            defaultValue={info.dontShow ? `*********` : info.value}
-            noStyle
-          />
+          {info.inputname === 'birthday' ? (
+            <InputDate
+              name={info.inputname}
+              placeholder={info.dontShow ? `*********` : ''}
+              value={info.dontShow ? '' : info.value}
+              noStyle
+            />
+          ) : (
+            <Input
+              name={info.inputname}
+              placeholder={info.dontShow ? `*********` : ''}
+              defaultValue={info.dontShow ? '' : info.value}
+              noStyle
+            />
+          )}
         </Value>
 
         <Change>
@@ -63,15 +72,30 @@ const EditProfile: React.FC = () => {
 
   return (
     <Style theme={theme}>
-      <Form path=''>
+      <Form
+        path='user/update'
+        changeData={data => {
+          const old = data.birthday.split('/')
+          data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
+        }}
+        loading
+        captcha
+      >
         <Slider width={550} gap={200} gapVertical={100}>
           {containers}
         </Slider>
 
         {save ? (
-          <ConfirmModal>
+          <ConfirmModal theme={theme}>
             <Card headerText='Confirme sua senha'>
-              <Button>Confirmar</Button>
+              <Input name='password' placeholder='Confirme sua senha' eye />
+              <div className='buttons'>
+                <button type='button' onClick={() => setSave(false)}>
+                  Cancelar
+                </button>
+
+                <Button>Confirmar</Button>
+              </div>
             </Card>
           </ConfirmModal>
         ) : (
