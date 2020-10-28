@@ -10,11 +10,9 @@ const Historic: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   return (
-    <Content>
-      <Style theme={theme}>
-        <h1>Historic</h1>
-      </Style>
-    </Content>
+    <Style theme={theme}>
+      <h1>Historic</h1>
+    </Style>
   )
 }
 

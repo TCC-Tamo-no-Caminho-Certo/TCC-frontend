@@ -10,11 +10,9 @@ const Home: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   return (
-    <Content>
-      <Style theme={theme}>
-        <h1>Home</h1>
-      </Style>
-    </Content>
+    <Style theme={theme}>
+      <h1>Home</h1>
+    </Style>
   )
 }
 

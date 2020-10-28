@@ -1,17 +1,13 @@
 import React from 'react'
 import Style, { MotionRect } from './styles'
 
-import { useCycle } from 'framer-motion'
-
 interface HamburgerProps {
   toggle(): void
+  state: boolean
 }
 
-const Hamburger: React.FC<HamburgerProps> = ({ toggle }) => {
-  const [closed, setClosed] = useCycle(true, false)
-
+const Hamburger: React.FC<HamburgerProps> = ({ toggle, state }) => {
   function onHamburgerClick() {
-    setClosed()
     toggle()
   }
 
@@ -38,7 +34,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle }) => {
         <MotionRect
           y='0'
           variants={first}
-          animate={closed ? 'closed' : 'open'}
+          animate={state ? 'open' : 'closed'}
           transition={transition}
           initial={false}
         />
@@ -46,7 +42,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle }) => {
         <MotionRect
           y='7'
           variants={second}
-          animate={closed ? 'closed' : 'open'}
+          animate={state ? 'open' : 'closed'}
           transition={transition}
           initial={false}
         />
@@ -54,7 +50,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle }) => {
         <MotionRect
           y='14'
           variants={third}
-          animate={closed ? 'closed' : 'open'}
+          animate={state ? 'open' : 'closed'}
           transition={transition}
           initial={false}
         />

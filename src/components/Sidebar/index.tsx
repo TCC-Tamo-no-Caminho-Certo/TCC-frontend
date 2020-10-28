@@ -27,7 +27,7 @@ interface ParamsType {
 
 const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
-  const open = useSelector<RootState>(({ sidebar }) => sidebar.open)
+  const open = useSelector<RootState, boolean>(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
 
   const cycle = () => (open ? 'open' : 'closed')
@@ -82,7 +82,7 @@ const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
 
   return (
     <Style theme={theme}>
-      <Hamburger toggle={onToggle} />
+      <Hamburger toggle={onToggle} state={open} />
 
       <motion.ul variants={ul} animate={cycle()}>
         {routes.map((route, index) => (

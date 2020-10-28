@@ -61,29 +61,27 @@ const EditProfile: React.FC = () => {
   const containersNames = ['Personal', 'Professor', 'Student']
 
   return (
-    <Content overflow={save}>
-      <Style theme={theme}>
-        <Form path=''>
-          <Slider width={550} gap={200} gapVertical={100} containersNames={containersNames}>
-            {containers}
-          </Slider>
+    <Style theme={theme}>
+      <Form path=''>
+        <Slider width={550} gap={200} gapVertical={100} containersNames={containersNames}>
+          {containers}
+        </Slider>
 
-          {save ? (
-            <ConfirmModal>
-              <Card headerText='Confirme sua senha'>
-                <Button>Confirmar</Button>
-              </Card>
-            </ConfirmModal>
-          ) : (
-            <></>
-          )}
+        {save ? (
+          <ConfirmModal>
+            <Card headerText='Confirme sua senha'>
+              <Button>Confirmar</Button>
+            </Card>
+          </ConfirmModal>
+        ) : (
+          <></>
+        )}
 
-          <button id='saveButton' type='button' onClick={() => setSave(true)}>
-            Salvar
-          </button>
-        </Form>
-      </Style>
-    </Content>
+        <button id='saveButton' type='button' onClick={() => setSave(true)}>
+          Salvar
+        </button>
+      </Form>
+    </Style>
   )
 }
 

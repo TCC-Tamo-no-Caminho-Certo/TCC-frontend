@@ -5,7 +5,7 @@ interface StyleProps {
   overflow: boolean
 }
 
-const Style = styled(motion.section)<StyleProps>`
+const Style = styled(motion.div)<StyleProps>`
   overflow: hidden;
 `
 
