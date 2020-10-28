@@ -176,4 +176,5 @@ export const CheckboxStyle = styled.div<StyleProps>`
 `
 
 CheckboxStyle.displayName = 'Checkbox-Style'
+DefaultInput.displayName = 'DefaultInput-Style'
 Field.displayName = 'Field-Style'

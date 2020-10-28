@@ -47,24 +47,25 @@ const EditProfile: React.FC = () => {
   }
 
   const containers = [
-    <Card headerText='Dados Pessoais'>
+    <Card headerText='Dados Pessoais' key='Personal'>
       <Avatar size={128} src={avatar} />
-
       {inputs(user.role === 'baseUser' ? 'baseUser' : 'user')}
     </Card>,
 
-    <Card headerText='Dados de Professor'>{inputs('professor')}</Card>,
+    <Card headerText='Dados de Professor' key='Professor'>
+      {inputs('professor')}
+    </Card>,
 
-    <Card headerText='Dados de Estudante'>{inputs('student')}</Card>,
+    <Card headerText='Dados de Estudante' key='Student'>
+      {inputs('student')}
+    </Card>,
   ]
 
-  const containersNames = ['Personal', 'Professor', 'Student']
-
   return (
-    <Content overflow={save}>
+    <Content>
       <Style theme={theme}>
         <Form path=''>
-          <Slider width={550} gap={200} gapVertical={100} containersNames={containersNames}>
+          <Slider width={550} gap={200} gapVertical={100}>
             {containers}
           </Slider>
 

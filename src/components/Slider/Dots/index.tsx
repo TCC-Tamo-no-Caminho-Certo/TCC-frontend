@@ -59,14 +59,7 @@ const Dots: React.FC<DotsProps> = ({
       scale: [0.6, 1],
       transition,
     })
-  }, [
-    leftAnimation,
-    centerAnimation,
-    rightAnimation,
-    newRightAnimation,
-    move,
-    transition,
-  ])
+  }, [leftAnimation, centerAnimation, rightAnimation, newRightAnimation, move, transition])
 
   const resetLeftMove = useCallback(() => {
     leftAnimation.start({
@@ -86,13 +79,7 @@ const Dots: React.FC<DotsProps> = ({
       scale: 0.6,
       transition: resetTransition,
     })
-  }, [
-    leftAnimation,
-    centerAnimation,
-    rightAnimation,
-    newRightAnimation,
-    resetTransition,
-  ])
+  }, [leftAnimation, centerAnimation, rightAnimation, newRightAnimation, resetTransition])
 
   const rightMove = useCallback(() => {
     rightAnimation.start({
@@ -116,14 +103,7 @@ const Dots: React.FC<DotsProps> = ({
       scale: [0.6, 1],
       transition,
     })
-  }, [
-    newLeftAnimation,
-    leftAnimation,
-    centerAnimation,
-    rightAnimation,
-    move,
-    transition,
-  ])
+  }, [newLeftAnimation, leftAnimation, centerAnimation, rightAnimation, move, transition])
 
   const resetRightMove = useCallback(() => {
     rightAnimation.start({
@@ -151,13 +131,7 @@ const Dots: React.FC<DotsProps> = ({
       scale: 0.6,
       transition: resetTransition,
     })
-  }, [
-    newLeftAnimation,
-    leftAnimation,
-    centerAnimation,
-    rightAnimation,
-    resetTransition,
-  ])
+  }, [newLeftAnimation, leftAnimation, centerAnimation, rightAnimation, resetTransition])
 
   const sequenceToLeft = useCallback(async () => {
     if (position > -limit) {
