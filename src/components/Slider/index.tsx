@@ -26,7 +26,6 @@ const Slider: React.FC<SliderProps> = ({
 
   const move = width + gap
   const quantity = containers.length
-
   const limit = quantity % 2 === 0 ? move * ((quantity - 2) / 2) : move * ((quantity - 1) / 2)
 
   const onLeftClick = () => {
@@ -76,7 +75,7 @@ const Slider: React.FC<SliderProps> = ({
       </motion.ul>
 
       <Dots
-        size={24}
+        size={18}
         gap={16}
         radius={50}
         quantity={quantity}

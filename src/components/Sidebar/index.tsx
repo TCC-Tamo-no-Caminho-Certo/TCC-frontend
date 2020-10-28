@@ -46,6 +46,7 @@ const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
         staggerChildren: 0.1,
       },
     },
+
     closed: {
       width: 72,
       transition: {
@@ -65,18 +66,23 @@ const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
         duration: 0.4,
       },
     },
+
     closed: {
       opacity: [1, 0],
+      x: [0, -16],
       transition: {
         type: 'tween',
         duration: 0.1,
       },
     },
+
+    initial: {
+      opacity: 0,
+    },
   }
 
   useEffect(() => {
     const searchArray = routes.map(route => (route.path === pathname ? 1 : 0))
-
     window.scrollTo(0, height * searchArray.indexOf(1))
   }, [id, pathname, routes, height])
 
@@ -93,7 +99,7 @@ const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
 
                 <AnimatePresence>
                   {open && (
-                    <motion.span key={route.label} variants={ulSpan}>
+                    <motion.span variants={ulSpan} initial='initial'>
                       {route.label}
                     </motion.span>
                   )}

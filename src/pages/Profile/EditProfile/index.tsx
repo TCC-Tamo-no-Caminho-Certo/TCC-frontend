@@ -14,7 +14,6 @@ import { Button, Form, Input } from 'components/Form'
 import Card from 'components/Card'
 import Avatar from 'components/User/Avatar'
 import Slider from 'components/Slider'
-import Content from 'components/Sidebar/Content'
 
 const EditProfile: React.FC = () => {
   const user = useSelector<RootState, UserState>(state => state.user)
@@ -47,23 +46,29 @@ const EditProfile: React.FC = () => {
   }
 
   const containers = [
-    <Card headerText='Dados Pessoais'>
+    <Card key='Personal' headerText='Dados Pessoais'>
       <Avatar size={128} src={avatar} />
 
       {inputs(user.role === 'baseUser' ? 'baseUser' : 'user')}
     </Card>,
 
-    <Card headerText='Dados de Professor'>{inputs('professor')}</Card>,
+    <Card key='Professor' headerText='Dados de Professor'>
+      {inputs('professor')}
+    </Card>,
 
-    <Card headerText='Dados de Estudante'>{inputs('student')}</Card>,
+    <Card key='Student' headerText='Dados de Estudante'>
+      {inputs('student')}
+    </Card>,
   ]
 
   const containersNames = ['Personal', 'Professor', 'Student']
 
   return (
     <Style theme={theme}>
+      <h2>Editar Perfil</h2>
+
       <Form path=''>
-        <Slider width={550} gap={200} gapVertical={100} containersNames={containersNames}>
+        <Slider width={550} gap={200} gapVertical={60} containersNames={containersNames}>
           {containers}
         </Slider>
 
@@ -76,6 +81,10 @@ const EditProfile: React.FC = () => {
         ) : (
           <></>
         )}
+
+        <button id='discardButton' type='button'>
+          Descartar alterações
+        </button>
 
         <button id='saveButton' type='button' onClick={() => setSave(true)}>
           Salvar

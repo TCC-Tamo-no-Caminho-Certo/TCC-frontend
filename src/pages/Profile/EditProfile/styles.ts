@@ -101,6 +101,14 @@ const Style = styled(motion.section)`
   position: relative;
   background-color: ${fromTheme('tertiary')};
 
+  h2 {
+    position: absolute;
+    top: 5%;
+
+    color: white;
+    font-size: 3rem;
+  }
+
   .Card + .Card {
     margin-left: 60px;
   }
@@ -108,13 +116,37 @@ const Style = styled(motion.section)`
   #saveButton {
     position: absolute;
     right: 10%;
-    bottom: 10%;
+    bottom: 8%;
+
     width: 200px;
     height: 40px;
     border-radius: 15px;
 
     color: #eee;
     background-color: #ff6d8d;
+    box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.49);
+    transition: transform 1s ease;
+
+    &:hover {
+      transform: scale(1.03);
+    }
+  }
+
+  #discardButton {
+    position: absolute;
+    right: 10%;
+    bottom: 8%;
+
+    height: 40px;
+    border-radius: 15px;
+    margin-right: 220px;
+
+    color: #eee;
+    background-color: transparent;
+
+    &:hover {
+      color: #ff6d8d;
+    }
   }
 `
 

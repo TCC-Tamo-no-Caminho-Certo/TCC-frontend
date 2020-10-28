@@ -1,13 +1,10 @@
 import React from 'react'
-import Style from './styles'
 
 import { RootState, useSelector } from 'store'
 
-interface ContentProps {
-  overflow?: boolean
-}
+import { motion } from 'framer-motion'
 
-const Content: React.FC<ContentProps> = ({ children, overflow = true }) => {
+const Content: React.FC = ({ children }) => {
   const open = useSelector<RootState>(({ sidebar }) => sidebar.open)
 
   const content = {
@@ -28,8 +25,7 @@ const Content: React.FC<ContentProps> = ({ children, overflow = true }) => {
   }
 
   return (
-    <Style
-      overflow={overflow}
+    <motion.section
       variants={content}
       transition={content.transition}
       initial='initial'
@@ -37,7 +33,7 @@ const Content: React.FC<ContentProps> = ({ children, overflow = true }) => {
       exit='exit'
     >
       {children}
-    </Style>
+    </motion.section>
   )
 }
 

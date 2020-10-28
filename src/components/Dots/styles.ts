@@ -18,6 +18,7 @@ const Style = styled.div.attrs({
   padding: 8px;
 
   ${Dot} {
+    box-shadow: 5px 4px 5px 0px rgba(0, 0, 0, 0.49);
     width: ${({ size }) => size};
     height: ${({ size }) => size};
     border-radius: ${({ radius }) => radius};
