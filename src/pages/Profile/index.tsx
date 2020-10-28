@@ -5,6 +5,7 @@ import EditProfile from './EditProfile'
 import Historic from './Historic'
 import Financial from './Financial'
 import Customization from './Customization'
+import { ConfirmModal } from './EditProfile/styles'
 
 import home from 'assets/ProfileSidebar/home.svg'
 import editProfile from 'assets/ProfileSidebar/editProfile.svg'
@@ -53,7 +54,6 @@ const Profile: React.FC = () => {
   return (
     <>
       <Sidebar routes={profileRoutes} />
-
       <ProfileHome />
       <EditProfile />
       <Financial />

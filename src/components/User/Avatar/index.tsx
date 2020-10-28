@@ -6,11 +6,7 @@ interface Props extends ImgHTMLAttributes<HTMLImageElement> {
 }
 
 const Avatar: FC<Props> = ({ size, ...rest }) => {
-  return (
-    <Style size={size}>
-      <img alt='avatar' draggable={false} {...rest} />
-    </Style>
-  )
+  return <Style size={size} alt='avatar' draggable={false} className='Avatar' {...rest} />
 }
 
 export default Avatar

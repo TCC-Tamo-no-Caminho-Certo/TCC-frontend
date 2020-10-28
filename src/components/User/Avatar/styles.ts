@@ -4,14 +4,13 @@ interface Props {
   size: number
 }
 
-const Style = styled.div<Props>`
-  img {
-    width: ${({ size }) => `${size}px`};
-    height: ${({ size }) => `${size}px`};
+const Style = styled.img<Props>`
+  width: ${({ size }) => `${size}px`};
+  height: ${({ size }) => `${size}px`};
 
-    border-radius: 50%;
-  }
+  border-radius: 50%;
 `
+
 Style.displayName = 'Avatar-Style'
 
 export default Style

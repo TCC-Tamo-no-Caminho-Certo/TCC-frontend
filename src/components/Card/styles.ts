@@ -9,11 +9,19 @@ const Style = styled.div`
   flex-direction: column;
 
   width: 100%;
-  padding: 60px 20px 20px 20px;
+  padding: 60px 20px;
   border-radius: 16px;
 
   background-color: white;
-  box-shadow: 0px 0px 15px 3px rgba(0, 0, 0, 0.8);
+  box-shadow: 8px 8px 5px 0px rgba(0, 0, 0, 0.49);
+
+  .InfoChanger + .InfoChanger {
+    margin-top: 24px;
+  }
+
+  .Avatar {
+    margin-bottom: 24px;
+  }
 `
 
 export const Header = styled.header`
