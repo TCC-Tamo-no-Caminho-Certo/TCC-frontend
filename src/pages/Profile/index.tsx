@@ -16,32 +16,40 @@ import map from 'assets/MainSidebar/map.svg'
 import Sidebar from 'components/Sidebar'
 import Content from 'components/Sidebar/Content'
 
+import { Route } from 'react-router-dom'
+
 const Profile: React.FC = () => {
   const profileRoutes = [
     {
       icon: home,
       label: 'Perfil',
       path: '/session/profile',
+      exact: true,
+      component: () => <ProfileHome />,
     },
     {
       icon: editProfile,
       label: 'Editar Perfil',
       path: '/session/profile/edit-profile',
+      component: () => <EditProfile />,
     },
     {
       icon: financial,
       label: 'Financeiro',
       path: '/session/profile/financial',
+      component: () => <Financial />,
     },
     {
       icon: historic,
       label: 'Histórico',
       path: '/session/profile/historic',
+      component: () => <Historic />,
     },
     {
       icon: customization,
       label: 'Customização',
       path: '/session/profile/customization',
+      component: () => <Customization />,
     },
     {
       icon: map,
@@ -56,11 +64,14 @@ const Profile: React.FC = () => {
       <Sidebar routes={profileRoutes} />
 
       <Content>
-        <ProfileHome />
-        <EditProfile />
-        <Financial />
-        <Historic />
-        <Customization />
+        {profileRoutes.map(route => (
+          <Route
+            key={route.path}
+            path={route.path}
+            exact={route.exact}
+            component={route.component}
+          />
+        ))}
       </Content>
     </>
   )

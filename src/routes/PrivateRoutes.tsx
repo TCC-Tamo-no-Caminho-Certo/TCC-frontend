@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import Main from 'pages/Main'
 import Profile from 'pages/Profile'
@@ -13,19 +13,22 @@ import { Route, Switch } from 'react-router-dom'
 const PrivateRoutes: React.FC = () => {
   const dispatch = useDispatch()
 
-  const token = localStorage.getItem('@SLab_ac_token')
+  useEffect(() => {
+    const token = localStorage.getItem('@SLab_ac_token')
 
-  api
-    .get('user/get', {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    })
-    .then(res => {
-      dispatch(UserActions.setUserInfo(res.user))
-    })
+    api
+      .get('user/get', {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        dispatch(UserActions.setUserInfo(res.user))
+      })
 
-  window.history.pushState(null, '', document.URL)
+    window.history.pushState(null, '', document.URL)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Switch>
