@@ -26,6 +26,11 @@ const EditProfile: React.FC = () => {
     data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
   }, [])
 
+  const inputDateValue = (value: string) => {
+    const old = value.split('-')
+    return `${old[2]}/${old[1]}/${old[0]}`
+  }
+
   const inputs = (type: Types) => {
     return formatUpdateUser(user, type).map((info: Info) => (
       <InfoChanger key={info.inputname}>
@@ -35,7 +40,11 @@ const EditProfile: React.FC = () => {
 
         <Value>
           {info.inputname === 'birthday' ? (
-            <InputDate name={info.inputname} value={`${info.value}`} noStyle />
+            <InputDate
+              name={info.inputname}
+              value={`${inputDateValue(info.value as string)}`}
+              noStyle
+            />
           ) : (
             <Input
               name={info.inputname}

@@ -26,6 +26,7 @@ const PrivateRoutes: React.FC = () => {
       })
 
     window.history.pushState(null, '', document.URL)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

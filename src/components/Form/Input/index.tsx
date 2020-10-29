@@ -3,14 +3,14 @@ import React, {
   FocusEvent,
   FormEvent,
   forwardRef,
-  memo,
   RefObject,
-  useEffect,
+  useContext,
   useRef,
   useState,
 } from 'react'
 import { CheckboxStyle, DefaultInput, Field } from './styles'
 
+import FormContext, { FormState } from '../Form/FormContext'
 import Checkbox from '../Checkbox'
 
 import { ErrorTooltip } from 'components/Tooltips/index'
@@ -18,28 +18,19 @@ import { ErrorTooltip } from 'components/Tooltips/index'
 import { IconBaseProps } from 'react-icons'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 
-export interface Ref {
-  input: RefObject<HTMLInputElement>
-  setError: (value: string) => void
-}
-
 export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   eye?: boolean
-  theme?: any
   noStyle?: boolean
   pasteAndDrop?: boolean
   icon?: ComponentType<IconBaseProps>
   handleValue?: (value: any) => void
-  _setref?: (ref: Ref) => void
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
-      _setref = () => {},
       eye,
       type,
-      theme,
       onBlur,
       noStyle = false,
       className,
@@ -58,12 +49,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const [checked, setChecked] = useState(false)
     const [error, setError] = useState<string>()
 
-    useEffect(() => {
-      _setref({
-        input: auxRef,
-        setError,
-      })
-    }, [_setref, auxRef])
+    const form = useContext<FormState | null>(FormContext)
+
+    form?.setRef({
+      input: auxRef,
+      setError,
+    })
 
     const onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
       onBlur && onBlur(e)
@@ -92,7 +83,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <InputStyle
-        theme={theme}
+        theme={form?.theme}
         hasEye={!!eye}
         hasIcon={!!Icon}
         isFilled={isFilled}
@@ -105,7 +96,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       >
         {error ? <ErrorTooltip content={error} /> : Icon && <Icon className='icon' />}
 
-        {type === 'checkbox' && !noStyle && <Checkbox theme={theme} checked={checked} />}
+        {type === 'checkbox' && !noStyle && <Checkbox theme={form?.theme} checked={checked} />}
 
         <input
           ref={ref || inputRef}
@@ -135,6 +126,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   }
 )
 
-export default memo(Input)
+export default Input
 
 Input.displayName = 'Input'
