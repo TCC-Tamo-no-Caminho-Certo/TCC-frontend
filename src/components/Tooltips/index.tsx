@@ -1,15 +1,14 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { StyledTooltipError } from './styles'
-
-import { RootState, useSelector } from 'store'
-import { ThemeState } from 'store/theme'
 
 import { FcHighPriority } from 'react-icons/fc'
 import { PopupProps } from 'semantic-ui-react'
 
-export const ErrorTooltip: React.FC<PopupProps> = ({ className = 'errorIcon', ...rest }) => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+interface Props extends PopupProps {
+  theme: any
+}
 
+const ErrorTooltip: React.FC<Props> = ({ theme, className = 'errorIcon', ...rest }) => {
   return (
     <StyledTooltipError
       theme={theme}
@@ -20,3 +19,5 @@ export const ErrorTooltip: React.FC<PopupProps> = ({ className = 'errorIcon', ..
     />
   )
 }
+
+export default memo(ErrorTooltip)

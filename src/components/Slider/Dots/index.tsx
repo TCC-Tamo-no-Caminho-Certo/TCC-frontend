@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import Style, { Dot } from './styles'
 
 import { useAnimation } from 'framer-motion'
@@ -181,4 +181,4 @@ const Dots: React.FC<DotsProps> = ({
   )
 }
 
-export default Dots
+export default memo(Dots)

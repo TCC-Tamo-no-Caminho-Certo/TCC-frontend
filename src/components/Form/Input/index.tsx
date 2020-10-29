@@ -3,6 +3,7 @@ import React, {
   FocusEvent,
   FormEvent,
   forwardRef,
+  memo,
   RefObject,
   useContext,
   useRef,
@@ -13,7 +14,7 @@ import { CheckboxStyle, DefaultInput, Field } from './styles'
 import FormContext, { FormState } from '../Form/FormContext'
 import Checkbox from '../Checkbox'
 
-import { ErrorTooltip } from 'components/Tooltips/index'
+import ErrorTooltip from 'components/Tooltips'
 
 import { IconBaseProps } from 'react-icons'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
@@ -94,7 +95,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           onClick: type === 'checkbox' ? () => setChecked(!checked) : undefined,
         }}
       >
-        {error ? <ErrorTooltip content={error} /> : Icon && <Icon className='icon' />}
+        {error ? (
+          <ErrorTooltip theme={form?.theme} content={error} />
+        ) : (
+          Icon && <Icon className='icon' />
+        )}
 
         {type === 'checkbox' && !noStyle && <Checkbox theme={form?.theme} checked={checked} />}
 
@@ -126,6 +131,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   }
 )
 
-export default Input
+export default memo(Input)
 
 Input.displayName = 'Input'
