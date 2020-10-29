@@ -68,14 +68,13 @@ export const Value = styled.div`
     cursor: pointer;
   }
 
-  & > div,
   input,
+  & > div,
   & > span {
     min-width: 100%;
     padding: 0;
 
-    font-size: inherit;
-    font-family: inherit;
+    font-size: 1.5rem;
     text-align: center;
     overflow-wrap: break-word;
 
@@ -146,8 +145,8 @@ const Style = styled(motion.section)`
     height: 40px;
     border-radius: 15px;
 
-    color: #eee;
-    background-color: #ff6d8d;
+    color: ${fromTheme('white')};
+    background-color: ${fromTheme('primary')};
     box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.49);
     transition: transform 1s ease;
 
@@ -165,11 +164,11 @@ const Style = styled(motion.section)`
     border-radius: 15px;
     margin-right: 220px;
 
-    color: #eee;
+    color: ${fromTheme('white')};
     background-color: transparent;
 
     &:hover {
-      color: #ff6d8d;
+      color: ${fromTheme('primary')};
     }
   }
 `

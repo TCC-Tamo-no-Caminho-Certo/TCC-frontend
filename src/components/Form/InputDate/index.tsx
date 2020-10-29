@@ -28,7 +28,7 @@ const maximumDate = {
   day: present.day,
 }
 
-const InputDate: React.FC<InputProps> = ({ theme, icon: Icon, _setref, ...rest }) => {
+const InputDate: React.FC<InputProps> = ({ theme, icon: Icon, value, _setref, ...rest }) => {
   const [selectedDate, setSelectedDate] = useState<DayValue>(null)
 
   const renderCustomInput = ({ ref }: any) => {
@@ -53,7 +53,7 @@ const InputDate: React.FC<InputProps> = ({ theme, icon: Icon, _setref, ...rest }
         icon={Icon}
         theme={theme}
         onClick={onClick}
-        value={InputValue(selectedDate)}
+        value={InputValue(selectedDate) || value}
         readOnly
         _setref={_setref}
         {...rest}

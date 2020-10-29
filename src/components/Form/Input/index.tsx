@@ -3,6 +3,7 @@ import React, {
   FocusEvent,
   FormEvent,
   forwardRef,
+  memo,
   RefObject,
   useEffect,
   useRef,
@@ -51,10 +52,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   ) => {
     const inputRef = useRef<HTMLInputElement>(null)
     const auxRef = (ref as RefObject<HTMLInputElement>) || inputRef
-    const [error, setError] = useState<string>()
+
     const [showInput, setShowInput] = useState(false)
     const [isFilled, setIsFilled] = useState(false)
     const [checked, setChecked] = useState(false)
+    const [error, setError] = useState<string>()
 
     useEffect(() => {
       _setref({
@@ -103,7 +105,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       >
         {error ? <ErrorTooltip content={error} /> : Icon && <Icon className='icon' />}
 
-        {type === 'checkbox' && !noStyle && <Checkbox checked={checked} />}
+        {type === 'checkbox' && !noStyle && <Checkbox theme={theme} checked={checked} />}
 
         <input
           ref={ref || inputRef}
@@ -133,6 +135,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   }
 )
 
-export default Input
+export default memo(Input)
 
 Input.displayName = 'Input'

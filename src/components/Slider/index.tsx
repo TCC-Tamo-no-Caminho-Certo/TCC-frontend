@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Style, { Container } from './styles'
 
 import Dots from './Dots'
@@ -21,30 +21,33 @@ const Slider: React.FC<SliderProps> = ({ children: containers, gap, width, gapVe
   const quantity = containers.length
   const limit = quantity % 2 === 0 ? move * ((quantity - 2) / 2) : move * ((quantity - 1) / 2)
 
-  const onLeftClick = () => {
+  const onLeftClick = useCallback(() => {
     xValue > -limit && setXValue(xValue - move)
     setMakeLeftMove(false)
-  }
+  }, [limit, move, xValue])
 
-  const onRightClick = () => {
+  const onRightClick = useCallback(() => {
     xValue < limit && setXValue(xValue + move)
     setMakeRightMove(false)
-  }
+  }, [limit, move, xValue])
 
-  const onDragged = (event: any, info: any) => {
-    const maxSwipeToAnimate = 20000
-    const offset = info.offset.x
-    const velocity = info.velocity.x
-    const swipe = Math.abs(offset) * velocity
+  const onDragged = useCallback(
+    (event: any, info: any) => {
+      const maxSwipeToAnimate = 20000
+      const offset = info.offset.x
+      const velocity = info.velocity.x
+      const swipe = Math.abs(offset) * velocity
 
-    if (swipe < -maxSwipeToAnimate) {
-      setMakeLeftMove(true)
-      onLeftClick()
-    } else if (swipe > maxSwipeToAnimate) {
-      setMakeRightMove(true)
-      onRightClick()
-    }
-  }
+      if (swipe < -maxSwipeToAnimate) {
+        setMakeLeftMove(true)
+        onLeftClick()
+      } else if (swipe > maxSwipeToAnimate) {
+        setMakeRightMove(true)
+        onRightClick()
+      }
+    },
+    [onLeftClick, onRightClick]
+  )
 
   return (
     <Style gap={`${gap}px`} gapVertical={`${gapVertical}px`}>

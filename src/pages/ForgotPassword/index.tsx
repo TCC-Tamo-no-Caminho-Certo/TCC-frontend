@@ -4,15 +4,15 @@ import Style, { ConfirmToken } from './styles'
 import { emailSchema } from 'utils/validations/forgotPassword'
 
 import { ThemeState } from 'store/theme'
-import { useSelector, RootState } from 'store'
+import { RootState, useSelector } from 'store'
 
 import Logo from 'components/Logo'
-import { Form, Input, Button } from 'components/Form'
+import { Button, Form, Input } from 'components/Form'
 import Modal, { ModalAttributes } from 'components/Modal'
 
-import { useHistory } from 'react-router-dom'
-import { FiUser, FiLock } from 'react-icons/fi'
+import { FiLock, FiUser } from 'react-icons/fi'
 import { RiArrowLeftSLine } from 'react-icons/ri'
+import { useHistory } from 'react-router-dom'
 
 const ForgotPassword: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string>()
@@ -67,17 +67,10 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <>
-      <Modal
-        {...modalAttributes}
-        onOKClick={() => setModalAttributes({ visible: false })}
-      />
+      <Modal {...modalAttributes} onOKClick={() => setModalAttributes({ visible: false })} />
 
       <Style theme={theme}>
-        <button
-          type='button'
-          className='backButton'
-          onClick={() => history.push('/')}
-        >
+        <button type='button' className='backButton' onClick={() => history.push('/')}>
           <RiArrowLeftSLine size={30} />
 
           <span>Voltar</span>
@@ -90,12 +83,7 @@ const ForgotPassword: React.FC = () => {
 
           {tokenIsSend ? (
             <ConfirmToken theme={theme}>
-              <Form
-                callback={handleTokenSubmit}
-                path='reset-password'
-                loading
-                captcha
-              >
+              <Form callback={handleTokenSubmit} path='reset-password' loading captcha>
                 <h3>Confirme o código enviado para o seu email</h3>
 
                 <Input name='token' placeholder='Código' icon={FiLock} />
@@ -125,16 +113,11 @@ const ForgotPassword: React.FC = () => {
               >
                 <h3>Digite seu email para recuperar a senha</h3>
 
-                <Input
-                  name='email'
-                  placeholder='E-mail'
-                  icon={FiUser}
-                  handleValue={setUserEmail}
-                />
+                <Input name='email' placeholder='E-mail' icon={FiUser} handleValue={setUserEmail} />
 
                 <p>
-                  Enviaremos uma email para o seguinte endereço contendo
-                  instruções para renovação da senha
+                  Enviaremos uma email para o seguinte endereço contendo instruções para renovação
+                  da senha
                 </p>
 
                 <Button className='submit'>Enviar</Button>

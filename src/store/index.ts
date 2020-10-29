@@ -1,6 +1,6 @@
 import Theme, { ThemeState } from './theme'
-import User from './user'
 import Sidebar from './sidebar'
+import User from './user'
 import Home from './home'
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit'

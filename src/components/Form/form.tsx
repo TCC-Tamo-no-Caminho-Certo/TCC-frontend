@@ -53,8 +53,8 @@ const Form: FC<Props> = ({
   const refs: Ref[] = []
   let haveErrors = false
 
-  const [showLoader, setShowLoader] = useState(false)
   const recaptchaRef = useRef<Captcha>(null)
+  const [showLoader, setShowLoader] = useState(false)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const setRef = (input: Ref) => {
@@ -142,8 +142,6 @@ const Form: FC<Props> = ({
     })
   }
 
-  const newChildren = checkChildren(children)
-
   return (
     <form onSubmit={handleSubmit} noValidate {...rest}>
       {captcha && (
@@ -154,7 +152,7 @@ const Form: FC<Props> = ({
         />
       )}
 
-      {newChildren}
+      {checkChildren(children)}
     </form>
   )
 }

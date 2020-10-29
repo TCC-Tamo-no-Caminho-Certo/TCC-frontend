@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import Style, { Change, ConfirmModal, InfoChanger, Label, Value } from './styles'
 
 import formatUpdateUser, { Info, Types } from 'utils/formatUpdateUser'
@@ -21,6 +21,11 @@ const EditProfile: React.FC = () => {
 
   const [save, setSave] = useState(false)
 
+  const changeData = useCallback((data: any) => {
+    const old = data.birthday.split('/')
+    data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
+  }, [])
+
   const inputs = (type: Types) => {
     return formatUpdateUser(user, type).map((info: Info) => (
       <InfoChanger key={info.inputname}>
@@ -30,12 +35,7 @@ const EditProfile: React.FC = () => {
 
         <Value>
           {info.inputname === 'birthday' ? (
-            <InputDate
-              name={info.inputname}
-              placeholder={info.dontShow ? `*********` : ''}
-              value={info.dontShow ? '' : info.value}
-              noStyle
-            />
+            <InputDate name={info.inputname} value={`${info.value}`} noStyle />
           ) : (
             <Input
               name={info.inputname}
@@ -72,15 +72,7 @@ const EditProfile: React.FC = () => {
 
   return (
     <Style theme={theme}>
-      <Form
-        path='user/update'
-        changeData={data => {
-          const old = data.birthday.split('/')
-          data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
-        }}
-        loading
-        captcha
-      >
+      <Form path='user/update' changeData={changeData} loading captcha>
         <Slider width={550} gap={200} gapVertical={100}>
           {containers}
         </Slider>
