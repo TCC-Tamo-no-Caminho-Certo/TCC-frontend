@@ -8,7 +8,7 @@ import { RootState, useDispatch, useSelector } from 'store'
 import Hamburger from 'components/Hamburger'
 
 import { AnimatePresence, motion } from 'framer-motion'
-import { NavLink, useLocation, useParams } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 export interface RouteProps {
   icon: string
@@ -22,10 +22,6 @@ interface SidebarProps {
   noScroll?: boolean
 }
 
-interface ParamsType {
-  id: string
-}
-
 const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const open = useSelector<RootState, boolean>(({ sidebar }) => sidebar.open)
@@ -35,7 +31,7 @@ const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
   const onToggle = () => dispatch(SidebarActions.openSidebar(!open))
 
   const height = window.innerHeight
-  const { id }: ParamsType = useParams()
+
   const { pathname } = useLocation()
 
   const ul = {
@@ -85,7 +81,9 @@ const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
   useEffect(() => {
     const searchArray = routes.map(route => (route.path === pathname ? 1 : 0))
     window.scrollTo(0, height * searchArray.indexOf(1))
-  }, [id, pathname, routes, height])
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Style theme={theme}>
@@ -94,7 +92,7 @@ const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
       <motion.ul variants={ul} animate={cycle()}>
         {routes.map((route, index) => (
           <ListItem key={route.path} bottom={route.bottom}>
-            <NavLink to={route.path} onClick={() => window.scrollTo(0, height * index)}>
+            <Link to={route.path} onClick={() => window.scrollTo(0, height * index)}>
               <button type='button'>
                 <img src={route.icon} alt={route.path} />
 
@@ -106,7 +104,7 @@ const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
                   )}
                 </AnimatePresence>
               </button>
-            </NavLink>
+            </Link>
           </ListItem>
         ))}
       </motion.ul>
