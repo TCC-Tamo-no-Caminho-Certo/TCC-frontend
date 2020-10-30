@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { memo, useCallback, useMemo, useState } from 'react'
 import Style, { Dot } from './styles'
 
 import { useAnimation } from 'framer-motion'
@@ -133,28 +133,32 @@ const Dots: React.FC<DotsProps> = ({
     })
   }, [newLeftAnimation, leftAnimation, centerAnimation, rightAnimation, resetTransition])
 
-  const sequenceToLeft = useCallback(async () => {
-    if (position > -limit) {
-      onLeftClick()
-      await leftMove()
-      await resetLeftMove()
-      setPosition(position - 1)
-    }
-  }, [onLeftClick, leftMove, resetLeftMove, position, limit])
+  const sequenceToLeft = useCallback(
+    async (slide = true) => {
+      if (position > -limit) {
+        slide && onLeftClick()
+        await leftMove()
+        await resetLeftMove()
+        setPosition(position - 1)
+      }
+    },
+    [onLeftClick, leftMove, resetLeftMove, position, limit]
+  )
 
-  const sequenceToRight = useCallback(async () => {
-    if (position < limit) {
-      onRightClick()
-      await rightMove()
-      await resetRightMove()
-      setPosition(position + 1)
-    }
-  }, [onRightClick, rightMove, resetRightMove, limit, position])
+  const sequenceToRight = useCallback(
+    async (slide = true) => {
+      if (position < limit) {
+        slide && onRightClick()
+        await rightMove()
+        await resetRightMove()
+        setPosition(position + 1)
+      }
+    },
+    [onRightClick, rightMove, resetRightMove, limit, position]
+  )
 
-  useEffect(() => {
-    if (makeLeftTap) sequenceToLeft()
-    if (makeRightTap) sequenceToRight()
-  }, [makeLeftTap, makeRightTap, sequenceToLeft, sequenceToRight])
+  if (makeLeftTap) sequenceToLeft(false)
+  if (makeRightTap) sequenceToRight(false)
 
   return (
     <Style size={`${size}px`} gap={`${gap}px`} radius={`${radius}%`}>

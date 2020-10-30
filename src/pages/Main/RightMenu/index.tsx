@@ -8,9 +8,10 @@ import { ThemeState } from 'store/theme'
 
 import gear from 'assets/gear.svg'
 import logout from 'assets/RightMenuOpen/logout.svg'
-import avatar from 'assets/avatar.jpg'
 import change from 'assets/RightMenuOpen/change.svg'
 import editProfile from 'assets/ProfileSidebar/editProfile.svg'
+
+import Avatar from 'components/User/Avatar'
 
 import { AnimatePresence, motion, useCycle } from 'framer-motion'
 import { Link, useHistory } from 'react-router-dom'
@@ -139,7 +140,7 @@ const RightMenu: React.FC = () => {
       </Background>
 
       <Style width={`${width}px`} theme={theme}>
-        <img src={avatar} alt='avatar' id='avatar' />
+        <Avatar size={80} id='avatar' />
 
         <UserInfo theme={theme}>
           <span id='userRole'>Estudante</span>

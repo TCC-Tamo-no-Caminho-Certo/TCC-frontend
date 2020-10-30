@@ -3,9 +3,9 @@ import React, {
   FocusEvent,
   FormEvent,
   forwardRef,
-  memo,
   RefObject,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from 'react'
@@ -52,10 +52,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const form = useContext<FormState | null>(FormContext)
 
-    form?.setRef({
-      input: auxRef,
-      setError,
-    })
+    useEffect(() => {
+      form?.setRef({
+        input: auxRef,
+        setError,
+      })
+    }, [auxRef, form])
 
     const onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
       onBlur && onBlur(e)
@@ -131,6 +133,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   }
 )
 
-export default memo(Input)
+export default Input
 
 Input.displayName = 'Input'

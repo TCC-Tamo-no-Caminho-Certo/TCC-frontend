@@ -6,7 +6,6 @@ import formatUpdateUser, { Info, Types } from 'utils/formatUpdateUser'
 import { UserState } from 'store'
 
 import editPencil from 'assets/editPencil.svg'
-import avatar from 'assets/avatar.jpg'
 
 import { Input, InputDate } from 'components/Form'
 import Card from 'components/Card'
@@ -27,7 +26,7 @@ const Field: FC<Props> = ({ theme, type, data, headerText }) => {
 
   return (
     <Card headerText={headerText}>
-      {type === 'baseUser' || type === 'user' ? <Avatar size={128} src={avatar} /> : <></>}
+      {type === 'baseUser' || type === 'user' ? <Avatar size={128} /> : <></>}
 
       {formatUpdateUser(data, type).map((info: Info) => (
         <Style key={info.inputname} theme={theme}>

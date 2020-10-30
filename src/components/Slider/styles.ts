@@ -14,9 +14,7 @@ export const Container = styled(motion.li)<ContainerProps>`
   width: ${({ width }) => width};
 `
 
-const Style = styled.div.attrs({
-  className: 'Slider',
-})<StyleProps>`
+const Style = styled.div.attrs({ className: 'Slider' })<StyleProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, memo } from 'react'
 
 import { motion } from 'framer-motion'
 
@@ -54,4 +54,4 @@ const Checkbox: FC<Props> = ({ checked, theme }) => {
   )
 }
 
-export default Checkbox
+export default memo(Checkbox)

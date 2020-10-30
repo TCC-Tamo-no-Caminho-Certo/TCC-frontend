@@ -1,6 +1,6 @@
 import React, { FC, FormEvent, HTMLProps, ReactElement, useRef, useState } from 'react'
+import { captcha as Captcha, ReCaptcha } from './styles'
 
-import { captcha as Captcha, ReCaptcha } from '../styles'
 import { FormProvider, Ref } from './FormContext'
 
 import api from 'services/api'
@@ -62,9 +62,9 @@ const Form: FC<Props> = ({
     })
   }
 
-  const validate = async () => {
+  const validate = () => {
     try {
-      valSchema && (await valSchema.validate(data, { abortEarly: false }))
+      valSchema && valSchema.validateSync(data, { abortEarly: false })
     } catch (error) {
       haveErrors = true
 
@@ -96,7 +96,7 @@ const Form: FC<Props> = ({
 
     setData()
     changeData && changeData(data)
-    await validate()
+    validate()
     if (captcha) data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
     // !haveErrors && (await submit(callback))
 
