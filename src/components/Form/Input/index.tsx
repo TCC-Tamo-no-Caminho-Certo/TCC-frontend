@@ -4,41 +4,34 @@ import React, {
   FormEvent,
   forwardRef,
   RefObject,
+  useContext,
   useEffect,
   useRef,
   useState,
 } from 'react'
 import { CheckboxStyle, DefaultInput, Field } from './styles'
 
+import FormContext, { FormState } from '../Form/FormContext'
 import Checkbox from '../Checkbox'
 
-import { ErrorTooltip } from 'components/Tooltips/index'
+import ErrorTooltip from 'components/Tooltips'
 
 import { IconBaseProps } from 'react-icons'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 
-export interface Ref {
-  input: RefObject<HTMLInputElement>
-  setError: (value: string) => void
-}
-
 export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   eye?: boolean
-  theme?: any
   noStyle?: boolean
   pasteAndDrop?: boolean
   icon?: ComponentType<IconBaseProps>
   handleValue?: (value: any) => void
-  _setref?: (ref: Ref) => void
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
-      _setref = () => {},
       eye,
       type,
-      theme,
       onBlur,
       noStyle = false,
       className,
@@ -51,17 +44,20 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   ) => {
     const inputRef = useRef<HTMLInputElement>(null)
     const auxRef = (ref as RefObject<HTMLInputElement>) || inputRef
-    const [error, setError] = useState<string>()
+
     const [showInput, setShowInput] = useState(false)
     const [isFilled, setIsFilled] = useState(false)
     const [checked, setChecked] = useState(false)
+    const [error, setError] = useState<string>()
+
+    const form = useContext<FormState | null>(FormContext)
 
     useEffect(() => {
-      _setref({
+      form?.setRef({
         input: auxRef,
         setError,
       })
-    }, [_setref, auxRef])
+    }, [auxRef, form])
 
     const onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
       onBlur && onBlur(e)
@@ -90,7 +86,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <InputStyle
-        theme={theme}
+        theme={form?.theme}
         hasEye={!!eye}
         hasIcon={!!Icon}
         isFilled={isFilled}
@@ -101,9 +97,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           onClick: type === 'checkbox' ? () => setChecked(!checked) : undefined,
         }}
       >
-        {error ? <ErrorTooltip content={error} /> : Icon && <Icon className='icon' />}
+        {error ? (
+          <ErrorTooltip theme={form?.theme} content={error} />
+        ) : (
+          Icon && <Icon className='icon' />
+        )}
 
-        {type === 'checkbox' && !noStyle && <Checkbox checked={checked} />}
+        {type === 'checkbox' && !noStyle && <Checkbox theme={form?.theme} checked={checked} />}
 
         <input
           ref={ref || inputRef}

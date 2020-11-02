@@ -1,89 +1,27 @@
-import React, { useState } from 'react'
-import Style, { Change, ConfirmModal, InfoChanger, Label, Value } from './styles'
+import React, { useCallback, useState } from 'react'
+import Style, { ConfirmModal } from './styles'
 
-import formatUpdateUser, { Info, Types } from 'utils/formatUpdateUser'
+import Fields from './Fields'
 
-import { ThemeState } from 'store/theme'
-import { RootState, useSelector } from 'store'
-import { UserState } from 'store/user'
+import { RootState, ThemeState, useSelector } from 'store'
 
-import editPencil from 'assets/editPencil.svg'
-import avatar from 'assets/avatar.jpg'
-
-import { Button, Form, Input, InputDate } from 'components/Form'
+import { Button, Form, Input } from 'components/Form'
 import Card from 'components/Card'
-import Avatar from 'components/User/Avatar'
-import Slider from 'components/Slider'
 
 const EditProfile: React.FC = () => {
-  const user = useSelector<RootState, UserState>(state => state.user)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const [save, setSave] = useState(false)
 
-  const inputs = (type: Types) => {
-    return formatUpdateUser(user, type).map((info: Info) => (
-      <InfoChanger key={info.inputname}>
-        <Label>
-          <label htmlFor={info.inputname}>{info.label}</label>
-        </Label>
-
-        <Value>
-          {info.inputname === 'birthday' ? (
-            <InputDate
-              name={info.inputname}
-              placeholder={info.dontShow ? `*********` : ''}
-              value={info.dontShow ? '' : info.value}
-              noStyle
-            />
-          ) : (
-            <Input
-              name={info.inputname}
-              placeholder={info.dontShow ? `*********` : ''}
-              defaultValue={info.dontShow ? '' : info.value}
-              noStyle
-            />
-          )}
-        </Value>
-
-        <Change>
-          <label htmlFor={info.inputname}>
-            <img src={editPencil} alt='edit' />
-          </label>
-        </Change>
-      </InfoChanger>
-    ))
-  }
-
-  const containers = [
-    <Card key='Personal' headerText='Dados Pessoais'>
-      <Avatar size={128} src={avatar} />
-      {inputs(user.role === 'baseUser' ? 'baseUser' : 'user')}
-    </Card>,
-
-    <Card key='Professor' headerText='Dados de Professor'>
-      {inputs('professor')}
-    </Card>,
-
-    <Card key='Student' headerText='Dados de Estudante'>
-      {inputs('student')}
-    </Card>,
-  ]
+  const changeData = useCallback((data: any) => {
+    const old = data.birthday.split('/')
+    data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
+  }, [])
 
   return (
     <Style theme={theme}>
-      <Form
-        path='user/update'
-        changeData={data => {
-          const old = data.birthday.split('/')
-          data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
-        }}
-        loading
-        captcha
-      >
-        <Slider width={550} gap={200} gapVertical={100}>
-          {containers}
-        </Slider>
+      <Form path='user/update' changeData={changeData} loading captcha>
+        <Fields theme={theme} />
 
         {save ? (
           <ConfirmModal theme={theme}>

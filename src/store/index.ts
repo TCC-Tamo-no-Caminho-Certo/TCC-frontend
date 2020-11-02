@@ -1,6 +1,6 @@
 import Theme, { ThemeState } from './theme'
-import User from './user'
 import Sidebar from './sidebar'
+import User, { UserState } from './user'
 import Home from './home'
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
@@ -20,6 +20,7 @@ export type RootState = ReturnType<typeof rootReducer>
 
 // Types
 export type { ThemeState }
+export type { UserState }
 
 export default store
 

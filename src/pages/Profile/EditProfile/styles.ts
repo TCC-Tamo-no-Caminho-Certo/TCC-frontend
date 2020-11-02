@@ -52,69 +52,6 @@ export const ConfirmModal = styled.div`
   }
 `
 
-export const Label = styled.div`
-  grid-area: labels;
-  justify-self: start;
-
-  & > label {
-    padding-left: 15px;
-  }
-`
-
-export const Value = styled.div`
-  grid-area: value;
-
-  span {
-    cursor: pointer;
-  }
-
-  & > div,
-  input,
-  & > span {
-    min-width: 100%;
-    padding: 0;
-
-    font-size: inherit;
-    font-family: inherit;
-    text-align: center;
-    overflow-wrap: break-word;
-
-    color: inherit;
-  }
-`
-
-export const Change = styled.div`
-  grid-area: change;
-  justify-self: end;
-
-  & > label {
-    padding-right: 15px;
-  }
-
-  & > img {
-    cursor: pointer;
-  }
-`
-
-export const InfoChanger = styled.div.attrs({ className: 'InfoChanger' })`
-  display: grid;
-  grid: 'labels value change' 100%/15% 70% 15%;
-
-  font-size: 1.5rem;
-  height: 40px;
-  width: 500px;
-  border-radius: 5px;
-
-  border: solid 2px #50393e;
-  color: #50393e;
-
-  & > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-`
-
 const Style = styled(motion.section)`
   display: flex;
   justify-content: center;
@@ -146,8 +83,8 @@ const Style = styled(motion.section)`
     height: 40px;
     border-radius: 15px;
 
-    color: #eee;
-    background-color: #ff6d8d;
+    color: ${fromTheme('white')};
+    background-color: ${fromTheme('primary')};
     box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.49);
     transition: transform 1s ease;
 
@@ -165,11 +102,11 @@ const Style = styled(motion.section)`
     border-radius: 15px;
     margin-right: 220px;
 
-    color: #eee;
+    color: ${fromTheme('white')};
     background-color: transparent;
 
     &:hover {
-      color: #ff6d8d;
+      color: ${fromTheme('primary')};
     }
   }
 `
@@ -177,7 +114,4 @@ const Style = styled(motion.section)`
 export default Style
 
 Style.displayName = 'Slider-Style'
-Label.displayName = 'Label-Style'
-Value.displayName = 'Value-Style'
-Change.displayName = 'Change-Style'
-InfoChanger.displayName = 'Infos-Style'
+ConfirmModal.displayName = 'ConfirmModal-Style'

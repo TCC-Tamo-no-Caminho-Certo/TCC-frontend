@@ -1,17 +1,7 @@
+import React, { FC, FormEvent, HTMLProps, ReactElement, useRef, useState } from 'react'
 import { captcha as Captcha, ReCaptcha } from './styles'
-import React, {
-  cloneElement,
-  FC,
-  FormEvent,
-  HTMLProps,
-  ReactElement,
-  useRef,
-  useState,
-} from 'react'
 
-import Button from './Button'
-import Input, { InputProps, Ref } from './Input'
-import InputDate from './InputDate'
+import { FormProvider, Ref } from './FormContext'
 
 import api from 'services/api'
 
@@ -53,8 +43,8 @@ const Form: FC<Props> = ({
   const refs: Ref[] = []
   let haveErrors = false
 
-  const [showLoader, setShowLoader] = useState(false)
   const recaptchaRef = useRef<Captcha>(null)
+  const [showLoader, setShowLoader] = useState(false)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const setRef = (input: Ref) => {
@@ -72,9 +62,9 @@ const Form: FC<Props> = ({
     })
   }
 
-  const validate = async () => {
+  const validate = () => {
     try {
-      valSchema && (await valSchema.validate(data, { abortEarly: false }))
+      valSchema && valSchema.validateSync(data, { abortEarly: false })
     } catch (error) {
       haveErrors = true
 
@@ -106,43 +96,13 @@ const Form: FC<Props> = ({
 
     setData()
     changeData && changeData(data)
-    await validate()
+    validate()
     if (captcha) data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
-    !haveErrors && (await submit(callback))
+    // !haveErrors && (await submit(callback))
 
     loading && setShowLoader(false)
     console.log(data)
   }
-
-  const checkChildren = (elements: (ReactElement | ReactElement[])[] | ReactElement) => {
-    const childrenCheck: any = Array.isArray(elements) ? elements : [elements]
-
-    return childrenCheck.map((child: ReactElement<InputProps> | ReactElement, i: number) => {
-      if (child.type === Input || child.type === InputDate)
-        return cloneElement(child, {
-          key: child.props.name,
-          theme,
-          _setref: setRef,
-        })
-
-      if (child.type === Button)
-        return loading ? cloneElement(child, { key: 'loader', theme, _loader: showLoader }) : child
-
-      if (child.props?.children) {
-        const result = checkChildren(child.props.children)
-        return cloneElement(child, {
-          key: child.key || `${i} ${child.props}`,
-          children: result,
-        })
-      }
-
-      if (Array.isArray(child)) return checkChildren(child)
-
-      return child
-    })
-  }
-
-  const newChildren = checkChildren(children)
 
   return (
     <form onSubmit={handleSubmit} noValidate {...rest}>
@@ -154,7 +114,7 @@ const Form: FC<Props> = ({
         />
       )}
 
-      {newChildren}
+      <FormProvider value={{ setRef, theme, loader: showLoader }}>{children}</FormProvider>
     </form>
   )
 }

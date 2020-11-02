@@ -15,7 +15,6 @@ const PrivateRoutes: React.FC = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('@SLab_ac_token')
-
     api
       .get('user/get', {
         headers: {

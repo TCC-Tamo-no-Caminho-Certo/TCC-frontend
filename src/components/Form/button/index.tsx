@@ -1,19 +1,21 @@
-import React, { FC, HTMLProps } from 'react'
+import React, { FC, HTMLProps, useContext } from 'react'
+
+import FormContext, { FormState } from '../Form/FormContext'
 
 import Loader from 'components/Form/Button/Loader'
 
 interface Props extends HTMLProps<HTMLButtonElement> {
-  theme?: { [s: string]: string }
   type?: never
-  _loader?: boolean
 }
 
-const Button: FC<Props> = ({ _loader, theme, children, ...rest }) => {
+const Button: FC<Props> = ({ children, ...rest }) => {
+  const form = useContext<FormState | null>(FormContext)
+
   return (
     <button type='submit' {...rest}>
       {children}
 
-      {_loader && <Loader theme={theme} />}
+      {form?.loader && <Loader theme={form?.theme} />}
     </button>
   )
 }

@@ -1,17 +1,13 @@
-import React, { FC } from 'react'
-
-import { ThemeState } from 'store/theme'
-import { RootState, useSelector } from 'store'
+import React, { FC, memo } from 'react'
 
 import { motion } from 'framer-motion'
 
 interface Props {
+  theme?: any
   checked: boolean
 }
 
-const Checkbox: FC<Props> = ({ checked }) => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
-
+const Checkbox: FC<Props> = ({ checked, theme }) => {
   const pathAnimation = {
     check: {
       pathLength: 1,
@@ -32,13 +28,7 @@ const Checkbox: FC<Props> = ({ checked }) => {
 
   return (
     <svg viewBox='0 0 15 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
-      <rect
-        x='0.5'
-        y='0.5'
-        width='14'
-        height='14'
-        stroke='url(#checkboxRadial)'
-      />
+      <rect x='0.5' y='0.5' width='14' height='14' stroke='url(#checkboxRadial)' />
 
       <defs>
         <motion.radialGradient
@@ -64,4 +54,4 @@ const Checkbox: FC<Props> = ({ checked }) => {
   )
 }
 
-export default Checkbox
+export default memo(Checkbox)
