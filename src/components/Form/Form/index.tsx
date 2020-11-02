@@ -40,7 +40,7 @@ const Form: FC<Props> = ({
   ...rest
 }) => {
   const data: any = { ...addData }
-  const refs: Ref[] = []
+  let refs: Ref[] = []
   let haveErrors = false
 
   const recaptchaRef = useRef<Captcha>(null)
@@ -49,6 +49,12 @@ const Form: FC<Props> = ({
 
   const setRef = (input: Ref) => {
     refs.push(input)
+  }
+
+  const removeRef = (input: Ref) => {
+    const index = refs.findIndex(value => value === input)
+    const newArray = refs.filter((_, i) => i !== index)
+    refs = newArray
   }
 
   const setData = () => {
@@ -114,7 +120,9 @@ const Form: FC<Props> = ({
         />
       )}
 
-      <FormProvider value={{ setRef, theme, loader: showLoader }}>{children}</FormProvider>
+      <FormProvider value={{ removeRef, setRef, theme, loader: showLoader }}>
+        {children}
+      </FormProvider>
     </form>
   )
 }

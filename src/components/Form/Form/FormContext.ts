@@ -6,6 +6,7 @@ export interface Ref {
 }
 
 export interface FormState {
+  removeRef: (input: Ref) => void
   setRef: (input: Ref) => void
   loader: boolean
   theme: any

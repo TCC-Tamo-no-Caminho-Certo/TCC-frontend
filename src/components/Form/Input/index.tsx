@@ -53,10 +53,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const form = useContext<FormState | null>(FormContext)
 
     useEffect(() => {
-      form?.setRef({
+      const input = {
         input: auxRef,
         setError,
-      })
+      }
+
+      form?.setRef(input)
+
+      return () => form?.removeRef(input)
     }, [auxRef, form])
 
     const onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
