@@ -11,7 +11,7 @@ import Card from 'components/Card'
 const EditProfile: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
-  const [save, setSave] = useState(false)
+  const [show, setShow] = useState(false)
 
   const changeData = useCallback((data: any) => {
     const old = data.birthday.split('/')
@@ -23,28 +23,35 @@ const EditProfile: React.FC = () => {
       <Form path='user/update' changeData={changeData} loading captcha>
         <Fields theme={theme} />
 
-        {save ? (
-          <ConfirmModal theme={theme}>
-            <Card headerText='Confirme sua senha'>
-              <Input name='password' placeholder='Confirme sua senha' eye />
-              <div className='buttons'>
-                <button type='button' onClick={() => setSave(false)}>
-                  Cancelar
-                </button>
+        <ConfirmModal theme={theme} show={show}>
+          <Card headerText='Confirme sua senha'>
+            <Input name='password' placeholder='Confirme sua senha' eye />
+            <div className='buttons'>
+              <button
+                type='button'
+                onClick={() => {
+                  setShow(false)
+                }}
+              >
+                Cancelar
+              </button>
 
-                <Button>Confirmar</Button>
-              </div>
-            </Card>
-          </ConfirmModal>
-        ) : (
-          <></>
-        )}
+              <Button>Confirmar</Button>
+            </div>
+          </Card>
+        </ConfirmModal>
 
         <button id='discardButton' type='button'>
           Descartar alterações
         </button>
 
-        <button id='saveButton' type='button' onClick={() => setSave(true)}>
+        <button
+          id='saveButton'
+          type='button'
+          onClick={() => {
+            setShow(true)
+          }}
+        >
           Salvar
         </button>
       </Form>

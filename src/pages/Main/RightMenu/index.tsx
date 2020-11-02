@@ -3,8 +3,7 @@ import Style, { Background, RightMenuOpen, UserInfo } from './styles'
 
 import api from 'services/api'
 
-import { RootState, useSelector } from 'store'
-import { ThemeState } from 'store/theme'
+import { RootState, ThemeState, UserState, useSelector } from 'store'
 
 import gear from 'assets/gear.svg'
 import logout from 'assets/RightMenuOpen/logout.svg'
@@ -17,7 +16,9 @@ import { AnimatePresence, motion, useCycle } from 'framer-motion'
 import { Link, useHistory } from 'react-router-dom'
 
 const RightMenu: React.FC = () => {
+  const { name, surname, role } = useSelector<RootState, UserState>(state => state.user)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
+
   const [editOpen, toggle] = useCycle(false, true)
   const history = useHistory()
 
@@ -143,8 +144,8 @@ const RightMenu: React.FC = () => {
         <Avatar size={80} id='avatar' />
 
         <UserInfo theme={theme}>
-          <span id='userRole'>Estudante</span>
-          <span id='userName'>Miguel Andrade</span>
+          <span id='userRole'>{role}</span>
+          <span id='userName'>{`${name} ${surname}`}</span>
 
           <span id='userActivity'>
             <svg width='5' height='5' xmlns='http://www.w3.org/2000/svg'>
@@ -180,7 +181,7 @@ const RightMenu: React.FC = () => {
                 <motion.li key='Switch Perfil' variants={liAnimation}>
                   <Link to='/editProfile'>
                     <img src={change} alt='Switch Perfil' />
-                    Alternar perfil
+                    Alternar papel
                   </Link>
                 </motion.li>
               </ul>

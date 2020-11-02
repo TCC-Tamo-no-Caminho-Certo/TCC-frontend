@@ -46,7 +46,7 @@ const InputDate: React.FC<InputProps> = ({ icon: Icon, value, ...rest }) => {
     const onClick = () => {
       const year: HTMLButtonElement | null = document.querySelector('.Calendar__yearText')
 
-      if (year && ref.current.value === '') year.click()
+      if (year && !selectedDate) year.click()
     }
 
     return (

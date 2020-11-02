@@ -3,8 +3,12 @@ import fromTheme from 'utils/fromTheme'
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
-export const ConfirmModal = styled.div`
-  display: flex;
+interface ConfirmModalProps {
+  show: boolean
+}
+
+export const ConfirmModal = styled.div<ConfirmModalProps>`
+  display: ${({ show }) => (show ? 'flex' : 'none')};
   justify-content: center;
   align-items: center;
 
