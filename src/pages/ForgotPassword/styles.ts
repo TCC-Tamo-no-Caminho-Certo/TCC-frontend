@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-
 import fromTheme from 'utils/fromTheme'
+
+import styled from 'styled-components'
 
 export const ConfirmToken = styled.section`
   form.resendContainer {
@@ -121,23 +121,14 @@ const Style = styled.main`
     }
   }
 
-  button.backButton {
+  .BackButton {
     position: absolute;
     top: 3%;
     left: 1%;
 
-    display: flex;
-    align-items: center;
-
-    color: ${fromTheme('primary')};
-    transition: all 0.2s;
-
-    &:hover {
-      color: ${fromTheme('tertiary')};
-    }
-
     @media (max-width: 500px) {
       top: 1%;
+
       span {
         display: none;
       }
