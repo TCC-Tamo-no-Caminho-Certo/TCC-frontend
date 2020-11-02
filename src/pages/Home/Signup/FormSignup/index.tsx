@@ -26,7 +26,13 @@ const FormSignup: React.FC = () => {
         <button type='button'>
           <RiArrowLeftSLine />
 
-          <Link to='/home' onClick={() => dispatch(HomeActions.animation(true))}>
+          <Link
+            to='/home'
+            onClick={() => {
+              dispatch(HomeActions.initial(true))
+              dispatch(HomeActions.page('login'))
+            }}
+          >
             Voltar
           </Link>
         </button>

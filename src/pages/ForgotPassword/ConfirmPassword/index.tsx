@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
+
 import Style from '../styles'
 
 import { passwordSchema } from 'utils/validations/forgotPassword'
 
 import { ThemeState } from 'store/theme'
-import { useSelector, RootState } from 'store'
+import { RootState, useSelector } from 'store'
 
 import Logo from 'components/Logo'
-import { Form, Input, Button } from 'components/Form'
+import { Button, Form, Input } from 'components/Form'
 import Modal, { ModalAttributes } from 'components/Modal'
 
-import { useHistory } from 'react-router-dom'
 import { FiLock } from 'react-icons/fi'
+import { useHistory } from 'react-router-dom'
 
 const ConfirmPassword: React.FC = () => {
   const [modalAttributes, setModalAttributes] = useState<ModalAttributes>({
@@ -59,13 +60,7 @@ const ConfirmPassword: React.FC = () => {
               captcha
             >
               <h2>Digite sua nova senha</h2>
-              <Input
-                name='password'
-                type='password'
-                placeholder='Senha'
-                icon={FiLock}
-                eye
-              />
+              <Input name='password' type='password' placeholder='Senha' icon={FiLock} eye />
               <h2>Confirme sua nova senha</h2>
               <Input
                 name='confirmPassword'

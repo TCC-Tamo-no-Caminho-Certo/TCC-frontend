@@ -32,11 +32,12 @@ const Routes: React.FC = () => {
 
   return (
     <Switch>
-      <Route exact path='/'>
+      <Route path='/' exact>
         <Redirect to='/home' />
       </Route>
 
       <Route path='/home' component={Home} />
+
       <Route path='/forgot-password' component={ForgotPassword} />
       <Route path='/reset-password' component={ConfirmPassword} />
 
