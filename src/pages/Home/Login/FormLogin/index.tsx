@@ -73,14 +73,18 @@ const FormLogin: React.FC = () => {
           </Permanence>
         </Form>
 
-        <Link to='/forgot-password' onClick={() => dispatch(HomeActions.animation(false))}>
-          Não consegue fazer login?
-        </Link>
+        <Link to='/forgot-password'>Não consegue fazer login?</Link>
 
         <Register theme={theme}>
           <span>Ainda não possui uma conta ?</span>
 
-          <Link to='/home/signup' onClick={() => dispatch(HomeActions.animation(true))}>
+          <Link
+            to='/home/signup'
+            onClick={() => {
+              dispatch(HomeActions.initial(true))
+              dispatch(HomeActions.page('signup'))
+            }}
+          >
             Registre-se aqui!
           </Link>
         </Register>

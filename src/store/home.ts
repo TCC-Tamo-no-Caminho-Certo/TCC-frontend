@@ -3,12 +3,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 const Home = createSlice({
   name: 'sidebar',
   initialState: {
-    animate: false,
+    initial: false,
+    page: 'login',
   },
 
   reducers: {
-    animation(state, action: PayloadAction<boolean>) {
-      state.animate = action.payload
+    initial(state, action: PayloadAction<boolean>) {
+      state.initial = action.payload
+    },
+    page(state, action: PayloadAction<string>) {
+      state.page = action.payload
     },
   },
 })

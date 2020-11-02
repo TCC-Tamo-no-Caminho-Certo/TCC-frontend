@@ -10,11 +10,10 @@ import { RootState, useDispatch, useSelector } from 'store'
 import Logo from 'components/Logo'
 import ThemeSwitch from 'components/ThemeSwitch'
 import { Button, Form, Input, InputDate } from 'components/Form'
+import BackButton from 'components/BackButton'
 
 import { FaUserLock } from 'react-icons/fa'
 import { MdPublic } from 'react-icons/md'
-import { RiArrowLeftSLine } from 'react-icons/ri'
-import { Link } from 'react-router-dom'
 
 const FormSignup: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
@@ -23,13 +22,13 @@ const FormSignup: React.FC = () => {
   return (
     <Style theme={theme}>
       <nav>
-        <button type='button'>
-          <RiArrowLeftSLine />
-
-          <Link to='/home' onClick={() => dispatch(HomeActions.animation(true))}>
-            Voltar
-          </Link>
-        </button>
+        <BackButton
+          to='/home'
+          onClick={() => {
+            dispatch(HomeActions.initial(true))
+            dispatch(HomeActions.page('login'))
+          }}
+        />
 
         <ThemeSwitch />
       </nav>

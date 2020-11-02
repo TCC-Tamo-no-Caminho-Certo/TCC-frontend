@@ -4,23 +4,25 @@ import Style, { ConfirmToken } from './styles'
 import { emailSchema } from 'utils/validations/forgotPassword'
 
 import { ThemeState } from 'store/theme'
-import { RootState, useSelector } from 'store'
+import { RootState, useDispatch, useSelector } from 'store'
+import { HomeActions } from 'store/home'
 
 import Logo from 'components/Logo'
 import { Button, Form, Input } from 'components/Form'
 import Modal, { ModalAttributes } from 'components/Modal'
+import BackButton from 'components/BackButton'
 
 import { FiLock, FiUser } from 'react-icons/fi'
-import { RiArrowLeftSLine } from 'react-icons/ri'
 import { useHistory } from 'react-router-dom'
 
 const ForgotPassword: React.FC = () => {
+  const dispatch = useDispatch()
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const [userEmail, setUserEmail] = useState<string>()
   const [tokenIsSend, setTokenIsSend] = useState(false)
   const [modalAttributes, setModalAttributes] = useState<ModalAttributes>({
     visible: false,
   })
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const history = useHistory()
 
@@ -70,11 +72,13 @@ const ForgotPassword: React.FC = () => {
       <Modal {...modalAttributes} onOKClick={() => setModalAttributes({ visible: false })} />
 
       <Style theme={theme}>
-        <button type='button' className='backButton' onClick={() => history.push('/')}>
-          <RiArrowLeftSLine size={30} />
-
-          <span>Voltar</span>
-        </button>
+        <BackButton
+          to='/home'
+          onClick={() => {
+            dispatch(HomeActions.initial(false))
+            dispatch(HomeActions.page('login'))
+          }}
+        />
 
         <article>
           <header>

@@ -27,32 +27,6 @@ const Style = styled.div`
     max-width: 1000px;
     height: 4vh;
 
-    button {
-      display: flex;
-      align-items: center;
-
-      height: 100%;
-
-      color: ${fromTheme('primary')};
-
-      svg {
-        min-width: calc(33px + 0.8vh);
-        min-height: calc(20px + 0.8vh);
-
-        transform: translateX(-40%);
-      }
-
-      a {
-        font-size: calc(1.3rem + 0.5vh);
-        line-height: calc(20px + 0.8vh);
-        transform: translateX(-48%);
-
-        &:hover {
-          color: ${fromTheme('primary')};
-        }
-      }
-    }
-
     .ThemeSwitch {
       min-width: 33px;
       min-height: 33px;

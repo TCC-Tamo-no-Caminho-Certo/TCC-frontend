@@ -10,7 +10,7 @@ import projects from 'assets/MainSidebar/projects.svg'
 import Sidebar from 'components/Sidebar'
 
 const Profile: React.FC = () => {
-  const profileRoutes = [
+  const mainRoutes = [
     {
       path: '/session/main/map',
       icon: map,
@@ -25,7 +25,7 @@ const Profile: React.FC = () => {
 
   return (
     <>
-      <Sidebar routes={profileRoutes} />
+      <Sidebar routes={mainRoutes} />
 
       <RightMenu />
 
