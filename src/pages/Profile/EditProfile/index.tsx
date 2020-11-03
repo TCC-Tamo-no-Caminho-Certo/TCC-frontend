@@ -4,7 +4,8 @@ import Style, { ConfirmModal } from './styles'
 import Fields from './Fields'
 import ImageChanger from './ImageChanger'
 
-import { RootState, ThemeState, useSelector } from 'store'
+import { RootState, ThemeState, useDispatch, useSelector } from 'store'
+import { UserActions } from 'store/user'
 
 import { Button, Form, Input } from 'components/Form'
 import Card from 'components/Card'
@@ -20,20 +21,29 @@ ModalContext.displayName = 'Modal Context'
 
 const EditProfile: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const dispatch = useDispatch()
   const [image, setImage] = useState(false)
   const [confirm, setConfirm] = useState(false)
 
-  const changeData = useCallback((data: any) => {
+  let updateData: any
+
+  const changeData = (data: any) => {
     if (data.birthday) {
       const old = data.birthday.split('/')
       data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
     }
-  }, [])
+
+    updateData = data
+  }
+
+  const submitCallback = (resData: any) => {
+    if (resData.success) dispatch(UserActions.updateUserInfo(updateData))
+  }
 
   return (
     <ModalContext.Provider value={{ show: image, setShow: setImage }}>
       <Style theme={theme}>
-        <Form path='user/update' changeData={changeData} loading captcha>
+        <Form path='user/update' changeData={changeData} callback={submitCallback} loading captcha>
           <Fields theme={theme} />
 
           <ConfirmModal theme={theme} show={confirm}>

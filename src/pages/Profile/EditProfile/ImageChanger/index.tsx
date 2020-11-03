@@ -3,18 +3,21 @@ import Style from './styles'
 
 import { ModalContext } from '../'
 
-import { RootState, ThemeState, useSelector } from 'store'
+import api from 'services/api'
+
+import { UserActions } from 'store/user'
+import { RootState, ThemeState, useDispatch, useSelector } from 'store'
 
 import 'cropperjs/dist/cropper.css'
 import { Cropper } from 'react-cropper'
 
 const ImageChanger: React.FC = () => {
+  const dispatch = useDispatch()
   const modal = useContext(ModalContext)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const [image, setImage] = useState()
   const [cropper, setCropper] = useState<any>()
-  const [cropData, setCropData] = useState('')
 
   const onChange = (e: any) => {
     e.preventDefault()
@@ -36,10 +39,22 @@ const ImageChanger: React.FC = () => {
     reader.readAsDataURL(files[0])
   }
 
-  function onConfirmButtonClick() {
+  const onConfirmButtonClick = async () => {
     if (cropper.cropped) {
-      setCropData(cropper.getCroppedCanvas().toDataURL())
-      setTimeout(() => modal?.setShow(false), 1)
+      const token = localStorage.getItem('@SLab_ac_token')
+
+      const result = await api.post(
+        '/user/avatar/upload',
+        { picture: cropper.getCroppedCanvas().toDataURL() },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      dispatch(UserActions.updateUserInfo({ avata: result.object }))
+      modal?.setShow(false)
     }
   }
 

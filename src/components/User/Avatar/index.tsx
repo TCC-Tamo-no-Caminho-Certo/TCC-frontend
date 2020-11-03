@@ -3,7 +3,7 @@ import Style from './styles'
 
 import { RootState, useSelector } from 'store'
 
-import avat from 'assets/avatar.jpg'
+import defaultAvatar from 'assets/avatar.jpg'
 
 interface Props extends ImgHTMLAttributes<HTMLImageElement> {
   size: number
@@ -11,15 +11,14 @@ interface Props extends ImgHTMLAttributes<HTMLImageElement> {
 
 const Avatar: FC<Props> = ({ size, ...rest }) => {
   const avatar = useSelector<RootState, string>(state => state.user.avatar)
-  return (
-    <Style
-      size={size}
-      alt='avatar'
-      draggable={false}
-      className='Avatar'
-      src={avat || avatar}
-      {...rest}
-    />
+
+  const src =
+    avatar === 'default.png' ? defaultAvatar : `https://s3.steamslab.com/profile/${avatar}`
+
+  return avatar ? (
+    <Style size={size} alt='avatar' draggable={false} className='Avatar' src={src} {...rest} />
+  ) : (
+    <span>loading animation...</span>
   )
 }
 
