@@ -14,7 +14,7 @@ const Style = styled.div`
     display: none;
   }
 
-  label {
+  #firstFileSelect {
     position: absolute;
 
     display: flex;
@@ -34,9 +34,14 @@ const Style = styled.div`
     width: 300px;
     height: 300px;
 
+    .cropper-modal {
+      border-radius: 5px;
+
+      border: ${fromTheme('white')} dashed 1px;
+    }
+
     .cropper-face {
       background-color: transparent;
-      border: solid 1px ${fromTheme('primary')};
 
       .cropper-move {
         border: none;
@@ -88,22 +93,20 @@ const Style = styled.div`
     }
   }
 
-  .sidebar {
+  #sidebar {
     display: flex;
     flex-direction: column;
     justify-content: center;
 
     margin-left: 48px;
 
-    .preview {
+    #preview {
       position: relative;
 
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
-
-      height: 204px;
 
       > div {
         width: 80px;
@@ -116,7 +119,7 @@ const Style = styled.div`
         color: ${fromTheme('white')};
       }
 
-      .before-img-preview {
+      #before-img-preview {
         width: 80px;
         height: 80px;
         transform: translateY(-100%);
@@ -124,25 +127,72 @@ const Style = styled.div`
         border: solid 1px ${fromTheme('primary')};
       }
 
-      .img-preview {
+      #img-preview {
+        width: 80px;
+        height: 80px;
         overflow: hidden;
       }
     }
 
-    .confirmButton {
-      border-radius: 8px;
+    #otherFileSelect {
+      position: absolute;
+      right: 48px;
 
-      background-color: ${fromTheme('primary')};
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      border-radius: 4px;
+      padding: 4px 8px;
+      margin-top: 48px;
+
+      font-size: 1.3rem;
+      width: 120px;
+      text-align: center;
+
+      color: ${fromTheme('white')};
+
+      cursor: pointer;
+
+      .Camera {
+        width: 24px;
+        margin-right: 8px;
+      }
+
+      &:hover {
+        color: ${fromTheme('primary')};
+
+        .Camera path {
+          stroke: ${fromTheme('primary')};
+        }
+      }
     }
 
-    button {
+    #discardButton {
+      width: 120px;
+
+      transition: color 200ms ease-in-out;
+      color: ${fromTheme('white')};
+
+      &:hover {
+        color: ${fromTheme('primary')};
+      }
+    }
+
+    #confirmButton {
       width: 120px;
       height: 36px;
 
       color: ${fromTheme('white')};
+      background-color: ${fromTheme('tertiary')};
+      border: solid 1px ${fromTheme('primary')};
+      margin-top: 8px;
 
-      & + button {
-        margin-top: 24px;
+      transition: box-shadow 300ms ease-in-out;
+
+      &:hover {
+        box-shadow: inset -60px 0 0 0 ${fromTheme('primary')},
+          inset 60px 0 0 0 ${fromTheme('primary')};
       }
     }
   }

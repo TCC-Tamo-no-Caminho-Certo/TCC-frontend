@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import Style, { ConfirmModal } from './styles'
+import Style from './styles'
 
 import Fields from './Fields'
 import ImageChanger from './ImageChanger'
@@ -30,39 +30,32 @@ const EditProfile: React.FC = () => {
         <Form path='user/update' changeData={changeData} loading captcha>
           <Fields theme={theme} />
 
-          <ConfirmModal theme={theme} show={show}>
-            <Card headerText='Confirme sua senha'>
-              <Input name='password' placeholder='Confirme sua senha' eye />
-              <div className='buttons'>
-                <button
-                  type='button'
-                  onClick={() => {
-                    setShow(false)
-                  }}
-                >
-                  Cancelar
-                </button>
-
-                <Button>Confirmar</Button>
-              </div>
-            </Card>
-          </ConfirmModal>
-
           <button id='discardButton' type='button'>
             Descartar alterações
           </button>
 
-          <button
-            id='saveButton'
-            type='button'
-            onClick={() => {
-              setShow(true)
-            }}
-          >
+          <button id='saveButton' type='button' onClick={() => setShow(true)}>
             Salvar
           </button>
         </Form>
       </Style>
+
+      <Modal
+        show={show}
+        onClick={() => setShow(false)}
+        children={() => (
+          <Card headerText='Confirme sua senha'>
+            <Input name='password' placeholder='Confirme sua senha' eye />
+            <div className='buttons'>
+              <button type='button' onClick={() => setShow(false)}>
+                Cancelar
+              </button>
+
+              <Button>Confirmar</Button>
+            </div>
+          </Card>
+        )}
+      />
 
       <Modal
         show={userModal}

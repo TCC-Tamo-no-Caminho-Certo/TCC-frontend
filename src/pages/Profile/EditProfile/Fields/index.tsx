@@ -22,7 +22,7 @@ const Fields: FC<Props> = ({ theme }) => {
   return (
     <Slider width={550} gap={200} gapVertical={100}>
       <Card key='Personal' headerText='Dados Pessoais'>
-        <Avatar size={128} onClick={() => dispatch(ModalsActions.setUser(true))} />
+        <Avatar size={128} onClickInShadow={() => dispatch(ModalsActions.setUser(true))} shadow />
 
         {formatUpdateUser(user, user.role === 'baseUser' ? 'baseUser' : 'user').map(
           (info: Info) => (

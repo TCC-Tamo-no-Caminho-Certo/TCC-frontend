@@ -3,59 +3,6 @@ import fromTheme from 'utils/fromTheme'
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
-interface ConfirmModalProps {
-  show: boolean
-}
-
-export const ConfirmModal = styled.div<ConfirmModalProps>`
-  display: ${({ show }) => (show ? 'flex' : 'none')};
-  justify-content: center;
-  align-items: center;
-
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  z-index: 3;
-
-  height: 100%;
-  width: 100%;
-
-  background-color: rgba(0, 0, 0, 0.75);
-
-  & > div {
-    height: 35%;
-    width: 25%;
-    padding: 0;
-    border-radius: 20px;
-    justify-content: center;
-
-    > div {
-      width: 75%;
-    }
-
-    button {
-      background-color: ${fromTheme('primary')};
-      color: ${fromTheme('white')};
-      border-radius: 10px;
-      width: 40%;
-      height: 100%;
-    }
-
-    > .buttons {
-      height: 10%;
-      width: 80%;
-      display: flex;
-      justify-content: space-around;
-      margin-top: 10%;
-
-      & + button {
-        margin-right: 20px;
-      }
-    }
-  }
-`
-
 const Style = styled(motion.section)`
   display: flex;
   justify-content: center;
@@ -118,4 +65,3 @@ const Style = styled(motion.section)`
 export default Style
 
 Style.displayName = 'Slider-Style'
-ConfirmModal.displayName = 'ConfirmModal-Style'

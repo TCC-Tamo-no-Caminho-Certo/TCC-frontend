@@ -141,10 +141,10 @@ const RightMenu: React.FC = () => {
       </Background>
 
       <Style width={`${width}px`} theme={theme}>
-        <Avatar size={80} id='avatar' />
+        <Avatar size={80} />
 
         <UserInfo theme={theme}>
-          <span id='userRole'>{role}</span>
+          <span id='userRole'>{role === 'base user' ? 'Convidado' : 'nothing'}</span>
           <span id='userName'>{`${name} ${surname}`}</span>
 
           <span id='userActivity'>

@@ -146,7 +146,7 @@ const Style = styled.div<StyleProps>`
     color: ${fromTheme('white')};
   }
 
-  #avatar {
+  .Avatar {
     margin-left: 16px;
   }
 

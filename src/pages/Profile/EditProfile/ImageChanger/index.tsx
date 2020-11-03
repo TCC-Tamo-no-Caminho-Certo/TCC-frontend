@@ -4,7 +4,10 @@ import Style from './styles'
 import { RootState, ThemeState, useDispatch, useSelector } from 'store'
 import { ModalsActions } from 'store/modals'
 
+import Camera from 'assets/Camera'
+
 import 'cropperjs/dist/cropper.css'
+import { motion } from 'framer-motion'
 import { Cropper } from 'react-cropper'
 
 const ImageChanger: React.FC = () => {
@@ -13,7 +16,10 @@ const ImageChanger: React.FC = () => {
 
   const [image, setImage] = useState()
   const [cropper, setCropper] = useState<any>()
-  const [cropData, setCropData] = useState('')
+  const [cropData, setCropData] = useState<string>()
+  const [noImage, setNoImage] = useState(false)
+
+  const [showUpload, setShowUpload] = useState(false)
 
   const onChange = (e: any) => {
     e.preventDefault()
@@ -33,36 +39,53 @@ const ImageChanger: React.FC = () => {
     }
 
     reader.readAsDataURL(files[0])
+
+    setShowUpload(true)
   }
 
-  function onConfirmButtonClick() {
+  function onConfirmClick() {
     if (cropper.cropped) {
       setCropData(cropper.getCroppedCanvas().toDataURL())
       setTimeout(() => dispatch(ModalsActions.setUser(false)), 1)
+    } else {
+      console.log('nenhuma imagem adicionada')
+      setNoImage(true)
+      setTimeout(() => setNoImage(false), 300)
     }
+  }
+
+  function onDiscardClick() {
+    dispatch(ModalsActions.setUser(false))
   }
 
   return (
     <Style theme={theme}>
       <div>
-        <label htmlFor='fileSelect'>Selecionar um arquivo </label>
-        <input id='fileSelect' type='file' onChange={onChange} className='beforeBox' />
+        <motion.label
+          htmlFor='first'
+          id='firstFileSelect'
+          animate={{
+            color: noImage ? ['#fcfcfc', '#f00', '#fcfcfc'] : '#fcfcfc',
+            borderColor: noImage ? ['#fcfcfc', '#f00', '#fcfcfc'] : '#fcfcfc',
+          }}
+          transition={{ duration: 0.3 }}
+        >
+          Selecionar um arquivo
+        </motion.label>
+        <input id='first' type='file' onChange={onChange} />
 
         <Cropper
-          className='Cropper'
-          dragMode='crop'
-          preview='.img-preview'
           src={image}
-          initialAspectRatio={1}
+          className='Cropper'
+          preview='#img-preview'
+          dragMode='move'
+          background={false}
           viewMode={3}
+          aspectRatio={1}
           guides={false}
-          center
           minCropBoxHeight={80}
           minCropBoxWidth={80}
-          background={false}
-          aspectRatio={1 / 1}
-          responsive
-          autoCropArea={1}
+          center
           checkOrientation={false}
           onInitialized={instance => {
             setCropper(instance)
@@ -70,18 +93,30 @@ const ImageChanger: React.FC = () => {
         />
       </div>
 
-      <div className='sidebar'>
-        <div className='preview'>
+      <div id='sidebar'>
+        <div id='preview'>
           <span>Antevisão</span>
 
-          <div className='img-preview' />
-          <div className='before-img-preview' />
+          <div id='img-preview' />
+          <div id='before-img-preview' />
         </div>
 
-        <button type='button'> Descartar alterações </button>
+        {showUpload && (
+          <>
+            <label htmlFor='other' id='otherFileSelect'>
+              <Camera />
+              Enviar outra foto
+            </label>
+            <input id='other' type='file' onChange={onChange} />
+          </>
+        )}
 
-        <button type='button' className='confirmButton' onClick={onConfirmButtonClick}>
-          Confirmar
+        <button type='button' id='discardButton' onClick={onDiscardClick}>
+          Descartar
+        </button>
+
+        <button type='button' id='confirmButton' onClick={onConfirmClick}>
+          Salvar
         </button>
       </div>
     </Style>
