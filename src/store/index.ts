@@ -2,6 +2,7 @@ import Theme, { ThemeState } from './theme'
 import Sidebar from './sidebar'
 import User, { UserState } from './user'
 import Home from './home'
+import Modals from './modals'
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
   theme: Theme.reducer,
   home: Home.reducer,
   sidebar: Sidebar.reducer,
+  modals: Modals.reducer,
 })
 
 const store = configureStore({

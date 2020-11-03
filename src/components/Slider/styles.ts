@@ -21,7 +21,8 @@ const Style = styled.div.attrs({ className: 'Slider' })<StyleProps>`
   flex-direction: column;
 
   ul {
-    &, form {
+    &,
+    form {
       display: flex;
       justify-content: center;
       align-items: center;

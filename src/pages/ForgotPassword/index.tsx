@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import Style, { ConfirmToken } from './styles'
 
+import Modal, { ModalAttributes } from 'pages/ForgotPassword/Modal'
+
 import { emailSchema } from 'utils/validations/forgotPassword'
 
 import { ThemeState } from 'store/theme'
@@ -9,7 +11,6 @@ import { HomeActions } from 'store/home'
 
 import Logo from 'components/Logo'
 import { Button, Form, Input } from 'components/Form'
-import Modal, { ModalAttributes } from 'components/Modal'
 import BackButton from 'components/BackButton'
 
 import { FiLock, FiUser } from 'react-icons/fi'

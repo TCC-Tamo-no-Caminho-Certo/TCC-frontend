@@ -3,7 +3,8 @@ import Style, { Change, Label, Value } from './styles'
 
 import formatUpdateUser, { Info, Types } from 'utils/formatUpdateUser'
 
-import { UserState } from 'store'
+import { useDispatch, UserState } from 'store'
+import { ModalsActions } from 'store/modals'
 
 import editPencil from 'assets/editPencil.svg'
 
@@ -19,6 +20,8 @@ interface Props {
 }
 
 const Field: FC<Props> = ({ theme, type, data, headerText }) => {
+  const dispatch = useDispatch()
+
   const inputDateValue = (value: string) => {
     const old = value.split('-')
     return old[0] ? `${old[2]}/${old[1]}/${old[0]}` : ''
@@ -26,7 +29,11 @@ const Field: FC<Props> = ({ theme, type, data, headerText }) => {
 
   return (
     <Card headerText={headerText}>
-      {type === 'baseUser' || type === 'user' ? <Avatar size={128} /> : <></>}
+      {type === 'baseUser' || type === 'user' ? (
+        <Avatar size={128} onClick={() => dispatch(ModalsActions.setUser(true))} />
+      ) : (
+        <></>
+      )}
 
       {formatUpdateUser(data, type).map((info: Info) => (
         <Style key={info.inputname} theme={theme}>

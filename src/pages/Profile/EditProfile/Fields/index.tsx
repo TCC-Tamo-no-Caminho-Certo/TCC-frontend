@@ -22,6 +22,7 @@ const Fields: FC<Props> = ({ theme }) => {
         data={user}
         headerText='Dados Pessoais'
       />
+
       <Field
         key='Professor'
         theme={theme}
@@ -29,6 +30,7 @@ const Fields: FC<Props> = ({ theme }) => {
         data={user}
         headerText='Dados de Professor'
       />
+
       <Field
         key='Student'
         theme={theme}

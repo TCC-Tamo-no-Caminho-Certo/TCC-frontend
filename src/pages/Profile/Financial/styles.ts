@@ -12,6 +12,7 @@ const Style = styled.div`
   background-color: ${fromTheme('tertiary')};
   color: white;
 `
+
 export default Style
 
 Style.displayName = 'Home-Style'
