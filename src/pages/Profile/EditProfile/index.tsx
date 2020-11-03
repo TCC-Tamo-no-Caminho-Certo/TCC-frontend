@@ -28,6 +28,11 @@ const EditProfile: React.FC = () => {
   let updateData: any
 
   const handleData = (data: any) => {
+    if (data.birthday) {
+      const old = data.birthday.split('/')
+      data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
+    }
+
     updateData = data
   }
 

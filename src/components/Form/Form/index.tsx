@@ -104,7 +104,7 @@ const Form: FC<Props> = ({
     handleData && handleData(data)
     validate()
     if (captcha) data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
-    !haveErrors && (await submit(callback))
+    // !haveErrors && (await submit(callback))
 
     loading && setShowLoader(false)
     console.log(data)
