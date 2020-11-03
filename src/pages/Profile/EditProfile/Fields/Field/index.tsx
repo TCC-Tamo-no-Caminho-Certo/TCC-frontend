@@ -4,7 +4,7 @@ import Style, { Change, Label, Value } from './styles'
 import { Info } from 'utils/formatUpdateUser'
 
 import editPencil from 'assets/editPencil.svg'
-import close from 'assets/close.svg'
+import Close from 'assets/Close'
 
 import { Input, InputDate } from 'components/Form'
 
@@ -63,7 +63,7 @@ const Field: FC<Props> = ({ theme, data }) => {
       <Change>
         <label htmlFor={change ? data.inputname : undefined}>
           <button type='button' onClick={() => setChange(!change)}>
-            <img src={change ? close : editPencil} alt='edit' />
+            {change ? <Close /> : <img src={editPencil} alt='edit' />}
           </button>
         </label>
       </Change>

@@ -18,9 +18,12 @@ const Avatar: FC<AvatarProps> = ({ size, shadow = false, onClickInShadow, ...res
   const avatar = useSelector<RootState, string>(state => state.user.avatar)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
-  return (
-    <Style shadow={shadow} size={size} draggable={false} className='Avatar' theme={theme}>
-      <img src={defaultAvatar || avatar} alt='avatar' {...rest} />
+  const src =
+    avatar === 'default.png' ? defaultAvatar : `https://s3.steamslab.com/profile/${avatar}`
+
+  return avatar ? (
+    <Style shadow={shadow} size={size} className='Avatar' theme={theme}>
+      <img src={src} alt='avatar' draggable={false} {...rest} />
 
       {shadow && (
         <motion.div
@@ -33,6 +36,8 @@ const Avatar: FC<AvatarProps> = ({ size, shadow = false, onClickInShadow, ...res
         </motion.div>
       )}
     </Style>
+  ) : (
+    <span>starting animation...</span>
   )
 }
 

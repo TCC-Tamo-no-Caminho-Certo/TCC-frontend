@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Style from './styles'
 
+import { ModalContext } from '../'
+
+import api from 'services/api'
+
+import { UserActions } from 'store/user'
 import { RootState, ThemeState, useDispatch, useSelector } from 'store'
-import { ModalsActions } from 'store/modals'
 
 import Camera from 'assets/Camera'
+import Close from 'assets/Close'
 
 import 'cropperjs/dist/cropper.css'
 import { motion } from 'framer-motion'
@@ -12,11 +17,11 @@ import { Cropper } from 'react-cropper'
 
 const ImageChanger: React.FC = () => {
   const dispatch = useDispatch()
+  const modal = useContext(ModalContext)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const [image, setImage] = useState()
   const [cropper, setCropper] = useState<any>()
-  const [cropData, setCropData] = useState<string>()
   const [noImage, setNoImage] = useState(false)
 
   const [showUpload, setShowUpload] = useState(false)
@@ -43,19 +48,34 @@ const ImageChanger: React.FC = () => {
     setShowUpload(true)
   }
 
-  function onConfirmClick() {
+  const onConfirmClick = async () => {
     if (cropper.cropped) {
-      setCropData(cropper.getCroppedCanvas().toDataURL())
-      setTimeout(() => dispatch(ModalsActions.setUser(false)), 1)
+      const token = localStorage.getItem('@SLab_ac_token')
+
+      const result = await api.post(
+        '/user/avatar/upload',
+        { picture: cropper.getCroppedCanvas().toDataURL() },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      dispatch(UserActions.updateUserInfo({ avatar: result.object }))
+      modal?.setShow(false)
     } else {
-      console.log('nenhuma imagem adicionada')
       setNoImage(true)
       setTimeout(() => setNoImage(false), 300)
     }
   }
 
   function onDiscardClick() {
-    dispatch(ModalsActions.setUser(false))
+    cropper.destroy()
+  }
+
+  function onCloseClick() {
+    modal?.setShow(false)
   }
 
   return (
@@ -94,6 +114,8 @@ const ImageChanger: React.FC = () => {
       </div>
 
       <div id='sidebar'>
+        <Close onClick={onCloseClick} />
+
         <div id='preview'>
           <span>Antevisão</span>
 

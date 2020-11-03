@@ -2,7 +2,7 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
 const request = axios.create({
-  baseURL: 'http://dev.steamslab.com/api/',
+  baseURL: 'https://dev.steamslab.com/api/',
 })
 
 interface Data {

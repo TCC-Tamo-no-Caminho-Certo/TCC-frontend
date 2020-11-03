@@ -1,11 +1,11 @@
-import React, { FC, memo } from 'react'
+import React, { FC, memo, useContext } from 'react'
 
 import Field from './Field'
+import { ModalContext } from '../'
 
 import formatUpdateUser, { Info, Types } from 'utils/formatUpdateUser'
 
-import { RootState, useDispatch, UserState, useSelector } from 'store'
-import { ModalsActions } from 'store/modals'
+import { RootState, UserState, useSelector } from 'store'
 
 import Avatar from 'components/User/Avatar'
 import Card from 'components/Card'
@@ -17,12 +17,12 @@ interface Props {
 
 const Fields: FC<Props> = ({ theme }) => {
   const user = useSelector<RootState, UserState>(state => state.user)
-  const dispatch = useDispatch()
+  const modal = useContext(ModalContext)
 
   return (
     <Slider width={550} gap={200} gapVertical={100}>
       <Card key='Personal' headerText='Dados Pessoais'>
-        <Avatar size={128} onClickInShadow={() => dispatch(ModalsActions.setUser(true))} shadow />
+        <Avatar size={128} onClickInShadow={() => modal?.setShow(true)} shadow />
 
         {formatUpdateUser(user, user.role === 'baseUser' ? 'baseUser' : 'user').map(
           (info: Info) => (

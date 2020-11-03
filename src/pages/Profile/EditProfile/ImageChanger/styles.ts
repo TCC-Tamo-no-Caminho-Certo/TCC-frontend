@@ -100,6 +100,17 @@ const Style = styled.div`
 
     margin-left: 48px;
 
+    .Close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      transform: scale(1.2);
+
+      path {
+        fill: ${fromTheme('white')};
+      }
+    }
+
     #preview {
       position: relative;
 
