@@ -87,7 +87,7 @@ const Form: FC<Props> = ({
 
   const submit = async (cb?: (data: any) => void) => {
     const resData = await api.post(
-      `http://dev.steamslab.com/api/${path}`,
+      path,
       data,
       token ? { headers: { authorization: `Berear ${token}` } } : undefined
     )
