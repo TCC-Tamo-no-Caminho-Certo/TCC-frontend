@@ -1,71 +1,73 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import Style, { Change, Label, Value } from './styles'
 
-import formatUpdateUser, { Info, Types } from 'utils/formatUpdateUser'
-
-import { useDispatch, UserState } from 'store'
-import { ModalsActions } from 'store/modals'
+import { Info } from 'utils/formatUpdateUser'
 
 import editPencil from 'assets/editPencil.svg'
+import close from 'assets/close.svg'
 
 import { Input, InputDate } from 'components/Form'
-import Card from 'components/Card'
-import Avatar from 'components/User/Avatar'
 
 interface Props {
   theme: any
-  type: Types
-  data: UserState
-  headerText: string
+  data: Info
 }
 
-const Field: FC<Props> = ({ theme, type, data, headerText }) => {
-  const dispatch = useDispatch()
+const Field: FC<Props> = ({ theme, data }) => {
+  const [change, setChange] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const inputDateValue = (value: string) => {
     const old = value.split('-')
     return old[0] ? `${old[2]}/${old[1]}/${old[0]}` : ''
   }
 
+  useEffect(() => {
+    if (change) inputRef.current?.focus()
+  }, [change])
+
+  const input =
+    data.inputname === 'birthday' ? (
+      <InputDate name={data.inputname} value={`${inputDateValue(data.value as string)}`} noStyle />
+    ) : (
+      <Input
+        ref={inputRef}
+        name={data.inputname}
+        placeholder={data.dontShow ? `*********` : ''}
+        defaultValue={data.dontShow ? '' : data.value}
+        noStyle
+      />
+    )
+
   return (
-    <Card headerText={headerText}>
-      {type === 'baseUser' || type === 'user' ? (
-        <Avatar size={128} onClick={() => dispatch(ModalsActions.setUser(true))} />
-      ) : (
-        <></>
-      )}
+    <Style key={data.inputname} theme={theme}>
+      <Label>
+        <span>{data.label}</span>
+      </Label>
 
-      {formatUpdateUser(data, type).map((info: Info) => (
-        <Style key={info.inputname} theme={theme}>
-          <Label>
-            <label htmlFor={info.inputname}>{info.label}</label>
-          </Label>
+      <Value>
+        {change ? (
+          input
+        ) : (
+          <span
+            onClick={() => setChange(true)}
+            onKeyPress={() => setChange(true)}
+            tabIndex={0}
+            role='button'
+          >
+            {data.inputname === 'birthday' ? inputDateValue(data.value as string) : data.value}
+          </span>
+        )}
+      </Value>
 
-          <Value>
-            {info.inputname === 'birthday' ? (
-              <InputDate
-                name={info.inputname}
-                value={`${inputDateValue(info.value as string)}`}
-                noStyle
-              />
-            ) : (
-              <Input
-                name={info.inputname}
-                placeholder={info.dontShow ? `*********` : ''}
-                defaultValue={info.dontShow ? '' : info.value}
-                noStyle
-              />
-            )}
-          </Value>
-
-          <Change>
-            <label htmlFor={info.inputname}>
-              <img src={editPencil} alt='edit' />
-            </label>
-          </Change>
-        </Style>
-      ))}
-    </Card>
+      <Change>
+        <label htmlFor={change ? data.inputname : undefined}>
+          <button type='button' onClick={() => setChange(!change)}>
+            <img src={change ? close : editPencil} alt='edit' />
+          </button>
+        </label>
+      </Change>
+    </Style>
   )
 }
 

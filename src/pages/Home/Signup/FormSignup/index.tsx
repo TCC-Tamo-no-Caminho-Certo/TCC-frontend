@@ -59,7 +59,12 @@ const FormSignup: React.FC = () => {
           Certifique-se de que corresponde ao nome no seu documento de identificação oficial
         </span>
 
-        <InputDate name='birthday' placeholder='Data de nascimento' icon={FaUserLock} />
+        <InputDate
+          name='birthday'
+          placeholder='Data de nascimento'
+          arrow='bottom'
+          icon={FaUserLock}
+        />
 
         <span>Você precisa ter pelo menos 18 anos</span>
 

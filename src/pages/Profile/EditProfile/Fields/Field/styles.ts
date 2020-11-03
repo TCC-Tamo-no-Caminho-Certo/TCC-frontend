@@ -23,8 +23,8 @@ export const Label = styled.div`
   grid-area: labels;
   justify-self: start;
 
-  & > label {
-    padding-left: 15px;
+  & > span {
+    margin-left: 15px;
   }
 `
 
@@ -32,7 +32,7 @@ export const Value = styled.div`
   grid-area: value;
 
   span {
-    cursor: pointer;
+    cursor: text;
   }
 
   input,
@@ -53,12 +53,13 @@ export const Change = styled.div`
   grid-area: change;
   justify-self: end;
 
-  & > label {
-    padding-right: 15px;
-  }
+  label {
+    cursor: default;
+    margin-right: 15px;
 
-  & > img {
-    cursor: pointer;
+    img {
+      cursor: pointer;
+    }
   }
 `
 

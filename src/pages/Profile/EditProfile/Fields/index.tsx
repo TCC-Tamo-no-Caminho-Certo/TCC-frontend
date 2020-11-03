@@ -2,8 +2,13 @@ import React, { FC, memo } from 'react'
 
 import Field from './Field'
 
-import { RootState, UserState, useSelector } from 'store'
+import formatUpdateUser, { Info, Types } from 'utils/formatUpdateUser'
 
+import { RootState, useDispatch, UserState, useSelector } from 'store'
+import { ModalsActions } from 'store/modals'
+
+import Avatar from 'components/User/Avatar'
+import Card from 'components/Card'
 import Slider from 'components/Slider'
 
 interface Props {
@@ -12,32 +17,31 @@ interface Props {
 
 const Fields: FC<Props> = ({ theme }) => {
   const user = useSelector<RootState, UserState>(state => state.user)
+  const dispatch = useDispatch()
 
   return (
     <Slider width={550} gap={200} gapVertical={100}>
-      <Field
-        key='Personal'
-        theme={theme}
-        type={user.role === 'baseUser' ? 'baseUser' : 'user'}
-        data={user}
-        headerText='Dados Pessoais'
-      />
+      <Card key='Personal' headerText='Dados Pessoais'>
+        <Avatar size={128} onClick={() => dispatch(ModalsActions.setUser(true))} />
 
-      <Field
-        key='Professor'
-        theme={theme}
-        type='professor'
-        data={user}
-        headerText='Dados de Professor'
-      />
+        {formatUpdateUser(user, user.role === 'baseUser' ? 'baseUser' : 'user').map(
+          (info: Info) => (
+            <Field key={info.inputname} theme={theme} data={info} />
+          )
+        )}
+      </Card>
 
-      <Field
-        key='Student'
-        theme={theme}
-        type='student'
-        data={user}
-        headerText='Dados de Estudante'
-      />
+      <Card key='Professor' headerText='Dados de Professor'>
+        {formatUpdateUser(user, 'professor').map((info: Info) => (
+          <Field key={info.inputname} theme={theme} data={info} />
+        ))}
+      </Card>
+
+      <Card key='Student' headerText='Dados de Estudante'>
+        {formatUpdateUser(user, 'student').map((info: Info) => (
+          <Field key={info.inputname} theme={theme} data={info} />
+        ))}
+      </Card>
     </Slider>
   )
 }

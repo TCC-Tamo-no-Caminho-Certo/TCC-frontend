@@ -18,8 +18,10 @@ const EditProfile: React.FC = () => {
   const [show, setShow] = useState(false)
 
   const changeData = useCallback((data: any) => {
-    const old = data.birthday.split('/')
-    data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
+    if (data.birthday) {
+      const old = data.birthday.split('/')
+      data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
+    }
   }, [])
 
   return (

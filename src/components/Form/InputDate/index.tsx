@@ -30,7 +30,11 @@ const maximumDate = {
   day: present.day,
 }
 
-const InputDate: React.FC<InputProps> = ({ icon: Icon, value, ...rest }) => {
+interface InputDateProps extends InputProps {
+  arrow?: string
+}
+
+const InputDate: React.FC<InputDateProps> = ({ icon: Icon, value, arrow, ...rest }) => {
   const [selectedDate, setSelectedDate] = useState<DayValue>(null)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
@@ -63,7 +67,7 @@ const InputDate: React.FC<InputProps> = ({ icon: Icon, value, ...rest }) => {
   }
 
   return (
-    <Style theme={theme} className='InputDate'>
+    <Style theme={theme} className='InputDate' arrow={arrow}>
       <DatePicker
         locale={ptbr}
         value={selectedDate}

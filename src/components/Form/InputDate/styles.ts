@@ -1,8 +1,12 @@
 import fromTheme from 'utils/fromTheme'
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-const Style = styled.div`
+interface StyleProps {
+  arrow?: string
+}
+
+const Style = styled.div<StyleProps>`
   .DatePicker {
     width: 100%;
     height: 4.5vh;
@@ -25,6 +29,7 @@ const Style = styled.div`
     border-bottom: solid 2px ${fromTheme('calendarHeader')};
     padding: 10px;
     border-radius: 20px 20px 0px 0px;
+
     .Calendar__monthText,
     .Calendar__yearText {
       width: 60%;
@@ -56,7 +61,7 @@ const Style = styled.div`
 
   .Calendar__monthSelector.-open,
   .Calendar__yearSelector.-open {
-    border-radius: 30px 30px 20px 20px;
+    border-radius: 0px 0px 20px 20px;
   }
 
   .Calendar__yearSelectorWrapper,
@@ -86,7 +91,14 @@ const Style = styled.div`
   }
 
   .DatePicker__calendarArrow {
-    border-color: transparent transparent ${fromTheme('calendarHeader')} transparent;
+    ${({ arrow }) =>
+      arrow === 'bottom'
+        ? css`
+            border-color: transparent transparent ${fromTheme('calendarHeader')} transparent;
+          `
+        : css`
+            border-color: transparent transparent ${fromTheme('calendarBackground')} transparent;
+          `}
   }
 
   .Calendar__section.-shown,
