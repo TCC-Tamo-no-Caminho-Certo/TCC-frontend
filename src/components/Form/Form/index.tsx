@@ -18,7 +18,7 @@ interface Props extends HTMLProps<HTMLFormElement> {
   loading?: boolean
   valSchema?: ObjectSchema
   addData?: { [key: string]: string }
-  changeData?: (data: any) => void
+  handleData?: (data: any) => void
   callback?: (resData: any) => void
 }
 
@@ -33,7 +33,7 @@ const Form: FC<Props> = ({
   token,
   loading,
   valSchema,
-  changeData,
+  handleData,
   addData,
   captcha,
   callback,
@@ -87,7 +87,7 @@ const Form: FC<Props> = ({
 
   const submit = async (cb?: (data: any) => void) => {
     const resData = await api.post(
-      `http://dev.steamslab.com/api/${path}`,
+      path,
       data,
       token ? { headers: { authorization: `Berear ${token}` } } : undefined
     )
@@ -101,10 +101,10 @@ const Form: FC<Props> = ({
     loading && setShowLoader(true)
 
     setData()
-    changeData && changeData(data)
+    handleData && handleData(data)
     validate()
     if (captcha) data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
-    !haveErrors && (await submit(callback))
+    // !haveErrors && (await submit(callback))
 
     loading && setShowLoader(false)
     console.log(data)

@@ -91,7 +91,12 @@ const ForgotPassword: React.FC = () => {
               <Form callback={handleTokenSubmit} path='reset-password' loading captcha>
                 <h3>Confirme o código enviado para o seu email</h3>
 
-                <Input name='token' placeholder='Código' icon={FiLock} />
+                <Input
+                  name='token'
+                  placeholder='Código'
+                  handleValue={value => localStorage.setItem('reset-password-token', value)}
+                  icon={FiLock}
+                />
 
                 <Button className='submit'>Confirmar</Button>
               </Form>

@@ -38,7 +38,7 @@ const FormSignup: React.FC = () => {
       <Form
         valSchema={signupSchema}
         path='register'
-        changeData={data => {
+        handleData={data => {
           const old = data.birthday.split('/')
           data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
         }}
