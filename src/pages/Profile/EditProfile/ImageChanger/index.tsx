@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Style from './styles'
 
-import { RootState, ThemeState, useDispatch, useSelector } from 'store'
-import { ModalsActions } from 'store/modals'
+import { ModalContext } from '../'
+
+import { RootState, ThemeState, useSelector } from 'store'
 
 import 'cropperjs/dist/cropper.css'
 import { Cropper } from 'react-cropper'
 
 const ImageChanger: React.FC = () => {
-  const dispatch = useDispatch()
+  const modal = useContext(ModalContext)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const [image, setImage] = useState()
@@ -38,7 +39,7 @@ const ImageChanger: React.FC = () => {
   function onConfirmButtonClick() {
     if (cropper.cropped) {
       setCropData(cropper.getCroppedCanvas().toDataURL())
-      setTimeout(() => dispatch(ModalsActions.setUser(false)), 1)
+      setTimeout(() => modal?.setShow(false), 1)
     }
   }
 
@@ -78,7 +79,9 @@ const ImageChanger: React.FC = () => {
           <div className='before-img-preview' />
         </div>
 
-        <button type='button'> Descartar alterações </button>
+        <button type='button' onClick={() => modal?.setShow(false)}>
+          Descartar alterações
+        </button>
 
         <button type='button' className='confirmButton' onClick={onConfirmButtonClick}>
           Confirmar

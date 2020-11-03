@@ -1,21 +1,27 @@
-import React, { useCallback, useState } from 'react'
+import React, { createContext, useCallback, useState } from 'react'
 import Style, { ConfirmModal } from './styles'
 
 import Fields from './Fields'
 import ImageChanger from './ImageChanger'
 
-import { RootState, ThemeState, useDispatch, useSelector } from 'store'
-import { ModalsActions } from 'store/modals'
+import { RootState, ThemeState, useSelector } from 'store'
 
 import { Button, Form, Input } from 'components/Form'
 import Card from 'components/Card'
 import Modal from 'components/Modal'
 
+export interface ModalState {
+  show: boolean
+  setShow: (value: any) => void
+}
+
+export const ModalContext = createContext<ModalState | null>(null)
+ModalContext.displayName = 'Modal Context'
+
 const EditProfile: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
-  const userModal = useSelector<RootState, boolean>(state => state.modals.user)
-  const dispatch = useDispatch()
-  const [show, setShow] = useState(false)
+  const [image, setImage] = useState(false)
+  const [confirm, setConfirm] = useState(false)
 
   const changeData = useCallback((data: any) => {
     if (data.birthday) {
@@ -25,19 +31,19 @@ const EditProfile: React.FC = () => {
   }, [])
 
   return (
-    <>
+    <ModalContext.Provider value={{ show: image, setShow: setImage }}>
       <Style theme={theme}>
         <Form path='user/update' changeData={changeData} loading captcha>
           <Fields theme={theme} />
 
-          <ConfirmModal theme={theme} show={show}>
+          <ConfirmModal theme={theme} show={confirm}>
             <Card headerText='Confirme sua senha'>
               <Input name='password' placeholder='Confirme sua senha' eye />
               <div className='buttons'>
                 <button
                   type='button'
                   onClick={() => {
-                    setShow(false)
+                    setConfirm(false)
                   }}
                 >
                   Cancelar
@@ -56,7 +62,7 @@ const EditProfile: React.FC = () => {
             id='saveButton'
             type='button'
             onClick={() => {
-              setShow(true)
+              setConfirm(true)
             }}
           >
             Salvar
@@ -64,12 +70,10 @@ const EditProfile: React.FC = () => {
         </Form>
       </Style>
 
-      <Modal
-        show={userModal}
-        onClick={() => dispatch(ModalsActions.setUser(false))}
-        children={ImageChanger}
-      />
-    </>
+      <Modal show={image} onClick={() => setImage(false)}>
+        <ImageChanger />
+      </Modal>
+    </ModalContext.Provider>
   )
 }
 
