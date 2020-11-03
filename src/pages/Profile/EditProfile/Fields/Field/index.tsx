@@ -22,13 +22,23 @@ const Field: FC<Props> = ({ theme, data }) => {
     return old[0] ? `${old[2]}/${old[1]}/${old[0]}` : ''
   }
 
+  const handleData = (formData: any) => {
+    const old = formData.birthday.split('/')
+    formData.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
+  }
+
   useEffect(() => {
     if (change) inputRef.current?.focus()
   }, [change])
 
   const input =
     data.inputname === 'birthday' ? (
-      <InputDate name={data.inputname} value={`${inputDateValue(data.value as string)}`} noStyle />
+      <InputDate
+        name={data.inputname}
+        handleValue={handleData}
+        value={`${inputDateValue(data.value as string)}`}
+        noStyle
+      />
     ) : (
       <Input
         ref={inputRef}

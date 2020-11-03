@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useState } from 'react'
+import React, { createContext, useState } from 'react'
 import Style, { ConfirmModal } from './styles'
 
 import Fields from './Fields'
@@ -27,12 +27,7 @@ const EditProfile: React.FC = () => {
 
   let updateData: any
 
-  const changeData = (data: any) => {
-    if (data.birthday) {
-      const old = data.birthday.split('/')
-      data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
-    }
-
+  const handleData = (data: any) => {
     updateData = data
   }
 
@@ -43,7 +38,7 @@ const EditProfile: React.FC = () => {
   return (
     <ModalContext.Provider value={{ show: image, setShow: setImage }}>
       <Style theme={theme}>
-        <Form path='user/update' changeData={changeData} callback={submitCallback} loading captcha>
+        <Form path='user/update' handleData={handleData} callback={submitCallback} loading captcha>
           <Fields theme={theme} />
 
           <ConfirmModal theme={theme} show={confirm}>

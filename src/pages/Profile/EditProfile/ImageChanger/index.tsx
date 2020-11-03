@@ -53,7 +53,7 @@ const ImageChanger: React.FC = () => {
         }
       )
 
-      dispatch(UserActions.updateUserInfo({ avata: result.object }))
+      dispatch(UserActions.updateUserInfo({ avatar: result.object }))
       modal?.setShow(false)
     }
   }
