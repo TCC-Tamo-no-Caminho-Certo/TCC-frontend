@@ -4,21 +4,21 @@ import Map from './Map'
 import RightMenu from './RightMenu'
 import Projects from './Projects/index'
 
-import map from 'assets/MainSidebar/map.svg'
-import projects from 'assets/MainSidebar/projects.svg'
+import MapIcon from 'assets/MainSidebar/MapIcon'
+import ProjectIcon from 'assets/MainSidebar/ProjectIcon'
 
 import Sidebar from 'components/Sidebar'
 
 const Profile: React.FC = () => {
   const mainRoutes = [
     {
+      icon: () => <MapIcon />,
       path: '/session/main/map',
-      icon: map,
       label: 'Mapa',
     },
     {
+      icon: () => <ProjectIcon />,
       path: '/session/main/projects',
-      icon: projects,
       label: 'Projetos',
     },
   ]

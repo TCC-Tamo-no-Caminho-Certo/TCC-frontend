@@ -5,13 +5,15 @@ import EditProfile from './EditProfile'
 import Historic from './Historic'
 import Financial from './Financial'
 import Customization from './Customization'
+import Security from './Security'
 
-import home from 'assets/ProfileSidebar/home.svg'
-import editProfile from 'assets/ProfileSidebar/editProfile.svg'
-import financial from 'assets/ProfileSidebar/financial.svg'
-import historic from 'assets/ProfileSidebar/historic.svg'
-import customization from 'assets/ProfileSidebar/customization.svg'
-import map from 'assets/MainSidebar/map.svg'
+import CardIcon from 'assets/ProfileSidebar/CardIcon'
+import EditUserIcon from 'assets/ProfileSidebar/EditUserIcon'
+import HistoryIcon from 'assets/ProfileSidebar/HistoryIcon'
+import PalleteIcon from 'assets/ProfileSidebar/PalleteIcon'
+import SecurityIcon from 'assets/ProfileSidebar/SecurityIcon'
+import UserIcon from 'assets/ProfileSidebar/UserIcon'
+import MapIcon from 'assets/MainSidebar/MapIcon'
 
 import Sidebar from 'components/Sidebar'
 import Content from 'components/Sidebar/Content'
@@ -22,38 +24,44 @@ const Profile: React.FC = () => {
   const profileRoutes = useMemo(
     () => [
       {
-        icon: home,
+        icon: () => <UserIcon />,
         label: 'Perfil',
         path: '/session/profile',
         exact: true,
         component: () => <ProfileHome />,
       },
       {
-        icon: editProfile,
+        icon: () => <EditUserIcon />,
         label: 'Editar Perfil',
         path: '/session/profile/edit-profile',
         component: () => <EditProfile />,
       },
       {
-        icon: financial,
+        icon: () => <CardIcon />,
         label: 'Financeiro',
         path: '/session/profile/financial',
         component: () => <Financial />,
       },
       {
-        icon: historic,
+        icon: () => <SecurityIcon />,
+        label: 'Financeiro',
+        path: '/session/profile/security',
+        component: () => <Security />,
+      },
+      {
+        icon: () => <HistoryIcon />,
         label: 'Histórico',
         path: '/session/profile/historic',
         component: () => <Historic />,
       },
       {
-        icon: customization,
+        icon: () => <PalleteIcon />,
         label: 'Customização',
         path: '/session/profile/customization',
         component: () => <Customization />,
       },
       {
-        icon: map,
+        icon: () => <MapIcon />,
         label: 'Voltar ao mapa',
         path: '/session/main/map',
         bottom: true,

@@ -9,10 +9,11 @@ import { passwordSchema } from 'utils/validations/forgotPassword'
 import { ThemeState } from 'store/theme'
 import { RootState, useSelector } from 'store'
 
+import PadlockIcon from 'assets/Inputs/PadlockIcon'
+
 import Logo from 'components/Logo'
 import { Button, Form, Input } from 'components/Form'
 
-import { FiLock } from 'react-icons/fi'
 import { useHistory } from 'react-router-dom'
 
 const ConfirmPassword: React.FC = () => {
@@ -61,13 +62,19 @@ const ConfirmPassword: React.FC = () => {
               captcha
             >
               <h2>Digite sua nova senha</h2>
-              <Input name='password' type='password' placeholder='Senha' icon={FiLock} eye />
+              <Input
+                name='password'
+                type='password'
+                placeholder='Senha'
+                icon={() => <PadlockIcon />}
+                eye
+              />
               <h2>Confirme sua nova senha</h2>
               <Input
                 name='confirmPassword'
                 type='password'
                 placeholder='Confirmar senha'
-                icon={FiLock}
+                icon={() => <PadlockIcon />}
                 eye
               />
 

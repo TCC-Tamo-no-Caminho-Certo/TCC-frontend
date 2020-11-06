@@ -8,8 +8,8 @@ import api from 'services/api'
 import { UserActions } from 'store/user'
 import { RootState, ThemeState, useDispatch, useSelector } from 'store'
 
-import Camera from 'assets/Camera'
-import Close from 'assets/Close'
+import CameraIcon from 'assets/Inputs/CameraIcon'
+import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import 'cropperjs/dist/cropper.css'
 import { motion } from 'framer-motion'
@@ -114,7 +114,7 @@ const ImageChanger: React.FC = () => {
       </div>
 
       <div id='sidebar'>
-        <Close onClick={onCloseClick} />
+        <CloseIcon onClick={onCloseClick} />
 
         <div id='preview'>
           <span>Antevisão</span>
@@ -126,7 +126,7 @@ const ImageChanger: React.FC = () => {
         {showUpload && (
           <>
             <label htmlFor='other' id='otherFileSelect'>
-              <Camera />
+              <CameraIcon />
               Enviar outra foto
             </label>
             <input id='other' type='file' onChange={onChange} />

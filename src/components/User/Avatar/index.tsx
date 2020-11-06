@@ -4,8 +4,9 @@ import Style from './styles'
 import { RootState, useSelector } from 'store'
 import { ThemeState } from 'store/theme'
 
-import defaultAvatar from 'assets/avatar.jpg'
-import Camera from 'assets/Camera'
+import AvatarIcon from 'assets/Inputs/AvatarIcon'
+import CameraIcon from 'assets/Inputs/CameraIcon'
+import DotsLoader from 'assets/DotsLoader'
 
 import { motion } from 'framer-motion'
 
@@ -13,17 +14,27 @@ interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
   size: number
   shadow?: boolean
   onClickInShadow?(): void
+  loaderColor?: string
 }
-const Avatar: FC<AvatarProps> = ({ size, shadow = false, onClickInShadow, ...rest }) => {
+const Avatar: FC<AvatarProps> = ({
+  size,
+  shadow = false,
+  onClickInShadow,
+  loaderColor = '#fcfcfc',
+  ...rest
+}) => {
   const avatar = useSelector<RootState, string>(state => state.user.avatar)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
-  const src =
-    avatar === 'default.png' ? defaultAvatar : `https://s3.steamslab.com/profile/${avatar}`
+  const src = `https://s3.steamslab.com/profile/${avatar}`
 
   return avatar ? (
     <Style shadow={shadow} size={size} className='Avatar' theme={theme}>
-      <img src={src} alt='avatar' draggable={false} {...rest} />
+      {avatar === 'default.png' ? (
+        <AvatarIcon />
+      ) : (
+        <img src={src} alt='avatar' draggable={false} {...rest} />
+      )}
 
       {shadow && (
         <motion.div
@@ -32,12 +43,12 @@ const Avatar: FC<AvatarProps> = ({ size, shadow = false, onClickInShadow, ...res
           transition={{ duration: 0.3 }}
           onClick={onClickInShadow}
         >
-          <Camera />
+          <CameraIcon />
         </motion.div>
       )}
     </Style>
   ) : (
-    <span>starting animation...</span>
+    <DotsLoader color={loaderColor} dotSize={8} size={36} />
   )
 }
 

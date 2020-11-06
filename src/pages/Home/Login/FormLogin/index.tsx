@@ -8,13 +8,13 @@ import { HomeActions } from 'store/home'
 import { ThemeState } from 'store/theme'
 
 import google from 'assets/google.png'
+import MailIcon from 'assets/Inputs/MailIcon'
+import PadlockIcon from 'assets/Inputs/PadlockIcon'
 
 import { Button, Form, Input } from 'components/Form'
 import Logo from 'components/Logo'
 import ThemeSwitch from 'components/ThemeSwitch'
 
-import { AiOutlineMail } from 'react-icons/ai'
-import { FiLock } from 'react-icons/fi'
 import { Link, useHistory } from 'react-router-dom'
 
 export interface LoginData {
@@ -51,14 +51,14 @@ const FormLogin: React.FC = () => {
         </Google>
 
         <Form callback={handleSubmit} valSchema={loginSchema} path='login' loading captcha>
-          <Input name='email' placeholder='E-mail' icon={AiOutlineMail} autoComplete='email' />
+          <Input name='email' placeholder='E-mail' icon={() => <MailIcon />} autoComplete='email' />
 
           <Input
             name='password'
             type='password'
             placeholder='Senha'
             autoComplete='current-password'
-            icon={FiLock}
+            icon={() => <PadlockIcon />}
             eye
           />
 

@@ -7,13 +7,13 @@ import { ThemeState } from 'store/theme'
 import { HomeActions } from 'store/home'
 import { RootState, useDispatch, useSelector } from 'store'
 
+import WorldIcon from 'assets/Inputs/WorldIcon'
+import UserLockedIcon from 'assets/Inputs/UserLockedIcon'
+
 import Logo from 'components/Logo'
 import ThemeSwitch from 'components/ThemeSwitch'
 import { Button, Form, Input, InputDate } from 'components/Form'
 import BackButton from 'components/BackButton'
-
-import { FaUserLock } from 'react-icons/fa'
-import { MdPublic } from 'react-icons/md'
 
 const FormSignup: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
@@ -49,11 +49,16 @@ const FormSignup: React.FC = () => {
           className='dual'
           name='name'
           placeholder='Nome'
-          icon={MdPublic}
+          icon={() => <WorldIcon />}
           autoComplete='given-name'
         />
 
-        <Input name='surname' placeholder='Sobrenome' icon={MdPublic} autoComplete='family-name' />
+        <Input
+          name='surname'
+          placeholder='Sobrenome'
+          icon={() => <WorldIcon />}
+          autoComplete='family-name'
+        />
 
         <span>
           Certifique-se de que corresponde ao nome no seu documento de identificação oficial
@@ -63,12 +68,17 @@ const FormSignup: React.FC = () => {
           name='birthday'
           placeholder='Data de nascimento'
           arrow='bottom'
-          icon={FaUserLock}
+          icon={() => <UserLockedIcon />}
         />
 
         <span>Você precisa ter pelo menos 18 anos</span>
 
-        <Input name='email' placeholder='E-mail' icon={FaUserLock} autoComplete='email' />
+        <Input
+          name='email'
+          placeholder='E-mail'
+          icon={() => <UserLockedIcon />}
+          autoComplete='email'
+        />
 
         <span>Enviaremos um e-mail para confirmação</span>
 
@@ -78,7 +88,7 @@ const FormSignup: React.FC = () => {
           type='password'
           placeholder='Senha'
           autoComplete='new-password'
-          icon={FaUserLock}
+          icon={() => <UserLockedIcon />}
           eye
         />
 
@@ -86,7 +96,7 @@ const FormSignup: React.FC = () => {
           name='confirmPassword'
           type='password'
           placeholder='Confirmar Senha'
-          icon={FaUserLock}
+          icon={() => <UserLockedIcon />}
           autoComplete='new-password'
         />
 

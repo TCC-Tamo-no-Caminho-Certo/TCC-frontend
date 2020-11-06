@@ -2,13 +2,13 @@ import React from 'react'
 import Style, { MotionRect } from './styles'
 
 interface HamburgerProps {
-  toggle(): void
+  toggle?(): void
   state: boolean
 }
 
 const Hamburger: React.FC<HamburgerProps> = ({ toggle, state }) => {
   function onHamburgerClick() {
-    toggle()
+    toggle?.()
   }
 
   const first = {

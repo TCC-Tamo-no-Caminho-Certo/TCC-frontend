@@ -31,7 +31,7 @@ const Style = styled.div<StyleProps>`
     color: white;
     pointer-events: none;
 
-    .Camera {
+    .Icon {
       position: absolute;
       bottom: 16%;
       left: 50%;
@@ -39,15 +39,16 @@ const Style = styled.div<StyleProps>`
 
       width: 24px;
       transform: translate(-50%, 50%);
+      transition: all 300ms ease-in-out;
       cursor: pointer;
 
-      path {
-      }
+      fill: ${fromTheme('primary')};
+      opacity: 0.3;
     }
 
     &:hover {
-      .Camera path {
-        stroke: ${fromTheme('primary')};
+      .Icon {
+        opacity: 1;
       }
     }
   }

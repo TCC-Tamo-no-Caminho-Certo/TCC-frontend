@@ -46,13 +46,21 @@ export const Content = styled.div`
   }
 
   form {
+    & > * {
+      width: 100%;
+      margin-bottom: 2.5vh;
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+
     button {
       position: relative;
 
       width: 100%;
       height: 5vh;
       min-height: 35px;
-
       transition: all 0.2s;
       font-size: calc(1.3rem + 0.5vh);
       font: 700 1.8rem 'Archivo';
@@ -74,14 +82,9 @@ export const Content = styled.div`
 
         transform: translateY(-50%);
       }
-    }
 
-    & > * {
-      width: 100%;
-      margin-bottom: 2.5vh;
-
-      &:last-child {
-        margin: 0;
+      .dual {
+        transform: translateY(-1px);
       }
     }
   }
@@ -91,6 +94,10 @@ export const Content = styled.div`
     font-size: calc(1.2rem + 0.5vh);
 
     color: ${fromTheme('primary')};
+  }
+
+  #Padlock {
+    width: 16px;
   }
 
   @media screen and (min-height: 700px) {

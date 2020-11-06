@@ -37,12 +37,15 @@ const Style = styled.nav`
 
         width: 100%;
 
-        img {
+        .Icon {
+          min-width: 24px;
+          min-height: 24px;
           width: 24px;
           height: 24px;
           margin: 24px;
 
-          color: #fff;
+          fill: #fcfcfc;
+          stroke: #fcfcfc;
         }
 
         span {

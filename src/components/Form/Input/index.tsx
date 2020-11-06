@@ -1,5 +1,4 @@
 import React, {
-  ComponentType,
   FocusEvent,
   FormEvent,
   forwardRef,
@@ -14,16 +13,16 @@ import { CheckboxStyle, DefaultInput, Field } from './styles'
 import FormContext, { FormState } from '../Form/FormContext'
 import Checkbox from '../Checkbox'
 
-import ErrorTooltip from 'components/Tooltips'
+import EyeClosedIcon from 'assets/Inputs/EyeClosedIcon'
+import EyeIcon from 'assets/Inputs/EyeIcon'
 
-import { IconBaseProps } from 'react-icons'
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import ErrorTooltip from 'components/Tooltips'
 
 export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   eye?: boolean
   noStyle?: boolean
   pasteAndDrop?: boolean
-  icon?: ComponentType<IconBaseProps>
+  icon?: () => JSX.Element
   handleValue?: (value: any) => void
 }
 
@@ -102,9 +101,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         }}
       >
         {error ? (
-          <ErrorTooltip theme={form?.theme} content={error} />
+          <div className='iconSpace'>
+            <ErrorTooltip theme={form?.theme} content={error} />
+          </div>
         ) : (
-          Icon && <Icon className='icon' />
+          Icon && (
+            <div className='iconSpace'>
+              <Icon />
+            </div>
+          )
         )}
 
         {type === 'checkbox' && !noStyle && <Checkbox theme={form?.theme} checked={checked} />}
@@ -128,9 +133,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
         {eye &&
           (showInput ? (
-            <AiFillEyeInvisible onClick={() => setShowInput(false)} className='eyeIcon' />
+            <div className='iconSpace'>
+              <EyeClosedIcon onClick={() => setShowInput(false)} />
+            </div>
           ) : (
-            <AiFillEye className='eyeIcon' onClick={() => setShowInput(true)} />
+            <div className='iconSpace'>
+              <EyeIcon onClick={() => setShowInput(true)} />
+            </div>
           ))}
       </InputStyle>
     )

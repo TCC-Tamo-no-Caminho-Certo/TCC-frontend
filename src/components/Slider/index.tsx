@@ -33,7 +33,7 @@ const Slider: React.FC<SliderProps> = ({ children: containers, gap, width, gapVe
 
   const onDragged = useCallback(
     (event: any, info: any) => {
-      const maxSwipeToAnimate = 20000
+      const maxSwipeToAnimate = 300000
       const offset = info.offset.x
       const velocity = info.velocity.x
       const swipe = Math.abs(offset) * velocity

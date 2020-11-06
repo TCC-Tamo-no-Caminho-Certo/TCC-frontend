@@ -55,6 +55,8 @@ const Style = styled.div`
     }
 
     .cropper-point {
+      width: 5px;
+      height: 5px;
       opacity: 1;
 
       background-color: ${fromTheme('white')};
@@ -100,14 +102,19 @@ const Style = styled.div`
 
     margin-left: 48px;
 
-    .Close {
+    #Close {
       position: absolute;
       top: 24px;
       right: 24px;
-      transform: scale(1.2);
 
-      path {
-        fill: ${fromTheme('white')};
+      width: 18px;
+      height: 18px;
+      transition: fill 300ms ease-out;
+
+      fill: ${fromTheme('white')};
+
+      &:hover {
+        fill: ${fromTheme('primary')};
       }
     }
 
@@ -165,16 +172,18 @@ const Style = styled.div`
 
       cursor: pointer;
 
-      .Camera {
+      .Icon {
         width: 24px;
+        height: 24px;
         margin-right: 8px;
+        fill: ${fromTheme('white')};
       }
 
       &:hover {
         color: ${fromTheme('primary')};
 
-        .Camera path {
-          stroke: ${fromTheme('primary')};
+        .Icon {
+          fill: ${fromTheme('primary')};
         }
       }
     }

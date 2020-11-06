@@ -1,18 +1,30 @@
 import React, { memo } from 'react'
 import { StyledTooltipError } from './styles'
 
-import { FcHighPriority } from 'react-icons/fc'
+import AlertIcon from 'assets/Inputs/AlertIcon'
+
 import { PopupProps } from 'semantic-ui-react'
 
 interface Props extends PopupProps {
   theme: any
 }
 
-const ErrorTooltip: React.FC<Props> = ({ theme, className = 'errorIcon', ...rest }) => {
+const ErrorTooltip: React.FC<Props> = ({ theme, ...rest }) => {
   return (
     <StyledTooltipError
       theme={theme}
-      trigger={<FcHighPriority className={className} />}
+      trigger={
+        <div
+          style={{
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <AlertIcon />
+        </div>
+      }
       className='ErrorTooltip'
       position='top left'
       {...rest}

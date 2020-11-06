@@ -3,8 +3,10 @@ import Style, { Change, Label, Value } from './styles'
 
 import { Info } from 'utils/formatUpdateUser'
 
-import editPencil from 'assets/editPencil.svg'
-import Close from 'assets/Close'
+import { RootState, ThemeState, useSelector } from 'store'
+
+import PencilIcon from 'assets/Inputs/PencilIcon'
+import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import { Input, InputDate } from 'components/Form'
 
@@ -16,6 +18,7 @@ interface Props {
 const Field: FC<Props> = ({ theme, data }) => {
   const [change, setChange] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  const themes = useSelector<RootState, ThemeState>(state => state.theme)
 
   const inputDateValue = (value: string) => {
     const old = value.split('-')
@@ -60,10 +63,10 @@ const Field: FC<Props> = ({ theme, data }) => {
         )}
       </Value>
 
-      <Change>
+      <Change theme={themes}>
         <label htmlFor={change ? data.inputname : undefined}>
           <button type='button' onClick={() => setChange(!change)}>
-            {change ? <Close /> : <img src={editPencil} alt='edit' />}
+            {change ? <CloseIcon /> : <PencilIcon />}
           </button>
         </label>
       </Change>

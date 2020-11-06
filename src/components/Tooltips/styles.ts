@@ -13,11 +13,8 @@ export const StyledTooltipError = styled(Popup)`
   &,
   &:before {
     background-color: ${fromTheme('primary')} !important;
-  }
-
-  &:before {
     box-shadow: none !important;
-    margin-left: 5% !important;
+    margin-left: 1px !important;
   }
 `
 

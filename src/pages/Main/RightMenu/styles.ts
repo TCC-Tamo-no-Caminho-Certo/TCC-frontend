@@ -92,10 +92,6 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
       font-size: 1.4rem;
 
       color: ${fromTheme('white')};
-
-      img {
-        margin-right: 16px;
-      }
     }
 
     li + li {
@@ -109,17 +105,22 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     right: 16px;
 
     display: flex;
+    align-items: center;
 
-    color: ${fromTheme('white')};
+    height: 24px;
     opacity: 0;
 
-    div {
-      font-size: 1.5rem;
-      line-height: 15px;
-    }
+    color: ${fromTheme('white')};
 
-    img {
+    .Icon {
+      min-width: 20px;
+      min-height: 20px;
+      width: 20px;
+      height: 20px;
+      margin: 0px;
       margin-left: 8px;
+
+      fill: ${fromTheme('white')};
     }
   }
 `
@@ -146,11 +147,21 @@ const Style = styled.div<StyleProps>`
     color: ${fromTheme('white')};
   }
 
-  .Avatar {
+  .Avatar,
+  .DotsLoader {
     margin-left: 16px;
   }
 
-  #gear {
+  .Icon {
+    margin-right: 16px;
+    width: 24px;
+
+    fill: ${fromTheme('white')};
+  }
+
+  #Gear {
+    width: 10px;
+
     position: absolute;
     right: 16px;
     top: 73px;

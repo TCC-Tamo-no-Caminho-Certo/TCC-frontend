@@ -11,7 +11,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
 
 export interface RouteProps {
-  icon: string
+  icon: () => JSX.Element
   label: string
   path: string
   bottom?: boolean
@@ -94,7 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
           <ListItem key={route.path} bottom={route.bottom}>
             <Link to={route.path} onClick={() => window.scrollTo(0, height * index)}>
               <button type='button'>
-                <img src={route.icon} alt={route.path} />
+                <route.icon />
 
                 <AnimatePresence>
                   {open && (

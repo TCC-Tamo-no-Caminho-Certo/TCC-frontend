@@ -1,3 +1,5 @@
+import fromTheme from 'utils/fromTheme'
+
 import styled from 'styled-components'
 
 const Style = styled.div.attrs({ className: 'InfoChanger' })`
@@ -53,13 +55,18 @@ export const Change = styled.div`
   grid-area: change;
   justify-self: end;
 
+  .Icon {
+    width: 18px;
+    height: 18px;
+
+    fill: ${fromTheme('primary')};
+    stroke: none;
+    cursor: pointer;
+  }
+
   label {
     cursor: default;
     margin-right: 15px;
-
-    img {
-      cursor: pointer;
-    }
   }
 `
 

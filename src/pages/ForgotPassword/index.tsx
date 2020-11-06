@@ -9,11 +9,13 @@ import { ThemeState } from 'store/theme'
 import { RootState, useDispatch, useSelector } from 'store'
 import { HomeActions } from 'store/home'
 
+import PadlockIcon from 'assets/Inputs/PadlockIcon'
+import MailIcon from 'assets/Inputs/MailIcon'
+
 import Logo from 'components/Logo'
 import { Button, Form, Input } from 'components/Form'
 import BackButton from 'components/BackButton'
 
-import { FiLock, FiUser } from 'react-icons/fi'
 import { useHistory } from 'react-router-dom'
 
 const ForgotPassword: React.FC = () => {
@@ -95,7 +97,7 @@ const ForgotPassword: React.FC = () => {
                   name='token'
                   placeholder='Código'
                   handleValue={value => localStorage.setItem('reset-password-token', value)}
-                  icon={FiLock}
+                  icon={() => <PadlockIcon />}
                 />
 
                 <Button className='submit'>Confirmar</Button>
@@ -123,7 +125,12 @@ const ForgotPassword: React.FC = () => {
               >
                 <h3>Digite seu email para recuperar a senha</h3>
 
-                <Input name='email' placeholder='E-mail' icon={FiUser} handleValue={setUserEmail} />
+                <Input
+                  name='email'
+                  placeholder='E-mail'
+                  icon={() => <MailIcon />}
+                  handleValue={setUserEmail}
+                />
 
                 <p>
                   Enviaremos uma email para o seguinte endereço contendo instruções para renovação

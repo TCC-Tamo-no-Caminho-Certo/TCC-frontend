@@ -5,10 +5,10 @@ import api from 'services/api'
 
 import { RootState, ThemeState, UserState, useSelector } from 'store'
 
-import gear from 'assets/gear.svg'
-import logout from 'assets/RightMenuOpen/logout.svg'
-import change from 'assets/RightMenuOpen/change.svg'
-import editProfile from 'assets/ProfileSidebar/editProfile.svg'
+import EditUserIcon from 'assets/ProfileSidebar/EditUserIcon'
+import LogoutIcon from 'assets/RightMenuOpen/LogoutIcon'
+import ChangeIcon from 'assets/RightMenuOpen/ChangeIcon'
+import GearIcon from 'assets/RightMenuOpen/GearIcon'
 
 import Avatar from 'components/User/Avatar'
 
@@ -32,7 +32,7 @@ const RightMenu: React.FC = () => {
     toggle()
   }
 
-  const onLogoutClick = async () => {
+  async function onLogoutClick() {
     const token = localStorage.getItem('@SLab_ac_token')
     await api.get('logout', {
       headers: {
@@ -40,6 +40,25 @@ const RightMenu: React.FC = () => {
       },
     })
     history.push('/')
+  }
+
+  function UserRoleLabel(userRole: string) {
+    switch (userRole) {
+      case 'professor':
+        return 'Professor'
+      case 'proponent':
+        return 'Proponente'
+      case 'base user':
+        return 'Convidado'
+      case 'student':
+        return 'Estudante'
+      case 'admin':
+        return 'Administrador'
+      case 'user':
+        return 'Usuário'
+      default:
+        return 'Não identificado'
+    }
   }
 
   const pathAnimation = {
@@ -144,7 +163,7 @@ const RightMenu: React.FC = () => {
         <Avatar size={80} />
 
         <UserInfo theme={theme}>
-          <span id='userRole'>{role === 'base user' ? 'Convidado' : 'nothing'}</span>
+          <span id='userRole'>{UserRoleLabel(role)}</span>
           <span id='userName'>{`${name} ${surname}`}</span>
 
           <span id='userActivity'>
@@ -156,7 +175,7 @@ const RightMenu: React.FC = () => {
         </UserInfo>
 
         <button type='button' onClick={onGearClick}>
-          <img src={gear} alt='edit profile' id='gear' />
+          <GearIcon />
         </button>
 
         <AnimatePresence>
@@ -174,27 +193,26 @@ const RightMenu: React.FC = () => {
 
                 <motion.li key='Edit Profile' variants={liAnimation}>
                   <Link to='/session/profile/edit-profile'>
-                    <img src={editProfile} alt='Edit Profile' /> Editar perfil
+                    <EditUserIcon /> Editar perfil
                   </Link>
                 </motion.li>
 
                 <motion.li key='Switch Perfil' variants={liAnimation}>
                   <Link to='/editProfile'>
-                    <img src={change} alt='Switch Perfil' />
-                    Alternar papel
+                    <ChangeIcon /> Alternar perfil
                   </Link>
                 </motion.li>
-              </ul>
 
-              <motion.button
-                type='button'
-                onClick={onLogoutClick}
-                variants={logoutAnimation}
-                animate='open'
-              >
-                <div>Sair</div>
-                <img src={logout} alt='Logout' />
-              </motion.button>
+                <motion.button
+                  type='button'
+                  onClick={onLogoutClick}
+                  variants={logoutAnimation}
+                  animate='open'
+                >
+                  <div>Sair</div>
+                  <LogoutIcon />
+                </motion.button>
+              </ul>
             </RightMenuOpen>
           )}
         </AnimatePresence>
