@@ -53,20 +53,24 @@ export const Value = styled.div`
 
 export const Change = styled.div`
   grid-area: change;
-  justify-self: end;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .Icon {
     width: 18px;
     height: 18px;
 
     fill: ${fromTheme('primary')};
-    stroke: none;
+    stroke: ${fromTheme('primary')};
     cursor: pointer;
   }
 
   label {
     cursor: default;
-    margin-right: 15px;
+    width: 18px;
+    height: 18px;
   }
 `
 
