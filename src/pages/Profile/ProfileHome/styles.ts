@@ -14,4 +14,4 @@ const Style = styled.div`
 `
 export default Style
 
-Style.displayName = 'Historic-Style'
+Style.displayName = 'ProfileHome-Style'

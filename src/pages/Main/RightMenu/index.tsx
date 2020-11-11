@@ -9,6 +9,7 @@ import EditUserIcon from 'assets/ProfileSidebar/EditUserIcon'
 import LogoutIcon from 'assets/RightMenuOpen/LogoutIcon'
 import ChangeIcon from 'assets/RightMenuOpen/ChangeIcon'
 import GearIcon from 'assets/RightMenuOpen/GearIcon'
+import ProfilesToggle from 'assets/RightMenuOpen/ProfilesToggle'
 
 import Avatar from 'components/User/Avatar'
 
@@ -24,7 +25,7 @@ const RightMenu: React.FC = () => {
 
   const width = 300
   const closedHeight = 112
-  const editHeight = 127 + closedHeight
+  const openHeight = 300 + closedHeight
 
   const cycle = () => (editOpen ? 'open' : 'closed')
 
@@ -72,9 +73,9 @@ const RightMenu: React.FC = () => {
       },
     },
     open: {
-      d: `M0,8 C0,3.5 3.5,0 8,0 H${width} V${editHeight} H8 C3.5,${editHeight} 0,${
-        editHeight - 4
-      } 0,${editHeight - 8} V8Z`,
+      d: `M0,8 C0,3.5 3.5,0 8,0 H${width} V${openHeight} H8 C3.5,${openHeight} 0,${
+        openHeight - 4
+      } 0,${openHeight - 8} V8Z`,
       transition: {
         type: 'tween',
         duration: 0.2,
@@ -155,7 +156,7 @@ const RightMenu: React.FC = () => {
 
   return (
     <>
-      <Background width={`${width}px`} height={`${editHeight}px`}>
+      <Background width={`${width}px`} height={`${openHeight}px`}>
         <motion.path initial={false} variants={pathAnimation} animate={cycle()} fill='#6E4850' />
       </Background>
 
@@ -182,7 +183,7 @@ const RightMenu: React.FC = () => {
           {editOpen && (
             <RightMenuOpen
               width={`${width}px`}
-              height={`${editHeight - closedHeight}px`}
+              height={`${openHeight - closedHeight}px`}
               theme={theme}
               variants={rightMenuOpenAnimation}
               animate='open'
@@ -197,9 +198,15 @@ const RightMenu: React.FC = () => {
                   </Link>
                 </motion.li>
 
+                <motion.li key='Profiles Toggle' variants={liAnimation}>
+                  <Link to='/session/profile/edit-profile'>
+                    <ProfilesToggle /> Alternar entre perfis
+                  </Link>
+                </motion.li>
+
                 <motion.li key='Switch Perfil' variants={liAnimation}>
-                  <Link to='/editProfile'>
-                    <ChangeIcon /> Alternar perfil
+                  <Link to='/session/profile/edit-profile'>
+                    <ChangeIcon /> Mudar papel
                   </Link>
                 </motion.li>
 

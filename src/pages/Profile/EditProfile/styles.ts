@@ -68,4 +68,4 @@ const Style = styled(motion.section)`
 
 export default Style
 
-Style.displayName = 'Slider-Style'
+Style.displayName = 'EditProfile-Style'

@@ -3,7 +3,7 @@ import React, { FC, memo, useContext } from 'react'
 import Field from './Field'
 import { ModalContext } from '../'
 
-import formatUpdateUser, { Info, Types } from 'utils/formatUpdateUser'
+import formatUpdateUser, { Info } from 'utils/formatUpdateUser'
 
 import { RootState, UserState, useSelector } from 'store'
 
@@ -34,12 +34,6 @@ const Fields: FC<Props> = ({ theme }) => {
             <Field key={info.inputname} theme={theme} data={info} />
           )
         )}
-      </Card>
-
-      <Card key='Professor' headerText='Dados de Professor'>
-        {formatUpdateUser(user, 'professor').map((info: Info) => (
-          <Field key={info.inputname} theme={theme} data={info} />
-        ))}
       </Card>
 
       <Card key='Student' headerText='Dados de Estudante'>

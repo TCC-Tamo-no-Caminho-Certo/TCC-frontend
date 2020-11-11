@@ -15,4 +15,4 @@ const Style = styled.div`
 
 export default Style
 
-Style.displayName = 'Home-Style'
+Style.displayName = 'Security-Style'

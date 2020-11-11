@@ -92,6 +92,27 @@ export const Content = styled.div`
     color: ${fromTheme('primary')};
   }
 
+  #loginFailed {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+
+    min-height: 35px;
+    height: 4.5vh;
+    font-size: calc(1.3rem + 0.5vh);
+    border-radius: 35px;
+
+    color: red;
+
+    .Icon {
+      width: 24px;
+      fill: red;
+
+      margin-right: 8px;
+    }
+  }
+
   #Padlock {
     width: 16px;
   }

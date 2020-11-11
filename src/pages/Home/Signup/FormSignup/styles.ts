@@ -63,10 +63,11 @@ const Style = styled.div`
 
       position: relative;
 
-      span {
+      .DotsLoader {
         position: absolute;
         right: 10%;
-        top: calc(50% - 9px);
+        top: 50%;
+
         transform: translateY(-50%);
       }
     }

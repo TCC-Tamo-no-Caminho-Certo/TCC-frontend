@@ -125,12 +125,15 @@ export const Field = styled.div<StyleProps>`
     height: 100%;
   }
 
-  .Icon,
-  .errorIcon {
+  .Icon {
     width: 24px;
     margin: 0 8px;
 
     fill: ${fromTheme('quaternary')};
+  }
+
+  #Alert {
+    fill: ${fromTheme('primary')};
   }
 
   &:focus-within {
