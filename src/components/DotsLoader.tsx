@@ -3,17 +3,19 @@ import React from 'react'
 import { motion } from 'framer-motion'
 
 interface DotsLoaderProps {
-  size: number
-  dotSize: number
-  color: string
+  size?: number
+  dotSize?: number
+  color?: string
 }
 
 const DotsLoader: React.FC<DotsLoaderProps> = ({ size = 36, dotSize = 8, color = '#FCFCFC' }) => {
   const loadingContainer = {
+    height: 'auto',
     width: size,
-    height: size,
     display: 'flex',
     justifyContent: 'space-around',
+
+    className: 'DotsLoader',
   }
 
   const loadingCircle = {
@@ -39,10 +41,10 @@ const DotsLoader: React.FC<DotsLoaderProps> = ({ size = 36, dotSize = 8, color =
 
   const loadingCircleVariants = {
     start: {
-      y: '50%',
+      y: '-50%',
     },
     end: {
-      y: '150%',
+      y: '50%',
     },
   }
 

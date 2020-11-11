@@ -62,9 +62,7 @@ const FormLogin: React.FC = () => {
             eye
           />
 
-          <Button>
-            <div>Efetuar Login</div>
-          </Button>
+          <Button>Efetuar Login</Button>
 
           <Permanence theme={theme}>
             <Input type='checkbox' name='remember' />

@@ -2,7 +2,7 @@ import React, { FC, HTMLProps, useContext } from 'react'
 
 import FormContext, { FormState } from '../Form/FormContext'
 
-import Loader from 'components/Form/Button/Loader'
+import DotsLoader from 'components/DotsLoader'
 
 interface Props extends HTMLProps<HTMLButtonElement> {
   type?: never
@@ -14,8 +14,9 @@ const Button: FC<Props> = ({ children, ...rest }) => {
   return (
     <button type='submit' {...rest}>
       {children}
+      {/* {form?.loader && */}
 
-      {form?.loader && <Loader theme={form?.theme} />}
+      <DotsLoader dotSize={6} />
     </button>
   )
 }

@@ -6,7 +6,8 @@ import { ThemeState } from 'store/theme'
 
 import AvatarIcon from 'assets/Inputs/AvatarIcon'
 import CameraIcon from 'assets/Inputs/CameraIcon'
-import DotsLoader from 'assets/DotsLoader'
+
+import DotsLoader from 'components/DotsLoader'
 
 import { motion } from 'framer-motion'
 
@@ -48,7 +49,7 @@ const Avatar: FC<AvatarProps> = ({
       )}
     </Style>
   ) : (
-    <DotsLoader color={loaderColor} dotSize={8} size={36} />
+    <DotsLoader color={loaderColor} />
   )
 }
 

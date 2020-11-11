@@ -86,14 +86,20 @@ const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
   }, [])
 
   return (
-    <Style theme={theme}>
+    <Style
+      theme={theme}
+      pathname={`#${pathname.slice(pathname.lastIndexOf('/')).replace('/', '')}`}
+    >
       <Hamburger toggle={onToggle} state={open} />
 
       <motion.ul variants={ul} animate={cycle()}>
         {routes.map((route, index) => (
           <ListItem key={route.path} bottom={route.bottom}>
             <Link to={route.path} onClick={() => window.scrollTo(0, height * index)}>
-              <button type='button'>
+              <button
+                type='button'
+                id={route.path.slice(route.path.lastIndexOf('/')).replace('/', '')}
+              >
                 <route.icon />
 
                 <AnimatePresence>

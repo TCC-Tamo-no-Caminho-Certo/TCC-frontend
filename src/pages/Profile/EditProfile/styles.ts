@@ -60,6 +60,10 @@ const Style = styled(motion.section)`
       color: ${fromTheme('primary')};
     }
   }
+
+  .DotsLoader {
+    margin: 8px 0 16px 0;
+  }
 `
 
 export default Style

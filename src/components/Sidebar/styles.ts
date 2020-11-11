@@ -2,22 +2,21 @@ import fromTheme from 'utils/fromTheme'
 
 import styled, { css } from 'styled-components'
 
+interface StyleProps {
+  pathname: string
+}
+
 interface ListItemProps {
   bottom?: boolean
 }
 
-const Style = styled.nav`
+const Style = styled.nav<StyleProps>`
   position: fixed;
   z-index: 1;
 
   height: 100vh;
 
   background-color: ${fromTheme('primary')};
-
-  .Hamburger {
-    width: 72px;
-    height: 72px;
-  }
 
   ul {
     position: relative;
@@ -56,6 +55,18 @@ const Style = styled.nav`
       }
     }
   }
+
+  .Hamburger {
+    width: 72px;
+    height: 72px;
+  }
+
+  ${({ pathname }) =>
+    css`
+      ${pathname} {
+        background-color: ${fromTheme('tertiary')};
+      }
+    `}
 `
 
 export const ListItem = styled.li<ListItemProps>`

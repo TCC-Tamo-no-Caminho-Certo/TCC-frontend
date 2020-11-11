@@ -8,8 +8,11 @@ interface StyleProps {
 }
 
 const Style = styled.div<StyleProps>`
-  width: ${({ size }) => `${size}px`};
-  height: ${({ size }) => `${size}px`};
+  &,
+  #Avatar {
+    width: ${({ size }) => `${size}px`};
+    height: ${({ size }) => `${size}px`};
+  }
 
   img {
     width: 100%;
