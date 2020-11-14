@@ -205,7 +205,7 @@ const RightMenu: React.FC = () => {
                 </motion.li>
 
                 <motion.li key='Switch Perfil' variants={liAnimation}>
-                  <Link to='/session/profile/edit-profile'>
+                  <Link to='/session/profile/change-role'>
                     <ChangeIcon /> Mudar papel
                   </Link>
                 </motion.li>

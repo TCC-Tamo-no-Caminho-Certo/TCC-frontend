@@ -41,7 +41,7 @@ const Profile: React.FC = () => {
       {
         icon: () => <ChangeIcon />,
         label: 'Mudar Papel',
-        path: '/session/profile/changle-role',
+        path: '/session/profile/change-role',
         component: () => <ChangeRole />,
       },
       {
@@ -82,16 +82,16 @@ const Profile: React.FC = () => {
     <>
       <Sidebar routes={profileRoutes} />
 
-      <Content>
-        {profileRoutes.map(route => (
+      {profileRoutes.map(route => (
+        <Content>
           <Route
             key={route.path}
             path={route.path}
             exact={route.exact}
             component={route.component}
           />
-        ))}
-      </Content>
+        </Content>
+      ))}
     </>
   )
 }
