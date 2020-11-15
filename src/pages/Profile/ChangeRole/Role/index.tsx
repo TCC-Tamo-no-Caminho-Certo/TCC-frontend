@@ -8,19 +8,13 @@ import { AnimatePresence, motion, useCycle } from 'framer-motion'
 
 interface RoleProps {
   title: string
-  titleColor?: string
+
   benefits: string[]
   color: string
   noButton?: boolean
 }
 
-const Role: React.FC<RoleProps> = ({
-  title,
-  benefits,
-  color,
-  titleColor = color,
-  noButton = false,
-}) => {
+const Role: React.FC<RoleProps> = ({ title, benefits, color, noButton = false }) => {
   const [show, toggleShow] = useCycle<boolean>(false, true)
   const [deg, rotate] = useCycle(-90, 0)
 
@@ -53,7 +47,7 @@ const Role: React.FC<RoleProps> = ({
   }
 
   return (
-    <Style show={show} color={color} titleColor={titleColor} className='Role'>
+    <Style show={show} color={color} title={title} className='Role'>
       <button
         id='title'
         type='button'

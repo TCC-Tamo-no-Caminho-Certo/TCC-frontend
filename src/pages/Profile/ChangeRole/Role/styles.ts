@@ -2,12 +2,20 @@ import styled from 'styled-components'
 
 interface StyleProps {
   color: string
-  titleColor: string
   show: boolean
+  title: string
 }
 
 const Style = styled.div<StyleProps>`
+  grid-area: ${({ title }) => title};
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+
   width: 300px;
+
   margin-top: 24px;
 
   #title {

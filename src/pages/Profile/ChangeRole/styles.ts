@@ -15,8 +15,8 @@ const Style = styled.div`
   color: white;
 
   h2 {
-    font-size: 3.2rem;
     width: 80%;
+    font-size: 3.2rem;
   }
 
   p {
@@ -31,13 +31,12 @@ const Style = styled.div`
     justify-content: space-around;
 
     width: 80%;
+    border: solid red 1px;
+    padding: 0 24px 24px 24px;
 
     .Role {
-      margin-top: 48px;
-    }
-
-    .Role + .Role {
-      margin-left: 48px;
+      border: solid red 1px;
+      padding: 24px;
     }
   }
 `
