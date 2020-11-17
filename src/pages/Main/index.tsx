@@ -25,7 +25,7 @@ const Profile: React.FC = () => {
 
   return (
     <>
-      <Sidebar routes={mainRoutes} />
+      <Sidebar routes={mainRoutes} samePage />
 
       <RightMenu />
 

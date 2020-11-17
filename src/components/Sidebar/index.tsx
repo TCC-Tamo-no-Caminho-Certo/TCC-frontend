@@ -19,10 +19,10 @@ export interface RouteProps {
 
 interface SidebarProps {
   routes: RouteProps[]
-  noScroll?: boolean
+  samePage?: boolean
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
+const Sidebar: React.FC<SidebarProps> = ({ routes, samePage = false }) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const open = useSelector<RootState, boolean>(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
@@ -79,27 +79,29 @@ const Sidebar: React.FC<SidebarProps> = ({ routes }) => {
   }
 
   useEffect(() => {
-    const searchArray = routes.map(route => (route.path === pathname ? 1 : 0))
-    window.scrollTo(0, height * searchArray.indexOf(1))
+    if (samePage) {
+      const searchArray = routes.map(route => (route.path === pathname ? 1 : 0))
+      window.scrollTo(0, height * searchArray.indexOf(1))
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <Style
-      theme={theme}
-      pathname={`#${pathname.slice(pathname.lastIndexOf('/')).replace('/', '')}`}
-    >
+    <Style theme={theme}>
       <Hamburger toggle={onToggle} state={open} />
 
       <motion.ul variants={ul} animate={cycle()}>
         {routes.map((route, index) => (
-          <ListItem key={route.path} bottom={route.bottom}>
-            <Link to={route.path} onClick={() => window.scrollTo(0, height * index)}>
-              <button
-                type='button'
-                id={route.path.slice(route.path.lastIndexOf('/')).replace('/', '')}
-              >
+          <ListItem
+            key={route.path}
+            bottom={route.bottom}
+            pathname={pathname.replaceAll('/', '-')}
+            buttonId={route.path.replaceAll('/', '-')}
+            theme={theme}
+          >
+            <Link to={route.path} onClick={() => samePage && window.scrollTo(0, height * index)}>
+              <button type='button' id={route.path.replaceAll('/', '-')}>
                 <route.icon />
 
                 <AnimatePresence>

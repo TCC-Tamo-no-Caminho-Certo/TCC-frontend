@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react'
 import Style from './styles'
 
@@ -5,18 +6,29 @@ import CheckIcon from 'assets/CheckIcon'
 import ArrowIcon from 'assets/ArrowIcon'
 
 import { AnimatePresence, motion, useCycle } from 'framer-motion'
+import { useHistory } from 'react-router-dom'
 
 interface RoleProps {
   title: string
-
   benefits: string[]
   color: string
+  path?: string
+  onClick?(): void
   noButton?: boolean
 }
 
-const Role: React.FC<RoleProps> = ({ title, benefits, color, noButton = false }) => {
-  const [show, toggleShow] = useCycle<boolean>(false, true)
-  const [deg, rotate] = useCycle(-90, 0)
+const Role: React.FC<RoleProps> = ({
+  title,
+  benefits,
+  color,
+  onClick,
+  noButton = false,
+  path = 'invalid-path',
+}) => {
+  const [show, toggleShow] = useCycle<boolean>(true, false)
+  const [deg, rotate] = useCycle(0, -90)
+
+  const history = useHistory()
 
   const container = {
     show: {
@@ -42,8 +54,24 @@ const Role: React.FC<RoleProps> = ({ title, benefits, color, noButton = false })
     hidden: {
       y: ['0%', '-100%'],
       opacity: [1, 0],
-      transition: { duration: 0.02 },
+      transition: { type: 'tween', duration: 0.2 },
     },
+  }
+
+  const button = {
+    show: {
+      opacity: [0, 1],
+      transition: { type: 'tween', duration: 0.2 },
+    },
+    hidden: {
+      opacity: [1, 0],
+      transition: { type: 'tween', duration: 0.2 },
+    },
+  }
+
+  function onButtonClick(pushPath: string) {
+    onClick === undefined || onClick()
+    history.push(pushPath)
   }
 
   return (
@@ -73,8 +101,8 @@ const Role: React.FC<RoleProps> = ({ title, benefits, color, noButton = false })
         {show && (
           <motion.div variants={container} animate='show' exit='hidden'>
             <ul>
-              {benefits.map(benefit => (
-                <motion.li variants={item}>
+              {benefits.map((benefit, index) => (
+                <motion.li key={index} variants={item}>
                   <CheckIcon />
                   {benefit}
                 </motion.li>
@@ -82,7 +110,7 @@ const Role: React.FC<RoleProps> = ({ title, benefits, color, noButton = false })
             </ul>
 
             {!noButton && (
-              <motion.button type='button' variants={item}>
+              <motion.button type='button' variants={button} onClick={() => onButtonClick(path)}>
                 Sou {title}!
               </motion.button>
             )}

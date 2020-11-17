@@ -2,15 +2,13 @@ import fromTheme from 'utils/fromTheme'
 
 import styled, { css } from 'styled-components'
 
-interface StyleProps {
-  pathname: string
-}
-
 interface ListItemProps {
   bottom?: boolean
+  pathname: string
+  buttonId: string
 }
 
-const Style = styled.nav<StyleProps>`
+const Style = styled.nav`
   position: fixed;
   z-index: 1;
 
@@ -60,13 +58,6 @@ const Style = styled.nav<StyleProps>`
     width: 72px;
     height: 72px;
   }
-
-  ${({ pathname }) =>
-    css`
-      ${pathname} {
-        background-color: ${fromTheme('tertiary')};
-      }
-    `}
 `
 
 export const ListItem = styled.li<ListItemProps>`
@@ -77,6 +68,17 @@ export const ListItem = styled.li<ListItemProps>`
       bottom: 72px;
       left: 0;
     `}
+
+  ${({ pathname, buttonId }) => {
+    return (
+      pathname.includes(buttonId) &&
+      css`
+        ${`#${buttonId}`} {
+          background-color: ${fromTheme('tertiary')};
+        }
+      `
+    )
+  }}
 `
 
 export default Style

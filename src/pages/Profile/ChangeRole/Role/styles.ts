@@ -71,6 +71,7 @@ const Style = styled.div<StyleProps>`
       min-height: 32px;
       height: 32px;
       border-radius: 10px;
+      opacity: 0;
 
       color: #fcfcfc;
       background-color: ${({ color }) => color};

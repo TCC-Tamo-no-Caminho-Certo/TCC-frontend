@@ -1,8 +1,9 @@
 import fromTheme from 'utils/fromTheme'
 
+import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
-const Style = styled.div`
+const Style = styled(motion.div)`
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -10,6 +11,7 @@ const Style = styled.div`
 
   padding-top: 64px;
   min-height: 100vh;
+  width: 100%;
 
   background-color: ${fromTheme('tertiary')};
   color: white;
@@ -31,11 +33,11 @@ const Style = styled.div`
     justify-content: space-around;
 
     width: 80%;
-    border: solid red 1px;
     padding: 0 24px 24px 24px;
 
+    margin-bottom: 64px;
+
     .Role {
-      border: solid red 1px;
       padding: 24px;
     }
   }

@@ -8,16 +8,14 @@ const Content: React.FC = ({ children }) => {
   const open = useSelector<RootState>(({ sidebar }) => sidebar.open)
 
   const content = {
-    initial: {},
     animateOpen: {
-      marginLeft: '210px',
+      x: '210px',
       width: 'calc(100vw - 210px)',
     },
     animateClosed: {
-      marginLeft: '72px',
+      x: '72px',
       width: 'calc(100vw - 72px)',
     },
-    exit: {},
     transition: {
       type: 'tween',
       duration: 0.2,
@@ -28,9 +26,7 @@ const Content: React.FC = ({ children }) => {
     <motion.section
       variants={content}
       transition={content.transition}
-      initial='initial'
       animate={open ? 'animateOpen' : 'animateClosed'}
-      exit='exit'
     >
       {children}
     </motion.section>

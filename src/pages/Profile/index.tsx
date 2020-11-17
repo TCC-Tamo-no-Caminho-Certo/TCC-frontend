@@ -28,7 +28,7 @@ const Profile: React.FC = () => {
       {
         icon: () => <UserIcon />,
         label: 'Perfil',
-        path: '/session/profile',
+        path: '/session/profile/home',
         exact: true,
         component: () => <ProfileHome />,
       },
@@ -52,7 +52,7 @@ const Profile: React.FC = () => {
       },
       {
         icon: () => <SecurityIcon />,
-        label: 'Financeiro',
+        label: 'Segurança',
         path: '/session/profile/security',
         component: () => <Security />,
       },
@@ -83,7 +83,7 @@ const Profile: React.FC = () => {
       <Sidebar routes={profileRoutes} />
 
       {profileRoutes.map(route => (
-        <Content>
+        <Content key={route.label}>
           <Route
             key={route.path}
             path={route.path}

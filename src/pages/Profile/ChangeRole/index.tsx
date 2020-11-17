@@ -1,17 +1,59 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Style from './styles'
 
 import Role from './Role'
+import Student from './Roles/Student'
+import Proponent from './Roles/Proponent'
+import Moderator from './Roles/Moderator'
+import Reviewer from './Roles/Reviewer'
+import Professor from './Roles/Professor'
 
 import { ThemeState } from 'store/theme'
 import { RootState, useSelector } from 'store'
 
+import { Route } from 'react-router-dom'
+
+const roles = [
+  {
+    path: '/session/profile/change-role/student',
+    exact: true,
+    component: () => <Student />,
+  },
+  {
+    path: '/session/profile/change-role/professor',
+    exact: false,
+    component: () => <Professor />,
+  },
+  {
+    path: '/session/profile/change-role/proponent',
+    exact: false,
+    component: () => <Proponent />,
+  },
+  {
+    path: '/session/profile/change-role/moderator',
+    exact: false,
+    component: () => <Moderator />,
+  },
+  {
+    path: '/session/profile/change-role/reviewer',
+    exact: false,
+    component: () => <Reviewer />,
+  },
+  {
+    path: '/session/profile/change-role/guest',
+    exact: false,
+    component: () => <></>,
+  },
+]
+
 const ChangeRole: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
+  useEffect(() => window.scrollBy(0, 0), [])
+
   return (
-    <Style theme={theme}>
-      <h2>Alterar Papel</h2>
+    <Style theme={theme} id='ChangeRole'>
+      <h2>Escolher Papel</h2>
 
       <p>
         Escolha um papel para poder ter mais acesso ao Steams Labs! Lorem ipsum dolor sit amet,
@@ -39,6 +81,7 @@ const ChangeRole: React.FC = () => {
             'Aceitar convites para propostas e projetos',
             'Candidatar-se a um projeto',
           ]}
+          path='/session/profile/change-role/student'
         />
 
         <Role
@@ -50,6 +93,7 @@ const ChangeRole: React.FC = () => {
             'Aceitar alunos e professores candidatados',
             'Remover estudantes e professores de propostas',
           ]}
+          path='/session/profile/change-role/proponent'
         />
 
         <Role
@@ -61,6 +105,7 @@ const ChangeRole: React.FC = () => {
             'Remover estudantes de propostas, somente professor coordenador pode remover outros professores',
             'Solicitar papel de Revisor',
           ]}
+          path='/session/profile/change-role/professor'
         />
 
         <Role
@@ -73,6 +118,7 @@ const ChangeRole: React.FC = () => {
             'Aceitar convites para propostas e projetos',
             'Definir conflitos de interesses',
           ]}
+          path='/session/profile/change-role/reviewer'
         />
 
         <Role
@@ -85,8 +131,13 @@ const ChangeRole: React.FC = () => {
             'Ver usuários da instituição',
             'Alterar status da proposta',
           ]}
+          path='/session/profile/change-role/moderator'
         />
       </div>
+
+      {roles.map(route => (
+        <Route key={route.path} path={route.path} exact={route.exact} component={route.component} />
+      ))}
     </Style>
   )
 }
