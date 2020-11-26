@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 const Style = styled(motion.div)`
   display: flex;
+      border: solid red 1px;
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
@@ -34,6 +35,7 @@ const Style = styled(motion.div)`
 
     width: 80%;
     padding: 0 24px 24px 24px;
+
 
     margin-bottom: 64px;
 

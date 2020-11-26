@@ -18,7 +18,7 @@ interface Props {
 const Fields: FC<Props> = ({ theme }) => {
   const user = useSelector<RootState, UserState>(state => state.user)
   const modal = useContext(ModalContext)
-
+console.log(user)
   return (
     <Slider width={550} gap={200} gapVertical={100}>
       <Card key='Personal' headerText='Dados Pessoais'>
@@ -29,7 +29,7 @@ const Fields: FC<Props> = ({ theme }) => {
           shadow
         />
 
-        {formatUpdateUser(user, user.role === 'baseUser' ? 'baseUser' : 'user').map(
+        {formatUpdateUser(user, user.selectedRole === 'base user'  ?  'baseUser' : 'user').map(
           (info: Info) => (
             <Field key={info.inputname} theme={theme} data={info} />
           )

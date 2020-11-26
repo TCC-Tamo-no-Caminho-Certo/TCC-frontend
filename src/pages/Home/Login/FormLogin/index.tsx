@@ -35,7 +35,7 @@ const FormLogin: React.FC = () => {
 
   const handleSubmit = (resData: any) => {
     if (resData.success) {
-      localStorage.setItem('@SLab_ac_token', resData.access_token)
+      localStorage.setItem('@SLab_ac_token',  resData.access_token)
       history.push('/session/main')
     } else {
       console.log(resData)

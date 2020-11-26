@@ -31,7 +31,7 @@ const Avatar: FC<AvatarProps> = ({
 
   return avatar ? (
     <Style shadow={shadow} size={size} className='Avatar' theme={theme}>
-      {avatar === 'default.png' ? (
+      {avatar === 'default'  ? (
         <AvatarIcon />
       ) : (
         <img src={src} alt='avatar' draggable={false} {...rest} />

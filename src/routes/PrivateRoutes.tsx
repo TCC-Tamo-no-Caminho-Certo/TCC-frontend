@@ -22,7 +22,8 @@ const PrivateRoutes: React.FC = () => {
         },
       })
       .then(res => {
-        dispatch(UserActions.setUserInfo(res.user))
+        console.log(res)
+        dispatch(UserActions.setUserInfo({...res.user, selectedRole: res.user.roles[0]}))
       })
 
     window.history.pushState(null, '', document.URL)

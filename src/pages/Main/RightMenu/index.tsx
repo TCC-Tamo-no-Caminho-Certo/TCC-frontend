@@ -3,6 +3,7 @@ import Style, { Background, RightMenuOpen, UserInfo } from './styles'
 
 import api from 'services/api'
 
+import selectRoleLabel from "utils/selectRoleLabel"
 import { RootState, ThemeState, UserState, useSelector } from 'store'
 
 import EditUserIcon from 'assets/ProfileSidebar/EditUserIcon'
@@ -17,7 +18,7 @@ import { AnimatePresence, motion, useCycle } from 'framer-motion'
 import { Link, useHistory } from 'react-router-dom'
 
 const RightMenu: React.FC = () => {
-  const { name, surname, role } = useSelector<RootState, UserState>(state => state.user)
+  const { name, surname, selectedRole } = useSelector<RootState, UserState>(state => state.user)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const [editOpen, toggle] = useCycle(false, true)
@@ -27,40 +28,23 @@ const RightMenu: React.FC = () => {
   const closedHeight = 112
   const openHeight = 300 + closedHeight
 
-  const cycle = () => (editOpen ? 'open' : 'closed')
-
   function onGearClick() {
     toggle()
   }
 
   async function onLogoutClick() {
     const token = localStorage.getItem('@SLab_ac_token')
+
     await api.get('logout', {
       headers: {
         authorization: `Bearer ${token}`,
       },
     })
+
     history.push('/')
   }
 
-  function UserRoleLabel(userRole: string) {
-    switch (userRole) {
-      case 'professor':
-        return 'Professor'
-      case 'proponent':
-        return 'Proponente'
-      case 'base user':
-        return 'Convidado'
-      case 'student':
-        return 'Estudante'
-      case 'admin':
-        return 'Administrador'
-      case 'user':
-        return 'Usuário'
-      default:
-        return 'Não identificado'
-    }
-  }
+  const cycle = () => (editOpen ? 'open' : 'closed')
 
   const pathAnimation = {
     closed: {
@@ -164,7 +148,7 @@ const RightMenu: React.FC = () => {
         <Avatar size={80} />
 
         <UserInfo theme={theme}>
-          <span id='userRole'>{UserRoleLabel(role)}</span>
+          <span id='userRole'>{selectRoleLabel(selectedRole)}</span>
           <span id='userName'>{`${name} ${surname}`}</span>
 
           <span id='userActivity'>

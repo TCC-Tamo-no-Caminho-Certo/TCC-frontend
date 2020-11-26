@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import { createSlice } from '@reduxjs/toolkit'
 
+export type RoleTypes =  'admin' | 'base user' | 'aris user' | 'student' | 'professor' | 'customer' | 'evaluator' | 'moderator'
+
 export interface UserState {
   user_id: number
   name: string
@@ -8,9 +10,10 @@ export interface UserState {
   email: string
   avatar: string
   birthday: string
-  role: string
   created_at: string
   updated_at: string
+  roles: RoleTypes[]
+  selectedRole: RoleTypes
 }
 
 const initialState: UserState = {
@@ -20,9 +23,10 @@ const initialState: UserState = {
   email: '',
   avatar: '',
   birthday: '',
-  role: '',
+  roles: ['base user'],
   created_at: '',
   updated_at: '',
+  selectedRole:'base user',
 }
 
 const User = createSlice({
