@@ -22,4 +22,13 @@ export interface ThemeAttributes {
   calendarDisabled: string
   calendarBackground: string
   calendarHeader: string
+
+  professor: string
+  customer: string
+  student: string
+  moderator: string
+  evaluator: string
+  admin: string
+  'base user': string
+  'aris user': string
 }

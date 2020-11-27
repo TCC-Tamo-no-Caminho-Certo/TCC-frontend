@@ -19,6 +19,15 @@ const light: ThemeAttributes = {
   calendarHeader: '#80535D',
   calendarDisabled: '#CCCCCC',
   calendarBackground: '#FCFCFC',
+
+  'base user': '#fff500',
+  'aris user': '#f00',
+  student: '#00d053',
+  customer: '#ff6b00',
+  professor: '#329dff',
+  evaluator: '#ba5eff',
+  moderator: '#64e3ff',
+  admin: '#f00',
 }
 
 export default light

@@ -76,6 +76,11 @@ const Style = styled.div<StyleProps>`
       color: #fcfcfc;
       background-color: ${({ color }) => color};
     }
+
+    #roleAlreadyExists {
+      background-color: transparent;
+      border: solid 1px ${({ color }) => color};
+    }
   }
 `
 

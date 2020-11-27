@@ -1,11 +1,15 @@
 import fromTheme from 'utils/fromTheme'
-
+import { RoleTypes } from 'store/user'
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
 interface RightMenuOpenProps {
   height: string
   width: string
+}
+
+interface UserInfoProps {
+  selectedRole: RoleTypes
 }
 
 interface StyleProps {
@@ -21,7 +25,7 @@ export const Background = styled.svg`
   overflow: visible;
 `
 
-export const UserInfo = styled.div.attrs({ className: 'UserInfo' })`
+export const UserInfo = styled.div.attrs({ className: 'UserInfo' })<UserInfoProps>`
   display: flex;
   flex-direction: column;
 
@@ -37,7 +41,7 @@ export const UserInfo = styled.div.attrs({ className: 'UserInfo' })`
   #userRole {
     font-size: 1.3rem;
 
-    color: #fff500;
+    color: ${({ selectedRole }) => fromTheme(selectedRole)};
   }
 
   #userName {

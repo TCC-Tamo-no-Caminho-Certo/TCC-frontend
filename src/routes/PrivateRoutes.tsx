@@ -15,6 +15,7 @@ const PrivateRoutes: React.FC = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('@SLab_ac_token')
+
     api
       .get('user/get', {
         headers: {
@@ -22,8 +23,13 @@ const PrivateRoutes: React.FC = () => {
         },
       })
       .then(res => {
-        console.log(res)
-        dispatch(UserActions.setUserInfo({...res.user, selectedRole: res.user.roles[0]}))
+        dispatch(
+          UserActions.setUserInfo({
+            ...res.user,
+            selectedRole: 'student',
+            roles: ['base user', 'student'],
+          })
+        )
       })
 
     window.history.pushState(null, '', document.URL)

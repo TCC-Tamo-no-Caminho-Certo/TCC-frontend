@@ -15,6 +15,7 @@ interface RoleProps {
   path?: string
   onClick?(): void
   noButton?: boolean
+  userRoles?: string[]
 }
 
 const Role: React.FC<RoleProps> = ({
@@ -24,9 +25,11 @@ const Role: React.FC<RoleProps> = ({
   onClick,
   noButton = false,
   path = 'invalid-path',
+  userRoles,
 }) => {
   const [show, toggleShow] = useCycle<boolean>(true, false)
   const [deg, rotate] = useCycle(0, -90)
+  const haveThisRole = userRoles?.includes(title)
 
   const history = useHistory()
 
@@ -109,11 +112,16 @@ const Role: React.FC<RoleProps> = ({
               ))}
             </ul>
 
-            {!noButton && (
-              <motion.button type='button' variants={button} onClick={() => onButtonClick(path)}>
-                Sou {title}!
-              </motion.button>
-            )}
+            {!noButton &&
+              (!haveThisRole ? (
+                <motion.button type='button' variants={button} onClick={() => onButtonClick(path)}>
+                  Sou {title}!
+                </motion.button>
+              ) : (
+                <motion.button disabled id='roleAlreadyExists' variants={button}>
+                  Já sou {title}!
+                </motion.button>
+              ))}
           </motion.div>
         )}
       </AnimatePresence>

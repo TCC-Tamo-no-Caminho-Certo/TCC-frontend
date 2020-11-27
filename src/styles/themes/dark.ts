@@ -19,6 +19,15 @@ const dark: ThemeAttributes = {
   calendarHeader: '#303030',
   calendarDisabled: '#303030',
   calendarBackground: '#18191A',
+
+  'base user': '#fff500',
+  'aris user': '#f00',
+  student: '#00d053',
+  customer: '#ff6b00',
+  professor: '#329dff',
+  evaluator: '#ba5eff',
+  moderator: '#64e3ff',
+  admin: '#f00',
 }
 
 export default dark
