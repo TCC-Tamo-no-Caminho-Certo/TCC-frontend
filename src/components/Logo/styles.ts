@@ -5,7 +5,8 @@ const Style = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  width: 258px;
+
+  width: 450px;
 
   svg + svg {
     overflow: visible;

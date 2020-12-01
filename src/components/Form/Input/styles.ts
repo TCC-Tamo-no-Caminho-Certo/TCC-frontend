@@ -1,4 +1,4 @@
-import fromTheme from 'utils/fromTheme'
+//import fromTheme from 'utils/fromTheme'
 
 import styled, { css } from 'styled-components'
 
@@ -43,22 +43,21 @@ export const DefaultInput = styled.div<StyleProps>`
     height: 100%;
   }
 
-  .Icon,
-  .errorIcon {
+  .Icon {
     width: 24px;
     margin: 0 8px;
 
-    fill: ${fromTheme('quaternary')};
+    fill: #6e4850;
   }
 
   &:focus-within {
-    border-color: ${fromTheme('primary')};
+    border-color: #ec5878;
 
     &,
     input::placeholder,
     .Icon {
-      color: ${fromTheme('primary')};
-      -webkit-text-fill-color: ${fromTheme('primary')};
+      color: #ec5878;
+      -webkit-text-fill-color: #ec5878;
     }
   }
 
@@ -67,8 +66,8 @@ export const DefaultInput = styled.div<StyleProps>`
     css`
       &,
       .Icon {
-        color: ${fromTheme('primary')};
-        -webkit-text-fill-color: ${fromTheme('primary')};
+        color: #ec5878;
+        -webkit-text-fill-color: #ec5878;
       }
     `}
 
@@ -80,12 +79,12 @@ export const DefaultInput = styled.div<StyleProps>`
       border-radius: ${setBorderRadius(hasEye, hasIcon)};
 
       background-color: transparent;
-      color: ${fromTheme('primary')};
-      -webkit-text-fill-color: ${fromTheme('primary')};
+      color: #ec5878;
+      -webkit-text-fill-color: #ec5878;
 
       &::placeholder {
-        color: ${fromTheme('quaternary')};
-        -webkit-text-fill-color: ${fromTheme('quaternary')};
+        color: #6e4850;
+        -webkit-text-fill-color: #6e4850;
       }
     }
   `}
@@ -100,19 +99,19 @@ export const Field = styled.div<StyleProps>`
   font-size: calc(1.3rem + 0.5vh);
   border-radius: 10px;
   background-color: transparent;
-  border: solid 1px ${fromTheme('quaternary')};
+  border: solid 1px #6e4850;
 
   input {
     height: 100%;
 
     border: none;
     background-color: transparent;
-    color: ${fromTheme('primary')};
-    -webkit-text-fill-color: ${fromTheme('primary')};
+    color: #ec5878;
+    -webkit-text-fill-color: #ec5878;
 
     &::placeholder {
-      color: ${fromTheme('quaternary')};
-      -webkit-text-fill-color: ${fromTheme('quaternary')};
+      color: #6e4850;
+      -webkit-text-fill-color: #6e4850;
     }
   }
 
@@ -129,21 +128,21 @@ export const Field = styled.div<StyleProps>`
     width: 24px;
     margin: 0 8px;
 
-    fill: ${fromTheme('quaternary')};
+    fill: #6e4850;
   }
 
   #Alert {
-    fill: ${fromTheme('primary')};
+    fill: #d62828;
   }
 
   &:focus-within {
-    border-color: ${fromTheme('primary')};
+    border-color: #ec5878;
 
     &,
     input::placeholder,
     .Icon {
-      fill: ${fromTheme('primary')};
-      -webkit-text-fill-color: ${fromTheme('primary')};
+      fill: #ec5878;
+      -webkit-text-fill-color: #ec5878;
     }
   }
 
@@ -159,9 +158,9 @@ export const Field = styled.div<StyleProps>`
     css`
       &,
       .Icon {
-        color: ${fromTheme('primary')};
-        fill: ${fromTheme('primary')};
-        -webkit-text-fill-color: ${fromTheme('primary')};
+        color: #ec5878;
+        fill: #ec5878;
+        -webkit-text-fill-color: #ec5878;
       }
     `}
 

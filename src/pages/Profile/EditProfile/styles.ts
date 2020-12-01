@@ -1,4 +1,4 @@
-import fromTheme from 'utils/fromTheme'
+// import fromTheme from 'utils/fromTheme'
 
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
@@ -11,7 +11,7 @@ const Style = styled(motion.section)`
 
   height: 100vh;
   position: relative;
-  background-color: ${fromTheme('tertiary')};
+  background-color: #6e4850;
 
   h2 {
     position: absolute;
@@ -34,8 +34,8 @@ const Style = styled(motion.section)`
     height: 40px;
     border-radius: 15px;
 
-    color: ${fromTheme('white')};
-    background-color: ${fromTheme('primary')};
+    color: #fcfcfc;
+    background-color: #ec5878;
     box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.49);
     transition: transform 1s ease;
 
@@ -53,11 +53,11 @@ const Style = styled(motion.section)`
     border-radius: 15px;
     margin-right: 220px;
 
-    color: ${fromTheme('white')};
+    color: #fcfcfc;
     background-color: transparent;
 
     &:hover {
-      color: ${fromTheme('primary')};
+      color: #ec5878;
     }
   }
 

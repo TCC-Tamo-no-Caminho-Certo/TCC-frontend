@@ -1,8 +1,10 @@
-import fromTheme from 'utils/fromTheme'
+// import fromTheme from 'utils/fromTheme'
 
 import styled from 'styled-components'
 
 const Style = styled.div`
+  position: relative;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,8 +14,9 @@ const Style = styled.div`
   width: 100vw;
   height: 100vh;
   padding: 73px 0 73px 0;
+  box-shadow: 8px 0px 6px 0px rgba(0, 0, 0, 0.34);
 
-  background-color: ${fromTheme('secondary')};
+  background-color: #fcfcfc;
 
   nav {
     position: absolute;
@@ -23,7 +26,7 @@ const Style = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    width: 70%;
+    width: 100%;
     max-width: 1000px;
     height: 4vh;
 
@@ -54,7 +57,7 @@ const Style = styled.div`
       border: none;
       margin-top: 30px;
       border-radius: 8px;
-      background-color: ${fromTheme('primary')};
+      background-color: #ec5878;
 
       &:hover {
         filter: brightness(1.1);
@@ -97,10 +100,11 @@ const Style = styled.div`
   }
 
   @media screen and (min-width: 1000px) {
+    border-radius: 0 20px 20px 0;
     width: 38vw;
 
     nav {
-      width: 30%;
+      width: 80%;
     }
   }
 `

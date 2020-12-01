@@ -4,20 +4,22 @@ import GlobalStyle from 'styles/GlobalStyle'
 
 import Routes from 'routes'
 
-import store from 'store'
+import { ThemeState } from 'store/theme'
+import { RootState, useSelector } from 'store'
 
-import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
 const App: React.FC = () => {
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+
   return (
-    <Provider store={store}>
-      <GlobalStyle theme={store.getState().theme} />
+    <>
+      <GlobalStyle theme={theme} />
 
       <BrowserRouter>
         <Routes />
       </BrowserRouter>
-    </Provider>
+    </>
   )
 }
 

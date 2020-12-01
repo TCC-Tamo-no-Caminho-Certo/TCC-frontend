@@ -1,4 +1,4 @@
-import fromTheme from 'utils/fromTheme'
+//import fromTheme from 'utils/fromTheme'
 
 import { createGlobalStyle } from 'styled-components'
 
@@ -18,17 +18,24 @@ export default createGlobalStyle`
 
   body {
     font-size: 1.6rem;
-    color: ${fromTheme('tertiary')};
-    background-color: ${fromTheme('background')};
-
-    input:-webkit-autofill {
-      -webkit-box-shadow: 0 0 0 30px white inset !important;
-      box-shadow: 0 0 0 30px white inset !important;
+    color: #6E4850;
+    background-color: #EC5878;
+    
+    span, p, h1, h2, h3, h4, h5 {
+      cursor: default;
     }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus, 
+    input:-webkit-autofill:active  {
+      transition: background-color 5000s ease-in-out 0s;
+    }
+
 
     &::-webkit-scrollbar {
       width: 12px;
-      background-color: ${fromTheme('quaternary')};
+      background-color: #6E4850;
     }
 
     &::-webkit-scrollbar-track {
@@ -49,7 +56,7 @@ export default createGlobalStyle`
 
   a {
     text-decoration: none;
-    color: ${fromTheme('primary')};
+    color: #EC5878;
   }
 
   li {

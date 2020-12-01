@@ -1,4 +1,4 @@
-import fromTheme from 'utils/fromTheme'
+//import fromTheme from 'utils/fromTheme'
 
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
@@ -7,11 +7,11 @@ const Style = styled(Link)`
   display: flex;
   align-items: center;
 
-  color: ${fromTheme('primary')};
+  color: #6e4850;
   transition: all 0.2s;
 
   &:hover {
-    color: ${fromTheme('tertiary')};
+    color: #ec5878;
   }
 
   svg {

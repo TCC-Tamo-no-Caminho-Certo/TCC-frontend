@@ -11,7 +11,7 @@ async function validateSession(): Promise<boolean> {
 
   return response.success
 
-  // return true
+  // ? return true
 }
 
 export default validateSession

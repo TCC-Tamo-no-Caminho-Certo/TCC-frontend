@@ -1,4 +1,6 @@
-import fromTheme from 'utils/fromTheme'
+// import fromTheme from 'utils/fromTheme'
+
+import googleMaps from 'assets/googleMaps.png'
 
 import styled from 'styled-components'
 
@@ -9,8 +11,12 @@ const Style = styled.div`
 
   height: 100vh;
 
-  background-color: ${fromTheme('tertiary')};
-  color: white;
+  background-color: #fcfcfc;
+  color: #6e4850;
+  background-image: url(${googleMaps});
+  background-repeat: no-repeat;
+
+  background-size: cover;
 `
 
 export default Style

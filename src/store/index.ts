@@ -5,6 +5,8 @@ import Home from './home'
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
+export { useSelector, useDispatch } from 'react-redux'
+
 const rootReducer = combineReducers({
   user: User.reducer,
   theme: Theme.reducer,
@@ -17,11 +19,7 @@ const store = configureStore({
 })
 
 export type RootState = ReturnType<typeof rootReducer>
-
-// Types
-export type { ThemeState }
 export type { UserState }
+export type { ThemeState }
 
 export default store
-
-export { useSelector, useDispatch } from 'react-redux'

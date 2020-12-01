@@ -7,7 +7,7 @@ import { RootState, useSelector } from 'store'
 const RestOfHome: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
-  return <Style theme={theme}>Rest of Home</Style>
+  return <Style theme={theme}>Home</Style>
 }
 
 export default RestOfHome

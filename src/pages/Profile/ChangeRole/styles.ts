@@ -1,4 +1,4 @@
-import fromTheme from 'utils/fromTheme'
+//import fromTheme from 'utils/fromTheme'
 
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
@@ -13,7 +13,7 @@ const Style = styled(motion.div)`
   min-height: 100vh;
   width: 100%;
 
-  background-color: ${fromTheme('tertiary')};
+  background-color: #6e4850;
   color: white;
 
   h2 {

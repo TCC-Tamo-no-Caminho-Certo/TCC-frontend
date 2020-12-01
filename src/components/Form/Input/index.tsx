@@ -33,7 +33,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       type,
       onBlur,
       noStyle = false,
-      className,
+      className = 'Input',
       handleValue,
       icon: Icon,
       pasteAndDrop = true,
@@ -115,6 +115,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {type === 'checkbox' && !noStyle && <Checkbox theme={form?.theme} checked={checked} />}
 
         <input
+          spellCheck='false'
           ref={ref || inputRef}
           id={rest.name}
           type={hiddenInput()}

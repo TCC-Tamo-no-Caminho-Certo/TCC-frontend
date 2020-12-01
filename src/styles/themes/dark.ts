@@ -3,16 +3,6 @@ import { ThemeAttributes } from './'
 const dark: ThemeAttributes = {
   name: 'dark',
 
-  primary: '#EC5878',
-  secondary: '#18191A',
-  tertiary: '#e5e5e5',
-  quaternary: '#5a5a5a',
-  quinary: '#50393e',
-
-  background: '#50393e',
-
-  white: '#EFEFEF',
-
   calendarPrimary: '#EC5878',
   calendarSecondary: '#FCFCFC',
   calendarTertiary: '#FCFCFC',
@@ -21,13 +11,13 @@ const dark: ThemeAttributes = {
   calendarBackground: '#18191A',
 
   'base user': '#fff500',
-  'aris user': '#f00',
+  'aris user': '#f20089',
   student: '#00d053',
   customer: '#ff6b00',
   professor: '#329dff',
   evaluator: '#ba5eff',
   moderator: '#64e3ff',
-  admin: '#f00',
+  admin: '#d62828',
 }
 
 export default dark

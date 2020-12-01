@@ -1,9 +1,10 @@
 import React from 'react'
 import Style, { Background, RightMenuOpen, UserInfo } from './styles'
 
+import selectRoleLabel from 'utils/selectedRoleLabel'
+
 import api from 'services/api'
 
-import selectRoleLabel from 'utils/selectedRoleLabel'
 import { RootState, ThemeState, UserState, useSelector } from 'store'
 
 import EditUserIcon from 'assets/ProfileSidebar/EditUserIcon'
@@ -142,7 +143,7 @@ const RightMenu: React.FC = () => {
   return (
     <>
       <Background width={`${width}px`} height={`${openHeight}px`}>
-        <motion.path initial={false} variants={pathAnimation} animate={cycle()} fill='#6E4850' />
+        <motion.path initial={false} variants={pathAnimation} animate={cycle()} fill='#6e4850' />
       </Background>
 
       <Style width={`${width}px`} theme={theme}>
@@ -201,7 +202,7 @@ const RightMenu: React.FC = () => {
                   variants={logoutAnimation}
                   animate='open'
                 >
-                  <div>Sair</div>
+                  <span>Sair</span>
                   <LogoutIcon />
                 </motion.button>
               </ul>

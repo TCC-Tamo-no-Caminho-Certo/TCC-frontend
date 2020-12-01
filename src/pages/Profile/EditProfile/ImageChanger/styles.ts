@@ -1,4 +1,4 @@
-import fromTheme from 'utils/fromTheme'
+//import fromTheme from 'utils/fromTheme'
 
 import styled from 'styled-components'
 
@@ -8,7 +8,7 @@ const Style = styled.div`
   padding: 48px;
   border-radius: 24px;
 
-  background-color: ${fromTheme('tertiary')};
+  background-color: #6e4850;
 
   input[type='file'] {
     display: none;
@@ -25,8 +25,8 @@ const Style = styled.div`
     height: 300px;
     border-radius: 5px;
 
-    color: ${fromTheme('white')};
-    border: ${fromTheme('white')} dashed 1px;
+    color: #fcfcfc;
+    border: #fcfcfc dashed 1px;
     cursor: pointer;
   }
 
@@ -37,7 +37,7 @@ const Style = styled.div`
     .cropper-modal {
       border-radius: 5px;
 
-      border: ${fromTheme('white')} dashed 1px;
+      border: #fcfcfc dashed 1px;
     }
 
     .cropper-face {
@@ -51,7 +51,7 @@ const Style = styled.div`
     .cropper-view-box {
       border-radius: 50%;
 
-      outline: 1px solid ${fromTheme('white')};
+      outline: 1px solid #fcfcfc;
     }
 
     .cropper-point {
@@ -59,7 +59,7 @@ const Style = styled.div`
       height: 5px;
       opacity: 1;
 
-      background-color: ${fromTheme('white')};
+      background-color: #fcfcfc;
     }
 
     .cropper-center {
@@ -73,7 +73,7 @@ const Style = styled.div`
       width: 8px;
       height: 1px;
 
-      background-color: ${fromTheme('white')};
+      background-color: #fcfcfc;
     }
 
     .cropper-center::after {
@@ -83,7 +83,7 @@ const Style = styled.div`
       width: 1px;
       height: 8px;
 
-      background-color: ${fromTheme('white')};
+      background-color: #fcfcfc;
     }
 
     .cropper-line,
@@ -111,10 +111,10 @@ const Style = styled.div`
       height: 18px;
       transition: fill 300ms ease-out;
 
-      fill: ${fromTheme('white')};
+      fill: #fcfcfc;
 
       &:hover {
-        fill: ${fromTheme('primary')};
+        fill: #ec5878;
       }
     }
 
@@ -134,7 +134,7 @@ const Style = styled.div`
 
       span {
         margin-bottom: 12px;
-        color: ${fromTheme('white')};
+        color: #fcfcfc;
       }
 
       #before-img-preview {
@@ -142,7 +142,7 @@ const Style = styled.div`
         height: 80px;
         transform: translateY(-100%);
 
-        border: solid 1px ${fromTheme('primary')};
+        border: solid 1px #ec5878;
       }
 
       #img-preview {
@@ -168,7 +168,7 @@ const Style = styled.div`
       width: 120px;
       text-align: center;
 
-      color: ${fromTheme('white')};
+      color: #fcfcfc;
 
       cursor: pointer;
 
@@ -176,14 +176,14 @@ const Style = styled.div`
         width: 24px;
         height: 24px;
         margin-right: 8px;
-        fill: ${fromTheme('white')};
+        fill: #fcfcfc;
       }
 
       &:hover {
-        color: ${fromTheme('primary')};
+        color: #ec5878;
 
         .Icon {
-          fill: ${fromTheme('primary')};
+          fill: #ec5878;
         }
       }
     }
@@ -192,10 +192,10 @@ const Style = styled.div`
       width: 120px;
 
       transition: color 200ms ease-in-out;
-      color: ${fromTheme('white')};
+      color: #fcfcfc;
 
       &:hover {
-        color: ${fromTheme('primary')};
+        color: #ec5878;
       }
     }
 
@@ -203,16 +203,15 @@ const Style = styled.div`
       width: 120px;
       height: 36px;
 
-      color: ${fromTheme('white')};
-      background-color: ${fromTheme('tertiary')};
-      border: solid 1px ${fromTheme('primary')};
+      color: #fcfcfc;
+      background-color: transparent;
+      border: solid 1px #ec5878;
       margin-top: 8px;
 
       transition: box-shadow 300ms ease-in-out;
 
       &:hover {
-        box-shadow: inset -60px 0 0 0 ${fromTheme('primary')},
-          inset 60px 0 0 0 ${fromTheme('primary')};
+        box-shadow: inset -60px 0 0 0 #ec5878, inset 60px 0 0 0 #ec5878;
       }
     }
   }

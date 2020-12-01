@@ -9,6 +9,7 @@ import { ThemeState } from 'store/theme'
 import { RootState, useDispatch, useSelector } from 'store'
 import { HomeActions } from 'store/home'
 
+import SendEmailIcon from 'assets/SendEmailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import MailIcon from 'assets/Inputs/MailIcon'
 
@@ -84,24 +85,11 @@ const ForgotPassword: React.FC = () => {
         />
 
         <article>
-          <header>
-            <Logo />
-          </header>
+          <Logo />
 
           {tokenIsSend ? (
             <ConfirmToken theme={theme}>
-              <Form callback={handleTokenSubmit} path='reset-password' loading captcha>
-                <h3>Confirme o código enviado para o seu email</h3>
-
-                <Input
-                  name='token'
-                  placeholder='Código'
-                  handleValue={value => localStorage.setItem('reset-password-token', value)}
-                  icon={() => <PadlockIcon />}
-                />
-
-                <Button className='submit'>Confirmar</Button>
-              </Form>
+              <h3>Confirme o código enviado para o seu email</h3>
 
               <Form
                 className='resendContainer'
@@ -111,7 +99,21 @@ const ForgotPassword: React.FC = () => {
               >
                 <Input name='email' hidden value={userEmail} />
 
-                <Button>Envie novamente</Button>
+                <Button>
+                  <SendEmailIcon />
+                  Reenviar código
+                </Button>
+              </Form>
+
+              <Form callback={handleTokenSubmit} path='reset-password' loading captcha>
+                <Input
+                  name='token'
+                  placeholder='Código'
+                  handleValue={value => localStorage.setItem('reset-password-token', value)}
+                  icon={() => <PadlockIcon />}
+                />
+
+                <Button className='submit'>Confirmar</Button>
               </Form>
             </ConfirmToken>
           ) : (

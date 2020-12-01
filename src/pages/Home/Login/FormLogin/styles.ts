@@ -1,13 +1,15 @@
-import fromTheme from 'utils/fromTheme'
+// import fromTheme from 'utils/fromTheme'
 
 import styled from 'styled-components'
+
+interface PermanenceProps {
+  permanence: boolean
+}
 
 export const Register = styled.div`
   text-align: center;
 
   padding: 0 10px;
-
-  color: ${fromTheme('tertiary')};
 
   &,
   button {
@@ -18,7 +20,7 @@ export const Register = styled.div`
     border: none;
     background-color: transparent;
 
-    color: ${fromTheme('primary')};
+    color: #ec5878;
   }
 `
 
@@ -33,6 +35,10 @@ export const Content = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
+    .Logo {
+      flex-direction: row;
+    }
   }
 
   & > * {
@@ -68,7 +74,7 @@ export const Content = styled.div`
       color: white;
       border: none;
       border-radius: 8px;
-      background-color: ${fromTheme('primary')};
+      background-color: #ec5878;
 
       &:hover {
         filter: brightness(1.1);
@@ -88,8 +94,14 @@ export const Content = styled.div`
   a {
     margin-bottom: 5px;
     font-size: calc(1.2rem + 0.5vh);
+    text-decoration: underline;
 
-    color: ${fromTheme('primary')};
+    color: #ec5878;
+
+    &:hover {
+      filter: brightness(1.1);
+      transform: scale(1.01);
+    }
   }
 
   #loginFailed {
@@ -124,7 +136,7 @@ export const Content = styled.div`
   }
 `
 
-export const Permanence = styled.div`
+export const Permanence = styled.div<PermanenceProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -132,31 +144,17 @@ export const Permanence = styled.div`
 
   height: 40px;
 
-  border-bottom: 2px solid ${fromTheme('quinary')};
+  border-bottom: 2px solid #6e4850;
 
   label {
     margin-left: 8px;
     font-size: calc(1.5rem + 0.2vh);
-  }
-`
 
-export const Google = styled.button.attrs({ type: 'button' })`
-  flex-direction: row;
+    color: ${({ permanence }) => (permanence ? '#EC5878' : '#6E4850')};
 
-  width: auto;
-  padding: 10px 5px;
-
-  cursor: pointer;
-  color: ${fromTheme('tertiary')};
-  border-bottom: solid 2px ${fromTheme('quinary')};
-
-  span {
-    font-size: calc(1.2rem + 0.5vh);
-  }
-
-  img {
-    width: 25px;
-    margin-right: 10px;
+    &:hover {
+      color: #ec5878;
+    }
   }
 `
 
@@ -168,11 +166,13 @@ const Style = styled.div`
   align-items: center;
 
   min-width: 320px;
-  width: 100vw;
+  width: calc(100vw + 1px);
   height: 100vh;
   padding: 73px 0px;
 
-  background-color: ${fromTheme('secondary')};
+  box-shadow: -8px 0px 6px 0px rgba(0, 0, 0, 0.34);
+
+  background-color: #fcfcfc;
 
   header {
     position: absolute;
@@ -185,11 +185,14 @@ const Style = styled.div`
     .ThemeSwitch {
       position: absolute;
       right: 0;
+
+      height: 4vh;
     }
   }
 
   @media screen and (min-width: 1000px) {
     width: calc(38vw + 1px);
+    border-radius: 20px 0 0 20px;
   }
 `
 
@@ -198,5 +201,4 @@ export default Style
 Register.displayName = 'Register-Style'
 Content.displayName = 'Content-Style'
 Permanence.displayName = 'Permanence-Style'
-Google.displayName = 'Google-Style'
 Style.displayName = 'FormLogin-Style'

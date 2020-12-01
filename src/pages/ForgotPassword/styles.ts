@@ -1,25 +1,36 @@
-import fromTheme from 'utils/fromTheme'
+// import fromTheme from 'utils/fromTheme'
 
 import styled from 'styled-components'
 
 export const ConfirmToken = styled.section`
-  form.resendContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 15px 15px 0px 15px;
+  .Icon {
+    height: 20px;
+    margin: 0;
   }
 
-  .resendContainer button {
-    margin: 15px;
+  .resendContainer {
+    .Icon {
+      margin-right: 8px;
+      fill: #ec5878;
+      height: 26px;
+    }
 
-    text-decoration: underline;
-    font-weight: bold;
-    color: ${fromTheme('primary')};
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-    &:hover {
-      color: ${fromTheme('tertiary')};
+      width: 100%;
+      margin-bottom: 8px;
+      font-weight: bold;
+
+      color: #ec5878;
+
+      &:hover,
+      .icon:hover {
+        filter: brightness(1.1);
+        transform: scale(1.01);
+      }
     }
   }
 `
@@ -34,21 +45,26 @@ const Style = styled.main`
   width: 100vw;
   height: 100vh;
 
-  background-color: ${fromTheme('secondary')};
+  background-color: #6e4850;
+
+  h3,
+  .Input,
+  .resendContainer,
+  .Logo {
+    margin-bottom: 16px;
+  }
 
   article {
     width: min(90%, 500px);
     padding: 20px 15px 40px;
     border-radius: 10px;
 
-    box-shadow: 0 0 5px ${fromTheme('tertiary')};
-    background: ${fromTheme('secondary')};
+    background: #fcfcfc;
+    box-shadow: -8px 8px 10px -4px rgba(0, 0, 0, 0.49);
 
     header {
       display: flex;
       justify-content: center;
-
-      padding: 15px 0;
     }
 
     @media (max-width: 425px) {
@@ -70,20 +86,18 @@ const Style = styled.main`
     }
 
     h3 {
-      margin-top: 10px;
-      margin-bottom: 30px;
       text-align: center;
     }
 
     p {
-      margin-top: 30px;
-      margin-bottom: 0px;
       text-align: center;
       font-style: italic;
     }
   }
 
-  button.submit {
+  .submit {
+    position: relative;
+
     width: 100%;
     height: 55px;
     transition: all 0.2s;
@@ -91,16 +105,13 @@ const Style = styled.main`
 
     color: white;
     border: none;
-    margin-top: 30px;
     border-radius: 8px;
-    background-color: ${fromTheme('primary')};
+    background-color: #ec5878;
 
     &:hover {
       filter: brightness(1.1);
       transform: scale(1.01);
     }
-
-    position: relative;
 
     .DotsLoader {
       position: absolute;
@@ -126,6 +137,13 @@ const Style = styled.main`
     position: absolute;
     top: 3%;
     left: 1%;
+
+    color: #ec5878;
+    transition: all 0.2s;
+
+    &:hover {
+      color: #ec5878;
+    }
 
     @media (max-width: 500px) {
       top: 1%;

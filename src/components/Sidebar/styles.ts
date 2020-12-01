@@ -1,4 +1,4 @@
-import fromTheme from 'utils/fromTheme'
+//import fromTheme from 'utils/fromTheme'
 
 import styled, { css } from 'styled-components'
 
@@ -14,7 +14,7 @@ const Style = styled.nav`
 
   height: 100vh;
 
-  background-color: ${fromTheme('primary')};
+  background-color: #ec5878;
 
   ul {
     position: relative;
@@ -48,7 +48,7 @@ const Style = styled.nav`
         span {
           opacity: 0;
           white-space: nowrap;
-          color: ${fromTheme('secondary')};
+          color: #fcfcfc;
         }
       }
     }
@@ -74,7 +74,7 @@ export const ListItem = styled.li<ListItemProps>`
       pathname.includes(buttonId) &&
       css`
         ${`#${buttonId}`} {
-          background-color: ${fromTheme('tertiary')};
+          background-color: #6e4850;
         }
       `
     )

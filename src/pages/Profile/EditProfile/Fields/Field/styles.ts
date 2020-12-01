@@ -1,4 +1,4 @@
-import fromTheme from 'utils/fromTheme'
+//import fromTheme from 'utils/fromTheme'
 
 import styled from 'styled-components'
 
@@ -62,8 +62,8 @@ export const Change = styled.div`
     width: 18px;
     height: 18px;
 
-    fill: ${fromTheme('primary')};
-    stroke: ${fromTheme('primary')};
+    fill: #ec5878;
+    stroke: #ec5878;
     cursor: pointer;
   }
 

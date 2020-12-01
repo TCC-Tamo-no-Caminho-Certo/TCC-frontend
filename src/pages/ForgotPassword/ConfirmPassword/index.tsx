@@ -62,6 +62,7 @@ const ConfirmPassword: React.FC = () => {
               captcha
             >
               <h2>Digite sua nova senha</h2>
+
               <Input
                 name='password'
                 type='password'
@@ -69,7 +70,9 @@ const ConfirmPassword: React.FC = () => {
                 icon={() => <PadlockIcon />}
                 eye
               />
+
               <h2>Confirme sua nova senha</h2>
+
               <Input
                 name='confirmPassword'
                 type='password'

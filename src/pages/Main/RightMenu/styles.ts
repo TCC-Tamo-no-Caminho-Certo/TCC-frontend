@@ -1,5 +1,7 @@
 import fromTheme from 'utils/fromTheme'
+
 import { RoleTypes } from 'store/user'
+
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
@@ -47,7 +49,7 @@ export const UserInfo = styled.div.attrs({ className: 'UserInfo' })<UserInfoProp
   #userName {
     font-size: 1.4rem;
 
-    color: ${fromTheme('secondary')};
+    color: #fcfcfc;
   }
 
   #userActivity {
@@ -81,7 +83,7 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     height: 2px;
 
     border: none;
-    background-color: ${fromTheme('white')};
+    background-color: #fcfcfc;
   }
 
   ul {
@@ -95,7 +97,8 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
 
       font-size: 1.4rem;
 
-      color: ${fromTheme('white')};
+      color: #fcfcfc;
+      user-select: none;
     }
 
     li + li {
@@ -114,7 +117,12 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     height: 24px;
     opacity: 0;
 
-    color: ${fromTheme('white')};
+    color: #fcfcfc;
+
+    span {
+      user-select: none;
+      cursor: pointer;
+    }
 
     .Icon {
       min-width: 20px;
@@ -124,7 +132,7 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
       margin: 0px;
       margin-left: 8px;
 
-      fill: ${fromTheme('white')};
+      fill: #fcfcfc;
     }
   }
 `
@@ -148,7 +156,7 @@ const Style = styled.div<StyleProps>`
   a,
   svg,
   span {
-    color: ${fromTheme('white')};
+    color: #fcfcfc;
   }
 
   .Avatar,
@@ -160,7 +168,7 @@ const Style = styled.div<StyleProps>`
     margin-right: 16px;
     width: 24px;
 
-    fill: ${fromTheme('white')};
+    fill: #fcfcfc;
   }
 
   #Gear {

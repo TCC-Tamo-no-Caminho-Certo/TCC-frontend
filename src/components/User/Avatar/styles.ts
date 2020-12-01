@@ -1,4 +1,4 @@
-import fromTheme from 'utils/fromTheme'
+//import fromTheme from 'utils/fromTheme'
 
 import styled from 'styled-components'
 
@@ -45,7 +45,7 @@ const Style = styled.div<StyleProps>`
       transition: all 300ms ease-in-out;
       cursor: pointer;
 
-      fill: ${fromTheme('primary')};
+      fill: #ec5878;
       opacity: 0.3;
     }
 

@@ -18,7 +18,7 @@ interface DataTypes {
 
 export type Types = keyof DataTypes
 
-const formatUpdateUser = (userData: any,  type: Types) => {
+const formatUpdateUser = (userData: any, type: Types): Data => {
   const professor: Data = []
   const proponent: Data = []
   const student: Data = []
@@ -31,7 +31,7 @@ const formatUpdateUser = (userData: any,  type: Types) => {
     { label: 'Nascimento:', inputname: 'birthday', value: userData.birthday },
     // { label: 'Senha:', inputname: 'new_password', value: 10, dontShow: true },
   ]
-  
+
   const user: Data = [...baseUser]
 
   const dataTypes: DataTypes = {

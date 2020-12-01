@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Style, { Content, Google, Permanence, Register } from './styles'
+import Style, { Content, Permanence, Register } from './styles'
 
 import loginSchema from 'utils/validations/login'
 
@@ -7,7 +7,6 @@ import { RootState, useDispatch, useSelector } from 'store'
 import { HomeActions } from 'store/home'
 import { ThemeState } from 'store/theme'
 
-import google from 'assets/google.png'
 import MailIcon from 'assets/Inputs/MailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import AlertIcon from 'assets/Inputs/AlertIcon'
@@ -32,14 +31,13 @@ const FormLogin: React.FC = () => {
   const dispatch = useDispatch()
 
   const [loginFailed, setLoginFailed] = useState('')
+  const [permanence, setPermanence] = useState(false)
 
   const handleSubmit = (resData: any) => {
     if (resData.success) {
-      localStorage.setItem('@SLab_ac_token',  resData.access_token)
+      localStorage.setItem('@SLab_ac_token', resData.access_token)
       history.push('/session/main')
     } else {
-      console.log(resData)
-
       setLoginFailed(
         resData.error === 'Incorrect password!' ? 'Senha incorreta!' : 'E-mail não encontrado'
       )
@@ -56,11 +54,6 @@ const FormLogin: React.FC = () => {
 
       <Content theme={theme}>
         <Logo />
-
-        <Google theme={theme}>
-          <img src={google} alt='google' />
-          <span>Entrar com o Google</span>
-        </Google>
 
         <AnimatePresence>
           {loginFailed !== '' && (
@@ -84,7 +77,11 @@ const FormLogin: React.FC = () => {
 
           <Button>Efetuar Login</Button>
 
-          <Permanence theme={theme}>
+          <Permanence
+            theme={theme}
+            permanence={permanence}
+            onClick={() => setPermanence(!permanence)}
+          >
             <Input type='checkbox' name='remember' />
 
             <label htmlFor='remember'>Permanecer conectado</label>

@@ -1,4 +1,4 @@
-import fromTheme from 'utils/fromTheme'
+// import fromTheme from 'utils/fromTheme'
 
 import styled from 'styled-components'
 
@@ -19,7 +19,7 @@ const Style = styled.div`
     width: min(350px, 80vw);
     border: 2px solid #ccc;
 
-    background: ${fromTheme('secondary')};
+    background: #6e4850;
     border-radius: 15px;
     text-align: center;
 
@@ -36,7 +36,6 @@ const Style = styled.div`
     section {
       p {
         text-align: center;
-
         padding: 20px;
       }
 
@@ -45,8 +44,8 @@ const Style = styled.div`
         font: 500 1.6rem 'Archivo';
         padding: 8px 30px;
         border-radius: 5px;
-        background: ${fromTheme('primary')};
-        color: ${fromTheme('secondary')};
+        background: #ec5878;
+        color: #fcfcfc;
 
         &:hover {
           filter: brightness(1.1);

@@ -1,4 +1,4 @@
-import fromTheme from 'utils/fromTheme'
+//import fromTheme from 'utils/fromTheme'
 
 import styled from 'styled-components'
 
@@ -11,8 +11,8 @@ const Style = styled.div`
   width: 100vw;
   height: 100vh;
 
-  color: ${fromTheme('white')};
-  background-color: ${fromTheme('tertiary')};
+  color: #fcfcfc;
+  background-color: #ec5878;
 
   @media screen and (min-width: 1000px) {
     width: 62vw;

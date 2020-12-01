@@ -14,7 +14,7 @@ const Button: FC<Props> = ({ children, ...rest }) => {
   return (
     <button type='submit' {...rest}>
       {children}
-      {form?.loader && <DotsLoader dotSize={6} />}
+      {form?.loader && <DotsLoader dotSize={6} color='#fcfcfc' />}
     </button>
   )
 }

@@ -21,7 +21,7 @@ const Avatar: FC<AvatarProps> = ({
   size,
   shadow = false,
   onClickInShadow,
-  loaderColor = '#fcfcfc',
+  loaderColor = '#6e4850',
   ...rest
 }) => {
   const avatar = useSelector<RootState, string>(state => state.user.avatar)
@@ -31,7 +31,7 @@ const Avatar: FC<AvatarProps> = ({
 
   return avatar ? (
     <Style shadow={shadow} size={size} className='Avatar' theme={theme}>
-      {avatar === 'default'  ? (
+      {avatar === 'default' ? (
         <AvatarIcon />
       ) : (
         <img src={src} alt='avatar' draggable={false} {...rest} />

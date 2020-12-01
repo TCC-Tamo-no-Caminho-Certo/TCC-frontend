@@ -17,7 +17,7 @@ const Style = styled.div<StyleProps>`
   .Calendar {
     --cl-color-primary: ${fromTheme('calendarPrimary')}!important;
     --cl-color-disabled: ${fromTheme('calendarDisabled')}!important;
-    --cl-color-primary-light: ${fromTheme('white')}!important;
+    --cl-color-primary-light: #fcfcfc !important;
     box-shadow: 8px 8px 7px 4px rgba(0, 0, 0, 0.49);
   }
 
@@ -112,7 +112,7 @@ const Style = styled.div<StyleProps>`
   .Calendar__monthText,
   .Calendar__yearText,
   .Calendar__weekDay {
-    color: ${fromTheme('white')};
+    color: #fcfcfc;
     background-color: transparent;
     &:hover {
       background-color: transparent;
@@ -131,7 +131,7 @@ const Style = styled.div<StyleProps>`
     }
 
     &:hover {
-      color: ${fromTheme('white')};
+      color: #fcfcfc;
       background-color: ${fromTheme('calendarPrimary')}!important;
     }
   }
@@ -139,13 +139,13 @@ const Style = styled.div<StyleProps>`
   .Calendar__day.-ltr {
     color: ${fromTheme('calendarTertiary')};
     &:hover {
-      background-color: ${fromTheme('primary')} !important;
+      background-color: #ec5878 !important;
       color: ${fromTheme('calendarSecondary')} !important;
     }
   }
 
   .Calendar__day.-ltr.-selected {
-    color: ${fromTheme('white')};
+    color: #fcfcfc;
   }
 
   .Calendar__day.-ltr.-disabled {
@@ -153,7 +153,7 @@ const Style = styled.div<StyleProps>`
   }
 
   .Calendar__monthSelectorItem.-active .Calendar__monthSelectorItemText {
-    color: ${fromTheme('white')};
+    color: #fcfcfc;
   }
 
   .Calendar__monthSelectorItemText:disabled,

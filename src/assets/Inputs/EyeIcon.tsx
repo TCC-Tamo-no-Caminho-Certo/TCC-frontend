@@ -13,6 +13,7 @@ const EyeIcon: React.FC<EyeProps> = ({ onClick }) => {
       xmlns='http://www.w3.org/2000/svg'
       fill='none'
       viewBox='0 0 512 300'
+      style={{ cursor: 'pointer' }}
     >
       <path
         fillRule='evenodd'
