@@ -1,4 +1,4 @@
-//import fromTheme from 'utils/fromTheme'
+// import fromTheme from 'utils/fromTheme'
 
 import styled, { css } from 'styled-components'
 
@@ -120,7 +120,7 @@ export const Field = styled.div<StyleProps>`
     justify-content: center;
     align-items: center;
 
-    width: 15%;
+    width: 18%;
     height: 100%;
   }
 

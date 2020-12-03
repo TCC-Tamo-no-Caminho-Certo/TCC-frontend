@@ -25,20 +25,16 @@ export const Register = styled.div`
 `
 
 export const Content = styled.div`
-  width: calc(100% - 1px);
+  width: 80%;
   height: 100%;
 
   &,
-  & > *,
+  a,
   form {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-
-    .Logo {
-      flex-direction: row;
-    }
   }
 
   & > * {
@@ -167,11 +163,9 @@ const Style = styled.div`
   align-items: center;
 
   min-width: 320px;
-  width: calc(100vw + 1px);
+  width: 100vw;
   height: 100vh;
   padding: 73px 0px;
-
-  box-shadow: -8px 0px 6px 0px rgba(0, 0, 0, 0.34);
 
   background-color: #fcfcfc;
 

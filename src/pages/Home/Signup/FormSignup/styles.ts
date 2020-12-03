@@ -13,8 +13,7 @@ const Style = styled.div`
   min-width: 320px;
   width: 100vw;
   height: 100vh;
-  padding: 73px 0 73px 0;
-  box-shadow: 8px 0px 6px 0px rgba(0, 0, 0, 0.34);
+  padding: 73px 0px;
 
   background-color: #fcfcfc;
 
@@ -26,7 +25,7 @@ const Style = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    width: 100%;
+    width: 80%;
     max-width: 1000px;
     height: 4vh;
 
@@ -101,6 +100,7 @@ const Style = styled.div`
 
   @media screen and (min-width: 1000px) {
     border-radius: 0 20px 20px 0;
+
     width: 38vw;
 
     nav {

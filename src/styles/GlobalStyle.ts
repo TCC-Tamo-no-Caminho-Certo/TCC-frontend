@@ -1,4 +1,4 @@
-//import fromTheme from 'utils/fromTheme'
+// import fromTheme from 'utils/fromTheme'
 
 import { createGlobalStyle } from 'styled-components'
 

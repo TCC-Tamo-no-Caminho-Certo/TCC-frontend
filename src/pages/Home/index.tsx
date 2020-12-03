@@ -18,6 +18,11 @@ const Home: React.FC = () => {
 
   window.history.pushState(null, '', document.URL)
 
+  const transition = {
+    type: 'tween',
+    duration: 2,
+  }
+
   const loginAnimation = {
     initial: {
       x: initial ? '-100vw' : '0vw',
@@ -27,10 +32,6 @@ const Home: React.FC = () => {
     },
     exit: {
       x: '-100vw',
-    },
-    transition: {
-      type: 'tween',
-      duration: 0.9,
     },
   }
 
@@ -44,10 +45,6 @@ const Home: React.FC = () => {
     exit: {
       x: '100vw',
     },
-    transition: {
-      type: 'tween',
-      duration: 0.9,
-    },
   }
 
   useEffect(() => {
@@ -58,13 +55,27 @@ const Home: React.FC = () => {
 
   return (
     <>
+      <motion.div
+        style={{
+          backgroundColor: 'transparent',
+          width: '76vw',
+          height: '100vh',
+          position: 'absolute',
+          borderRadius: 24,
+          boxShadow: '-8px 8px 6px 4px rgba(0,0,0,0.14)',
+        }}
+        initial={false}
+        animate={{ left: page === 'login' ? '62vw' : '-38vw' }}
+        transition={transition}
+      />
+
       <AnimatePresence>
         <Switch location={location} key={location.key}>
           <Route path='/home' exact>
             {page !== 'signup' && (
               <motion.div
                 variants={loginAnimation}
-                transition={loginAnimation.transition}
+                transition={transition}
                 initial='initial'
                 animate='default'
                 exit='exit'
@@ -78,7 +89,7 @@ const Home: React.FC = () => {
             {page === 'signup' && (
               <motion.div
                 variants={signupAnimation}
-                transition={signupAnimation.transition}
+                transition={transition}
                 initial='initial'
                 animate='default'
                 exit='exit'

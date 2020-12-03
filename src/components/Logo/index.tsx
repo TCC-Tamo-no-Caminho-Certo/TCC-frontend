@@ -8,7 +8,7 @@ export const Logo: React.FC = () => {
   // const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   return (
-    <Style className='Logo'>
+    <Style>
       <svg xmlns='http://www.w3.org/2000/svg' width='66' height='72' fill='none' id='logo'>
         <g id='brown' stroke='#80535D' strokeWidth='3'>
           <path d='M64.5 48.55a9.72 9.72 0 11-19.45.01 9.72 9.72 0 0119.45-.01z' />

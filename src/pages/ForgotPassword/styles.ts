@@ -47,13 +47,6 @@ const Style = styled.main`
 
   background-color: #6e4850;
 
-  h3,
-  .Input,
-  .resendContainer,
-  .Logo {
-    margin-bottom: 16px;
-  }
-
   article {
     width: min(90%, 500px);
     padding: 20px 15px 40px;
@@ -93,6 +86,13 @@ const Style = styled.main`
       text-align: center;
       font-style: italic;
     }
+  }
+
+  h3,
+  .Input,
+  .resendContainer,
+  .Logo {
+    margin-bottom: 16px;
   }
 
   .submit {
@@ -138,7 +138,7 @@ const Style = styled.main`
     top: 3%;
     left: 1%;
 
-    color: #ec5878;
+    color: #fcfcfc;
     transition: all 0.2s;
 
     &:hover {

@@ -7,8 +7,8 @@ import About from './About'
 const Login: React.FC = () => {
   return (
     <Style>
-      <About />
       <FormLogin />
+      <About />
     </Style>
   )
 }

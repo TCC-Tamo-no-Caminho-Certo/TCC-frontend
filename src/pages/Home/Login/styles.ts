@@ -9,7 +9,7 @@ const Style = styled(motion.section)`
   flex-direction: column-reverse;
 
   @media screen and (min-width: 1000px) {
-    flex-direction: row;
+    flex-direction: row-reverse;
   }
 `
 

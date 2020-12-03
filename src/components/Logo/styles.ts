@@ -1,16 +1,22 @@
 import styled from 'styled-components'
 
-const Style = styled.div`
+const Style = styled.div.attrs({
+  className: 'Logo',
+})`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
+  flex-direction: column;
 
-  width: 450px;
+  width: 80%;
 
   svg + svg {
     overflow: visible;
     margin-left: 20px;
+  }
+
+  @media screen and (min-width: 440px) {
+    flex-direction: row;
   }
 `
 

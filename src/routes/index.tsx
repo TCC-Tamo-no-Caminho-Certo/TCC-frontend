@@ -21,8 +21,9 @@ const Routes: React.FC = () => {
       if (response) {
         location.pathname.split('/')[1] !== 'session' && history.push('/session/main')
       } else if (location.pathname.split('/')[1] === 'session') {
-        history.push('/')
+        history.push('/home')
       }
+
       setLoading(false)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps

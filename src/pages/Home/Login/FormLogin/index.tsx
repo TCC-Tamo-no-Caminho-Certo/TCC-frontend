@@ -88,7 +88,9 @@ const FormLogin: React.FC = () => {
           </Permanence>
         </Form>
 
-        <Link to='/forgot-password'>Não consegue fazer login?</Link>
+        <Link to='/forgot-password' onClick={() => dispatch(HomeActions.initial(false))}>
+          Não consegue fazer login?
+        </Link>
 
         <Register theme={theme}>
           <span>Ainda não possui uma conta ?</span>

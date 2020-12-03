@@ -43,6 +43,7 @@ const RightMenu: React.FC = () => {
       },
     })
 
+    localStorage.removeItem('@SLab_ac_token')
     history.push('/home')
   }
 
