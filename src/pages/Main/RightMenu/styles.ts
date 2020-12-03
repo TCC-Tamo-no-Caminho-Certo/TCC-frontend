@@ -99,6 +99,10 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
 
       color: #fcfcfc;
       user-select: none;
+
+      .Icon {
+        height: 24px;
+      }
     }
 
     li + li {
@@ -179,6 +183,24 @@ const Style = styled.div<StyleProps>`
     top: 73px;
     width: 16px;
     height: 16px;
+  }
+
+  #baseButton {
+    position: fixed;
+    right: 24px;
+    bottom: 16px;
+    z-index: 4;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 256px;
+    padding: 8px;
+    border-radius: 8px;
+
+    color: #fcfcfc;
+    background-color: #ec5878;
   }
 `
 

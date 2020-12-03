@@ -85,8 +85,8 @@ const ForgotPassword: React.FC = () => {
         />
 
         <article>
+          gi
           <Logo />
-
           {tokenIsSend ? (
             <ConfirmToken theme={theme}>
               <h3>Confirme o código enviado para o seu email</h3>

@@ -11,7 +11,7 @@ import EditUserIcon from 'assets/ProfileSidebar/EditUserIcon'
 import LogoutIcon from 'assets/RightMenuOpen/LogoutIcon'
 import ChangeIcon from 'assets/RightMenuOpen/ChangeIcon'
 import GearIcon from 'assets/RightMenuOpen/GearIcon'
-import ProfilesToggle from 'assets/RightMenuOpen/ProfilesToggle'
+import AddRoleIcon from 'assets/RightMenuOpen/AddRoleIcon'
 
 import Avatar from 'components/User/Avatar'
 
@@ -178,21 +178,22 @@ const RightMenu: React.FC = () => {
               <ul>
                 <motion.hr variants={hrAnimation} />
 
+                <motion.li key='Profiles Toggle' variants={liAnimation}>
+                  <Link to='/session/profile/edit-profile'>
+                    <ChangeIcon />
+                    Alternar entre papéis
+                  </Link>
+                </motion.li>
+
                 <motion.li key='Edit Profile' variants={liAnimation}>
                   <Link to='/session/profile/edit-profile'>
                     <EditUserIcon /> Editar perfil
                   </Link>
                 </motion.li>
 
-                <motion.li key='Profiles Toggle' variants={liAnimation}>
-                  <Link to='/session/profile/edit-profile'>
-                    <ProfilesToggle /> Alternar entre papeis
-                  </Link>
-                </motion.li>
-
                 <motion.li key='Switch Perfil' variants={liAnimation}>
                   <Link to='/session/profile/change-role'>
-                    <ChangeIcon /> Solicitar novo papel
+                    <AddRoleIcon /> Solicitar novo papel
                   </Link>
                 </motion.li>
 
@@ -209,25 +210,13 @@ const RightMenu: React.FC = () => {
             </RightMenuOpen>
           )}
         </AnimatePresence>
-      </Style>
 
-      {selectedRole === 'base user' && (
-        <Link
-          to='/session/profile/change-role'
-          style={{
-            position: 'fixed',
-            right: '24px',
-            bottom: '24px',
-            padding: '8px',
-            borderRadius: '8px',
-            color: 'white',
-            backgroundColor: 'red',
-            zIndex: 4,
-          }}
-        >
-          Adicionar papel
-        </Link>
-      )}
+        {selectedRole === 'base user' && (
+          <Link to='/session/profile/change-role' id='baseButton'>
+            <AddRoleIcon /> Adicionar papel
+          </Link>
+        )}
+      </Style>
     </>
   )
 }

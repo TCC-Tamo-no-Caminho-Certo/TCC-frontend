@@ -8,7 +8,7 @@ import api from 'services/api'
 import { UserActions } from 'store/user'
 import { useDispatch } from 'store'
 
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 const PrivateRoutes: React.FC = () => {
   const dispatch = useDispatch()
@@ -26,8 +26,8 @@ const PrivateRoutes: React.FC = () => {
         dispatch(
           UserActions.setUserInfo({
             ...res.user,
-            selectedRole: 'student',
-            roles: ['base user', 'student'],
+            selectedRole: 'base user',
+            roles: ['base user'],
           })
         )
       })
@@ -38,9 +38,7 @@ const PrivateRoutes: React.FC = () => {
 
   return (
     <Switch>
-      <Route path='/session/profile' exact>
-        <Redirect to='/session/profile/home' />
-      </Route>
+      <Route path='/session/profile/home' exact />
 
       <Route path='/session/profile' component={Profile} />
 

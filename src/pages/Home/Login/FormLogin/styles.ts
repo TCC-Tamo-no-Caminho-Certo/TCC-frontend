@@ -160,6 +160,7 @@ export const Permanence = styled.div<PermanenceProps>`
 
 const Style = styled.div`
   position: relative;
+  z-index: 2;
 
   display: flex;
   justify-content: center;
