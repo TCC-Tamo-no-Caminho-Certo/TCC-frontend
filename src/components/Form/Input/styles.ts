@@ -1,5 +1,3 @@
-// import fromTheme from 'utils/fromTheme'
-
 import styled, { css } from 'styled-components'
 
 interface StyleProps {
@@ -49,13 +47,13 @@ export const DefaultInput = styled.div<StyleProps>`
   }
 
   &:focus-within {
-    border-color: #ec5878;
+    border-color: #d65881;
 
     &,
     input::placeholder,
     .Icon {
-      color: #ec5878;
-      -webkit-text-fill-color: #ec5878;
+      color: #d65881;
+      -webkit-text-fill-color: #d65881;
     }
   }
 
@@ -64,8 +62,8 @@ export const DefaultInput = styled.div<StyleProps>`
     css`
       &,
       .Icon {
-        color: #ec5878;
-        -webkit-text-fill-color: #ec5878;
+        color: #d65881;
+        -webkit-text-fill-color: #d65881;
       }
     `}
 
@@ -74,11 +72,12 @@ export const DefaultInput = styled.div<StyleProps>`
       width: ${setWidth(hasEye, hasIcon)};
       height: 100%;
       border: none;
+
       border-radius: ${setBorderRadius(hasEye, hasIcon)};
 
       background-color: transparent;
-      color: #ec5878;
-      -webkit-text-fill-color: #ec5878;
+      color: #d65881;
+      -webkit-text-fill-color: #d65881;
 
       &::placeholder {
         color: #6e4850;
@@ -91,6 +90,8 @@ export const DefaultInput = styled.div<StyleProps>`
 export const Field = styled.div<StyleProps>`
   display: ${({ hidden }) => (hidden ? 'none' : 'flex')};
   align-items: center;
+  * {
+  }
 
   min-height: 35px;
   height: 4.5vh;
@@ -104,9 +105,10 @@ export const Field = styled.div<StyleProps>`
     height: 100%;
 
     border: none;
+
     background-color: transparent;
-    color: #ec5878;
-    -webkit-text-fill-color: #ec5878;
+    color: #d65881;
+    -webkit-text-fill-color: #d65881;
 
     &::placeholder {
       color: #6e4850;
@@ -121,13 +123,17 @@ export const Field = styled.div<StyleProps>`
 
     width: 18%;
     height: 100%;
-  }
 
-  .Icon {
-    width: 24px;
-    margin: 0 8px;
+    .Icon {
+      width: 24px;
+      margin: 0 8px;
 
-    fill: #6e4850;
+      fill: #6e4850;
+
+      &:hover {
+        fill: #d62828;
+      }
+    }
   }
 
   #Alert {
@@ -135,13 +141,13 @@ export const Field = styled.div<StyleProps>`
   }
 
   &:focus-within {
-    border-color: #ec5878;
+    border-color: #d65881;
 
     &,
     input::placeholder,
     .Icon {
-      fill: #ec5878;
-      -webkit-text-fill-color: #ec5878;
+      fill: #d65881;
+      -webkit-text-fill-color: #d65881;
     }
   }
 
@@ -157,9 +163,9 @@ export const Field = styled.div<StyleProps>`
     css`
       &,
       .Icon {
-        color: #ec5878;
-        fill: #ec5878;
-        -webkit-text-fill-color: #ec5878;
+        color: #d65881;
+        fill: #d65881;
+        -webkit-text-fill-color: #d65881;
       }
     `}
 

@@ -1,5 +1,3 @@
-// import fromTheme from 'utils/fromTheme'
-
 import styled from 'styled-components'
 
 const Style = styled.div`
@@ -54,8 +52,17 @@ const Style = styled.div`
       width: 18px;
       height: 18px;
 
-      fill: #ec5878;
-      stroke: #ec5878;
+      fill: #d65881;
+      stroke: #d65881;
+    }
+
+    #CloseIcon {
+      width: 16px;
+      height: 16px;
+
+      path {
+        stroke-width: 50;
+      }
     }
   }
 `

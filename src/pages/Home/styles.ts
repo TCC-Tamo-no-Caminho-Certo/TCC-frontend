@@ -6,15 +6,18 @@ interface ShadowProps {
 }
 
 export const Shadow = styled(motion.div)<ShadowProps>`
-  position: absolute;
+  box-shadow: none;
 
-  width: 76vw;
-  height: 100vh;
-  border-radius: 24px;
+  @media screen and (min-width: 1200px) {
+    position: absolute;
 
-  background-color: transparent;
-  box-shadow: -8px 8px 6px 4px rgba(0, 0, 0, 0.14);
+    width: 100vw;
+    height: 100vh;
+    border-radius: 24px;
 
-  @media screen and (min-width: 1000px) {
+    background-color: transparent;
+    box-shadow: -8px 8px 6px 4px rgba(0, 0, 0, 0.14);
+
+    width: 76vw;
   }
 `

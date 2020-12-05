@@ -1,6 +1,124 @@
-//import fromTheme from 'utils/fromTheme'
-
 import styled from 'styled-components'
+
+export const RightMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  margin-left: 48px;
+
+  #CloseIcon {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+
+    width: 18px;
+    height: 18px;
+    transition: fill 300ms ease-out;
+
+    stroke: #fcfcfc;
+
+    &:hover {
+      stroke: #d65881;
+    }
+  }
+
+  #preview,
+  #otherFileSelect {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  #preview {
+    position: relative;
+
+    > div {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+    }
+
+    span {
+      margin-bottom: 12px;
+      color: #fcfcfc;
+    }
+
+    #before-img-preview {
+      width: 80px;
+      height: 80px;
+      transform: translateY(-100%);
+
+      border: solid 1px #d65881;
+    }
+
+    #img-preview {
+      width: 80px;
+      height: 80px;
+      overflow: hidden;
+    }
+  }
+
+  #otherFileSelect {
+    position: absolute;
+    right: 48px;
+
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-top: 48px;
+
+    font-size: 1.3rem;
+    width: 120px;
+    text-align: center;
+
+    color: #fcfcfc;
+
+    cursor: pointer;
+
+    &:hover {
+      color: #d65881;
+
+      .Icon {
+        fill: #d65881;
+      }
+    }
+
+    .Icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 0px;
+      fill: #fcfcfc;
+    }
+  }
+
+  #discardButton {
+    width: 120px;
+
+    transition: color 200ms ease-in-out;
+    color: #fcfcfc;
+
+    &:hover {
+      color: #d65881;
+    }
+  }
+
+  #confirmButton {
+    width: 120px;
+    height: 36px;
+
+    color: #fcfcfc;
+    background-color: transparent;
+    border: solid 1px #d65881;
+    margin-top: 8px;
+
+    transition: box-shadow 300ms ease-in-out;
+
+    &:hover {
+      box-shadow: inset -60px 0 0 0 #d65881, inset 60px 0 0 0 #d65881;
+    }
+  }
+`
 
 const Style = styled.div`
   display: flex;
@@ -9,6 +127,7 @@ const Style = styled.div`
   border-radius: 24px;
 
   background-color: #6e4850;
+  transform: scale(1.3);
 
   input[type='file'] {
     display: none;
@@ -94,129 +213,9 @@ const Style = styled.div`
       background-color: transparent;
     }
   }
-
-  #sidebar {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    margin-left: 48px;
-
-    #Close {
-      position: absolute;
-      top: 24px;
-      right: 24px;
-
-      width: 18px;
-      height: 18px;
-      transition: fill 300ms ease-out;
-
-      fill: #fcfcfc;
-
-      &:hover {
-        fill: #ec5878;
-      }
-    }
-
-    #preview {
-      position: relative;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-
-      > div {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-      }
-
-      span {
-        margin-bottom: 12px;
-        color: #fcfcfc;
-      }
-
-      #before-img-preview {
-        width: 80px;
-        height: 80px;
-        transform: translateY(-100%);
-
-        border: solid 1px #ec5878;
-      }
-
-      #img-preview {
-        width: 80px;
-        height: 80px;
-        overflow: hidden;
-      }
-    }
-
-    #otherFileSelect {
-      position: absolute;
-      right: 48px;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      border-radius: 4px;
-      padding: 4px 8px;
-      margin-top: 48px;
-
-      font-size: 1.3rem;
-      width: 120px;
-      text-align: center;
-
-      color: #fcfcfc;
-
-      cursor: pointer;
-
-      .Icon {
-        width: 24px;
-        height: 24px;
-        margin-right: 8px;
-        fill: #fcfcfc;
-      }
-
-      &:hover {
-        color: #ec5878;
-
-        .Icon {
-          fill: #ec5878;
-        }
-      }
-    }
-
-    #discardButton {
-      width: 120px;
-
-      transition: color 200ms ease-in-out;
-      color: #fcfcfc;
-
-      &:hover {
-        color: #ec5878;
-      }
-    }
-
-    #confirmButton {
-      width: 120px;
-      height: 36px;
-
-      color: #fcfcfc;
-      background-color: transparent;
-      border: solid 1px #ec5878;
-      margin-top: 8px;
-
-      transition: box-shadow 300ms ease-in-out;
-
-      &:hover {
-        box-shadow: inset -60px 0 0 0 #ec5878, inset 60px 0 0 0 #ec5878;
-      }
-    }
-  }
 `
 
 export default Style
 
 Style.displayName = 'ImageChanger-Style'
+RightMenu.displayName = 'RightMenu-Style'

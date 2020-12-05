@@ -1,5 +1,3 @@
-// import fromTheme from 'utils/fromTheme'
-
 import { createGlobalStyle } from 'styled-components'
 
 export default createGlobalStyle`
@@ -19,7 +17,7 @@ export default createGlobalStyle`
   body {
     font-size: 1.6rem;
     color: #6E4850;
-    background-color: #EC5878;
+    background-color: #D65881;
     
     span, p, h1, h2, h3, h4, h5 {
       cursor: default;
@@ -56,7 +54,7 @@ export default createGlobalStyle`
 
   a {
     text-decoration: none;
-    color: #EC5878;
+    color: #D65881;
   }
 
   li {

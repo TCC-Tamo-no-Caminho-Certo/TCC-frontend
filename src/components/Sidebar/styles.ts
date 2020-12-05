@@ -1,5 +1,3 @@
-//import fromTheme from 'utils/fromTheme'
-
 import styled, { css } from 'styled-components'
 
 interface ListItemProps {
@@ -14,7 +12,7 @@ const Style = styled.nav`
 
   height: 100vh;
 
-  background-color: #ec5878;
+  background-color: #d65881;
 
   ul {
     position: relative;

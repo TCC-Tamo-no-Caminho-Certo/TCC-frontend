@@ -1,5 +1,3 @@
-// import fromTheme from 'utils/fromTheme'
-
 import styled from 'styled-components'
 
 const Style = styled.div`
@@ -12,14 +10,13 @@ const Style = styled.div`
 
   min-width: 320px;
   width: 100vw;
-  height: 100vh;
-  padding: 73px 0px;
+  min-height: 100vh;
 
   background-color: #fcfcfc;
 
   nav {
     position: absolute;
-    top: 20px;
+    top: 24px;
 
     display: flex;
     align-items: center;
@@ -36,6 +33,10 @@ const Style = styled.div`
     }
   }
 
+  .Logo {
+    padding-top: 80px;
+  }
+
   form {
     display: flex;
     justify-content: center;
@@ -43,11 +44,13 @@ const Style = styled.div`
     flex-direction: column;
 
     width: 80%;
+    padding-bottom: 80px;
 
     & > button {
       width: 100%;
-      height: 5vh;
       min-height: 35px;
+      height: 5vh;
+
       transition: all 0.2s;
       font: 700 1.8rem 'Archivo';
       font-size: calc(1.3rem + 0.5vh);
@@ -56,7 +59,7 @@ const Style = styled.div`
       border: none;
       margin-top: 30px;
       border-radius: 8px;
-      background-color: #ec5878;
+      background-color: #d65881;
 
       &:hover {
         filter: brightness(1.1);
@@ -98,7 +101,7 @@ const Style = styled.div`
     margin-bottom: 22px;
   }
 
-  @media screen and (min-width: 1000px) {
+  @media screen and (min-width: 1200px) {
     border-radius: 0 20px 20px 0;
 
     width: 38vw;

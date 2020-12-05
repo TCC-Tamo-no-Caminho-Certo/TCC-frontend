@@ -107,7 +107,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         ) : (
           Icon && (
             <div className='iconSpace'>
-              <Icon />
+              <button type='button' onClick={() => inputRef.current?.focus()}>
+                <Icon />
+              </button>
             </div>
           )
         )}

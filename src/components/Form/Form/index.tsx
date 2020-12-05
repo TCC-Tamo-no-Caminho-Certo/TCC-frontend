@@ -10,7 +10,7 @@ import { RootState, useSelector } from 'store'
 
 import { ObjectSchema, ValidationError } from 'yup'
 
-interface Props extends HTMLProps<HTMLFormElement> {
+interface FormProps extends HTMLProps<HTMLFormElement> {
   children: (ReactElement | ReactElement[])[] | ReactElement
   path: string
   token?: string
@@ -27,7 +27,7 @@ interface Props extends HTMLProps<HTMLFormElement> {
  * @param children -must have an input
  */
 
-const Form: FC<Props> = ({
+const Form: FC<FormProps> = ({
   children,
   path,
   token,

@@ -200,7 +200,7 @@ const Style = styled.div<StyleProps>`
     border-radius: 8px;
 
     color: #fcfcfc;
-    background-color: #ec5878;
+    background-color: #d65881;
   }
 `
 

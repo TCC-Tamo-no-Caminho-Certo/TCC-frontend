@@ -23,9 +23,10 @@ const Fields: FC<Props> = ({ theme }) => {
     <Slider width={550} gap={200} gapVertical={100}>
       <Card key='Personal' headerText='Dados Pessoais'>
         <Avatar
+          border
           size={128}
-          onClickInShadow={() => modal?.setShow(true)}
-          loaderColor='#DB7093'
+          onClick={() => modal?.setShow(true)}
+          loaderColor='#D65881'
           shadow
         />
 

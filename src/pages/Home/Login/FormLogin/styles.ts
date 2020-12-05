@@ -1,126 +1,133 @@
-// import fromTheme from 'utils/fromTheme'
+import { Form } from 'components/Form'
 
+import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
-interface PermanenceProps {
-  permanence: boolean
-}
+export const LoginFailed = styled(motion.div)`
+  width: auto;
+  margin: 0;
 
-export const Register = styled.div`
-  display: flex;
-  text-align: center;
-  flex-direction: column;
+  color: #d62828;
+  align-self: flex-end;
 
-  padding: 0 10px;
+  .Icon {
+    width: 24px;
+    fill: #d62828;
 
-  &,
-  button {
-    font-size: calc(1.2rem + 0.5vh);
-  }
-
-  button {
-    border: none;
-    background-color: transparent;
-
-    color: #ec5878;
+    margin-right: 8px;
   }
 `
 
-export const Content = styled.div`
-  width: 80%;
-  height: 100%;
+export const Register = styled.div`
+  flex-direction: column;
 
-  &,
-  a,
-  form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  button {
+    color: #d65881;
+
+    &:hover {
+      filter: brightness(1.1);
+      transform: scale(1.01);
+    }
+  }
+`
+
+export const Permanence = styled.div`
+  flex-direction: row;
+
+  border-bottom: 2px solid #6e4850;
+
+  > * {
+    margin-bottom: 8px;
   }
 
-  & > * {
-    width: 80%;
-    max-width: 450px;
+  label {
+    margin-left: 8px;
+    font-size: calc(1.5rem + 0.2vh);
+
+    color: #6e4850;
+
+    &:hover {
+      color: #d65881;
+      filter: brightness(1.1);
+    }
+  }
+`
+
+export const ContentForm = styled(Form)`
+  flex-direction: column;
+
+  width: 70%;
+  max-width: 530px;
+
+  > * {
+    width: 100%;
+
     margin-bottom: 2.5vh;
 
     &:last-child {
-      margin: 0;
-    }
-  }
-
-  form {
-    & > * {
-      width: 100%;
-      margin-bottom: 2.5vh;
-
-      &:last-child {
-        margin: 0;
-      }
-    }
-
-    a {
       margin-bottom: 0;
-      font-size: calc(1.2rem + 0.5vh);
-      text-decoration: underline;
-      text-align: end;
-
-      color: #ec5878;
-
-      &:hover {
-        filter: brightness(1.1);
-        transform: scale(1.01);
-      }
-    }
-
-    button {
-      position: relative;
-
-      width: 100%;
-      height: 5vh;
-      min-height: 35px;
-      transition: all 0.2s;
-      font-size: calc(1.3rem + 0.5vh);
-      font: 700 1.8rem 'Archivo';
-
-      color: white;
-      border: none;
-      border-radius: 8px;
-      background-color: #ec5878;
-
-      &:hover {
-        filter: brightness(1.1);
-        transform: scale(1.01);
-      }
-
-      .DotsLoader {
-        position: absolute;
-        right: 10%;
-        top: 50%;
-
-        transform: translateY(-50%);
-      }
     }
   }
 
-  #loginFailed {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
+  button#login {
+    position: relative;
 
+    height: 5vh;
     min-height: 35px;
-    height: 4.5vh;
+    transition: all 0.2s;
     font-size: calc(1.3rem + 0.5vh);
-    border-radius: 35px;
 
-    color: red;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    background-color: #d65881;
 
-    .Icon {
-      width: 24px;
-      fill: red;
+    &:hover {
+      filter: brightness(1.1);
+      transform: scale(1.01);
+    }
 
-      margin-right: 8px;
+    .DotsLoader {
+      position: absolute;
+      right: 10%;
+      top: 50%;
+
+      transform: translateY(-50%);
+    }
+  }
+
+  div#fail {
+    position: relative;
+    margin-bottom: 0;
+
+    height: 0;
+
+    ${LoginFailed} {
+      position: absolute;
+      top: 0;
+      left: 16px;
+    }
+  }
+
+  .Input + .Input {
+    margin-bottom: 0;
+  }
+
+  a {
+    padding: 4px 0;
+    width: auto;
+    margin: 0;
+    align-self: flex-end;
+
+    font-size: calc(1.1rem + 0.5vh);
+    text-align: end;
+
+    color: #d65881;
+
+    padding-right: 16px;
+
+    &:hover {
+      filter: brightness(1.1);
     }
   }
 
@@ -135,60 +142,33 @@ export const Content = styled.div`
   }
 `
 
-export const Permanence = styled.div<PermanenceProps>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-
-  height: 40px;
-
-  border-bottom: 2px solid #6e4850;
-
-  label {
-    margin-left: 8px;
-    font-size: calc(1.5rem + 0.2vh);
-
-    color: ${({ permanence }) => (permanence ? '#EC5878' : '#6E4850')};
-
-    &:hover {
-      color: #ec5878;
-    }
-  }
-`
-
 const Style = styled.div`
   position: relative;
   z-index: 2;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   min-width: 320px;
-  width: 100vw;
-  height: 100vh;
-  padding: 73px 0px;
+  width: calc(100vw + 1px);
+  min-height: 100vh;
 
   background-color: #fcfcfc;
 
-  header {
-    position: absolute;
-    top: 20px;
-
-    width: 70%;
-    max-width: 1000px;
-    height: 33px;
-
-    .ThemeSwitch {
-      position: absolute;
-      right: 0;
-
-      height: 4vh;
-    }
+  &,
+  ${Permanence}, ${ContentForm}, ${LoginFailed}, ${Register} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  @media screen and (min-width: 1000px) {
+  .ThemeSwitch {
+    position: absolute;
+    top: 24px;
+    right: 10%;
+
+    min-height: 33px;
+    height: 4vh;
+  }
+
+  @media screen and (min-width: 1200px) {
     width: calc(38vw + 1px);
     border-radius: 20px 0 0 20px;
   }
@@ -196,7 +176,8 @@ const Style = styled.div`
 
 export default Style
 
+LoginFailed.displayName = 'LoginFailed-Style'
 Register.displayName = 'Register-Style'
-Content.displayName = 'Content-Style'
 Permanence.displayName = 'Permanence-Style'
+ContentForm.displayName = 'ContentForm-Style'
 Style.displayName = 'FormLogin-Style'

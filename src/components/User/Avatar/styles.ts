@@ -1,10 +1,9 @@
-//import fromTheme from 'utils/fromTheme'
-
 import styled from 'styled-components'
 
 interface StyleProps {
   size: number
   shadow: boolean
+  border: boolean
 }
 
 const Style = styled.div<StyleProps>`
@@ -18,6 +17,9 @@ const Style = styled.div<StyleProps>`
     width: 100%;
     height: 100%;
     border-radius: 50%;
+  }
+
+  #border {
   }
 
   .circle {
@@ -45,14 +47,8 @@ const Style = styled.div<StyleProps>`
       transition: all 300ms ease-in-out;
       cursor: pointer;
 
-      fill: #ec5878;
+      fill: #d65881;
       opacity: 0.3;
-    }
-
-    &:hover {
-      .Icon {
-        opacity: 1;
-      }
     }
   }
 
@@ -70,6 +66,12 @@ const Style = styled.div<StyleProps>`
     content: '';
     cursor: pointer;
     pointer-events: all;
+  }
+
+  &:hover {
+    .Icon {
+      opacity: 1;
+    }
   }
 `
 

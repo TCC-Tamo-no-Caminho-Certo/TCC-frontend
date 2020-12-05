@@ -1,4 +1,4 @@
-import React, { FC, ImgHTMLAttributes, memo } from 'react'
+import React, { FC, ImgHTMLAttributes, memo, useState } from 'react'
 import Style from './styles'
 
 import { RootState, useSelector } from 'store'
@@ -14,14 +14,18 @@ import { motion } from 'framer-motion'
 interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
   size: number
   shadow?: boolean
-  onClickInShadow?(): void
+  onShadowClick?(): void
+  onClick?(): void
   loaderColor?: string
+  border?: boolean
 }
 const Avatar: FC<AvatarProps> = ({
   size,
   shadow = false,
-  onClickInShadow,
+  onShadowClick,
   loaderColor = '#6e4850',
+  onClick,
+  border = false,
   ...rest
 }) => {
   const avatar = useSelector<RootState, string>(state => state.user.avatar)
@@ -29,8 +33,19 @@ const Avatar: FC<AvatarProps> = ({
 
   const src = `https://s3.steamslab.com/profile/${avatar}`
 
+  const [hovering, setHovering] = useState(false)
+
   return avatar ? (
-    <Style shadow={shadow} size={size} className='Avatar' theme={theme}>
+    <Style
+      border={border}
+      onClick={onClick}
+      shadow={shadow}
+      size={size}
+      className='Avatar'
+      theme={theme}
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => setHovering(false)}
+    >
       {avatar === 'default' ? (
         <AvatarIcon />
       ) : (
@@ -40,9 +55,9 @@ const Avatar: FC<AvatarProps> = ({
       {shadow && (
         <motion.div
           className='circle'
-          whileHover={{ opacity: [0.7, 0.9] }}
+          onClick={onShadowClick}
+          animate={{ opacity: hovering ? 0.9 : 0.7 }}
           transition={{ duration: 0.3 }}
-          onClick={onClickInShadow}
         >
           <CameraIcon />
         </motion.div>

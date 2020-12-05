@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import Style from './styles'
+import Style, { RightMenu } from './styles'
 
 import { ModalContext } from '../'
 
@@ -92,6 +92,7 @@ const ImageChanger: React.FC = () => {
         >
           Selecionar um arquivo
         </motion.label>
+
         <input id='first' type='file' onChange={onChange} />
 
         <Cropper
@@ -113,7 +114,7 @@ const ImageChanger: React.FC = () => {
         />
       </div>
 
-      <div id='sidebar'>
+      <RightMenu>
         <CloseIcon onClick={onCloseClick} />
 
         <div id='preview'>
@@ -126,9 +127,10 @@ const ImageChanger: React.FC = () => {
         {showUpload && (
           <>
             <label htmlFor='other' id='otherFileSelect'>
+              <div>Enviar outra foto</div>
               <CameraIcon />
-              Enviar outra foto
             </label>
+
             <input id='other' type='file' onChange={onChange} />
           </>
         )}
@@ -140,7 +142,7 @@ const ImageChanger: React.FC = () => {
         <button type='button' id='confirmButton' onClick={onConfirmClick}>
           Salvar
         </button>
-      </div>
+      </RightMenu>
     </Style>
   )
 }

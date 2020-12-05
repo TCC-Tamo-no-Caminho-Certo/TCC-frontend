@@ -1,5 +1,3 @@
-// import fromTheme from 'utils/fromTheme'
-
 import styled from 'styled-components'
 
 const Style = styled.div`
@@ -44,7 +42,7 @@ const Style = styled.div`
         font: 500 1.6rem 'Archivo';
         padding: 8px 30px;
         border-radius: 5px;
-        background: #ec5878;
+        background: #d65881;
         color: #fcfcfc;
 
         &:hover {

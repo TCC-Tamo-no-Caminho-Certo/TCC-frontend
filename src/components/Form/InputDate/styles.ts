@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import fromTheme from 'utils/fromTheme'
 
 import styled, { css } from 'styled-components'
@@ -139,7 +140,7 @@ const Style = styled.div<StyleProps>`
   .Calendar__day.-ltr {
     color: ${fromTheme('calendarTertiary')};
     &:hover {
-      background-color: #ec5878 !important;
+      background-color: #d65881 !important;
       color: ${fromTheme('calendarSecondary')} !important;
     }
   }

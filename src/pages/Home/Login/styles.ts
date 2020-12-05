@@ -6,9 +6,9 @@ const Style = styled(motion.section)`
   top: 0;
 
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
 
-  @media screen and (min-width: 1000px) {
+  @media screen and (min-width: 1200px) {
     flex-direction: row-reverse;
   }
 `

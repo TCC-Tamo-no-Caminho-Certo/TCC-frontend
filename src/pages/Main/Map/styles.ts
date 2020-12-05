@@ -1,5 +1,3 @@
-// import fromTheme from 'utils/fromTheme'
-
 import googleMaps from 'assets/googleMaps.png'
 
 import styled from 'styled-components'

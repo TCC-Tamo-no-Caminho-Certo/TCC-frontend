@@ -37,9 +37,9 @@ const Checkbox: FC<Props> = ({ checked, theme }) => {
           id='checkboxRadial'
           r='1'
         >
-          <stop stopColor={theme?.primary} />
+          <stop stopColor='#6e4850' />
 
-          <stop offset='1' stopColor={theme?.quaternary} />
+          <stop offset='1' stopColor='#D65881' />
         </motion.radialGradient>
       </defs>
 

@@ -1,5 +1,3 @@
-//import fromTheme from 'utils/fromTheme'
-
 import styled from 'styled-components'
 
 const Style = styled.div`

@@ -1,5 +1,3 @@
-// import fromTheme from 'utils/fromTheme'
-
 import styled from 'styled-components'
 
 const Style = styled.div`
@@ -14,7 +12,7 @@ const Style = styled.div`
   color: #fcfcfc;
   background-color: transparent;
 
-  @media screen and (min-width: 1000px) {
+  @media screen and (min-width: 1200px) {
     width: 62vw;
   }
 `

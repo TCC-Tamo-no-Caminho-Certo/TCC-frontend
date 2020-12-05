@@ -10,9 +10,8 @@ const CloseIcon: React.FC<CloseIconProps> = ({ onClick }) => {
     <svg
       onClick={onClick}
       className='Icon'
-      id='Close'
+      id='CloseIcon'
       xmlns='http://www.w3.org/2000/svg'
-      fill='none'
       viewBox='0 0 343 344'
     >
       <path d='M15 15.5L328.5 329' strokeWidth='60' strokeLinejoin='round' />

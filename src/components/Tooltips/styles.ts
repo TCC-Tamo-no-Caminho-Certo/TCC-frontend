@@ -1,5 +1,3 @@
-//import fromTheme from 'utils/fromTheme'
-
 import 'semantic-ui-css/semantic.min.css'
 import { Popup } from 'semantic-ui-react'
 import styled from 'styled-components'
@@ -12,7 +10,7 @@ export const StyledTooltipError = styled(Popup)`
 
   &,
   &:before {
-    background-color: #ec5878 !important;
+    background-color: #d65881 !important;
     box-shadow: none !important;
     margin-left: 1px !important;
   }

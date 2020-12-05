@@ -8,7 +8,7 @@ const Style = styled(motion.section)`
   display: flex;
   flex-direction: column;
 
-  @media screen and (min-width: 1000px) {
+  @media screen and (min-width: 1200px) {
     flex-direction: row;
   }
 `

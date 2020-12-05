@@ -1,5 +1,3 @@
-// import fromTheme from 'utils/fromTheme'
-
 import styled from 'styled-components'
 
 export const ConfirmToken = styled.section`
@@ -11,7 +9,7 @@ export const ConfirmToken = styled.section`
   .resendContainer {
     .Icon {
       margin-right: 8px;
-      fill: #ec5878;
+      fill: #d65881;
       height: 26px;
     }
 
@@ -24,7 +22,7 @@ export const ConfirmToken = styled.section`
       margin-bottom: 8px;
       font-weight: bold;
 
-      color: #ec5878;
+      color: #d65881;
 
       &:hover,
       .icon:hover {
@@ -106,7 +104,7 @@ const Style = styled.main`
     color: white;
     border: none;
     border-radius: 8px;
-    background-color: #ec5878;
+    background-color: #d65881;
 
     &:hover {
       filter: brightness(1.1);
@@ -142,7 +140,7 @@ const Style = styled.main`
     transition: all 0.2s;
 
     &:hover {
-      color: #ec5878;
+      color: #d65881;
     }
 
     @media (max-width: 500px) {

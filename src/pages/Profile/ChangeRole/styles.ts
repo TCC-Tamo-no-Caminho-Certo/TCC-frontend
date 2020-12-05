@@ -1,5 +1,3 @@
-//import fromTheme from 'utils/fromTheme'
-
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 

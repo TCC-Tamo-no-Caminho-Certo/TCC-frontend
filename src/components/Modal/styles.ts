@@ -15,9 +15,7 @@ export const ModalBackground = styled.div.attrs({
   background-color: rgba(0, 0, 0, 0.75);
 `
 
-const Style = styled.div.attrs({
-  className: 'Modal',
-})`
+const Style = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;

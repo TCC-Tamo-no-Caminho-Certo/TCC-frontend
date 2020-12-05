@@ -3,7 +3,7 @@ import { ThemeAttributes } from './'
 const light: ThemeAttributes = {
   name: 'light',
 
-  calendarPrimary: '#EC5878',
+  calendarPrimary: '#D65881',
   calendarSecondary: '#FCFCFC',
   calendarTertiary: '#6E4850',
   calendarHeader: '#6E4850',

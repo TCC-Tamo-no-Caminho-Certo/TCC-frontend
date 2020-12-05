@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useCallback, useEffect, useRef } from 'react'
 import Style, { ModalBackground } from './styles'
 
 interface ModalProps {
@@ -7,15 +7,30 @@ interface ModalProps {
   onClick(): void
 }
 
-const Modal: React.FC<ModalProps> = ({ show, children: Children, onClick }) => {
-  return show ? (
-    <>
-      <Style>{Children}</Style>
+const Modal: React.FC<ModalProps> = ({ children: Children, onClick }) => {
+  const modalRef = useRef(null)
 
+  const onKeyDown = useCallback(
+    (e: any) => {
+      e.key === 'Escape' && onClick()
+    },
+    [onClick]
+  )
+
+  useEffect(() => {
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [onKeyDown])
+
+  return (
+    <>
       <ModalBackground onClick={onClick} />
+
+      <Style ref={modalRef} className='Modal' onKeyDown={onKeyDown}>
+        {Children}
+      </Style>
     </>
-  ) : (
-    <></>
   )
 }
 

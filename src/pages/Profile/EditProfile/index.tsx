@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react'
-import Style from './styles'
+import Style, { ConfirmForm } from './styles'
 
 import Fields from './Fields'
 import ImageChanger from './ImageChanger'
@@ -7,8 +7,9 @@ import ImageChanger from './ImageChanger'
 import { RootState, ThemeState, useDispatch, useSelector } from 'store'
 import { UserActions } from 'store/user'
 
+import CloseIcon from 'assets/Inputs/CloseIcon'
+
 import { Button, Form, Input } from 'components/Form'
-import Card from 'components/Card'
 import Modal from 'components/Modal'
 
 export interface ModalState {
@@ -56,23 +57,30 @@ const EditProfile: React.FC = () => {
         </Form>
       </Style>
 
-      <Modal show={confirm} onClick={() => setConfirm(false)}>
-        <Card headerText='Confirme sua senha'>
-          <Input name='password' placeholder='Confirme sua senha' eye />
+      {confirm && (
+        <Modal show={confirm} onClick={() => setConfirm(false)}>
+          <ConfirmForm path='confirmUpdate'>
+            <span>Você precisa confirmar sua senha para salvar as alterações!</span>
+            <CloseIcon onClick={() => setConfirm(false)} />
 
-          <div className='buttons'>
-            <button type='button' onClick={() => setConfirm(false)}>
-              Cancelar
-            </button>
+            <Input name='password' placeholder='Confirme sua senha' eye />
 
-            <Button>Confirmar</Button>
-          </div>
-        </Card>
-      </Modal>
+            <div id='buttons'>
+              <button type='button' id='cancel' onClick={() => setConfirm(false)}>
+                Cancelar
+              </button>
 
-      <Modal show={image} onClick={() => setImage(false)}>
-        <ImageChanger />
-      </Modal>
+              <Button>Confirmar</Button>
+            </div>
+          </ConfirmForm>
+        </Modal>
+      )}
+
+      {image && (
+        <Modal show={image} onClick={() => setImage(false)}>
+          <ImageChanger />
+        </Modal>
+      )}
     </ModalContext.Provider>
   )
 }

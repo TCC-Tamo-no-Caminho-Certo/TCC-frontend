@@ -1,5 +1,3 @@
-// import fromTheme from 'utils/fromTheme'
-
 import styled from 'styled-components'
 
 const Style = styled.button`
@@ -10,7 +8,7 @@ const Style = styled.button`
   transition: all 0.2s;
 
   &:hover {
-    color: #ec5878;
+    color: #d65881;
   }
 
   svg {

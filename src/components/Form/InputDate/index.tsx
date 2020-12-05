@@ -77,7 +77,7 @@ const InputDate: React.FC<InputDateProps> = ({ icon: Icon, value, arrow, ...rest
         maximumDate={maximumDate}
         selectorEndingYear={present.year}
         selectorStartingYear={minimumDate.year}
-        colorPrimary='#EC5878'
+        colorPrimary='#D65881'
         calendarClassName='CalendarSize'
       />
     </Style>

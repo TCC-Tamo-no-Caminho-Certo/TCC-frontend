@@ -3,7 +3,7 @@ import { ThemeAttributes } from './'
 const dark: ThemeAttributes = {
   name: 'dark',
 
-  calendarPrimary: '#EC5878',
+  calendarPrimary: '#D65881',
   calendarSecondary: '#FCFCFC',
   calendarTertiary: '#FCFCFC',
   calendarHeader: '#303030',
