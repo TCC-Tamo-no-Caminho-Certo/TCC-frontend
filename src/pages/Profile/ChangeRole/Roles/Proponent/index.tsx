@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import Style from './styles'
 
 import ScrollButton from '../../ScrollButton'
+import FormRole from '../../FormRole'
 
 import { ThemeState } from 'store/theme'
 import { RootState, useSelector } from 'store'
@@ -13,7 +14,7 @@ const Proponent: React.FC = () => {
 
   return (
     <Style theme={theme} id='Proponent'>
-      <h1>Proponent</h1>
+      <FormRole formTitle='Proponente' />
 
       <ScrollButton />
     </Style>

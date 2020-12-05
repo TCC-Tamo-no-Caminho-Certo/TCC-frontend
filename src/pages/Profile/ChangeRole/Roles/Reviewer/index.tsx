@@ -5,6 +5,7 @@ import ScrollButton from '../../ScrollButton'
 
 import { ThemeState } from 'store/theme'
 import { RootState, useSelector } from 'store'
+import FormRole from '../../FormRole'
 
 const Reviewer: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
@@ -13,8 +14,7 @@ const Reviewer: React.FC = () => {
 
   return (
     <Style theme={theme} id='Reviewer'>
-      <h1>Reviewer</h1>
-
+      <FormRole formTitle='Revisor' />
       <ScrollButton />
     </Style>
   )
