@@ -29,6 +29,7 @@ const FormLogin: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const history = useHistory()
   const dispatch = useDispatch()
+  const [disable, setDisable] = useState(false)
 
   const [loginFailed, setLoginFailed] = useState('')
   const [permanence, setPermanence] = useState(false)
@@ -44,6 +45,13 @@ const FormLogin: React.FC = () => {
 
       setTimeout(() => setLoginFailed(''), 3000)
     }
+  }
+
+  const onRegisterClick = () => {
+    setDisable(true)
+    dispatch(HomeActions.initial(true))
+    dispatch(HomeActions.page('signup'))
+    history.push('/home/signup')
   }
 
   return (
@@ -64,6 +72,10 @@ const FormLogin: React.FC = () => {
         </AnimatePresence>
 
         <Form callback={handleSubmit} valSchema={loginSchema} path='login' loading captcha>
+          <Link to='/forgot-password' onClick={() => dispatch(HomeActions.initial(false))}>
+            Não consegue fazer login?
+          </Link>
+
           <Input name='email' placeholder='E-mail' icon={() => <MailIcon />} autoComplete='email' />
 
           <Input
@@ -88,22 +100,12 @@ const FormLogin: React.FC = () => {
           </Permanence>
         </Form>
 
-        <Link to='/forgot-password' onClick={() => dispatch(HomeActions.initial(false))}>
-          Não consegue fazer login?
-        </Link>
-
         <Register theme={theme}>
           <span>Ainda não possui uma conta ?</span>
 
-          <Link
-            to='/home/signup'
-            onClick={() => {
-              dispatch(HomeActions.initial(true))
-              dispatch(HomeActions.page('signup'))
-            }}
-          >
+          <button type='button' onClick={onRegisterClick} disabled={disable}>
             Registre-se aqui!
-          </Link>
+          </button>
         </Register>
       </Content>
     </Style>

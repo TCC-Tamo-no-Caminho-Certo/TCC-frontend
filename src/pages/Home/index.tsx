@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { Shadow } from './styles'
 
 import Login from './Login'
 import Signup from './Signup'
@@ -20,7 +21,7 @@ const Home: React.FC = () => {
 
   const transition = {
     type: 'tween',
-    duration: 2,
+    duration: 1,
   }
 
   const loginAnimation = {
@@ -47,6 +48,19 @@ const Home: React.FC = () => {
     },
   }
 
+  const shadowAnimation = {
+    login: {
+      x: '62vw',
+    },
+    signup: {
+      x: '-38vw',
+    },
+    transition: {
+      type: 'tween',
+      duration: initial ? 1 : 0,
+    },
+  }
+
   useEffect(() => {
     location.pathname === '/home/signup'
       ? dispatch(HomeActions.page('signup'))
@@ -55,18 +69,11 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <motion.div
-        style={{
-          backgroundColor: 'transparent',
-          width: '76vw',
-          height: '100vh',
-          position: 'absolute',
-          borderRadius: 24,
-          boxShadow: '-8px 8px 6px 4px rgba(0,0,0,0.14)',
-        }}
-        initial={false}
-        animate={{ left: page === 'login' ? '62vw' : '-38vw' }}
-        transition={transition}
+      <Shadow
+        page={page}
+        variants={shadowAnimation}
+        animate={page}
+        transition={shadowAnimation.transition}
       />
 
       <AnimatePresence>

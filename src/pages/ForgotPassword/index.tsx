@@ -78,7 +78,7 @@ const ForgotPassword: React.FC = () => {
       <Style theme={theme}>
         <BackButton
           to='/home'
-          onClick={() => {
+          onTap={() => {
             dispatch(HomeActions.initial(false))
             dispatch(HomeActions.page('login'))
           }}

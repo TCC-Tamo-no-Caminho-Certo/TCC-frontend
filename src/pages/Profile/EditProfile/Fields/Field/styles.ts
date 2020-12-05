@@ -1,10 +1,9 @@
-//import fromTheme from 'utils/fromTheme'
+// import fromTheme from 'utils/fromTheme'
 
 import styled from 'styled-components'
 
-const Style = styled.div.attrs({ className: 'InfoChanger' })`
-  display: grid;
-  grid: 'labels value change' 100%/15% 70% 15%;
+const Style = styled.div`
+  display: flex;
 
   font-size: 1.5rem;
   height: 40px;
@@ -14,69 +13,53 @@ const Style = styled.div.attrs({ className: 'InfoChanger' })`
   border: solid 2px #50393e;
   color: #50393e;
 
-  & > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-`
-
-export const Label = styled.div`
-  grid-area: labels;
-  justify-self: start;
-
-  & > span {
-    margin-left: 15px;
-  }
-`
-
-export const Value = styled.div`
-  grid-area: value;
-
-  span {
-    cursor: text;
+  button {
+    width: 100%;
+    height: 100%;
   }
 
-  input,
-  & > div,
-  & > span {
-    min-width: 100%;
-    padding: 0;
-
-    font-size: 1.5rem;
-    text-align: center;
-    overflow-wrap: break-word;
-
-    color: inherit;
-  }
-`
-
-export const Change = styled.div`
-  grid-area: change;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .Icon {
-    width: 18px;
-    height: 18px;
-
-    fill: #ec5878;
-    stroke: #ec5878;
-    cursor: pointer;
+  .label {
+    width: 20%;
+    padding-left: 2%;
+    text-align: left;
   }
 
-  label {
-    cursor: default;
-    width: 18px;
-    height: 18px;
+  .input {
+    width: 60%;
+    height: 100%;
+
+    .InputChange,
+    .InputDate,
+    .DatePicker,
+    .DefaultDate {
+      height: 100%;
+
+      input {
+        width: 100%;
+        height: 100%;
+
+        text-align: center;
+        font-size: 1.6rem;
+        border-radius: 0;
+      }
+    }
+  }
+
+  .icon {
+    width: 20%;
+    text-align: right;
+    padding-right: 2%;
+
+    .Icon {
+      width: 18px;
+      height: 18px;
+
+      fill: #ec5878;
+      stroke: #ec5878;
+    }
   }
 `
 
 export default Style
 
-Label.displayName = 'Label-Style'
-Value.displayName = 'Value-Style'
-Change.displayName = 'Change-Style'
 Style.displayName = 'Field-Style'

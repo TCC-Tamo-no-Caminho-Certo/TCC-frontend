@@ -1,9 +1,8 @@
-//import fromTheme from 'utils/fromTheme'
+// import fromTheme from 'utils/fromTheme'
 
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-const Style = styled(Link)`
+const Style = styled.button`
   display: flex;
   align-items: center;
 

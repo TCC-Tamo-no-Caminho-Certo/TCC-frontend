@@ -2,6 +2,7 @@ export interface Info {
   label: string
   value: string | number
   inputname: string
+  date?: boolean
   dontShow?: boolean
 }
 
@@ -28,7 +29,7 @@ const formatUpdateUser = (userData: any, type: Types): Data => {
     { label: 'Nome:', inputname: 'name', value: userData.name },
     { label: 'Sobrenome:', inputname: 'surname', value: userData.surname },
     { label: 'E-mail:', inputname: 'email', value: userData.email },
-    { label: 'Nascimento:', inputname: 'birthday', value: userData.birthday },
+    { label: 'Nascimento:', inputname: 'birthday', value: userData.birthday, date: true },
     // { label: 'Senha:', inputname: 'new_password', value: 10, dontShow: true },
   ]
 

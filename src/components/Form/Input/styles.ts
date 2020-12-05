@@ -32,8 +32,6 @@ export const DefaultInput = styled.div<StyleProps>`
   font-size: calc(1.3rem + 0.5vh);
   border-radius: 10px;
 
-  background-color: transparent;
-
   .iconSpace {
     display: flex;
     justify-content: center;
@@ -98,6 +96,7 @@ export const Field = styled.div<StyleProps>`
   height: 4.5vh;
   font-size: calc(1.3rem + 0.5vh);
   border-radius: 10px;
+
   background-color: transparent;
   border: solid 1px #6e4850;
 

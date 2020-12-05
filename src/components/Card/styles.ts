@@ -15,7 +15,7 @@ const Style = styled.div.attrs({ className: 'Card' })`
   background-color: white;
   box-shadow: 8px 8px 5px 0px rgba(0, 0, 0, 0.49);
 
-  .InfoChanger + .InfoChanger {
+  .Field + .Field {
     margin-top: 24px;
   }
 

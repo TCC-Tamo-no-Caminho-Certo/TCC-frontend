@@ -7,7 +7,9 @@ interface PermanenceProps {
 }
 
 export const Register = styled.div`
+  display: flex;
   text-align: center;
+  flex-direction: column;
 
   padding: 0 10px;
 
@@ -57,6 +59,20 @@ export const Content = styled.div`
       }
     }
 
+    a {
+      margin-bottom: 0;
+      font-size: calc(1.2rem + 0.5vh);
+      text-decoration: underline;
+      text-align: end;
+
+      color: #ec5878;
+
+      &:hover {
+        filter: brightness(1.1);
+        transform: scale(1.01);
+      }
+    }
+
     button {
       position: relative;
 
@@ -84,19 +100,6 @@ export const Content = styled.div`
 
         transform: translateY(-50%);
       }
-    }
-  }
-
-  a {
-    margin-bottom: 5px;
-    font-size: calc(1.2rem + 0.5vh);
-    text-decoration: underline;
-
-    color: #ec5878;
-
-    &:hover {
-      filter: brightness(1.1);
-      transform: scale(1.01);
     }
   }
 

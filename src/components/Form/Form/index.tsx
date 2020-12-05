@@ -96,7 +96,6 @@ const Form: FC<Props> = ({
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    // console.log(refs)
 
     loading && setShowLoader(true)
 
@@ -108,7 +107,6 @@ const Form: FC<Props> = ({
     !haveErrors && (await submit(callback))
 
     loading && setShowLoader(false)
-    console.log(data)
   }
 
   return (

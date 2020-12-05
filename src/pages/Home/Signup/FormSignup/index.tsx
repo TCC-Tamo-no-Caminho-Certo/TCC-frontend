@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Style from './styles'
 
 import signupSchema from 'utils/validations/signup'
@@ -18,13 +18,16 @@ import BackButton from 'components/BackButton'
 const FormSignup: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const dispatch = useDispatch()
+  const [disable, setDisable] = useState(false)
 
   return (
     <Style theme={theme}>
       <nav>
         <BackButton
           to='/home'
-          onClick={() => {
+          disabled={disable}
+          onTap={() => {
+            setDisable(true)
             dispatch(HomeActions.initial(true))
             dispatch(HomeActions.page('login'))
           }}
