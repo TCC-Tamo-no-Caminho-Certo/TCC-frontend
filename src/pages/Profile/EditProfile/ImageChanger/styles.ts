@@ -3,19 +3,26 @@ import styled from 'styled-components'
 export const RightMenu = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
 
+  width: 148px;
+  height: 300px;
+
   margin-left: 48px;
+
+  > * {
+    width: 100%;
+  }
 
   #CloseIcon {
     position: absolute;
     top: 24px;
     right: 24px;
 
-    width: 18px;
-    height: 18px;
-    transition: fill 300ms ease-out;
-
+    width: 16px;
+    height: 16px;
+    margin-right: 0px;
     stroke: #fcfcfc;
 
     &:hover {
@@ -28,11 +35,12 @@ export const RightMenu = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
   }
 
   #preview {
     position: relative;
+
+    flex-direction: column;
 
     > div {
       width: 80px;
@@ -61,40 +69,39 @@ export const RightMenu = styled.div`
   }
 
   #otherFileSelect {
-    position: absolute;
-    right: 48px;
-
     border-radius: 4px;
-    padding: 4px 8px;
-    margin-top: 48px;
 
-    font-size: 1.3rem;
-    width: 120px;
+    padding: 0 8px;
+    height: 32px;
+    margin-bottom: 16px;
+    font-size: 1.2rem;
     text-align: center;
 
     color: #fcfcfc;
 
     cursor: pointer;
 
+    border: solid #fcfcfc 1px;
+
     &:hover {
       color: #d65881;
-
+      border: solid #d65881 1px;
       .Icon {
         fill: #d65881;
       }
     }
 
     .Icon {
-      width: 24px;
-      height: 24px;
-      margin-right: 0px;
+      width: 20px;
+      height: 20px;
+      margin-left: 8px;
       fill: #fcfcfc;
+
+      transform: translateY(-10%);
     }
   }
 
   #discardButton {
-    width: 120px;
-
     transition: color 200ms ease-in-out;
     color: #fcfcfc;
 
@@ -104,7 +111,6 @@ export const RightMenu = styled.div`
   }
 
   #confirmButton {
-    width: 120px;
     height: 36px;
 
     color: #fcfcfc;
@@ -115,19 +121,20 @@ export const RightMenu = styled.div`
     transition: box-shadow 300ms ease-in-out;
 
     &:hover {
-      box-shadow: inset -60px 0 0 0 #d65881, inset 60px 0 0 0 #d65881;
+      box-shadow: inset -74px 0 0 0 #d65881, inset 74px 0 0 0 #d65881;
     }
   }
 `
 
 const Style = styled.div`
+  position: relative;
+
   display: flex;
 
   padding: 48px;
   border-radius: 24px;
 
   background-color: #6e4850;
-  transform: scale(1.3);
 
   input[type='file'] {
     display: none;
@@ -147,6 +154,11 @@ const Style = styled.div`
     color: #fcfcfc;
     border: #fcfcfc dashed 1px;
     cursor: pointer;
+
+    &:hover {
+      color: #d65881;
+      border: solid 1px;
+    }
   }
 
   .Cropper {

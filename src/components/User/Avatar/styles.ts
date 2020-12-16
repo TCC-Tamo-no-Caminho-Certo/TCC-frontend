@@ -19,9 +19,6 @@ const Style = styled.div<StyleProps>`
     border-radius: 50%;
   }
 
-  #border {
-  }
-
   .circle {
     position: relative;
     transform: translateY(-105%);

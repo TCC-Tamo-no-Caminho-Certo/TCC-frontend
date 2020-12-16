@@ -7,12 +7,14 @@ import Proponent from './Roles/Proponent'
 import Moderator from './Roles/Moderator'
 import Reviewer from './Roles/Reviewer'
 import Professor from './Roles/Professor'
+import RequestStatus from './RequestStatus'
+
+import selectRoleLabel from 'utils/selectedRoleLabel'
 
 import { ThemeState } from 'store/theme'
-import { RootState, useSelector, UserState } from 'store'
+import { RootState, UserState, useSelector } from 'store'
 
 import { Route } from 'react-router-dom'
-import selectRoleLabel from 'utils/selectedRoleLabel'
 
 const rolesRoute = [
   {
@@ -146,6 +148,8 @@ const ChangeRole: React.FC = () => {
       {rolesRoute.map(route => (
         <Route key={route.path} path={route.path} exact={route.exact} component={route.component} />
       ))}
+
+      <RequestStatus />
     </Style>
   )
 }

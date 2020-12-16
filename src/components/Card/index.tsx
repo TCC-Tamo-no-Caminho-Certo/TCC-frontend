@@ -1,14 +1,14 @@
 import React, { ReactElement } from 'react'
 import Style, { Header } from './styles'
 
-interface Props {
+interface CardProps {
   children: (ReactElement | ReactElement[])[] | ReactElement
   headerText: string
 }
 
-const Card: React.FC<Props> = ({ headerText, children }) => {
+const Card: React.FC<CardProps> = ({ headerText, children }) => {
   return (
-    <Style>
+    <Style className='Card'>
       <Header>{headerText}</Header>
       {children}
     </Style>

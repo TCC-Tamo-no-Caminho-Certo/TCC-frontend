@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const Style = styled.div.attrs({ className: 'Card' })`
+const Style = styled.div`
   position: relative;
 
   display: flex;
@@ -8,7 +8,6 @@ const Style = styled.div.attrs({ className: 'Card' })`
   justify-content: center;
   flex-direction: column;
 
-  width: 100%;
   padding: 60px 20px;
   border-radius: 16px;
 

@@ -25,6 +25,7 @@ const Field: FC<Props> = ({ theme, data }) => {
   const input =
     data.inputname === 'birthday' ? (
       <InputDate
+        ref={inputRef}
         name={data.inputname}
         value={`${inputDateValue(data.value as string)}`}
         noStyle
@@ -41,14 +42,14 @@ const Field: FC<Props> = ({ theme, data }) => {
       />
     )
 
-  useEffect(() => {
-    if (change) inputRef.current?.focus()
-  }, [change])
-
   const setInput = () => {
     if (change) return input
     return data.date ? inputDateValue(data.value as string) : data.value
   }
+
+  useEffect(() => {
+    if (change) inputRef.current?.focus()
+  }, [change])
 
   return (
     <Style key={data.inputname} theme={theme} className='Field'>

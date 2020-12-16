@@ -70,10 +70,6 @@ const ImageChanger: React.FC = () => {
     }
   }
 
-  function onDiscardClick() {
-    cropper.destroy()
-  }
-
   function onCloseClick() {
     modal?.setShow(false)
   }
@@ -125,19 +121,16 @@ const ImageChanger: React.FC = () => {
         </div>
 
         {showUpload && (
-          <>
+          <div>
             <label htmlFor='other' id='otherFileSelect'>
               <div>Enviar outra foto</div>
+
               <CameraIcon />
             </label>
 
             <input id='other' type='file' onChange={onChange} />
-          </>
+          </div>
         )}
-
-        <button type='button' id='discardButton' onClick={onDiscardClick}>
-          Descartar
-        </button>
 
         <button type='button' id='confirmButton' onClick={onConfirmClick}>
           Salvar
