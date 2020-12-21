@@ -21,7 +21,6 @@ const Style = styled(motion.div)`
 
   p {
     width: 80%;
-    font-size: 1.6rem;
   }
 
   #Roles {

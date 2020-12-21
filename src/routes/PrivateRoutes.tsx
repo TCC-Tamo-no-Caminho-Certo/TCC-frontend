@@ -26,8 +26,8 @@ const PrivateRoutes: React.FC = () => {
         dispatch(
           UserActions.setUserInfo({
             ...res.user,
-            selectedRole: 'base user',
             roles: ['base user'],
+            selectedRole: 'base user',
           })
         )
       })
