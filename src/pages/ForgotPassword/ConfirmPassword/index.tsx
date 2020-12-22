@@ -6,9 +6,6 @@ import Modal, { ModalAttributes } from 'pages/ForgotPassword/Modal'
 
 import { passwordSchema } from 'utils/validations/forgotPassword'
 
-import { ThemeState } from 'store/theme'
-import { RootState, useSelector } from 'store'
-
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 
 import Logo from 'components/Logo'
@@ -20,7 +17,6 @@ const ConfirmPassword: React.FC = () => {
   const [modalAttributes, setModalAttributes] = useState<ModalAttributes>({
     visible: false,
   })
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const history = useHistory()
 
@@ -46,7 +42,7 @@ const ConfirmPassword: React.FC = () => {
   return (
     <>
       <Modal {...modalAttributes} onOKClick={handleModalOKClick} />
-      <Style theme={theme}>
+      <Style>
         <article>
           <header>
             <Logo />

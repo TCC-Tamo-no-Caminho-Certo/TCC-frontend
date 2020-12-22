@@ -23,13 +23,7 @@ const PrivateRoutes: React.FC = () => {
         },
       })
       .then(res => {
-        dispatch(
-          UserActions.setUserInfo({
-            ...res.user,
-            roles: ['base user'],
-            selectedRole: 'base user',
-          })
-        )
+        dispatch(UserActions.setUserInfo({ ...res.user }))
       })
 
     window.history.pushState(null, '', document.URL)

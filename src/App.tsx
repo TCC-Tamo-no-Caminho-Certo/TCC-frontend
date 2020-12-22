@@ -8,18 +8,19 @@ import { ThemeState } from 'store/theme'
 import { RootState, useSelector } from 'store'
 
 import { BrowserRouter } from 'react-router-dom'
+import { ThemeProvider } from 'styled-components'
 
 const App: React.FC = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   return (
-    <>
-      <GlobalStyle theme={theme} />
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
 
       <BrowserRouter>
         <Routes />
       </BrowserRouter>
-    </>
+    </ThemeProvider>
   )
 }
 

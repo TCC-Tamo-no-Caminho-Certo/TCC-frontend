@@ -9,7 +9,7 @@ export interface FormState {
   removeRef: (input: Ref) => void
   setRef: (input: Ref) => void
   loader: boolean
-  theme: any
+  theme?: any
 }
 
 const FormContext = createContext<FormState | null>(null)

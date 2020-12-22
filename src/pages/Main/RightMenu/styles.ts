@@ -1,5 +1,3 @@
-import fromTheme from 'utils/fromTheme'
-
 import { RoleTypes } from 'store/user'
 
 import { motion } from 'framer-motion'
@@ -43,7 +41,7 @@ export const UserInfo = styled.div.attrs({ className: 'UserInfo' })<UserInfoProp
   #userRole {
     font-size: 1.3rem;
 
-    color: ${({ selectedRole }) => fromTheme(selectedRole)};
+    color: ${props => props.theme.roles['base user']};
   }
 
   #userName {

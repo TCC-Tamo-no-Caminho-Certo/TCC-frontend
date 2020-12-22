@@ -6,7 +6,7 @@ import { ModalContext } from '../'
 import api from 'services/api'
 
 import { UserActions } from 'store/user'
-import { RootState, ThemeState, useDispatch, useSelector } from 'store'
+import { useDispatch } from 'store'
 
 import CameraIcon from 'assets/Inputs/CameraIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
@@ -18,7 +18,6 @@ import { Cropper } from 'react-cropper'
 const ImageChanger: React.FC = () => {
   const dispatch = useDispatch()
   const modal = useContext(ModalContext)
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const [image, setImage] = useState()
   const [cropper, setCropper] = useState<any>()
@@ -75,7 +74,7 @@ const ImageChanger: React.FC = () => {
   }
 
   return (
-    <Style theme={theme}>
+    <Style>
       <div>
         <motion.label
           htmlFor='first'

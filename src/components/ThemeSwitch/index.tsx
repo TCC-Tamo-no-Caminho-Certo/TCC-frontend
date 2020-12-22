@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
-import { ThemeActions, ThemeState } from 'store/theme'
-import { RootState, useDispatch, useSelector } from 'store'
+import { ThemeActions } from 'store/theme'
+import { useDispatch } from 'store'
+
+import { ThemeContext } from 'styled-components'
 
 const ThemeSwitch: React.FC = () => {
   const dispatch = useDispatch()
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const theme = useContext(ThemeContext)
 
   return (
     <svg

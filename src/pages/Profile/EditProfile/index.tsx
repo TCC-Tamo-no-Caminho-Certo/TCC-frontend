@@ -4,7 +4,7 @@ import Style, { ConfirmForm } from './styles'
 import Fields from './Fields'
 import ImageChanger from './ImageChanger'
 
-import { RootState, ThemeState, useDispatch, useSelector } from 'store'
+import { useDispatch } from 'store'
 import { UserActions } from 'store/user'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
@@ -21,7 +21,6 @@ export const ModalContext = createContext<ModalState | null>(null)
 ModalContext.displayName = 'Modal Context'
 
 const EditProfile: React.FC = () => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const dispatch = useDispatch()
   const [image, setImage] = useState(false)
   const [confirm, setConfirm] = useState(false)
@@ -43,9 +42,9 @@ const EditProfile: React.FC = () => {
 
   return (
     <ModalContext.Provider value={{ show: image, setShow: setImage }}>
-      <Style theme={theme}>
+      <Style>
         <Form path='user/update' handleData={handleData} callback={submitCallback} loading captcha>
-          <Fields theme={theme} />
+          <Fields />
 
           <button id='discardButton' type='button'>
             Descartar alterações

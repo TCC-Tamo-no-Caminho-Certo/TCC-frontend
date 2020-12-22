@@ -6,8 +6,6 @@ import Input, { InputProps } from '../Input'
 
 import ptbr from 'utils/locales/dates/ptbr'
 
-import { RootState, ThemeState, useSelector } from 'store'
-
 import DatePicker, { DayValue } from 'react-modern-calendar-datepicker'
 
 const actualDate = new Date()
@@ -36,7 +34,6 @@ interface InputDateProps extends InputProps {
 
 const InputDate: React.FC<InputDateProps> = ({ icon: Icon, value, arrow, ...rest }) => {
   const [selectedDate, setSelectedDate] = useState<DayValue>(null)
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const renderCustomInput = ({ ref }: any) => {
     const InputValue = (date: DayValue) => {
@@ -67,7 +64,7 @@ const InputDate: React.FC<InputDateProps> = ({ icon: Icon, value, arrow, ...rest
   }
 
   return (
-    <Style theme={theme} className='InputDate' arrow={arrow}>
+    <Style className='InputDate' arrow={arrow}>
       <DatePicker
         locale={ptbr}
         value={selectedDate}

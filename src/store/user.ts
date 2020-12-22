@@ -11,30 +11,36 @@ export type RoleTypes =
   | 'evaluator'
   | 'moderator'
 
+interface Email {
+  email: string
+  main: boolean
+  options?: { [key: string]: any }
+}
+
 export interface UserState {
   user_id: number
   name: string
   surname: string
-  email: string
   avatar: string
   birthday: string
   created_at: string
   updated_at: string
   roles: RoleTypes[]
   selectedRole: RoleTypes
+  emails: Email[]
 }
 
 const initialState: UserState = {
   user_id: 0,
   name: '',
   surname: '',
-  email: '',
   avatar: '',
   birthday: '',
   created_at: '',
   updated_at: '',
   roles: ['base user'],
   selectedRole: 'base user',
+  emails: [{ email: '', main: true }],
 }
 
 const User = createSlice({

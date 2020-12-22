@@ -3,9 +3,8 @@ import Style from './styles'
 
 import signupSchema from 'utils/validations/signup'
 
-import { ThemeState } from 'store/theme'
 import { HomeActions } from 'store/home'
-import { RootState, useDispatch, useSelector } from 'store'
+import { useDispatch } from 'store'
 
 import WorldIcon from 'assets/Inputs/WorldIcon'
 import UserLockedIcon from 'assets/Inputs/UserLockedIcon'
@@ -16,12 +15,11 @@ import { Button, Form, Input, InputDate } from 'components/Form'
 import BackButton from 'components/BackButton'
 
 const FormSignup: React.FC = () => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const dispatch = useDispatch()
   const [disable, setDisable] = useState(false)
 
   return (
-    <Style theme={theme}>
+    <Style>
       <nav>
         <BackButton
           to='/home'

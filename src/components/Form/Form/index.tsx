@@ -5,9 +5,6 @@ import { FormProvider, Ref } from './FormContext'
 
 import api from 'services/api'
 
-import { ThemeState } from 'store/theme'
-import { RootState, useSelector } from 'store'
-
 import { ObjectSchema, ValidationError } from 'yup'
 
 interface FormProps extends HTMLProps<HTMLFormElement> {
@@ -45,7 +42,6 @@ const Form: FC<FormProps> = ({
 
   const recaptchaRef = useRef<Captcha>(null)
   const [showLoader, setShowLoader] = useState(false)
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const setRef = (input: Ref) => {
     refs.push(input)
@@ -119,9 +115,7 @@ const Form: FC<FormProps> = ({
         />
       )}
 
-      <FormProvider value={{ removeRef, setRef, theme, loader: showLoader }}>
-        {children}
-      </FormProvider>
+      <FormProvider value={{ removeRef, setRef, loader: showLoader }}>{children}</FormProvider>
     </form>
   )
 }

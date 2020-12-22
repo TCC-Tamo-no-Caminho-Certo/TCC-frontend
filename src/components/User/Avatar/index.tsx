@@ -2,7 +2,6 @@ import React, { FC, ImgHTMLAttributes, memo, useState } from 'react'
 import Style from './styles'
 
 import { RootState, useSelector } from 'store'
-import { ThemeState } from 'store/theme'
 
 import AvatarIcon from 'assets/Inputs/AvatarIcon'
 import CameraIcon from 'assets/Inputs/CameraIcon'
@@ -29,7 +28,6 @@ const Avatar: FC<AvatarProps> = ({
   ...rest
 }) => {
   const avatar = useSelector<RootState, string>(state => state.user.avatar)
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   const src = `https://s3.steamslab.com/profile/${avatar}`
 
@@ -42,7 +40,6 @@ const Avatar: FC<AvatarProps> = ({
       shadow={shadow}
       size={size}
       className='Avatar'
-      theme={theme}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >

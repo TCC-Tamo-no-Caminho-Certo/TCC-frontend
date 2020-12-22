@@ -5,7 +5,7 @@ import selectRoleLabel from 'utils/selectedRoleLabel'
 
 import api from 'services/api'
 
-import { RootState, ThemeState, UserState, useSelector } from 'store'
+import { RootState, UserState, useSelector } from 'store'
 
 import EditUserIcon from 'assets/ProfileSidebar/EditUserIcon'
 import LogoutIcon from 'assets/RightMenuOpen/LogoutIcon'
@@ -19,9 +19,9 @@ import { AnimatePresence, motion, useCycle } from 'framer-motion'
 import { Link, useHistory } from 'react-router-dom'
 
 const RightMenu: React.FC = () => {
-  const { name, surname, selectedRole } = useSelector<RootState, UserState>(state => state.user)
-
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const { name, surname, selectedRole, roles } = useSelector<RootState, UserState>(
+    state => state.user
+  )
 
   const [editOpen, toggle] = useCycle(false, true)
   const history = useHistory()
@@ -147,11 +147,11 @@ const RightMenu: React.FC = () => {
         <motion.path initial={false} variants={pathAnimation} animate={cycle()} fill='#6e4850' />
       </Background>
 
-      <Style width={`${width}px`} theme={theme}>
+      <Style width={`${width}px`}>
         <Avatar size={80} />
 
-        <UserInfo selectedRole={selectedRole} theme={theme}>
-          <span id='userRole'>{selectRoleLabel(selectedRole)}</span>
+        <UserInfo selectedRole={selectedRole}>
+          <span id='userRole'>{selectRoleLabel(roles[0])}</span>
           <span id='userName'>{`${name} ${surname}`}</span>
 
           <span id='userActivity'>
@@ -171,7 +171,6 @@ const RightMenu: React.FC = () => {
             <RightMenuOpen
               width={`${width}px`}
               height={`${openHeight - closedHeight}px`}
-              theme={theme}
               variants={rightMenuOpenAnimation}
               animate='open'
               exit='close'

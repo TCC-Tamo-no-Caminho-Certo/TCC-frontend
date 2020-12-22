@@ -9,11 +9,10 @@ import CloseIcon from 'assets/Inputs/CloseIcon'
 import { Input, InputDate } from 'components/Form'
 
 interface Props {
-  theme: any
   data: Info
 }
 
-const Field: FC<Props> = ({ theme, data }) => {
+const Field: FC<Props> = ({ data }) => {
   const [change, setChange] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -52,7 +51,7 @@ const Field: FC<Props> = ({ theme, data }) => {
   }, [change])
 
   return (
-    <Style key={data.inputname} theme={theme} className='Field'>
+    <Style key={data.inputname} className='Field'>
       <button
         className='label'
         type='button'

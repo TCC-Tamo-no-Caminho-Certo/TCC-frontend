@@ -3,9 +3,8 @@ import Style, { ContentForm, LoginFailed, Permanence, Register } from './styles'
 
 import loginSchema from 'utils/validations/login'
 
-import { RootState, useDispatch, useSelector } from 'store'
+import { useDispatch } from 'store'
 import { HomeActions } from 'store/home'
-import { ThemeState } from 'store/theme'
 
 import MailIcon from 'assets/Inputs/MailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
@@ -26,7 +25,6 @@ export interface LoginData {
 }
 
 const FormLogin: React.FC = () => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const history = useHistory()
   const dispatch = useDispatch()
   const [disable, setDisable] = useState(false)
@@ -56,17 +54,10 @@ const FormLogin: React.FC = () => {
   }
 
   return (
-    <Style theme={theme}>
+    <Style>
       <ThemeSwitch />
 
-      <ContentForm
-        theme={theme}
-        callback={handleSubmit}
-        valSchema={loginSchema}
-        path='login'
-        loading
-        captcha
-      >
+      <ContentForm callback={handleSubmit} valSchema={loginSchema} path='login' loading captcha>
         <Logo />
 
         <motion.div id='fail' animate={{ height: loginFailed !== '' ? 32 : 0 }}>
@@ -100,7 +91,7 @@ const FormLogin: React.FC = () => {
 
         <Button id='login'>Efetuar Login</Button>
 
-        <Permanence theme={theme}>
+        <Permanence>
           <Input type='checkbox' name='remember' />
 
           <label htmlFor='remember'>Permanecer conectado</label>

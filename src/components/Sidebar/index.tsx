@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import Style, { ListItem } from './styles'
 
-import { ThemeState } from 'store/theme'
 import { SidebarActions } from 'store/sidebar'
 import { RootState, useDispatch, useSelector } from 'store'
 
@@ -23,7 +22,6 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ routes, samePage = false }) => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const open = useSelector<RootState, boolean>(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
 
@@ -88,7 +86,7 @@ const Sidebar: React.FC<SidebarProps> = ({ routes, samePage = false }) => {
   }, [])
 
   return (
-    <Style theme={theme}>
+    <Style>
       <Hamburger toggle={onToggle} state={open} />
 
       <motion.ul variants={ul} animate={cycle()}>
@@ -98,7 +96,6 @@ const Sidebar: React.FC<SidebarProps> = ({ routes, samePage = false }) => {
             bottom={route.bottom}
             pathname={pathname.replaceAll('/', '-')}
             buttonId={route.path.replaceAll('/', '-')}
-            theme={theme}
           >
             <Link to={route.path} onClick={() => samePage && window.scrollTo(0, height * index)}>
               <button type='button' id={route.path.replaceAll('/', '-')}>

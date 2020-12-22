@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Style from './styles'
 
 import Role from './Role'
@@ -11,10 +11,10 @@ import RequestStatus from './RequestStatus'
 
 import selectRoleLabel from 'utils/selectedRoleLabel'
 
-import { ThemeState } from 'store/theme'
 import { RootState, UserState, useSelector } from 'store'
 
 import { Route } from 'react-router-dom'
+import { ThemeContext } from 'styled-components'
 
 const rolesRoute = [
   {
@@ -50,14 +50,14 @@ const rolesRoute = [
 ]
 
 const ChangeRole: React.FC = () => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const { roles } = useSelector<RootState, UserState>(state => state.user)
   const labelRoles = roles.map(role => selectRoleLabel(role))
+  const theme = useContext(ThemeContext)
 
   useEffect(() => window.scrollBy(0, 0), [])
 
   return (
-    <Style theme={theme} id='ChangeRole'>
+    <Style id='ChangeRole'>
       <h2>Escolher Papel</h2>
 
       <p>
@@ -72,7 +72,7 @@ const ChangeRole: React.FC = () => {
       <div id='Roles'>
         <Role
           title='Convidado'
-          color={theme['base user']}
+          color={theme.roles['base user']}
           benefits={['Solicitar alteração de papel para Estudante ou Professor']}
           noButton
         />
@@ -80,7 +80,7 @@ const ChangeRole: React.FC = () => {
         <Role
           title='Estudante'
           userRoles={labelRoles}
-          color={theme.student}
+          color={theme.roles.student}
           benefits={[
             'Participar de propostas',
             'Candidatar-se a um projeto',
@@ -93,7 +93,7 @@ const ChangeRole: React.FC = () => {
         <Role
           title='Proponente'
           userRoles={labelRoles}
-          color={theme.customer}
+          color={theme.roles.customer}
           benefits={[
             'Submeter uma proposta',
             'Convidar estudantes e professores para  propostas',
@@ -106,7 +106,7 @@ const ChangeRole: React.FC = () => {
         <Role
           title='Professor'
           userRoles={labelRoles}
-          color={theme.professor}
+          color={theme.roles.professor}
           benefits={[
             'Tudo de Estudante e Proponente',
             'Pedir revisão de propostas',
@@ -119,7 +119,7 @@ const ChangeRole: React.FC = () => {
         <Role
           title='Revisor'
           userRoles={labelRoles}
-          color={theme.evaluator}
+          color={theme.roles.evaluator}
           benefits={[
             'Avaliar propostas',
             'Dar nota de 0 a 10 a propostas',
@@ -133,7 +133,7 @@ const ChangeRole: React.FC = () => {
         <Role
           title='Moderador'
           userRoles={labelRoles}
-          color={theme.moderator}
+          color={theme.roles.moderator}
           benefits={[
             'Aceitar solicitação de mudança para Revisor ',
             'Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores' +

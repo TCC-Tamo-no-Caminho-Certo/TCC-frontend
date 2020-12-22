@@ -6,19 +6,23 @@ export { light, dark }
 export interface ThemeAttributes {
   name: string
 
-  calendarPrimary: string
-  calendarSecondary: string
-  calendarTertiary: string
-  calendarHeader: string
-  calendarDisabled: string
-  calendarBackground: string
+  calendar: {
+    primary: string
+    secondary: string
+    tertiary: string
+    header: string
+    disabled: string
+    background: string
+  }
 
-  'base user': string
-  'aris user': string
-  professor: string
-  customer: string
-  student: string
-  moderator: string
-  evaluator: string
-  admin: string
+  roles: {
+    'base user': string
+    'aris user': string
+    professor: string
+    customer: string
+    student: string
+    moderator: string
+    evaluator: string
+    admin: string
+  }
 }

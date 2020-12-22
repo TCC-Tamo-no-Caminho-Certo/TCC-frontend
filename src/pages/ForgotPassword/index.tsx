@@ -5,8 +5,7 @@ import Modal, { ModalAttributes } from 'pages/ForgotPassword/Modal'
 
 import { emailSchema } from 'utils/validations/forgotPassword'
 
-import { ThemeState } from 'store/theme'
-import { RootState, useDispatch, useSelector } from 'store'
+import { useDispatch } from 'store'
 import { HomeActions } from 'store/home'
 
 import SendEmailIcon from 'assets/SendEmailIcon'
@@ -21,7 +20,7 @@ import { useHistory } from 'react-router-dom'
 
 const ForgotPassword: React.FC = () => {
   const dispatch = useDispatch()
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+
   const [userEmail, setUserEmail] = useState<string>()
   const [tokenIsSend, setTokenIsSend] = useState(false)
   const [modalAttributes, setModalAttributes] = useState<ModalAttributes>({
@@ -75,7 +74,7 @@ const ForgotPassword: React.FC = () => {
     <>
       <Modal {...modalAttributes} onOKClick={() => setModalAttributes({ visible: false })} />
 
-      <Style theme={theme}>
+      <Style>
         <BackButton
           to='/home'
           onTap={() => {
@@ -88,7 +87,7 @@ const ForgotPassword: React.FC = () => {
           <Logo />
 
           {tokenIsSend ? (
-            <ConfirmToken theme={theme}>
+            <ConfirmToken>
               <h3>Confirme o código enviado para o seu email</h3>
 
               <Form

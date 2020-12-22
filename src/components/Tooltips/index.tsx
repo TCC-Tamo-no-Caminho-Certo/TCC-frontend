@@ -12,7 +12,6 @@ interface Props extends PopupProps {
 const ErrorTooltip: React.FC<Props> = ({ theme, ...rest }) => {
   return (
     <StyledTooltipError
-      theme={theme}
       trigger={
         <div
           style={{
