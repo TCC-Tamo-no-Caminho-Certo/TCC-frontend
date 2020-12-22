@@ -1,6 +1,6 @@
 import { UserState } from 'store/user'
 
-export interface Info {
+export interface InputData {
   label: string
   value: string | number
   inputname: string
@@ -9,24 +9,26 @@ export interface Info {
 }
 
 interface DataTypes {
-  professor: Data
-  proponent: Data
-  baseUser: Data
-  student: Data
-  admin: Data
-  user: Data
+  professor: InputData[]
+  guest: InputData[]
+  student: InputData[]
+  admin: InputData[]
+  aris: InputData[]
+  evaluator: InputData[]
+  customer: InputData[]
+  moderator: InputData[]
 }
 
-type Data = Info[]
-export type Types = keyof DataTypes
+const formatUpdateUser = (userData: UserState, role: keyof DataTypes): InputData[] => {
+  const professor: InputData[] = []
+  const student: InputData[] = []
+  const admin: InputData[] = []
+  const aris: InputData[] = []
+  const evaluator: InputData[] = []
+  const customer: InputData[] = []
+  const moderator: InputData[] = []
 
-const formatUpdateUser = (userData: UserState, type: Types): Data => {
-  const professor: Data = []
-  const proponent: Data = []
-  const student: Data = []
-  const admin: Data = []
-
-  const baseUser: Data = [
+  const guest: InputData[] = [
     { label: 'Nome:', inputname: 'name', value: userData.name },
     { label: 'Sobrenome:', inputname: 'surname', value: userData.surname },
     { label: 'E-mail:', inputname: 'email', value: userData.emails[0].email },
@@ -34,18 +36,18 @@ const formatUpdateUser = (userData: UserState, type: Types): Data => {
     // { label: 'Senha:', inputname: 'new_password', value: '00000asd', dontShow: true },
   ]
 
-  const user: Data = [...baseUser]
-
-  const dataTypes: DataTypes = {
+  const formInputs: DataTypes = {
     professor,
-    proponent,
-    baseUser,
     student,
     admin,
-    user,
+    guest,
+    aris,
+    evaluator,
+    customer,
+    moderator,
   }
 
-  return dataTypes[type]
+  return formInputs[role]
 }
 
 export default formatUpdateUser

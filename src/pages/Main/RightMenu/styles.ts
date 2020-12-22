@@ -1,11 +1,13 @@
 import { RoleTypes } from 'store/user'
 
 import { motion } from 'framer-motion'
-import styled from 'styled-components'
+import { darken } from 'polished'
+import styled, { css } from 'styled-components'
 
 interface RightMenuOpenProps {
   height: string
   width: string
+  changeRole: boolean
 }
 
 interface UserInfoProps {
@@ -16,6 +18,10 @@ interface StyleProps {
   width: string
 }
 
+interface RoleLiProps {
+  role: RoleTypes
+}
+
 export const Background = styled.svg`
   position: fixed;
   top: 0;
@@ -23,6 +29,10 @@ export const Background = styled.svg`
   z-index: 1;
 
   overflow: visible;
+
+  path {
+    fill: ${darken(0.1, '#6e4850')};
+  }
 `
 
 export const UserInfo = styled.div.attrs({ className: 'UserInfo' })<UserInfoProps>`
@@ -41,7 +51,7 @@ export const UserInfo = styled.div.attrs({ className: 'UserInfo' })<UserInfoProp
   #userRole {
     font-size: 1.3rem;
 
-    color: ${props => props.theme.roles['base user']};
+    color: ${({ theme, selectedRole }) => theme.roles[selectedRole]};
   }
 
   #userName {
@@ -62,13 +72,60 @@ export const UserInfo = styled.div.attrs({ className: 'UserInfo' })<UserInfoProp
   }
 `
 
+export const RoleLi = styled.li<RoleLiProps>`
+  button {
+    width: 100%;
+    height: 56px;
+    user-select: none;
+
+    color: #fcfcfc;
+  }
+
+  &:hover {
+    background-color: ${({ theme, role }) => theme.roles[role]};
+  }
+
+  &:first-child {
+    button {
+      border-radius: 16px 0 0 0;
+    }
+
+    &:hover {
+      background-color: ${({ theme, role }) => theme.roles[role]};
+      border-radius: 16px 0 0 0;
+    }
+  }
+
+  &:last-child {
+    button {
+      border-radius: 0 0 16px 16px;
+    }
+
+    &:hover {
+      background-color: ${({ theme, role }) => theme.roles[role]};
+      border-radius: 0 0 16px 16px;
+    }
+  }
+
+  &:only-child {
+    button {
+      border-radius: 16px 0 16px 16px;
+    }
+
+    &:hover {
+      background-color: ${({ theme, role }) => theme.roles[role]};
+      border-radius: 16px 0 16px 16px;
+    }
+  }
+`
+
 export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
   position: absolute;
   top: 112px;
   right: 0;
   z-index: 2;
 
-  padding: 16px;
+  padding: 16px 0;
   width: ${({ width }) => width};
   height: ${({ height }) => height};
 
@@ -84,15 +141,44 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     background-color: #fcfcfc;
   }
 
-  ul {
+  #selectRoles {
+    position: absolute;
+    right: ${({ width }) => width};
+
+    width: 230px;
+
+    background-color: #d65881;
+    border-radius: 16px 0 16px 16px;
+  }
+
+  ul#openProfile {
     & > * {
       opacity: 0;
     }
 
-    li a {
-      display: flex;
-      justify-items: center;
+    li {
+      a:hover,
+      button:hover {
+        background-color: #d65881;
+      }
 
+      button {
+        ${({ changeRole }) =>
+          changeRole &&
+          css`
+            background-color: #d65881;
+          `}
+      }
+    }
+
+    li a,
+    li button {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+
+      width: 100%;
+      height: 100%;
       font-size: 1.4rem;
 
       color: #fcfcfc;
@@ -102,13 +188,9 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
         height: 24px;
       }
     }
-
-    li + li {
-      margin-top: 16px;
-    }
   }
 
-  button {
+  button#logout {
     position: absolute;
     bottom: 16px;
     right: 16px;

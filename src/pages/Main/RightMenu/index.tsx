@@ -1,11 +1,13 @@
-import React from 'react'
-import Style, { Background, RightMenuOpen, UserInfo } from './styles'
+/* eslint-disable react/jsx-curly-newline */
+import React, { useState } from 'react'
+import Style, { Background, RightMenuOpen, RoleLi, UserInfo } from './styles'
 
 import selectRoleLabel from 'utils/selectedRoleLabel'
 
 import api from 'services/api'
 
-import { RootState, UserState, useSelector } from 'store'
+import { RootState, useDispatch, UserState, useSelector } from 'store'
+import { UserActions } from 'store/user'
 
 import EditUserIcon from 'assets/ProfileSidebar/EditUserIcon'
 import LogoutIcon from 'assets/RightMenuOpen/LogoutIcon'
@@ -22,8 +24,10 @@ const RightMenu: React.FC = () => {
   const { name, surname, selectedRole, roles } = useSelector<RootState, UserState>(
     state => state.user
   )
+  const dispatch = useDispatch()
 
-  const [editOpen, toggle] = useCycle(false, true)
+  const [editOpen, toggleEditProfile] = useCycle(false, true)
+  const [changeRole, setChangeRole] = useState(false)
   const history = useHistory()
 
   const width = 300
@@ -31,7 +35,7 @@ const RightMenu: React.FC = () => {
   const openHeight = 300 + closedHeight
 
   function onGearClick() {
-    toggle()
+    toggleEditProfile()
   }
 
   async function onLogoutClick() {
@@ -144,14 +148,14 @@ const RightMenu: React.FC = () => {
   return (
     <>
       <Background width={`${width}px`} height={`${openHeight}px`}>
-        <motion.path initial={false} variants={pathAnimation} animate={cycle()} fill='#6e4850' />
+        <motion.path initial={false} variants={pathAnimation} animate={cycle()} />
       </Background>
 
       <Style width={`${width}px`}>
         <Avatar size={80} />
 
         <UserInfo selectedRole={selectedRole}>
-          <span id='userRole'>{selectRoleLabel(roles[0])}</span>
+          <span id='userRole'>{selectRoleLabel(selectedRole)}</span>
           <span id='userName'>{`${name} ${surname}`}</span>
 
           <span id='userActivity'>
@@ -169,20 +173,41 @@ const RightMenu: React.FC = () => {
         <AnimatePresence>
           {editOpen && (
             <RightMenuOpen
+              onMouseLeave={() => setChangeRole(false)}
+              changeRole={changeRole}
               width={`${width}px`}
               height={`${openHeight - closedHeight}px`}
               variants={rightMenuOpenAnimation}
               animate='open'
               exit='close'
             >
-              <ul>
+              {changeRole && (
+                <motion.div id='selectRoles'>
+                  <ul>
+                    {roles.map(role => (
+                      <RoleLi key={role} role={role}>
+                        <button
+                          type='button'
+                          onClick={() =>
+                            dispatch(UserActions.updateUserInfo({ selectedRole: role }))
+                          }
+                        >
+                          {selectRoleLabel(role)}
+                        </button>
+                      </RoleLi>
+                    ))}
+                  </ul>
+                </motion.div>
+              )}
+
+              <ul id='openProfile'>
                 <motion.hr variants={hrAnimation} />
 
-                <motion.li key='Profiles Toggle' variants={liAnimation}>
-                  <Link to='/session/profile/edit-profile'>
+                <motion.li key='Profiles toggleEditProfile' variants={liAnimation}>
+                  <button type='button' onClick={() => setChangeRole(!changeRole)}>
                     <ChangeIcon />
                     Alternar entre papéis
-                  </Link>
+                  </button>
                 </motion.li>
 
                 <motion.li key='Edit Profile' variants={liAnimation}>
@@ -202,6 +227,7 @@ const RightMenu: React.FC = () => {
                   onClick={onLogoutClick}
                   variants={logoutAnimation}
                   animate='open'
+                  id='logout'
                 >
                   <span>Sair</span>
                   <LogoutIcon />
@@ -211,7 +237,7 @@ const RightMenu: React.FC = () => {
           )}
         </AnimatePresence>
 
-        {selectedRole === 'base user' && (
+        {selectedRole === 'guest' && (
           <Link to='/session/profile/change-role' id='baseButton'>
             <AddRoleIcon /> Adicionar papel
           </Link>

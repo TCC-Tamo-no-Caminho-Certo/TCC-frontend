@@ -1,3 +1,4 @@
+import { darken } from 'polished'
 import { createGlobalStyle } from 'styled-components'
 
 export default createGlobalStyle`
@@ -33,7 +34,7 @@ export default createGlobalStyle`
 
     &::-webkit-scrollbar {
       width: 12px;
-      background-color: #6E4850;
+      background-color:${darken(0.1, '#6e4850')};
     }
 
     &::-webkit-scrollbar-track {

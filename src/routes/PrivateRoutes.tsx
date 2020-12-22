@@ -22,8 +22,23 @@ const PrivateRoutes: React.FC = () => {
           authorization: `Bearer ${token}`,
         },
       })
+
       .then(res => {
-        dispatch(UserActions.setUserInfo({ ...res.user }))
+        dispatch(
+          UserActions.updateUserInfo({
+            ...res.user,
+            roles: [
+              'guest',
+              'aris',
+              'student',
+              'customer',
+              'professor',
+              'evaluator',
+              'moderator',
+              'admin',
+            ],
+          })
+        )
       })
 
     window.history.pushState(null, '', document.URL)

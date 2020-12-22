@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import Style from './styles'
 
-import { Info } from 'utils/formatUpdateUser'
+import { InputData } from 'utils/formatUpdateUser'
 
 import PencilIcon from 'assets/Inputs/PencilIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
@@ -9,7 +9,7 @@ import CloseIcon from 'assets/Inputs/CloseIcon'
 import { Input, InputDate } from 'components/Form'
 
 interface Props {
-  data: Info
+  data: InputData
 }
 
 const Field: FC<Props> = ({ data }) => {

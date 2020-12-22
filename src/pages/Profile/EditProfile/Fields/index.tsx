@@ -3,7 +3,8 @@ import React, { memo, useContext } from 'react'
 import Field from './Field'
 import { ModalContext } from '../'
 
-import formatUpdateUser, { Info } from 'utils/formatUpdateUser'
+import formatUpdateUser, { InputData } from 'utils/formatUpdateUser'
+import selectedRoleLabel from 'utils/selectedRoleLabel'
 
 import { RootState, UserState, useSelector } from 'store'
 
@@ -17,33 +18,33 @@ const Fields: React.FC = () => {
 
   return (
     <Slider width={550} gap={200} gapVertical={100}>
-      <Card key='Personal' headerText='Dados Pessoais'>
-        <Avatar
-          border
-          size={128}
-          onClick={() => modal?.setShow(true)}
-          loaderColor='#D65881'
-          shadow
-        />
+      {user.roles.map(role => {
+        if (role === 'guest') {
+          return (
+            <Card key={role} headerText='Dados Pessoais'>
+              <Avatar
+                border
+                size={128}
+                onClick={() => modal?.setShow(true)}
+                loaderColor='#D65881'
+                shadow
+              />
 
-        {formatUpdateUser(user, user.selectedRole === 'base user' ? 'baseUser' : 'user').map(
-          (info: Info) => (
-            <Field key={info.inputname} data={info} />
+              {formatUpdateUser(user, 'guest').map((info: InputData) => (
+                <Field key={info.inputname} data={info} />
+              ))}
+            </Card>
           )
-        )}
-      </Card>
+        }
 
-      <Card key='Student' headerText='Dados de Estudante'>
-        {formatUpdateUser(user, 'student').map((info: Info) => (
-          <Field key={info.inputname} data={info} />
-        ))}
-      </Card>
-
-      <Card key='Professor' headerText='Dados de Professor'>
-        {formatUpdateUser(user, 'student').map((info: Info) => (
-          <Field key={info.inputname} data={info} />
-        ))}
-      </Card>
+        return (
+          <Card key={role} headerText={`Dados de ${selectedRoleLabel(role)}`}>
+            {formatUpdateUser(user, role).map((info: InputData) => (
+              <Field key={info.inputname} data={info} />
+            ))}
+          </Card>
+        )
+      })}
     </Slider>
   )
 }

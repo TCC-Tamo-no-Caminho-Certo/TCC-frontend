@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 export type RoleTypes =
   | 'admin'
-  | 'base user'
-  | 'aris user'
+  | 'guest'
+  | 'aris'
   | 'student'
   | 'professor'
   | 'customer'
@@ -38,8 +38,8 @@ const initialState: UserState = {
   birthday: '',
   created_at: '',
   updated_at: '',
-  roles: ['base user'],
-  selectedRole: 'base user',
+  roles: ['guest'],
+  selectedRole: 'guest',
   emails: [{ email: '', main: true }],
 }
 
@@ -48,7 +48,6 @@ const User = createSlice({
   initialState,
 
   reducers: {
-    setUserInfo: (state, action) => action.payload,
     updateUserInfo: (state, action) => ({ ...state, ...action.payload }),
   },
 })

@@ -72,7 +72,7 @@ const ChangeRole: React.FC = () => {
       <div id='Roles'>
         <Role
           title='Convidado'
-          color={theme.roles['base user']}
+          color={theme.roles.guest}
           benefits={['Solicitar alteração de papel para Estudante ou Professor']}
           noButton
         />
