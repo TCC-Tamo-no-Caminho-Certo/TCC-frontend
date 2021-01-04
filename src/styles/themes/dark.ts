@@ -22,6 +22,12 @@ const dark: ThemeAttributes = {
     disabled: '#303030',
     background: '#18191A',
   },
+
+  sidebar: {
+    selected: '#d65881',
+    letters: '#fcfcfc',
+    background: '#303030',
+  },
 }
 
 export default dark

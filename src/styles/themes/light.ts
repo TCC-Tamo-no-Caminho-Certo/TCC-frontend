@@ -22,6 +22,12 @@ const light: ThemeAttributes = {
     disabled: '#d62828',
     background: '#FCFCFC',
   },
+
+  sidebar: {
+    selected: '#6E4850',
+    letters: '#fcfcfc',
+    background: '#d65881',
+  },
 }
 
 export default light

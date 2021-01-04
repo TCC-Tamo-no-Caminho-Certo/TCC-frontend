@@ -1,19 +1,23 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
+interface StyleProps {
+  width: string
+  height: string
+}
+
 export const MotionRect = styled(motion.rect).attrs({
   width: '24',
   height: '3',
-  fill: '#fff',
   rx: '2',
 })``
 
 const Style = styled.button.attrs({
   type: 'button',
   className: 'Hamburger',
-})`
-  width: 72px;
-  height: 70px;
+})<StyleProps>`
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
 
   svg {
     overflow: visible;

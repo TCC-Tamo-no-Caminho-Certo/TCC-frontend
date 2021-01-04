@@ -33,7 +33,7 @@ export default createGlobalStyle`
 
 
     &::-webkit-scrollbar {
-      width: 12px;
+      width: 15px;
       background-color:${darken(0.1, '#6e4850')};
     }
 

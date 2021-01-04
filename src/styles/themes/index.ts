@@ -25,4 +25,10 @@ export interface ThemeAttributes {
     evaluator: string
     admin: string
   }
+
+  sidebar: {
+    selected: string
+    letters: string
+    background: string
+  }
 }

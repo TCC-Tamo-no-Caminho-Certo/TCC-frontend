@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useContext, useMemo } from 'react'
 
 import ProfileHome from './ProfileHome'
 import EditProfile from './EditProfile'
@@ -17,13 +17,14 @@ import UserIcon from 'assets/ProfileSidebar/UserIcon'
 import MapIcon from 'assets/MainSidebar/MapIcon'
 import ChangeIcon from 'assets/RightMenuOpen/ChangeIcon'
 
-import Sidebar from 'components/Sidebar'
-import Content from 'components/Sidebar/Content'
+import Sidebar, { RouteProps } from 'components/Sidebar'
 
-import { Route } from 'react-router-dom'
+import { ThemeContext } from 'styled-components'
 
 const Profile: React.FC = () => {
-  const profileRoutes = useMemo(
+  const { sidebar } = useContext(ThemeContext)
+
+  const profileRoutes: RouteProps[] = useMemo(
     () => [
       {
         icon: () => <UserIcon />,
@@ -43,6 +44,7 @@ const Profile: React.FC = () => {
         label: 'Mudar Papel',
         path: '/session/profile/change-role',
         component: () => <ChangeRole />,
+        isBigInOther: true,
       },
       {
         icon: () => <CardIcon />,
@@ -79,20 +81,13 @@ const Profile: React.FC = () => {
   )
 
   return (
-    <>
-      <Sidebar routes={profileRoutes} />
-
-      {profileRoutes.map(route => (
-        <Content key={route.label}>
-          <Route
-            key={route.path}
-            path={route.path}
-            exact={route.exact}
-            component={route.component}
-          />
-        </Content>
-      ))}
-    </>
+    <Sidebar
+      routes={profileRoutes}
+      selected={sidebar.selected}
+      background={sidebar.background}
+      letters={sidebar.letters}
+      title='Perfil'
+    />
   )
 }
 

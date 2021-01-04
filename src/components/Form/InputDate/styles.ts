@@ -16,8 +16,8 @@ const Style = styled.div<StyleProps>`
   }
 
   .Calendar {
-    --cl-color-primary: ${props => props.theme.calendar.primary} !important;
-    --cl-color-disabled: ${props => props.theme.calendar.disabled} !important;
+    --cl-color-primary: ${({ theme }) => theme.calendar.primary} !important;
+    --cl-color-disabled: ${({ theme }) => theme.calendar.disabled} !important;
     --cl-color-primary-light: #fcfcfc !important;
     box-shadow: 8px 8px 7px 4px rgba(0, 0, 0, 0.49);
   }
@@ -26,8 +26,8 @@ const Style = styled.div<StyleProps>`
     display: flex;
     align-items: center;
     justify-content: space-around;
-    background-color: ${props => props.theme.calendar.header};
-    border-bottom: solid 2px ${props => props.theme.calendar.header};
+    background-color: ${({ theme }) => theme.calendar.header};
+    border-bottom: solid 2px ${({ theme }) => theme.calendar.header};
     padding: 10px;
     border-radius: 20px 20px 0px 0px;
 
@@ -54,7 +54,7 @@ const Style = styled.div<StyleProps>`
   .Calendar__weekDays {
     margin: 0;
     padding: 0 20px 10px 20px;
-    background-color: ${props => props.theme.calendar.header};
+    background-color: ${({ theme }) => theme.calendar.header};
     .Calendar__weekDay {
       text-decoration: none;
     }
@@ -83,7 +83,7 @@ const Style = styled.div<StyleProps>`
   }
 
   .CalendarSize {
-    background-color: ${props => props.theme.calendar.background};
+    background-color: ${({ theme }) => theme.calendar.background};
     font-size: 8px !important;
   }
 
@@ -93,13 +93,13 @@ const Style = styled.div<StyleProps>`
 
   .DatePicker__calendarArrow {
     ${({ arrow }) =>
-      arrow === 'bottom'
-        ? css`
-            border-color: transparent transparent ${props => props.theme.calendar.header}
+    arrow === 'bottom'
+      ? css`
+            border-color: transparent transparent ${({ theme }) => theme.calendar.header}
               transparent;
           `
-        : css`
-            border-color: transparent transparent ${props => props.theme.calendar.background}
+      : css`
+            border-color: transparent transparent ${({ theme }) => theme.calendar.background}
               transparent;
           `}
   }
@@ -109,7 +109,7 @@ const Style = styled.div<StyleProps>`
   .Calendar__yearSelector.-open,
   .Calendar.-noFocusOutline.-ltr {
     background-image: none;
-    background-color: ${props => props.theme.calendar.background};
+    background-color: ${({ theme }) => theme.calendar.background};
   }
 
   .Calendar__monthText,
@@ -127,23 +127,23 @@ const Style = styled.div<StyleProps>`
   }
 
   .Calendar__yearSelectorText {
-    color: ${props => props.theme.calendar.tertiary};
+    color: ${({ theme }) => theme.calendar.tertiary};
     &:disabled {
-      color: ${props => props.theme.calendar.disabled} !important;
+      color: ${({ theme }) => theme.calendar.disabled} !important;
       opacity: 1;
     }
 
     &:hover {
       color: #fcfcfc;
-      background-color: ${props => props.theme.calendar.primary}!important;
+      background-color: ${({ theme }) => theme.calendar.primary}!important;
     }
   }
 
   .Calendar__day.-ltr {
-    color: ${props => props.theme.calendar.tertiary};
+    color: ${({ theme }) => theme.calendar.tertiary};
     &:hover {
       background-color: #d65881 !important;
-      color: ${props => props.theme.calendar.secondary} !important;
+      color: ${({ theme }) => theme.calendar.secondary} !important;
     }
   }
 
@@ -162,12 +162,12 @@ const Style = styled.div<StyleProps>`
   .Calendar__monthSelectorItemText:disabled,
   .Calendar__yearSelectorText:disabled {
     opacity: 1;
-    color: ${props => props.theme.calendar.disabled}!important;
+    color: ${({ theme }) => theme.calendar.disabled}!important;
   }
 
   .Calendar__yearText.-activeBackground,
   .Calendar__monthText.-activeBackground {
-    background-color: ${props => props.theme.calendar.primary} !important;
+    background-color: ${({ theme }) => theme.calendar.primary} !important;
   }
 
   @media screen and (min-height: 900px) {
