@@ -1,4 +1,4 @@
-import { RoleTypes } from 'store/user'
+import { Role } from 'store/user'
 
 import { motion } from 'framer-motion'
 import { darken } from 'polished'
@@ -11,7 +11,7 @@ interface RightMenuOpenProps {
 }
 
 interface UserInfoProps {
-  selectedRole: RoleTypes
+  selectedRole: Role
 }
 
 interface StyleProps {
@@ -19,7 +19,7 @@ interface StyleProps {
 }
 
 interface RoleLiProps {
-  role: RoleTypes
+  role: Role
 }
 
 export const Background = styled.svg`

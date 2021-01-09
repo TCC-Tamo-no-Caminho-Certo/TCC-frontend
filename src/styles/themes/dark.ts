@@ -3,6 +3,16 @@ import { ThemeAttributes } from './'
 const dark: ThemeAttributes = {
   name: 'dark',
 
+  colors: {
+    primary: '#d65881',
+    secondary: '#fcfcfc',
+    tertiary: '#6e4850',
+    white: '#fcfcfc',
+    green: '#00d053',
+    yellow: '#fff500',
+    red: '#ff0000',
+  },
+
   roles: {
     guest: '#fff500',
     aris: '#f20089',
@@ -15,9 +25,9 @@ const dark: ThemeAttributes = {
   },
 
   calendar: {
-    primary: '#D65881',
-    secondary: '#FCFCFC',
-    tertiary: '#FCFCFC',
+    primary: '#d65881',
+    secondary: '#fcfcfc',
+    tertiary: '#fcfcfc',
     header: '#303030',
     disabled: '#303030',
     background: '#18191A',

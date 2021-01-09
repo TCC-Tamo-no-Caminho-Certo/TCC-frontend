@@ -82,11 +82,11 @@ const Profile: React.FC = () => {
 
   return (
     <Sidebar
+      title='Perfil'
       routes={profileRoutes}
       selected={sidebar.selected}
       background={sidebar.background}
       letters={sidebar.letters}
-      title='Perfil'
     />
   )
 }

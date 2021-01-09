@@ -63,8 +63,8 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     location.pathname === '/home/signup'
-      ? dispatch(HomeActions.page('signup'))
-      : dispatch(HomeActions.page('login'))
+      ? dispatch(HomeActions.update({ page: 'signup' }))
+      : dispatch(HomeActions.update({ page: 'login' }))
   }, [dispatch, location.pathname])
 
   return (

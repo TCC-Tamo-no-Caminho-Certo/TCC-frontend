@@ -21,6 +21,7 @@ export interface RouteProps {
   bottom?: boolean
   exact?: boolean
   path2?: string
+  noContentMove?: boolean
 }
 
 interface SidebarProps {
@@ -71,15 +72,15 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const moveCorrectly = useCallback(
     (index: number): void => {
-      const heightOfRoutes = routes.map(
-        route => document.getElementById(route.path.replaceAll('/', '--'))?.offsetHeight
-      )
+      const heightOfRoutes = routes.map(({ path }) => {
+        const id = path.replaceAll('/', '--')
+        return document.getElementById(id)?.offsetHeight
+      })
 
       const move =
         heightOfRoutes !== undefined &&
         heightOfRoutes.reduce((prev, curr, i) => {
-          if (i < index && prev !== undefined && curr !== undefined) return prev + curr
-          return prev
+          return i < index && prev !== undefined && curr !== undefined ? prev + curr : prev
         }, 0)
 
       window.scrollTo(0, move as number)
@@ -237,8 +238,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         <motion.section
           key={route.path}
           variants={motionContent}
-          animate={open ? 'open' : 'closed'}
-          initial={open ? 'open' : 'closed'}
+          animate={open && !route.noContentMove ? 'open' : 'closed'}
+          initial={open && !route.noContentMove ? 'open' : 'closed'}
           style={{ overflow: 'hidden' }}
           id={route.path.replaceAll('/', '--')}
         >

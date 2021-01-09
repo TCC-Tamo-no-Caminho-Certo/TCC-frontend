@@ -6,8 +6,8 @@ import selectRoleLabel from 'utils/selectedRoleLabel'
 
 import api from 'services/api'
 
-import { RootState, useDispatch, UserState, useSelector } from 'store'
-import { UserActions } from 'store/user'
+import { RootState, useDispatch, useSelector } from 'store'
+import { UserActions, UserState } from 'store/user'
 
 import EditUserIcon from 'assets/ProfileSidebar/EditUserIcon'
 import LogoutIcon from 'assets/RightMenuOpen/LogoutIcon'
@@ -17,7 +17,7 @@ import AddRoleIcon from 'assets/RightMenuOpen/AddRoleIcon'
 
 import Avatar from 'components/User/Avatar'
 
-import { AnimatePresence, motion, useCycle } from 'framer-motion'
+import { AnimatePresence, motion, useCycle, Variants } from 'framer-motion'
 import { Link, useHistory } from 'react-router-dom'
 
 const RightMenu: React.FC = () => {
@@ -25,20 +25,14 @@ const RightMenu: React.FC = () => {
     state => state.user
   )
   const dispatch = useDispatch()
-
   const [editOpen, toggleEditProfile] = useCycle(false, true)
   const [changeRole, setChangeRole] = useState(false)
   const history = useHistory()
-
   const width = 300
   const closedHeight = 112
   const openHeight = 300 + closedHeight
 
-  function onGearClick() {
-    toggleEditProfile()
-  }
-
-  async function onLogoutClick() {
+  const onLogoutClick = async () => {
     const token = localStorage.getItem('@SLab_ac_token')
 
     await api.get('logout', {
@@ -51,9 +45,7 @@ const RightMenu: React.FC = () => {
     history.push('/home')
   }
 
-  const cycle = () => (editOpen ? 'open' : 'closed')
-
-  const pathAnimation = {
+  const motionPath: Variants = {
     closed: {
       d: `M0,8 C0,3.5 3.5,0 8,0 H${width} V${closedHeight} H8 C3.5,${closedHeight} 0,${
         closedHeight - 4
@@ -74,7 +66,7 @@ const RightMenu: React.FC = () => {
     },
   }
 
-  const rightMenuOpenAnimation = {
+  const motionMenu: Variants = {
     open: {
       transition: {
         type: 'tween',
@@ -91,7 +83,7 @@ const RightMenu: React.FC = () => {
     },
   }
 
-  const hrAnimation = {
+  const motionHr: Variants = {
     open: {
       opacity: [0, 1],
 
@@ -109,7 +101,7 @@ const RightMenu: React.FC = () => {
     },
   }
 
-  const liAnimation = {
+  const motionLi: Variants = {
     open: {
       opacity: [0, 1],
       x: [16, 0],
@@ -127,7 +119,7 @@ const RightMenu: React.FC = () => {
     },
   }
 
-  const logoutAnimation = {
+  const motionLogout: Variants = {
     open: {
       opacity: [0, 1],
       y: [-16, 0],
@@ -148,7 +140,7 @@ const RightMenu: React.FC = () => {
   return (
     <>
       <Background width={`${width}px`} height={`${openHeight}px`}>
-        <motion.path initial={false} variants={pathAnimation} animate={cycle()} />
+        <motion.path initial={false} variants={motionPath} animate={editOpen ? 'open' : 'closed'} />
       </Background>
 
       <Style width={`${width}px`}>
@@ -166,7 +158,7 @@ const RightMenu: React.FC = () => {
           </span>
         </UserInfo>
 
-        <button type='button' onClick={onGearClick}>
+        <button type='button' onClick={() => toggleEditProfile()}>
           <GearIcon />
         </button>
 
@@ -177,7 +169,7 @@ const RightMenu: React.FC = () => {
               changeRole={changeRole}
               width={`${width}px`}
               height={`${openHeight - closedHeight}px`}
-              variants={rightMenuOpenAnimation}
+              variants={motionMenu}
               animate='open'
               exit='close'
             >
@@ -201,22 +193,22 @@ const RightMenu: React.FC = () => {
               )}
 
               <ul id='openProfile'>
-                <motion.hr variants={hrAnimation} />
+                <motion.hr variants={motionHr} />
 
-                <motion.li key='Profiles toggleEditProfile' variants={liAnimation}>
+                <motion.li key='Profiles toggleEditProfile' variants={motionLi}>
                   <button type='button' onClick={() => setChangeRole(!changeRole)}>
                     <ChangeIcon />
                     Alternar entre papéis
                   </button>
                 </motion.li>
 
-                <motion.li key='Edit Profile' variants={liAnimation}>
+                <motion.li key='Edit Profile' variants={motionLi}>
                   <Link to='/session/profile/edit-profile'>
                     <EditUserIcon /> Editar perfil
                   </Link>
                 </motion.li>
 
-                <motion.li key='Switch Perfil' variants={liAnimation}>
+                <motion.li key='Switch Perfil' variants={motionLi}>
                   <Link to='/session/profile/change-role'>
                     <AddRoleIcon /> Solicitar novo papel
                   </Link>
@@ -225,7 +217,7 @@ const RightMenu: React.FC = () => {
                 <motion.button
                   type='button'
                   onClick={onLogoutClick}
-                  variants={logoutAnimation}
+                  variants={motionLogout}
                   animate='open'
                   id='logout'
                 >

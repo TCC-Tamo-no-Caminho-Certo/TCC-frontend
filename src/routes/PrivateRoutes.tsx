@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 
 import Main from 'pages/Main'
 import Profile from 'pages/Profile'
+import Moderator from 'pages/Moderator'
 
 import api from 'services/api'
 
@@ -52,8 +53,9 @@ const PrivateRoutes: React.FC = () => {
       </Route>
 
       <Route path='/session/profile' component={Profile} />
-
       <Route path='/session/main' component={Main} />
+
+      <Route path='/session/moderator' component={Moderator} />
     </Switch>
   )
 }

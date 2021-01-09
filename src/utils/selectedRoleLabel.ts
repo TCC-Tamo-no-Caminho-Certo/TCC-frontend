@@ -1,4 +1,4 @@
-import { RoleTypes } from 'store/user'
+import { Role } from 'store/user'
 
 const role: any = {
   professor: 'Professor',
@@ -11,4 +11,4 @@ const role: any = {
   aris: 'Aris',
 }
 
-export default (roleKey: RoleTypes): RoleTypes => role[roleKey]
+export default (roleKey: Role): Role => role[roleKey]

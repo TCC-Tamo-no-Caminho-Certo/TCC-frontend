@@ -78,8 +78,7 @@ const ForgotPassword: React.FC = () => {
         <BackButton
           to='/home'
           onTap={() => {
-            dispatch(HomeActions.initial(false))
-            dispatch(HomeActions.page('login'))
+            dispatch(HomeActions.update({ initial: false, page: 'login' }))
           }}
         />
 

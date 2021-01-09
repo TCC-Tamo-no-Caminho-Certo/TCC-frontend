@@ -6,6 +6,16 @@ export { light, dark }
 export interface ThemeAttributes {
   name: string
 
+  colors: {
+    primary: string
+    secondary: string
+    tertiary: string
+    white: string
+    green: string
+    yellow: string
+    red: string
+  }
+
   calendar: {
     primary: string
     secondary: string

@@ -3,6 +3,16 @@ import { ThemeAttributes } from './'
 const light: ThemeAttributes = {
   name: 'light',
 
+  colors: {
+    primary: '#D65881',
+    secondary: '#fcfcfc',
+    tertiary: '#6e4850',
+    white: '#fcfcfc',
+    green: '#00d053',
+    yellow: '#fff500',
+    red: '#ff0000',
+  },
+
   roles: {
     guest: '#fff500',
     aris: '#f20089',
@@ -16,15 +26,15 @@ const light: ThemeAttributes = {
 
   calendar: {
     primary: '#D65881',
-    secondary: '#FCFCFC',
-    tertiary: '#6E4850',
-    header: '#6E4850',
+    secondary: '#fcfcfc',
+    tertiary: '#6e4850',
+    header: '#6e4850',
     disabled: '#d62828',
-    background: '#FCFCFC',
+    background: '#fcfcfc',
   },
 
   sidebar: {
-    selected: '#6E4850',
+    selected: '#6e4850',
     letters: '#fcfcfc',
     background: '#d65881',
   },

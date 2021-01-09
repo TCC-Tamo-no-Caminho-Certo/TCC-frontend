@@ -26,8 +26,8 @@ const FormSignup: React.FC = () => {
           disabled={disable}
           onTap={() => {
             setDisable(true)
-            dispatch(HomeActions.initial(true))
-            dispatch(HomeActions.page('login'))
+            dispatch(HomeActions.update({ initial: true }))
+            dispatch(HomeActions.update({ page: 'login' }))
           }}
         />
 

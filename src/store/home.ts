@@ -1,19 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+type Page = 'login' | 'signup'
+
+export interface HomeState {
+  initial: boolean
+  page: Page
+}
+
+interface HomeStatePayload {
+  initial?: boolean
+  page?: Page
+}
+
+const initialState: HomeState = {
+  initial: false,
+  page: 'login',
+}
+
 const Home = createSlice({
   name: 'sidebar',
-  initialState: {
-    initial: false,
-    page: 'login',
-  },
-
+  initialState,
   reducers: {
-    initial(state, action: PayloadAction<boolean>) {
-      state.initial = action.payload
-    },
-    page(state, action: PayloadAction<string>) {
-      state.page = action.payload
-    },
+    update: (state, action: PayloadAction<HomeStatePayload>) => ({ ...state, ...action.payload }),
   },
 })
 

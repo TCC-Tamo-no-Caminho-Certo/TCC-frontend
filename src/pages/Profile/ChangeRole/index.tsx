@@ -11,7 +11,8 @@ import RequestStatus from './RequestStatus'
 
 import selectRoleLabel from 'utils/selectedRoleLabel'
 
-import { RootState, UserState, useSelector } from 'store'
+import { RootState, useSelector } from 'store'
+import { UserState } from 'store/user'
 
 import { Route } from 'react-router-dom'
 import { ThemeContext } from 'styled-components'

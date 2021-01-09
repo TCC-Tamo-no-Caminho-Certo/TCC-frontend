@@ -6,7 +6,8 @@ import { ModalContext } from '../'
 import formatUpdateUser, { InputData } from 'utils/formatUpdateUser'
 import selectedRoleLabel from 'utils/selectedRoleLabel'
 
-import { RootState, UserState, useSelector } from 'store'
+import { RootState, useSelector } from 'store'
+import { UserState } from 'store/user'
 
 import Avatar from 'components/User/Avatar'
 import Card from 'components/Card'

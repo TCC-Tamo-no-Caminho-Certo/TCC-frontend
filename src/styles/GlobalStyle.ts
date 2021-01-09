@@ -33,7 +33,7 @@ export default createGlobalStyle`
 
 
     &::-webkit-scrollbar {
-      width: 15px;
+      width: 16px;
       background-color:${darken(0.1, '#6e4850')};
     }
 
@@ -66,6 +66,7 @@ export default createGlobalStyle`
     background-color: transparent;
     border: none;
     font-size: 1.6rem;
+
   }
 
   button, label, input[type="checkbox"] {

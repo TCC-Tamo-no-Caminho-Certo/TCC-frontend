@@ -48,8 +48,8 @@ const FormLogin: React.FC = () => {
 
   const onRegisterClick = () => {
     setDisable(true)
-    dispatch(HomeActions.initial(true))
-    dispatch(HomeActions.page('signup'))
+    dispatch(HomeActions.update({ initial: true }))
+    dispatch(HomeActions.update({ page: 'signup' }))
     history.push('/home/signup')
   }
 
@@ -85,7 +85,10 @@ const FormLogin: React.FC = () => {
           eye
         />
 
-        <Link to='/forgot-password' onClick={() => dispatch(HomeActions.initial(false))}>
+        <Link
+          to='/forgot-password'
+          onClick={() => dispatch(HomeActions.update({ initial: false }))}
+        >
           Não consegue fazer login?
         </Link>
 

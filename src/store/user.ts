@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export type RoleTypes =
+export type Role =
   | 'admin'
   | 'guest'
   | 'aris'
@@ -25,9 +25,22 @@ export interface UserState {
   birthday: string
   created_at: string
   updated_at: string
-  roles: RoleTypes[]
-  selectedRole: RoleTypes
+  roles: Role[]
+  selectedRole: Role
   emails: Email[]
+}
+
+export interface UserStatePayload {
+  user_id?: number
+  name?: string
+  surname?: string
+  avatar?: string
+  birthday?: string
+  created_at?: string
+  updated_at?: string
+  roles?: Role[]
+  selectedRole?: Role
+  emails?: Email[]
 }
 
 const initialState: UserState = {
@@ -46,9 +59,11 @@ const initialState: UserState = {
 const User = createSlice({
   name: 'userConfig',
   initialState,
-
   reducers: {
-    updateUserInfo: (state, action) => ({ ...state, ...action.payload }),
+    updateUserInfo: (state, action: PayloadAction<UserStatePayload>) => ({
+      ...state,
+      ...action.payload,
+    }),
   },
 })
 
