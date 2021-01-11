@@ -1,10 +1,10 @@
 import React, { ChangeEvent, useMemo, useState } from 'react'
-import Style from './styles'
+import Style, { Circle } from './styles'
 
 import ArrowIcon from 'assets/ArrowIcon'
 
 interface TableProps {
-  headerData: string[]
+  headerData: { name: string; label: string }[]
   data: Object[]
 }
 
@@ -57,15 +57,16 @@ const Table: React.FC<TableProps> = ({ headerData, data }) => {
     return { rotate: -90 }
   }
 
-  function filter(e: ChangeEvent<HTMLInputElement>) {
+  const filter = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toLowerCase()
+    const regex = new RegExp(`^${value}`)
     const table = document.getElementById('table')
     const tr = table?.getElementsByTagName('tr')
     const td = table?.getElementsByTagName('td')
 
     const removeDisplay = (array: any[]) => {
       for (let k = 0; k < array.length; k += 1) {
-        if (array[k].toLowerCase().search(value) > -1) return true
+        if (array[k].toLowerCase().search(regex) > -1) return true
       }
 
       return false
@@ -93,23 +94,41 @@ const Table: React.FC<TableProps> = ({ headerData, data }) => {
       <table id='table'>
         <thead>
           <tr draggable='false'>
-            {headerData.map(th => (
-              <th key={th} onClick={() => sort(th)}>
-                <div>
-                  <ArrowIcon initial={{ rotate: -90 }} animate={arrowAnimation(th)} />
-                  {th}
-                </div>
-              </th>
-            ))}
+            {headerData.map(({ label, name }) => {
+              if (name !== 'statusCircle') {
+                return (
+                  <th key={name}>
+                    <button type='button' onClick={() => sort(name)}>
+                      <ArrowIcon initial={{ rotate: -90 }} animate={arrowAnimation(name)} />
+                      {label}
+                    </button>
+                  </th>
+                )
+              }
+
+              return (
+                <th key={name} className='statusCircle'>
+                  <button type='button' onClick={() => sort(name)}>
+                    <Circle />
+                  </button>
+                </th>
+              )
+            })}
           </tr>
         </thead>
 
         <tbody>
           {items.map(item => (
-            <tr key={item.id}>
-              {headerData.map(th => (
-                <td key={item[th]}>{item[th]}</td>
-              ))}
+            <tr key={item.name}>
+              {headerData.map(({ label, name }) => {
+                if (name !== 'statusCircle') return <td key={label}>{item[name]}</td>
+
+                return (
+                  <td key={label} className='statusCircle'>
+                    <Circle status={item.statusCircle} />
+                  </td>
+                )
+              })}
             </tr>
           ))}
         </tbody>

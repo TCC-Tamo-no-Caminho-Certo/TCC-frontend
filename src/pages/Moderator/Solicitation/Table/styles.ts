@@ -1,6 +1,31 @@
 import { darken } from 'polished'
 import styled from 'styled-components'
 
+interface CircleProps {
+  status?: 'accepted' | 'waiting' | 'refused'
+}
+
+export const Circle = styled.div<CircleProps>`
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: 50%;
+  transform: translateX(-50%);
+
+  background-color: ${({ theme, status }) => {
+    switch (status) {
+      case 'accepted':
+        return theme.colors.green
+      case 'waiting':
+        return theme.colors.yellow
+      case 'refused':
+        return theme.colors.red
+      default:
+        return theme.colors.white
+    }
+  }};
+`
+
 const Style = styled.div`
   display: flex;
   flex-direction: column;
@@ -36,12 +61,14 @@ const Style = styled.div`
 
     thead {
       th {
+        cursor: pointer;
         text-align: left;
 
-        cursor: pointer;
-
-        div {
+        button {
+          text-align: left;
           user-select: none;
+
+          color: ${({ theme }) => theme.colors.secondary};
 
           .Icon {
             width: 12px;
@@ -61,15 +88,16 @@ const Style = styled.div`
       }
     }
 
-    td:first-child,
-    th:first-child {
-      padding-left: 24px;
-    }
-
     td:last-child,
     th:last-child {
       padding-right: 24px;
       text-align: right;
+    }
+
+    td.statusCircle,
+    th.statusCircle {
+      width: 32px;
+      text-align: center;
     }
   }
 `

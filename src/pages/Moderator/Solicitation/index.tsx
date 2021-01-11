@@ -3,40 +3,118 @@ import Style from './styles'
 
 import Table from 'pages/Moderator/Solicitation/Table'
 
-import { Role } from 'store/user'
-
-interface UserSolicitation {
-  Nome: string
-  Papel: Role
-  Data: string
-  Status: 'accepted' | 'waiting' | 'refused'
-  id: number
+interface TableData {
+  statusCircle: 'accepted' | 'waiting' | 'refused'
+  status: string
+  name: string
+  role: string
+  date: string
 }
 
 const Solicitation: React.FC = () => {
-  const headerData = ['Nome', 'Papel', 'Status', 'Data']
+  const headerData = [
+    { name: 'statusCircle', label: '' },
+    { name: 'name', label: 'Nome' },
+    { name: 'role', label: 'Papel' },
+    { name: 'status', label: 'Status' },
+    { name: 'date', label: 'Data' },
+  ]
 
-  const users: any[] = [
+  const makeStatusLabel = (status: 'accepted' | 'waiting' | 'refused'): string => {
+    switch (status) {
+      case 'accepted':
+        return 'Aceito'
+      case 'refused':
+        return 'Recusado'
+      default:
+        return 'Aguardando'
+    }
+  }
+
+  const users: TableData[] = [
     {
-      Nome: 'Miguel Andrade',
-      Papel: 'Estudante',
-      Data: '1 jan',
-      Status: 'Aceito',
-      id: 1,
+      statusCircle: 'accepted',
+      name: 'Miguel Andrade',
+      role: 'Estudante',
+      status: makeStatusLabel('accepted'),
+      date: '1 jan',
     },
     {
-      Nome: 'Gabriel',
-      Papel: 'Professor',
-      Data: '24 dez',
-      Status: 'Aguardando',
-      id: 2,
+      statusCircle: 'waiting',
+      name: 'Gabriel',
+      role: 'Professor',
+      status: makeStatusLabel('waiting'),
+      date: '24 dez',
     },
     {
-      Nome: 'Jean',
-      Papel: 'Convidado',
-      Data: '5 mai',
-      Status: 'Recusado',
-      id: 3,
+      statusCircle: 'refused',
+      name: 'Jean',
+      role: 'Convidado',
+      status: makeStatusLabel('refused'),
+      date: '5 mai',
+    },
+    {
+      statusCircle: 'accepted',
+      name: 'Miguel Andrade4',
+      role: 'Estudante',
+      status: makeStatusLabel('accepted'),
+      date: '1 jan',
+    },
+    {
+      statusCircle: 'waiting',
+      name: 'Gabriel4',
+      role: 'Professor',
+      status: makeStatusLabel('waiting'),
+      date: '24 dez',
+    },
+    {
+      statusCircle: 'refused',
+      name: 'Jean4',
+      role: 'Convidado',
+      status: makeStatusLabel('refused'),
+      date: '5 mai',
+    },
+    {
+      statusCircle: 'accepted',
+      name: 'Miguel Andrade3',
+      role: 'Estudante',
+      status: makeStatusLabel('accepted'),
+      date: '1 jan',
+    },
+    {
+      statusCircle: 'waiting',
+      name: 'Gabriel3',
+      role: 'Professor',
+      status: makeStatusLabel('waiting'),
+      date: '24 dez',
+    },
+    {
+      statusCircle: 'refused',
+      name: 'Jean3',
+      role: 'Convidado',
+      status: makeStatusLabel('refused'),
+      date: '5 mai',
+    },
+    {
+      statusCircle: 'accepted',
+      name: 'Miguel Andrade2',
+      role: 'Estudante',
+      status: makeStatusLabel('accepted'),
+      date: '1 jan',
+    },
+    {
+      statusCircle: 'waiting',
+      name: 'Gabriel2',
+      role: 'Professor',
+      status: makeStatusLabel('waiting'),
+      date: '24 dez',
+    },
+    {
+      statusCircle: 'refused',
+      name: 'Jean2',
+      role: 'Convidado',
+      status: makeStatusLabel('refused'),
+      date: '5 mai',
     },
   ]
 
