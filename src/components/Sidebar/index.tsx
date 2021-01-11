@@ -240,7 +240,6 @@ const Sidebar: React.FC<SidebarProps> = ({
           variants={motionContent}
           animate={open && !route.noContentMove ? 'open' : 'closed'}
           initial={open && !route.noContentMove ? 'open' : 'closed'}
-          style={{ overflow: 'hidden' }}
           id={route.path.replaceAll('/', '--')}
         >
           {samePage ? (

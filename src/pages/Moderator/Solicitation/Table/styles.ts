@@ -1,9 +1,19 @@
+import { Role } from 'store/user'
+
 import { darken } from 'polished'
 import styled from 'styled-components'
 
 interface CircleProps {
   status?: 'accepted' | 'waiting' | 'refused'
 }
+
+interface RoleTdProps {
+  role: Role
+}
+
+export const RoleTd = styled.td<RoleTdProps>`
+  color: ${({ theme, role }) => theme.roles[role]};
+`
 
 export const Circle = styled.div<CircleProps>`
   width: 8px;
@@ -38,7 +48,7 @@ const Style = styled.div`
     height: 32px;
     border-radius: 8px;
     padding-left: 16px;
-    margin: 24px 0;
+    margin-bottom: 24px;
 
     background-color: transparent;
     border: solid 1px ${({ theme }) => theme.colors.secondary};

@@ -22,6 +22,7 @@ const Profile: React.FC = () => {
         path2: '/session/moderator/solicitation',
         label: 'Solicitações',
         exact: true,
+        isBigInOther: true,
       },
       {
         icon: () => <ProjectIcon />,

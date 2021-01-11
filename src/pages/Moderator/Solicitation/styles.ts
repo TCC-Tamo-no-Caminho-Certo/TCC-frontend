@@ -16,16 +16,16 @@ const Style = styled.div`
 
   flex-direction: column;
 
-  height: 100vh;
-
   background-color: ${({ theme }) => theme.colors.tertiary};
   color: ${({ theme }) => theme.colors.secondary};
 
   header {
-    width: 90%;
-    text-align: left;
+    display: flex;
+    align-items: center;
 
-    padding: 16px 0;
+    width: 90%;
+    height: 64px;
+    text-align: left;
   }
 `
 export default Style

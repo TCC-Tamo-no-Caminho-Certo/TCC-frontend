@@ -1,5 +1,7 @@
 import React, { ChangeEvent, useMemo, useState } from 'react'
-import Style, { Circle } from './styles'
+import Style, { Circle, RoleTd } from './styles'
+
+import selectedRoleLabel from 'utils/selectedRoleLabel'
 
 import ArrowIcon from 'assets/ArrowIcon'
 
@@ -88,7 +90,7 @@ const Table: React.FC<TableProps> = ({ headerData, data }) => {
   }
 
   return (
-    <Style>
+    <Style className='Table'>
       <input type='text' onChange={filter} placeholder='Pesquisar' autoComplete='off' />
 
       <table id='table'>
@@ -121,6 +123,12 @@ const Table: React.FC<TableProps> = ({ headerData, data }) => {
           {items.map(item => (
             <tr key={item.name}>
               {headerData.map(({ label, name }) => {
+                if (name === 'role')
+                  return (
+                    <RoleTd role={item[name]} key={label}>
+                      {selectedRoleLabel(item[name])}
+                    </RoleTd>
+                  )
                 if (name !== 'statusCircle') return <td key={label}>{item[name]}</td>
 
                 return (
