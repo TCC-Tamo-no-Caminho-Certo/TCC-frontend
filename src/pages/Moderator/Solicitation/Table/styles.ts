@@ -19,8 +19,6 @@ export const Circle = styled.div<CircleProps>`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  margin-left: 50%;
-  transform: translateX(-50%);
 
   background-color: ${({ theme, status }) => {
     switch (status) {
@@ -40,15 +38,16 @@ const Style = styled.div`
   display: flex;
   flex-direction: column;
 
-  width: 90%;
+  width: 100%;
 
   color: ${({ theme }) => theme.colors.secondary};
 
   input {
+    width: 90%;
     height: 32px;
     border-radius: 8px;
     padding-left: 16px;
-    margin-bottom: 24px;
+    margin: 0 0 16px 5%;
 
     background-color: transparent;
     border: solid 1px ${({ theme }) => theme.colors.secondary};
@@ -59,56 +58,93 @@ const Style = styled.div`
     }
   }
 
-  table {
-    border-collapse: collapse;
+  #tableWrapper {
+    width: 100%;
+    height: calc(100vh - 2px - 137px);
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+  }
+
+  thead {
+    width: 100%;
+    padding-right: 8px;
 
     tr {
-      th,
-      td {
-        height: 32px;
-      }
+      display: flex;
+      align-items: center;
+
+      width: 100%;
+      height: 32px;
     }
 
-    thead {
-      th {
-        cursor: pointer;
+    th {
+      width: 30%;
+      height: 100%;
+      text-align: left;
+
+      cursor: pointer;
+
+      button {
+        height: 100%;
         text-align: left;
+        user-select: none;
 
-        button {
-          text-align: left;
-          user-select: none;
+        color: ${({ theme }) => theme.colors.secondary};
 
-          color: ${({ theme }) => theme.colors.secondary};
+        .Icon {
+          width: 12px;
+          margin-right: 8px;
 
-          .Icon {
-            width: 12px;
-            margin-right: 8px;
-
-            fill: ${({ theme }) => theme.colors.secondary};
-          }
+          fill: ${({ theme }) => theme.colors.secondary};
         }
       }
     }
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
 
     tbody {
+      tr {
+        display: flex;
+        align-items: center;
+
+        td {
+          display: flex;
+          align-items: center;
+
+          width: 30%;
+          height: 32px;
+        }
+      }
+
       tr:hover {
         background-color: ${({ theme }) => darken(0.1, theme.colors.tertiary)};
 
         cursor: pointer;
       }
     }
+  }
 
-    td:last-child,
-    th:last-child {
-      padding-right: 24px;
-      text-align: right;
-    }
+  td:last-child,
+  th:last-child {
+    text-align: right;
+    justify-content: flex-end;
 
-    td.statusCircle,
-    th.statusCircle {
-      width: 32px;
-      text-align: center;
-    }
+    margin-right: 5%;
+  }
+
+  .statusCircle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    margin-left: 5%;
   }
 `
 

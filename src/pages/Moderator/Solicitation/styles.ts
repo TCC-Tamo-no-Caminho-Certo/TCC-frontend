@@ -16,6 +16,8 @@ const Style = styled.div`
 
   flex-direction: column;
 
+  height: 100vh;
+
   background-color: ${({ theme }) => theme.colors.tertiary};
   color: ${({ theme }) => theme.colors.secondary};
 
@@ -24,7 +26,7 @@ const Style = styled.div`
     align-items: center;
 
     width: 90%;
-    height: 64px;
+    padding: 16px 0;
     text-align: left;
   }
 `

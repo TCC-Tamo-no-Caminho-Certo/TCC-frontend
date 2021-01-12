@@ -7,7 +7,7 @@ import ArrowIcon from 'assets/ArrowIcon'
 
 interface TableProps {
   headerData: { name: string; label: string }[]
-  data: Object[]
+  data: any[]
 }
 
 const useSortableData = (items: any[], config: { th: string; direction: string }) => {
@@ -93,54 +93,56 @@ const Table: React.FC<TableProps> = ({ headerData, data }) => {
     <Style className='Table'>
       <input type='text' onChange={filter} placeholder='Pesquisar' autoComplete='off' />
 
-      <table id='table'>
-        <thead>
-          <tr draggable='false'>
-            {headerData.map(({ label, name }) => {
-              if (name !== 'statusCircle') {
-                return (
-                  <th key={name}>
-                    <button type='button' onClick={() => sort(name)}>
-                      <ArrowIcon initial={{ rotate: -90 }} animate={arrowAnimation(name)} />
-                      {label}
-                    </button>
-                  </th>
-                )
-              }
-
+      <thead>
+        <tr draggable='false'>
+          {headerData.map(({ label, name }) => {
+            if (name !== 'statusCircle') {
               return (
-                <th key={name} className='statusCircle'>
+                <th key={name}>
                   <button type='button' onClick={() => sort(name)}>
-                    <Circle />
+                    <ArrowIcon initial={{ rotate: -90 }} animate={arrowAnimation(name)} />
+                    {label}
                   </button>
                 </th>
               )
-            })}
-          </tr>
-        </thead>
+            }
 
-        <tbody>
-          {items.map(item => (
-            <tr key={item.name}>
-              {headerData.map(({ label, name }) => {
-                if (name === 'role')
+            return (
+              <th key={name} className='statusCircle'>
+                <button type='button' onClick={() => sort(name)}>
+                  <Circle />
+                </button>
+              </th>
+            )
+          })}
+        </tr>
+      </thead>
+
+      <div id='tableWrapper'>
+        <table id='table'>
+          <tbody>
+            {items.map(item => (
+              <tr key={item.name}>
+                {headerData.map(({ label, name }) => {
+                  if (name === 'role')
+                    return (
+                      <RoleTd role={item[name]} key={label}>
+                        {selectedRoleLabel(item[name])}
+                      </RoleTd>
+                    )
+                  if (name !== 'statusCircle') return <td key={label}>{item[name]}</td>
+
                   return (
-                    <RoleTd role={item[name]} key={label}>
-                      {selectedRoleLabel(item[name])}
-                    </RoleTd>
+                    <td key={name} className='statusCircle'>
+                      <Circle status={item.statusCircle} />
+                    </td>
                   )
-                if (name !== 'statusCircle') return <td key={label}>{item[name]}</td>
-
-                return (
-                  <td key={label} className='statusCircle'>
-                    <Circle status={item.statusCircle} />
-                  </td>
-                )
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </Style>
   )
 }
