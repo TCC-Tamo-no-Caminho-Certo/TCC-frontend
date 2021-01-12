@@ -34,7 +34,6 @@ const FormLogin: React.FC = () => {
   const handleSubmit = (resData: any) => {
     if (resData.success) {
       localStorage.setItem('@SLab_ac_token', resData.access_token)
-      history.push('/session/main')
     } else {
       setLoginFailed(
         resData.error === 'Incorrect password!'
@@ -57,7 +56,14 @@ const FormLogin: React.FC = () => {
     <Style>
       <ThemeSwitch />
 
-      <ContentForm callback={handleSubmit} valSchema={loginSchema} path='login' loading captcha>
+      <ContentForm
+        callback={handleSubmit}
+        valSchema={loginSchema}
+        path='login'
+        push='/session/main'
+        loading
+        captcha
+      >
         <Logo />
 
         <motion.div id='fail' animate={{ height: loginFailed !== '' ? 32 : 0 }}>
