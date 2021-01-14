@@ -39,7 +39,8 @@ const Solicitation: React.FC = () => {
   ]
 
   const makeRequest = async () => {
-    const response = await api.get('request/role/get/1')
+    const response = await api.get('request/role/get/1/1')
+
     recieveSolicitations(response.requests)
   }
 
@@ -58,6 +59,29 @@ const Solicitation: React.FC = () => {
     }
   }
 
+  const makeDateLabel = (date: string): string => {
+    const teste = date.replaceAll('-', '/').split('')
+
+    const month = {
+      '01': 'jan',
+      '02': 'fev',
+      '03': 'mar',
+      '04': 'mai',
+      '05': 'abr',
+      '06': 'jun',
+      '07': 'jul',
+      '08': 'ago',
+      '09': 'set',
+      '10': 'out',
+      '11': 'nov',
+      '12': 'dez',
+    }
+
+    const keyOfMonth = teste[5] + teste[6]
+
+    return `${teste[8] + teste[9]} ${month[keyOfMonth as keyof typeof month]}`
+  }
+
   const tableData = (): RequestData[] => {
     const usersSolicitations = solicitations?.map(
       ({ status, full_name, role, created_at, request_id }) => {
@@ -66,7 +90,7 @@ const Solicitation: React.FC = () => {
           role,
           statusCircle: status,
           name: full_name,
-          date: created_at,
+          date: makeDateLabel(created_at),
           id: request_id,
         }
       }

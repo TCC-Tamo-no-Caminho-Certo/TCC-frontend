@@ -87,6 +87,8 @@ const Style = styled.div`
       height: 100%;
       text-align: left;
 
+      padding-right: 8px;
+
       cursor: pointer;
 
       button {

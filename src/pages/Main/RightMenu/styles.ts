@@ -78,43 +78,41 @@ export const RoleLi = styled.li<RoleLiProps>`
     height: 56px;
     user-select: none;
 
-    color: #fcfcfc;
-  }
+    color: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.primary};
 
-  &:hover {
-    background-color: ${({ theme, role }) => theme.roles[role]};
+    &:hover {
+      background-color: ${({ theme, role }) => theme.roles[role]};
+    }
   }
 
   &:first-child {
     button {
       border-radius: 16px 0 0 0;
-    }
 
-    &:hover {
-      background-color: ${({ theme, role }) => theme.roles[role]};
-      border-radius: 16px 0 0 0;
+      &:hover {
+        background-color: ${({ theme, role }) => theme.roles[role]};
+      }
     }
   }
 
   &:last-child {
     button {
       border-radius: 0 0 16px 16px;
-    }
 
-    &:hover {
-      background-color: ${({ theme, role }) => theme.roles[role]};
-      border-radius: 0 0 16px 16px;
+      &:hover {
+        background-color: ${({ theme, role }) => theme.roles[role]};
+      }
     }
   }
 
   &:only-child {
     button {
-      border-radius: 16px 0 16px 16px;
-    }
+      border-radius: 16px 0 0 16px;
 
-    &:hover {
-      background-color: ${({ theme, role }) => theme.roles[role]};
-      border-radius: 16px 0 16px 16px;
+      &:hover {
+        background-color: ${({ theme, role }) => theme.roles[role]};
+      }
     }
   }
 `
@@ -146,9 +144,6 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     right: ${({ width }) => width};
 
     width: 230px;
-
-    background-color: #d65881;
-    border-radius: 16px 0 16px 16px;
   }
 
   ul#openProfile {
