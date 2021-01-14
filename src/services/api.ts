@@ -1,33 +1,48 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import axios, { AxiosRequestConfig } from 'axios'
-
-const request = axios.create({
-  baseURL: 'https://dev.steamslab.com/api/',
-})
 
 interface Data {
   [k: string]: any
 }
 
+const request = axios.create({
+  baseURL: 'https://dev.steamslab.com/api/',
+})
+
 const api = {
-  /**
-   * Returns the data of an API request.
-   */
-  post: async (path: string, data?: Data, config?: AxiosRequestConfig) => {
+  post: async (path: string, data?: Data, config?: AxiosRequestConfig): Promise<any> => {
+    const token = localStorage.getItem('@SLab_ac_token')
+
+    const axiosConfig = token
+      ? {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+          ...config,
+        }
+      : config
+
     try {
-      const res = await request.post(path, data, config)
+      const res = await request.post(path, data, axiosConfig)
       return res.data
     } catch (error) {
       return error.response.data
     }
   },
 
-  /**
-   * Returns the data of an API request.
-   */
-  get: async (path: string, config?: AxiosRequestConfig) => {
+  get: async (path: string, config?: AxiosRequestConfig): Promise<any> => {
+    const token = localStorage.getItem('@SLab_ac_token')
+
+    const axiosConfig = token
+      ? {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+          ...config,
+        }
+      : config
+
     try {
-      const res = await request.get(path, config)
+      const res = await request.get(path, axiosConfig)
       return res.data
     } catch (error) {
       return error.response.data

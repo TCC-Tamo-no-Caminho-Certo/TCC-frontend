@@ -6,7 +6,7 @@ import selectRoleLabel from 'utils/selectedRoleLabel'
 
 import api from 'services/api'
 
-import { RootState, useDispatch, useSelector } from 'store'
+import { RootState } from 'store'
 import { UserActions, UserState } from 'store/user'
 
 import EditUserIcon from 'assets/ProfileSidebar/EditUserIcon'
@@ -18,6 +18,7 @@ import AddRoleIcon from 'assets/RightMenuOpen/AddRoleIcon'
 import Avatar from 'components/User/Avatar'
 
 import { AnimatePresence, motion, useCycle, Variants } from 'framer-motion'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 
 const RightMenu: React.FC = () => {
@@ -33,13 +34,7 @@ const RightMenu: React.FC = () => {
   const openHeight = 300 + closedHeight
 
   const onLogoutClick = async () => {
-    const token = localStorage.getItem('@SLab_ac_token')
-
-    await api.get('logout', {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    })
+    await api.get('logout')
 
     localStorage.removeItem('@SLab_ac_token')
     history.push('/home')

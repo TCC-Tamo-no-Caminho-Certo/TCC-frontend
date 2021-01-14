@@ -5,8 +5,6 @@ import Home from './home'
 
 import { configureStore } from '@reduxjs/toolkit'
 
-export { useSelector, useDispatch } from 'react-redux'
-
 const store = configureStore({
   reducer: {
     user: User.reducer,

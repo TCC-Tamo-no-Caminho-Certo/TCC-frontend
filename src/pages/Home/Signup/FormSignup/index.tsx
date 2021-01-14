@@ -4,7 +4,6 @@ import Style from './styles'
 import signupSchema from 'utils/validations/signup'
 
 import { HomeActions } from 'store/home'
-import { useDispatch } from 'store'
 
 import WorldIcon from 'assets/Inputs/WorldIcon'
 import UserLockedIcon from 'assets/Inputs/UserLockedIcon'
@@ -13,6 +12,8 @@ import Logo from 'components/Logo'
 import ThemeSwitch from 'components/ThemeSwitch'
 import { Button, Form, Input, InputDate } from 'components/Form'
 import BackButton from 'components/BackButton'
+
+import { useDispatch } from 'react-redux'
 
 const FormSignup: React.FC = () => {
   const dispatch = useDispatch()

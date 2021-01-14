@@ -1,19 +1,35 @@
-import React from 'react'
+/* eslint-disable camelcase */
+import React, { useEffect, useState } from 'react'
 import Style from './styles'
 
-import Table from 'pages/Moderator/Solicitation/Table'
+import Table, { RequestData, StatusTypes } from './Table'
+
+import api from 'services/api'
 
 import { Role } from 'store/user'
+import { RootState } from 'store'
+import { ThemeState } from 'store/theme'
 
-interface TableData {
-  statusCircle: 'accepted' | 'waiting' | 'refused'
-  status: string
-  name: string
+import DotsLoader from 'components/DotsLoader'
+
+import { useSelector } from 'react-redux'
+
+interface Request {
+  request_id: number
+  user_id: number
+  role_id: number
+  data: string
+  status: StatusTypes
+  full_name: string
   role: Role
-  date: string
+  created_at: string
+  updated_at?: string
 }
 
 const Solicitation: React.FC = () => {
+  const [solicitations, recieveSolicitations] = useState<Request[] | undefined>(undefined)
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+
   const headerData = [
     { name: 'statusCircle', label: '' },
     { name: 'name', label: 'Nome' },
@@ -22,264 +38,42 @@ const Solicitation: React.FC = () => {
     { name: 'date', label: 'Data' },
   ]
 
-  const makeStatusLabel = (status: 'accepted' | 'waiting' | 'refused'): string => {
+  const makeRequest = async () => {
+    const response = await api.get('request/role/get/1')
+    recieveSolicitations(response.requests)
+  }
+
+  useEffect(() => {
+    makeRequest()
+  }, [])
+
+  const makeStatusLabel = (status: StatusTypes): string => {
     switch (status) {
       case 'accepted':
         return 'Aceito'
-      case 'refused':
+      case 'rejected':
         return 'Recusado'
       default:
         return 'Aguardando'
     }
   }
 
-  const users: TableData[] = [
-    {
-      statusCircle: 'accepted',
-      name: 'Miguel Andrade',
-      role: 'moderator',
-      status: makeStatusLabel('accepted'),
-      date: '19 ago',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Jean Domingues',
-      role: 'student',
-      status: makeStatusLabel('accepted'),
-      date: '31 dez',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Gabriel Augusto',
-      role: 'professor',
-      status: makeStatusLabel('accepted'),
-      date: '22 fev',
-    },
-    {
-      statusCircle: 'waiting',
-      name: 'André Santana',
-      role: 'admin',
-      status: makeStatusLabel('waiting'),
-      date: '5 mai',
-    },
-    {
-      statusCircle: 'waiting',
-      name: 'João Pedro',
-      role: 'evaluator',
-      status: makeStatusLabel('waiting'),
-      date: '5 mai',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Miguel Andrade2',
-      role: 'moderator',
-      status: makeStatusLabel('accepted'),
-      date: '19 ago',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Jean Domingues2',
-      role: 'student',
-      status: makeStatusLabel('accepted'),
-      date: '31 dez',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Gabriel Augusto2',
-      role: 'professor',
-      status: makeStatusLabel('accepted'),
-      date: '22 fev',
-    },
-    {
-      statusCircle: 'waiting',
-      name: 'André Santana2',
-      role: 'admin',
-      status: makeStatusLabel('waiting'),
-      date: '5 mai',
-    },
-    {
-      statusCircle: 'waiting',
-      name: 'João Pedro2',
-      role: 'evaluator',
-      status: makeStatusLabel('waiting'),
-      date: '5 mai',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Miguel Andrade3',
-      role: 'moderator',
-      status: makeStatusLabel('accepted'),
-      date: '19 ago',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Jean Domingues3',
-      role: 'student',
-      status: makeStatusLabel('accepted'),
-      date: '31 dez',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Gabriel Augusto3',
-      role: 'professor',
-      status: makeStatusLabel('accepted'),
-      date: '22 fev',
-    },
-    {
-      statusCircle: 'waiting',
-      name: 'André Santana3',
-      role: 'admin',
-      status: makeStatusLabel('waiting'),
-      date: '5 mai',
-    },
-    {
-      statusCircle: 'waiting',
-      name: 'João Pedro3',
-      role: 'evaluator',
-      status: makeStatusLabel('waiting'),
-      date: '5 mai',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Miguel Andrade4',
-      role: 'moderator',
-      status: makeStatusLabel('accepted'),
-      date: '19 ago',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Jean Domingues4',
-      role: 'student',
-      status: makeStatusLabel('accepted'),
-      date: '31 dez',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Gabriel Augusto4',
-      role: 'professor',
-      status: makeStatusLabel('accepted'),
-      date: '22 fev',
-    },
-    {
-      statusCircle: 'waiting',
-      name: 'André Santana4',
-      role: 'admin',
-      status: makeStatusLabel('waiting'),
-      date: '5 mai',
-    },
-    {
-      statusCircle: 'waiting',
-      name: 'João Pedro4',
-      role: 'evaluator',
-      status: makeStatusLabel('waiting'),
-      date: '5 mai',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Miguel Andrade5',
-      role: 'moderator',
-      status: makeStatusLabel('accepted'),
-      date: '19 ago',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Jean Domingues5',
-      role: 'student',
-      status: makeStatusLabel('accepted'),
-      date: '31 dez',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Gabriel Augusto5',
-      role: 'professor',
-      status: makeStatusLabel('accepted'),
-      date: '22 fev',
-    },
-    {
-      statusCircle: 'waiting',
-      name: 'André Santana5',
-      role: 'admin',
-      status: makeStatusLabel('waiting'),
-      date: '5 mai',
-    },
-    {
-      statusCircle: 'waiting',
-      name: 'João Pedro5',
-      role: 'evaluator',
-      status: makeStatusLabel('waiting'),
-      date: '5 mai',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Miguel Andrade6',
-      role: 'moderator',
-      status: makeStatusLabel('accepted'),
-      date: '19 ago',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Jean Domingues6',
-      role: 'student',
-      status: makeStatusLabel('accepted'),
-      date: '31 dez',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Gabriel Augusto6',
-      role: 'professor',
-      status: makeStatusLabel('accepted'),
-      date: '22 fev',
-    },
-    {
-      statusCircle: 'waiting',
-      name: 'André Santana6',
-      role: 'admin',
-      status: makeStatusLabel('waiting'),
-      date: '5 mai',
-    },
-    {
-      statusCircle: 'waiting',
-      name: 'João Pedro6',
-      role: 'evaluator',
-      status: makeStatusLabel('waiting'),
-      date: '5 mai',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Miguel Andrade7',
-      role: 'moderator',
-      status: makeStatusLabel('accepted'),
-      date: '19 ago',
-    },
-    {
-      statusCircle: 'refused',
-      name: 'Jean Domingues7',
-      role: 'student',
-      status: makeStatusLabel('refused'),
-      date: '31 dez',
-    },
-    {
-      statusCircle: 'accepted',
-      name: 'Gabriel Augusto7',
-      role: 'professor',
-      status: makeStatusLabel('accepted'),
-      date: '22 fev',
-    },
-    {
-      statusCircle: 'waiting',
-      name: 'André Santana7',
-      role: 'admin',
-      status: makeStatusLabel('waiting'),
-      date: '5 mai',
-    },
-    {
-      statusCircle: 'waiting',
-      name: 'João Pedro7',
-      role: 'evaluator',
-      status: makeStatusLabel('waiting'),
-      date: '5 mai',
-    },
-  ]
+  const tableData = (): RequestData[] => {
+    const usersSolicitations = solicitations?.map(
+      ({ status, full_name, role, created_at, request_id }) => {
+        return {
+          status: makeStatusLabel(status),
+          role,
+          statusCircle: status,
+          name: full_name,
+          date: created_at,
+          id: request_id,
+        }
+      }
+    )
+
+    return usersSolicitations as RequestData[]
+  }
 
   return (
     <Style>
@@ -287,7 +81,11 @@ const Solicitation: React.FC = () => {
         <h1>Solicitações</h1>
       </header>
 
-      <Table headerData={headerData} data={users} />
+      {solicitations !== undefined ? (
+        <Table headerData={headerData} data={tableData()} />
+      ) : (
+        <DotsLoader color={theme.colors.white} />
+      )}
     </Style>
   )
 }

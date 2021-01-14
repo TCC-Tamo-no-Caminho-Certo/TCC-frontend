@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 
 import { ThemeActions } from 'store/theme'
-import { useDispatch } from 'store'
 
+import { useDispatch } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
 const ThemeSwitch: React.FC = () => {

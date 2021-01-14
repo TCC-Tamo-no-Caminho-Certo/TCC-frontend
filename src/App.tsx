@@ -5,8 +5,9 @@ import GlobalStyle from 'styles/GlobalStyle'
 import Routes from 'routes'
 
 import { ThemeState } from 'store/theme'
-import { RootState, useSelector } from 'store'
+import { RootState } from 'store'
 
+import { useSelector } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 

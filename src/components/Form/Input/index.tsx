@@ -96,6 +96,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         isErrored={!!error}
         hidden={rest.hidden}
         className={className}
+        onFocus={() => inputRef.current?.focus()}
         {...{
           onClick: type === 'checkbox' ? () => setChecked(!checked) : undefined,
         }}

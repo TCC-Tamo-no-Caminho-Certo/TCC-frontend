@@ -7,40 +7,21 @@ import Moderator from 'pages/Moderator'
 import api from 'services/api'
 
 import { UserActions } from 'store/user'
-import { useDispatch } from 'store'
 
+import { useDispatch } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
 const PrivateRoutes: React.FC = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const token = localStorage.getItem('@SLab_ac_token')
-
-    api
-      .get('user/get', {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      })
-
-      .then(res => {
-        dispatch(
-          UserActions.updateUserInfo({
-            ...res.user,
-            roles: [
-              'guest',
-              'aris',
-              'student',
-              'customer',
-              'professor',
-              'evaluator',
-              'moderator',
-              'admin',
-            ],
-          })
-        )
-      })
+    api.get('user/get', {}).then(res => {
+      dispatch(
+        UserActions.updateUserInfo({
+          ...res.user,
+        })
+      )
+    })
 
     window.history.pushState(null, '', document.URL)
     // eslint-disable-next-line react-hooks/exhaustive-deps

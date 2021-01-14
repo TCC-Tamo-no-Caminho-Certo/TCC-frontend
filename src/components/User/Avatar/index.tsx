@@ -1,7 +1,7 @@
 import React, { FC, ImgHTMLAttributes, memo, useState } from 'react'
 import Style from './styles'
 
-import { RootState, useSelector } from 'store'
+import { RootState } from 'store'
 
 import AvatarIcon from 'assets/Inputs/AvatarIcon'
 import CameraIcon from 'assets/Inputs/CameraIcon'
@@ -9,6 +9,7 @@ import CameraIcon from 'assets/Inputs/CameraIcon'
 import DotsLoader from 'components/DotsLoader'
 
 import { motion } from 'framer-motion'
+import { useSelector } from 'react-redux'
 
 interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
   size: number

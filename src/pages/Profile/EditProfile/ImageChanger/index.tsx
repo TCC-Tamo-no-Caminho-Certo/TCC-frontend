@@ -6,7 +6,6 @@ import { ModalContext } from '../'
 import api from 'services/api'
 
 import { UserActions } from 'store/user'
-import { useDispatch } from 'store'
 
 import CameraIcon from 'assets/Inputs/CameraIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
@@ -14,6 +13,7 @@ import CloseIcon from 'assets/Inputs/CloseIcon'
 import 'cropperjs/dist/cropper.css'
 import { motion } from 'framer-motion'
 import { Cropper } from 'react-cropper'
+import { useDispatch } from 'react-redux'
 
 const ImageChanger: React.FC = () => {
   const dispatch = useDispatch()
@@ -49,17 +49,9 @@ const ImageChanger: React.FC = () => {
 
   const onConfirmClick = async () => {
     if (cropper.cropped) {
-      const token = localStorage.getItem('@SLab_ac_token')
-
-      const result = await api.post(
-        '/user/avatar/upload',
-        { picture: cropper.getCroppedCanvas().toDataURL() },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      const result = await api.post('/user/avatar/upload', {
+        picture: cropper.getCroppedCanvas().toDataURL(),
+      })
 
       dispatch(UserActions.updateUserInfo({ avatar: result.object }))
       modal?.setShow(false)

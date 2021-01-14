@@ -5,10 +5,11 @@ import Login from './Login'
 import Signup from './Signup'
 import RestOfHome from './RestOfHome'
 
-import { RootState, useDispatch, useSelector } from 'store'
+import { RootState } from 'store'
 import { HomeActions } from 'store/home'
 
 import { AnimatePresence, motion } from 'framer-motion'
+import { useDispatch, useSelector } from 'react-redux'
 import { Route, Switch, useLocation } from 'react-router-dom'
 
 const Home: React.FC = () => {

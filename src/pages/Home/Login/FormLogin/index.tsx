@@ -3,7 +3,6 @@ import Style, { ContentForm, LoginFailed, Permanence, Register } from './styles'
 
 import loginSchema from 'utils/validations/login'
 
-import { useDispatch } from 'store'
 import { HomeActions } from 'store/home'
 
 import MailIcon from 'assets/Inputs/MailIcon'
@@ -15,6 +14,7 @@ import Logo from 'components/Logo'
 import ThemeSwitch from 'components/ThemeSwitch'
 
 import { AnimatePresence, motion } from 'framer-motion'
+import { useDispatch } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 
 export interface LoginData {
@@ -28,10 +28,9 @@ const FormLogin: React.FC = () => {
   const history = useHistory()
   const dispatch = useDispatch()
   const [disable, setDisable] = useState(false)
-
   const [loginFailed, setLoginFailed] = useState('')
 
-  const handleSubmit = (resData: any) => {
+  const onSubmit = (resData: any) => {
     if (resData.success) {
       localStorage.setItem('@SLab_ac_token', resData.access_token)
       history.push('/session/main')
@@ -57,7 +56,7 @@ const FormLogin: React.FC = () => {
     <Style>
       <ThemeSwitch />
 
-      <ContentForm callback={handleSubmit} valSchema={loginSchema} path='login' loading captcha>
+      <ContentForm callback={onSubmit} valSchema={loginSchema} path='login' loading captcha>
         <Logo />
 
         <motion.div id='fail' animate={{ height: loginFailed !== '' ? 32 : 0 }}>

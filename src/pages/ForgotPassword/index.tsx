@@ -5,7 +5,6 @@ import Modal, { ModalAttributes } from 'pages/ForgotPassword/Modal'
 
 import { emailSchema } from 'utils/validations/forgotPassword'
 
-import { useDispatch } from 'store'
 import { HomeActions } from 'store/home'
 
 import SendEmailIcon from 'assets/SendEmailIcon'
@@ -16,6 +15,7 @@ import Logo from 'components/Logo'
 import { Button, Form, Input } from 'components/Form'
 import BackButton from 'components/BackButton'
 
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 const ForgotPassword: React.FC = () => {

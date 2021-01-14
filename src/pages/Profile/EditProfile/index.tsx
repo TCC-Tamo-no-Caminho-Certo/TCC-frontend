@@ -4,13 +4,14 @@ import Style, { ConfirmForm } from './styles'
 import Fields from './Fields'
 import ImageChanger from './ImageChanger'
 
-import { useDispatch } from 'store'
 import { UserActions } from 'store/user'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import { Button, Form, Input } from 'components/Form'
 import Modal from 'components/Modal'
+
+import { useDispatch } from 'react-redux'
 
 export interface ModalState {
   show: boolean

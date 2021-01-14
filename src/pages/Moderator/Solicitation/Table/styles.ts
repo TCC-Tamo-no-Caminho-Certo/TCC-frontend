@@ -1,10 +1,12 @@
+import { StatusTypes } from './'
+
 import { Role } from 'store/user'
 
 import { darken } from 'polished'
 import styled from 'styled-components'
 
 interface CircleProps {
-  status?: 'accepted' | 'waiting' | 'refused'
+  status?: StatusTypes
 }
 
 interface RoleTdProps {
@@ -24,9 +26,9 @@ export const Circle = styled.div<CircleProps>`
     switch (status) {
       case 'accepted':
         return theme.colors.green
-      case 'waiting':
+      case 'awaiting':
         return theme.colors.yellow
-      case 'refused':
+      case 'rejected':
         return theme.colors.red
       default:
         return theme.colors.white

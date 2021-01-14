@@ -3,14 +3,30 @@ import Style, { Circle, RoleTd } from './styles'
 
 import selectedRoleLabel from 'utils/selectedRoleLabel'
 
+import { Role } from 'store/user'
+
 import ArrowIcon from 'assets/ArrowIcon'
+
+export type StatusTypes = 'accepted' | 'rejected' | 'awaiting'
+
+export interface RequestData {
+  statusCircle: StatusTypes
+  status: string
+  name: string
+  role: Role
+  date: string
+  id: number
+}
 
 interface TableProps {
   headerData: { name: string; label: string }[]
-  data: any[]
+  data: RequestData[]
 }
 
-const useSortableData = (items: any[], config: { th: string; direction: string }) => {
+const useSortableData = (
+  items: RequestData[],
+  config: { th: keyof RequestData; direction: string }
+) => {
   const [sortConfig, setSortConfig] = useState(config)
 
   const sortedItems = useMemo(() => {
@@ -36,7 +52,7 @@ const useSortableData = (items: any[], config: { th: string; direction: string }
     return sortableItems
   }, [items, sortConfig])
 
-  const sort = (th: any) => {
+  const sort = (th: keyof RequestData) => {
     if (sortConfig && sortConfig.th === th && sortConfig.direction === 'ascending')
       setSortConfig({ th, direction: 'descending' })
     else setSortConfig({ th, direction: 'ascending' })
@@ -48,7 +64,7 @@ const useSortableData = (items: any[], config: { th: string; direction: string }
 const Table: React.FC<TableProps> = ({ headerData, data }) => {
   const { items, sort, sortConfig } = useSortableData(data, {
     direction: '',
-    th: '',
+    th: 'name',
   })
 
   const arrowAnimation = (th: string) => {
@@ -93,36 +109,38 @@ const Table: React.FC<TableProps> = ({ headerData, data }) => {
     <Style className='Table'>
       <input type='text' onChange={filter} placeholder='Pesquisar' autoComplete='off' />
 
-      <thead>
-        <tr draggable='false'>
-          {headerData.map(({ label, name }) => {
-            if (name !== 'statusCircle') {
+      <table>
+        <thead>
+          <tr draggable='false'>
+            {headerData.map(({ label, name }) => {
+              if (name !== 'statusCircle') {
+                return (
+                  <th key={name}>
+                    <button type='button' onClick={() => sort(name as keyof RequestData)}>
+                      <ArrowIcon initial={{ rotate: -90 }} animate={arrowAnimation(name)} />
+                      {label}
+                    </button>
+                  </th>
+                )
+              }
+
               return (
-                <th key={name}>
-                  <button type='button' onClick={() => sort(name)}>
-                    <ArrowIcon initial={{ rotate: -90 }} animate={arrowAnimation(name)} />
-                    {label}
+                <th key={name} className='statusCircle'>
+                  <button type='button' onClick={() => sort(name as keyof RequestData)}>
+                    <Circle />
                   </button>
                 </th>
               )
-            }
-
-            return (
-              <th key={name} className='statusCircle'>
-                <button type='button' onClick={() => sort(name)}>
-                  <Circle />
-                </button>
-              </th>
-            )
-          })}
-        </tr>
-      </thead>
+            })}
+          </tr>
+        </thead>
+      </table>
 
       <div id='tableWrapper'>
         <table id='table'>
           <tbody>
             {items.map(item => (
-              <tr key={item.name}>
+              <tr key={item.id}>
                 {headerData.map(({ label, name }) => {
                   if (name === 'role')
                     return (
@@ -130,7 +148,8 @@ const Table: React.FC<TableProps> = ({ headerData, data }) => {
                         {selectedRoleLabel(item[name])}
                       </RoleTd>
                     )
-                  if (name !== 'statusCircle') return <td key={label}>{item[name]}</td>
+                  if (name !== 'statusCircle')
+                    return <td key={label}>{item[name as keyof RequestData]}</td>
 
                   return (
                     <td key={name} className='statusCircle'>
