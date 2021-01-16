@@ -4,7 +4,7 @@ const light: ThemeAttributes = {
   name: 'light',
 
   colors: {
-    primary: '#D65881',
+    primary: '#d65881',
     secondary: '#fcfcfc',
     tertiary: '#6e4850',
     white: '#fcfcfc',
@@ -25,7 +25,7 @@ const light: ThemeAttributes = {
   },
 
   calendar: {
-    primary: '#D65881',
+    primary: '#d65881',
     secondary: '#fcfcfc',
     tertiary: '#6e4850',
     header: '#6e4850',

@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import Style, { Background, RightMenuOpen, RoleLi, UserInfo } from './styles'
 
-import selectRoleLabel from 'utils/selectedRoleLabel'
+import selectRoleLabel from 'utils/makeRoleLabel'
 
 import api from 'services/api'
 

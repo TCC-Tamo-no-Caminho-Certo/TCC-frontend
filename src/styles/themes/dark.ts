@@ -30,7 +30,7 @@ const dark: ThemeAttributes = {
     tertiary: '#fcfcfc',
     header: '#303030',
     disabled: '#303030',
-    background: '#18191A',
+    background: '#18191a',
   },
 
   sidebar: {

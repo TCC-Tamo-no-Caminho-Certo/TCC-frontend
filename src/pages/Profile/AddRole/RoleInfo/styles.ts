@@ -50,14 +50,14 @@ const Style = styled.div<StyleProps>`
         opacity: 0;
         font-size: 1.6rem;
 
-        color: #fcfcfc;
+        color: ${({ theme }) => theme.colors.secondary};
 
         .Icon {
           width: 18px;
           height: 12px;
           margin-right: 8px;
 
-          fill: #00ff66;
+          fill: ${({ theme }) => theme.colors.green};
         }
       }
 
@@ -73,7 +73,7 @@ const Style = styled.div<StyleProps>`
       border-radius: 10px;
       opacity: 0;
 
-      color: #fcfcfc;
+      color: ${({ theme }) => theme.colors.secondary};
       background-color: ${({ color }) => color};
     }
 

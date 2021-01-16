@@ -4,7 +4,7 @@ import Field from './Field'
 import { ModalContext } from '../'
 
 import formatUpdateUser, { InputData } from 'utils/formatUpdateUser'
-import selectedRoleLabel from 'utils/selectedRoleLabel'
+import selectedRoleLabel from 'utils/makeRoleLabel'
 
 import { RootState } from 'store'
 import { UserState } from 'store/user'

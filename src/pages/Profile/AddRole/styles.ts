@@ -7,20 +7,20 @@ const Style = styled(motion.div)`
   align-items: center;
   flex-direction: column;
 
-  padding-top: 64px;
+  padding-top: 32px;
   min-height: 100vh;
   width: 100%;
 
-  background-color: #6e4850;
-  color: white;
+  background-color: ${({ theme }) => theme.colors.tertiary};
+  color: ${({ theme }) => theme.colors.white};
 
   h2 {
-    width: 80%;
+    width: 90%;
     font-size: 3.2rem;
   }
 
   p {
-    width: 80%;
+    width: 90%;
   }
 
   #Roles {

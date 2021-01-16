@@ -10,11 +10,11 @@ interface DotsLoaderProps {
 
 const DotsLoader: React.FC<DotsLoaderProps> = ({ size = 36, dotSize = 8, color = '#6e4850' }) => {
   const loadingContainer = {
-    height: 'auto',
+    height: '100%',
     width: size,
     display: 'flex',
     justifyContent: 'space-around',
-
+    alignItems: 'center',
     className: 'DotsLoader',
   }
 

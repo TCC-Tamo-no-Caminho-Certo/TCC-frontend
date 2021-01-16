@@ -6,7 +6,7 @@ import Historic from './Historic'
 import Financial from './Financial'
 import Customization from './Customization'
 import Security from './Security'
-import ChangeRole from './ChangeRole'
+import AddRole from './AddRole'
 
 import CardIcon from 'assets/ProfileSidebar/CardIcon'
 import EditUserIcon from 'assets/ProfileSidebar/EditUserIcon'
@@ -29,51 +29,60 @@ const Profile: React.FC = () => {
       {
         icon: () => <UserIcon />,
         label: 'Perfil',
-        path: '/session/profile/home',
+        paths: ['/session/profile/home'],
         exact: true,
         component: () => <ProfileHome />,
       },
       {
         icon: () => <EditUserIcon />,
         label: 'Editar Perfil',
-        path: '/session/profile/edit-profile',
+        paths: ['/session/profile/edit-profile'],
         component: () => <EditProfile />,
       },
       {
         icon: () => <ChangeIcon />,
         label: 'Mudar Papel',
-        path: '/session/profile/change-role',
-        component: () => <ChangeRole />,
+        paths: [
+          '/session/profile/change-role',
+          '/session/profile/change-role/student',
+          '/session/profile/change-role/customer',
+          '/session/profile/change-role/professor',
+          '/session/profile/change-role/evaluator',
+          '/session/profile/change-role/moderator',
+          '/session/profile/change-role/admin',
+        ],
+        exact: true,
+        component: () => <AddRole />,
         isBigInOther: true,
       },
       {
         icon: () => <CardIcon />,
         label: 'Financeiro',
-        path: '/session/profile/financial',
+        paths: ['/session/profile/financial'],
         component: () => <Financial />,
       },
       {
         icon: () => <SecurityIcon />,
         label: 'Segurança',
-        path: '/session/profile/security',
+        paths: ['/session/profile/security'],
         component: () => <Security />,
       },
       {
         icon: () => <HistoryIcon />,
         label: 'Histórico',
-        path: '/session/profile/historic',
+        paths: ['/session/profile/historic'],
         component: () => <Historic />,
       },
       {
         icon: () => <PalleteIcon />,
         label: 'Customização',
-        path: '/session/profile/customization',
+        paths: ['/session/profile/customization'],
         component: () => <Customization />,
       },
       {
         icon: () => <MapIcon />,
         label: 'Voltar ao mapa',
-        path: '/session/main/map',
+        paths: ['/session/main/map'],
         bottom: true,
       },
     ],

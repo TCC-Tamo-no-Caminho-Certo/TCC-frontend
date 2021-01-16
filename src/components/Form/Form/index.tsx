@@ -87,6 +87,7 @@ const Form: FC<FormProps> = ({
       data,
       token ? { headers: { authorization: `Berear ${token}` } } : undefined
     )
+
     cb && cb(resData)
   }
 

@@ -18,20 +18,19 @@ const Profile: React.FC = () => {
       {
         icon: () => <ProjectIcon />,
         component: () => <Solicitation />,
-        path: '/session/moderator',
-        path2: '/session/moderator/solicitation',
+        paths: ['/session/moderator', '/session/moderator/solicitation'],
         label: 'Solicitações',
         exact: true,
       },
       {
         icon: () => <ProjectIcon />,
         component: () => <List />,
-        path: '/session/moderator/list',
+        paths: ['/session/moderator/list'],
         label: 'Lista de alunos',
       },
       {
         icon: () => <MapIcon />,
-        path: '/session/main',
+        paths: ['/session/main'],
         label: 'Voltar ao mapa',
         bottom: true,
       },

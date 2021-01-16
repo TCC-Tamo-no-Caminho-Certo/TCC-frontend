@@ -6,32 +6,28 @@ import CheckIcon from 'assets/CheckIcon'
 import ArrowIcon from 'assets/ArrowIcon'
 
 import { AnimatePresence, motion, useCycle } from 'framer-motion'
-import { useHistory } from 'react-router-dom'
 
-interface RoleProps {
+interface RoleInfoProps {
   title: string
   benefits: string[]
   color: string
-  path?: string
+
   onClick?(): void
   noButton?: boolean
   userRoles?: string[]
 }
 
-const Role: React.FC<RoleProps> = ({
+const RoleInfo: React.FC<RoleInfoProps> = ({
   title,
   benefits,
   color,
   onClick,
   noButton = false,
-  path = 'invalid-path',
   userRoles,
 }) => {
-  const [show, toggleShow] = useCycle<boolean>(true, false)
+  const [show, toggleShow] = useCycle<boolean>(false, true)
   const [deg, rotate] = useCycle(0, -90)
   const haveThisRole = userRoles?.includes(title)
-
-  const history = useHistory()
 
   const container = {
     show: {
@@ -72,9 +68,12 @@ const Role: React.FC<RoleProps> = ({
     },
   }
 
-  function onButtonClick(pushPath: string) {
-    onClick === undefined || onClick()
-    history.push(pushPath)
+  const onButtonClick = () => {
+    onClick !== undefined && onClick()
+
+    setTimeout(() => {
+      window.scrollTo(0, document.body.scrollHeight)
+    }, 1)
   }
 
   return (
@@ -114,8 +113,8 @@ const Role: React.FC<RoleProps> = ({
 
             {!noButton &&
               (!haveThisRole ? (
-                <motion.button type='button' variants={button} onClick={() => onButtonClick(path)}>
-                  Sou {title}!
+                <motion.button type='button' variants={button} onClick={onButtonClick}>
+                  Quero ser {title}!
                 </motion.button>
               ) : (
                 <motion.button disabled id='roleAlreadyExists' variants={button}>
@@ -129,4 +128,4 @@ const Role: React.FC<RoleProps> = ({
   )
 }
 
-export default Role
+export default RoleInfo

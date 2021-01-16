@@ -9,11 +9,10 @@ interface StyleProps extends HTMLMotionProps<'nav'> {
 }
 
 interface ListItemProps {
-  bottom?: boolean
+  paths: string[]
   pathname: string
-  buttonId: string
-  buttonId2: string
   selected: string
+  bottom?: boolean
 }
 
 export const SidebarNav = styled(motion.nav as FC<StyleProps>)`
@@ -111,14 +110,20 @@ export const ListItem = styled.li<ListItemProps>`
       left: 0;
     `}
 
-  ${({ pathname, buttonId, buttonId2, selected }) => {
-    const regx = new RegExp(`^${buttonId}$`)
-    const regx2 = new RegExp(`^${buttonId2}$`)
+  ${({ pathname, paths, selected }) => {
+    const verifyPaths = () => {
+      for (let i = 0; i < paths.length; i += 1) {
+        const regex = new RegExp(`^${paths[i]}$`)
+        if (pathname.match(regex)) return true
+      }
+
+      return false
+    }
 
     return (
-      (pathname.match(regx) || pathname.match(regx2)) &&
+      verifyPaths() &&
       css`
-        ${`#${buttonId}`} {
+        ${`#${paths[0]}`} {
           background-color: ${selected};
         }
       `

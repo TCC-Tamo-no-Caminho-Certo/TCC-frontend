@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useMemo, useState } from 'react'
 import Style, { Circle, RoleTd } from './styles'
 
-import selectedRoleLabel from 'utils/selectedRoleLabel'
+import selectedRoleLabel from 'utils/makeRoleLabel'
 
 import { Role } from 'store/user'
 
@@ -91,7 +91,7 @@ const Table: React.FC<TableProps> = ({ headerData, data }) => {
     }
 
     if (tr !== undefined && td !== undefined) {
-      for (let i = 1; i < tr?.length; i += 1) {
+      for (let i = 0; i < tr?.length; i += 1) {
         const tdsToCheck = []
 
         for (let k = 0; k < td.length / tr.length; k += 1) {
@@ -136,7 +136,19 @@ const Table: React.FC<TableProps> = ({ headerData, data }) => {
         </thead>
       </table>
 
-      <div id='tableWrapper'>
+      <div
+        id='tableWrapper'
+        onScroll={() => {
+          const element = document.getElementById('tableWrapper')
+          if (element !== undefined && element !== null) {
+            const a = element.scrollTop
+            const b = element.scrollHeight - element.clientHeight
+            const maxScroll = a / b
+
+            if (maxScroll === 1) console.log('bottom')
+          }
+        }}
+      >
         <table id='table'>
           <tbody>
             {items.map(item => (

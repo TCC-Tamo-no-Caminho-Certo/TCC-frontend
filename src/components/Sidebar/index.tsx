@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect } from 'react'
 import { ListItem, SidebarNav } from './styles'
 
-import getAllIndexes from 'utils/getAllIndexes'
-
 import { SidebarActions } from 'store/sidebar'
 import { RootState } from 'store'
 
@@ -16,12 +14,10 @@ export interface RouteProps {
   icon?: () => JSX.Element
   component?: () => JSX.Element
   label: string
-  path: string
-  isBigInOther?: boolean
   bottom?: boolean
   exact?: boolean
-  path2?: string
   noContentMove?: boolean
+  paths: string[]
 }
 
 interface SidebarProps {
@@ -38,50 +34,33 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({
   routes,
-  title = '',
-  samePage = false,
   selected,
   letters,
   background,
+  title = '',
+  samePage = false,
   closedWidth = 72,
   width = 210,
-  scrollBarSize = 15,
 }) => {
   const open = useSelector<RootState, boolean>(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
   const history = useHistory()
   const { pathname } = useLocation()
 
-  const onToggle = () => dispatch(SidebarActions.toggleSidebar(!open))
-
-  const contentSize = (): string => {
-    const isBig = routes.map(route => route.isBigInOther === true)
-    const indexesOfBigs = getAllIndexes<boolean>(isBig, true)
-    const pathOfBigs = []
-
-    for (let i = 0; i < indexesOfBigs.length; i += 1) {
-      pathOfBigs.push(routes[indexesOfBigs[i]].path)
-    }
-
-    if (samePage || pathOfBigs.find(el => el === pathname))
-      return open
-        ? `calc(100vw - ${width + scrollBarSize}px)`
-        : `calc(100vw - ${closedWidth + scrollBarSize}px)`
-    return open ? `calc(100vw - ${width}px)` : `calc(100vw - ${closedWidth}px)`
-  }
-
-  const moveCorrectly = useCallback(
+  const scrollMoveCorrectly = useCallback(
     (index: number): void => {
-      const heightOfRoutes = routes.map(({ path }) => {
-        const id = path.replaceAll('/', '--')
+      const heightOfRoutes = routes.map(({ paths }) => {
+        const id = paths[0].replaceAll('/', '--')
         return document.getElementById(id)?.offsetHeight
       })
 
       const move =
         heightOfRoutes !== undefined &&
-        heightOfRoutes.reduce((prev, curr, i) => {
-          return i < index && prev !== undefined && curr !== undefined ? prev + curr : prev
-        }, 0)
+        heightOfRoutes.reduce(
+          (prev, curr, i) =>
+            i < index && prev !== undefined && curr !== undefined ? prev + curr : prev,
+          0
+        )
 
       window.scrollTo(0, move as number)
     },
@@ -89,10 +68,16 @@ const Sidebar: React.FC<SidebarProps> = ({
   )
 
   useEffect(() => {
-    const pathArray = routes.map(({ path }) => (path === pathname ? 1 : 0))
+    const pathArray = routes.map(({ paths }) => (paths[0] === pathname ? 1 : 0))
     const selectedIndex = pathArray.indexOf(1)
-    moveCorrectly(selectedIndex)
-  }, [moveCorrectly, pathname, routes])
+    scrollMoveCorrectly(selectedIndex)
+  }, [scrollMoveCorrectly, pathname, routes])
+
+  const onToggle = () => dispatch(SidebarActions.toggleSidebar(!open))
+
+  const contentSize = (): string => {
+    return open ? `calc(100vw - ${width}px)` : `calc(100vw - ${closedWidth}px)`
+  }
 
   const motionContent: Variants = {
     open: {
@@ -175,26 +160,25 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         <ul>
-          {routes.map((route, index) => (
+          {routes.map(({ paths, bottom, icon: Icon, label }, index) => (
             <ListItem
+              key={paths[0]}
+              bottom={bottom}
               selected={selected}
-              key={route.path}
-              bottom={route.bottom}
+              paths={paths?.map(path => path.replaceAll('/', '-'))}
               pathname={pathname.replaceAll('/', '-')}
-              buttonId={route.path.replaceAll('/', '-')}
-              buttonId2={route.path2 ? route.path2.replaceAll('/', '-') : 'none'}
             >
               <button
                 type='button'
-                id={route.path.replaceAll('/', '-')}
+                id={paths[0].replaceAll('/', '-')}
                 onClick={() => {
-                  samePage && moveCorrectly(index)
-                  history.push(route.path)
+                  samePage && scrollMoveCorrectly(index)
+                  history.push(paths[0])
                 }}
               >
-                {route.icon !== undefined && (
+                {Icon !== undefined && (
                   <div className='icon'>
-                    <route.icon />
+                    <Icon />
                   </div>
                 )}
 
@@ -224,7 +208,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                         },
                       }}
                     >
-                      {route.label}
+                      {label}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -234,33 +218,21 @@ const Sidebar: React.FC<SidebarProps> = ({
         </ul>
       </SidebarNav>
 
-      {routes.map(route => (
+      {routes.map(({ paths, component, noContentMove, exact }) => (
         <motion.section
-          key={route.path}
+          key={paths[0]}
+          id={paths[0].replaceAll('/', '--')}
           variants={motionContent}
-          animate={open && !route.noContentMove ? 'open' : 'closed'}
-          initial={open && !route.noContentMove ? 'open' : 'closed'}
-          id={route.path.replaceAll('/', '--')}
+          animate={open && !noContentMove ? 'open' : 'closed'}
+          initial={open && !noContentMove ? 'open' : 'closed'}
         >
           {samePage ? (
-            route.component && route.component()
+            component && component()
           ) : (
             <>
-              <Route
-                key={route.path}
-                path={route.path}
-                exact={route.exact}
-                component={route.component}
-              />
-
-              {route.path2 && (
-                <Route
-                  key={route.path2}
-                  path={route.path2}
-                  exact={route.exact}
-                  component={route.component}
-                />
-              )}
+              {paths.map(path => (
+                <Route key={path} path={path} exact={exact} component={component} />
+              ))}
             </>
           )}
         </motion.section>

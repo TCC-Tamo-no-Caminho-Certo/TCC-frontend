@@ -1,62 +1,75 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Style from './styles'
 
-import Role from './Role'
-import Student from './Roles/Student'
-import Proponent from './Roles/Proponent'
-import Moderator from './Roles/Moderator'
-import Reviewer from './Roles/Reviewer'
-import Professor from './Roles/Professor'
-import RequestStatus from './RequestStatus'
+import RoleInfo from './RoleInfo'
+import AddRoleForm from './AddRoleForm'
 
-import selectRoleLabel from 'utils/selectedRoleLabel'
+import selectRoleLabel from 'utils/makeRoleLabel'
 
 import { RootState } from 'store'
-import { UserState } from 'store/user'
+import { Role, UserState } from 'store/user'
 
 import { useSelector } from 'react-redux'
-import { Route } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+// import { Route } from 'react-router-dom'
 import { ThemeContext } from 'styled-components'
 
-const rolesRoute = [
-  {
-    path: '/session/profile/change-role/student',
-    exact: true,
-    component: () => <Student />,
-  },
-  {
-    path: '/session/profile/change-role/professor',
-    exact: false,
-    component: () => <Professor />,
-  },
-  {
-    path: '/session/profile/change-role/proponent',
-    exact: false,
-    component: () => <Proponent />,
-  },
-  {
-    path: '/session/profile/change-role/moderator',
-    exact: false,
-    component: () => <Moderator />,
-  },
-  {
-    path: '/session/profile/change-role/reviewer',
-    exact: false,
-    component: () => <Reviewer />,
-  },
-  {
-    path: '/session/profile/change-role/guest',
-    exact: false,
-    component: () => <></>,
-  },
+// const rolesRoute = [
+//   {
+//     path: '/session/profile/change-role/student',
+//     exact: true,
+//     component: () => <Student />,
+//   },
+//   {
+//     path: '/session/profile/change-role/professor',
+//     exact: false,
+//     component: () => <Professor />,
+//   },
+//   {
+//     path: '/session/profile/change-role/proponent',
+//     exact: false,
+//     component: () => <Proponent />,
+//   },
+//   {
+//     path: '/session/profile/change-role/moderator',
+//     exact: false,
+//     component: () => <Moderator />,
+//   },
+//   {
+//     path: '/session/profile/change-role/reviewer',
+//     exact: false,
+//     component: () => <Reviewer />,
+//   },
+//   {
+//     path: '/session/profile/change-role/guest',
+//     exact: false,
+//     component: () => <></>,
+//   },
+// ]
+
+const allRoles: Role[] = [
+  'admin',
+  'guest',
+  'aris',
+  'student',
+  'professor',
+  'customer',
+  'evaluator',
+  'moderator',
 ]
 
-const ChangeRole: React.FC = () => {
+const AddRole: React.FC = () => {
   const { roles } = useSelector<RootState, UserState>(state => state.user)
+  const [roleSelected, setRoleSelected] = useState<Role | undefined>(undefined)
   const labelRoles = roles.map(role => selectRoleLabel(role))
   const theme = useContext(ThemeContext)
+  const location = useLocation()
 
-  useEffect(() => window.scrollBy(0, 0), [])
+  useEffect(() => {
+    const { pathname } = location
+    if (roleSelected === undefined)
+      allRoles.map(role => pathname.includes(role) && setRoleSelected(role))
+  }, [location, roleSelected])
 
   return (
     <Style id='ChangeRole'>
@@ -72,14 +85,14 @@ const ChangeRole: React.FC = () => {
       </p>
 
       <div id='Roles'>
-        <Role
+        <RoleInfo
           title='Convidado'
           color={theme.roles.guest}
           benefits={['Solicitar alteração de papel para Estudante ou Professor']}
           noButton
         />
 
-        <Role
+        <RoleInfo
           title='Estudante'
           userRoles={labelRoles}
           color={theme.roles.student}
@@ -89,10 +102,10 @@ const ChangeRole: React.FC = () => {
             'Aceitar convites para propostas e projetos',
             'Candidatar-se a um projeto',
           ]}
-          path='/session/profile/change-role/student'
+          onClick={() => setRoleSelected('student')}
         />
 
-        <Role
+        <RoleInfo
           title='Proponente'
           userRoles={labelRoles}
           color={theme.roles.customer}
@@ -102,10 +115,10 @@ const ChangeRole: React.FC = () => {
             'Aceitar alunos e professores candidatados',
             'Remover estudantes e professores de propostas',
           ]}
-          path='/session/profile/change-role/proponent'
+          onClick={() => setRoleSelected('customer')}
         />
 
-        <Role
+        <RoleInfo
           title='Professor'
           userRoles={labelRoles}
           color={theme.roles.professor}
@@ -115,10 +128,10 @@ const ChangeRole: React.FC = () => {
             'Remover estudantes de propostas, somente professor coordenador pode remover outros professores',
             'Solicitar papel de Revisor',
           ]}
-          path='/session/profile/change-role/professor'
+          onClick={() => setRoleSelected('professor')}
         />
 
-        <Role
+        <RoleInfo
           title='Revisor'
           userRoles={labelRoles}
           color={theme.roles.evaluator}
@@ -129,10 +142,10 @@ const ChangeRole: React.FC = () => {
             'Aceitar convites para propostas e projetos',
             'Definir conflitos de interesses',
           ]}
-          path='/session/profile/change-role/reviewer'
+          onClick={() => setRoleSelected('evaluator')}
         />
 
-        <Role
+        <RoleInfo
           title='Moderador'
           userRoles={labelRoles}
           color={theme.roles.moderator}
@@ -143,17 +156,27 @@ const ChangeRole: React.FC = () => {
             'Ver usuários da instituição',
             'Alterar status da proposta',
           ]}
-          path='/session/profile/change-role/moderator'
+          onClick={() => setRoleSelected('moderator')}
+        />
+
+        <RoleInfo
+          title='Administrador'
+          userRoles={labelRoles}
+          color={theme.roles.admin}
+          benefits={[
+            'Aceitar solicitação de mudança para Revisor ',
+            'Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores' +
+              '(devem estar na mesma instituição)',
+            'Ver usuários da instituição',
+            'Alterar status da proposta',
+          ]}
+          onClick={() => setRoleSelected('admin')}
         />
       </div>
 
-      {rolesRoute.map(route => (
-        <Route key={route.path} path={route.path} exact={route.exact} component={route.component} />
-      ))}
-
-      <RequestStatus />
+      {roleSelected !== undefined && <AddRoleForm role={roleSelected} />}
     </Style>
   )
 }
 
-export default ChangeRole
+export default AddRole

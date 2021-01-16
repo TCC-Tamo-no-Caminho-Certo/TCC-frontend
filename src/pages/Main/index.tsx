@@ -23,14 +23,13 @@ const Profile: React.FC = () => {
     const sidebarSections: RouteProps[] = [
       {
         icon: () => <MapIcon />,
-        path: '/session/main',
-        path2: '/session/main/map',
+        paths: ['/session/main', '/session/main/map'],
         label: 'Mapa',
         component: () => <Map />,
       },
       {
         icon: () => <ProjectIcon />,
-        path: '/session/main/projects',
+        paths: ['/session/main/projects'],
         label: 'Projetos',
         component: () => <Projects />,
       },
@@ -39,7 +38,7 @@ const Profile: React.FC = () => {
     if (selectedRole === 'moderator')
       sidebarSections.push({
         icon: () => <ProjectIcon />,
-        path: '/session/moderator',
+        paths: ['/session/moderator'],
         label: 'Moderador',
       })
 
