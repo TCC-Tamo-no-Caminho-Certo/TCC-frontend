@@ -25,6 +25,7 @@ const RightMenu: React.FC = () => {
   const { name, surname, selectedRole, roles } = useSelector<RootState, UserState>(
     state => state.user
   )
+
   const dispatch = useDispatch()
   const [editOpen, toggleEditProfile] = useCycle(false, true)
   const [changeRole, setChangeRole] = useState(false)

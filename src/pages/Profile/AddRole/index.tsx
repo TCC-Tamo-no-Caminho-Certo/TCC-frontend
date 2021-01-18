@@ -105,6 +105,7 @@ const AddRole: React.FC = () => {
           onClick={() => setRoleSelected('student')}
         />
 
+        {/* 
         <RoleInfo
           title='Proponente'
           userRoles={labelRoles}
@@ -116,7 +117,7 @@ const AddRole: React.FC = () => {
             'Remover estudantes e professores de propostas',
           ]}
           onClick={() => setRoleSelected('customer')}
-        />
+        /> */}
 
         <RoleInfo
           title='Professor'
@@ -131,7 +132,7 @@ const AddRole: React.FC = () => {
           onClick={() => setRoleSelected('professor')}
         />
 
-        <RoleInfo
+        {/* <RoleInfo
           title='Revisor'
           userRoles={labelRoles}
           color={theme.roles.evaluator}
@@ -171,7 +172,7 @@ const AddRole: React.FC = () => {
             'Alterar status da proposta',
           ]}
           onClick={() => setRoleSelected('admin')}
-        />
+        /> */}
       </div>
 
       {roleSelected !== undefined && <AddRoleForm role={roleSelected} />}

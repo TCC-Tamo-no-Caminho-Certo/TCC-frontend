@@ -43,6 +43,13 @@ export interface UserStatePayload {
   emails?: Email[]
 }
 
+const getRole = () => {
+  const localRole = localStorage.getItem('@SLab_selected_role') as Role
+  if (localRole) return localRole
+  localStorage.setItem('@SLab_selected_role', 'guest')
+  return 'guest'
+}
+
 const initialState: UserState = {
   user_id: 0,
   name: '',
@@ -52,7 +59,7 @@ const initialState: UserState = {
   created_at: '',
   updated_at: '',
   roles: ['guest'],
-  selectedRole: 'guest',
+  selectedRole: getRole(),
   emails: [{ email: '', main: true }],
 }
 
@@ -60,10 +67,15 @@ const User = createSlice({
   name: 'userConfig',
   initialState,
   reducers: {
-    updateUserInfo: (state, action: PayloadAction<UserStatePayload>) => ({
-      ...state,
-      ...action.payload,
-    }),
+    updateUserInfo: (state, action: PayloadAction<UserStatePayload>) => {
+      if (action.payload.selectedRole !== undefined)
+        localStorage.setItem('@SLab_selected_role', action.payload.selectedRole)
+
+      return {
+        ...state,
+        ...action.payload,
+      }
+    },
   },
 })
 
