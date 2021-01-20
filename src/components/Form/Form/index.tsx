@@ -5,12 +5,13 @@ import { FormProvider, Ref } from './FormContext'
 
 import api from 'services/api'
 
+import { useHistory } from 'react-router-dom'
 import { ObjectSchema, ValidationError } from 'yup'
 
 interface FormProps extends HTMLProps<HTMLFormElement> {
   children: (ReactElement | ReactElement[])[] | ReactElement
   path: string
-  token?: string
+  push?: string
   captcha?: boolean
   loading?: boolean
   valSchema?: ObjectSchema
@@ -27,7 +28,7 @@ interface FormProps extends HTMLProps<HTMLFormElement> {
 const Form: FC<FormProps> = ({
   children,
   path,
-  token,
+  push,
   loading,
   valSchema,
   handleData,
@@ -42,6 +43,7 @@ const Form: FC<FormProps> = ({
 
   const recaptchaRef = useRef<Captcha>(null)
   const [showLoader, setShowLoader] = useState(false)
+  const history = useHistory()
 
   const setRef = (input: Ref) => {
     refs.push(input)
@@ -82,12 +84,7 @@ const Form: FC<FormProps> = ({
   }
 
   const submit = async (cb?: (data: any) => void) => {
-    const resData = await api.post(
-      path,
-      data,
-      token ? { headers: { authorization: `Berear ${token}` } } : undefined
-    )
-
+    const resData = await api.post(path, data)
     cb && cb(resData)
   }
 
@@ -104,6 +101,8 @@ const Form: FC<FormProps> = ({
     !haveErrors && (await submit(callback))
 
     loading && setShowLoader(false)
+
+    !haveErrors && push && history.push(push)
   }
 
   return (
