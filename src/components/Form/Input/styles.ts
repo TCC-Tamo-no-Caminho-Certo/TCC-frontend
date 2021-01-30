@@ -6,6 +6,7 @@ interface StyleProps {
   hidden?: boolean
   isFilled: boolean
   isErrored: boolean
+  color: string
 }
 
 function setBorderRadius(hasEye: boolean, hasIcon: boolean) {
@@ -67,17 +68,17 @@ export const DefaultInput = styled.div<StyleProps>`
       }
     `}
 
-  ${({ hasEye, hasIcon }) => css`
+  ${({ hasEye, hasIcon, color }) => css`
     input {
       width: ${setWidth(hasEye, hasIcon)};
       height: 100%;
-      border: none;
 
+      border: none;
       border-radius: ${setBorderRadius(hasEye, hasIcon)};
 
       background-color: transparent;
-      color: #d65881;
-      -webkit-text-fill-color: #d65881;
+      color: ${color};
+      -webkit-text-fill-color: ${color};
 
       &::placeholder {
         color: #6e4850;
@@ -90,8 +91,6 @@ export const DefaultInput = styled.div<StyleProps>`
 export const Field = styled.div<StyleProps>`
   display: ${({ hidden }) => (hidden ? 'none' : 'flex')};
   align-items: center;
-  * {
-  }
 
   min-height: 35px;
   height: 4.5vh;
@@ -107,8 +106,8 @@ export const Field = styled.div<StyleProps>`
     border: none;
 
     background-color: transparent;
-    color: #d65881;
-    -webkit-text-fill-color: #d65881;
+    color: ${({ color }) => color};
+    -webkit-text-fill-color: ${({ color }) => color};
 
     &::placeholder {
       color: #6e4850;

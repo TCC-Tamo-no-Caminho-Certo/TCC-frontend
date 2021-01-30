@@ -24,15 +24,6 @@ const dark: ThemeAttributes = {
     admin: '#d62828',
   },
 
-  calendar: {
-    primary: '#d65881',
-    secondary: '#fcfcfc',
-    tertiary: '#fcfcfc',
-    header: '#303030',
-    disabled: '#303030',
-    background: '#18191a',
-  },
-
   sidebar: {
     selected: '#d65881',
     letters: '#fcfcfc',

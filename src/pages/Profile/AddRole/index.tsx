@@ -3,6 +3,7 @@ import Style from './styles'
 
 import RoleInfo from './RoleInfo'
 import AddRoleForm from './AddRoleForm'
+import RequestStatus from './RequestStatus'
 
 import selectRoleLabel from 'utils/makeRoleLabel'
 
@@ -83,6 +84,8 @@ const AddRole: React.FC = () => {
         purus, id imperdiet sapien pharetra quis. Praesent mattis dolor a dictum scelerisque.
         Maecenas et tortor elementum.
       </p>
+
+      <RequestStatus />
 
       <div id='Roles'>
         <RoleInfo

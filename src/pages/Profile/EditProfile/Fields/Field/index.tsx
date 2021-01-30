@@ -3,10 +3,15 @@ import Style from './styles'
 
 import { InputData } from 'utils/formatUpdateUser'
 
+import { ThemeState } from 'store/theme'
+import { RootState } from 'store'
+
 import PencilIcon from 'assets/Inputs/PencilIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import { Input, InputDate } from 'components/Form'
+
+import { useSelector } from 'react-redux'
 
 interface Props {
   data: InputData
@@ -15,7 +20,7 @@ interface Props {
 const Field: FC<Props> = ({ data }) => {
   const [change, setChange] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
-
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const inputDateValue = (value: string) => {
     const old = value.split('-')
     return old[0] ? `${old[2]}/${old[1]}/${old[0]}` : ''
@@ -24,6 +29,8 @@ const Field: FC<Props> = ({ data }) => {
   const input =
     data.inputname === 'birthday' ? (
       <InputDate
+        color={theme.colors.primary}
+        isBirthday
         ref={inputRef}
         name={data.inputname}
         value={`${inputDateValue(data.value as string)}`}

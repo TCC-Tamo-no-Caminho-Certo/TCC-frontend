@@ -61,7 +61,7 @@
           "disableSort": true
         },
         {
-          "regex": "^hoc",
+          "regex": "^hooks",
           "orderLevel": 10,
           "disableSort": true
         },

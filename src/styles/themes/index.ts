@@ -16,15 +16,6 @@ export interface ThemeAttributes {
     red: string
   }
 
-  calendar: {
-    primary: string
-    secondary: string
-    tertiary: string
-    header: string
-    disabled: string
-    background: string
-  }
-
   roles: {
     guest: string
     aris: string

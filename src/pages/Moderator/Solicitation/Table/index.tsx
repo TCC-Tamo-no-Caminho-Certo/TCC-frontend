@@ -1,24 +1,30 @@
 /* eslint-disable camelcase */
-import React, { ChangeEvent, useEffect, useState } from 'react'
-import Style, { Circle, RoleTd } from './styles'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import Style, { BodyWrapper, RoleTd } from './styles'
+
+import Thead from './Thead'
+import Circle from './Circle'
 
 import selectedRoleLabel from 'utils/makeRoleLabel'
 
 import api from 'services/api'
 
 import { Role } from 'store/user'
+import { ThemeState } from 'store/theme'
+import { RootState } from 'store'
+
+import useSortableData from 'hooks/useSortableData'
 
 import ArrowIcon from 'assets/ArrowIcon'
+import LoupeIcon from 'assets/Inputs/LoupeIcon'
 
+import Input from 'components/Form/Input'
 import DotsLoader from 'components/DotsLoader'
+import { InputDate } from 'components/Form'
+
+import { useSelector } from 'react-redux'
 
 export type StatusTypes = 'accepted' | 'rejected' | 'awaiting'
-
-interface TableProps {
-  headerData: { name: string; label: string }[]
-  route: string
-  dotsColor: string
-}
 
 interface RequestsData {
   request_id: number
@@ -32,7 +38,7 @@ interface RequestsData {
   updated_at?: string
 }
 
-interface TableData {
+export interface TableData {
   statusCircle: StatusTypes
   status: string
   name: string
@@ -41,45 +47,18 @@ interface TableData {
   id: number
 }
 
-interface HeaderData {
-  th: keyof TableData
-  direction: 'ascending' | 'descending'
+export interface HeaderData {
+  name: keyof TableData
+  label: string
 }
 
-const initialHeaderData: HeaderData = {
-  direction: 'ascending',
-  th: 'name',
-}
-
-const filter = (e: ChangeEvent<HTMLInputElement>) => {
-  const value = e.target.value.toLowerCase()
-  const regexp = new RegExp(`^${value}`)
-
-  const table = document.getElementById('table')
-  const tr = table?.getElementsByTagName('tr')
-  const td = table?.getElementsByTagName('td')
-
-  const removeDisplay = (array: any[], regexP: RegExp): boolean => {
-    for (let k = 0; k < array.length; k += 1)
-      if (array[k].toLowerCase().search(regexP) > -1) return true
-
-    return false
-  }
-
-  if (tr !== undefined && td !== undefined)
-    for (let i = 0; i < tr.length; i += 1) {
-      const tdsOfRow = []
-      const numberOfColumns = td.length / tr.length
-
-      for (let k = 0; k < numberOfColumns; k += 1) {
-        const tdOfColumn = tr[i].getElementsByTagName('td')[k]
-        tdsOfRow.push(tdOfColumn.innerHTML)
-      }
-
-      if (removeDisplay(tdsOfRow, regexp)) tr[i].style.display = ''
-      else tr[i].style.display = 'none'
-    }
-}
+const headerData: HeaderData[] = [
+  { name: 'statusCircle', label: '' },
+  { name: 'name', label: 'Nome' },
+  { name: 'role', label: 'Papel' },
+  { name: 'status', label: 'Status' },
+  { name: 'date', label: 'Data' },
+]
 
 const makeStatusLabel = (status: StatusTypes): string => {
   switch (status) {
@@ -115,140 +94,154 @@ const makeDateLabel = (date: string): string => {
   return `${teste[8] + teste[9]} ${month[keyOfMonth as keyof typeof month]}`
 }
 
-const useSortableData = (items: TableData[] | null, config: HeaderData) => {
-  const [sortConfig, setSortConfig] = useState(config)
+const Table: React.FC = () => {
+  const tableRef = useRef() as React.MutableRefObject<HTMLDivElement>
+  const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
 
-  if (items === null) return { items: null, sort: null, sortConfig: null }
-
-  const sortedItems = (): TableData[] => {
-    const sortableItems = [...items]
-
-    sortableItems.sort((a, b) => {
-      const valueA = a[sortConfig.th]
-      const valueB = b[sortConfig.th]
-
-      if (valueA < valueB) return sortConfig.direction === 'ascending' ? -1 : 1
-      if (valueA > valueB) return sortConfig.direction === 'descending' ? -1 : 1
-      return 0
-    })
-
-    return sortableItems
-  }
-
-  const sort = (thToSort: keyof TableData) => {
-    sortConfig.direction === 'ascending'
-      ? setSortConfig({ th: thToSort, direction: 'descending' })
-      : setSortConfig({ th: thToSort, direction: 'ascending' })
-  }
-
-  return { items: sortedItems(), sort, sortConfig }
-}
-
-const Table: React.FC<TableProps> = ({ headerData, route, dotsColor }) => {
-  const [data, setData] = useState<TableData[] | null>(null)
   const [isClear, setIsClear] = useState(false)
-  const { items, sort, sortConfig } = useSortableData(data, initialHeaderData)
   const [tablePage, setTablePage] = useState(1)
+  const [data, setData] = useState<TableData[] | null>(null)
+  const [addData, setAddData] = useState<{ name: string } | undefined>(undefined)
 
-  const makeRequest = async (page: number) => {
-    const element = document.getElementById('tableWrapper')
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const { items, sort } = useSortableData(data, {
+    direction: 'descending',
+    indexer: 'name',
+  })
 
-    if (element) {
-      const limits = (element?.clientHeight / 32) * 2
+  const quantity = 25
 
+  useEffect(() => {
+    console.clear()
+
+    console.table({
+      iS_CLEAR: isClear,
+      ADD_DATA: addData,
+    })
+  }, [addData, isClear])
+
+  const makeRequest = useCallback(
+    async (page: number, limit: number) => {
       if (!isClear) {
-        const { requests } = await api.get(`${route}/${page}/${limits}`)
+        const { requests } = await api.post(`request/role/get/${page}/${limit}`, addData)
 
-        const tableData: TableData[] = requests.map(
-          ({ status, full_name, role, created_at, request_id }: RequestsData) => {
-            return {
-              status: makeStatusLabel(status),
-              role,
-              statusCircle: status,
-              name: full_name,
-              date: makeDateLabel(created_at),
-              id: request_id,
-            }
+        if (requests !== undefined) {
+          if (requests.length !== 0) {
+            const tableData = requests.map(
+              ({ status, full_name, role, created_at, request_id }: RequestsData) => {
+                return {
+                  role,
+                  id: request_id,
+                  name: full_name,
+                  statusCircle: status,
+                  status: makeStatusLabel(status),
+                  date: makeDateLabel(created_at),
+                }
+              }
+            )
+
+            setTablePage(before => before + 1)
+            setData(before => (before ? [...before, ...tableData] : tableData))
+          } else {
+            setIsClear(true)
           }
-        )
-
-        if (requests.length === 0) setIsClear(true)
-        setData(before => (before === null ? tableData : [...before, ...tableData]))
+        }
       }
+    },
+    [addData, isClear]
+  )
+
+  const onSearchClick = () => {
+    const { value } = inputRef.current
+
+    if (value === undefined || value === '') {
+      setAddData(before => {
+        if (before !== undefined) setData([])
+        return undefined
+      })
+    } else {
+      setAddData(before => {
+        if (before?.name !== value) {
+          setData([])
+          return { name: value }
+        }
+
+        return before
+      })
     }
   }
 
-  const arrowAnimation = (thToAnimate: string) => {
-    if (sortConfig === null) return { rotate: 0 }
+  const onScroll = () => {
+    const element = tableRef.current
 
-    const direction = sortConfig.th === thToAnimate ? sortConfig.direction : undefined
+    if (element !== undefined && element !== null) {
+      const a = element.scrollTop
+      const b = element.scrollHeight - element.clientHeight
+      const maxScroll = a / b
 
-    if (direction === 'ascending') return { rotate: -180 }
-    if (direction === 'descending') return { rotate: 0 }
-    return { rotate: -90 }
-  }
-
-  const onTableScroll = () => {
-    const table = document.getElementById('tableWrapper')
-
-    if (table !== null) {
-      const condition = table.scrollHeight - table.scrollTop
-
-      if (condition === table.clientHeight && !isClear) {
-        setTablePage(tablePage + 1)
+      if (maxScroll === 1) {
+        makeRequest(tablePage, quantity)
       }
     }
   }
 
   useEffect(() => {
-    makeRequest(tablePage)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tablePage])
+    makeRequest(1, quantity)
+  }, [makeRequest])
 
-  return data !== undefined ? (
+  useEffect(() => setIsClear(false), [addData])
+
+  return (
     <Style className='Table'>
-      <input type='text' placeholder='Pesquisar' autoComplete='off' onChange={filter} />
+      <div id='row'>
+        <div id='filters'>
+          <Input
+            ref={inputRef}
+            type='text'
+            autoComplete='off'
+            id='search'
+            placeholder='Filtrar'
+            className='InputSearch'
+            onKeyPress={e => e.key === 'Enter' && onSearchClick()}
+          />
 
-      <table draggable='false'>
-        <thead>
-          <tr>
-            {headerData.map(({ label, name }) => {
-              if (name === 'statusCircle')
-                return (
-                  <th key={name} className='statusCircle'>
-                    <button
-                      type='button'
-                      onClick={() => {
-                        if (sort !== null) return sort(name as keyof TableData)
-                        return ''
-                      }}
-                    >
-                      <Circle />
-                    </button>
-                  </th>
-                )
+          <div id='dates'>
+            <label htmlFor='from'>De</label>
+            <InputDate
+              name='from'
+              headerColor={theme.colors.primary}
+              bodyColor={theme.colors.secondary}
+              selectedColor={theme.colors.tertiary}
+              disabledColor={theme.colors.red}
+              valueColor={theme.colors.secondary}
+              icon={() => <ArrowIcon />}
+              disabled
+            />
 
-              return (
-                <th key={name}>
-                  <button
-                    type='button'
-                    onClick={() => {
-                      if (sort !== null) return sort(name as keyof TableData)
-                      return ''
-                    }}
-                  >
-                    <ArrowIcon initial={{ rotate: -90 }} animate={arrowAnimation(name)} />
-                    {label}
-                  </button>
-                </th>
-              )
-            })}
-          </tr>
-        </thead>
-      </table>
+            <label htmlFor='to'>Até</label>
+            <InputDate
+              name='to'
+              valueColor={theme.colors.secondary}
+              headerColor={theme.colors.primary}
+              bodyColor={theme.colors.secondary}
+              selectedColor={theme.colors.tertiary}
+              disabledColor={theme.colors.red}
+              icon={() => <ArrowIcon />}
+              disabled
+            />
+          </div>
+        </div>
 
-      <div id='tableWrapper' onScroll={onTableScroll}>
-        <table id='table' draggable='false'>
+        <button type='button' onClick={onSearchClick} id='searchButton'>
+          <LoupeIcon />
+          Buscar
+        </button>
+      </div>
+
+      <Thead headerData={headerData} sort={sort} />
+
+      <BodyWrapper ref={tableRef} onScroll={onScroll}>
+        <table draggable='false'>
           <tbody>
             {items?.map(item => (
               <tr key={item.id}>
@@ -273,10 +266,10 @@ const Table: React.FC<TableProps> = ({ headerData, route, dotsColor }) => {
             ))}
           </tbody>
         </table>
-      </div>
+      </BodyWrapper>
+
+      {data === null && <DotsLoader color={theme.colors.secondary} />}
     </Style>
-  ) : (
-    <DotsLoader color={dotsColor} />
   )
 }
 

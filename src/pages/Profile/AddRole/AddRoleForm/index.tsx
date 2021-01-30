@@ -26,7 +26,7 @@ const AddRoleForm: React.FC<AddRoleFormProps> = ({ role }) => {
         <div id='body'>
           <span>{makeRoleLabel(role)}</span>
 
-          <Form path='user/complete-register' callback={res => console.log(res)} loading>
+          <Form path='user/complete-register' loading>
             <Input name='cpf' placeholder='CPF' />
 
             <p className='form-role-text'>

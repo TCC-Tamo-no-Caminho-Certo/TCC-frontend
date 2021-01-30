@@ -29,10 +29,29 @@ const maximumDate = {
 }
 
 interface InputDateProps extends InputProps {
+  valueColor?: string
+  headerColor?: string
+  bodyColor?: string
+  disabledColor?: string
+  selectedColor?: string
+
   arrow?: string
+  isBirthday?: boolean
 }
 
-const InputDate: React.FC<InputDateProps> = ({ icon: Icon, value, arrow, ...rest }) => {
+const InputDate: React.FC<InputDateProps> = ({
+  valueColor = '#d65881',
+  headerColor = '#6e4850',
+  bodyColor = '#6e4850',
+  selectedColor = '#d65881',
+  disabledColor = '#d62828',
+  isBirthday,
+  arrow,
+  icon: Icon,
+  value,
+  name,
+  ...rest
+}) => {
   const [selectedDate, setSelectedDate] = useState<DayValue>(null)
 
   const renderCustomInput = ({ ref }: any) => {
@@ -46,38 +65,47 @@ const InputDate: React.FC<InputDateProps> = ({ icon: Icon, value, arrow, ...rest
 
     const onClick = () => {
       const year: HTMLButtonElement | null = document.querySelector('.Calendar__yearText')
-
       if (year && !selectedDate) year.click()
     }
 
     return (
       <Input
+        readOnly
         ref={ref}
+        id={name}
         type='text'
         icon={Icon}
+        color={valueColor}
         onClick={onClick}
         value={InputValue(selectedDate) || value}
-        readOnly
         {...rest}
       />
     )
   }
 
   return (
-    <Style className='InputDate' arrow={arrow}>
-      <DatePicker
-        locale={ptbr}
-        value={selectedDate}
-        renderInput={renderCustomInput}
-        onChange={setSelectedDate}
-        minimumDate={minimumDate}
-        maximumDate={maximumDate}
-        selectorEndingYear={present.year}
-        selectorStartingYear={minimumDate.year}
-        colorPrimary='#D65881'
-        calendarClassName='CalendarSize'
-      />
-    </Style>
+    <>
+      <Style
+        className='InputDate'
+        arrow={arrow}
+        headerColor={headerColor}
+        bodyColor={bodyColor}
+        selectedColor={selectedColor}
+        disabledColor={disabledColor}
+      >
+        <DatePicker
+          locale={ptbr}
+          value={selectedDate}
+          renderInput={renderCustomInput}
+          onChange={setSelectedDate}
+          minimumDate={isBirthday ? minimumDate : undefined}
+          maximumDate={isBirthday ? maximumDate : undefined}
+          selectorEndingYear={present.year}
+          selectorStartingYear={minimumDate.year}
+          calendarClassName='CalendarSize'
+        />
+      </Style>
+    </>
   )
 }
 

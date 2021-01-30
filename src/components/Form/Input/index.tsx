@@ -24,6 +24,7 @@ export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   pasteAndDrop?: boolean
   icon?: () => JSX.Element
   handleValue?: (value: any) => void
+  color?: string
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -32,11 +33,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       eye,
       type,
       onBlur,
-      noStyle = false,
-      className = 'Input',
       handleValue,
       icon: Icon,
+      noStyle = false,
       pasteAndDrop = true,
+      className = 'Input',
+      color = '#d65881',
       ...rest
     },
     ref
@@ -81,7 +83,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const hiddenInput = () => {
       if (eye) return showInput ? 'text' : 'password'
-
       return type
     }
 
@@ -89,6 +90,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <InputStyle
+        color={color}
         theme={form?.theme}
         hasEye={!!eye}
         hasIcon={!!Icon}

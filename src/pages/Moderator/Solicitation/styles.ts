@@ -1,19 +1,8 @@
-import { Role } from 'store/user'
-
 import styled from 'styled-components'
-
-interface RoleTdProps {
-  role: Role
-}
-
-export const RoleTd = styled.td<RoleTdProps>`
-  color: ${({ theme, role }) => theme.roles[role]};
-`
 
 const Style = styled.div`
   display: flex;
   align-items: center;
-
   flex-direction: column;
 
   height: 100vh;
@@ -32,4 +21,4 @@ const Style = styled.div`
 `
 export default Style
 
-Style.displayName = 'Home-Style'
+Style.displayName = 'Solicitation-Style'

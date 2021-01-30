@@ -10,10 +10,10 @@ import Sidebar, { RouteProps } from 'components/Sidebar'
 
 import { ThemeContext } from 'styled-components'
 
-const Profile: React.FC = () => {
+const Moderator: React.FC = () => {
   const { sidebar } = useContext(ThemeContext)
 
-  const mainRoutes = useMemo(
+  const moderatorRoutes = useMemo(
     (): RouteProps[] => [
       {
         icon: () => <ProjectIcon />,
@@ -41,7 +41,7 @@ const Profile: React.FC = () => {
   return (
     <Sidebar
       title='Moderador'
-      routes={mainRoutes}
+      routes={moderatorRoutes}
       selected={sidebar.selected}
       background={sidebar.background}
       letters={sidebar.letters}
@@ -49,4 +49,4 @@ const Profile: React.FC = () => {
   )
 }
 
-export default Profile
+export default Moderator

@@ -24,15 +24,6 @@ const light: ThemeAttributes = {
     admin: '#d62828',
   },
 
-  calendar: {
-    primary: '#d65881',
-    secondary: '#fcfcfc',
-    tertiary: '#6e4850',
-    header: '#6e4850',
-    disabled: '#d62828',
-    background: '#fcfcfc',
-  },
-
   sidebar: {
     selected: '#6e4850',
     letters: '#fcfcfc',

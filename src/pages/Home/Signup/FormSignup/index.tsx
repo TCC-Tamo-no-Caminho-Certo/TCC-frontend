@@ -4,6 +4,8 @@ import Style from './styles'
 import signupSchema from 'utils/validations/signup'
 
 import { HomeActions } from 'store/home'
+import { ThemeState } from 'store/theme'
+import { RootState } from 'store'
 
 import WorldIcon from 'assets/Inputs/WorldIcon'
 import UserLockedIcon from 'assets/Inputs/UserLockedIcon'
@@ -13,9 +15,10 @@ import ThemeSwitch from 'components/ThemeSwitch'
 import { Button, Form, Input, InputDate } from 'components/Form'
 import BackButton from 'components/BackButton'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const FormSignup: React.FC = () => {
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const dispatch = useDispatch()
   const [disable, setDisable] = useState(false)
 
@@ -67,6 +70,8 @@ const FormSignup: React.FC = () => {
         </span>
 
         <InputDate
+          isBirthday
+          color={theme.colors.primary}
           name='birthday'
           placeholder='Data de nascimento'
           arrow='bottom'
