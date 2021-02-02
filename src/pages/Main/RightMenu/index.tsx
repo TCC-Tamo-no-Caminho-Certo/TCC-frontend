@@ -25,17 +25,16 @@ const RightMenu: React.FC = () => {
   const { name, surname, selectedRole, roles } = useSelector<RootState, UserState>(
     state => state.user
   )
-
+  const history = useHistory()
   const dispatch = useDispatch()
   const [editOpen, toggleEditProfile] = useCycle(false, true)
   const [changeRole, setChangeRole] = useState(false)
-  const history = useHistory()
   const width = 300
   const closedHeight = 112
   const openHeight = 300 + closedHeight
 
   const onLogoutClick = async () => {
-    await api.get('logout')
+    await api.get('logout', {})
 
     localStorage.removeItem('@SLab_ac_token')
     history.push('/home')

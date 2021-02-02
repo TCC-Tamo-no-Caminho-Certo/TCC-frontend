@@ -43,13 +43,6 @@ export interface UserStatePayload {
   emails?: Email[]
 }
 
-const getRole = () => {
-  const localRole = localStorage.getItem('@SLab_selected_role') as Role
-  if (localRole) return localRole
-  localStorage.setItem('@SLab_selected_role', 'guest')
-  return 'guest'
-}
-
 const initialState: UserState = {
   user_id: 0,
   name: '',
@@ -59,7 +52,7 @@ const initialState: UserState = {
   created_at: '',
   updated_at: '',
   roles: ['guest'],
-  selectedRole: getRole(),
+  selectedRole: 'guest',
   emails: [{ email: '', main: true }],
 }
 

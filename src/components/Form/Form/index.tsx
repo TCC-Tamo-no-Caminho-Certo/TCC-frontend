@@ -85,7 +85,10 @@ const Form: FC<FormProps> = ({
 
   const submit = async (cb?: (data: any) => void) => {
     const resData = await api.post(path, data)
+    console.log(resData)
     cb && cb(resData)
+
+    return resData.success
   }
 
   const handleSubmit = async (e: FormEvent) => {
@@ -98,11 +101,11 @@ const Form: FC<FormProps> = ({
     validate()
 
     if (captcha) data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
-    !haveErrors && (await submit(callback))
+    const submitRes = !haveErrors && (await submit(callback))
 
     loading && setShowLoader(false)
 
-    !haveErrors && push && history.push(push)
+    !haveErrors && push && submitRes && history.push(push)
   }
 
   return (
