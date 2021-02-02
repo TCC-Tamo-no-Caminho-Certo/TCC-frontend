@@ -1,37 +1,38 @@
-import React, { ReactElement, useCallback, useEffect, useRef } from 'react'
+import React, { forwardRef, ReactElement, useImperativeHandle, useRef, useState } from 'react'
 import Style, { ModalBackground } from './styles'
 
 interface ModalProps {
-  show: boolean
-  children: (ReactElement | ReactElement[])[] | ReactElement
-  onClick(): void
+  children: ReactElement | ReactElement[]
 }
 
-const Modal: React.FC<ModalProps> = ({ children: Children, onClick }) => {
+export interface ModalMethods {
+  toggleModal: (setModal?: boolean) => void
+}
+
+const Modal: React.ForwardRefRenderFunction<ModalMethods, ModalProps> = ({ children }, ref) => {
   const modalRef = useRef(null)
+  const [openModal, setOpenModal] = useState(false)
 
-  const onKeyDown = useCallback(
-    (e: any) => {
-      e.key === 'Escape' && onClick()
-    },
-    [onClick]
-  )
+  const toggleModal = (setModal?: boolean) => {
+    if (setModal === undefined) setOpenModal(!openModal)
+    else setOpenModal(setModal)
+  }
 
-  useEffect(() => {
-    window.addEventListener('keydown', onKeyDown)
+  useImperativeHandle(ref, () => {
+    return { toggleModal }
+  })
 
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [onKeyDown])
-
-  return (
+  return openModal ? (
     <>
-      <ModalBackground onClick={onClick} />
+      <ModalBackground />
 
-      <Style ref={modalRef} className='Modal' onKeyDown={onKeyDown}>
-        {Children}
+      <Style ref={modalRef} className='Modal'>
+        {children}
       </Style>
     </>
+  ) : (
+    <></>
   )
 }
 
-export default Modal
+export default forwardRef(Modal)

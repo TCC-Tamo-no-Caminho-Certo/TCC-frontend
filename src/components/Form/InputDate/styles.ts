@@ -14,6 +14,8 @@ interface StyleProps {
 const Style = styled.div<StyleProps>`
   ${({ bodyColor, headerColor, selectedColor, disabledColor, arrow }) => css`
     .DatePicker {
+      z-index: 0;
+
       width: 100%;
       height: 4.5vh;
       min-height: 35px;
@@ -31,10 +33,12 @@ const Style = styled.div<StyleProps>`
       display: flex;
       align-items: center;
       justify-content: space-around;
-      background-color: ${headerColor};
-      border-bottom: solid 2px ${headerColor};
+
       padding: 10px;
       border-radius: 20px 20px 0px 0px;
+
+      background-color: ${headerColor};
+      border-bottom: solid 2px ${headerColor};
 
       .Calendar__monthText,
       .Calendar__yearText {
@@ -46,20 +50,24 @@ const Style = styled.div<StyleProps>`
       }
 
       .Calendar__monthArrowWrapper.-right {
-        padding: 0;
         transform: rotate(180deg);
+
+        padding: 0;
       }
 
       .Calendar__monthArrowWrapper.-left {
-        padding: 0;
         transform: rotate(360deg);
+
+        padding: 0;
       }
     }
 
     .Calendar__weekDays {
       margin: 0;
       padding: 0 20px 10px 20px;
+
       background-color: ${headerColor};
+
       .Calendar__weekDay {
         text-decoration: none;
       }
@@ -88,8 +96,9 @@ const Style = styled.div<StyleProps>`
     }
 
     .CalendarSize {
-      background-color: ${bodyColor};
       font-size: 8px !important;
+
+      background-color: ${bodyColor};
     }
 
     .Calendar__sectionWrapper {
@@ -119,6 +128,7 @@ const Style = styled.div<StyleProps>`
     .Calendar__weekDay {
       color: ${bodyColor};
       background-color: transparent;
+
       &:hover {
         background-color: transparent;
       }
@@ -132,8 +142,9 @@ const Style = styled.div<StyleProps>`
       color: ${headerColor};
 
       &:disabledcolord {
-        color: ${disabledColor} !important;
         opacity: 1;
+
+        color: ${disabledColor} !important;
       }
 
       &:hover {

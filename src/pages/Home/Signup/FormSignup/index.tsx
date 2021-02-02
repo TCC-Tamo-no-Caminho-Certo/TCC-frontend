@@ -54,16 +54,11 @@ const FormSignup: React.FC = () => {
           className='dual'
           name='name'
           placeholder='Nome'
-          icon={() => <WorldIcon />}
+          icon={WorldIcon}
           autoComplete='given-name'
         />
 
-        <Input
-          name='surname'
-          placeholder='Sobrenome'
-          icon={() => <WorldIcon />}
-          autoComplete='family-name'
-        />
+        <Input name='surname' placeholder='Sobrenome' icon={WorldIcon} autoComplete='family-name' />
 
         <span>
           Certifique-se de que corresponde ao nome no seu documento de identificação oficial
@@ -75,17 +70,12 @@ const FormSignup: React.FC = () => {
           name='birthday'
           placeholder='Data de nascimento'
           arrow='bottom'
-          icon={() => <UserLockedIcon />}
+          icon={UserLockedIcon}
         />
 
         <span>Você precisa ter pelo menos 18 anos</span>
 
-        <Input
-          name='email'
-          placeholder='E-mail'
-          icon={() => <UserLockedIcon />}
-          autoComplete='email'
-        />
+        <Input name='email' placeholder='E-mail' icon={UserLockedIcon} autoComplete='email' />
 
         <span>Enviaremos um e-mail para confirmação</span>
 
@@ -95,7 +85,7 @@ const FormSignup: React.FC = () => {
           type='password'
           placeholder='Senha'
           autoComplete='new-password'
-          icon={() => <UserLockedIcon />}
+          icon={UserLockedIcon}
           eye
         />
 
@@ -103,7 +93,7 @@ const FormSignup: React.FC = () => {
           name='confirmPassword'
           type='password'
           placeholder='Confirmar Senha'
-          icon={() => <UserLockedIcon />}
+          icon={UserLockedIcon}
           autoComplete='new-password'
         />
 

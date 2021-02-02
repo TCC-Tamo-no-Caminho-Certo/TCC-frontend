@@ -108,7 +108,7 @@ const ForgotPassword: React.FC = () => {
                   name='token'
                   placeholder='Código'
                   handleValue={value => localStorage.setItem('reset-password-token', value)}
-                  icon={() => <PadlockIcon />}
+                  icon={PadlockIcon}
                 />
 
                 <Button className='submit'>Confirmar</Button>
@@ -128,7 +128,7 @@ const ForgotPassword: React.FC = () => {
                 <Input
                   name='email'
                   placeholder='E-mail'
-                  icon={() => <MailIcon />}
+                  icon={MailIcon}
                   handleValue={setUserEmail}
                 />
 

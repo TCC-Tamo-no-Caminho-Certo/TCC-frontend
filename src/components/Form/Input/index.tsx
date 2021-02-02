@@ -22,7 +22,7 @@ export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   eye?: boolean
   noStyle?: boolean
   pasteAndDrop?: boolean
-  icon?: () => JSX.Element
+  icon?: React.FC
   handleValue?: (value: any) => void
   color?: string
 }

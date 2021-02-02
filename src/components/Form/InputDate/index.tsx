@@ -34,7 +34,6 @@ interface InputDateProps extends InputProps {
   bodyColor?: string
   disabledColor?: string
   selectedColor?: string
-
   arrow?: string
   isBirthday?: boolean
 }

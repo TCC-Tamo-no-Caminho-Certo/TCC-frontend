@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useRef } from 'react'
 import Style, { ConfirmForm } from './styles'
 
 import Fields from './Fields'
@@ -9,22 +9,21 @@ import { UserActions } from 'store/user'
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import { Button, Form, Input } from 'components/Form'
-import Modal from 'components/Modal'
+import Modal, { ModalMethods } from 'components/Modal'
 
 import { useDispatch } from 'react-redux'
 
 export interface ModalState {
-  show: boolean
-  setShow: (value: any) => void
+  ref: React.RefObject<ModalMethods>
 }
 
 export const ModalContext = createContext<ModalState | null>(null)
 ModalContext.displayName = 'Modal Context'
 
 const EditProfile: React.FC = () => {
+  const confirmRefModal = useRef<ModalMethods>(null)
+  const imageRefModal = useRef<ModalMethods>(null)
   const dispatch = useDispatch()
-  const [image, setImage] = useState(false)
-  const [confirm, setConfirm] = useState(false)
 
   let updateData: any
 
@@ -42,7 +41,7 @@ const EditProfile: React.FC = () => {
   }
 
   return (
-    <ModalContext.Provider value={{ show: image, setShow: setImage }}>
+    <ModalContext.Provider value={{ ref: imageRefModal }}>
       <Style>
         <Form path='user/update' handleData={handleData} callback={submitCallback} loading captcha>
           <Fields />
@@ -51,36 +50,40 @@ const EditProfile: React.FC = () => {
             Descartar alterações
           </button>
 
-          <button id='saveButton' type='button' onClick={() => setConfirm(true)}>
+          <button
+            id='saveButton'
+            type='button'
+            onClick={() => confirmRefModal.current?.toggleModal(true)}
+          >
             Salvar
           </button>
         </Form>
       </Style>
 
-      {confirm && (
-        <Modal show={confirm} onClick={() => setConfirm(false)}>
-          <ConfirmForm path='confirmUpdate'>
-            <span>Você precisa confirmar sua senha para salvar as alterações!</span>
-            <CloseIcon onClick={() => setConfirm(false)} />
+      <Modal ref={confirmRefModal}>
+        <ConfirmForm path='confirmUpdate'>
+          <span>Você precisa confirmar sua senha para salvar as alterações!</span>
+          <CloseIcon onClick={() => confirmRefModal.current?.toggleModal(false)} />
 
-            <Input name='password' placeholder='Confirme sua senha' eye />
+          <Input name='password' placeholder='Confirme sua senha' eye />
 
-            <div id='buttons'>
-              <button type='button' id='cancel' onClick={() => setConfirm(false)}>
-                Cancelar
-              </button>
+          <div id='buttons'>
+            <button
+              type='button'
+              id='cancel'
+              onClick={() => confirmRefModal.current?.toggleModal(false)}
+            >
+              Cancelar
+            </button>
 
-              <Button>Confirmar</Button>
-            </div>
-          </ConfirmForm>
-        </Modal>
-      )}
+            <Button>Confirmar</Button>
+          </div>
+        </ConfirmForm>
+      </Modal>
 
-      {image && (
-        <Modal show={image} onClick={() => setImage(false)}>
-          <ImageChanger />
-        </Modal>
-      )}
+      <Modal ref={imageRefModal}>
+        <ImageChanger />
+      </Modal>
     </ModalContext.Provider>
   )
 }

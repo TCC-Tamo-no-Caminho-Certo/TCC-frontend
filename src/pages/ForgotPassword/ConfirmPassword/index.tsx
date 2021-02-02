@@ -59,13 +59,7 @@ const ConfirmPassword: React.FC = () => {
             >
               <h2>Digite sua nova senha</h2>
 
-              <Input
-                name='password'
-                type='password'
-                placeholder='Senha'
-                icon={() => <PadlockIcon />}
-                eye
-              />
+              <Input name='password' type='password' placeholder='Senha' icon={PadlockIcon} eye />
 
               <h2>Confirme sua nova senha</h2>
 
@@ -73,7 +67,7 @@ const ConfirmPassword: React.FC = () => {
                 name='confirmPassword'
                 type='password'
                 placeholder='Confirmar senha'
-                icon={() => <PadlockIcon />}
+                icon={PadlockIcon}
                 eye
               />
 

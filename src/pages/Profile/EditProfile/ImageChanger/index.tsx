@@ -54,7 +54,7 @@ const ImageChanger: React.FC = () => {
       })
 
       dispatch(UserActions.updateUserInfo({ avatar: result.object }))
-      modal?.setShow(false)
+      modal?.ref.current?.toggleModal(false)
     } else {
       setNoImage(true)
       setTimeout(() => setNoImage(false), 300)
@@ -62,7 +62,7 @@ const ImageChanger: React.FC = () => {
   }
 
   function onCloseClick() {
-    modal?.setShow(false)
+    modal?.ref.current?.toggleModal(false)
   }
 
   return (

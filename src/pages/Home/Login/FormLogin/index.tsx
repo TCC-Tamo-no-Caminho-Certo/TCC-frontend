@@ -79,14 +79,14 @@ const FormLogin: React.FC = () => {
           </AnimatePresence>
         </motion.div>
 
-        <Input name='email' placeholder='E-mail' icon={() => <MailIcon />} autoComplete='email' />
+        <Input name='email' placeholder='E-mail' icon={MailIcon} autoComplete='email' />
 
         <Input
           name='password'
           type='password'
           placeholder='Senha'
           autoComplete='current-password'
-          icon={() => <PadlockIcon />}
+          icon={PadlockIcon}
           eye
         />
 

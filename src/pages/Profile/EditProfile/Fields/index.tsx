@@ -28,7 +28,7 @@ const Fields: React.FC = () => {
               <Avatar
                 border
                 size={128}
-                onClick={() => modal?.setShow(true)}
+                onClick={() => modal?.ref.current?.toggleModal(true)}
                 loaderColor='#D65881'
                 shadow
               />

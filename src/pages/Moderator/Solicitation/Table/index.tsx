@@ -18,6 +18,7 @@ import useSortableData from 'hooks/useSortableData'
 import ArrowIcon from 'assets/ArrowIcon'
 import LoupeIcon from 'assets/Inputs/LoupeIcon'
 
+import Modal, { ModalMethods } from 'components/Modal'
 import Input from 'components/Form/Input'
 import DotsLoader from 'components/DotsLoader'
 import { InputDate } from 'components/Form'
@@ -97,7 +98,9 @@ const makeDateLabel = (date: string): string => {
 const Table: React.FC = () => {
   const tableRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
+  const modalRef = useRef<ModalMethods>(null)
 
+  const [clickedItem, setClickedItem] = useState<TableData | undefined>(undefined)
   const [isClear, setIsClear] = useState(false)
   const [tablePage, setTablePage] = useState(1)
   const [data, setData] = useState<TableData[] | null>(null)
@@ -110,15 +113,6 @@ const Table: React.FC = () => {
   })
 
   const quantity = 25
-
-  useEffect(() => {
-    console.clear()
-
-    console.table({
-      iS_CLEAR: isClear,
-      ADD_DATA: addData,
-    })
-  }, [addData, isClear])
 
   const makeRequest = useCallback(
     async (page: number, limit: number) => {
@@ -196,12 +190,12 @@ const Table: React.FC = () => {
       <div id='row'>
         <div id='filters'>
           <Input
-            ref={inputRef}
+            id='search'
             type='text'
             autoComplete='off'
-            id='search'
             placeholder='Filtrar'
             className='InputSearch'
+            ref={inputRef}
             onKeyPress={e => e.key === 'Enter' && onSearchClick()}
           />
 
@@ -209,25 +203,23 @@ const Table: React.FC = () => {
             <label htmlFor='from'>De</label>
             <InputDate
               name='from'
+              icon={ArrowIcon}
               headerColor={theme.colors.primary}
               bodyColor={theme.colors.secondary}
               selectedColor={theme.colors.tertiary}
               disabledColor={theme.colors.red}
               valueColor={theme.colors.secondary}
-              icon={() => <ArrowIcon />}
-              disabled
             />
 
             <label htmlFor='to'>Até</label>
             <InputDate
               name='to'
+              icon={ArrowIcon}
               valueColor={theme.colors.secondary}
               headerColor={theme.colors.primary}
               bodyColor={theme.colors.secondary}
               selectedColor={theme.colors.tertiary}
               disabledColor={theme.colors.red}
-              icon={() => <ArrowIcon />}
-              disabled
             />
           </div>
         </div>
@@ -244,7 +236,13 @@ const Table: React.FC = () => {
         <table draggable='false'>
           <tbody>
             {items?.map(item => (
-              <tr key={item.id}>
+              <tr
+                key={item.id}
+                onClick={() => {
+                  modalRef.current?.toggleModal(true)
+                  setClickedItem(item)
+                }}
+              >
                 {headerData.map(({ label, name }) => {
                   if (name === 'role')
                     return (
@@ -269,6 +267,20 @@ const Table: React.FC = () => {
       </BodyWrapper>
 
       {data === null && <DotsLoader color={theme.colors.secondary} />}
+
+      <Modal ref={modalRef}>
+        <div id='content'>
+          <div>{`Nome: ${clickedItem?.name}`}</div>
+
+          <button
+            type='button'
+            style={{ color: 'white' }}
+            onClick={() => modalRef.current?.toggleModal(false)}
+          >
+            Fechar
+          </button>
+        </div>
+      </Modal>
     </Style>
   )
 }
