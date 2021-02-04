@@ -50,8 +50,8 @@ const ConfirmPassword: React.FC = () => {
 
           <section>
             <Form
-              callback={handleResetPassSubmit}
-              valSchema={passwordSchema}
+              afterResData={handleResetPassSubmit}
+              schema={passwordSchema}
               path='reset-password'
               addData={{ token }}
               loading

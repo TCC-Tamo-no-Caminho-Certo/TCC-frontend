@@ -6,8 +6,8 @@ import { ModalContext } from '../'
 import formatUpdateUser, { InputData } from 'utils/formatUpdateUser'
 import selectedRoleLabel from 'utils/makeRoleLabel'
 
+import { Role, UserState } from 'store/user'
 import { RootState } from 'store'
-import { UserState } from 'store/user'
 
 import Avatar from 'components/User/Avatar'
 import Card from 'components/Card'
@@ -18,11 +18,12 @@ import { useSelector } from 'react-redux'
 const Fields: React.FC = () => {
   const user = useSelector<RootState, UserState>(state => state.user)
   const modal = useContext(ModalContext)
+  const containers = ['personal', ...user.roles]
 
   return (
     <Slider width={550} gap={200} gapVertical={100}>
-      {user.roles.map(role => {
-        if (role === 'guest') {
+      {containers.map(role => {
+        if (role === 'personal') {
           return (
             <Card key={role} headerText='Dados Pessoais'>
               <Avatar
@@ -41,8 +42,8 @@ const Fields: React.FC = () => {
         }
 
         return (
-          <Card key={role} headerText={`Dados de ${selectedRoleLabel(role)}`}>
-            {formatUpdateUser(user, role).map((info: InputData) => (
+          <Card key={role} headerText={`Dados de ${selectedRoleLabel(role as Role)}`}>
+            {formatUpdateUser(user, role as Role).map((info: InputData) => (
               <Field key={info.inputname} data={info} />
             ))}
           </Card>

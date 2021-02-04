@@ -56,8 +56,8 @@ const FormLogin: React.FC = () => {
       <ThemeSwitch />
 
       <ContentForm
-        callback={onSubmit}
-        valSchema={loginSchema}
+        afterResData={onSubmit}
+        schema={loginSchema}
         path='login'
         push='/session/main'
         loading

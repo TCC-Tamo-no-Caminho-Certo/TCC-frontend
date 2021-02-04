@@ -14,6 +14,7 @@ export interface ThemeAttributes {
     green: string
     yellow: string
     red: string
+    gray: string
   }
 
   roles: {

@@ -1,21 +1,19 @@
-import { createContext, RefObject } from 'react'
+import React from 'react'
 
 export interface Ref {
-  input: RefObject<HTMLInputElement>
-  setError: (value: string) => void
+  input: React.RefObject<any>
+  setError: (message: string) => void
 }
 
 export interface FormState {
-  removeRef: (input: Ref) => void
-  setRef: (input: Ref) => void
   loader: boolean
   theme?: any
+  removeRef: (input: Ref) => void
+  setRef: (input: Ref) => void
 }
 
-const FormContext = createContext<FormState | null>(null)
-
-FormContext.displayName = 'Form Context'
-
-export const FormProvider = FormContext.Provider
+const FormContext = React.createContext<FormState | null>(null)
 
 export default FormContext
+
+FormContext.displayName = 'Form Context'

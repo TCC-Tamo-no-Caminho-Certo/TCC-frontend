@@ -11,6 +11,7 @@ const dark: ThemeAttributes = {
     green: '#00d053',
     yellow: '#fff500',
     red: '#ff0000',
+    gray: '#C4C4C4',
   },
 
   roles: {

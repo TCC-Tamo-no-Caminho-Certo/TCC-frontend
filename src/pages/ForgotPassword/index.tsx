@@ -91,7 +91,7 @@ const ForgotPassword: React.FC = () => {
 
               <Form
                 className='resendContainer'
-                callback={handleTokenResent}
+                afterResData={handleTokenResent}
                 path='forgot-password'
                 captcha
               >
@@ -103,7 +103,7 @@ const ForgotPassword: React.FC = () => {
                 </Button>
               </Form>
 
-              <Form callback={handleTokenSubmit} path='reset-password' loading captcha>
+              <Form afterResData={handleTokenSubmit} path='reset-password' loading captcha>
                 <Input
                   name='token'
                   placeholder='Código'
@@ -117,8 +117,8 @@ const ForgotPassword: React.FC = () => {
           ) : (
             <section>
               <Form
-                callback={handleEmailSubmit}
-                valSchema={emailSchema}
+                afterResData={handleEmailSubmit}
+                schema={emailSchema}
                 path='forgot-password'
                 loading
                 captcha

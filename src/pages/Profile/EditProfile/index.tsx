@@ -27,7 +27,7 @@ const EditProfile: React.FC = () => {
 
   let updateData: any
 
-  const handleData = (data: any) => {
+  const getFormData = (data: any) => {
     if (data.birthday) {
       const old = data.birthday.split('/')
       data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
@@ -43,7 +43,13 @@ const EditProfile: React.FC = () => {
   return (
     <ModalContext.Provider value={{ ref: imageRefModal }}>
       <Style>
-        <Form path='user/update' handleData={handleData} callback={submitCallback} loading captcha>
+        <Form
+          path='user/update'
+          getData={getFormData}
+          afterResData={submitCallback}
+          loading
+          captcha
+        >
           <Fields />
 
           <button id='discardButton' type='button'>

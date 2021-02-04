@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import Style from './styles'
 
 import RoleInfo from './RoleInfo'
-import AddRoleForm from './AddRoleForm'
-import RequestStatus from './RequestStatus'
+import StudentForm from './Forms/StudentForm'
+import ProfessorForm from './Forms/ProfessorForm'
 
 import selectRoleLabel from 'utils/makeRoleLabel'
 
@@ -12,41 +12,7 @@ import { Role, UserState } from 'store/user'
 
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-// import { Route } from 'react-router-dom'
 import { ThemeContext } from 'styled-components'
-
-// const rolesRoute = [
-//   {
-//     path: '/session/profile/change-role/student',
-//     exact: true,
-//     component: () => <Student />,
-//   },
-//   {
-//     path: '/session/profile/change-role/professor',
-//     exact: false,
-//     component: () => <Professor />,
-//   },
-//   {
-//     path: '/session/profile/change-role/proponent',
-//     exact: false,
-//     component: () => <Proponent />,
-//   },
-//   {
-//     path: '/session/profile/change-role/moderator',
-//     exact: false,
-//     component: () => <Moderator />,
-//   },
-//   {
-//     path: '/session/profile/change-role/reviewer',
-//     exact: false,
-//     component: () => <Reviewer />,
-//   },
-//   {
-//     path: '/session/profile/change-role/guest',
-//     exact: false,
-//     component: () => <></>,
-//   },
-// ]
 
 const allRoles: Role[] = [
   'admin',
@@ -85,8 +51,6 @@ const AddRole: React.FC = () => {
         Maecenas et tortor elementum.
       </p>
 
-      <RequestStatus />
-
       <div id='Roles'>
         <RoleInfo
           title='Convidado'
@@ -108,20 +72,6 @@ const AddRole: React.FC = () => {
           onClick={() => setRoleSelected('student')}
         />
 
-        {/* 
-        <RoleInfo
-          title='Proponente'
-          userRoles={labelRoles}
-          color={theme.roles.customer}
-          benefits={[
-            'Submeter uma proposta',
-            'Convidar estudantes e professores para  propostas',
-            'Aceitar alunos e professores candidatados',
-            'Remover estudantes e professores de propostas',
-          ]}
-          onClick={() => setRoleSelected('customer')}
-        /> */}
-
         <RoleInfo
           title='Professor'
           userRoles={labelRoles}
@@ -135,50 +85,25 @@ const AddRole: React.FC = () => {
           onClick={() => setRoleSelected('professor')}
         />
 
-        {/* <RoleInfo
-          title='Revisor'
-          userRoles={labelRoles}
-          color={theme.roles.evaluator}
-          benefits={[
-            'Avaliar propostas',
-            'Dar nota de 0 a 10 a propostas',
-            'Definir linha de pesquisa conforme CNPQ',
-            'Aceitar convites para propostas e projetos',
-            'Definir conflitos de interesses',
-          ]}
-          onClick={() => setRoleSelected('evaluator')}
-        />
-
-        <RoleInfo
-          title='Moderador'
-          userRoles={labelRoles}
-          color={theme.roles.moderator}
-          benefits={[
-            'Aceitar solicitação de mudança para Revisor ',
-            'Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores' +
-              '(devem estar na mesma instituição)',
-            'Ver usuários da instituição',
-            'Alterar status da proposta',
-          ]}
-          onClick={() => setRoleSelected('moderator')}
-        />
-
-        <RoleInfo
-          title='Administrador'
-          userRoles={labelRoles}
-          color={theme.roles.admin}
-          benefits={[
-            'Aceitar solicitação de mudança para Revisor ',
-            'Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores' +
-              '(devem estar na mesma instituição)',
-            'Ver usuários da instituição',
-            'Alterar status da proposta',
-          ]}
-          onClick={() => setRoleSelected('admin')}
-        /> */}
+        {roles.includes('professor') && (
+          <RoleInfo
+            title='Moderador'
+            userRoles={labelRoles}
+            color={theme.roles.moderator}
+            benefits={[
+              'Aceitar solicitação de mudança para Revisor ',
+              'Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores' +
+                '(devem estar na mesma instituição)',
+              'Ver usuários da instituição',
+              'Alterar status da proposta',
+            ]}
+            onClick={() => setRoleSelected('moderator')}
+          />
+        )}
       </div>
 
-      {roleSelected !== undefined && <AddRoleForm role={roleSelected} />}
+      {roleSelected === 'student' && <StudentForm />}
+      {roleSelected === 'professor' && <ProfessorForm />}
     </Style>
   )
 }

@@ -106,6 +106,7 @@ const RoleInfo: React.FC<RoleInfoProps> = ({
               {benefits.map((benefit, index) => (
                 <motion.li key={index} variants={item}>
                   <CheckIcon />
+
                   {benefit}
                 </motion.li>
               ))}

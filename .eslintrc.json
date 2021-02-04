@@ -59,7 +59,7 @@
     "react/jsx-filename-extension": [
       1,
       {
-        "extensions": [".tsx"]
+        "extensions": [".tsx", ".ts"]
       }
     ],
     "import/extensions": [
@@ -70,5 +70,13 @@
         "tsx": "never"
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": "styles.ts",
+      "rules": {
+        "react/display-name": ["error", { "ignoreTranspilerName": false }]
+      }
+    }
+  ]
 }
