@@ -26,7 +26,7 @@ export const RightMenu = styled.div`
     stroke: #fcfcfc;
 
     &:hover {
-      stroke: #d65881;
+      stroke: ${({ theme }) => theme.colors.primary};
     }
   }
 
@@ -58,7 +58,7 @@ export const RightMenu = styled.div`
       height: 80px;
       transform: translateY(-100%);
 
-      border: solid 1px #d65881;
+      border: solid 1px ${({ theme }) => theme.colors.primary};
     }
 
     #img-preview {
@@ -84,10 +84,10 @@ export const RightMenu = styled.div`
     border: solid #fcfcfc 1px;
 
     &:hover {
-      color: #d65881;
-      border: solid #d65881 1px;
+      color: ${({ theme }) => theme.colors.primary};
+      border: solid ${({ theme }) => theme.colors.primary} 1px;
       .Icon {
-        fill: #d65881;
+        fill: ${({ theme }) => theme.colors.primary};
       }
     }
 
@@ -106,7 +106,7 @@ export const RightMenu = styled.div`
     color: #fcfcfc;
 
     &:hover {
-      color: #d65881;
+      color: ${({ theme }) => theme.colors.primary};
     }
   }
 
@@ -115,13 +115,13 @@ export const RightMenu = styled.div`
 
     color: #fcfcfc;
     background-color: transparent;
-    border: solid 1px #d65881;
+    border: solid 1px ${({ theme }) => theme.colors.primary};
     margin-top: 8px;
 
     transition: box-shadow 300ms ease-in-out;
 
     &:hover {
-      box-shadow: inset -74px 0 0 0 #d65881, inset 74px 0 0 0 #d65881;
+      box-shadow: inset -74px 0 0 0 ${({ theme }) => theme.colors.primary}, inset 74px 0 0 0 ${({ theme }) => theme.colors.primary};
     }
   }
 `
@@ -156,7 +156,7 @@ const Style = styled.div`
     cursor: pointer;
 
     &:hover {
-      color: #d65881;
+      color: ${({ theme }) => theme.colors.primary};
       border: solid 1px;
     }
   }

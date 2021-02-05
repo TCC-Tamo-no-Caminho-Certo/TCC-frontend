@@ -59,7 +59,7 @@ const Style = styled.div`
       border: none;
       margin-top: 30px;
       border-radius: 8px;
-      background-color: #d65881;
+      background-color: ${({ theme }) => theme.colors.primary};
 
       &:hover {
         filter: brightness(1.1);

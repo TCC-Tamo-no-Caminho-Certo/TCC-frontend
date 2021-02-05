@@ -6,6 +6,8 @@ import { ModalContext } from '../'
 import api from 'services/api'
 
 import { UserActions } from 'store/user'
+import { RootState } from 'store'
+import { ThemeState } from 'store/theme'
 
 import CameraIcon from 'assets/Inputs/CameraIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
@@ -13,16 +15,17 @@ import CloseIcon from 'assets/Inputs/CloseIcon'
 import 'cropperjs/dist/cropper.css'
 import { motion } from 'framer-motion'
 import { Cropper } from 'react-cropper'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const ImageChanger: React.FC = () => {
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const { white, red } = theme.colors
+
   const dispatch = useDispatch()
   const modal = useContext(ModalContext)
-
   const [image, setImage] = useState()
   const [cropper, setCropper] = useState<any>()
   const [noImage, setNoImage] = useState(false)
-
   const [showUpload, setShowUpload] = useState(false)
 
   const onChange = (e: any) => {
@@ -72,8 +75,8 @@ const ImageChanger: React.FC = () => {
           htmlFor='first'
           id='firstFileSelect'
           animate={{
-            color: noImage ? ['#fcfcfc', '#f00', '#fcfcfc'] : '#fcfcfc',
-            borderColor: noImage ? ['#fcfcfc', '#f00', '#fcfcfc'] : '#fcfcfc',
+            color: noImage ? [white, red, white] : white,
+            borderColor: noImage ? [white, red, white] : white,
           }}
           transition={{ duration: 0.3 }}
         >
@@ -83,21 +86,19 @@ const ImageChanger: React.FC = () => {
         <input id='first' type='file' onChange={onChange} />
 
         <Cropper
-          src={image}
+          center
           className='Cropper'
           preview='#img-preview'
           dragMode='move'
+          src={image}
           background={false}
           viewMode={3}
           aspectRatio={1}
           guides={false}
           minCropBoxHeight={80}
           minCropBoxWidth={80}
-          center
           checkOrientation={false}
-          onInitialized={instance => {
-            setCropper(instance)
-          }}
+          onInitialized={instance => setCropper(instance)}
         />
       </div>
 

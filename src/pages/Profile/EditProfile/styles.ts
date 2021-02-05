@@ -27,7 +27,7 @@ export const ConfirmForm = styled(Form)`
     &:hover {
       filter: brightness(1.1);
 
-      stroke: #d65881;
+      stroke: ${({ theme }) => theme.colors.primary};
     }
   }
 
@@ -49,7 +49,7 @@ export const ConfirmForm = styled(Form)`
         filter: brightness(1.1);
         transform: scale(1.01);
 
-        color: #d65881;
+        color: ${({ theme }) => theme.colors.primary};
       }
     }
 
@@ -59,7 +59,7 @@ export const ConfirmForm = styled(Form)`
       border-radius: 8px;
       margin-left: 24px;
 
-      background-color: #d65881;
+      background-color: ${({ theme }) => theme.colors.primary};
       color: #fcfcfc;
 
       &:hover {
@@ -107,7 +107,7 @@ const Style = styled(motion.section)`
     border-radius: 15px;
 
     color: #fcfcfc;
-    background-color: #d65881;
+    background-color: ${({ theme }) => theme.colors.primary};
     box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.49);
     transition: transform 1s ease;
 
@@ -129,7 +129,7 @@ const Style = styled(motion.section)`
     background-color: transparent;
 
     &:hover {
-      color: #d65881;
+      color: ${({ theme }) => theme.colors.primary};
     }
   }
 

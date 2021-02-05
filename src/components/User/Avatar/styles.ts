@@ -44,7 +44,7 @@ const Style = styled.div<StyleProps>`
       transition: all 300ms ease-in-out;
       cursor: pointer;
 
-      fill: #d65881;
+      fill: ${({ theme }) => theme.colors.primary};
       opacity: 0.3;
     }
   }

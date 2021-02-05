@@ -154,14 +154,14 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     li {
       a:hover,
       button:hover {
-        background-color: #d65881;
+        background-color: ${({ theme }) => theme.colors.primary};
       }
 
       button {
         ${({ changeRole }) =>
           changeRole &&
           css`
-            background-color: #d65881;
+            background-color: ${({ theme }) => theme.colors.primary};
           `}
       }
     }
@@ -275,7 +275,7 @@ const Style = styled.div<StyleProps>`
     border-radius: 8px;
 
     color: #fcfcfc;
-    background-color: #d65881;
+    background-color: ${({ theme }) => theme.colors.primary};
   }
 `
 

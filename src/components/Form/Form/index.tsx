@@ -50,18 +50,20 @@ const Form: React.FC<FormProps> = ({
   }
 
   const setData = () => {
-    refs.forEach(ref => {
-      if (!ref.input.current) throw new Error('Form setData error!')
+    refs.forEach(({ inputRef: { current }, value }) => {
+      if (!current) throw new Error('Form setData error! inputRef.current not found!')
 
-      if (ref.input.current.name) {
-        const { name } = ref.input.current
-
-        if (ref.input.current?.type === 'checkbox') data[name] = ref.input.current?.checked
-        else data[name] = ref.input.current?.value
+      if (value) data[current.name] = value
+      else if (current.name) {
+        current?.type === 'checkbox'
+          ? (data[current.name] = current?.checked)
+          : (data[current.name] = current?.value)
       } else {
-        const { name } = ref.input.current?.select.props
+        const { name } = current?.select.props
 
-        data[name] = ref.input.current?.select.props.value.value
+        current?.select.props.value === null
+          ? (data[name] = '')
+          : (data[name] = current?.select.props.value.value)
       }
     })
   }
@@ -72,14 +74,16 @@ const Form: React.FC<FormProps> = ({
     } catch (error) {
       haveErrors = true
 
-      if (error instanceof ValidationError) {
+      if (error instanceof ValidationError)
         error.inner.forEach(errorElement => {
-          const index = refs.findIndex(value => value.input.current?.name === errorElement.path)
-          refs[index].setError(errorElement.message)
+          const index = refs.findIndex(ref => {
+            if (ref.inputRef.current?.name) return ref.inputRef.current?.name === errorElement.path
+            return ref.inputRef.current?.select.props.name === errorElement.path
+          })
+
+          if (refs[index]) refs[index].setError(errorElement.message)
         })
-      } else {
-        throw new Error('unexpected error on validation!')
-      }
+      else throw new Error('unexpected error on validation!')
     }
   }
 

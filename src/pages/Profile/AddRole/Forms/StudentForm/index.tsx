@@ -4,11 +4,17 @@ import Form from './styles'
 
 import Container from '../Container'
 
+import studentSchema from 'utils/validations/addRoleForms/student'
+
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
 import { Button, Input, Select } from 'components/Form'
+import Image from 'components/Form/File'
 
 import { AnimatePresence, motion, Variants } from 'framer-motion'
+
+const emailSize = 35
+const receiptSize = 88
 
 const universityOptions = [
   { value: 'universidade-anhembi-morumbi', label: 'Universidade Anhembi Morumbi' },
@@ -32,9 +38,6 @@ const semesterOptions = [
   { value: 'tenth', label: '10° Semestre' },
 ]
 
-const emailSize = 86
-const receiptSize = 88
-
 const inputs: Variants = {
   initial: { height: 0 },
   email: { height: emailSize },
@@ -44,14 +47,14 @@ const inputs: Variants = {
 const StudentForm: React.FC = () => {
   const [wayOfSignup, setWayOfSignup] = useState<undefined | 'email' | 'receipt'>(undefined)
 
-  const insideMethod: Variants = {
+  const method: Variants = {
     initial: {
       opacity: 0,
       height: 0,
     },
     open: {
       opacity: 1,
-      x: wayOfSignup === 'receipt' ? [300, 0] : [-300, 0],
+      x: wayOfSignup === 'email' ? [-300, 0] : [300, 0],
       transition: {
         type: 'tween',
         duration: 0.4,
@@ -59,7 +62,7 @@ const StudentForm: React.FC = () => {
     },
     closed: {
       opacity: 0,
-      x: wayOfSignup === 'receipt' ? [0, 300] : [0, -300],
+      x: wayOfSignup === 'email' ? [0, -300] : [0, 300],
       transition: {
         type: 'tween',
         duration: 0.2,
@@ -75,13 +78,18 @@ const StudentForm: React.FC = () => {
 
   return (
     <Container role='student'>
-      <Form path='user/complete-register' getData={data => console.log(data)} loading>
+      <Form
+        path='user/complete-register'
+        getData={data => console.log(data)}
+        schema={studentSchema}
+        loading
+      >
         <Select name='university' placeholder='Universidade' options={universityOptions} />
         <Select name='course' placeholder='Curso' options={courseOptions} />
         <Select name='semester' placeholder='Semestre' options={semesterOptions} />
 
-        <div id='method'>
-          <div id='methodLabel'>Forma de cadastro</div>
+        <div id='ways'>
+          <div id='label'>Forma de cadastro</div>
 
           <div id='buttons'>
             <button type='button' onClick={() => setWayOfSignup('email')}>
@@ -100,19 +108,17 @@ const StudentForm: React.FC = () => {
             animate={wayOfSignup}
             transition={{ type: 'tween', duration: 0.3 }}
           >
-            <AnimatePresence presenceAffectsLayout>
+            <AnimatePresence>
               {wayOfSignup === 'email' && (
-                <motion.div variants={insideMethod} animate='open' exit='closed' initial='initial'>
+                <motion.div variants={method} exit='closed' animate='open'>
                   <Input name='email' placeholder='E-mail institucional' />
-
-                  <Input name='register' placeholder='Registro acadêmico' />
                 </motion.div>
               )}
             </AnimatePresence>
 
-            <AnimatePresence presenceAffectsLayout>
+            <AnimatePresence>
               {wayOfSignup === 'receipt' && (
-                <motion.div variants={insideMethod} animate='open' exit='closed' initial='initial'>
+                <motion.div variants={method} exit='closed' animate='open'>
                   <div id='warning'>
                     <AlertIcon />
 
@@ -122,7 +128,7 @@ const StudentForm: React.FC = () => {
                     </div>
                   </div>
 
-                  <Input name='receipt' placeholder='Enviar comprovante' />
+                  <Image />
                 </motion.div>
               )}
             </AnimatePresence>

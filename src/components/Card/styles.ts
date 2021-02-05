@@ -35,7 +35,7 @@ export const Header = styled.header`
   height: 40px;
   border-radius: 16px 16px 0 0;
 
-  background-color: #ff6d8d;
+  background-color: ${({ theme }) => theme.colors.primary};
   color: white;
 `
 

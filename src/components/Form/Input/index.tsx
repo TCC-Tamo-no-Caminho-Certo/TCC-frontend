@@ -16,7 +16,7 @@ import Checkbox from '../Checkbox'
 import EyeClosedIcon from 'assets/Inputs/EyeClosedIcon'
 import EyeIcon from 'assets/Inputs/EyeIcon'
 
-import ErrorTooltip from 'components/Tooltips'
+import { ErrorTooltip } from 'components/Tooltips'
 
 export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   eye?: boolean
@@ -55,7 +55,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     useEffect(() => {
       const input = {
-        input: auxRef,
+        inputRef: auxRef,
         setError,
       }
 
@@ -104,9 +104,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         }}
       >
         {error ? (
-          <div className='iconSpace'>
-            <ErrorTooltip theme={form?.theme} content={error} />
-          </div>
+          <ErrorTooltip error={error} content={error} />
         ) : (
           Icon && (
             <div className='iconSpace'>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Style, { ContentForm, LoginFailed, Permanence, Register } from './styles'
+import Style, { Form, LoginFailed, Permanence, Register } from './styles'
 
 import loginSchema from 'utils/validations/login'
 
@@ -55,7 +55,7 @@ const FormLogin: React.FC = () => {
     <Style>
       <ThemeSwitch />
 
-      <ContentForm
+      <Form
         afterResData={onSubmit}
         schema={loginSchema}
         path='login'
@@ -111,7 +111,7 @@ const FormLogin: React.FC = () => {
             Registre-se aqui!
           </button>
         </Register>
-      </ContentForm>
+      </Form>
     </Style>
   )
 }

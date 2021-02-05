@@ -1,8 +1,9 @@
 import React from 'react'
 
 export interface Ref {
-  input: React.RefObject<any>
+  inputRef: React.RefObject<any>
   setError: (message: string) => void
+  value?: any
 }
 
 export interface FormState {

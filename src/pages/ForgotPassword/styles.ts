@@ -9,7 +9,7 @@ export const ConfirmToken = styled.section`
   .resendContainer {
     .Icon {
       margin-right: 8px;
-      fill: #d65881;
+      fill: ${({ theme }) => theme.colors.primary};
       height: 26px;
     }
 
@@ -22,7 +22,7 @@ export const ConfirmToken = styled.section`
       margin-bottom: 8px;
       font-weight: bold;
 
-      color: #d65881;
+      color: ${({ theme }) => theme.colors.primary};
 
       &:hover,
       .icon:hover {
@@ -104,7 +104,7 @@ const Style = styled.main`
     color: white;
     border: none;
     border-radius: 8px;
-    background-color: #d65881;
+    background-color: ${({ theme }) => theme.colors.primary};
 
     &:hover {
       filter: brightness(1.1);
@@ -140,7 +140,7 @@ const Style = styled.main`
     transition: all 0.2s;
 
     &:hover {
-      color: #d65881;
+      color: ${({ theme }) => theme.colors.primary};
     }
 
     @media (max-width: 500px) {

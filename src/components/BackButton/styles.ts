@@ -8,7 +8,7 @@ const Style = styled.button`
   transition: all 0.2s;
 
   &:hover {
-    color: #d65881;
+    color: ${({ theme }) => theme.colors.primary};
   }
 
   svg {

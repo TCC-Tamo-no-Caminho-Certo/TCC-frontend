@@ -1,11 +1,14 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
+import Style from './styles'
 
 import FormContext, { FormState } from '../Form/FormContext'
 
 import { ThemeState } from 'store/theme'
 import { RootState } from 'store'
 
-import { darken, lighten } from 'polished'
+import { ErrorTooltip } from 'components/Tooltips'
+
+import { lighten } from 'polished'
 import { useSelector } from 'react-redux'
 import RealSelect, { Theme } from 'react-select'
 
@@ -17,7 +20,7 @@ const Select: React.FC<any> = props => {
 
   useEffect(() => {
     const select = {
-      input: selectRef,
+      inputRef: selectRef,
       setError,
     }
 
@@ -27,6 +30,18 @@ const Select: React.FC<any> = props => {
   }, [selectRef, form])
 
   const overridingStyles = {
+    menu: (before: any) => ({
+      ...before,
+      zIndex: 3,
+    }),
+    control: (before: any) => ({
+      ...before,
+      paddingLeft: error ? 40 : 8,
+    }),
+    valueContainer: (before: any) => ({
+      ...before,
+      paddingLeft: 0,
+    }),
     singleValue: (before: any) => ({
       ...before,
       color: theme.colors.primary,
@@ -50,40 +65,41 @@ const Select: React.FC<any> = props => {
 
   const overridingTheme = (beforeTheme: Theme): Theme => ({
     ...beforeTheme,
-
     colors: {
       ...beforeTheme.colors,
-
       danger: theme.colors.red,
       dangerLight: lighten(0.5, theme.colors.red),
-
       primary: theme.colors.primary,
       primary25: lighten(0.25, theme.colors.primary),
       primary50: lighten(0.5, theme.colors.primary),
       primary75: lighten(0.75, theme.colors.primary),
-
       neutral0: theme.colors.secondary,
-      neutral5: darken(0.05, theme.colors.tertiary),
-      neutral10: darken(0.1, theme.colors.tertiary),
-      neutral20: darken(0.2, theme.colors.tertiary),
-      neutral30: darken(0.3, theme.colors.tertiary),
-      neutral40: darken(0.4, theme.colors.tertiary),
-      neutral50: darken(0.5, theme.colors.tertiary),
-      neutral60: darken(0.6, theme.colors.tertiary),
-      neutral70: darken(0.7, theme.colors.tertiary),
-      neutral80: darken(0.8, theme.colors.tertiary),
-      neutral90: darken(0.9, theme.colors.tertiary),
+      neutral5: theme.colors.tertiary,
+      neutral10: theme.colors.tertiary,
+      neutral20: theme.colors.tertiary,
+      neutral30: theme.colors.tertiary,
+      neutral40: theme.colors.tertiary,
+      neutral50: theme.colors.tertiary,
+      neutral60: theme.colors.tertiary,
+      neutral70: theme.colors.tertiary,
+      neutral80: theme.colors.tertiary,
+      neutral90: theme.colors.tertiary,
     },
   })
 
   return (
-    <RealSelect
-      classNamePrefix='Select'
-      ref={selectRef}
-      styles={overridingStyles}
-      theme={overridingTheme}
-      {...props}
-    />
+    <Style isErrored={!!error}>
+      <ErrorTooltip error={!!error} content={error} />
+
+      <RealSelect
+        classNamePrefix='Select'
+        onBlur={() => setError('')}
+        styles={overridingStyles}
+        theme={overridingTheme}
+        ref={selectRef}
+        {...props}
+      />
+    </Style>
   )
 }
 

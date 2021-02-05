@@ -1,34 +1,26 @@
-import React, { memo } from 'react'
-import { StyledTooltipError } from './styles'
+import React from 'react'
+import { ErrorTooltipStyle, ErrorTooltipTriggerArea } from './styles'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
 import { PopupProps } from 'semantic-ui-react'
 
-interface Props extends PopupProps {
-  theme: any
+interface ErrorTooltip extends PopupProps {
+  error: boolean
 }
 
-const ErrorTooltip: React.FC<Props> = ({ theme, ...rest }) => {
-  return (
-    <StyledTooltipError
-      trigger={
-        <div
-          style={{
-            height: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <AlertIcon />
-        </div>
-      }
-      className='ErrorTooltip'
+export const ErrorTooltip: React.FC<PopupProps> = ({ error, ...props }) => {
+  return error ? (
+    <ErrorTooltipStyle
+      {...props}
       position='top left'
-      {...rest}
+      trigger={
+        <ErrorTooltipTriggerArea>
+          <AlertIcon />
+        </ErrorTooltipTriggerArea>
+      }
     />
+  ) : (
+    <></>
   )
 }
-
-export default memo(ErrorTooltip)

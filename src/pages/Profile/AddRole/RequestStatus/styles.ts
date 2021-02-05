@@ -61,7 +61,7 @@ const Style = styled.div`
       }
 
       stop#true {
-        stop-color: #ff6d8d;
+        stop-color: ${({theme}) => theme.colors.primary};
       }
 
       stop#false {
@@ -90,8 +90,8 @@ const Style = styled.div`
         border-radius: 8px;
         padding: 8px 32px;
 
-        color: #d65881;
-        border: solid #d65881 1px;
+        color: ${({ theme }) => theme.colors.primary};
+        border: solid ${({ theme }) => theme.colors.primary} 1px;
       }
     }
   }

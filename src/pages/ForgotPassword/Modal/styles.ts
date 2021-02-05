@@ -42,7 +42,7 @@ const Style = styled.div`
         font: 500 1.6rem 'Archivo';
         padding: 8px 30px;
         border-radius: 5px;
-        background: #d65881;
+        background: ${({ theme }) => theme.colors.primary};
         color: #fcfcfc;
 
         &:hover {

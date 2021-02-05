@@ -44,17 +44,17 @@ export const DefaultInput = styled.div<StyleProps>`
     width: 24px;
     margin: 0 8px;
 
-    fill: #6e4850;
+    fill: ${({ theme }) => theme.colors.tertiary};
   }
 
   &:focus-within {
-    border-color: #d65881;
+    border-color: ${({ theme }) => theme.colors.primary};
 
     &,
     input::placeholder,
     .Icon {
-      color: #d65881;
-      -webkit-text-fill-color: #d65881;
+      color: ${({ theme }) => theme.colors.primary};
+      -webkit-text-fill-color: ${({ theme }) => theme.colors.primary};
     }
   }
 
@@ -63,8 +63,8 @@ export const DefaultInput = styled.div<StyleProps>`
     css`
       &,
       .Icon {
-        color: #d65881;
-        -webkit-text-fill-color: #d65881;
+        color: ${({ theme }) => theme.colors.primary};
+        -webkit-text-fill-color: ${({ theme }) => theme.colors.primary};
       }
     `}
 
@@ -81,8 +81,8 @@ export const DefaultInput = styled.div<StyleProps>`
       -webkit-text-fill-color: ${color};
 
       &::placeholder {
-        color: #6e4850;
-        -webkit-text-fill-color: #6e4850;
+        color: ${({ theme }) => theme.colors.tertiary};
+        -webkit-text-fill-color: ${({ theme }) => theme.colors.tertiary};
       }
     }
   `}
@@ -98,20 +98,20 @@ export const Field = styled.div<StyleProps>`
   border-radius: 10px;
 
   background-color: transparent;
-  border: solid 1px #6e4850;
+  border: solid 1px ${({ theme }) => theme.colors.tertiary};
 
   input {
     height: 100%;
-
     border: none;
+    padding-left: 16px;
 
     background-color: transparent;
     color: ${({ color }) => color};
     -webkit-text-fill-color: ${({ color }) => color};
 
     &::placeholder {
-      color: #6e4850;
-      -webkit-text-fill-color: #6e4850;
+      color: ${({ theme }) => theme.colors.tertiary};
+      -webkit-text-fill-color: ${({ theme }) => theme.colors.tertiary};
     }
   }
 
@@ -127,26 +127,26 @@ export const Field = styled.div<StyleProps>`
       width: 24px;
       margin: 0 8px;
 
-      fill: #6e4850;
+      fill: ${({ theme }) => theme.colors.tertiary};
 
       &:hover {
-        fill: #d62828;
+        fill: ${({ theme }) => theme.colors.red};
       }
     }
   }
 
   #Alert {
-    fill: #d62828;
+    fill: ${({ theme }) => theme.colors.red};
   }
 
   &:focus-within {
-    border-color: #d65881;
+    border-color: ${({ theme }) => theme.colors.primary};
 
     &,
     input::placeholder,
     .Icon {
-      fill: #d65881;
-      -webkit-text-fill-color: #d65881;
+      fill: ${({ theme }) => theme.colors.primary};
+      -webkit-text-fill-color: ${({ theme }) => theme.colors.primary};
     }
   }
 
@@ -162,9 +162,9 @@ export const Field = styled.div<StyleProps>`
     css`
       &,
       .Icon {
-        color: #d65881;
-        fill: #d65881;
-        -webkit-text-fill-color: #d65881;
+        color: ${({ theme }) => theme.colors.primary};
+        fill: ${({ theme }) => theme.colors.primary};
+        -webkit-text-fill-color: ${({ theme }) => theme.colors.primary};
       }
     `}
 
@@ -173,7 +173,7 @@ export const Field = styled.div<StyleProps>`
     !isErrored &&
     css`
       input {
-        padding-left: 20px;
+        padding-left: 8px;
       }
     `}
 `

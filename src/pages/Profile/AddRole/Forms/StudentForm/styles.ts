@@ -1,6 +1,5 @@
 import { Form as FormComponent } from 'components/Form'
 
-import { lighten } from 'polished'
 import styled from 'styled-components'
 
 export const Form = styled(FormComponent)`
@@ -27,10 +26,10 @@ export const Form = styled(FormComponent)`
     width: 100%;
   }
 
-  #method {
+  #ways {
     margin-bottom: 0px;
 
-    #methodLabel {
+    #label {
       margin-top: 16px;
       margin-bottom: 8px;
       height: 22px;
@@ -52,13 +51,13 @@ export const Form = styled(FormComponent)`
 
         height: 42px;
 
-        background-color: ${({ theme }) => theme.colors.green};
+        background-color: ${({ theme }) => theme.colors.tertiary};
         color: ${({ theme }) => theme.colors.white};
       }
+    }
 
-      button:last-child {
-        background-color: ${({ theme }) => lighten(0.12, theme.colors.red)};
-      }
+    .iconSpace {
+      width: 46px;
     }
 
     .Input + .Input {

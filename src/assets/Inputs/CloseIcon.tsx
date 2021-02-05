@@ -8,6 +8,7 @@ interface CloseIconProps {
 const CloseIcon: React.FC<CloseIconProps> = ({ onClick }) => {
   return (
     <svg
+      style={{ cursor: 'pointer' }}
       onClick={onClick}
       className='Icon'
       id='CloseIcon'

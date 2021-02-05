@@ -2,14 +2,19 @@ import React, { forwardRef, ReactElement, useImperativeHandle, useRef, useState 
 import Style, { ModalBackground } from './styles'
 
 interface ModalProps {
-  children: ReactElement | ReactElement[]
+  children: ReactElement
+  top?: string
+  bottom?: string
 }
 
 export interface ModalMethods {
   toggleModal: (setModal?: boolean) => void
 }
 
-const Modal: React.ForwardRefRenderFunction<ModalMethods, ModalProps> = ({ children }, ref) => {
+const Modal: React.ForwardRefRenderFunction<ModalMethods, ModalProps> = (
+  { top = '50%', bottom = '0%', children },
+  ref
+) => {
   const modalRef = useRef(null)
   const [openModal, setOpenModal] = useState(false)
 
@@ -18,15 +23,13 @@ const Modal: React.ForwardRefRenderFunction<ModalMethods, ModalProps> = ({ child
     else setOpenModal(setModal)
   }
 
-  useImperativeHandle(ref, () => {
-    return { toggleModal }
-  })
+  useImperativeHandle(ref, () => ({ toggleModal }))
 
   return openModal ? (
     <>
-      <ModalBackground />
+      <ModalBackground onClick={() => setOpenModal(false)} />
 
-      <Style ref={modalRef} className='Modal'>
+      <Style top={top} bottom={bottom} ref={modalRef}>
         {children}
       </Style>
     </>

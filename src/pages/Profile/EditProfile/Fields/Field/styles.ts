@@ -52,8 +52,8 @@ const Style = styled.div`
       width: 18px;
       height: 18px;
 
-      fill: #d65881;
-      stroke: #d65881;
+      fill: ${({ theme }) => theme.colors.primary};
+      stroke: ${({ theme }) => theme.colors.primary};
     }
 
     #CloseIcon {

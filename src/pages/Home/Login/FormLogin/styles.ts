@@ -1,4 +1,4 @@
-import { Form } from 'components/Form'
+import { Form as RealForm } from 'components/Form'
 
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
@@ -22,7 +22,7 @@ export const Register = styled.div`
   flex-direction: column;
 
   button {
-    color: #d65881;
+    color: ${({ theme }) => theme.colors.primary};
 
     &:hover {
       filter: brightness(1.1);
@@ -47,13 +47,13 @@ export const Permanence = styled.div`
     color: #6e4850;
 
     &:hover {
-      color: #d65881;
+      color: ${({ theme }) => theme.colors.primary};
       filter: brightness(1.1);
     }
   }
 `
 
-export const ContentForm = styled(Form)`
+export const Form = styled(RealForm)`
   flex-direction: column;
 
   width: 70%;
@@ -80,7 +80,7 @@ export const ContentForm = styled(Form)`
     color: white;
     border: none;
     border-radius: 8px;
-    background-color: #d65881;
+    background-color: ${({ theme }) => theme.colors.primary};
 
     &:hover {
       filter: brightness(1.1);
@@ -122,7 +122,7 @@ export const ContentForm = styled(Form)`
     font-size: calc(1.1rem + 0.5vh);
     text-align: end;
 
-    color: #d65881;
+    color: ${({ theme }) => theme.colors.primary};
 
     padding-right: 16px;
 
@@ -153,7 +153,7 @@ const Style = styled.div`
   background-color: #fcfcfc;
 
   &,
-  ${Permanence}, ${ContentForm}, ${LoginFailed}, ${Register} {
+  ${Permanence}, ${Form}, ${LoginFailed}, ${Register} {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -179,5 +179,5 @@ export default Style
 LoginFailed.displayName = 'LoginFailed-Style'
 Register.displayName = 'Register-Style'
 Permanence.displayName = 'Permanence-Style'
-ContentForm.displayName = 'ContentForm-Style'
+Form.displayName = 'ContentForm-Style'
 Style.displayName = 'FormLogin-Style'

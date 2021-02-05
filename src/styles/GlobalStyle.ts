@@ -78,4 +78,9 @@ export default createGlobalStyle`
       box-shadow: initial;
     }
   }
+
+  button, input, optgroup, select, textarea { 
+    font-family: 'Roboto', sans-serif;
+  }
+
 `
