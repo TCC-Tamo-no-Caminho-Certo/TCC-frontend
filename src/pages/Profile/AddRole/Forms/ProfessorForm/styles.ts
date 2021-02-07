@@ -1,6 +1,5 @@
 import { Form as FormComponent } from 'components/Form'
 
-import { lighten } from 'polished'
 import styled from 'styled-components'
 
 export const Form = styled(FormComponent)`
@@ -8,16 +7,15 @@ export const Form = styled(FormComponent)`
 
   color: ${({ theme }) => theme.colors.tertiary};
 
-  & > * {
-    margin-bottom: 16px;
-  }
-
-  .Input {
+  .Select,
+  .Text {
     height: 35px;
   }
 
-  .Select__control {
+  .Select {
+    margin-bottom: 16px;
     min-height: 35px;
+    height: auto;
   }
 
   span {
@@ -30,86 +28,74 @@ export const Form = styled(FormComponent)`
     width: 100%;
   }
 
-  #checkbox {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    label {
-      margin-right: 8px;
-    }
-  }
-
-  #method {
+  #ways {
     margin-bottom: 0px;
 
-    #methodLabel {
-      margin-top: 16px;
-      margin-bottom: 8px;
+    #label {
       height: 22px;
+      margin-top: 16px;
+
+      font-size: 1.6rem;
     }
 
     #buttons {
-      margin-bottom: 16px;
       display: flex;
       align-items: center;
       justify-content: space-evenly;
+
+      margin: 8px 0 16px 0;
 
       button {
         display: flex;
         justify-content: center;
         align-items: center;
 
+        height: 42px;
         border-radius: 4px;
         padding: 12px;
 
-        height: 42px;
-
-        background-color: ${({ theme }) => theme.colors.green};
+        background-color: ${({ theme }) => theme.colors.tertiary};
         color: ${({ theme }) => theme.colors.white};
-      }
-
-      button:last-child {
-        background-color: ${({ theme }) => lighten(0.12, theme.colors.red)};
-      }
-    }
-
-    .Input + .Input {
-      height: 35px;
-      margin-top: 16px;
-    }
-
-    #warning {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      font-size: 1.5rem;
-      margin-bottom: 8px;
-      height: 45px;
-
-      color: ${({ theme }) => theme.colors.red};
-
-      b {
-        font-weight: normal;
-
-        color: ${({ theme }) => theme.roles.moderator};
-      }
-
-      .Icon {
-        height: 24px;
-        padding: 0 8px 0 8px;
-
-        fill: ${({ theme }) => theme.colors.red};
       }
     }
 
     #inputs {
       margin-bottom: 16px;
+
+      #receipt {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        #warning {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          font-size: 1.4rem;
+          margin-bottom: 8px;
+          height: 45px;
+
+          color: ${({ theme }) => theme.colors.primary};
+
+          b {
+            font-weight: normal;
+
+            color: ${({ theme }) => theme.roles.moderator};
+          }
+
+          .Icon {
+            height: 24px;
+            padding: 0 8px 0 8px;
+
+            fill: ${({ theme }) => theme.colors.primary};
+          }
+        }
+      }
     }
   }
 `
 
 export default Form
 
-Form.displayName = 'StudentForm-Style'
+Form.displayName = 'ProfessorForm-Style'

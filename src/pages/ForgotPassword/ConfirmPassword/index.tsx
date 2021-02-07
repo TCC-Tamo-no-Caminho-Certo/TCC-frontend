@@ -9,7 +9,7 @@ import { passwordSchema } from 'utils/validations/forgotPassword'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 
 import Logo from 'components/Logo'
-import { Button, Form, Input } from 'components/Form'
+import { Form, Submit, Text } from 'components/Form'
 
 import { useHistory } from 'react-router-dom'
 
@@ -59,11 +59,11 @@ const ConfirmPassword: React.FC = () => {
             >
               <h2>Digite sua nova senha</h2>
 
-              <Input name='password' type='password' placeholder='Senha' icon={PadlockIcon} eye />
+              <Text name='password' type='password' placeholder='Senha' icon={PadlockIcon} eye />
 
               <h2>Confirme sua nova senha</h2>
 
-              <Input
+              <Text
                 name='confirmPassword'
                 type='password'
                 placeholder='Confirmar senha'
@@ -71,7 +71,7 @@ const ConfirmPassword: React.FC = () => {
                 eye
               />
 
-              <Button className='submit'>Redefinir</Button>
+              <Submit className='submit'>Redefinir</Submit>
             </Form>
           </section>
         </article>

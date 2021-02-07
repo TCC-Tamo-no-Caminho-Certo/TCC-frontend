@@ -4,12 +4,11 @@ import Form from './styles'
 
 import Container from '../Container'
 
-import studentSchema from 'utils/validations/addRoleForms/student'
+import { emailSchema, receiptSchema } from 'utils/validations/addRoleForms/student'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
-import { Button, Input, Select } from 'components/Form'
-import Image from 'components/Form/File'
+import { File, Select, Submit, Text } from 'components/Form'
 
 import { AnimatePresence, motion, Variants } from 'framer-motion'
 
@@ -79,17 +78,15 @@ const StudentForm: React.FC = () => {
   return (
     <Container role='student'>
       <Form
-        path='user/complete-register'
-        getData={data => console.log(data)}
-        schema={studentSchema}
+        path='user/addRole/student'
+        schema={wayOfSignup === 'email' ? emailSchema : receiptSchema}
         loading
       >
         <Select name='university' placeholder='Universidade' options={universityOptions} />
         <Select name='course' placeholder='Curso' options={courseOptions} />
         <Select name='semester' placeholder='Semestre' options={semesterOptions} />
-
         <div id='ways'>
-          <div id='label'>Forma de cadastro</div>
+          <span id='label'>Forma de registro</span>
 
           <div id='buttons'>
             <button type='button' onClick={() => setWayOfSignup('email')}>
@@ -111,14 +108,14 @@ const StudentForm: React.FC = () => {
             <AnimatePresence>
               {wayOfSignup === 'email' && (
                 <motion.div variants={method} exit='closed' animate='open'>
-                  <Input name='email' placeholder='E-mail institucional' />
+                  <Text name='email' placeholder='E-mail institucional' />
                 </motion.div>
               )}
             </AnimatePresence>
 
             <AnimatePresence>
               {wayOfSignup === 'receipt' && (
-                <motion.div variants={method} exit='closed' animate='open'>
+                <motion.div id='receipt' variants={method} exit='closed' animate='open'>
                   <div id='warning'>
                     <AlertIcon />
 
@@ -128,14 +125,16 @@ const StudentForm: React.FC = () => {
                     </div>
                   </div>
 
-                  <Image />
+                  <File guides name='receipt' label='Enviar comprovante' />
                 </motion.div>
               )}
             </AnimatePresence>
           </motion.div>
         </div>
 
-        <Button id='submit'>Enviar solicitação</Button>
+        <Submit id='submit' disabled={wayOfSignup === undefined}>
+          Enviar solicitação
+        </Submit>
       </Form>
     </Container>
   )

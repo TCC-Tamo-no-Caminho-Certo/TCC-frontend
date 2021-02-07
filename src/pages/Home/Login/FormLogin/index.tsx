@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Style, { Form, LoginFailed, Permanence, Register } from './styles'
+import Style, { Form, LoginFailed, Register } from './styles'
 
 import loginSchema from 'utils/validations/login'
 
@@ -9,7 +9,7 @@ import MailIcon from 'assets/Inputs/MailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
-import { Button, Input } from 'components/Form'
+import { Checkbox, Submit, Text } from 'components/Form'
 import Logo from 'components/Logo'
 import ThemeSwitch from 'components/ThemeSwitch'
 
@@ -79,15 +79,15 @@ const FormLogin: React.FC = () => {
           </AnimatePresence>
         </motion.div>
 
-        <Input name='email' placeholder='E-mail' icon={MailIcon} autoComplete='email' />
+        <Text name='email' placeholder='E-mail' icon={MailIcon} autoComplete='email' />
 
-        <Input
+        <Text
+          eye
           name='password'
           type='password'
           placeholder='Senha'
           autoComplete='current-password'
           icon={PadlockIcon}
-          eye
         />
 
         <Link
@@ -97,13 +97,9 @@ const FormLogin: React.FC = () => {
           Não consegue fazer login?
         </Link>
 
-        <Button id='login'>Efetuar Login</Button>
+        <Submit id='login'>Efetuar Login</Submit>
 
-        <Permanence>
-          <Input type='checkbox' name='remember' />
-
-          <label htmlFor='remember'>Permanecer conectado</label>
-        </Permanence>
+        <Checkbox name='remember' label='Permanecer conectado' />
 
         <Register>
           Ainda não possui uma conta ?

@@ -12,7 +12,7 @@ const signupSchema = Yup.object({
   email: Yup.string()
     .email('E-mail inválido!')
     .matches(/^(\w\.?)+@(\w\.?)+\.(\w\.?)+$/, 'E-mail inválido!')
-    .required('É necessário informar o email!'),
+    .required('É necessário informar o e-mail!'),
 
   birthday: Yup.string().required('É necessário informar a data!'),
 

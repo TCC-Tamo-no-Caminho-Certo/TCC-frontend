@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Style from './styles'
 
-import FormContext, { FormState } from '../Form/FormContext'
+import { FormContext, FormState } from '../'
 
 import { ThemeState } from 'store/theme'
 import { RootState } from 'store'
 
-import { ErrorTooltip } from 'components/Tooltips'
+import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 
 import { lighten } from 'polished'
 import { useSelector } from 'react-redux'
 import RealSelect, { Theme } from 'react-select'
 
-const Select: React.FC<any> = props => {
+const Select: React.FC<any> = ({ isMulti, ...props }) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const selectRef = useRef(null)
   const [error, setError] = useState<string>()
@@ -22,12 +22,13 @@ const Select: React.FC<any> = props => {
     const select = {
       inputRef: selectRef,
       setError,
+      type: isMulti ? 'multiSelect' : 'select',
     }
 
-    form?.setRef(select)
+    form?.registerInput(select)
 
-    return () => form?.removeRef(select)
-  }, [selectRef, form])
+    return () => form?.removeInput(select)
+  }, [selectRef, form, isMulti])
 
   const overridingStyles = {
     menu: (before: any) => ({
@@ -88,7 +89,7 @@ const Select: React.FC<any> = props => {
   })
 
   return (
-    <Style isErrored={!!error}>
+    <Style isErrored={!!error} className='Select'>
       <ErrorTooltip error={!!error} content={error} />
 
       <RealSelect
@@ -97,6 +98,7 @@ const Select: React.FC<any> = props => {
         styles={overridingStyles}
         theme={overridingTheme}
         ref={selectRef}
+        isMulti={isMulti}
         {...props}
       />
     </Style>

@@ -87,7 +87,7 @@ const Style = styled.main`
   }
 
   h3,
-  .Input,
+  .Text,
   .resendContainer,
   .Logo {
     margin-bottom: 16px;

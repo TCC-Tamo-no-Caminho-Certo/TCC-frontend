@@ -12,7 +12,7 @@ const Style = styled.div<StyleProps>`
   ${({ isErrored }) =>
     isErrored &&
     css`
-      .ErrorTooltipTriggerArea {
+      .Trigger {
         position: absolute;
         left: 0;
         top: 0;

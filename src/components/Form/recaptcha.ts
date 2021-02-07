@@ -6,5 +6,3 @@ import styled from 'styled-components'
 export const ReCaptcha = memo(styled(captcha)`
   display: none;
 `)
-
-export { captcha }

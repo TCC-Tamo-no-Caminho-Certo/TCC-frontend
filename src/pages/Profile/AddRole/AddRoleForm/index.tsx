@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
-import Style, { Content, Form, Header, Input } from './styles'
+import Style, { Content, Form, Header, Text } from './styles'
 
 import makeRoleLabel from 'utils/makeRoleLabel'
 
 import { Role } from 'store/user'
 
-import { Button } from 'components/Form'
+import { Submit } from 'components/Form'
 
 interface AddRoleFormProps {
   role: Role
@@ -27,13 +27,13 @@ const AddRoleForm: React.FC<AddRoleFormProps> = ({ role }) => {
           <span>{makeRoleLabel(role)}</span>
 
           <Form path='user/complete-register' loading>
-            <Input name='cpf' placeholder='CPF' />
+            <Text name='cpf' placeholder='CPF' />
 
             <p className='form-role-text'>
               A solicitação pode demorar um tempo pois será avaliada manualmente por um moderador
             </p>
 
-            <Button>Enviar solicitação</Button>
+            <Submit>Enviar solicitação</Submit>
           </Form>
 
           <button id='scrollButton' type='button' onClick={() => window.scrollTo(0, 0)}>

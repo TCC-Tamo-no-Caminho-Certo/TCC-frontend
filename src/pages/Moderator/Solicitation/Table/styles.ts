@@ -125,7 +125,7 @@ const Style = styled.div`
 
         width: 50%;
 
-        .InputDate {
+        .DatePicker {
           width: 50%;
 
           .DatePicker,
@@ -133,7 +133,7 @@ const Style = styled.div`
             height: 100%;
           }
 
-          .Input {
+          .Text {
             border: none;
 
             .Icon {

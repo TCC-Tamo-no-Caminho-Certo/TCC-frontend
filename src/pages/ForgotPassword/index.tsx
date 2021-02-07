@@ -12,7 +12,7 @@ import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import MailIcon from 'assets/Inputs/MailIcon'
 
 import Logo from 'components/Logo'
-import { Button, Form, Input } from 'components/Form'
+import { Form, Submit, Text } from 'components/Form'
 import BackButton from 'components/BackButton'
 
 import { useDispatch } from 'react-redux'
@@ -95,23 +95,23 @@ const ForgotPassword: React.FC = () => {
                 path='forgot-password'
                 captcha
               >
-                <Input name='email' hidden value={userEmail} />
+                <Text name='email' hidden value={userEmail} />
 
-                <Button>
+                <Submit>
                   <SendEmailIcon />
                   Reenviar código
-                </Button>
+                </Submit>
               </Form>
 
               <Form afterResData={handleTokenSubmit} path='reset-password' loading captcha>
-                <Input
+                <Text
                   name='token'
                   placeholder='Código'
                   handleValue={value => localStorage.setItem('reset-password-token', value)}
                   icon={PadlockIcon}
                 />
 
-                <Button className='submit'>Confirmar</Button>
+                <Submit className='submit'>Confirmar</Submit>
               </Form>
             </ConfirmToken>
           ) : (
@@ -125,7 +125,7 @@ const ForgotPassword: React.FC = () => {
               >
                 <h3>Digite seu email para recuperar a senha</h3>
 
-                <Input
+                <Text
                   name='email'
                   placeholder='E-mail'
                   icon={MailIcon}
@@ -137,7 +137,7 @@ const ForgotPassword: React.FC = () => {
                   da senha
                 </p>
 
-                <Button className='submit'>Enviar</Button>
+                <Submit className='submit'>Enviar</Submit>
               </Form>
             </section>
           )}

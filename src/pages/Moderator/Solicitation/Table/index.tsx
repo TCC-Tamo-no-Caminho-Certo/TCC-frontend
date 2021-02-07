@@ -19,9 +19,9 @@ import ArrowIcon from 'assets/ArrowIcon'
 import LoupeIcon from 'assets/Inputs/LoupeIcon'
 
 import Modal, { ModalMethods } from 'components/Modal'
-import Input from 'components/Form/Input'
+import Text from 'components/Form/Text'
 import DotsLoader from 'components/DotsLoader'
-import { InputDate } from 'components/Form'
+import { Datepicker } from 'components/Form'
 
 import { useSelector } from 'react-redux'
 
@@ -189,7 +189,7 @@ const Table: React.FC = () => {
     <Style className='Table'>
       <div id='row'>
         <div id='filters'>
-          <Input
+          <Text
             id='search'
             type='text'
             autoComplete='off'
@@ -201,7 +201,7 @@ const Table: React.FC = () => {
 
           <div id='dates'>
             <label htmlFor='from'>De</label>
-            <InputDate
+            <Datepicker
               name='from'
               icon={ArrowIcon}
               headerColor={theme.colors.primary}
@@ -212,7 +212,7 @@ const Table: React.FC = () => {
             />
 
             <label htmlFor='to'>Até</label>
-            <InputDate
+            <Datepicker
               name='to'
               icon={ArrowIcon}
               valueColor={theme.colors.secondary}

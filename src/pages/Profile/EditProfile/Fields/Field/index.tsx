@@ -9,7 +9,7 @@ import { RootState } from 'store'
 import PencilIcon from 'assets/Inputs/PencilIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
-import { Input, InputDate } from 'components/Form'
+import { Datepicker, Text } from 'components/Form'
 
 import { useSelector } from 'react-redux'
 
@@ -28,22 +28,20 @@ const Field: FC<Props> = ({ data }) => {
 
   const input =
     data.inputname === 'birthday' ? (
-      <InputDate
+      <Datepicker
         color={theme.colors.primary}
         isBirthday
         ref={inputRef}
         name={data.inputname}
         value={`${inputDateValue(data.value as string)}`}
-        noStyle
-        className='InputDate'
+        className='Datepicker'
       />
     ) : (
-      <Input
+      <Text
         ref={inputRef}
         name={data.inputname}
         placeholder={data.dontShow ? `*********` : ''}
         defaultValue={data.dontShow ? '' : data.value}
-        noStyle
         className='InputChange'
       />
     )

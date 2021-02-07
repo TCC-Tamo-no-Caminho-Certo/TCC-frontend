@@ -1,3 +1,4 @@
+import { lighten } from 'polished'
 import styled from 'styled-components'
 
 const Style = styled.button`
@@ -8,6 +9,10 @@ const Style = styled.button`
 
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.secondary};
+
+  &:disabled {
+    background-color: ${({ theme }) => lighten(0.1, theme.colors.primary)};
+  }
 
   .DotsLoader {
     position: absolute;

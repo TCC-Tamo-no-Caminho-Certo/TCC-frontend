@@ -12,7 +12,7 @@ import UserLockedIcon from 'assets/Inputs/UserLockedIcon'
 
 import Logo from 'components/Logo'
 import ThemeSwitch from 'components/ThemeSwitch'
-import { Button, Form, Input, InputDate } from 'components/Form'
+import { Datepicker, Form, Submit, Text } from 'components/Form'
 import BackButton from 'components/BackButton'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -44,13 +44,15 @@ const FormSignup: React.FC = () => {
         schema={signupSchema}
         path='register'
         getData={data => {
-          const old = data.birthday.split('/')
-          data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
+          if (data.birthday) {
+            const old = data.birthday.split('/')
+            data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
+          }
         }}
         loading
         captcha
       >
-        <Input
+        <Text
           className='dual'
           name='name'
           placeholder='Nome'
@@ -58,28 +60,30 @@ const FormSignup: React.FC = () => {
           autoComplete='given-name'
         />
 
-        <Input name='surname' placeholder='Sobrenome' icon={WorldIcon} autoComplete='family-name' />
+        <Text name='surname' placeholder='Sobrenome' icon={WorldIcon} autoComplete='family-name' />
 
         <span>
           Certifique-se de que corresponde ao nome no seu documento de identificação oficial
         </span>
 
-        <InputDate
+        <Datepicker
           isBirthday
-          color={theme.colors.primary}
           name='birthday'
           placeholder='Data de nascimento'
           arrow='bottom'
+          bodyColor={theme.colors.secondary}
+          headerColor={theme.colors.tertiary}
+          selectedColor={theme.colors.primary}
           icon={UserLockedIcon}
         />
 
         <span>Você precisa ter pelo menos 18 anos</span>
 
-        <Input name='email' placeholder='E-mail' icon={UserLockedIcon} autoComplete='email' />
+        <Text name='email' placeholder='E-mail' icon={UserLockedIcon} autoComplete='email' />
 
         <span>Enviaremos um e-mail para confirmação</span>
 
-        <Input
+        <Text
           className='dual'
           name='password'
           type='password'
@@ -89,7 +93,7 @@ const FormSignup: React.FC = () => {
           eye
         />
 
-        <Input
+        <Text
           name='confirmPassword'
           type='password'
           placeholder='Confirmar Senha'
@@ -103,7 +107,7 @@ const FormSignup: React.FC = () => {
           e a <a href='.'>Política de Não Discriminação</a> do Steams Lab.
         </span>
 
-        <Button>Concordar e concluir</Button>
+        <Submit>Concordar e concluir</Submit>
       </Form>
     </Style>
   )

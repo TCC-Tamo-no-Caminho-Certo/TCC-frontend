@@ -1,7 +1,7 @@
 import { Role } from 'store/user'
 
 import Card, { Header as HeaderComponent } from 'components/Card/styles'
-import { Form as FormComponent, Input as InputComponent } from 'components/Form'
+import { Form as FormComponent, Text as InputComponent } from 'components/Form'
 
 import styled from 'styled-components'
 
@@ -73,7 +73,7 @@ export const Form = styled(FormComponent)`
   }
 `
 
-export const Input = styled(InputComponent)`
+export const Text = styled(InputComponent)`
   margin-top: 5%;
   border-radius: 150px;
   font-size: 16px;
@@ -99,4 +99,4 @@ Style.displayName = 'Student-Style'
 Content.displayName = 'Content-Style'
 Header.displayName = 'Header-Style'
 Form.displayName = 'Form-Style'
-Input.displayName = 'Input-Style'
+Text.displayName = 'Text-Style'

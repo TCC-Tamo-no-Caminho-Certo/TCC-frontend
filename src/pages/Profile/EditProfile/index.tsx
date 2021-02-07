@@ -8,7 +8,7 @@ import { UserActions } from 'store/user'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
-import { Button, Form, Input } from 'components/Form'
+import { Form, Submit, Text } from 'components/Form'
 import Modal, { ModalMethods } from 'components/Modal'
 
 import { useDispatch } from 'react-redux'
@@ -71,7 +71,7 @@ const EditProfile: React.FC = () => {
           <span>Você precisa confirmar sua senha para salvar as alterações!</span>
           <CloseIcon onClick={() => confirmRefModal.current?.toggleModal(false)} />
 
-          <Input name='password' placeholder='Confirme sua senha' eye />
+          <Text name='password' placeholder='Confirme sua senha' eye />
 
           <div id='buttons'>
             <button
@@ -82,7 +82,7 @@ const EditProfile: React.FC = () => {
               Cancelar
             </button>
 
-            <Button>Confirmar</Button>
+            <Submit>Confirmar</Submit>
           </div>
         </ConfirmForm>
       </Modal>

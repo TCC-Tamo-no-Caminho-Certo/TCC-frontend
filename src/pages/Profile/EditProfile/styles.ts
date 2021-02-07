@@ -1,4 +1,4 @@
-import Form from 'components/Form/Form'
+import Form from 'components/Form'
 
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
@@ -31,7 +31,7 @@ export const ConfirmForm = styled(Form)`
     }
   }
 
-  .Input {
+  .Text {
     margin: 16px 0;
   }
 

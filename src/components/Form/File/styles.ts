@@ -1,6 +1,27 @@
 import styled from 'styled-components'
 
 const Style = styled.div`
+  #fileInput {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    label {
+      padding: 8px 16px;
+      border-radius: 8px;
+
+      background-color: ${({ theme }) => theme.colors.primary};
+      color: ${({ theme }) => theme.colors.secondary};
+
+      .Icon {
+        height: 16px;
+        margin-right: 8px;
+
+        fill: ${({ theme }) => theme.colors.secondary};
+      }
+    }
+  }
+
   #container {
     display: flex;
     align-items: flex-end;
@@ -12,8 +33,6 @@ const Style = styled.div`
     background-color: ${({ theme }) => theme.colors.tertiary};
 
     button {
-      width: 100%;
-
       margin-top: 16px;
       padding: 8px 16px;
       border-radius: 8px;
@@ -47,7 +66,7 @@ const Style = styled.div`
     }
 
     .cropper-view-box {
-      outline: 1px solid #fcfcfc;
+      outline: 1px solid ${({ theme }) => theme.colors.white};
     }
 
     .cropper-point {
@@ -55,7 +74,7 @@ const Style = styled.div`
       height: 5px;
       opacity: 1;
 
-      background-color: #fcfcfc;
+      background-color: ${({ theme }) => theme.colors.white};
     }
 
     .cropper-center {
@@ -69,7 +88,7 @@ const Style = styled.div`
       width: 8px;
       height: 1px;
 
-      background-color: #fcfcfc;
+      background-color: ${({ theme }) => theme.colors.white};
     }
 
     .cropper-center::after {
@@ -79,7 +98,7 @@ const Style = styled.div`
       width: 1px;
       height: 8px;
 
-      background-color: #fcfcfc;
+      background-color: ${({ theme }) => theme.colors.white};
     }
 
     .cropper-line,

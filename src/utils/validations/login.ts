@@ -7,6 +7,8 @@ const loginSchema = Yup.object({
     .required('Você esqueceu de informar o email!'),
 
   password: Yup.string().required('Você esqueceu de informar a senha!'),
+
+  remember: Yup.boolean(),
 })
 
 export default loginSchema

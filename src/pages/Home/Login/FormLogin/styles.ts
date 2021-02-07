@@ -31,28 +31,6 @@ export const Register = styled.div`
   }
 `
 
-export const Permanence = styled.div`
-  flex-direction: row;
-
-  border-bottom: 2px solid #6e4850;
-
-  > * {
-    margin-bottom: 8px;
-  }
-
-  label {
-    margin-left: 8px;
-    font-size: calc(1.5rem + 0.2vh);
-
-    color: #6e4850;
-
-    &:hover {
-      color: ${({ theme }) => theme.colors.primary};
-      filter: brightness(1.1);
-    }
-  }
-`
-
 export const Form = styled(RealForm)`
   flex-direction: column;
 
@@ -109,7 +87,7 @@ export const Form = styled(RealForm)`
     }
   }
 
-  .Input + .Input {
+  .Text + .Text {
     margin-bottom: 0;
   }
 
@@ -153,10 +131,16 @@ const Style = styled.div`
   background-color: #fcfcfc;
 
   &,
-  ${Permanence}, ${Form}, ${LoginFailed}, ${Register} {
+  ${Form}, ${LoginFailed}, ${Register} {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .Checkbox {
+    padding-bottom: 8px;
+
+    border-bottom: 2px solid #6e4850;
   }
 
   .ThemeSwitch {
@@ -178,6 +162,5 @@ export default Style
 
 LoginFailed.displayName = 'LoginFailed-Style'
 Register.displayName = 'Register-Style'
-Permanence.displayName = 'Permanence-Style'
 Form.displayName = 'ContentForm-Style'
 Style.displayName = 'FormLogin-Style'

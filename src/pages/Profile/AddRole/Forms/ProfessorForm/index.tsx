@@ -4,9 +4,11 @@ import Form from './styles'
 
 import Container from '../Container'
 
+import { emailSchema, receiptSchema } from 'utils/validations/addRoleForms/professor'
+
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
-import { Button, Input, Select } from 'components/Form'
+import { File, Select, Submit, Text } from 'components/Form'
 
 import { AnimatePresence, motion, Variants } from 'framer-motion'
 
@@ -38,21 +40,17 @@ const inputs: Variants = {
   receipt: { height: receiptSize },
 }
 
-const StudentForm: React.FC = () => {
+const ProfessorForm: React.FC = () => {
   const [wayOfSignup, setWayOfSignup] = useState<undefined | 'email' | 'receipt'>(undefined)
 
-  const onSelectChange = (value: any) => {
-    console.log(value.value, value.label)
-  }
-
-  const insideMethod: Variants = {
+  const method: Variants = {
     initial: {
       opacity: 0,
       height: 0,
     },
     open: {
       opacity: 1,
-      x: wayOfSignup === 'receipt' ? [300, 0] : [-300, 0],
+      x: wayOfSignup === 'email' ? [-300, 0] : [300, 0],
       transition: {
         type: 'tween',
         duration: 0.4,
@@ -60,7 +58,7 @@ const StudentForm: React.FC = () => {
     },
     closed: {
       opacity: 0,
-      x: wayOfSignup === 'receipt' ? [0, 300] : [0, -300],
+      x: wayOfSignup === 'email' ? [0, -300] : [0, 300],
       transition: {
         type: 'tween',
         duration: 0.2,
@@ -76,25 +74,17 @@ const StudentForm: React.FC = () => {
 
   return (
     <Container role='professor'>
-      <Form path='user/complete-register' loading>
-        <Select
-          isMulti
-          placeholder='Universidade'
-          options={universityOptions}
-          onChange={onSelectChange}
-        />
+      <Form
+        getData={e => console.log(e)}
+        path='user/addRole/professor'
+        schema={wayOfSignup === 'email' ? emailSchema : receiptSchema}
+        loading
+      >
+        <Select name='university' placeholder='Universidade' options={universityOptions} isMulti />
+        <Select name='course' placeholder='Curso' options={courseOptions} isMulti />
 
-        <Select isMulti placeholder='Curso' options={courseOptions} onChange={onSelectChange} />
-
-        <Input name='curriculum' placeholder='Link do currículo Lattes' />
-
-        <div id='checkbox'>
-          <label htmlFor='postgraduate'>Professor na Pós-Graduação</label>
-          <Input type='checkbox' name='postgraduate' />
-        </div>
-
-        <div id='method'>
-          <div id='methodLabel'>Forma de cadastro</div>
+        <div id='ways'>
+          <span id='label'>Forma de registro</span>
 
           <div id='buttons'>
             <button type='button' onClick={() => setWayOfSignup('email')}>
@@ -113,17 +103,17 @@ const StudentForm: React.FC = () => {
             animate={wayOfSignup}
             transition={{ type: 'tween', duration: 0.3 }}
           >
-            <AnimatePresence presenceAffectsLayout>
+            <AnimatePresence>
               {wayOfSignup === 'email' && (
-                <motion.div variants={insideMethod} animate='open' exit='closed' initial='initial'>
-                  <Input name='email' placeholder='E-mail institucional' />
+                <motion.div variants={method} exit='closed' animate='open'>
+                  <Text name='email' placeholder='E-mail institucional' />
                 </motion.div>
               )}
             </AnimatePresence>
 
-            <AnimatePresence presenceAffectsLayout>
+            <AnimatePresence>
               {wayOfSignup === 'receipt' && (
-                <motion.div variants={insideMethod} animate='open' exit='closed' initial='initial'>
+                <motion.div id='receipt' variants={method} exit='closed' animate='open'>
                   <div id='warning'>
                     <AlertIcon />
 
@@ -133,16 +123,19 @@ const StudentForm: React.FC = () => {
                     </div>
                   </div>
 
-                  <Input name='receipt' placeholder='Enviar comprovante' />
+                  <File guides name='receipt' label='Enviar comprovante' />
                 </motion.div>
               )}
             </AnimatePresence>
           </motion.div>
         </div>
-        <Button id='submit'>Enviar solicitação</Button>
+
+        <Submit id='submit' disabled={wayOfSignup === undefined}>
+          Enviar solicitação
+        </Submit>
       </Form>
     </Container>
   )
 }
 
-export default StudentForm
+export default ProfessorForm

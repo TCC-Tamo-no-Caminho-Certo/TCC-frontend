@@ -16,6 +16,7 @@ const Modal: React.ForwardRefRenderFunction<ModalMethods, ModalProps> = (
   ref
 ) => {
   const modalRef = useRef(null)
+
   const [openModal, setOpenModal] = useState(false)
 
   const toggleModal = (setModal?: boolean) => {
@@ -24,6 +25,10 @@ const Modal: React.ForwardRefRenderFunction<ModalMethods, ModalProps> = (
   }
 
   useImperativeHandle(ref, () => ({ toggleModal }))
+
+  window.addEventListener('keydown', e => {
+    e.key === 'Escape' && setOpenModal(false)
+  })
 
   return openModal ? (
     <>

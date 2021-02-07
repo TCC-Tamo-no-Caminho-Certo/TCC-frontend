@@ -27,7 +27,7 @@ const Style = styled.div`
     height: 100%;
 
     .InputChange,
-    .InputDate,
+    .DatePicker,
     .DatePicker,
     .DefaultDate {
       height: 100%;

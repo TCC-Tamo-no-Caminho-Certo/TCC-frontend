@@ -1,70 +1,82 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Style from './styles'
 
-import FormContext, { FormState } from '../Form/FormContext'
+import { FormContext, FormState } from '../'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
+import CameraIcon from 'assets/Inputs/CameraIcon'
 
 import Modal, { ModalMethods } from 'components/Modal'
-import { ErrorTooltip } from 'components/Tooltips'
+import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 
 import 'cropperjs/dist/cropper.css'
-import { Cropper } from 'react-cropper'
+import { Cropper, ReactCropperProps } from 'react-cropper'
 
-const File: React.FC = () => {
+interface FileProps extends ReactCropperProps {
+  label: string
+  name: string
+}
+
+const File: React.FC<FileProps> = ({ label, name, ...props }) => {
+  const form = useContext<FormState | null>(FormContext)
   const modalRef = useRef<ModalMethods>(null)
   const fileRef = useRef<HTMLInputElement>(null)
-  const [file, setFile] = useState('')
-
-  const [fileData, setFileData] = useState<any>()
+  const [fileData, setFileData] = useState<string>()
   const [cropper, setCropper] = useState<any>()
-  const form = useContext<FormState | null>(FormContext)
   const [error, setError] = useState<string>()
+  const [file, setFile] = useState<any>()
 
   const getCropData = () => {
-    if (cropper) setFileData(cropper.getCroppedCanvas().toDataURL())
+    const url = cropper.getCroppedCanvas().toDataURL()
+    cropper && setFileData(url)
   }
 
   const onChange = (e: any) => {
     e.preventDefault()
-    let files
 
-    if (e.dataTransfer) files = e.dataTransfer.files
-    else if (e.target) files = e.target.files
-
+    setError('')
+    const { files } = e.target
     const reader = new FileReader()
-    reader.onload = () => setFile(reader.result as any)
 
-    reader.readAsDataURL(files[0])
+    if (files[0]) {
+      reader.onload = () => setFile(reader.result)
+      reader.readAsDataURL(files[0])
+    }
   }
 
   useEffect(() => {
     const fileForInput = {
       inputRef: fileRef,
-      setError,
+      type: 'file',
       value: fileData,
+      setError,
     }
 
-    form?.setRef(fileForInput)
+    form?.registerInput(fileForInput)
 
-    return () => form?.removeRef(fileForInput)
+    return () => form?.removeInput(fileForInput)
   }, [fileRef, form, fileData])
 
   return (
-    <Style>
-      <ErrorTooltip error={!!error} content={error} />
+    <Style className='File'>
+      <div id='fileInput'>
+        <ErrorTooltip error={!!error} content={error} />
 
-      <label>
-        Upload de comprovante
-        <input
-          name='receipt'
-          ref={fileRef}
-          type='file'
-          style={{ display: 'none' }}
-          onChange={onChange}
-          onClick={() => modalRef.current?.toggleModal(true)}
-        />
-      </label>
+        <label>
+          <CameraIcon />
+
+          {label}
+
+          <input
+            type='file'
+            name={name}
+            ref={fileRef}
+            style={{ display: 'none' }}
+            onChange={onChange}
+            onClick={() => modalRef.current?.toggleModal(true)}
+          />
+        </label>
+      </div>
 
       <Modal ref={modalRef}>
         <div id='container'>
@@ -72,10 +84,10 @@ const File: React.FC = () => {
 
           <Cropper
             center
-            guides
-            src={file}
             className='Cropper'
             dragMode='move'
+            src={file}
+            guides={false}
             background={false}
             viewMode={3}
             aspectRatio={1}
@@ -83,6 +95,7 @@ const File: React.FC = () => {
             minCropBoxWidth={80}
             checkOrientation={false}
             onInitialized={instance => setCropper(instance)}
+            {...props}
           />
 
           <button
@@ -101,11 +114,3 @@ const File: React.FC = () => {
 }
 
 export default File
-
-/* 
-  <button type='button' onClick={getCropData}>
-    Crop File
-  </button>
-  
-  <img style={{ width: '100%' }} src={fileData} alt='cropped' />
-*/
