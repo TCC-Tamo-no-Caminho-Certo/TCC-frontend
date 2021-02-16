@@ -2,8 +2,6 @@ import { dark, light, ThemeAttributes } from 'styles/themes'
 
 import { createSlice } from '@reduxjs/toolkit'
 
-export type ThemeState = ThemeAttributes
-
 const localTheme = localStorage.getItem('@SLab_theme')
 
 const initialState: ThemeState = localTheme === 'light' || !localTheme ? light : dark
@@ -18,6 +16,8 @@ const Theme = createSlice({
     },
   },
 })
+
+export type ThemeState = ThemeAttributes
 
 export const ThemeActions = Theme.actions
 

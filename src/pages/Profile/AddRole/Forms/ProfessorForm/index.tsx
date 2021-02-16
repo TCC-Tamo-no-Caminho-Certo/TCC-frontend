@@ -75,9 +75,9 @@ const ProfessorForm: React.FC = () => {
   return (
     <Container role='professor'>
       <Form
-        getData={e => console.log(e)}
         path='user/addRole/professor'
         schema={wayOfSignup === 'email' ? emailSchema : receiptSchema}
+        addData={{ role: 'professor' }}
         loading
       >
         <Select name='university' placeholder='Universidade' options={universityOptions} isMulti />

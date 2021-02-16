@@ -1,11 +1,11 @@
 /* eslint-disable camelcase */
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import Style, { BodyWrapper, RoleTd } from './styles'
+import Style, { BodyWrapper, ModalContent, RoleTd } from './styles'
 
 import Thead from './Thead'
 import Circle from './Circle'
 
-import selectedRoleLabel from 'utils/makeRoleLabel'
+import makeRoleLabel from 'utils/makeRoleLabel'
 
 import api from 'services/api'
 
@@ -17,11 +17,12 @@ import useSortableData from 'hooks/useSortableData'
 
 import ArrowIcon from 'assets/ArrowIcon'
 import LoupeIcon from 'assets/Inputs/LoupeIcon'
+import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import Modal, { ModalMethods } from 'components/Modal'
-import Text from 'components/Form/Text'
 import DotsLoader from 'components/DotsLoader'
-import { Datepicker } from 'components/Form'
+import { Datepicker, Form, Submit, Text, Textarea } from 'components/Form'
+import Avatar from 'components/User/Avatar'
 
 import { useSelector } from 'react-redux'
 
@@ -96,6 +97,8 @@ const makeDateLabel = (date: string): string => {
 }
 
 const Table: React.FC = () => {
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+
   const tableRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
   const modalRef = useRef<ModalMethods>(null)
@@ -106,7 +109,6 @@ const Table: React.FC = () => {
   const [data, setData] = useState<TableData[] | null>(null)
   const [addData, setAddData] = useState<{ name: string } | undefined>(undefined)
 
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const { items, sort } = useSortableData(data, {
     direction: 'descending',
     indexer: 'name',
@@ -114,174 +116,162 @@ const Table: React.FC = () => {
 
   const quantity = 25
 
-  const makeRequest = useCallback(
-    async (page: number, limit: number) => {
-      if (!isClear) {
-        const { requests } = await api.post(`request/role/get/${page}/${limit}`, addData)
+  const requestToTableData = (array: RequestsData[]) =>
+    array.map(({ status, full_name, role, created_at, request_id }: RequestsData) => ({
+      role,
+      id: request_id,
+      name: full_name,
+      statusCircle: status,
+      status: makeStatusLabel(status),
+      date: makeDateLabel(created_at),
+    }))
 
-        if (requests !== undefined) {
-          if (requests.length !== 0) {
-            const tableData = requests.map(
-              ({ status, full_name, role, created_at, request_id }: RequestsData) => {
-                return {
-                  role,
-                  id: request_id,
-                  name: full_name,
-                  statusCircle: status,
-                  status: makeStatusLabel(status),
-                  date: makeDateLabel(created_at),
-                }
-              }
-            )
+  const initialRequest = useCallback(async () => {
+    if (!isClear) {
+      const { requests } = await api.post(`request/role/get/1/${quantity}`, addData)
 
-            setTablePage(before => before + 1)
-            setData(before => (before ? [...before, ...tableData] : tableData))
-          } else {
-            setIsClear(true)
-          }
-        }
-      }
-    },
-    [addData, isClear]
-  )
+      if (requests !== undefined && requests.length !== 0) {
+        const tableData = requestToTableData(requests)
 
-  const onSearchClick = () => {
-    const { value } = inputRef.current
-
-    if (value === undefined || value === '') {
-      setAddData(before => {
-        if (before !== undefined) setData([])
-        return undefined
-      })
-    } else {
-      setAddData(before => {
-        if (before?.name !== value) {
-          setData([])
-          return { name: value }
-        }
-
-        return before
-      })
+        setData(before => (before ? [...before, ...tableData] : [...tableData]))
+      } else setIsClear(true)
     }
-  }
-
-  const onScroll = () => {
-    const element = tableRef.current
-
-    if (element !== undefined && element !== null) {
-      const a = element.scrollTop
-      const b = element.scrollHeight - element.clientHeight
-      const maxScroll = a / b
-
-      if (maxScroll === 1) {
-        makeRequest(tablePage, quantity)
-      }
-    }
-  }
+  }, [addData, isClear])
 
   useEffect(() => {
-    makeRequest(1, quantity)
-  }, [makeRequest])
+    initialRequest()
+  }, [initialRequest])
 
   useEffect(() => setIsClear(false), [addData])
 
   return (
-    <Style className='Table'>
-      <div id='row'>
-        <div id='filters'>
-          <Text
-            id='search'
-            type='text'
-            autoComplete='off'
-            placeholder='Filtrar'
-            className='InputSearch'
-            ref={inputRef}
-            onKeyPress={e => e.key === 'Enter' && onSearchClick()}
-          />
-
-          <div id='dates'>
-            <label htmlFor='from'>De</label>
-            <Datepicker
-              name='from'
-              icon={ArrowIcon}
-              headerColor={theme.colors.primary}
-              bodyColor={theme.colors.secondary}
-              selectedColor={theme.colors.tertiary}
-              disabledColor={theme.colors.red}
-              valueColor={theme.colors.secondary}
+    <>
+      <Style className='Table'>
+        <Form
+          id='row'
+          path={`request/role/get/${tablePage}/${quantity}`}
+          afterResData={res => res !== undefined && setData(requestToTableData(res.requests))}
+        >
+          <div id='filters'>
+            <Text
+              id='search'
+              name='name'
+              type='text'
+              autoComplete='off'
+              placeholder='Filtrar'
+              className='InputSearch'
+              ref={inputRef}
             />
 
-            <label htmlFor='to'>Até</label>
-            <Datepicker
-              name='to'
-              icon={ArrowIcon}
-              valueColor={theme.colors.secondary}
-              headerColor={theme.colors.primary}
-              bodyColor={theme.colors.secondary}
-              selectedColor={theme.colors.tertiary}
-              disabledColor={theme.colors.red}
-            />
+            {/* 
+            <div id='dates'>
+              <label htmlFor='from'>De</label>
+
+              <Datepicker
+                name='from'
+                icon={ArrowIcon}
+                headerColor={theme.colors.primary}
+                bodyColor={theme.colors.secondary}
+                selectedColor={theme.colors.tertiary}
+                disabledColor={theme.colors.red}
+                valueColor={theme.colors.secondary}
+              />
+
+              <label htmlFor='to'> Até </label>
+
+              <Datepicker
+                name='to'
+                icon={ArrowIcon}
+                valueColor={theme.colors.secondary}
+                headerColor={theme.colors.primary}
+                bodyColor={theme.colors.secondary}
+                selectedColor={theme.colors.tertiary}
+                disabledColor={theme.colors.red}
+              />
+            </div>
+            */}
           </div>
-        </div>
 
-        <button type='button' onClick={onSearchClick} id='searchButton'>
-          <LoupeIcon />
-          Buscar
-        </button>
-      </div>
+          <button type='submit' id='searchButton'>
+            <LoupeIcon />
+            Buscar
+          </button>
+        </Form>
 
-      <Thead headerData={headerData} sort={sort} />
+        <Thead headerData={headerData} sort={sort} />
 
-      <BodyWrapper ref={tableRef} onScroll={onScroll}>
-        <table draggable='false'>
-          <tbody>
-            {items?.map(item => (
-              <tr
-                key={item.id}
-                onClick={() => {
-                  modalRef.current?.toggleModal(true)
-                  setClickedItem(item)
-                }}
-              >
-                {headerData.map(({ label, name }) => {
-                  if (name === 'role')
-                    return (
-                      <RoleTd role={item[name]} key={item.id}>
-                        {selectedRoleLabel(item[name])}
-                      </RoleTd>
-                    )
+        <BodyWrapper ref={tableRef}>
+          <table draggable='false'>
+            <tbody>
+              {items?.map(item => (
+                <tr
+                  key={item.id}
+                  onClick={() => {
+                    modalRef.current?.toggleModal(true)
+                    setClickedItem(item)
+                  }}
+                >
+                  {headerData.map(({ label, name }) => {
+                    if (name === 'role')
+                      return (
+                        <RoleTd role={item[name]} key={item.id}>
+                          {makeRoleLabel(item[name])}
+                        </RoleTd>
+                      )
 
-                  if (name === 'statusCircle')
-                    return (
-                      <td key={name} className='statusCircle'>
-                        <Circle status={item.statusCircle} />
-                      </td>
-                    )
+                    if (name === 'statusCircle')
+                      return (
+                        <td key={name} className='statusCircle'>
+                          <Circle status={item.statusCircle} />
+                        </td>
+                      )
 
-                  return <td key={label}>{item[name as keyof TableData]}</td>
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </BodyWrapper>
+                    return <td key={label}>{item[name as keyof TableData]}</td>
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </BodyWrapper>
 
-      {data === null && <DotsLoader color={theme.colors.secondary} />}
+        {data === null && <DotsLoader color={theme.colors.secondary} />}
+      </Style>
 
       <Modal ref={modalRef}>
-        <div id='content'>
-          <div>{`Nome: ${clickedItem?.name}`}</div>
+        <ModalContent role={clickedItem?.role} status={clickedItem?.statusCircle}>
+          <CloseIcon />
 
-          <button
-            type='button'
-            style={{ color: 'white' }}
-            onClick={() => modalRef.current?.toggleModal(false)}
-          >
-            Fechar
-          </button>
-        </div>
+          <div id='avatarAndInfo'>
+            <Avatar size={88} />
+
+            <div id='info'>
+              <div>{clickedItem?.name}</div>
+              <div id='role'>{makeRoleLabel(clickedItem?.role as Role)}</div>
+              <div id='status'>{clickedItem?.status}</div>
+              <div>{clickedItem?.date}</div>
+            </div>
+          </div>
+
+          <div id='doc' />
+
+          <Form path='modal-path'>
+            <Textarea
+              id='feedback'
+              name='feedback'
+              placeholder='Se quiser digite uma resposta...'
+            />
+
+            <div id='buttons'>
+              <Submit onClick={() => modalRef.current?.toggleModal(false)}>Aceitar</Submit>
+
+              <button type='button' onClick={() => modalRef.current?.toggleModal(false)}>
+                Recusar
+              </button>
+            </div>
+          </Form>
+        </ModalContent>
       </Modal>
-    </Style>
+    </>
   )
 }
 

@@ -4,6 +4,7 @@ const ambiguousSchema = {
   university: Yup.string().required('Você precisa selecionar!'),
   course: Yup.string().required('Você precisa selecionar!'),
   semester: Yup.string().required('Você precisa selecionar!'),
+  role: Yup.string().required(),
 }
 
 export const emailSchema = Yup.object({

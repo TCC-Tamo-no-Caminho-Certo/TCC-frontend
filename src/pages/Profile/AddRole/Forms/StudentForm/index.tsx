@@ -15,6 +15,24 @@ import { AnimatePresence, motion, Variants } from 'framer-motion'
 const emailSize = 35
 const receiptSize = 88
 
+interface StudentReceipt {
+  role: 'student'
+  course: string
+  receipt: string
+  semester: string
+  university: string
+}
+
+interface StudentEmail {
+  role: 'student'
+  course: string
+  receipt: string
+  semester: string
+  university: string
+}
+
+type StudentForm = StudentEmail | StudentReceipt
+
 const universityOptions = [
   { value: 'universidade-anhembi-morumbi', label: 'Universidade Anhembi Morumbi' },
 ]
@@ -79,12 +97,15 @@ const StudentForm: React.FC = () => {
     <Container role='student'>
       <Form
         path='user/addRole/student'
+        getData={e => console.log(e)}
         schema={wayOfSignup === 'email' ? emailSchema : receiptSchema}
+        addData={{ role: 'student' }}
         loading
       >
         <Select name='university' placeholder='Universidade' options={universityOptions} />
         <Select name='course' placeholder='Curso' options={courseOptions} />
         <Select name='semester' placeholder='Semestre' options={semesterOptions} />
+
         <div id='ways'>
           <span id='label'>Forma de registro</span>
 

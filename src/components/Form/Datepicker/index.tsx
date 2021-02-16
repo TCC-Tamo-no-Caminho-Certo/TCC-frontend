@@ -44,9 +44,9 @@ const Datepicker: React.FC<Datepicker> = ({
   bodyColor = '#6e4850',
   selectedColor = '#d65881',
   disabledColor = '#d62828',
+  icon: Icon,
   isBirthday,
   arrow,
-  icon: Icon,
   name,
   ...rest
 }) => {

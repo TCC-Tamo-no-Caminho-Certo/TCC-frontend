@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 
 import { ReCaptcha } from './recaptcha'
 import Text from './Text'
@@ -7,6 +7,7 @@ import Submit from './Submit'
 import Select from './Select'
 import File from './File'
 import Checkbox from './Checkbox'
+import Textarea from './Textarea'
 
 import api from 'services/api'
 
@@ -27,7 +28,7 @@ export interface FormState {
   registerInput: (input: Ref) => void
 }
 
-interface FormProps extends React.HTMLProps<HTMLFormElement> {
+export interface FormProps extends React.HTMLProps<HTMLFormElement> {
   path: string
   push?: string
   captcha?: boolean
@@ -55,7 +56,8 @@ const Form: React.FC<FormProps> = ({
   const recaptchaRef = useRef<Captcha>(null)
   const [showLoader, setShowLoader] = useState(false)
   const history = useHistory()
-  const data: { [name: string]: any } = { ...addData }
+  const data: { [name: string]: any } = useMemo(() => ({ ...addData }), [addData])
+
   let refs: Ref[] = []
   let haveErrors = false
 
@@ -73,15 +75,19 @@ const Form: React.FC<FormProps> = ({
       else
         switch (type) {
           case 'text':
-            data[current.name] = current?.value
+            data[current.name] = current.value
             break
 
           case 'password':
-            data[current.name] = current?.value
+            data[current.name] = current.value
             break
 
           case 'checkbox':
-            data[current.name] = current?.checked
+            data[current.name] = current.checked
+            break
+
+          case 'textarea':
+            data[current.name] = current.value
             break
 
           case 'select':
@@ -133,6 +139,7 @@ const Form: React.FC<FormProps> = ({
   const makeRequest = async (cbAfterResData?: (data: any) => void) => {
     const resData = await api.post(path, data)
     cbAfterResData && cbAfterResData(resData)
+
     return resData.success
   }
 
@@ -167,5 +174,5 @@ const Form: React.FC<FormProps> = ({
   )
 }
 
-export { Form, Text, Datepicker, Submit, Select, File, Checkbox }
+export { Form, Text, Datepicker, Submit, Select, File, Checkbox, Textarea }
 export default Form

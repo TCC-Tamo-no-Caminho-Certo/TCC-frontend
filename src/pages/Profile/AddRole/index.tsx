@@ -76,13 +76,13 @@ const AddRole: React.FC = () => {
           title='Professor'
           userRoles={labelRoles}
           color={theme.roles.professor}
+          onClick={() => setRoleSelected('professor')}
           benefits={[
-            'Tudo de Estudante e Proponente',
+            'Pode fazer tudo que um estudante pode fazer',
             'Pedir revisão de propostas',
             'Remover estudantes de propostas, somente professor coordenador pode remover outros professores',
             'Solicitar papel de Revisor',
           ]}
-          onClick={() => setRoleSelected('professor')}
         />
 
         {roles.includes('professor') && (
@@ -90,6 +90,7 @@ const AddRole: React.FC = () => {
             title='Moderador'
             userRoles={labelRoles}
             color={theme.roles.moderator}
+            onClick={() => setRoleSelected('moderator')}
             benefits={[
               'Aceitar solicitação de mudança para Revisor ',
               'Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores' +
@@ -97,7 +98,6 @@ const AddRole: React.FC = () => {
               'Ver usuários da instituição',
               'Alterar status da proposta',
             ]}
-            onClick={() => setRoleSelected('moderator')}
           />
         )}
       </div>

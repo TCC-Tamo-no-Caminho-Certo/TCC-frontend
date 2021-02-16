@@ -30,11 +30,11 @@ const Style = styled.div<StyleProps>`
     bottom !== '0%'
       ? css`
           bottom: ${bottom};
-          transform: translate(-50%, -50%);
+          transform: translate(-50%, 50%);
         `
       : css`
           top: ${top};
-          transform: translate(-50%, 50%);
+          transform: translate(-50%, -50%);
         `}
 `
 

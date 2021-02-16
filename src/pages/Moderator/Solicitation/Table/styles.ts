@@ -1,10 +1,17 @@
+import { StatusTypes } from './'
+
 import { Role } from 'store/user'
 
 import { darken } from 'polished'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 interface RoleTdProps {
   role: Role
+}
+
+interface ContentProps {
+  role?: Role
+  status?: StatusTypes
 }
 
 export const RoleTd = styled.td<RoleTdProps>`
@@ -62,6 +69,99 @@ export const BodyWrapper = styled.div`
   }
 `
 
+export const ModalContent = styled.div<ContentProps>`
+  display: flex;
+  flex-direction: column;
+
+  position: relative;
+
+  padding: 24px;
+  border-radius: 8px;
+  width: 70vw;
+  height: 80vh;
+  overflow-y: scroll;
+
+  background-color: ${({ theme }) => theme.colors.tertiary};
+
+  > *,
+  form > * {
+    width: 100%;
+  }
+
+  .Textarea {
+    margin-top: 16px;
+  }
+
+  #CloseIcon {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+
+    height: 16px;
+    width: 16px;
+
+    stroke: ${({ theme }) => theme.colors.secondary};
+  }
+
+  #avatarAndInfo {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 24px;
+
+    #info {
+      margin-left: 24px;
+
+      #status {
+        color: ${({ theme, status }) => {
+          switch (status) {
+            case 'accepted':
+              return theme.colors.green
+            case 'awaiting':
+              return theme.colors.yellow
+            case 'rejected':
+              return theme.colors.red
+            default:
+              return theme.colors.white
+          }
+        }};
+      }
+
+      ${({ theme, role }) =>
+        role &&
+        css`
+          #role {
+            color: ${theme.roles[role]};
+          }
+        `}
+    }
+  }
+
+  #buttons {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      width: 45%;
+      padding: 8px 16px;
+      border-radius: 4px;
+      margin-top: 12px;
+
+      background-color: ${({ theme }) => theme.colors.green};
+      color: ${({ theme }) => theme.colors.secondary};
+
+      & + button {
+        background-color: ${({ theme }) => theme.colors.red};
+      }
+    }
+  }
+
+  #doc {
+    min-height: 1200px;
+    background-color: white;
+  }
+`
+
 const Style = styled.div`
   position: relative;
 
@@ -73,6 +173,7 @@ const Style = styled.div`
 
   color: ${({ theme }) => theme.colors.secondary};
 
+  form,
   #row {
     display: flex;
     justify-content: space-between;
@@ -95,7 +196,10 @@ const Style = styled.div`
       border: solid 1px ${({ theme }) => theme.colors.secondary};
       box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.2);
 
-      .InputSearch {
+      .Text {
+        border: transparent;
+        background-color: red;
+
         width: 40%;
         height: 100%;
         padding-right: 16px;
