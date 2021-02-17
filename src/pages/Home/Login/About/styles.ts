@@ -5,11 +5,10 @@ const Style = styled.div`
   justify-content: center;
   align-items: center;
 
-  min-width: 320px;
-  width: 100vw;
+  width: max(100vw, 320px);
   height: 100vh;
 
-  color: #fcfcfc;
+  color: ${({ theme }) => theme.colors.secondary};
   background-color: transparent;
 
   @media screen and (min-width: 1200px) {

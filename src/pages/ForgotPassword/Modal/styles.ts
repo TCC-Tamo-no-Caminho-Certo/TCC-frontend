@@ -17,7 +17,7 @@ const Style = styled.div`
     width: min(350px, 80vw);
     border: 2px solid #ccc;
 
-    background: #6e4850;
+    background: ${({ theme }) => theme.colors.tertiary};
     border-radius: 15px;
     text-align: center;
 
@@ -43,7 +43,7 @@ const Style = styled.div`
         padding: 8px 30px;
         border-radius: 5px;
         background: ${({ theme }) => theme.colors.primary};
-        color: #fcfcfc;
+        color: ${({ theme }) => theme.colors.secondary};
 
         &:hover {
           filter: brightness(1.1);

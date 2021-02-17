@@ -11,13 +11,11 @@ export const Shadow = styled(motion.div)<ShadowProps>`
   @media screen and (min-width: 1200px) {
     position: absolute;
 
-    width: 100vw;
+    width: 76vw;
     height: 100vh;
     border-radius: 24px;
 
     background-color: transparent;
     box-shadow: -8px 8px 6px 4px rgba(0, 0, 0, 0.14);
-
-    width: 76vw;
   }
 `

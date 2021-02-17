@@ -40,7 +40,7 @@ const Style = styled.div`
       font-size: 1.8rem;
       padding: 0 24px;
 
-      color: #6e4850;
+      color: ${({ theme }) => theme.colors.tertiary};
 
       div {
         width: 100px;
@@ -52,20 +52,20 @@ const Style = styled.div`
       padding: 0 48px;
 
       path.checkIcon {
-        fill: #fcfcfc;
+        fill: ${({ theme }) => theme.colors.secondary};
       }
 
       path.errorIcon {
-        stroke: #fcfcfc;
+        stroke: ${({ theme }) => theme.colors.secondary};
         stroke-width: 3;
       }
 
       stop#true {
-        stop-color: ${({theme}) => theme.colors.primary};
+        stop-color: ${({ theme }) => theme.colors.primary};
       }
 
       stop#false {
-        stop-color: #6e4850;
+        stop-color: ${({ theme }) => theme.colors.tertiary};
       }
     }
 
@@ -82,7 +82,7 @@ const Style = styled.div`
       button#info {
         font-size: 2rem;
 
-        color: #6e4850;
+        color: ${({ theme }) => theme.colors.tertiary};
       }
 
       button#cancel {

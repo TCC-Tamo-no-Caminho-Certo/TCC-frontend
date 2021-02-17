@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-curly-newline */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Style, { Background, RightMenuOpen, RoleLi, UserInfo } from './styles'
 
 import selectRoleLabel from 'utils/makeRoleLabel'
@@ -8,6 +7,8 @@ import api from 'services/api'
 
 import { RootState } from 'store'
 import { UserActions, UserState } from 'store/user'
+
+import useWindowDimensions from 'hooks/useWindowDimensions'
 
 import EditUserIcon from 'assets/ProfileSidebar/EditUserIcon'
 import LogoutIcon from 'assets/RightMenuOpen/LogoutIcon'
@@ -22,43 +23,46 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 
 const RightMenu: React.FC = () => {
-  const { name, surname, selectedRole, roles } = useSelector<RootState, UserState>(
-    state => state.user
+  const { innerWidth } = useWindowDimensions()
+  const [editOpen, toggleEditProfile] = useCycle(
+    false,
+    true
   )
+
+  const [changeRole, setChangeRole] = useState(false)
+  const [width, setWidth] = useState(innerWidth)
   const history = useHistory()
   const dispatch = useDispatch()
-  const [editOpen, toggleEditProfile] = useCycle(false, true)
-  const [changeRole, setChangeRole] = useState(false)
-  const width = 300
+  const {
+    name,
+    surname,
+    selectedRole,
+    roles,
+  } = useSelector<RootState, UserState>(state => state.user)
+
   const closedHeight = 112
   const openHeight = 300 + closedHeight
 
+  useEffect(() => {
+    (async () => {
+      await toggleEditProfile()
+      toggleEditProfile()
+    })()
+
+    if (innerWidth <= 300) setWidth(320)
+    else {
+      innerWidth >= 425
+        ? setWidth(300)
+        : setWidth(innerWidth)
+    }
+    
+    // eslint-disable-next-line
+  }, [innerWidth])
+
   const onLogoutClick = async () => {
     await api.get('logout', {})
-
     localStorage.removeItem('@SLab_ac_token')
     history.push('/home')
-  }
-
-  const motionPath: Variants = {
-    closed: {
-      d: `M0,8 C0,3.5 3.5,0 8,0 H${width} V${closedHeight} H8 C3.5,${closedHeight} 0,${
-        closedHeight - 4
-      } 0,${closedHeight - 8} V8Z`,
-      transition: {
-        type: 'tween',
-        duration: 0.2,
-      },
-    },
-    open: {
-      d: `M0,8 C0,3.5 3.5,0 8,0 H${width} V${openHeight} H8 C3.5,${openHeight} 0,${
-        openHeight - 4
-      } 0,${openHeight - 8} V8Z`,
-      transition: {
-        type: 'tween',
-        duration: 0.2,
-      },
-    },
   }
 
   const motionMenu: Variants = {
@@ -132,28 +136,67 @@ const RightMenu: React.FC = () => {
     },
   }
 
+  const motionPath: Variants = {
+    closed: {
+      d: `M0,0 H${width} V${closedHeight} H0 V0 Z`,
+      transition: {
+        type: 'tween',
+        duration: 0.2,
+      },
+    },
+    open: {
+      d: `M0,0 H${width} V${openHeight} H0 V0 Z`,
+      transition: {
+        type: 'tween',
+        duration: 0.2,
+      },
+    },
+  }
+
   return (
     <>
-      <Background width={`${width}px`} height={`${openHeight}px`}>
-        <motion.path initial={false} variants={motionPath} animate={editOpen ? 'open' : 'closed'} />
+      <Background
+        closedHeight={`${closedHeight}px`}
+        openHeight={`${openHeight}px`}
+        isOpen={editOpen}
+      >
+        <motion.path
+          initial={false}
+          variants={motionPath}
+          animate={editOpen ? 'open' : 'closed'}
+        />
       </Background>
 
-      <Style width={`${width}px`}>
+      <Style closedHeight={`${closedHeight}px`}>
         <Avatar size={80} />
 
         <UserInfo selectedRole={selectedRole}>
-          <span id='userRole'>{selectRoleLabel(selectedRole)}</span>
+          <span id='userRole'>
+            {selectRoleLabel(selectedRole)}
+          </span>
           <span id='userName'>{`${name} ${surname}`}</span>
 
           <span id='userActivity'>
-            <svg width='5' height='5' xmlns='http://www.w3.org/2000/svg'>
-              <circle cx='2.5' cy='2.5' r='2.5' fill='#00FF66' />
+            <svg
+              width='5'
+              height='5'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <circle
+                cx='2.5'
+                cy='2.5'
+                r='2.5'
+                fill='#00FF66'
+              />
             </svg>
             Online
           </span>
         </UserInfo>
 
-        <button type='button' onClick={() => toggleEditProfile()}>
+        <button
+          type='button'
+          onClick={() => toggleEditProfile()}
+        >
           <GearIcon />
         </button>
 
@@ -175,9 +218,13 @@ const RightMenu: React.FC = () => {
                       <RoleLi key={role} role={role}>
                         <button
                           type='button'
-                          onClick={() =>
-                            dispatch(UserActions.updateUserInfo({ selectedRole: role }))
-                          }
+                          onClick={() => {
+                            dispatch(
+                              UserActions.updateUserInfo({
+                                selectedRole: role,
+                              })
+                            )
+                          }}
                         >
                           {selectRoleLabel(role)}
                         </button>
@@ -190,20 +237,33 @@ const RightMenu: React.FC = () => {
               <ul id='openProfile'>
                 <motion.hr variants={motionHr} />
 
-                <motion.li key='Profiles toggleEditProfile' variants={motionLi}>
-                  <button type='button' onClick={() => setChangeRole(!changeRole)}>
+                <motion.li
+                  key='Profiles toggleEditProfile'
+                  variants={motionLi}
+                >
+                  <button
+                    type='button'
+                    onClick={() =>
+                      setChangeRole(!changeRole)}
+                  >
                     <ChangeIcon />
                     Alternar entre papéis
                   </button>
                 </motion.li>
 
-                <motion.li key='Edit Profile' variants={motionLi}>
+                <motion.li
+                  key='Edit Profile'
+                  variants={motionLi}
+                >
                   <Link to='/session/profile/edit-profile'>
                     <EditUserIcon /> Editar perfil
                   </Link>
                 </motion.li>
 
-                <motion.li key='Switch Perfil' variants={motionLi}>
+                <motion.li
+                  key='Switch Perfil'
+                  variants={motionLi}
+                >
                   <Link to='/session/profile/change-role'>
                     <AddRoleIcon /> Solicitar novo papel
                   </Link>
@@ -225,7 +285,10 @@ const RightMenu: React.FC = () => {
         </AnimatePresence>
 
         {selectedRole === 'guest' && (
-          <Link to='/session/profile/change-role' id='baseButton'>
+          <Link
+            to='/session/profile/change-role'
+            id='baseButton'
+          >
             <AddRoleIcon /> Adicionar papel
           </Link>
         )}

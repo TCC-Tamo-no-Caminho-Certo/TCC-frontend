@@ -13,8 +13,8 @@ const Style = styled.div<StyleProps>`
   display: ${({ hidden }) => (hidden ? 'none' : 'flex')};
   align-items: center;
 
-  min-height: 35px;
-  height: 4.5vh;
+  height: max(4.5vh, 35px);
+  min-width: 320px;
   font-size: calc(1.3rem + 0.5vh);
   border-radius: 10px;
   padding: 0 8px;

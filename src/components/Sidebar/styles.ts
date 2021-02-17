@@ -1,4 +1,4 @@
-import { FC } from 'react'
+
 
 import { HTMLMotionProps, motion } from 'framer-motion'
 import styled, { css } from 'styled-components'
@@ -6,22 +6,64 @@ import styled, { css } from 'styled-components'
 interface StyleProps extends HTMLMotionProps<'nav'> {
   letters: string
   background: string
+  isOpen: boolean
 }
 
 interface ListItemProps {
   paths: string[]
   pathname: string
   selected: string
+  isOpen: boolean
   bottom?: boolean
 }
 
-export const SidebarNav = styled(motion.nav as FC<StyleProps>)`
+
+
+export const ListItem = styled.li<ListItemProps>`
+  visibility: ${({isOpen}) => isOpen ? 'visible' : 'hidden'};
+
+  cursor: pointer;
+
+  ${({ bottom }) =>
+    bottom &&
+    css`
+      position: absolute;
+      bottom: 72px;
+      left: 0;
+    `}
+
+  ${({ pathname, paths, selected }) => {
+    const verifyPaths = () => {
+      for (let i = 0; i < paths.length; i += 1) {
+        const regex = new RegExp(`^${paths[i]}$`)
+        if (pathname.match(regex)) return true
+      }
+
+      return false
+    }
+
+    return (
+      verifyPaths() &&
+      css`
+        ${`#${paths[0]}`} {
+          background-color: ${selected};
+        }
+      `
+    )
+  }}
+
+  @media screen and (min-width: 425px) {
+    visibility: visible;
+  }
+`
+
+export const SidebarNav = styled(motion.nav)<StyleProps>`
   position: fixed;
   left: 0;
-  top: 0;
+  bottom: 0;
 
-  height: 100vh;
   z-index: 3;
+  min-width: 320px;
 
   ${({ background }) =>
     background.search(/gradient/)
@@ -73,7 +115,7 @@ export const SidebarNav = styled(motion.nav as FC<StyleProps>)`
     width: 100%;
     height: 72px;
 
-    border-bottom: solid 2px ${({ letters }) => letters};
+    border-bottom: ${({letters, isOpen }) => isOpen ? `solid 2px ${letters}` : 'none'}
   }
 
   .Hamburger {
@@ -97,39 +139,28 @@ export const SidebarNav = styled(motion.nav as FC<StyleProps>)`
       height: 72px;
     }
   }
-`
 
-export const ListItem = styled.li<ListItemProps>`
-  cursor: pointer;
+  @media screen and (min-width: 425px) {
+    min-width: 72px;
+    width: 72px;
+    height: 100vh;
 
-  ${({ bottom }) =>
-    bottom &&
-    css`
-      position: absolute;
-      bottom: 72px;
-      left: 0;
-    `}
-
-  ${({ pathname, paths, selected }) => {
-    const verifyPaths = () => {
-      for (let i = 0; i < paths.length; i += 1) {
-        const regex = new RegExp(`^${paths[i]}$`)
-        if (pathname.match(regex)) return true
-      }
-
-      return false
+    #header {
+      border-bottom: ${({letters}) => `solid 2px ${letters}`}
     }
-
-    return (
-      verifyPaths() &&
-      css`
-        ${`#${paths[0]}`} {
-          background-color: ${selected};
-        }
-      `
-    )
-  }}
+  }
 `
 
+const Style = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  overflow-x: hidden;
+  min-width: 320px;
+`
+
+export default Style
+
+Style.displayName = 'SidebarWrapper-Style'
 SidebarNav.displayName = 'SidebarNav-Style'
 ListItem.displayName = 'ListItem-Style'

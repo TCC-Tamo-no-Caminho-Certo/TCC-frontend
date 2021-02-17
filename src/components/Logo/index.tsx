@@ -2,8 +2,6 @@
 import React from 'react'
 import Style from './styles'
 
-//  
-
 export const Logo: React.FC = () => {
   // const theme = useSelector<RootState, ThemeState>(state => state.theme)
 

@@ -40,6 +40,7 @@ const Profile: React.FC = () => {
         icon: () => <ProjectIcon />,
         paths: ['/session/moderator'],
         label: 'Moderador',
+        bottom: true,
       })
 
     return sidebarSections

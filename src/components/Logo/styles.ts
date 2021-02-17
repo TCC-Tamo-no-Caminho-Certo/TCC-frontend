@@ -6,7 +6,6 @@ const Style = styled.div.attrs({
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
 
   width: 80%;
 

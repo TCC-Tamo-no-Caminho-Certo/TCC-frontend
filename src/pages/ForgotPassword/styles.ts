@@ -43,14 +43,14 @@ const Style = styled.main`
   width: 100vw;
   height: 100vh;
 
-  background-color: #6e4850;
+  background-color: ${({ theme }) => theme.colors.tertiary};
 
   article {
     width: min(90%, 500px);
     padding: 20px 15px 40px;
     border-radius: 10px;
 
-    background: #fcfcfc;
+    background: ${({ theme }) => theme.colors.secondary};
     box-shadow: -8px 8px 10px -4px rgba(0, 0, 0, 0.49);
 
     header {
@@ -136,7 +136,7 @@ const Style = styled.main`
     top: 3%;
     left: 1%;
 
-    color: #fcfcfc;
+    color: ${({ theme }) => theme.colors.secondary};
     transition: all 0.2s;
 
     &:hover {

@@ -8,6 +8,7 @@ const Login: React.FC = () => {
   return (
     <Style>
       <FormLogin />
+
       <About />
     </Style>
   )

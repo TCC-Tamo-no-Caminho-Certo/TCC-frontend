@@ -41,26 +41,32 @@ const FormSignup: React.FC = () => {
       <Logo />
 
       <Form
-        schema={signupSchema}
+        captcha
+        loading
         path='register'
+        schema={signupSchema}
         getData={data => {
           if (data.birthday) {
             const old = data.birthday.split('/')
             data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
           }
         }}
-        loading
-        captcha
       >
         <Text
           className='dual'
           name='name'
           placeholder='Nome'
-          icon={WorldIcon}
           autoComplete='given-name'
+          icon={WorldIcon}
         />
 
-        <Text name='surname' placeholder='Sobrenome' icon={WorldIcon} autoComplete='family-name' />
+        <Text
+          className='dual'
+          name='surname'
+          placeholder='Sobrenome'
+          autoComplete='family-name'
+          icon={WorldIcon}
+        />
 
         <span>
           Certifique-se de que corresponde ao nome no seu documento de identificação oficial
@@ -84,27 +90,30 @@ const FormSignup: React.FC = () => {
         <span>Enviaremos um e-mail para confirmação</span>
 
         <Text
+          eye
           className='dual'
           name='password'
           type='password'
           placeholder='Senha'
           autoComplete='new-password'
           icon={UserLockedIcon}
-          eye
         />
 
         <Text
+          className='dual'
           name='confirmPassword'
           type='password'
           placeholder='Confirmar Senha'
-          icon={UserLockedIcon}
           autoComplete='new-password'
+          icon={UserLockedIcon}
         />
 
         <span>
-          Ao clicar em Concordar e concluir, concordo com os <a href='.'>Termos de uso</a>, os{' '}
-          <a href='.'>Termos de Serviço e Pagamentos</a>, a <a href='.'>Política de Privacidade</a>{' '}
-          e a <a href='.'>Política de Não Discriminação</a> do Steams Lab.
+          Ao clicar em Concordar e concluir, concordo com os
+          <a href='.link'>Termos de uso</a>, os
+          <a href='.link'>Termos de Serviço e Pagamentos</a>, a{' '}
+          <a href='.link'>Política de Privacidade</a> e a{' '}
+          <a href='.link'>Política de Não Discriminação</a> do Steams Lab.
         </span>
 
         <Submit>Concordar e concluir</Submit>

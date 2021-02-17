@@ -1,8 +1,10 @@
-import React, { useCallback, useEffect } from 'react'
-import { ListItem, SidebarNav } from './styles'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import Style, { ListItem, SidebarNav } from './styles'
 
 import { SidebarActions } from 'store/sidebar'
 import { RootState } from 'store'
+
+import useWindowDimensions from 'hooks/useWindowDimensions'
 
 import Hamburger from 'components/Hamburger'
 
@@ -42,10 +44,13 @@ const Sidebar: React.FC<SidebarProps> = ({
   closedWidth = 72,
   width = 210,
 }) => {
+  const { innerWidth } = useWindowDimensions()
+  const [isLarge, setisLarge] = useState(innerWidth >= 425)
   const open = useSelector<RootState, boolean>(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
   const history = useHistory()
   const { pathname } = useLocation()
+  const burgerRef = useRef<any>(null)
 
   const scrollMoveCorrectly = useCallback(
     (index: number): void => {
@@ -68,6 +73,19 @@ const Sidebar: React.FC<SidebarProps> = ({
   )
 
   useEffect(() => {
+    setisLarge(innerWidth >= 425)
+  }, [innerWidth])
+
+  useEffect(() => {
+    ;(async () => {
+      await dispatch(SidebarActions.toggleSidebar(!open))
+      dispatch(SidebarActions.toggleSidebar(open))
+    })()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLarge])
+
+  useEffect(() => {
     const pathArray = routes.map(({ paths }) => (paths[0] === pathname ? 1 : 0))
     const selectedIndex = pathArray.indexOf(1)
     scrollMoveCorrectly(selectedIndex)
@@ -76,12 +94,13 @@ const Sidebar: React.FC<SidebarProps> = ({
   const onToggle = () => dispatch(SidebarActions.toggleSidebar(!open))
 
   const contentSize = (): string => {
-    return open ? `calc(100vw - ${width}px)` : `calc(100vw - ${closedWidth}px)`
+    if (open) return isLarge ? `calc(100vw - ${width}px)` : '100vw'
+    return isLarge ? `calc(100vw - ${closedWidth}px)` : '100vw'
   }
 
   const motionContent: Variants = {
     open: {
-      x: width,
+      x: isLarge ? width : 0,
       width: contentSize(),
       transition: {
         type: 'tween',
@@ -89,7 +108,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       },
     },
     closed: {
-      x: closedWidth,
+      x: isLarge ? closedWidth : 0,
       width: contentSize(),
       transition: {
         type: 'tween',
@@ -100,14 +119,16 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const motionBackground: Variants = {
     open: {
-      width,
+      height: '100vh',
+      width: isLarge ? width : '100vw',
       transition: {
         type: 'tween',
         duration: 0.3,
       },
     },
     closed: {
-      width: closedWidth,
+      height: isLarge ? '100vh' : closedWidth,
+      width: isLarge ? closedWidth : '100vw',
       transition: {
         type: 'tween',
         duration: 0.2,
@@ -139,16 +160,17 @@ const Sidebar: React.FC<SidebarProps> = ({
   }
 
   return (
-    <>
+    <Style draggable='false'>
       <SidebarNav
+        isOpen={open}
         variants={motionBackground}
         animate={open ? 'open' : 'closed'}
-        initial={open ? 'open' : 'closed'}
+        initial={!isLarge ? 'open' : 'closed'}
         letters={letters}
         background={background}
       >
         <div id='header'>
-          <Hamburger toggle={onToggle} state={open} color={letters} />
+          <Hamburger ref={burgerRef} toggle={onToggle} state={open} color={letters} />
 
           <AnimatePresence>
             {open && (
@@ -162,6 +184,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         <ul>
           {routes.map(({ paths, bottom, icon: Icon, label }, index) => (
             <ListItem
+              isOpen={open}
               key={paths[0]}
               bottom={bottom}
               selected={selected}
@@ -219,12 +242,15 @@ const Sidebar: React.FC<SidebarProps> = ({
       </SidebarNav>
 
       {routes.map(({ paths, component, noContentMove, exact }) => (
-        <motion.section
+        <motion.div
           key={paths[0]}
           id={paths[0].replaceAll('/', '--')}
           variants={motionContent}
           animate={open && !noContentMove ? 'open' : 'closed'}
           initial={open && !noContentMove ? 'open' : 'closed'}
+          style={{
+            minWidth: 320,
+          }}
         >
           {samePage ? (
             component && component()
@@ -235,9 +261,9 @@ const Sidebar: React.FC<SidebarProps> = ({
               ))}
             </>
           )}
-        </motion.section>
+        </motion.div>
       ))}
-    </>
+    </Style>
   )
 }
 

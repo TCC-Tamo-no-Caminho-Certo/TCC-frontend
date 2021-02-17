@@ -7,7 +7,7 @@ const Style = styled.div`
 
   height: 100vh;
 
-  background-color: #6e4850;
+  background-color: ${({theme}) => theme.colors.tertiary};
   color: white;
 `
 

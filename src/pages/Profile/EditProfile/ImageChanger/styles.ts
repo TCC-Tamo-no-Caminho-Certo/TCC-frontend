@@ -23,7 +23,7 @@ export const RightMenu = styled.div`
     width: 16px;
     height: 16px;
     margin-right: 0px;
-    stroke: #fcfcfc;
+    stroke: ${({ theme }) => theme.colors.secondary};
 
     &:hover {
       stroke: ${({ theme }) => theme.colors.primary};
@@ -50,7 +50,7 @@ export const RightMenu = styled.div`
 
     span {
       margin-bottom: 12px;
-      color: #fcfcfc;
+      color: ${({ theme }) => theme.colors.secondary};
     }
 
     #before-img-preview {
@@ -77,11 +77,11 @@ export const RightMenu = styled.div`
     font-size: 1.2rem;
     text-align: center;
 
-    color: #fcfcfc;
+    color: ${({ theme }) => theme.colors.secondary};
 
     cursor: pointer;
 
-    border: solid #fcfcfc 1px;
+    border: solid ${({ theme }) => theme.colors.secondary} 1px;
 
     &:hover {
       color: ${({ theme }) => theme.colors.primary};
@@ -95,7 +95,7 @@ export const RightMenu = styled.div`
       width: 20px;
       height: 20px;
       margin-left: 8px;
-      fill: #fcfcfc;
+      fill: ${({ theme }) => theme.colors.secondary};
 
       transform: translateY(-10%);
     }
@@ -103,7 +103,7 @@ export const RightMenu = styled.div`
 
   #discardButton {
     transition: color 200ms ease-in-out;
-    color: #fcfcfc;
+    color: ${({ theme }) => theme.colors.secondary};
 
     &:hover {
       color: ${({ theme }) => theme.colors.primary};
@@ -113,7 +113,7 @@ export const RightMenu = styled.div`
   #confirmButton {
     height: 36px;
 
-    color: #fcfcfc;
+    color: ${({ theme }) => theme.colors.secondary};
     background-color: transparent;
     border: solid 1px ${({ theme }) => theme.colors.primary};
     margin-top: 8px;
@@ -121,7 +121,8 @@ export const RightMenu = styled.div`
     transition: box-shadow 300ms ease-in-out;
 
     &:hover {
-      box-shadow: inset -74px 0 0 0 ${({ theme }) => theme.colors.primary}, inset 74px 0 0 0 ${({ theme }) => theme.colors.primary};
+      box-shadow: inset -74px 0 0 0 ${({ theme }) => theme.colors.primary},
+        inset 74px 0 0 0 ${({ theme }) => theme.colors.primary};
     }
   }
 `
@@ -134,7 +135,7 @@ const Style = styled.div`
   padding: 48px;
   border-radius: 24px;
 
-  background-color: #6e4850;
+  background-color: ${({ theme }) => theme.colors.tertiary};
 
   input[type='file'] {
     display: none;
@@ -151,8 +152,8 @@ const Style = styled.div`
     height: 300px;
     border-radius: 5px;
 
-    color: #fcfcfc;
-    border: #fcfcfc dashed 1px;
+    color: ${({ theme }) => theme.colors.secondary};
+    border: ${({ theme }) => theme.colors.secondary} dashed 1px;
     cursor: pointer;
 
     &:hover {
@@ -168,7 +169,7 @@ const Style = styled.div`
     .cropper-modal {
       border-radius: 5px;
 
-      border: #fcfcfc dashed 1px;
+      border: ${({ theme }) => theme.colors.secondary} dashed 1px;
     }
 
     .cropper-face {
@@ -182,7 +183,7 @@ const Style = styled.div`
     .cropper-view-box {
       border-radius: 50%;
 
-      outline: 1px solid #fcfcfc;
+      outline: 1px solid ${({ theme }) => theme.colors.secondary};
     }
 
     .cropper-point {
@@ -190,7 +191,7 @@ const Style = styled.div`
       height: 5px;
       opacity: 1;
 
-      background-color: #fcfcfc;
+      background-color: ${({ theme }) => theme.colors.secondary};
     }
 
     .cropper-center {
@@ -204,7 +205,7 @@ const Style = styled.div`
       width: 8px;
       height: 1px;
 
-      background-color: #fcfcfc;
+      background-color: ${({ theme }) => theme.colors.secondary};
     }
 
     .cropper-center::after {
@@ -214,7 +215,7 @@ const Style = styled.div`
       width: 1px;
       height: 8px;
 
-      background-color: #fcfcfc;
+      background-color: ${({ theme }) => theme.colors.secondary};
     }
 
     .cropper-line,

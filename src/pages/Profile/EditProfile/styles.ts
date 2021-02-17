@@ -8,7 +8,7 @@ export const ConfirmForm = styled(Form)`
   padding: 24px;
   border-radius: 16px;
   transform: scale(1.2);
-  background-color: #fcfcfc;
+  background-color: ${({ theme }) => theme.colors.secondary};
 
   span {
     display: block;
@@ -22,7 +22,7 @@ export const ConfirmForm = styled(Form)`
     right: 24px;
     width: 16px;
 
-    stroke: #6e4850;
+    stroke: ${({ theme }) => theme.colors.tertiary};
 
     &:hover {
       filter: brightness(1.1);
@@ -43,7 +43,7 @@ export const ConfirmForm = styled(Form)`
     height: 44px;
 
     button#cancel {
-      color: #6e4850;
+      color: ${({ theme }) => theme.colors.tertiary};
 
       &:hover {
         filter: brightness(1.1);
@@ -60,7 +60,7 @@ export const ConfirmForm = styled(Form)`
       margin-left: 24px;
 
       background-color: ${({ theme }) => theme.colors.primary};
-      color: #fcfcfc;
+      color: ${({ theme }) => theme.colors.secondary};
 
       &:hover {
         filter: brightness(1.1);
@@ -75,7 +75,7 @@ const Style = styled(motion.section)`
 
   height: 100vh;
 
-  background-color: #6e4850;
+  background-color: ${({ theme }) => theme.colors.tertiary};
 
   &,
   ${ConfirmForm} {
@@ -106,7 +106,7 @@ const Style = styled(motion.section)`
     height: 40px;
     border-radius: 15px;
 
-    color: #fcfcfc;
+    color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.primary};
     box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.49);
     transition: transform 1s ease;
@@ -125,7 +125,7 @@ const Style = styled(motion.section)`
     border-radius: 15px;
     margin-right: 220px;
 
-    color: #fcfcfc;
+    color: ${({ theme }) => theme.colors.secondary};
     background-color: transparent;
 
     &:hover {

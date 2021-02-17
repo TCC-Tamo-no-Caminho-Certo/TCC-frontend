@@ -8,6 +8,7 @@ const Signup: React.FC = () => {
   return (
     <Style>
       <FormSignup />
+
       <Subscribe />
     </Style>
   )

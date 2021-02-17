@@ -76,6 +76,7 @@ const Datepicker: React.FC<Datepicker> = ({
         color={valueColor}
         onClick={onClick}
         value={InputValue(selectedDate)}
+        className='Datepicker'
         {...rest}
       />
     )

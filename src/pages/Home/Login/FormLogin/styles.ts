@@ -7,12 +7,12 @@ export const LoginFailed = styled(motion.div)`
   width: auto;
   margin: 0;
 
-  color: #d62828;
+  color: ${({ theme }) => theme.colors.red};
   align-self: flex-end;
 
   .Icon {
     width: 24px;
-    fill: #d62828;
+    fill: ${({ theme }) => theme.colors.red};
 
     margin-right: 8px;
   }
@@ -34,12 +34,10 @@ export const Register = styled.div`
 export const Form = styled(RealForm)`
   flex-direction: column;
 
-  width: 70%;
-  max-width: 530px;
+  width: clamp(300px, 70%, 530px);
 
   > * {
     width: 100%;
-
     margin-bottom: 2.5vh;
 
     &:last-child {
@@ -50,14 +48,13 @@ export const Form = styled(RealForm)`
   button#login {
     position: relative;
 
-    height: 5vh;
-    min-height: 35px;
+    height: max(5vh, 35px);
     transition: all 0.2s;
     font-size: calc(1.3rem + 0.5vh);
-
-    color: white;
-    border: none;
     border-radius: 8px;
+
+    border: none;
+    color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.primary};
 
     &:hover {
@@ -92,17 +89,16 @@ export const Form = styled(RealForm)`
   }
 
   a {
-    padding: 4px 0;
+    align-self: flex-end;
+
+    padding: 4px 16px 4px 0px;
     width: auto;
     margin: 0;
-    align-self: flex-end;
 
     font-size: calc(1.1rem + 0.5vh);
     text-align: end;
 
     color: ${({ theme }) => theme.colors.primary};
-
-    padding-right: 16px;
 
     &:hover {
       filter: brightness(1.1);
@@ -124,11 +120,10 @@ const Style = styled.div`
   position: relative;
   z-index: 2;
 
-  min-width: 320px;
-  width: calc(100vw + 1px);
+  width: max(100vw + 1px, 320px);
   min-height: 100vh;
 
-  background-color: #fcfcfc;
+  background-color: ${({ theme }) => theme.colors.secondary};
 
   &,
   ${Form}, ${LoginFailed}, ${Register} {
@@ -140,7 +135,7 @@ const Style = styled.div`
   .Checkbox {
     padding-bottom: 8px;
 
-    border-bottom: 2px solid #6e4850;
+    border-bottom: 2px solid ${({ theme }) => theme.colors.tertiary};
   }
 
   .ThemeSwitch {
@@ -148,8 +143,7 @@ const Style = styled.div`
     top: 24px;
     right: 10%;
 
-    min-height: 33px;
-    height: 4vh;
+    height: max(4vh, 33px);
   }
 
   @media screen and (min-width: 1200px) {

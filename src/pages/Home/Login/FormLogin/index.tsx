@@ -73,7 +73,9 @@ const FormLogin: React.FC = () => {
                 exit={{ x: '-10%', opacity: [1, 0] }}
                 transition={{ type: 'tween', duration: 0.7 }}
               >
-                <AlertIcon /> <div>{loginFailed}</div>
+                <AlertIcon />
+
+                <div>{loginFailed}</div>
               </LoginFailed>
             )}
           </AnimatePresence>

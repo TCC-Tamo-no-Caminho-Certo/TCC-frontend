@@ -12,19 +12,19 @@ import { motion } from 'framer-motion'
 import { useSelector } from 'react-redux'
 
 interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
-  size: number
-  shadow?: boolean
   onShadowClick?(): void
   onClick?(): void
+  size: number
+  shadow?: boolean
   loaderColor?: string
   border?: boolean
 }
 const Avatar: FC<AvatarProps> = ({
   size,
-  shadow = false,
   onShadowClick,
-  loaderColor = '#6e4850',
   onClick,
+  loaderColor = '#6e4850',
+  shadow = false,
   border = false,
   ...rest
 }) => {

@@ -8,11 +8,10 @@ const Style = styled.div`
   align-items: center;
   flex-direction: column;
 
-  min-width: 320px;
-  width: 100vw;
+  width: max(100vw, 320px);
   min-height: 100vh;
 
-  background-color: #fcfcfc;
+  background-color: ${({ theme }) => theme.colors.secondary};
 
   nav {
     position: absolute;
@@ -22,59 +21,35 @@ const Style = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    width: 80%;
-    max-width: 1000px;
+    width: min(80%, 1000px);
     height: 4vh;
 
     .ThemeSwitch {
-      min-width: 33px;
-      min-height: 33px;
-      height: 100%;
+      height: max(100%, 33px);
     }
   }
 
   .Logo {
     padding-top: 80px;
+    margin-bottom: 20px;
   }
 
   form {
+    position: relative;
+
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 
-    width: 80%;
-    padding-bottom: 80px;
+    width: clamp(300px, 80%, 530px);
 
-    & > button {
+    & > * {
       width: 100%;
-      min-height: 35px;
-      height: 5vh;
+    }
 
-      transition: all 0.2s;
-      font: 700 1.8rem 'Archivo';
-      font-size: calc(1.3rem + 0.5vh);
-
-      color: white;
-      border: none;
-      margin-top: 30px;
-      border-radius: 8px;
-      background-color: ${({ theme }) => theme.colors.primary};
-
-      &:hover {
-        filter: brightness(1.1);
-        transform: scale(1.01);
-      }
-
-      position: relative;
-
-      .DotsLoader {
-        position: absolute;
-        right: 10%;
-        top: 50%;
-
-        transform: translateY(-50%);
-      }
+    span {
+      margin: 1.25vh 0;
     }
 
     .dual {
@@ -86,24 +61,30 @@ const Style = styled.div`
       }
     }
 
-    & > span {
-      font-size: calc(1.3rem + 0.5vh);
-      margin: 1.25vh 0;
-    }
+    .Submit {
+      height: max(5vh, 35px);
 
-    & > * {
-      width: 100%;
-      max-width: 530px;
-    }
-  }
+      transition: all 0.2s;
+      margin-top: 30px;
+      border-radius: 8px;
 
-  .Logo {
-    margin-bottom: 22px;
+      &:hover {
+        filter: brightness(1.1);
+        transform: scale(1.01);
+      }
+
+      .DotsLoader {
+        position: absolute;
+        right: 10%;
+        top: 50%;
+
+        transform: translateY(-50%);
+      }
+    }
   }
 
   @media screen and (min-width: 1200px) {
     border-radius: 0 20px 20px 0;
-
     width: 38vw;
 
     nav {

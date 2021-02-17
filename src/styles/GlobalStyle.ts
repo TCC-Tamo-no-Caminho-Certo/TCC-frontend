@@ -17,7 +17,7 @@ export default createGlobalStyle`
 
   body {
     font-size: 1.6rem;
-    color: #6E4850;
+    color: ${({ theme }) => theme.colors.tertiary};
     background-color: #D65881;
     
     span, p, h1, h2, h3, h4, h5 {
@@ -34,7 +34,7 @@ export default createGlobalStyle`
 
     &::-webkit-scrollbar {
       width: 16px;
-      background-color:${darken(0.1, '#6e4850')};
+      background-color:${({ theme }) => darken(0.1, theme.colors.tertiary)};
     }
 
     &::-webkit-scrollbar-track {

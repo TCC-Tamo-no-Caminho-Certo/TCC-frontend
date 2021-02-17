@@ -4,6 +4,16 @@ import { motion } from 'framer-motion'
 import { darken } from 'polished'
 import styled, { css } from 'styled-components'
 
+interface StyleProps {
+  closedHeight: string
+}
+
+interface BackgroundProps {
+  closedHeight: string
+  openHeight: string
+  isOpen: boolean
+}
+
 interface RightMenuOpenProps {
   height: string
   width: string
@@ -14,28 +24,13 @@ interface UserInfoProps {
   selectedRole: Role
 }
 
-interface StyleProps {
-  width: string
-}
-
 interface RoleLiProps {
   role: Role
 }
 
-export const Background = styled.svg`
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 1;
-
-  overflow: visible;
-
-  path {
-    fill: ${darken(0.1, '#6e4850')};
-  }
-`
-
-export const UserInfo = styled.div.attrs({ className: 'UserInfo' })<UserInfoProps>`
+export const UserInfo = styled.div.attrs({
+  className: 'UserInfo',
+})<UserInfoProps>`
   display: flex;
   flex-direction: column;
 
@@ -51,13 +46,14 @@ export const UserInfo = styled.div.attrs({ className: 'UserInfo' })<UserInfoProp
   #userRole {
     font-size: 1.3rem;
 
-    color: ${({ theme, selectedRole }) => theme.roles[selectedRole]};
+    color: ${({ theme, selectedRole }) =>
+      theme.roles[selectedRole]};
   }
 
   #userName {
     font-size: 1.4rem;
 
-    color: #fcfcfc;
+    color: ${({ theme }) => theme.colors.secondary};
   }
 
   #userActivity {
@@ -79,10 +75,12 @@ export const RoleLi = styled.li<RoleLiProps>`
     user-select: none;
 
     color: ${({ theme }) => theme.colors.secondary};
-    background-color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) =>
+      theme.colors.primary};
 
     &:hover {
-      background-color: ${({ theme, role }) => theme.roles[role]};
+      background-color: ${({ theme, role }) =>
+        theme.roles[role]};
     }
   }
 
@@ -91,7 +89,8 @@ export const RoleLi = styled.li<RoleLiProps>`
       border-radius: 16px 0 0 0;
 
       &:hover {
-        background-color: ${({ theme, role }) => theme.roles[role]};
+        background-color: ${({ theme, role }) =>
+          theme.roles[role]};
       }
     }
   }
@@ -101,7 +100,8 @@ export const RoleLi = styled.li<RoleLiProps>`
       border-radius: 0 0 16px 16px;
 
       &:hover {
-        background-color: ${({ theme, role }) => theme.roles[role]};
+        background-color: ${({ theme, role }) =>
+          theme.roles[role]};
       }
     }
   }
@@ -111,7 +111,8 @@ export const RoleLi = styled.li<RoleLiProps>`
       border-radius: 16px 0 0 16px;
 
       &:hover {
-        background-color: ${({ theme, role }) => theme.roles[role]};
+        background-color: ${({ theme, role }) =>
+          theme.roles[role]};
       }
     }
   }
@@ -120,11 +121,11 @@ export const RoleLi = styled.li<RoleLiProps>`
 export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
   position: absolute;
   top: 112px;
-  right: 0;
   z-index: 2;
 
   padding: 16px 0;
-  width: ${({ width }) => width};
+  min-width: 320px;
+  width: 100vw;
   height: ${({ height }) => height};
 
   hr {
@@ -136,7 +137,8 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     height: 2px;
 
     border: none;
-    background-color: #fcfcfc;
+    background-color: ${({ theme }) =>
+      theme.colors.secondary};
   }
 
   #selectRoles {
@@ -154,14 +156,16 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     li {
       a:hover,
       button:hover {
-        background-color: ${({ theme }) => theme.colors.primary};
+        background-color: ${({ theme }) =>
+          theme.colors.primary};
       }
 
       button {
         ${({ changeRole }) =>
           changeRole &&
           css`
-            background-color: ${({ theme }) => theme.colors.primary};
+            background-color: ${({ theme }) =>
+              theme.colors.primary};
           `}
       }
     }
@@ -176,7 +180,7 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
       height: 100%;
       font-size: 1.4rem;
 
-      color: #fcfcfc;
+      color: ${({ theme }) => theme.colors.secondary};
       user-select: none;
 
       .Icon {
@@ -196,7 +200,7 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     height: 24px;
     opacity: 0;
 
-    color: #fcfcfc;
+    color: ${({ theme }) => theme.colors.secondary};
 
     span {
       user-select: none;
@@ -205,28 +209,62 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
 
     .Icon {
       min-width: 20px;
-      min-height: 20px;
       width: 20px;
+      min-height: 20px;
       height: 20px;
       margin: 0px;
       margin-left: 8px;
 
-      fill: #fcfcfc;
+      fill: ${({ theme }) => theme.colors.secondary};
     }
+  }
+
+  @media screen and (min-width: 425px) {
+    right: 0;
+
+    min-width: 300px;
+    width: 300px;
+  }
+`
+
+export const Background = styled.svg<BackgroundProps>`
+  position: fixed;
+  top: 0;
+
+  min-width: 320px;
+  width: 100vw;
+  
+  height: ${({ isOpen, openHeight, closedHeight }) =>
+    isOpen ? openHeight : closedHeight};
+
+  path {
+    fill: ${({ theme }) =>
+      darken(0.1, theme.colors.tertiary)};
+  }
+
+  @media screen and (min-width: 425px) {
+    right: 0;
+
+    min-width: 300px;
+    width: 300px;
+    border-radius: 8px 0 0 8px;
   }
 `
 
 const Style = styled.div<StyleProps>`
+  
+
   position: fixed;
   top: 0;
-  right: 0;
+
   z-index: 2;
 
   display: flex;
   align-items: center;
 
-  width: ${({ width }) => width};
-  height: 104px;
+  min-width: 320px;
+  width: 100vw;
+  height: ${({ closedHeight }) => closedHeight};
 
   * {
     z-index: 2;
@@ -235,7 +273,7 @@ const Style = styled.div<StyleProps>`
   a,
   svg,
   span {
-    color: #fcfcfc;
+    color: ${({ theme }) => theme.colors.secondary};
   }
 
   .Avatar,
@@ -247,15 +285,14 @@ const Style = styled.div<StyleProps>`
     margin-right: 16px;
     width: 24px;
 
-    fill: #fcfcfc;
+    fill: ${({ theme }) => theme.colors.secondary};
   }
 
   #Gear {
-    width: 10px;
-
     position: absolute;
     right: 16px;
     top: 73px;
+
     width: 16px;
     height: 16px;
   }
@@ -274,8 +311,15 @@ const Style = styled.div<StyleProps>`
     padding: 8px;
     border-radius: 8px;
 
-    color: #fcfcfc;
-    background-color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) =>
+      theme.colors.primary};
+  }
+
+  @media screen and (min-width: 425px) {
+    min-width: 300px;
+    width: 300px;
+    right: 0;
   }
 `
 

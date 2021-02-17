@@ -12,7 +12,7 @@ const Style = styled.main`
   height: 100vh;
   font-size: 3rem;
 
-  color: #fcfcfc;
+  color: ${({ theme }) => theme.colors.secondary};
   background-color: transparent;
 
   @media screen and (min-width: 1200px) {
