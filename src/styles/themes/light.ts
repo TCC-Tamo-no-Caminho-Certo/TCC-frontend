@@ -11,7 +11,7 @@ const light: ThemeAttributes = {
     green: '#00d053',
     yellow: '#fff500',
     red: '#ff0000',
-    gray: '#C4C4C4',
+    gray: '#C4C4C4'
   },
 
   roles: {
@@ -22,14 +22,14 @@ const light: ThemeAttributes = {
     professor: '#329dff',
     evaluator: '#ba5eff',
     moderator: '#64e3ff',
-    admin: '#d62828',
+    admin: '#d62828'
   },
 
   sidebar: {
     selected: '#6e4850',
     letters: '#fcfcfc',
-    background: '#d65881',
-  },
+    background: '#d65881'
+  }
 }
 
 export default light

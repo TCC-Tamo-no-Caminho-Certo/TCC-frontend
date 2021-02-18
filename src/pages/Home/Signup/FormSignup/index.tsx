@@ -69,7 +69,8 @@ const FormSignup: React.FC = () => {
         />
 
         <span>
-          Certifique-se de que corresponde ao nome no seu documento de identificação oficial
+          Certifique-se de que corresponde ao nome no seu documento de
+          identificação oficial
         </span>
 
         <Datepicker
@@ -85,7 +86,12 @@ const FormSignup: React.FC = () => {
 
         <span>Você precisa ter pelo menos 18 anos</span>
 
-        <Text name='email' placeholder='E-mail' icon={UserLockedIcon} autoComplete='email' />
+        <Text
+          name='email'
+          placeholder='E-mail'
+          icon={UserLockedIcon}
+          autoComplete='email'
+        />
 
         <span>Enviaremos um e-mail para confirmação</span>
 

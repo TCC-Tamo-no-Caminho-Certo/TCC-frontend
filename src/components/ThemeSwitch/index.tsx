@@ -17,7 +17,12 @@ const ThemeSwitch: React.FC = () => {
       onClick={() => dispatch(ThemeActions.changeTheme())}
       style={{ cursor: 'pointer' }}
     >
-      <g strokeWidth='3' strokeLinecap='round' strokeLinejoin='round' stroke='#6E4850'>
+      <g
+        strokeWidth='3'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        stroke='#6E4850'
+      >
         <path d='M21 40.25L21 36.75' />
         <path d='M21 5.25L21 1.75' />
         <path d='M34.6152 34.6152L32.1302 32.1302' />

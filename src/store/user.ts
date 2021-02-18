@@ -53,7 +53,7 @@ const initialState: UserState = {
   updated_at: '',
   roles: ['guest'],
   selectedRole: 'guest',
-  emails: [{ email: '', main: true }],
+  emails: [{ email: '', main: true }]
 }
 
 const User = createSlice({
@@ -66,10 +66,10 @@ const User = createSlice({
 
       return {
         ...state,
-        ...action.payload,
+        ...action.payload
       }
-    },
-  },
+    }
+  }
 })
 
 export const UserActions = User.actions

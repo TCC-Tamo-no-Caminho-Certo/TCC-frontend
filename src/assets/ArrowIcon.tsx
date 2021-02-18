@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React from 'react'
 
 import { motion, Variants } from 'framer-motion'
@@ -20,8 +19,8 @@ const ArrowIcon: React.FC<ArrowIconProps> = ({
   animate,
   transition = {
     type: 'tween',
-    duration: 0.3,
-  },
+    duration: 0.3
+  }
 }) => {
   return (
     <motion.svg

@@ -20,20 +20,20 @@ const Moderator: React.FC = () => {
         component: () => <Solicitation />,
         paths: ['/session/moderator', '/session/moderator/solicitation'],
         label: 'Solicitações',
-        exact: true,
+        exact: true
       },
       {
         icon: () => <ProjectIcon />,
         component: () => <List />,
         paths: ['/session/moderator/list'],
-        label: 'Lista de alunos',
+        label: 'Lista de alunos'
       },
       {
         icon: () => <MapIcon />,
         paths: ['/session/main'],
         label: 'Voltar ao mapa',
-        bottom: true,
-      },
+        bottom: true
+      }
     ],
     []
   )

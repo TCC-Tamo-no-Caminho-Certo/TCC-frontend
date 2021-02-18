@@ -26,7 +26,11 @@ const Container: React.FC<ContainerProps> = ({ role, children }) => {
 
         {children}
 
-        <button id='scrollButton' type='button' onClick={() => window.scrollTo(0, 0)}>
+        <button
+          id='scrollButton'
+          type='button'
+          onClick={() => window.scrollTo(0, 0)}
+        >
           Escolher outro papel
         </button>
       </Content>

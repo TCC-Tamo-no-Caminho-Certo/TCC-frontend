@@ -29,7 +29,7 @@ const signupSchema = Yup.object({
 
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password')], 'As senhas não são iguais')
-    .required('Você precisa confirmar sua senha!'),
+    .required('Você precisa confirmar sua senha!')
 })
 
 export default signupSchema

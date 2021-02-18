@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const Style = styled.div.attrs({
-  className: 'Logo',
+  className: 'Logo'
 })`
   display: flex;
   justify-content: center;

@@ -23,7 +23,7 @@ const RoleInfo: React.FC<RoleInfoProps> = ({
   color,
   onClick,
   noButton = false,
-  userRoles,
+  userRoles
 }) => {
   const [show, toggleShow] = useCycle<boolean>(false, true)
   const [deg, rotate] = useCycle(0, -90)
@@ -34,38 +34,38 @@ const RoleInfo: React.FC<RoleInfoProps> = ({
       cursor: 'pointer',
       height: 320,
       opacity: 1,
-      transition: { staggerChildren: 0.05, type: 'tween', duration: 0.1 },
+      transition: { staggerChildren: 0.05, type: 'tween', duration: 0.1 }
     },
     hidden: {
       cursor: 'pointer',
       height: 0,
       opacity: 0,
-      transition: { staggerChildren: 0.1, staggerDirection: -1 },
-    },
+      transition: { staggerChildren: 0.1, staggerDirection: -1 }
+    }
   }
 
   const item = {
     show: {
       y: ['-100%', '0%'],
       opacity: [0, 1],
-      transition: { type: 'tween', duration: 0.2 },
+      transition: { type: 'tween', duration: 0.2 }
     },
     hidden: {
       y: ['0%', '-100%'],
       opacity: [1, 0],
-      transition: { type: 'tween', duration: 0.2 },
-    },
+      transition: { type: 'tween', duration: 0.2 }
+    }
   }
 
   const button = {
     show: {
       opacity: [0, 1],
-      transition: { type: 'tween', duration: 0.2 },
+      transition: { type: 'tween', duration: 0.2 }
     },
     hidden: {
       opacity: [1, 0],
-      transition: { type: 'tween', duration: 0.2 },
-    },
+      transition: { type: 'tween', duration: 0.2 }
+    }
   }
 
   const onButtonClick = () => {
@@ -91,8 +91,8 @@ const RoleInfo: React.FC<RoleInfoProps> = ({
             rotate: deg,
             transition: {
               type: 'tween',
-              duration: 0.3,
-            },
+              duration: 0.3
+            }
           }}
         />
 
@@ -114,11 +114,19 @@ const RoleInfo: React.FC<RoleInfoProps> = ({
 
             {!noButton &&
               (!haveThisRole ? (
-                <motion.button type='button' variants={button} onClick={onButtonClick}>
+                <motion.button
+                  type='button'
+                  variants={button}
+                  onClick={onButtonClick}
+                >
                   Quero ser {title}!
                 </motion.button>
               ) : (
-                <motion.button disabled id='roleAlreadyExists' variants={button}>
+                <motion.button
+                  disabled
+                  id='roleAlreadyExists'
+                  variants={button}
+                >
                   Já sou {title}!
                 </motion.button>
               ))}

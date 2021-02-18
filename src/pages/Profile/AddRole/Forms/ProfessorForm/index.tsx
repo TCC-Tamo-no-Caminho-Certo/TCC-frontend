@@ -1,10 +1,12 @@
-/* eslint-disable jsx-a11y/aria-role */
 import React, { useEffect, useState } from 'react'
 import Form from './styles'
 
 import Container from '../Container'
 
-import { emailSchema, receiptSchema } from 'utils/validations/addRoleForms/professor'
+import {
+  emailSchema,
+  receiptSchema
+} from 'utils/validations/addRoleForms/professor'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
@@ -13,7 +15,10 @@ import { File, Select, Submit, Text } from 'components/Form'
 import { AnimatePresence, motion, Variants } from 'framer-motion'
 
 const universityOptions = [
-  { value: 'universidade-anhembi-morumbi', label: 'Universidade Anhembi Morumbi' },
+  {
+    value: 'universidade-anhembi-morumbi',
+    label: 'Universidade Anhembi Morumbi'
+  }
 ]
 
 const courseOptions = [
@@ -28,7 +33,7 @@ const courseOptions = [
   { value: 'computer-engineering5', label: 'Engenharia da Computação' },
   { value: 'computer-science5', label: 'Ciência da Computação' },
   { value: 'computer-engineering6', label: 'Engenharia da Computação' },
-  { value: 'computer-science6', label: 'Ciência da Computação' },
+  { value: 'computer-science6', label: 'Ciência da Computação' }
 ]
 
 const emailSize = 35
@@ -37,33 +42,35 @@ const receiptSize = 88
 const inputs: Variants = {
   initial: { height: 0 },
   email: { height: emailSize },
-  receipt: { height: receiptSize },
+  receipt: { height: receiptSize }
 }
 
 const ProfessorForm: React.FC = () => {
-  const [wayOfSignup, setWayOfSignup] = useState<undefined | 'email' | 'receipt'>(undefined)
+  const [wayOfSignup, setWayOfSignup] = useState<
+    undefined | 'email' | 'receipt'
+  >(undefined)
 
   const method: Variants = {
     initial: {
       opacity: 0,
-      height: 0,
+      height: 0
     },
     open: {
       opacity: 1,
       x: wayOfSignup === 'email' ? [-300, 0] : [300, 0],
       transition: {
         type: 'tween',
-        duration: 0.4,
-      },
+        duration: 0.4
+      }
     },
     closed: {
       opacity: 0,
       x: wayOfSignup === 'email' ? [0, -300] : [0, 300],
       transition: {
         type: 'tween',
-        duration: 0.2,
-      },
-    },
+        duration: 0.2
+      }
+    }
   }
 
   useEffect(() => {
@@ -80,8 +87,18 @@ const ProfessorForm: React.FC = () => {
         addData={{ role: 'professor' }}
         loading
       >
-        <Select name='university' placeholder='Universidade' options={universityOptions} isMulti />
-        <Select name='course' placeholder='Curso' options={courseOptions} isMulti />
+        <Select
+          name='university'
+          placeholder='Universidade'
+          options={universityOptions}
+          isMulti
+        />
+        <Select
+          name='course'
+          placeholder='Curso'
+          options={courseOptions}
+          isMulti
+        />
 
         <div id='ways'>
           <span id='label'>Forma de registro</span>
@@ -113,13 +130,18 @@ const ProfessorForm: React.FC = () => {
 
             <AnimatePresence>
               {wayOfSignup === 'receipt' && (
-                <motion.div id='receipt' variants={method} exit='closed' animate='open'>
+                <motion.div
+                  id='receipt'
+                  variants={method}
+                  exit='closed'
+                  animate='open'
+                >
                   <div id='warning'>
                     <AlertIcon />
 
                     <div>
-                      Este processo é mais lento pois requer confirmação de um <b>Moderador</b> de
-                      sua universidade.
+                      Este processo é mais lento pois requer confirmação de um{' '}
+                      <b>Moderador</b> de sua universidade.
                     </div>
                   </div>
 

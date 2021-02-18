@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-interface */
 import { ThemeAttributes } from './index'
 
 import 'styled-components'

@@ -7,7 +7,7 @@ import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 
 import { motion, Variants } from 'framer-motion'
 
-interface Checkbox {
+interface CheckboxProps {
   name: string
   label: string
 }
@@ -17,20 +17,20 @@ const pathAnimation: Variants = {
     pathLength: 1,
     transition: {
       type: 'tween',
-      duration: 0.4,
-    },
+      duration: 0.4
+    }
   },
   unCheck: {
     d: 'M3 6 l3 4 l7 -6',
     pathLength: 0,
     transition: {
       type: 'tween',
-      duration: 0.2,
-    },
-  },
+      duration: 0.2
+    }
+  }
 }
 
-const Checkbox: React.FC<Checkbox> = ({ name, label }) => {
+const Checkbox: React.FC<CheckboxProps> = ({ name, label }) => {
   const checkboxRef = useRef<HTMLInputElement>(null)
   const form = useContext<FormState | null>(FormContext)
   const [checked, setChecked] = useState(false)
@@ -40,7 +40,7 @@ const Checkbox: React.FC<Checkbox> = ({ name, label }) => {
     const checkbox = {
       inputRef: checkboxRef,
       setError,
-      type: 'checkbox',
+      type: 'checkbox'
     }
 
     form?.registerInput(checkbox)
@@ -59,15 +59,34 @@ const Checkbox: React.FC<Checkbox> = ({ name, label }) => {
           setError('')
         }}
       >
-        <input readOnly type='checkbox' name={name} checked={checked} ref={checkboxRef} />
+        <input
+          readOnly
+          type='checkbox'
+          name={name}
+          checked={checked}
+          ref={checkboxRef}
+        />
 
         <svg viewBox='0 0 15 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
-          <rect x='0.5' y='0.5' width='14' height='14' stroke='url(#checkboxRadial)' />
+          <rect
+            x='0.5'
+            y='0.5'
+            width='14'
+            height='14'
+            stroke='url(#checkboxRadial)'
+          />
 
           <defs>
             <motion.radialGradient
-              animate={{ cx: [0, 1, 1, 0, 0], cy: [0, 0, 1, 1, 0] }}
-              transition={{ type: 'tween', duration: 3, repeat: Infinity }}
+              animate={{
+                cx: [0, 1, 1, 0, 0],
+                cy: [0, 0, 1, 1, 0]
+              }}
+              transition={{
+                type: 'tween',
+                duration: 3,
+                repeat: Infinity
+              }}
               id='checkboxRadial'
               r='1'
             >

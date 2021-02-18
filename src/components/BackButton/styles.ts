@@ -4,7 +4,7 @@ const Style = styled.button`
   display: flex;
   align-items: center;
 
-  color: ${({theme}) => theme.colors.tertiary};
+  color: ${({ theme }) => theme.colors.tertiary};
   transition: all 0.2s;
 
   &:hover {

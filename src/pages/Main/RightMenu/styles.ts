@@ -29,7 +29,7 @@ interface RoleLiProps {
 }
 
 export const UserInfo = styled.div.attrs({
-  className: 'UserInfo',
+  className: 'UserInfo'
 })<UserInfoProps>`
   display: flex;
   flex-direction: column;
@@ -46,8 +46,7 @@ export const UserInfo = styled.div.attrs({
   #userRole {
     font-size: 1.3rem;
 
-    color: ${({ theme, selectedRole }) =>
-      theme.roles[selectedRole]};
+    color: ${({ theme, selectedRole }) => theme.roles[selectedRole]};
   }
 
   #userName {
@@ -75,12 +74,10 @@ export const RoleLi = styled.li<RoleLiProps>`
     user-select: none;
 
     color: ${({ theme }) => theme.colors.secondary};
-    background-color: ${({ theme }) =>
-      theme.colors.primary};
+    background-color: ${({ theme }) => theme.colors.primary};
 
     &:hover {
-      background-color: ${({ theme, role }) =>
-        theme.roles[role]};
+      background-color: ${({ theme, role }) => theme.roles[role]};
     }
   }
 
@@ -89,8 +86,7 @@ export const RoleLi = styled.li<RoleLiProps>`
       border-radius: 16px 0 0 0;
 
       &:hover {
-        background-color: ${({ theme, role }) =>
-          theme.roles[role]};
+        background-color: ${({ theme, role }) => theme.roles[role]};
       }
     }
   }
@@ -100,8 +96,7 @@ export const RoleLi = styled.li<RoleLiProps>`
       border-radius: 0 0 16px 16px;
 
       &:hover {
-        background-color: ${({ theme, role }) =>
-          theme.roles[role]};
+        background-color: ${({ theme, role }) => theme.roles[role]};
       }
     }
   }
@@ -111,8 +106,7 @@ export const RoleLi = styled.li<RoleLiProps>`
       border-radius: 16px 0 0 16px;
 
       &:hover {
-        background-color: ${({ theme, role }) =>
-          theme.roles[role]};
+        background-color: ${({ theme, role }) => theme.roles[role]};
       }
     }
   }
@@ -137,8 +131,7 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     height: 2px;
 
     border: none;
-    background-color: ${({ theme }) =>
-      theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.secondary};
   }
 
   #selectRoles {
@@ -156,16 +149,14 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     li {
       a:hover,
       button:hover {
-        background-color: ${({ theme }) =>
-          theme.colors.primary};
+        background-color: ${({ theme }) => theme.colors.primary};
       }
 
       button {
         ${({ changeRole }) =>
           changeRole &&
           css`
-            background-color: ${({ theme }) =>
-              theme.colors.primary};
+            background-color: ${({ theme }) => theme.colors.primary};
           `}
       }
     }
@@ -233,13 +224,12 @@ export const Background = styled.svg<BackgroundProps>`
 
   min-width: 320px;
   width: 100vw;
-  
+
   height: ${({ isOpen, openHeight, closedHeight }) =>
     isOpen ? openHeight : closedHeight};
 
   path {
-    fill: ${({ theme }) =>
-      darken(0.1, theme.colors.tertiary)};
+    fill: ${({ theme }) => darken(0.1, theme.colors.tertiary)};
   }
 
   @media screen and (min-width: 425px) {
@@ -252,8 +242,6 @@ export const Background = styled.svg<BackgroundProps>`
 `
 
 const Style = styled.div<StyleProps>`
-  
-
   position: fixed;
   top: 0;
 
@@ -312,8 +300,7 @@ const Style = styled.div<StyleProps>`
     border-radius: 8px;
 
     color: ${({ theme }) => theme.colors.secondary};
-    background-color: ${({ theme }) =>
-      theme.colors.primary};
+    background-color: ${({ theme }) => theme.colors.primary};
   }
 
   @media screen and (min-width: 425px) {

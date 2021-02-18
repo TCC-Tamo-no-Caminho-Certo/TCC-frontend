@@ -1,4 +1,10 @@
-import React, { forwardRef, ReactElement, useImperativeHandle, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  ReactElement,
+  useImperativeHandle,
+  useRef,
+  useState
+} from 'react'
 import Style, { ModalBackground } from './styles'
 
 interface ModalProps {
@@ -8,7 +14,7 @@ interface ModalProps {
 }
 
 export interface ModalMethods {
-  toggleModal: (setModal?: boolean) => void
+  toggleModal: (_setModal?: boolean) => void
 }
 
 const Modal: React.ForwardRefRenderFunction<ModalMethods, ModalProps> = (

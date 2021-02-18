@@ -31,9 +31,9 @@ const FormLogin: React.FC = () => {
   const [loginFailed, setLoginFailed] = useState('')
 
   const onSubmit = (resData: any) => {
-    if (resData.success) {
+    if (resData.success)
       localStorage.setItem('@SLab_ac_token', resData.access_token)
-    } else {
+    else {
       setLoginFailed(
         resData.error === 'Incorrect password!'
           ? 'Senha incorreta, tente novamente'
@@ -81,7 +81,12 @@ const FormLogin: React.FC = () => {
           </AnimatePresence>
         </motion.div>
 
-        <Text name='email' placeholder='E-mail' icon={MailIcon} autoComplete='email' />
+        <Text
+          name='email'
+          placeholder='E-mail'
+          icon={MailIcon}
+          autoComplete='email'
+        />
 
         <Text
           eye

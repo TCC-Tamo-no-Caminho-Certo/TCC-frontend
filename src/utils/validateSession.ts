@@ -7,8 +7,8 @@ async function validateSession(): Promise<boolean> {
 
   const response = await api.get('validate-session', {
     headers: {
-      authorization: `Bearer ${token}`,
-    },
+      authorization: `Bearer ${token}`
+    }
   })
 
   return response.success

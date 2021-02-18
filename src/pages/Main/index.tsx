@@ -25,14 +25,14 @@ const Profile: React.FC = () => {
         icon: () => <MapIcon />,
         paths: ['/session/main', '/session/main/map'],
         label: 'Mapa',
-        component: () => <Map />,
+        component: () => <Map />
       },
       {
         icon: () => <ProjectIcon />,
         paths: ['/session/main/projects'],
         label: 'Projetos',
-        component: () => <Projects />,
-      },
+        component: () => <Projects />
+      }
     ]
 
     if (selectedRole === 'moderator')
@@ -40,7 +40,7 @@ const Profile: React.FC = () => {
         icon: () => <ProjectIcon />,
         paths: ['/session/moderator'],
         label: 'Moderador',
-        bottom: true,
+        bottom: true
       })
 
     return sidebarSections

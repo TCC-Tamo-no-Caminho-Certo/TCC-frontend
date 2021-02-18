@@ -17,40 +17,40 @@ export default {
     'Setembro',
     'Outubro',
     'Novembro',
-    'Dezembro',
+    'Dezembro'
   ],
 
   weekDays: [
     {
       name: 'Domingo',
       short: 'D',
-      isWeekend: true,
+      isWeekend: true
     },
     {
       name: 'Segunda',
-      short: 'S',
+      short: 'S'
     },
     {
       name: 'Terça',
-      short: 'T',
+      short: 'T'
     },
     {
       name: 'Quarta',
-      short: 'Q',
+      short: 'Q'
     },
     {
       name: 'Quinta',
-      short: 'Q',
+      short: 'Q'
     },
     {
       name: 'Sexta',
-      short: 'S',
+      short: 'S'
     },
     {
       name: 'Sábado',
       short: 'S',
-      isWeekend: true,
-    },
+      isWeekend: true
+    }
   ],
 
   weekStartingIndex: 0,
@@ -82,5 +82,5 @@ export default {
   to: 'até',
   digitSeparator: ',',
   yearLetterSkip: 0,
-  isRtl: false,
+  isRtl: false
 }

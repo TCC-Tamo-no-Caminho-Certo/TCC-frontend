@@ -1,9 +1,13 @@
-/* eslint-disable max-len */
 import React from 'react'
 
 const Loupe: React.FC = () => {
   return (
-    <svg viewBox='0 0 512 512' fill='none' xmlns='http://www.w3.org/2000/svg' className='Icon'>
+    <svg
+      viewBox='0 0 512 512'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className='Icon'
+    >
       <path d='M312.065 157.073c-8.611-22.412-23.604-41.574-43.36-55.413C248.479 87.49 224.721 80 200 80c-5.522 0-10 4.478-10 10s4.478 10 10 10c41.099 0 78.631 25.818 93.396 64.247a10.003 10.003 0 009.337 6.416 9.978 9.978 0 003.584-.668c5.155-1.981 7.729-7.766 5.748-12.922z' />
 
       <path

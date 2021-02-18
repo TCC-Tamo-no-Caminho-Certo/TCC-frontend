@@ -22,7 +22,7 @@ const Select: React.FC<any> = ({ isMulti, ...props }) => {
     const select = {
       inputRef: selectRef,
       setError,
-      type: isMulti ? 'multiSelect' : 'select',
+      type: isMulti ? 'multiSelect' : 'select'
     }
 
     form?.registerInput(select)
@@ -33,35 +33,35 @@ const Select: React.FC<any> = ({ isMulti, ...props }) => {
   const overridingStyles = {
     menu: (before: any) => ({
       ...before,
-      zIndex: 3,
+      zIndex: 3
     }),
     control: (before: any) => ({
       ...before,
-      paddingLeft: error ? 40 : 8,
+      paddingLeft: error ? 40 : 8
     }),
     valueContainer: (before: any) => ({
       ...before,
-      paddingLeft: 0,
+      paddingLeft: 0
     }),
     singleValue: (before: any) => ({
       ...before,
-      color: theme.colors.primary,
+      color: theme.colors.primary
     }),
     multiValue: (before: any) => ({
       ...before,
-      backgroundColor: theme.colors.primary,
+      backgroundColor: theme.colors.primary
     }),
     multiValueLabel: (before: any) => ({
       ...before,
-      color: theme.colors.secondary,
+      color: theme.colors.secondary
     }),
     multiValueRemove: (before: any) => ({
       ...before,
       color: theme.colors.secondary,
       ':hover': {
-        backgroundColor: theme.colors.tertiary,
-      },
-    }),
+        backgroundColor: theme.colors.tertiary
+      }
+    })
   }
 
   const overridingTheme = (beforeTheme: Theme): Theme => ({
@@ -84,8 +84,8 @@ const Select: React.FC<any> = ({ isMulti, ...props }) => {
       neutral60: theme.colors.tertiary,
       neutral70: theme.colors.tertiary,
       neutral80: theme.colors.tertiary,
-      neutral90: theme.colors.tertiary,
-    },
+      neutral90: theme.colors.tertiary
+    }
   })
 
   return (

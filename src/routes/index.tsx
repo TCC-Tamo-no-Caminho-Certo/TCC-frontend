@@ -8,7 +8,13 @@ import Home from 'pages/Home'
 
 import validateSession from 'utils/validateSession'
 
-import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom'
+import {
+  Redirect,
+  Route,
+  Switch,
+  useHistory,
+  useLocation
+} from 'react-router-dom'
 
 const Routes: React.FC = () => {
   const { pathname } = useLocation()
@@ -17,7 +23,8 @@ const Routes: React.FC = () => {
   const onStartRoute = useCallback(async () => {
     const response = await validateSession()
 
-    if (response) pathname.split('/')[1] !== 'session' && history.push('/session/main')
+    if (response)
+      pathname.split('/')[1] !== 'session' && history.push('/session/main')
     else if (pathname.split('/')[1] === 'session') history.push('/home')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

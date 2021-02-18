@@ -42,7 +42,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   title = '',
   samePage = false,
   closedWidth = 72,
-  width = 210,
+  width = 210
 }) => {
   const { innerWidth } = useWindowDimensions()
   const [isLarge, setisLarge] = useState(innerWidth >= 425)
@@ -63,7 +63,9 @@ const Sidebar: React.FC<SidebarProps> = ({
         heightOfRoutes !== undefined &&
         heightOfRoutes.reduce(
           (prev, curr, i) =>
-            i < index && prev !== undefined && curr !== undefined ? prev + curr : prev,
+            i < index && prev !== undefined && curr !== undefined
+              ? prev + curr
+              : prev,
           0
         )
 
@@ -104,17 +106,17 @@ const Sidebar: React.FC<SidebarProps> = ({
       width: contentSize(),
       transition: {
         type: 'tween',
-        duration: 0.31,
-      },
+        duration: 0.31
+      }
     },
     closed: {
       x: isLarge ? closedWidth : 0,
       width: contentSize(),
       transition: {
         type: 'tween',
-        duration: 0.19,
-      },
-    },
+        duration: 0.19
+      }
+    }
   }
 
   const motionBackground: Variants = {
@@ -123,40 +125,40 @@ const Sidebar: React.FC<SidebarProps> = ({
       width: isLarge ? width : '100vw',
       transition: {
         type: 'tween',
-        duration: 0.3,
-      },
+        duration: 0.3
+      }
     },
     closed: {
       height: isLarge ? '100vh' : closedWidth,
       width: isLarge ? closedWidth : '100vw',
       transition: {
         type: 'tween',
-        duration: 0.2,
-      },
-    },
+        duration: 0.2
+      }
+    }
   }
 
   const motionTitle: Variants = {
     initial: {
       opacity: 0,
-      x: -24,
+      x: -24
     },
     open: {
       opacity: 1,
       x: 0,
       transition: {
         type: 'tween',
-        duration: 0.4,
-      },
+        duration: 0.4
+      }
     },
     closed: {
       opacity: 0,
       x: -24,
       transition: {
         type: 'tween',
-        duration: 0.1,
-      },
-    },
+        duration: 0.1
+      }
+    }
   }
 
   return (
@@ -170,7 +172,12 @@ const Sidebar: React.FC<SidebarProps> = ({
         background={background}
       >
         <div id='header'>
-          <Hamburger ref={burgerRef} toggle={onToggle} state={open} color={letters} />
+          <Hamburger
+            ref={burgerRef}
+            toggle={onToggle}
+            state={open}
+            color={letters}
+          />
 
           <AnimatePresence>
             {open && (
@@ -211,7 +218,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                       className='label'
                       initial={{
                         opacity: 0,
-                        x: -24,
+                        x: -24
                       }}
                       animate={{
                         opacity: 1,
@@ -219,16 +226,16 @@ const Sidebar: React.FC<SidebarProps> = ({
                         transition: {
                           type: 'tween',
                           duration: 0.4,
-                          delay: 0.1 * index,
-                        },
+                          delay: 0.1 * index
+                        }
                       }}
                       exit={{
                         opacity: 0,
                         x: -24,
                         transition: {
                           type: 'tween',
-                          duration: 0.1,
-                        },
+                          duration: 0.1
+                        }
                       }}
                     >
                       {label}
@@ -249,7 +256,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           animate={open && !noContentMove ? 'open' : 'closed'}
           initial={open && !noContentMove ? 'open' : 'closed'}
           style={{
-            minWidth: 320,
+            minWidth: 320
           }}
         >
           {samePage ? (
@@ -257,7 +264,12 @@ const Sidebar: React.FC<SidebarProps> = ({
           ) : (
             <>
               {paths.map(path => (
-                <Route key={path} path={path} exact={exact} component={component} />
+                <Route
+                  key={path}
+                  path={path}
+                  exact={exact}
+                  component={component}
+                />
               ))}
             </>
           )}

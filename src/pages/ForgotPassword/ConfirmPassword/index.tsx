@@ -15,7 +15,7 @@ import { useHistory } from 'react-router-dom'
 
 const ConfirmPassword: React.FC = () => {
   const [modalAttributes, setModalAttributes] = useState<ModalAttributes>({
-    visible: false,
+    visible: false
   })
 
   const history = useHistory()
@@ -35,7 +35,7 @@ const ConfirmPassword: React.FC = () => {
       visible: true,
       title: 'Sucesso',
       message: 'Senha Alterada',
-      color: '#13c47c',
+      color: '#13c47c'
     })
   }
 
@@ -59,7 +59,13 @@ const ConfirmPassword: React.FC = () => {
             >
               <h2>Digite sua nova senha</h2>
 
-              <Text name='password' type='password' placeholder='Senha' icon={PadlockIcon} eye />
+              <Text
+                name='password'
+                type='password'
+                placeholder='Senha'
+                icon={PadlockIcon}
+                eye
+              />
 
               <h2>Confirme sua nova senha</h2>
 

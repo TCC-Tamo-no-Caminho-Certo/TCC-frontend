@@ -20,7 +20,9 @@ const Submit: React.FC<SubmitProps> = ({ children, disabled }) => {
     <Style type='submit' className='Submit' disabled={disabled}>
       {children}
 
-      {form?.loader && <DotsLoader dotSize={6} color={theme.colors.secondary} />}
+      {form?.loader && (
+        <DotsLoader dotSize={6} color={theme.colors.secondary} />
+      )}
     </Style>
   )
 }

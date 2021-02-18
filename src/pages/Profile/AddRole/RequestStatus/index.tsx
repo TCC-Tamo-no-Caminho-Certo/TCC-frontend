@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React from 'react'
 import Style from './styles'
 
@@ -7,7 +6,11 @@ import Card from 'components/Card'
 import { motion, useCycle } from 'framer-motion'
 
 const RequestStatus: React.FC = () => {
-  const [progressTrue, cycleProgressTrue] = useCycle(['4%', '4%'], ['4%', '27%'], ['27%', '50%'])
+  const [progressTrue, cycleProgressTrue] = useCycle(
+    ['4%', '4%'],
+    ['4%', '27%'],
+    ['27%', '50%']
+  )
   const [progressFalse, cycleProgressFalse] = useCycle(
     ['24%', '24%'],
     ['24%', '47%'],
@@ -82,15 +85,27 @@ const RequestStatus: React.FC = () => {
             />
 
             {errorThird && (
-              <path className='errorIcon' id='thirdFail' d='M700 41L719 22M719 41L700 22' />
+              <path
+                className='errorIcon'
+                id='thirdFail'
+                d='M700 41L719 22M719 41L700 22'
+              />
             )}
 
             {errorSecond && (
-              <path className='errorIcon' id='secondFail' d='M361 42L380 23M380 42L361 23' />
+              <path
+                className='errorIcon'
+                id='secondFail'
+                d='M361 42L380 23M380 42L361 23'
+              />
             )}
 
             {errorFirst && (
-              <path className='errorIcon' id='firstFail' d='M23 41L42 22M42 41L23 22' />
+              <path
+                className='errorIcon'
+                id='firstFail'
+                d='M23 41L42 22M42 41L23 22'
+              />
             )}
 
             {!errorThird && (
@@ -119,13 +134,26 @@ const RequestStatus: React.FC = () => {
           </g>
 
           <defs>
-            <linearGradient id='barGradient' x1='0%' y1='50%' x2='200%' y2='50%'>
+            <linearGradient
+              id='barGradient'
+              x1='0%'
+              y1='50%'
+              x2='200%'
+              y2='50%'
+            >
               <motion.stop id='true' animate={{ offset: progressTrue }} />
 
               <motion.stop id='false' animate={{ offset: progressFalse }} />
             </linearGradient>
 
-            <filter id='barFilter' x='0' y='0' width='750' height='72' filterUnits='userSpaceOnUse'>
+            <filter
+              id='barFilter'
+              x='0'
+              y='0'
+              width='750'
+              height='72'
+              filterUnits='userSpaceOnUse'
+            >
               <feFlood floodOpacity='0' result='BackgroundImageFix' />
               <feColorMatrix
                 in='SourceAlpha'
@@ -134,9 +162,21 @@ const RequestStatus: React.FC = () => {
               />
               <feOffset dy='4' dx='4' />
               <feGaussianBlur stdDeviation='2' />
-              <feColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0' />
-              <feBlend mode='normal' in2='BackgroundImageFix' result='effect1_dropShadow' />
-              <feBlend mode='normal' in='SourceGraphic' in2='effect1_dropShadow' result='shape' />
+              <feColorMatrix
+                type='matrix'
+                values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
+              />
+              <feBlend
+                mode='normal'
+                in2='BackgroundImageFix'
+                result='effect1_dropShadow'
+              />
+              <feBlend
+                mode='normal'
+                in='SourceGraphic'
+                in2='effect1_dropShadow'
+                result='shape'
+              />
             </filter>
           </defs>
         </svg>

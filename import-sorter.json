@@ -3,9 +3,10 @@
   "importStringConfiguration.tabSize": 2,
   "importStringConfiguration.hasSemicolon": false,
   "importStringConfiguration.numberOfEmptyLinesAfterAllImports": 1,
-  "importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 100,
+  "importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 80,
   "importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne",
-  "importSorter.importStringConfiguration.trailingComma": "es5",
+  "importSorter.importStringConfiguration.trailingComma": "none",
+  "importSorter.importStringConfiguration.tabType": "space",
   "sortConfiguration": {
     "customOrderingRules": {
       "rules": [

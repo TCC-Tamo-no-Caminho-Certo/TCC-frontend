@@ -19,7 +19,10 @@ interface DataTypes {
   moderator: InputData[]
 }
 
-const formatUpdateUser = (userData: UserState, role: keyof DataTypes): InputData[] => {
+const formatUpdateUser = (
+  userData: UserState,
+  role: keyof DataTypes
+): InputData[] => {
   const professor: InputData[] = []
   const student: InputData[] = []
   const admin: InputData[] = []
@@ -29,10 +32,27 @@ const formatUpdateUser = (userData: UserState, role: keyof DataTypes): InputData
   const moderator: InputData[] = []
 
   const guest: InputData[] = [
-    { label: 'Nome:', inputname: 'name', value: userData.name },
-    { label: 'Sobrenome:', inputname: 'surname', value: userData.surname },
-    { label: 'E-mail:', inputname: 'email', value: userData.emails[0].email },
-    { label: 'Nascimento:', inputname: 'birthday', value: userData.birthday, date: true },
+    {
+      label: 'Nome:',
+      inputname: 'name',
+      value: userData.name
+    },
+    {
+      label: 'Sobrenome:',
+      inputname: 'surname',
+      value: userData.surname
+    },
+    {
+      label: 'E-mail:',
+      inputname: 'email',
+      value: userData.emails[0].email
+    },
+    {
+      label: 'Nascimento:',
+      inputname: 'birthday',
+      value: userData.birthday,
+      date: true
+    }
     // { label: 'Senha:', inputname: 'new_password', value: '00000asd', dontShow: true },
   ]
 
@@ -44,7 +64,7 @@ const formatUpdateUser = (userData: UserState, role: keyof DataTypes): InputData
     aris,
     evaluator,
     customer,
-    moderator,
+    moderator
   }
 
   return formInputs[role]

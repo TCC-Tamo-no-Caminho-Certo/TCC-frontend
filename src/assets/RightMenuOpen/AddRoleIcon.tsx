@@ -1,9 +1,13 @@
-/* eslint-disable max-len */
 import React from 'react'
 
 const AddRoleIcon: React.FC = () => {
   return (
-    <svg fill='none' className='Icon' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 510 562'>
+    <svg
+      fill='none'
+      className='Icon'
+      xmlns='http://www.w3.org/2000/svg'
+      viewBox='0 0 510 562'
+    >
       <path d='M428.5 423H394v-34.5c0-3.05-1.212-5.975-3.369-8.131a11.496 11.496 0 00-16.263 0A11.495 11.495 0 00371 388.5V423h-34.5a11.499 11.499 0 00-11.5 11.5 11.498 11.498 0 0011.5 11.5H371v34.5a11.5 11.5 0 1023 0V446h34.5a11.499 11.499 0 100-23z' />
       <path
         fillRule='evenodd'

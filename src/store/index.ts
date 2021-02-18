@@ -10,8 +10,8 @@ const store = configureStore({
     user: User.reducer,
     theme: Theme.reducer,
     home: Home.reducer,
-    sidebar: Sidebar.reducer,
-  },
+    sidebar: Sidebar.reducer
+  }
 })
 
 export type RootState = ReturnType<typeof store.getState>

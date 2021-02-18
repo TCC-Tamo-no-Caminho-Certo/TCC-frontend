@@ -1,83 +1,47 @@
 {
   "env": {
     "browser": true,
-    "es6": true
+    "es2021": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 12,
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "extends": [
     "plugin:react/recommended",
-    "plugin",
-    "prettier/@typescript-eslint",
-    "airbnb",
-    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/react",
+    "standard",
+    "plugin:react-hooks/recommended"
   ],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": 2018,
-    "sourceType": "module"
-  },
-  "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier", "import", "jsx-a11y"],
-  "settings": {
-    "import/resolver": {
-      "typescript": {}
-    }
-  },
-  "parser": "@typescript-eslint/parser",
+  "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
-    "semi": "off",
-    "react-hooks/rules-of-hooks": "error",
+    "no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
     "prettier/prettier": "error",
-    "no-nested-ternary": "warn",
-    "react-hooks/exhaustive-deps": "warn",
-    "import/no-useless-path-segments": "off",
-    "import/order": "off",
-    "no-empty-function": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/ban-types": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "react/jsx-one-expression-per-line": "off",
-    "react/jsx-props-no-spreading": "off",
+    "no-use-before-define": "off",
     "react/prop-types": "off",
-    "react/no-children-prop": "off",
-    "no-unused-expressions": "off",
-    "no-param-reassign": "off",
-    "import/prefer-default-export": "off",
-    "jsx-a11y/label-has-associated-control": "off",
-    "@typescript-eslint/no-empty-function": "off",
-    "react/jsx-wrap-multilines": "off",
-    "max-len": [
-      "error",
-      {
-        "code": 100,
-        "tabWidth": 2
-      }
-    ],
-    "react/jsx-filename-extension": [
-      1,
-      {
-        "extensions": [".tsx", ".ts"]
-      }
-    ],
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        "ts": "never",
-        "tsx": "never"
-      }
-    ]
-  },
-  "overrides": [
-    {
-      "files": "styles.ts",
-      "rules": {
-        "react/display-name": ["error", { "ignoreTranspilerName": false }]
-      }
-    }
-  ]
+    "no-undef": "off",
+    "multiline-ternary": "off",
+    "indent": "off",
+    "curly": [2, "multi"],
+    "react/display-name": "off"
+  }
 }

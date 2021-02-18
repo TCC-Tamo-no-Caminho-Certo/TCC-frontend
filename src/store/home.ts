@@ -14,15 +14,18 @@ interface HomeStatePayload {
 
 const initialState: HomeState = {
   initial: false,
-  page: 'login',
+  page: 'login'
 }
 
 const Home = createSlice({
   name: 'sidebar',
   initialState,
   reducers: {
-    update: (state, action: PayloadAction<HomeStatePayload>) => ({ ...state, ...action.payload }),
-  },
+    update: (state, action: PayloadAction<HomeStatePayload>) => ({
+      ...state,
+      ...action.payload
+    })
+  }
 })
 
 export const HomeActions = Home.actions

@@ -12,14 +12,22 @@ interface SliderProps {
   gapVertical?: number
 }
 
-const Slider: React.FC<SliderProps> = ({ children: containers, gap, width, gapVertical = gap }) => {
+const Slider: React.FC<SliderProps> = ({
+  children: containers,
+  gap,
+  width,
+  gapVertical = gap
+}) => {
   const [makeLeftMove, setMakeLeftMove] = useState(false)
   const [makeRightMove, setMakeRightMove] = useState(false)
   const [xValue, setXValue] = useState(0)
 
   const move = width + gap
   const quantity = containers.length
-  const limit = quantity % 2 === 0 ? move * ((quantity - 2) / 2) : move * ((quantity - 1) / 2)
+  const limit =
+    quantity % 2 === 0
+      ? move * ((quantity - 2) / 2)
+      : move * ((quantity - 1) / 2)
 
   const onLeftClick = useCallback(() => {
     xValue > -limit && setXValue(xValue - move)

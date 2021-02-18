@@ -1,5 +1,3 @@
-
-
 import { HTMLMotionProps, motion } from 'framer-motion'
 import styled, { css } from 'styled-components'
 
@@ -17,10 +15,8 @@ interface ListItemProps {
   bottom?: boolean
 }
 
-
-
 export const ListItem = styled.li<ListItemProps>`
-  visibility: ${({isOpen}) => isOpen ? 'visible' : 'hidden'};
+  visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
 
   cursor: pointer;
 
@@ -115,7 +111,8 @@ export const SidebarNav = styled(motion.nav)<StyleProps>`
     width: 100%;
     height: 72px;
 
-    border-bottom: ${({letters, isOpen }) => isOpen ? `solid 2px ${letters}` : 'none'}
+    border-bottom: ${({ letters, isOpen }) =>
+      isOpen ? `solid 2px ${letters}` : 'none'};
   }
 
   .Hamburger {
@@ -146,7 +143,7 @@ export const SidebarNav = styled(motion.nav)<StyleProps>`
     height: 100vh;
 
     #header {
-      border-bottom: ${({letters}) => `solid 2px ${letters}`}
+      border-bottom: ${({ letters }) => `solid 2px ${letters}`};
     }
   }
 `

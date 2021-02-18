@@ -1,4 +1,10 @@
-import React, { forwardRef, useContext, useEffect, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import Style from './styles'
 
 import { FormContext, FormState } from '../'
@@ -9,7 +15,7 @@ import EyeIcon from 'assets/Inputs/EyeIcon'
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 
 export interface TextProps extends React.HTMLProps<HTMLInputElement> {
-  handleValue?: (value: any) => void
+  handleValue?: (_value: any) => void
   eye?: boolean
   pasteAndDrop?: boolean
   icon?: React.FC
@@ -42,7 +48,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
       const input = {
         inputRef: auxRef,
         setError,
-        type,
+        type
       }
 
       form?.registerInput(input)
@@ -113,3 +119,5 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
 )
 
 export default Text
+
+Text.displayName = 'Text'

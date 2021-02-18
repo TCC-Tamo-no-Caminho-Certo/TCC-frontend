@@ -8,7 +8,7 @@ const role: any = {
   evaluator: 'Revisor',
   admin: 'Administrador',
   guest: 'Convidado',
-  aris: 'Aris',
+  aris: 'Aris'
 }
 
 export default (roleKey: Role): Role => role[roleKey]

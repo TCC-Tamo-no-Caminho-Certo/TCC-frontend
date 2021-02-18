@@ -22,7 +22,7 @@ const Dots: React.FC<DotsProps> = ({
   onRightClick,
   onLeftClick,
   makeLeftTap = false,
-  makeRightTap = false,
+  makeRightTap = false
 }) => {
   const [position, setPosition] = useState(0)
   const move = gap + size
@@ -42,7 +42,7 @@ const Dots: React.FC<DotsProps> = ({
       x: -move,
       opacity: [1, 0],
       scale: [1, 0.6],
-      transition,
+      transition
     })
 
     center.start({ x: -move, scale: [1.4, 1], transition })
@@ -53,7 +53,7 @@ const Dots: React.FC<DotsProps> = ({
       x: -move,
       opacity: [0, 1],
       scale: [0.6, 1],
-      transition,
+      transition
     })
   }, [left, center, right, newRight, move, transition])
 
@@ -62,7 +62,7 @@ const Dots: React.FC<DotsProps> = ({
       x: 0,
       opacity: 1,
       scale: 1,
-      transition: resetTransition,
+      transition: resetTransition
     })
 
     center.start({ x: 0, scale: 1.4, transition: resetTransition })
@@ -73,7 +73,7 @@ const Dots: React.FC<DotsProps> = ({
       x: 0,
       opacity: 0,
       scale: 0.6,
-      transition: resetTransition,
+      transition: resetTransition
     })
   }, [left, center, right, newRight, resetTransition])
 
@@ -82,7 +82,7 @@ const Dots: React.FC<DotsProps> = ({
       x: move,
       scale: [1, 0.6],
       opacity: [1, 0],
-      transition,
+      transition
     })
 
     center.start({ x: move, scale: [1.4, 1], transition })
@@ -90,14 +90,14 @@ const Dots: React.FC<DotsProps> = ({
     left.start({
       x: move,
       scale: [1, 1.4],
-      transition,
+      transition
     })
 
     return newLeft.start({
       x: move,
       opacity: [0, 1],
       scale: [0.6, 1],
-      transition,
+      transition
     })
   }, [newLeft, left, center, right, move, transition])
 
@@ -106,26 +106,26 @@ const Dots: React.FC<DotsProps> = ({
       x: 0,
       scale: 1,
       opacity: 1,
-      transition: resetTransition,
+      transition: resetTransition
     })
 
     center.start({
       x: 0,
       scale: 1.4,
-      transition: resetTransition,
+      transition: resetTransition
     })
 
     left.start({
       x: 0,
       scale: 1,
-      transition: resetTransition,
+      transition: resetTransition
     })
 
     return newLeft.start({
       x: 0,
       opacity: 0,
       scale: 0.6,
-      transition: resetTransition,
+      transition: resetTransition
     })
   }, [newLeft, left, center, right, resetTransition])
 

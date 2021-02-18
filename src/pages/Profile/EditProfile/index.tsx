@@ -68,8 +68,12 @@ const EditProfile: React.FC = () => {
 
       <Modal ref={confirmRefModal}>
         <ConfirmForm path='confirmUpdate'>
-          <span>Você precisa confirmar sua senha para salvar as alterações!</span>
-          <CloseIcon onClick={() => confirmRefModal.current?.toggleModal(false)} />
+          <span>
+            Você precisa confirmar sua senha para salvar as alterações!
+          </span>
+          <CloseIcon
+            onClick={() => confirmRefModal.current?.toggleModal(false)}
+          />
 
           <Text name='password' placeholder='Confirme sua senha' eye />
 

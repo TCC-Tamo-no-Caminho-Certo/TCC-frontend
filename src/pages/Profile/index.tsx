@@ -31,13 +31,13 @@ const Profile: React.FC = () => {
         label: 'Perfil',
         paths: ['/session/profile/home'],
         exact: true,
-        component: () => <ProfileHome />,
+        component: () => <ProfileHome />
       },
       {
         icon: () => <EditUserIcon />,
         label: 'Editar Perfil',
         paths: ['/session/profile/edit-profile'],
-        component: () => <EditProfile />,
+        component: () => <EditProfile />
       },
       {
         icon: () => <ChangeIcon />,
@@ -49,42 +49,42 @@ const Profile: React.FC = () => {
           '/session/profile/change-role/professor',
           '/session/profile/change-role/evaluator',
           '/session/profile/change-role/moderator',
-          '/session/profile/change-role/admin',
+          '/session/profile/change-role/admin'
         ],
         exact: true,
         component: () => <AddRole />,
-        isBigInOther: true,
+        isBigInOther: true
       },
       {
         icon: () => <CardIcon />,
         label: 'Financeiro',
         paths: ['/session/profile/financial'],
-        component: () => <Financial />,
+        component: () => <Financial />
       },
       {
         icon: () => <SecurityIcon />,
         label: 'Segurança',
         paths: ['/session/profile/security'],
-        component: () => <Security />,
+        component: () => <Security />
       },
       {
         icon: () => <HistoryIcon />,
         label: 'Histórico',
         paths: ['/session/profile/historic'],
-        component: () => <Historic />,
+        component: () => <Historic />
       },
       {
         icon: () => <PalleteIcon />,
         label: 'Customização',
         paths: ['/session/profile/customization'],
-        component: () => <Customization />,
+        component: () => <Customization />
       },
       {
         icon: () => <MapIcon />,
         label: 'Voltar ao mapa',
         paths: ['/session/main/map'],
-        bottom: true,
-      },
+        bottom: true
+      }
     ],
     []
   )

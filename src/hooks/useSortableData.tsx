@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 interface Return<T> {
   items?: T[]
-  sort?: (indexerToSort: keyof T) => void
+  sort?: (_indexerToSort: keyof T) => void
   sortConfig?: SortableConfig<T>
 }
 
@@ -11,7 +11,10 @@ interface SortableConfig<T> {
   direction: 'ascending' | 'descending'
 }
 
-const useSortableData = <T,>(items: T[] | null, config: SortableConfig<T>): Return<T> => {
+const useSortableData = <T, _>(
+  items: T[] | null,
+  config: SortableConfig<T>
+): Return<T> => {
   const [sortConfig, setSortConfig] = useState(config)
 
   if (items) {
@@ -22,8 +25,10 @@ const useSortableData = <T,>(items: T[] | null, config: SortableConfig<T>): Retu
         const valueA = a[sortConfig.indexer]
         const valueB = b[sortConfig.indexer]
 
-        if (valueA < valueB) return sortConfig.direction === 'ascending' ? -1 : 1
-        if (valueA > valueB) return sortConfig.direction === 'ascending' ? 1 : -1
+        if (valueA < valueB)
+          return sortConfig.direction === 'ascending' ? -1 : 1
+        if (valueA > valueB)
+          return sortConfig.direction === 'ascending' ? 1 : -1
         return 0
       })
 
@@ -31,7 +36,10 @@ const useSortableData = <T,>(items: T[] | null, config: SortableConfig<T>): Retu
     }
 
     const sort = (indexerToSort: keyof T) => {
-      if (sortConfig.indexer === indexerToSort && sortConfig.direction === 'ascending')
+      if (
+        sortConfig.indexer === indexerToSort &&
+        sortConfig.direction === 'ascending'
+      )
         setSortConfig({ indexer: indexerToSort, direction: 'descending' })
       else setSortConfig({ indexer: indexerToSort, direction: 'ascending' })
     }
@@ -42,7 +50,7 @@ const useSortableData = <T,>(items: T[] | null, config: SortableConfig<T>): Retu
   return {
     items: undefined,
     sort: undefined,
-    sortConfig: undefined,
+    sortConfig: undefined
   }
 }
 

@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 // import fromTheme from 'utils/fromTheme'
 
 import styled, { css } from 'styled-components'

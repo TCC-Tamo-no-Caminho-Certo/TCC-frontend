@@ -13,22 +13,22 @@ const actualDate = new Date()
 const present = {
   year: actualDate.getFullYear(),
   month: actualDate.getMonth(),
-  day: actualDate.getDate(),
+  day: actualDate.getDate()
 }
 
 const minimumDate = {
   year: present.year - 120,
   month: present.month + 1,
-  day: present.day,
+  day: present.day
 }
 
 const maximumDate = {
   year: present.year - 18,
   month: present.month + 1,
-  day: present.day,
+  day: present.day
 }
 
-interface Datepicker extends TextProps {
+interface DatepickerProps extends TextProps {
   valueColor?: string
   headerColor?: string
   bodyColor?: string
@@ -38,7 +38,7 @@ interface Datepicker extends TextProps {
   isBirthday?: boolean
 }
 
-const Datepicker: React.FC<Datepicker> = ({
+const Datepicker: React.FC<DatepickerProps> = ({
   valueColor = '#d65881',
   headerColor = '#6e4850',
   bodyColor = '#6e4850',
@@ -62,7 +62,9 @@ const Datepicker: React.FC<Datepicker> = ({
     }
 
     const onClick = () => {
-      const year: HTMLButtonElement | null = document.querySelector('.Calendar__yearText')
+      const year: HTMLButtonElement | null = document.querySelector(
+        '.Calendar__yearText'
+      )
       if (year && !selectedDate) year.click()
     }
 

@@ -1,6 +1,6 @@
-host: "31.220.52.69"
+host: '31.220.52.69'
 port: 22
-username: "rgd"
-password: "J9QDcPqMECi7Q3giRDFF"
-remote-path: "/home/rgd/deploy/dev/frontend"
-local-path: "./build"
+username: 'rgd'
+password: 'J9QDcPqMECi7Q3giRDFF'
+remote-path: '/home/rgd/deploy/dev/frontend'
+local-path: './build'

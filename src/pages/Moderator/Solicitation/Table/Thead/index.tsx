@@ -9,24 +9,24 @@ import ArrowIcon from 'assets/ArrowIcon'
 import { Variants } from 'framer-motion'
 
 interface TheadProps {
-  sort?: (name: keyof TableData) => void
+  sort?: (_name: keyof TableData) => void
   headerData: HeaderData[]
 }
 
 type Arrow = {
-  [name in keyof TableData]: 'default' | 'up' | 'down'
+  [_name in keyof TableData]: 'default' | 'up' | 'down'
 }
 
 const arrow: Variants = {
   default: {
-    rotate: -90,
+    rotate: -90
   },
   up: {
-    rotate: -180,
+    rotate: -180
   },
   down: {
-    rotate: -0,
-  },
+    rotate: -0
+  }
 }
 
 const Thead: React.FC<TheadProps> = ({ headerData, sort }) => {
@@ -63,8 +63,15 @@ const Thead: React.FC<TheadProps> = ({ headerData, sort }) => {
 
             return (
               <th key={name}>
-                <button type='button' onClick={() => onButtonClick(name, index)}>
-                  <ArrowIcon variants={arrow} initial={false} animate={arrows[index][name]} />
+                <button
+                  type='button'
+                  onClick={() => onButtonClick(name, index)}
+                >
+                  <ArrowIcon
+                    variants={arrow}
+                    initial={false}
+                    animate={arrows[index][name]}
+                  />
                   {label}
                 </button>
               </th>

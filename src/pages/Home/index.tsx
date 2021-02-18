@@ -22,44 +22,44 @@ const Home: React.FC = () => {
 
   const transition = {
     type: 'tween',
-    duration: 1,
+    duration: 1
   }
 
   const loginAnimation = {
     initial: {
-      x: initial ? '-100vw' : '0vw',
+      x: initial ? '-100vw' : '0vw'
     },
     default: {
-      x: '0vw',
+      x: '0vw'
     },
     exit: {
-      x: '-100vw',
-    },
+      x: '-100vw'
+    }
   }
 
   const signupAnimation = {
     initial: {
-      x: initial ? '100vw' : '0vw',
+      x: initial ? '100vw' : '0vw'
     },
     default: {
-      x: '0vw',
+      x: '0vw'
     },
     exit: {
-      x: '100vw',
-    },
+      x: '100vw'
+    }
   }
 
   const shadowAnimation = {
     login: {
-      x: '62vw',
+      x: '62vw'
     },
     signup: {
-      x: '-38vw',
+      x: '-38vw'
     },
     transition: {
       type: 'tween',
-      duration: initial ? 1 : 0,
-    },
+      duration: initial ? 1 : 0
+    }
   }
 
   useEffect(() => {

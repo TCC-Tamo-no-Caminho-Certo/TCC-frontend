@@ -9,7 +9,7 @@ interface StyleProps {
 
 export const Dot = styled(motion.button).attrs({
   className: 'Dot',
-  type: 'button',
+  type: 'button'
 })``
 
 const Style = styled.div.attrs({ className: 'Dots' })<StyleProps>`

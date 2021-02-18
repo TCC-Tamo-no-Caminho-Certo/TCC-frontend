@@ -9,12 +9,12 @@ interface StyleProps {
 export const MotionRect = styled(motion.rect).attrs({
   width: '24',
   height: '3',
-  rx: '2',
+  rx: '2'
 })``
 
 const Style = styled.button.attrs({
   type: 'button',
-  className: 'Hamburger',
+  className: 'Hamburger'
 })<StyleProps>`
   width: ${({ width }) => width};
   height: ${({ height }) => height};

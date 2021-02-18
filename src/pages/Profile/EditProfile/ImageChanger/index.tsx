@@ -33,11 +33,8 @@ const ImageChanger: React.FC = () => {
 
     let files
 
-    if (e.dataTransfer) {
-      files = e.dataTransfer.files
-    } else if (e.target) {
-      files = e.target.files
-    }
+    if (e.dataTransfer) files = e.dataTransfer.files
+    else if (e.target) files = e.target.files
 
     const reader = new FileReader()
 
@@ -53,7 +50,7 @@ const ImageChanger: React.FC = () => {
   const onConfirmClick = async () => {
     if (cropper.cropped) {
       const result = await api.post('/user/avatar/upload', {
-        picture: cropper.getCroppedCanvas().toDataURL(),
+        picture: cropper.getCroppedCanvas().toDataURL()
       })
 
       dispatch(UserActions.updateUserInfo({ avatar: result.object }))
@@ -76,7 +73,7 @@ const ImageChanger: React.FC = () => {
           id='firstFileSelect'
           animate={{
             color: noImage ? [white, red, white] : white,
-            borderColor: noImage ? [white, red, white] : white,
+            borderColor: noImage ? [white, red, white] : white
           }}
           transition={{ duration: 0.3 }}
         >

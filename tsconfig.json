@@ -14,17 +14,10 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "types": [
-      "jest",
-    ]
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": ["jest"],
+    "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "src"
-  ],
+  "include": ["src"],
   "files": ["src/styles/themes/styled.d.ts"]
 }

@@ -24,7 +24,7 @@ const ForgotPassword: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string>()
   const [tokenIsSend, setTokenIsSend] = useState(false)
   const [modalAttributes, setModalAttributes] = useState<ModalAttributes>({
-    visible: false,
+    visible: false
   })
 
   const history = useHistory()
@@ -36,7 +36,7 @@ const ForgotPassword: React.FC = () => {
           visible: true,
           message: 'Email não cadastrado em nossa plataforma',
           title: 'Erro',
-          color: '#e8423f',
+          color: '#e8423f'
         })
   }
 
@@ -44,14 +44,13 @@ const ForgotPassword: React.FC = () => {
     if (result.success) {
       localStorage.setItem('reset-password-token', result.token)
       history.push('/reset-password')
-    } else {
+    } else
       setModalAttributes({
         visible: true,
         title: 'Erro',
         message: 'Token Inválido',
-        color: '#e8423f',
+        color: '#e8423f'
       })
-    }
   }
 
   const handleTokenResent = (result: any) => {
@@ -60,25 +59,33 @@ const ForgotPassword: React.FC = () => {
           visible: true,
           title: 'Sucesso',
           message: 'Código reenviado!',
-          color: '#13c47c',
+          color: '#13c47c'
         })
       : setModalAttributes({
           visible: true,
           title: 'Erro',
           message: 'Algo inesperado ocorreu',
-          color: '#e8423f',
+          color: '#e8423f'
         })
   }
 
   return (
     <>
-      <Modal {...modalAttributes} onOKClick={() => setModalAttributes({ visible: false })} />
+      <Modal
+        {...modalAttributes}
+        onOKClick={() => setModalAttributes({ visible: false })}
+      />
 
       <Style>
         <BackButton
           to='/home'
           onTap={() => {
-            dispatch(HomeActions.update({ initial: false, page: 'login' }))
+            dispatch(
+              HomeActions.update({
+                initial: false,
+                page: 'login'
+              })
+            )
           }}
         />
 
@@ -103,11 +110,18 @@ const ForgotPassword: React.FC = () => {
                 </Submit>
               </Form>
 
-              <Form afterResData={handleTokenSubmit} path='reset-password' loading captcha>
+              <Form
+                afterResData={handleTokenSubmit}
+                path='reset-password'
+                loading
+                captcha
+              >
                 <Text
                   name='token'
                   placeholder='Código'
-                  handleValue={value => localStorage.setItem('reset-password-token', value)}
+                  handleValue={value =>
+                    localStorage.setItem('reset-password-token', value)
+                  }
                   icon={PadlockIcon}
                 />
 
@@ -133,8 +147,8 @@ const ForgotPassword: React.FC = () => {
                 />
 
                 <p>
-                  Enviaremos uma email para o seguinte endereço contendo instruções para renovação
-                  da senha
+                  Enviaremos uma email para o seguinte endereço contendo
+                  instruções para renovação da senha
                 </p>
 
                 <Submit className='submit'>Enviar</Submit>

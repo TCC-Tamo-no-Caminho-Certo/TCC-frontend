@@ -16,17 +16,17 @@ const Hamburger = React.forwardRef<any, HamburgerProps>(
 
     const motionFirst = {
       open: { rotate: 45, y: 7 },
-      closed: { rotate: 0, y: 0 },
+      closed: { rotate: 0, y: 0 }
     }
 
     const motionSecond = {
       open: { x: 12, y: 0, width: 0 },
-      closed: { x: 0, y: 0, width: 24 },
+      closed: { x: 0, y: 0, width: 24 }
     }
 
     const motionThird = {
       open: { rotate: -45, y: -7 },
-      closed: { rotate: 0, y: 0 },
+      closed: { rotate: 0, y: 0 }
     }
 
     const transition = { type: 'tween', duration: 0.2 }
@@ -73,3 +73,5 @@ const Hamburger = React.forwardRef<any, HamburgerProps>(
 )
 
 export default Hamburger
+
+Hamburger.displayName = 'Hamburger'

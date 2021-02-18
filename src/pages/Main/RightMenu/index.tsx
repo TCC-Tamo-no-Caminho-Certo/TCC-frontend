@@ -24,38 +24,29 @@ import { Link, useHistory } from 'react-router-dom'
 
 const RightMenu: React.FC = () => {
   const { innerWidth } = useWindowDimensions()
-  const [editOpen, toggleEditProfile] = useCycle(
-    false,
-    true
-  )
+  const [editOpen, toggleEditProfile] = useCycle(false, true)
 
   const [changeRole, setChangeRole] = useState(false)
   const [width, setWidth] = useState(innerWidth)
   const history = useHistory()
   const dispatch = useDispatch()
-  const {
-    name,
-    surname,
-    selectedRole,
-    roles,
-  } = useSelector<RootState, UserState>(state => state.user)
+  const { name, surname, selectedRole, roles } = useSelector<
+    RootState,
+    UserState
+  >(state => state.user)
 
   const closedHeight = 112
   const openHeight = 300 + closedHeight
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       await toggleEditProfile()
       toggleEditProfile()
     })()
 
     if (innerWidth <= 300) setWidth(320)
-    else {
-      innerWidth >= 425
-        ? setWidth(300)
-        : setWidth(innerWidth)
-    }
-    
+    else innerWidth >= 425 ? setWidth(300) : setWidth(innerWidth)
+
     // eslint-disable-next-line
   }, [innerWidth])
 
@@ -70,16 +61,16 @@ const RightMenu: React.FC = () => {
       transition: {
         type: 'tween',
         duration: 0.2,
-        staggerChildren: 0.1,
-      },
+        staggerChildren: 0.1
+      }
     },
     closed: {
       transition: {
         type: 'tween',
         duration: 0.2,
-        staggerChildren: 0,
-      },
-    },
+        staggerChildren: 0
+      }
+    }
   }
 
   const motionHr: Variants = {
@@ -88,16 +79,16 @@ const RightMenu: React.FC = () => {
 
       transition: {
         type: 'tween',
-        duration: 0.4,
-      },
+        duration: 0.4
+      }
     },
     closed: {
       opacity: [1, 0],
       transition: {
         type: 'tween',
-        duration: 0.1,
-      },
-    },
+        duration: 0.1
+      }
+    }
   }
 
   const motionLi: Variants = {
@@ -106,16 +97,16 @@ const RightMenu: React.FC = () => {
       x: [16, 0],
       transition: {
         type: 'tween',
-        duration: 0.4,
-      },
+        duration: 0.4
+      }
     },
     closed: {
       opacity: [1, 0],
       transition: {
         type: 'tween',
-        duration: 0.1,
-      },
-    },
+        duration: 0.1
+      }
+    }
   }
 
   const motionLogout: Variants = {
@@ -124,16 +115,16 @@ const RightMenu: React.FC = () => {
       y: [-16, 0],
       transition: {
         type: 'tween',
-        duration: 0.4,
-      },
+        duration: 0.4
+      }
     },
     closed: {
       opacity: [1, 0],
       transition: {
         type: 'tween',
-        duration: 0.1,
-      },
-    },
+        duration: 0.1
+      }
+    }
   }
 
   const motionPath: Variants = {
@@ -141,16 +132,16 @@ const RightMenu: React.FC = () => {
       d: `M0,0 H${width} V${closedHeight} H0 V0 Z`,
       transition: {
         type: 'tween',
-        duration: 0.2,
-      },
+        duration: 0.2
+      }
     },
     open: {
       d: `M0,0 H${width} V${openHeight} H0 V0 Z`,
       transition: {
         type: 'tween',
-        duration: 0.2,
-      },
-    },
+        duration: 0.2
+      }
+    }
   }
 
   return (
@@ -171,32 +162,18 @@ const RightMenu: React.FC = () => {
         <Avatar size={80} />
 
         <UserInfo selectedRole={selectedRole}>
-          <span id='userRole'>
-            {selectRoleLabel(selectedRole)}
-          </span>
+          <span id='userRole'>{selectRoleLabel(selectedRole)}</span>
           <span id='userName'>{`${name} ${surname}`}</span>
 
           <span id='userActivity'>
-            <svg
-              width='5'
-              height='5'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <circle
-                cx='2.5'
-                cy='2.5'
-                r='2.5'
-                fill='#00FF66'
-              />
+            <svg width='5' height='5' xmlns='http://www.w3.org/2000/svg'>
+              <circle cx='2.5' cy='2.5' r='2.5' fill='#00FF66' />
             </svg>
             Online
           </span>
         </UserInfo>
 
-        <button
-          type='button'
-          onClick={() => toggleEditProfile()}
-        >
+        <button type='button' onClick={() => toggleEditProfile()}>
           <GearIcon />
         </button>
 
@@ -221,7 +198,7 @@ const RightMenu: React.FC = () => {
                           onClick={() => {
                             dispatch(
                               UserActions.updateUserInfo({
-                                selectedRole: role,
+                                selectedRole: role
                               })
                             )
                           }}
@@ -237,33 +214,23 @@ const RightMenu: React.FC = () => {
               <ul id='openProfile'>
                 <motion.hr variants={motionHr} />
 
-                <motion.li
-                  key='Profiles toggleEditProfile'
-                  variants={motionLi}
-                >
+                <motion.li key='Profiles toggleEditProfile' variants={motionLi}>
                   <button
                     type='button'
-                    onClick={() =>
-                      setChangeRole(!changeRole)}
+                    onClick={() => setChangeRole(!changeRole)}
                   >
                     <ChangeIcon />
                     Alternar entre papéis
                   </button>
                 </motion.li>
 
-                <motion.li
-                  key='Edit Profile'
-                  variants={motionLi}
-                >
+                <motion.li key='Edit Profile' variants={motionLi}>
                   <Link to='/session/profile/edit-profile'>
                     <EditUserIcon /> Editar perfil
                   </Link>
                 </motion.li>
 
-                <motion.li
-                  key='Switch Perfil'
-                  variants={motionLi}
-                >
+                <motion.li key='Switch Perfil' variants={motionLi}>
                   <Link to='/session/profile/change-role'>
                     <AddRoleIcon /> Solicitar novo papel
                   </Link>
@@ -285,10 +252,7 @@ const RightMenu: React.FC = () => {
         </AnimatePresence>
 
         {selectedRole === 'guest' && (
-          <Link
-            to='/session/profile/change-role'
-            id='baseButton'
-          >
+          <Link to='/session/profile/change-role' id='baseButton'>
             <AddRoleIcon /> Adicionar papel
           </Link>
         )}

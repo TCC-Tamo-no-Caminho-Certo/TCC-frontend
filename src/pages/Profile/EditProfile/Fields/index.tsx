@@ -23,7 +23,7 @@ const Fields: React.FC = () => {
   return (
     <Slider width={550} gap={200} gapVertical={100}>
       {containers.map(role => {
-        if (role === 'personal') {
+        if (role === 'personal')
           return (
             <Card key={role} headerText='Dados Pessoais'>
               <Avatar
@@ -39,10 +39,12 @@ const Fields: React.FC = () => {
               ))}
             </Card>
           )
-        }
 
         return (
-          <Card key={role} headerText={`Dados de ${selectedRoleLabel(role as Role)}`}>
+          <Card
+            key={role}
+            headerText={`Dados de ${selectedRoleLabel(role as Role)}`}
+          >
             {formatUpdateUser(user, role as Role).map((info: InputData) => (
               <Field key={info.inputname} data={info} />
             ))}

@@ -19,13 +19,13 @@ export interface Ref {
   inputRef: React.RefObject<any>
   type: string
   value?: any
-  setError: (message: string) => void
+  setError: (_message: string) => void
 }
 
 export interface FormState {
   loader: boolean
-  removeInput: (input: Ref) => void
-  registerInput: (input: Ref) => void
+  removeInput: (_input: Ref) => void
+  registerInput: (_input: Ref) => void
 }
 
 export interface FormProps extends React.HTMLProps<HTMLFormElement> {
@@ -35,8 +35,8 @@ export interface FormProps extends React.HTMLProps<HTMLFormElement> {
   loading?: boolean
   schema?: ObjectSchema
   addData?: { [key: string]: string }
-  getData?: (data: any) => void
-  afterResData?: (resData: any) => void
+  getData?: (_data: any) => void
+  afterResData?: (_resData: any) => void
 }
 
 export const FormContext = React.createContext<FormState | null>(null)
@@ -56,7 +56,9 @@ const Form: React.FC<FormProps> = ({
   const recaptchaRef = useRef<Captcha>(null)
   const [showLoader, setShowLoader] = useState(false)
   const history = useHistory()
-  const data: { [name: string]: any } = useMemo(() => ({ ...addData }), [addData])
+  const data: { [name: string]: any } = useMemo(() => ({ ...addData }), [
+    addData
+  ])
 
   let refs: Ref[] = []
   let haveErrors = false
@@ -71,7 +73,8 @@ const Form: React.FC<FormProps> = ({
 
   const setData = () => {
     refs.forEach(({ inputRef: { current }, value, type }) => {
-      if (!current) throw new Error('Form setData error! inputRef.current not found!')
+      if (!current)
+        throw new Error('Form setData error! inputRef.current not found!')
       else
         switch (type) {
           case 'text':
@@ -97,12 +100,13 @@ const Form: React.FC<FormProps> = ({
             break
 
           case 'multiSelect':
-            if (current.select.props.value === null) data[current.props.name] = ''
-            else {
+            if (current.select.props.value === null)
+              data[current.props.name] = ''
+            else
               data[current.props.name] = current.select.props.value.map(
                 (oneValue: { value: string; label: string }) => oneValue.value
               )
-            }
+
             break
 
           case 'file':
@@ -132,11 +136,13 @@ const Form: React.FC<FormProps> = ({
           refs[index] && refs[index].setError(errorElement.message)
         })
       else
-        throw new Error('Unexpected error on validation! error isnt instanceof Yup.ValidationError')
+        throw new Error(
+          'Unexpected error on validation! error isnt instanceof Yup.ValidationError'
+        )
     }
   }
 
-  const makeRequest = async (cbAfterResData?: (data: any) => void) => {
+  const makeRequest = async (cbAfterResData?: (_data: any) => void) => {
     const resData = await api.post(path, data)
     cbAfterResData && cbAfterResData(resData)
 
@@ -150,7 +156,8 @@ const Form: React.FC<FormProps> = ({
     getData && getData(data)
     validate()
 
-    if (captcha) data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
+    if (captcha)
+      data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
 
     const submitRes = !haveErrors && (await makeRequest(afterResData))
     loading && setShowLoader(false)
@@ -167,7 +174,9 @@ const Form: React.FC<FormProps> = ({
         />
       )}
 
-      <FormContext.Provider value={{ removeInput, registerInput, loader: showLoader }}>
+      <FormContext.Provider
+        value={{ removeInput, registerInput, loader: showLoader }}
+      >
         {children}
       </FormContext.Provider>
     </form>

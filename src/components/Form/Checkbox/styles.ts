@@ -14,7 +14,7 @@ const Style = styled.div<StyleProps>`
     margin-left: 8px;
     font-size: calc(1.5rem + 0.2vh);
 
-    color: ${({theme}) => theme.colors.tertiary};
+    color: ${({ theme }) => theme.colors.tertiary};
 
     &:hover {
       color: ${({ theme }) => theme.colors.primary};

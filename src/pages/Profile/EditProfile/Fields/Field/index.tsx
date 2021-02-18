@@ -40,7 +40,7 @@ const Field: FC<Props> = ({ data }) => {
       <Text
         ref={inputRef}
         name={data.inputname}
-        placeholder={data.dontShow ? `*********` : ''}
+        placeholder={data.dontShow ? '*********' : ''}
         defaultValue={data.dontShow ? '' : data.value}
         className='InputChange'
       />

@@ -19,7 +19,7 @@ const debounce = (action: any, timeout: any) => {
 
 const getDimensions = () => ({
   innerHeight: window.innerHeight,
-  innerWidth: window.innerWidth,
+  innerWidth: window.innerWidth
 })
 
 const useWindowDimensions = (): WindowDimension => {

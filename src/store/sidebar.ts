@@ -5,7 +5,7 @@ export interface SidebarState {
 }
 
 const initialState: SidebarState = {
-  open: false,
+  open: false
 }
 
 const Sidebar = createSlice({
@@ -14,8 +14,8 @@ const Sidebar = createSlice({
   reducers: {
     toggleSidebar(state, action: PayloadAction<boolean>) {
       state.open = action.payload
-    },
-  },
+    }
+  }
 })
 
 export const SidebarActions = Sidebar.actions

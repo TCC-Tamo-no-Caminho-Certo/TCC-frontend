@@ -49,7 +49,7 @@ const File: React.FC<FileProps> = ({ label, name, ...props }) => {
       inputRef: fileRef,
       type: 'file',
       value: fileData,
-      setError,
+      setError
     }
 
     form?.registerInput(fileForInput)

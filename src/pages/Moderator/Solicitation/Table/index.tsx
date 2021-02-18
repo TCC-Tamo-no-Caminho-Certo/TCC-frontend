@@ -59,7 +59,7 @@ const headerData: HeaderData[] = [
   { name: 'name', label: 'Nome' },
   { name: 'role', label: 'Papel' },
   { name: 'status', label: 'Status' },
-  { name: 'date', label: 'Data' },
+  { name: 'date', label: 'Data' }
 ]
 
 const makeStatusLabel = (status: StatusTypes): string => {
@@ -86,9 +86,9 @@ const makeDateLabel = (date: string): string => {
     '07': 'jul',
     '08': 'ago',
     '09': 'set',
-    '10': 'out',
-    '11': 'nov',
-    '12': 'dez',
+    10: 'out',
+    11: 'nov',
+    12: 'dez'
   }
 
   const keyOfMonth = teste[5] + teste[6]
@@ -103,32 +103,41 @@ const Table: React.FC = () => {
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
   const modalRef = useRef<ModalMethods>(null)
 
-  const [clickedItem, setClickedItem] = useState<TableData | undefined>(undefined)
+  const [clickedItem, setClickedItem] = useState<TableData | undefined>(
+    undefined
+  )
   const [isClear, setIsClear] = useState(false)
   const [tablePage, setTablePage] = useState(1)
   const [data, setData] = useState<TableData[] | null>(null)
-  const [addData, setAddData] = useState<{ name: string } | undefined>(undefined)
+  const [addData, setAddData] = useState<{ name: string } | undefined>(
+    undefined
+  )
 
   const { items, sort } = useSortableData(data, {
     direction: 'descending',
-    indexer: 'name',
+    indexer: 'name'
   })
 
   const quantity = 25
 
   const requestToTableData = (array: RequestsData[]) =>
-    array.map(({ status, full_name, role, created_at, request_id }: RequestsData) => ({
-      role,
-      id: request_id,
-      name: full_name,
-      statusCircle: status,
-      status: makeStatusLabel(status),
-      date: makeDateLabel(created_at),
-    }))
+    array.map(
+      ({ status, full_name, role, created_at, request_id }: RequestsData) => ({
+        role,
+        id: request_id,
+        name: full_name,
+        statusCircle: status,
+        status: makeStatusLabel(status),
+        date: makeDateLabel(created_at)
+      })
+    )
 
   const initialRequest = useCallback(async () => {
     if (!isClear) {
-      const { requests } = await api.post(`request/role/get/1/${quantity}`, addData)
+      const { requests } = await api.post(
+        `request/role/get/1/${quantity}`,
+        addData
+      )
 
       if (requests !== undefined && requests.length !== 0) {
         const tableData = requestToTableData(requests)
@@ -150,7 +159,9 @@ const Table: React.FC = () => {
         <Form
           id='row'
           path={`request/role/get/${tablePage}/${quantity}`}
-          afterResData={res => res !== undefined && setData(requestToTableData(res.requests))}
+          afterResData={res =>
+            res !== undefined && setData(requestToTableData(res.requests))
+          }
         >
           <div id='filters'>
             <Text
@@ -163,7 +174,7 @@ const Table: React.FC = () => {
               ref={inputRef}
             />
 
-            {/* 
+            {/*
             <div id='dates'>
               <label htmlFor='from'>De</label>
 
@@ -238,7 +249,10 @@ const Table: React.FC = () => {
       </Style>
 
       <Modal ref={modalRef}>
-        <ModalContent role={clickedItem?.role} status={clickedItem?.statusCircle}>
+        <ModalContent
+          role={clickedItem?.role}
+          status={clickedItem?.statusCircle}
+        >
           <CloseIcon />
 
           <div id='avatarAndInfo'>
@@ -262,9 +276,14 @@ const Table: React.FC = () => {
             />
 
             <div id='buttons'>
-              <Submit onClick={() => modalRef.current?.toggleModal(false)}>Aceitar</Submit>
+              <Submit onClick={() => modalRef.current?.toggleModal(false)}>
+                Aceitar
+              </Submit>
 
-              <button type='button' onClick={() => modalRef.current?.toggleModal(false)}>
+              <button
+                type='button'
+                onClick={() => modalRef.current?.toggleModal(false)}
+              >
                 Recusar
               </button>
             </div>

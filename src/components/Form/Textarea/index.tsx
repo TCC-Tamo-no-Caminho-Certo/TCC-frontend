@@ -1,4 +1,10 @@
-import React, { HTMLProps, useContext, useEffect, useRef, useState } from 'react'
+import React, {
+  HTMLProps,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import Style from './styles'
 
 import { FormContext, FormState } from '../'
@@ -16,7 +22,7 @@ const Textarea: React.FC<TextareaProps> = props => {
     const sendRef = {
       inputRef: textareaRef,
       setError,
-      type: 'textarea',
+      type: 'textarea'
     }
 
     form?.registerInput(sendRef)
@@ -27,7 +33,11 @@ const Textarea: React.FC<TextareaProps> = props => {
     <>
       <ErrorTooltip error={!!error} content={error} />
 
-      <Style className='Textarea' ref={textareaRef as any} {...(props as any)} />
+      <Style
+        className='Textarea'
+        ref={textareaRef as any}
+        {...(props as any)}
+      />
     </>
   )
 }

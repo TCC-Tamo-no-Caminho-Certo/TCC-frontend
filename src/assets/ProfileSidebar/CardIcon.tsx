@@ -1,9 +1,13 @@
-/* eslint-disable max-len */
 import React from 'react'
 
 const CardIcon: React.FC = () => {
   return (
-    <svg className='Icon' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 512 461'>
+    <svg
+      className='Icon'
+      xmlns='http://www.w3.org/2000/svg'
+      fill='none'
+      viewBox='0 0 512 461'
+    >
       <path d='M408.789 276.524c-3.903-3.903-10.234-3.905-14.141-.001l-53.477 53.473-28.023-28.025c-3.906-3.902-10.238-3.904-14.143 0-3.905 3.906-3.906 10.238 0 14.143L334.1 351.21c1.953 1.953 4.512 2.93 7.071 2.93s5.119-.977 7.07-2.93l60.547-60.543c3.906-3.904 3.906-10.236.001-14.143z' />
       <path
         fillRule='evenodd'
