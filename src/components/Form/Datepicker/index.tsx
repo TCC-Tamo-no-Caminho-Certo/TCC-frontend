@@ -38,7 +38,7 @@ interface DatepickerProps extends TextProps {
   isBirthday?: boolean
 }
 
-const Datepicker: React.FC<DatepickerProps> = ({
+const Datepicker = ({
   valueColor = '#d65881',
   headerColor = '#6e4850',
   bodyColor = '#6e4850',
@@ -49,7 +49,7 @@ const Datepicker: React.FC<DatepickerProps> = ({
   arrow,
   name,
   ...rest
-}) => {
+}: DatepickerProps) => {
   const [selectedDate, setSelectedDate] = useState<DayValue>(null)
 
   const renderCustomInput = ({ ref }: any) => {

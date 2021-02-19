@@ -13,7 +13,7 @@ import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 
 type TextareaProps = HTMLProps<HTMLTextAreaElement>
 
-const Textarea: React.FC<TextareaProps> = props => {
+const Textarea = (props: TextareaProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [error, setError] = useState<string>()
   const form = useContext<FormState | null>(FormContext)

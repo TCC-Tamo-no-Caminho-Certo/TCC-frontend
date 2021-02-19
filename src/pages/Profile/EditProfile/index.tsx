@@ -1,4 +1,4 @@
-import React, { createContext, useRef } from 'react'
+import React, { createContext, RefObject, useRef } from 'react'
 import Style, { ConfirmForm } from './styles'
 
 import Fields from './Fields'
@@ -14,13 +14,13 @@ import Modal, { ModalMethods } from 'components/Modal'
 import { useDispatch } from 'react-redux'
 
 export interface ModalState {
-  ref: React.RefObject<ModalMethods>
+  ref: RefObject<ModalMethods>
 }
 
 export const ModalContext = createContext<ModalState | null>(null)
 ModalContext.displayName = 'Modal Context'
 
-const EditProfile: React.FC = () => {
+const EditProfile = () => {
   const confirmRefModal = useRef<ModalMethods>(null)
   const imageRefModal = useRef<ModalMethods>(null)
   const dispatch = useDispatch()

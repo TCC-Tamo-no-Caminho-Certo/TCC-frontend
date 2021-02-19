@@ -9,7 +9,7 @@ interface ErrorTooltipProps extends PopupProps {
   error: boolean
 }
 
-const ErrorTooltip: React.FC<ErrorTooltipProps> = ({ error, ...props }) => {
+const ErrorTooltip = ({ error, ...props }: ErrorTooltipProps) => {
   return error ? (
     <Style
       position='top left'

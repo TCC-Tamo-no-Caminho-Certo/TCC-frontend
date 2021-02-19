@@ -15,7 +15,7 @@ import Slider from 'components/Slider'
 
 import { useSelector } from 'react-redux'
 
-const Fields: React.FC = () => {
+const Fields = () => {
   const user = useSelector<RootState, UserState>(state => state.user)
   const modal = useContext(ModalContext)
   const containers = ['personal', ...user.roles]

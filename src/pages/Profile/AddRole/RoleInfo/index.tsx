@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import React from 'react'
 import Style from './styles'
 
@@ -17,14 +16,14 @@ interface RoleInfoProps {
   userRoles?: string[]
 }
 
-const RoleInfo: React.FC<RoleInfoProps> = ({
+const RoleInfo = ({
   title,
   benefits,
   color,
   onClick,
   noButton = false,
   userRoles
-}) => {
+}: RoleInfoProps) => {
   const [show, toggleShow] = useCycle<boolean>(false, true)
   const [deg, rotate] = useCycle(0, -90)
   const haveThisRole = userRoles?.includes(title)

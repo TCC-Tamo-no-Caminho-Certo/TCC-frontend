@@ -4,7 +4,7 @@ interface EyeClosedIconProps {
   onClick?(): void
 }
 
-const EyeClosedIcon: React.FC<EyeClosedIconProps> = ({ onClick }) => {
+const EyeClosedIcon = ({ onClick }: EyeClosedIconProps) => {
   return (
     <svg
       className='Icon'

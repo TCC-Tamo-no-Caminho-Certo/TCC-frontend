@@ -1,4 +1,12 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, {
+  createContext,
+  FormEvent,
+  HTMLProps,
+  RefObject,
+  useMemo,
+  useRef,
+  useState
+} from 'react'
 
 import { ReCaptcha } from './recaptcha'
 import Text from './Text'
@@ -16,7 +24,7 @@ import { useHistory } from 'react-router-dom'
 import { ObjectSchema, ValidationError } from 'yup'
 
 export interface Ref {
-  inputRef: React.RefObject<any>
+  inputRef: RefObject<any>
   type: string
   value?: any
   setError: (_message: string) => void
@@ -28,7 +36,7 @@ export interface FormState {
   registerInput: (_input: Ref) => void
 }
 
-export interface FormProps extends React.HTMLProps<HTMLFormElement> {
+export interface FormProps extends HTMLProps<HTMLFormElement> {
   path: string
   push?: string
   captcha?: boolean
@@ -39,9 +47,9 @@ export interface FormProps extends React.HTMLProps<HTMLFormElement> {
   afterResData?: (_resData: any) => void
 }
 
-export const FormContext = React.createContext<FormState | null>(null)
+export const FormContext = createContext<FormState | null>(null)
 
-const Form: React.FC<FormProps> = ({
+const Form = ({
   children,
   path,
   push,
@@ -52,7 +60,7 @@ const Form: React.FC<FormProps> = ({
   captcha,
   afterResData,
   ...rest
-}) => {
+}: FormProps) => {
   const recaptchaRef = useRef<Captcha>(null)
   const [showLoader, setShowLoader] = useState(false)
   const history = useHistory()
@@ -149,7 +157,7 @@ const Form: React.FC<FormProps> = ({
     return resData.success
   }
 
-  const onSubmit = async (event: React.FormEvent) => {
+  const onSubmit = async (event: FormEvent) => {
     event.preventDefault()
     loading && setShowLoader(true)
     setData()

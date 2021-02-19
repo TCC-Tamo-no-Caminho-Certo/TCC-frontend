@@ -16,7 +16,7 @@ import {
   useLocation
 } from 'react-router-dom'
 
-const Routes: React.FC = () => {
+const Routes = () => {
   const { pathname } = useLocation()
   const history = useHistory()
 

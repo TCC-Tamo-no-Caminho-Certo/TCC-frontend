@@ -1,4 +1,4 @@
-import React, { FC, ImgHTMLAttributes, memo, useState } from 'react'
+import React, { ImgHTMLAttributes, memo, useState } from 'react'
 import Style from './styles'
 
 import { RootState } from 'store'
@@ -19,7 +19,7 @@ interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
   loaderColor?: string
   border?: boolean
 }
-const Avatar: FC<AvatarProps> = ({
+const Avatar = ({
   size,
   onShadowClick,
   onClick,
@@ -27,7 +27,7 @@ const Avatar: FC<AvatarProps> = ({
   shadow = false,
   border = false,
   ...rest
-}) => {
+}: AvatarProps) => {
   const avatar = useSelector<RootState, string>(state => state.user.avatar)
 
   const src = `https://s3.steamslab.com/profile/${avatar}`

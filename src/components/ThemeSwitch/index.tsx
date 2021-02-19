@@ -5,7 +5,7 @@ import { ThemeActions } from 'store/theme'
 import { useDispatch } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
-const ThemeSwitch: React.FC = () => {
+const ThemeSwitch = () => {
   const dispatch = useDispatch()
   const theme = useContext(ThemeContext)
 

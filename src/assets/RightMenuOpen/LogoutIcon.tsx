@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LogoutIcon: React.FC = () => {
+const LogoutIcon = () => {
   return (
     <svg
       className='Icon'

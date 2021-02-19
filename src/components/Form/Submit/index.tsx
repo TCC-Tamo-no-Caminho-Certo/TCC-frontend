@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { HTMLProps, useContext } from 'react'
 import Style from './styles'
 
 import { FormContext, FormState } from '../'
@@ -10,9 +10,9 @@ import DotsLoader from 'components/DotsLoader'
 
 import { useSelector } from 'react-redux'
 
-type SubmitProps = React.HTMLProps<HTMLButtonElement>
+type SubmitProps = HTMLProps<HTMLButtonElement>
 
-const Submit: React.FC<SubmitProps> = ({ children, disabled }) => {
+const Submit = ({ children, disabled }: SubmitProps) => {
   const form = useContext<FormState | null>(FormContext)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 

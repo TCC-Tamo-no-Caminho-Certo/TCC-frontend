@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MapIcon: React.FC = () => {
+const MapIcon= () => {
   return (
     <svg
       className='Icon'

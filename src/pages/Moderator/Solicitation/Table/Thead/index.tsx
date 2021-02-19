@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import Style from './styles'
 
 import { HeaderData, TableData } from '../index'
@@ -29,7 +29,7 @@ const arrow: Variants = {
   }
 }
 
-const Thead: React.FC<TheadProps> = ({ headerData, sort }) => {
+const Thead = ({ headerData, sort }: TheadProps) => {
   const initialArrows: Arrow[] = headerData.map(({ name }) => {
     return { [name]: 'default' } as Arrow
   })
@@ -83,4 +83,4 @@ const Thead: React.FC<TheadProps> = ({ headerData, sort }) => {
   )
 }
 
-export default React.memo(Thead)
+export default memo(Thead)

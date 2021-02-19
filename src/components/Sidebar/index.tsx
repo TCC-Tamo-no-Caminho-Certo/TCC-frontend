@@ -34,7 +34,7 @@ interface SidebarProps {
   scrollBarSize?: number
 }
 
-const Sidebar: React.FC<SidebarProps> = ({
+const Sidebar = ({
   routes,
   selected,
   letters,
@@ -43,7 +43,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   samePage = false,
   closedWidth = 72,
   width = 210
-}) => {
+}: SidebarProps) => {
   const { innerWidth } = useWindowDimensions()
   const [isLarge, setisLarge] = useState(innerWidth >= 545)
   const open = useSelector<RootState, boolean>(({ sidebar }) => sidebar.open)

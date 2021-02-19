@@ -1,6 +1,6 @@
 import React from 'react'
 
-const HistoryIcon: React.FC = () => {
+const HistoryIcon = () => {
   return (
     <svg
       className='Icon'

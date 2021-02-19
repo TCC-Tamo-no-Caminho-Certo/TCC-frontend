@@ -17,7 +17,7 @@ import { motion } from 'framer-motion'
 import { Cropper } from 'react-cropper'
 import { useDispatch, useSelector } from 'react-redux'
 
-const ImageChanger: React.FC = () => {
+const ImageChanger = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const { white, red } = theme.colors
 

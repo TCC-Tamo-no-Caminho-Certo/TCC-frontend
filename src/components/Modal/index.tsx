@@ -1,5 +1,6 @@
 import React, {
   forwardRef,
+  ForwardRefRenderFunction,
   ReactElement,
   useImperativeHandle,
   useRef,
@@ -17,12 +18,11 @@ export interface ModalMethods {
   toggleModal: (_setModal?: boolean) => void
 }
 
-const Modal: React.ForwardRefRenderFunction<ModalMethods, ModalProps> = (
+const Modal: ForwardRefRenderFunction<ModalMethods, ModalProps> = (
   { top = '50%', bottom = '0%', children },
   ref
 ) => {
   const modalRef = useRef(null)
-
   const [openModal, setOpenModal] = useState(false)
 
   const toggleModal = (setModal?: boolean) => {

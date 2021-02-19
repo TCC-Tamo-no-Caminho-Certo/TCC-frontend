@@ -1,7 +1,7 @@
 import React from 'react'
 import Style from './styles'
 
-const List: React.FC = () => {
+const List= () => {
   return <Style>List</Style>
 }
 

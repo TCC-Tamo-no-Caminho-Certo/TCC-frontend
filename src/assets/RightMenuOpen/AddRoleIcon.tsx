@@ -1,6 +1,6 @@
 import React from 'react'
 
-const AddRoleIcon: React.FC = () => {
+const AddRoleIcon = () => {
   return (
     <svg
       fill='none'

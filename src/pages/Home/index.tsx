@@ -12,7 +12,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Switch, useLocation } from 'react-router-dom'
 
-const Home: React.FC = () => {
+const Home = () => {
   const page = useSelector<RootState, string>(state => state.home.page)
   const initial = useSelector<RootState, boolean>(state => state.home.initial)
   const dispatch = useDispatch()

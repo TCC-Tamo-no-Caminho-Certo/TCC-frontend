@@ -9,13 +9,13 @@ export interface ModalAttributes {
   onOKClick?: () => void
 }
 
-const Modal: React.FC<ModalAttributes> = ({
+const Modal = ({
   message,
   visible,
   title,
   color,
   onOKClick
-}) => {
+}: ModalAttributes) => {
   if (!onOKClick)
     throw new Error('onOKClick function not provided to the modal!')
 

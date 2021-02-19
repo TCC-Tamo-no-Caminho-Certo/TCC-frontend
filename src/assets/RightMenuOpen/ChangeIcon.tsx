@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ChangeIcon: React.FC = () => {
+const ChangeIcon = () => {
   return (
     <svg
       className='Icon'

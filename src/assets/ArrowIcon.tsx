@@ -11,7 +11,7 @@ interface ArrowIconProps {
   variants?: Variants
 }
 
-const ArrowIcon: React.FC<ArrowIconProps> = ({
+const ArrowIcon = ({
   className = 'Icon',
   id = 'ArrowIcon',
   variants,
@@ -21,7 +21,7 @@ const ArrowIcon: React.FC<ArrowIconProps> = ({
     type: 'tween',
     duration: 0.3
   }
-}) => {
+}: ArrowIconProps) => {
   return (
     <motion.svg
       xmlns='http://www.w3.org/2000/svg'

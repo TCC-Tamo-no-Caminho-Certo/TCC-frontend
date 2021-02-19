@@ -18,7 +18,7 @@ import BackButton from 'components/BackButton'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-const ForgotPassword: React.FC = () => {
+const ForgotPassword = () => {
   const dispatch = useDispatch()
 
   const [userEmail, setUserEmail] = useState<string>()

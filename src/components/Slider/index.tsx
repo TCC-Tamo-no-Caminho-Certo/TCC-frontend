@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { ReactElement, useCallback, useState } from 'react'
 import Style, { Container } from './styles'
 
 import Dots from './Dots'
@@ -6,18 +6,18 @@ import Dots from './Dots'
 import { motion } from 'framer-motion'
 
 interface SliderProps {
-  children: React.ReactElement[]
+  children: ReactElement[]
   width: number
   gap: number
   gapVertical?: number
 }
 
-const Slider: React.FC<SliderProps> = ({
+const Slider = ({
   children: containers,
   gap,
   width,
   gapVertical = gap
-}) => {
+}: SliderProps) => {
   const [makeLeftMove, setMakeLeftMove] = useState(false)
   const [makeRightMove, setMakeRightMove] = useState(false)
   const [xValue, setXValue] = useState(0)

@@ -4,7 +4,7 @@ interface CheckedIconProps {
   className?: string
 }
 
-const CheckedIcon: React.FC<CheckedIconProps> = ({ className = 'Icon' }) => {
+const CheckedIcon = ({ className = 'Icon' }: CheckedIconProps) => {
   return (
     <svg
       className={className}

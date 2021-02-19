@@ -1,7 +1,7 @@
 import React from 'react'
 import Style from './styles'
 
-const Customization: React.FC = () => {
+const Customization= () => {
   return (
     <Style>
       <h1>Customization</h1>

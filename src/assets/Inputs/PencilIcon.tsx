@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PencilIcon: React.FC = () => {
+const PencilIcon= () => {
   return (
     <svg
       className='Icon'

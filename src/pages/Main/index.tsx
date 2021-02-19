@@ -15,7 +15,7 @@ import Sidebar, { RouteProps } from 'components/Sidebar'
 import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
-const Profile: React.FC = () => {
+const Profile = () => {
   const { sidebar } = useContext(ThemeContext)
   const { selectedRole } = useSelector<RootState, UserState>(({ user }) => user)
 

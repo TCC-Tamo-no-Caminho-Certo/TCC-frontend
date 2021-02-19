@@ -17,7 +17,7 @@ interface FileProps extends ReactCropperProps {
   name: string
 }
 
-const File: React.FC<FileProps> = ({ label, name, ...props }) => {
+const File = ({ label, name, ...props }: FileProps) => {
   const form = useContext<FormState | null>(FormContext)
   const modalRef = useRef<ModalMethods>(null)
   const fileRef = useRef<HTMLInputElement>(null)

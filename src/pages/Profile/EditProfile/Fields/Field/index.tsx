@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Style from './styles'
 
 import { InputData } from 'utils/formatUpdateUser'
@@ -13,11 +13,11 @@ import { Datepicker, Text } from 'components/Form'
 
 import { useSelector } from 'react-redux'
 
-interface Props {
+interface FieldProps {
   data: InputData
 }
 
-const Field: FC<Props> = ({ data }) => {
+const Field = ({ data }: FieldProps) => {
   const [change, setChange] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)

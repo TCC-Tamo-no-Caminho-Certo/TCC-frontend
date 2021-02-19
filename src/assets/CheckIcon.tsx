@@ -4,7 +4,7 @@ interface CheckIconProps {
   id?: string
 }
 
-const CheckIcon: React.FC<CheckIconProps> = ({ id }) => {
+const CheckIcon = ({ id }: CheckIconProps) => {
   return (
     <svg
       className='Icon'

@@ -13,7 +13,7 @@ import { Form, Submit, Text } from 'components/Form'
 
 import { useHistory } from 'react-router-dom'
 
-const ConfirmPassword: React.FC = () => {
+const ConfirmPassword = () => {
   const [modalAttributes, setModalAttributes] = useState<ModalAttributes>({
     visible: false
   })

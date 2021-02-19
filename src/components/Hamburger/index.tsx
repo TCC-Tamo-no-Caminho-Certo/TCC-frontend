@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import Style, { MotionRect } from './styles'
 
 interface HamburgerProps {
@@ -8,7 +8,7 @@ interface HamburgerProps {
   size?: number
 }
 
-const Hamburger = React.forwardRef<any, HamburgerProps>(
+const Hamburger = forwardRef<any, HamburgerProps>(
   ({ toggle, state, color, size = 24 }, ref) => {
     function onHamburgerClick() {
       toggle?.()

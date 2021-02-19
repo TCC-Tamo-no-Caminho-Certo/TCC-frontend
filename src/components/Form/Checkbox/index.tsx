@@ -30,7 +30,7 @@ const pathAnimation: Variants = {
   }
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({ name, label }) => {
+const Checkbox = ({ name, label }: CheckboxProps) => {
   const checkboxRef = useRef<HTMLInputElement>(null)
   const form = useContext<FormState | null>(FormContext)
   const [checked, setChecked] = useState(false)

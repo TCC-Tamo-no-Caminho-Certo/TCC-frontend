@@ -45,7 +45,7 @@ const inputs: Variants = {
   receipt: { height: receiptSize }
 }
 
-const ProfessorForm: React.FC = () => {
+const ProfessorForm = () => {
   const [wayOfSignup, setWayOfSignup] = useState<
     undefined | 'email' | 'receipt'
   >(undefined)

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const GearIcon: React.FC = () => {
+const GearIcon = () => {
   return (
     <svg
       className='Icon'

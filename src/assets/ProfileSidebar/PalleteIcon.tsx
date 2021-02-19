@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PalleteIcon: React.FC = () => {
+const PalleteIcon = () => {
   return (
     <svg
       className='Icon'

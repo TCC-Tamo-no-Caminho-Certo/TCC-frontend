@@ -10,7 +10,7 @@ import Sidebar, { RouteProps } from 'components/Sidebar'
 
 import { ThemeContext } from 'styled-components'
 
-const Moderator: React.FC = () => {
+const Moderator = () => {
   const { sidebar } = useContext(ThemeContext)
 
   const moderatorRoutes = useMemo(

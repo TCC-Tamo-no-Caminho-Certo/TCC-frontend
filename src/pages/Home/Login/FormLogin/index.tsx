@@ -24,7 +24,7 @@ export interface LoginData {
   remember?: boolean
 }
 
-const FormLogin: React.FC = () => {
+const FormLogin = () => {
   const history = useHistory()
   const dispatch = useDispatch()
   const [disable, setDisable] = useState(false)

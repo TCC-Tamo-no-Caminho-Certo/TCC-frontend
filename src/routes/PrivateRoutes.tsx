@@ -23,7 +23,7 @@ const getRole = (roles: Role[]): Role => {
   return roles[0]
 }
 
-const PrivateRoutes: React.FC = () => {
+const PrivateRoutes = () => {
   const dispatch = useDispatch()
 
   const onStartInPrivateRoute = useCallback(async () => {

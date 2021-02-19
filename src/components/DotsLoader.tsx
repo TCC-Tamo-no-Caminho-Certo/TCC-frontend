@@ -8,11 +8,11 @@ interface DotsLoaderProps {
   color?: string
 }
 
-const DotsLoader: React.FC<DotsLoaderProps> = ({
+const DotsLoader = ({
   size = 36,
   dotSize = 8,
   color = '#6e4850'
-}) => {
+}: DotsLoaderProps) => {
   const loadingContainer = {
     height: '100%',
     width: size,

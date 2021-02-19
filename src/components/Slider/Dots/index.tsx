@@ -14,7 +14,7 @@ interface DotsProps {
   makeRightTap?: boolean
 }
 
-const Dots: React.FC<DotsProps> = ({
+const Dots = ({
   size,
   gap,
   radius,
@@ -23,7 +23,7 @@ const Dots: React.FC<DotsProps> = ({
   onLeftClick,
   makeLeftTap = false,
   makeRightTap = false
-}) => {
+}: DotsProps) => {
   const [position, setPosition] = useState(0)
   const move = gap + size
   const limit = quantity % 2 === 0 ? (quantity - 2) / 2 : (quantity - 1) / 2

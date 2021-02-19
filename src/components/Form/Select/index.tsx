@@ -12,7 +12,7 @@ import { lighten } from 'polished'
 import { useSelector } from 'react-redux'
 import RealSelect, { Theme } from 'react-select'
 
-const Select: React.FC<any> = ({ isMulti, ...props }) => {
+const Select = ({ isMulti, ...props }: any) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const selectRef = useRef(null)
   const [error, setError] = useState<string>()

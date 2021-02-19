@@ -22,7 +22,7 @@ import { AnimatePresence, motion, useCycle, Variants } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 
-const RightMenu: React.FC = () => {
+const RightMenu = () => {
   const { innerWidth } = useWindowDimensions()
   const [editOpen, toggleEditProfile] = useCycle(false, true)
 

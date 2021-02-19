@@ -1,7 +1,7 @@
 import React from 'react'
 import Style from './styles'
 
-export const Logo: React.FC = () => {
+export const Logo = () => {
   // const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   return (

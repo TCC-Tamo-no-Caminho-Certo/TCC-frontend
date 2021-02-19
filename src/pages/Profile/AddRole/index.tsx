@@ -25,7 +25,7 @@ const allRoles: Role[] = [
   'moderator'
 ]
 
-const AddRole: React.FC = () => {
+const AddRole = () => {
   const { roles } = useSelector<RootState, UserState>(state => state.user)
   const [roleSelected, setRoleSelected] = useState<Role | undefined>(undefined)
   const labelRoles = roles.map(role => selectRoleLabel(role))

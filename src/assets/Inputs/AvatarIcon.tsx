@@ -1,6 +1,6 @@
 import React from 'react'
 
-const AvatarIcon: React.FC = () => {
+const AvatarIcon= () => {
   return (
     <svg
       className='Icon'

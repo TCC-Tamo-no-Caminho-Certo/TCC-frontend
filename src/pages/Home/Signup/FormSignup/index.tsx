@@ -17,7 +17,7 @@ import BackButton from 'components/BackButton'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-const FormSignup: React.FC = () => {
+const FormSignup = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const dispatch = useDispatch()
   const [disable, setDisable] = useState(false)

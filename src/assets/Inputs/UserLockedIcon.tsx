@@ -1,6 +1,6 @@
 import React from 'react'
 
-const UserLockedIcon: React.FC = () => {
+const UserLockedIcon= () => {
   return (
     <svg
       className='Icon'

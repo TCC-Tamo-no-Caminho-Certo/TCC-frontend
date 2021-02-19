@@ -6,7 +6,7 @@ interface CardProps {
   headerText: string
 }
 
-const Card: React.FC<CardProps> = ({ headerText, children }) => {
+const Card = ({ headerText, children }: CardProps) => {
   return (
     <Style className='Card'>
       <Header>{headerText}</Header>

@@ -9,7 +9,7 @@ interface BackButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   onTap(): void
 }
 
-const BackButton: React.FC<BackButtonProps> = ({ to, onTap, ...props }) => {
+const BackButton = ({ to, onTap, ...props }: BackButtonProps) => {
   const history = useHistory()
 
   const onButtonClick = () => {

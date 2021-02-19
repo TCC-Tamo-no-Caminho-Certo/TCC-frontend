@@ -4,7 +4,7 @@ interface EyeProps {
   onClick?(): void
 }
 
-const EyeIcon: React.FC<EyeProps> = ({ onClick }) => {
+const EyeIcon = ({ onClick }: EyeProps) => {
   return (
     <svg
       className='Icon'

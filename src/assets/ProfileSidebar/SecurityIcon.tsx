@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SecurityIcon: React.FC = () => {
+const SecurityIcon = () => {
   return (
     <svg
       className='Icon'

@@ -1,5 +1,10 @@
 import React, {
+  FC,
+  FocusEvent,
+  FormEvent,
   forwardRef,
+  HTMLProps,
+  RefObject,
   useContext,
   useEffect,
   useRef,
@@ -14,11 +19,11 @@ import EyeIcon from 'assets/Inputs/EyeIcon'
 
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 
-export interface TextProps extends React.HTMLProps<HTMLInputElement> {
+export interface TextProps extends HTMLProps<HTMLInputElement> {
   handleValue?: (_value: any) => void
   eye?: boolean
   pasteAndDrop?: boolean
-  icon?: React.FC
+  icon?: FC
   color?: string
 }
 
@@ -38,7 +43,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
   ) => {
     const form = useContext<FormState | null>(FormContext)
     const textRef = useRef<HTMLInputElement>(null)
-    const auxRef = (ref as React.RefObject<HTMLInputElement>) || textRef
+    const auxRef = (ref as RefObject<HTMLInputElement>) || textRef
     const [showInput, setShowInput] = useState(false)
     const [isFilled, setIsFilled] = useState(false)
     const [error, setError] = useState<string>()
@@ -54,13 +59,13 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
       return () => form?.removeInput(input)
     }, [auxRef, form, type])
 
-    const onInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
       onBlur && onBlur(e)
       setIsFilled(!!auxRef.current?.value)
       setError(undefined)
     }
 
-    const valueHandler = (e: React.FormEvent) => {
+    const valueHandler = (e: FormEvent) => {
       e.preventDefault()
       handleValue && handleValue(auxRef.current?.value)
     }

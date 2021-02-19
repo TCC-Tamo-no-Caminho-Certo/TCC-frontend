@@ -5,7 +5,7 @@ import Card from 'components/Card'
 
 import { motion, useCycle } from 'framer-motion'
 
-const RequestStatus: React.FC = () => {
+const RequestStatus= () => {
   const [progressTrue, cycleProgressTrue] = useCycle(
     ['4%', '4%'],
     ['4%', '27%'],

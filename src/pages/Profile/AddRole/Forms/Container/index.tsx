@@ -1,5 +1,4 @@
-/* eslint-disable no-nested-ternary */
-import React, { useEffect } from 'react'
+import React, { ReactNode, useEffect } from 'react'
 import Style, { Content, Header } from './styles'
 
 import makeRoleLabel from 'utils/makeRoleLabel'
@@ -8,9 +7,10 @@ import { Role } from 'store/user'
 
 interface ContainerProps {
   role: Role
+  children: ReactNode
 }
 
-const Container: React.FC<ContainerProps> = ({ role, children }) => {
+const Container = ({ role, children }: ContainerProps) => {
   useEffect(() => {
     setTimeout(() => {
       window.scrollTo(0, document.body.scrollHeight)
