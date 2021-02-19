@@ -263,8 +263,8 @@ const Style = styled.div`
       justify-content: center;
       align-items: center;
 
-      width: 15%;
-      max-width: 170px;
+      width: clamp(100px, 15%, 170px);
+
       height: 100%;
       border-radius: 8px;
 

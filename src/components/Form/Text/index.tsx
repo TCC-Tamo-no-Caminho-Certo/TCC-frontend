@@ -32,7 +32,6 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
       icon: Icon,
       pasteAndDrop = true,
       color = '#d65881',
-      className = 'Text',
       ...rest
     },
     ref
@@ -73,7 +72,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
 
     return (
       <Style
-        className={className}
+        className='Text'
         color={color}
         hasEye={!!eye}
         hasIcon={!!Icon}
