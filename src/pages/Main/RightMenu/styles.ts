@@ -28,9 +28,7 @@ interface RoleLiProps {
   role: Role
 }
 
-export const UserInfo = styled.div.attrs({
-  className: 'UserInfo'
-})<UserInfoProps>`
+export const UserInfo = styled.div<UserInfoProps>`
   display: flex;
   flex-direction: column;
 
@@ -210,7 +208,7 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     }
   }
 
-  @media screen and (min-width: 425px) {
+  @media screen and (min-width: 545px) {
     right: 0;
 
     min-width: 300px;
@@ -232,7 +230,7 @@ export const Background = styled.svg<BackgroundProps>`
     fill: ${({ theme }) => darken(0.1, theme.colors.tertiary)};
   }
 
-  @media screen and (min-width: 425px) {
+  @media screen and (min-width: 545px) {
     right: 0;
 
     min-width: 300px;
@@ -303,7 +301,7 @@ const Style = styled.div<StyleProps>`
     background-color: ${({ theme }) => theme.colors.primary};
   }
 
-  @media screen and (min-width: 425px) {
+  @media screen and (min-width: 545px) {
     min-width: 300px;
     width: 300px;
     right: 0;

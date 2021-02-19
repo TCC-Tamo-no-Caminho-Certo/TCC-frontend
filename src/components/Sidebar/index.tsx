@@ -45,7 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   width = 210
 }) => {
   const { innerWidth } = useWindowDimensions()
-  const [isLarge, setisLarge] = useState(innerWidth >= 425)
+  const [isLarge, setisLarge] = useState(innerWidth >= 545)
   const open = useSelector<RootState, boolean>(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
   const history = useHistory()
@@ -75,7 +75,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   )
 
   useEffect(() => {
-    setisLarge(innerWidth >= 425)
+    setisLarge(innerWidth >= 545)
   }, [innerWidth])
 
   useEffect(() => {
@@ -123,6 +123,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     open: {
       height: '100vh',
       width: isLarge ? width : '100vw',
+      opacity: 1,
       transition: {
         type: 'tween',
         duration: 0.3
@@ -131,6 +132,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     closed: {
       height: isLarge ? '100vh' : closedWidth,
       width: isLarge ? closedWidth : '100vw',
+      opacity: isLarge ? 1 : 0.95,
       transition: {
         type: 'tween',
         duration: 0.2
@@ -197,6 +199,9 @@ const Sidebar: React.FC<SidebarProps> = ({
               selected={selected}
               paths={paths?.map(path => path.replaceAll('/', '-'))}
               pathname={pathname.replaceAll('/', '-')}
+              onClick={() => {
+                !isLarge && onToggle()
+              }}
             >
               <button
                 type='button'

@@ -45,7 +45,7 @@ const RightMenu: React.FC = () => {
     })()
 
     if (innerWidth <= 300) setWidth(320)
-    else innerWidth >= 425 ? setWidth(300) : setWidth(innerWidth)
+    else innerWidth >= 545 ? setWidth(300) : setWidth(innerWidth)
 
     // eslint-disable-next-line
   }, [innerWidth])
@@ -130,6 +130,7 @@ const RightMenu: React.FC = () => {
   const motionPath: Variants = {
     closed: {
       d: `M0,0 H${width} V${closedHeight} H0 V0 Z`,
+      opacity: innerWidth >= 545 ? 1 : 0.95,
       transition: {
         type: 'tween',
         duration: 0.2
@@ -137,6 +138,7 @@ const RightMenu: React.FC = () => {
     },
     open: {
       d: `M0,0 H${width} V${openHeight} H0 V0 Z`,
+      opacity: 1,
       transition: {
         type: 'tween',
         duration: 0.2
@@ -161,7 +163,7 @@ const RightMenu: React.FC = () => {
       <Style closedHeight={`${closedHeight}px`}>
         <Avatar size={80} />
 
-        <UserInfo selectedRole={selectedRole}>
+        <UserInfo selectedRole={selectedRole} className='UserInfo'>
           <span id='userRole'>{selectRoleLabel(selectedRole)}</span>
           <span id='userName'>{`${name} ${surname}`}</span>
 

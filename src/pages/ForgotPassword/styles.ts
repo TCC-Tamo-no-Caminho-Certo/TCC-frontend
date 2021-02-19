@@ -58,7 +58,7 @@ const Style = styled.main`
       justify-content: center;
     }
 
-    @media (max-width: 425px) {
+    @media (max-width: 545px) {
       width: 100%;
       height: 100vh;
       padding: 10% 0 0 0;
@@ -119,7 +119,7 @@ const Style = styled.main`
       transform: translateY(-50%);
     }
 
-    @media (max-width: 425px) {
+    @media (max-width: 545px) {
       position: fixed;
 
       width: 90vw;

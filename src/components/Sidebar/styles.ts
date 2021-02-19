@@ -48,7 +48,7 @@ export const ListItem = styled.li<ListItemProps>`
     )
   }}
 
-  @media screen and (min-width: 425px) {
+  @media screen and (min-width: 545px) {
     visibility: visible;
   }
 `
@@ -57,9 +57,16 @@ export const SidebarNav = styled(motion.nav)<StyleProps>`
   position: fixed;
   left: 0;
   bottom: 0;
-
   z-index: 3;
-  min-width: 320px;
+
+  /* ${({ isOpen }) =>
+    isOpen
+      ? css`
+          min-width: 320px;
+        `
+      : css`
+          max-width: 72px;
+        `} */
 
   ${({ background }) =>
     background.search(/gradient/)
@@ -137,7 +144,7 @@ export const SidebarNav = styled(motion.nav)<StyleProps>`
     }
   }
 
-  @media screen and (min-width: 425px) {
+  @media screen and (min-width: 545px) {
     min-width: 72px;
     width: 72px;
     height: 100vh;
