@@ -19,3 +19,5 @@ export const Shadow = styled(motion.div)<ShadowProps>`
     box-shadow: -8px 8px 6px 4px rgba(0, 0, 0, 0.14);
   }
 `
+
+Shadow.displayName = 'Shadow-Style'

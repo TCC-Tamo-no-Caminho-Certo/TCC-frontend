@@ -1,5 +1,21 @@
 import styled from 'styled-components'
 
+export const Header = styled.header`
+  position: absolute;
+  top: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 40px;
+  border-radius: 16px 16px 0 0;
+
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: white;
+`
+
 const Style = styled.div`
   position: relative;
 
@@ -25,23 +41,7 @@ const Style = styled.div`
   }
 `
 
-export const Header = styled.header`
-  position: absolute;
-  top: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  height: 40px;
-  border-radius: 16px 16px 0 0;
-
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: white;
-`
-
 export default Style
 
-Style.displayName = 'Card-Style'
 Header.displayName = 'Header-Style'
+Style.displayName = 'Card-Style'

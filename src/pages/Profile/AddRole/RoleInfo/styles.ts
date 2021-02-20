@@ -85,3 +85,5 @@ const Style = styled.div<StyleProps>`
 `
 
 export default Style
+
+Style.displayName = 'RoleInfo-Style'

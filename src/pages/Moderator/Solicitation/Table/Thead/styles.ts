@@ -16,7 +16,7 @@ const Style = styled.table`
 
       width: calc(100% - 8px);
       height: 32px;
-      padding: 0 8px;
+      padding: 0 16px 0 8px;
 
       th {
         height: 100%;
@@ -67,14 +67,19 @@ const Style = styled.table`
         &.date button {
           justify-content: flex-end;
 
-          text-align: right;
           min-width: 64px;
         }
       }
     }
   }
 
-  @media screen and (min-width: 545px) {
+  @media screen and (min-width: 745px) {
+    table thead tr {
+      padding: 0 8px;
+    }
+  }
+
+  @media screen and (min-width: 745px) {
     thead tr {
       padding: 0 32px;
 

@@ -51,6 +51,6 @@ const Style = styled.div`
 
 export default Style
 
-Style.displayName = 'Student-Style'
-Content.displayName = 'Content-Style'
 Header.displayName = 'Header-Style'
+Content.displayName = 'Content-Style'
+Style.displayName = 'Container-Style'

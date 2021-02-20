@@ -112,3 +112,5 @@ const Style = styled.div`
 `
 
 export default Style
+
+Style.displayName = 'File-Style'

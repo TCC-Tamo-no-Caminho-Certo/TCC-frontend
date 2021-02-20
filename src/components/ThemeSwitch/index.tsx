@@ -1,13 +1,13 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
-import { ThemeActions } from 'store/theme'
+import { ThemeActions, ThemeState } from 'store/theme'
+import { RootState } from 'store'
 
-import { useDispatch } from 'react-redux'
-import { ThemeContext } from 'styled-components'
+import { useDispatch, useSelector } from 'react-redux'
 
 const ThemeSwitch = () => {
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const dispatch = useDispatch()
-  const theme = useContext(ThemeContext)
 
   return (
     <svg
@@ -21,7 +21,7 @@ const ThemeSwitch = () => {
         strokeWidth='3'
         strokeLinecap='round'
         strokeLinejoin='round'
-        stroke='#6E4850'
+        stroke={theme.colors.tertiary}
       >
         <path d='M21 40.25L21 36.75' />
         <path d='M21 5.25L21 1.75' />
@@ -30,11 +30,11 @@ const ThemeSwitch = () => {
         <path d='M34.6152 7.38512L32.1302 9.87012' />
 
         <path
-          fill={theme.name === 'light' ? '#D65881' : 'none'}
+          fill={theme.name === 'light' ? theme.colors.primary : 'none'}
           d='M29.75 21C29.75 15.75 26.25 12.25 21 12.25L21 29.75C26.25 29.75 29.75 26.25 29.75 21Z'
         />
         <path
-          fill={theme.name === 'light' ? 'none' : '#D65881'}
+          fill={theme.name === 'light' ? 'none' : theme.colors.primary}
           d='M12.25 21C12.25 26.25 15.75 29.75 21 29.75L21 12.25C15.75 12.25 12.25 15.75 12.25 21Z'
         />
       </g>

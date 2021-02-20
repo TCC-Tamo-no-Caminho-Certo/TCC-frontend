@@ -140,4 +140,5 @@ const Style = styled(motion.section)`
 
 export default Style
 
+ConfirmForm.displayName = 'ConfirmForm-Style'
 Style.displayName = 'EditProfile-Style'

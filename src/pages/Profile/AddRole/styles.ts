@@ -41,4 +41,4 @@ const Style = styled(motion.div)`
 `
 export default Style
 
-Style.displayName = 'ChangeRole-Style'
+Style.displayName = 'AddRole-Style'

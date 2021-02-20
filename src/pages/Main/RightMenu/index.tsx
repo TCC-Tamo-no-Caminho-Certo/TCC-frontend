@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import Style, { Background, RightMenuOpen, RoleLi, UserInfo } from './styles'
+import Style, {
+  Background,
+  Gear,
+  RightMenuOpen,
+  RoleLi,
+  UserInfo
+} from './styles'
 
 import selectRoleLabel from 'utils/makeRoleLabel'
 
@@ -23,13 +29,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 
 const RightMenu = () => {
-  const { innerWidth } = useWindowDimensions()
-  const [editOpen, toggleEditProfile] = useCycle(false, true)
-
-  const [changeRole, setChangeRole] = useState(false)
-  const [width, setWidth] = useState(innerWidth)
   const history = useHistory()
   const dispatch = useDispatch()
+  const { innerWidth } = useWindowDimensions()
+  const [width, setWidth] = useState(innerWidth)
+  const [editOpen, toggleEditProfile] = useCycle(false, true)
+  const [isOpen, setIsOpen] = useState(false)
+  const [changeRole, setChangeRole] = useState(false)
   const { name, surname, selectedRole, roles } = useSelector<
     RootState,
     UserState
@@ -148,117 +154,135 @@ const RightMenu = () => {
 
   return (
     <>
-      <Background
-        closedHeight={`${closedHeight}px`}
-        openHeight={`${openHeight}px`}
-        isOpen={editOpen}
-      >
-        <motion.path
-          initial={false}
-          variants={motionPath}
-          animate={editOpen ? 'open' : 'closed'}
-        />
-      </Background>
+      {(isOpen === true || innerWidth >= 545) && (
+        <>
+          <Background
+            closedHeight={`${closedHeight}px`}
+            openHeight={`${openHeight}px`}
+            isOpen={editOpen}
+          >
+            <motion.path
+              initial={false}
+              variants={motionPath}
+              animate={editOpen ? 'open' : 'closed'}
+            />
+          </Background>
 
-      <Style closedHeight={`${closedHeight}px`}>
-        <Avatar size={80} />
+          <Style closedHeight={`${closedHeight}px`}>
+            <Avatar size={80} />
 
-        <UserInfo selectedRole={selectedRole} className='UserInfo'>
-          <span id='userRole'>{selectRoleLabel(selectedRole)}</span>
-          <span id='userName'>{`${name} ${surname}`}</span>
+            <UserInfo selectedRole={selectedRole} className='UserInfo'>
+              <span id='userRole'>{selectRoleLabel(selectedRole)}</span>
+              <span id='userName'>{`${name} ${surname}`}</span>
 
-          <span id='userActivity'>
-            <svg width='5' height='5' xmlns='http://www.w3.org/2000/svg'>
-              <circle cx='2.5' cy='2.5' r='2.5' fill='#00FF66' />
-            </svg>
-            Online
-          </span>
-        </UserInfo>
+              <span id='userActivity'>
+                <svg width='5' height='5' xmlns='http://www.w3.org/2000/svg'>
+                  <circle cx='2.5' cy='2.5' r='2.5' fill='#00FF66' />
+                </svg>
+                Online
+              </span>
+            </UserInfo>
 
-        <button type='button' onClick={() => toggleEditProfile()}>
-          <GearIcon />
-        </button>
+            {innerWidth >= 545 && (
+              <button type='button' onClick={() => toggleEditProfile()}>
+                <GearIcon />
+              </button>
+            )}
 
-        <AnimatePresence>
-          {editOpen && (
-            <RightMenuOpen
-              onMouseLeave={() => setChangeRole(false)}
-              changeRole={changeRole}
-              width={`${width}px`}
-              height={`${openHeight - closedHeight}px`}
-              variants={motionMenu}
-              animate='open'
-              exit='close'
-            >
-              {changeRole && (
-                <motion.div id='selectRoles'>
-                  <ul>
-                    {roles.map(role => (
-                      <RoleLi key={role} role={role}>
-                        <button
-                          type='button'
-                          onClick={() => {
-                            dispatch(
-                              UserActions.updateUserInfo({
-                                selectedRole: role
-                              })
-                            )
-                          }}
-                        >
-                          {selectRoleLabel(role)}
-                        </button>
-                      </RoleLi>
-                    ))}
-                  </ul>
-                </motion.div>
-              )}
-
-              <ul id='openProfile'>
-                <motion.hr variants={motionHr} />
-
-                <motion.li key='Profiles toggleEditProfile' variants={motionLi}>
-                  <button
-                    type='button'
-                    onClick={() => setChangeRole(!changeRole)}
-                  >
-                    <ChangeIcon />
-                    Alternar entre papéis
-                  </button>
-                </motion.li>
-
-                <motion.li key='Edit Profile' variants={motionLi}>
-                  <Link to='/session/profile/edit-profile'>
-                    <EditUserIcon /> Editar perfil
-                  </Link>
-                </motion.li>
-
-                <motion.li key='Switch Perfil' variants={motionLi}>
-                  <Link to='/session/profile/change-role'>
-                    <AddRoleIcon /> Solicitar novo papel
-                  </Link>
-                </motion.li>
-
-                <motion.button
-                  type='button'
-                  onClick={onLogoutClick}
-                  variants={motionLogout}
+            <AnimatePresence>
+              {editOpen && (
+                <RightMenuOpen
+                  onMouseLeave={() => setChangeRole(false)}
+                  changeRole={changeRole}
+                  width={`${width}px`}
+                  height={`${openHeight - closedHeight}px`}
+                  variants={motionMenu}
                   animate='open'
-                  id='logout'
+                  exit='close'
                 >
-                  <span>Sair</span>
-                  <LogoutIcon />
-                </motion.button>
-              </ul>
-            </RightMenuOpen>
-          )}
-        </AnimatePresence>
+                  {changeRole && (
+                    <motion.div id='selectRoles'>
+                      <ul>
+                        {roles.map(role => (
+                          <RoleLi key={role} role={role}>
+                            <button
+                              type='button'
+                              onClick={() => {
+                                dispatch(
+                                  UserActions.updateUserInfo({
+                                    selectedRole: role
+                                  })
+                                )
+                              }}
+                            >
+                              {selectRoleLabel(role)}
+                            </button>
+                          </RoleLi>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  )}
 
-        {selectedRole === 'guest' && (
-          <Link to='/session/profile/change-role' id='baseButton'>
-            <AddRoleIcon /> Adicionar papel
-          </Link>
-        )}
-      </Style>
+                  <ul id='openProfile'>
+                    <motion.hr variants={motionHr} />
+
+                    <motion.li
+                      key='Profiles toggleEditProfile'
+                      variants={motionLi}
+                    >
+                      <button
+                        type='button'
+                        onClick={() => setChangeRole(!changeRole)}
+                      >
+                        <ChangeIcon />
+                        Alternar entre papéis
+                      </button>
+                    </motion.li>
+
+                    <motion.li key='Edit Profile' variants={motionLi}>
+                      <Link to='/session/profile/edit-profile'>
+                        <EditUserIcon /> Editar perfil
+                      </Link>
+                    </motion.li>
+
+                    <motion.li key='Switch Perfil' variants={motionLi}>
+                      <Link to='/session/profile/change-role'>
+                        <AddRoleIcon /> Solicitar novo papel
+                      </Link>
+                    </motion.li>
+
+                    <motion.button
+                      type='button'
+                      onClick={onLogoutClick}
+                      variants={motionLogout}
+                      animate='open'
+                      id='logout'
+                    >
+                      <span>Sair</span>
+                      <LogoutIcon />
+                    </motion.button>
+                  </ul>
+                </RightMenuOpen>
+              )}
+            </AnimatePresence>
+
+            {selectedRole === 'guest' && (
+              <Link to='/session/profile/change-role' id='baseButton'>
+                <AddRoleIcon /> Adicionar papel
+              </Link>
+            )}
+          </Style>
+        </>
+      )}
+
+      {innerWidth <= 545 && (
+        <Gear
+          onClick={() => {
+            setIsOpen(!isOpen)
+            toggleEditProfile()
+          }}
+        />
+      )}
     </>
   )
 }

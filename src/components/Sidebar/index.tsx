@@ -253,7 +253,7 @@ const Sidebar = ({
         </ul>
       </SidebarNav>
 
-      {routes.map(({ paths, component, noContentMove, exact }) => (
+      {routes.map(({ paths, component, noContentMove, exact }, index) => (
         <motion.div
           key={paths[0]}
           id={paths[0].replaceAll('/', '--')}
@@ -261,6 +261,7 @@ const Sidebar = ({
           animate={open && !noContentMove ? 'open' : 'closed'}
           initial={open && !noContentMove ? 'open' : 'closed'}
           style={{
+            marginTop: index === 0 && innerWidth < 545 ? 72 : 0,
             minWidth: 320
           }}
         >

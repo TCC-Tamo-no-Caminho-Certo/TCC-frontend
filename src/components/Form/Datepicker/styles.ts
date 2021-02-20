@@ -1,5 +1,3 @@
-// import fromTheme from 'utils/fromTheme'
-
 import styled, { css } from 'styled-components'
 
 interface StyleProps {
@@ -200,4 +198,4 @@ const Style = styled.div<StyleProps>`
 
 export default Style
 
-Style.displayName = 'Calendar-Style'
+Style.displayName = 'Datepicker-Style'

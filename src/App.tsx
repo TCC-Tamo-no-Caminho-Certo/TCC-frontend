@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 
-const App= () => {
+const App = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
   return (

@@ -230,5 +230,5 @@ const Style = styled.div`
 
 export default Style
 
-Style.displayName = 'ImageChanger-Style'
 RightMenu.displayName = 'RightMenu-Style'
+Style.displayName = 'ImageChanger-Style'

@@ -36,6 +36,7 @@ const Style = styled.div.attrs({ className: 'Slider' })<StyleProps>`
   }
 `
 
-Style.displayName = 'Slider-Style'
-
 export default Style
+
+Container.displayName = 'Container-Style'
+Style.displayName = 'Slider-Style'

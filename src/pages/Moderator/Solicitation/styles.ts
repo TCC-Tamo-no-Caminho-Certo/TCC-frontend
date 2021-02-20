@@ -15,7 +15,7 @@ const Style = styled.div`
     display: flex;
     align-items: center;
 
-    width: 100%;
+    width: max(100%, 280px);
     padding: 16px 16px;
     text-align: left;
   }

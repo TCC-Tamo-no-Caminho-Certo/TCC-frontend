@@ -155,5 +155,5 @@ const Style = styled.main`
 
 export default Style
 
-Style.displayName = 'ForgotPassword-Style'
 ConfirmToken.displayName = 'ConfirmToken-Style'
+Style.displayName = 'ForgotPassword-Style'

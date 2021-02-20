@@ -14,7 +14,7 @@ const Style = styled.div<StyleProps>`
   align-items: center;
 
   height: max(4.5vh, 35px);
-  min-width: 320px;
+  min-width: 300px;
   font-size: calc(1.3rem + 0.5vh);
   border-radius: 10px;
   padding: 0 8px;

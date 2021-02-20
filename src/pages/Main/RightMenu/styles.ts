@@ -1,17 +1,17 @@
 import { Role } from 'store/user'
 
+import GearIcon from 'assets/RightMenuOpen/GearIcon'
+
 import { motion } from 'framer-motion'
 import { darken } from 'polished'
 import styled, { css } from 'styled-components'
 
-interface StyleProps {
-  closedHeight: string
+interface RoleLiProps {
+  role: Role
 }
 
-interface BackgroundProps {
-  closedHeight: string
-  openHeight: string
-  isOpen: boolean
+interface UserInfoProps {
+  selectedRole: Role
 }
 
 interface RightMenuOpenProps {
@@ -20,50 +20,15 @@ interface RightMenuOpenProps {
   changeRole: boolean
 }
 
-interface UserInfoProps {
-  selectedRole: Role
+interface BackgroundProps {
+  closedHeight: string
+  openHeight: string
+  isOpen: boolean
 }
 
-interface RoleLiProps {
-  role: Role
+interface StyleProps {
+  closedHeight: string
 }
-
-export const UserInfo = styled.div<UserInfoProps>`
-  display: flex;
-  flex-direction: column;
-
-  margin-left: 16px;
-
-  cursor: default;
-
-  span {
-    line-height: 16px;
-    text-align: left;
-  }
-
-  #userRole {
-    font-size: 1.3rem;
-
-    color: ${({ theme, selectedRole }) => theme.roles[selectedRole]};
-  }
-
-  #userName {
-    font-size: 1.4rem;
-
-    color: ${({ theme }) => theme.colors.secondary};
-  }
-
-  #userActivity {
-    line-height: 16px;
-    font-size: 1.2rem;
-
-    color: #00ff66;
-
-    svg {
-      margin: 0 4px 2px 0;
-    }
-  }
-`
 
 export const RoleLi = styled.li<RoleLiProps>`
   button {
@@ -110,13 +75,50 @@ export const RoleLi = styled.li<RoleLiProps>`
   }
 `
 
+export const UserInfo = styled.div<UserInfoProps>`
+  display: flex;
+  flex-direction: column;
+
+  margin-left: 16px;
+
+  cursor: default;
+
+  span {
+    line-height: 16px;
+    text-align: left;
+  }
+
+  #userRole {
+    font-size: 1.3rem;
+
+    color: ${({ theme, selectedRole }) => theme.roles[selectedRole]};
+  }
+
+  #userName {
+    font-size: 1.4rem;
+
+    color: ${({ theme }) => theme.colors.secondary};
+  }
+
+  #userActivity {
+    line-height: 16px;
+    font-size: 1.2rem;
+
+    color: #00ff66;
+
+    svg {
+      margin: 0 4px 2px 0;
+    }
+  }
+`
+
 export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
   position: absolute;
   top: 112px;
-  z-index: 2;
+  z-index: 3;
 
   padding: 16px 0;
-  min-width: 320px;
+  min-width: 300px;
   width: 100vw;
   height: ${({ height }) => height};
 
@@ -186,6 +188,7 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     display: flex;
     align-items: center;
 
+    margin-right: 16px;
     height: 24px;
     opacity: 0;
 
@@ -216,11 +219,26 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
   }
 `
 
+export const Gear = styled(GearIcon)`
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 3;
+
+  width: 22px;
+  margin: 36px 24px 0 0;
+  transform: translateY(-50%);
+
+  stroke: ${({ theme }) => theme.colors.secondary};
+  fill: ${({ theme }) => theme.colors.secondary};
+`
+
 export const Background = styled.svg<BackgroundProps>`
   position: fixed;
   top: 0;
+  z-index: 3;
 
-  min-width: 320px;
+  min-width: 300px;
   width: 100vw;
 
   height: ${({ isOpen, openHeight, closedHeight }) =>
@@ -242,13 +260,12 @@ export const Background = styled.svg<BackgroundProps>`
 const Style = styled.div<StyleProps>`
   position: fixed;
   top: 0;
-
-  z-index: 2;
+  z-index: 3;
 
   display: flex;
   align-items: center;
 
-  min-width: 320px;
+  min-width: 300px;
   width: 100vw;
   height: ${({ closedHeight }) => closedHeight};
 
@@ -310,7 +327,9 @@ const Style = styled.div<StyleProps>`
 
 export default Style
 
-Background.displayName = 'Background-Style'
+RoleLi.displayName = 'RoleLi-Style'
 UserInfo.displayName = 'UserInfo-Style'
 RightMenuOpen.displayName = 'RightMenuOpen-Style'
+Gear.displayName = 'Gear-Style'
+Background.displayName = 'Background-Style'
 Style.displayName = 'RightMenu-Style'

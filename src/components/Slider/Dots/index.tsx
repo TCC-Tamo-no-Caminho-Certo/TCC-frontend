@@ -157,7 +157,12 @@ const Dots = ({
   makeRightTap && sequenceToRight(false)
 
   return (
-    <Style size={`${size}px`} gap={`${gap}px`} radius={`${radius}%`}>
+    <Style
+      className='Dots'
+      size={`${size}px`}
+      gap={`${gap}px`}
+      radius={`${radius}%`}
+    >
       <Dot id='newLeft' animate={newLeft}>
         {'  '}
       </Dot>

@@ -9,7 +9,7 @@ interface RoleTdProps {
   role: Role
 }
 
-interface ContentProps {
+interface ModalContentProps {
   role?: Role
   status?: StatusTypes
 }
@@ -39,7 +39,7 @@ export const BodyWrapper = styled.div`
 
         width: 100%;
         min-height: 32px;
-        padding: 0 8px;
+        padding: 0 16px 0 8px;
 
         &:hover {
           cursor: pointer;
@@ -79,9 +79,8 @@ export const BodyWrapper = styled.div`
           }
 
           &.date {
-            justify-content: flex-end;
+            justify-content: center;
 
-            text-align: right;
             min-width: 64px;
           }
         }
@@ -89,7 +88,13 @@ export const BodyWrapper = styled.div`
     }
   }
 
-  @media screen and (min-width: 545px) {
+  @media screen and (min-width: 745px) {
+    table tbody tr {
+      padding: 0 8px;
+    }
+  }
+
+  @media screen and (min-width: 745px) {
     table tbody tr {
       padding: 0 32px;
 
@@ -100,16 +105,16 @@ export const BodyWrapper = styled.div`
   }
 `
 
-export const ModalContent = styled.div<ContentProps>`
+export const ModalContent = styled.div<ModalContentProps>`
   position: relative;
 
   display: flex;
   flex-direction: column;
 
-  padding: 24px;
-  border-radius: 8px;
   width: 70vw;
   height: 80vh;
+  padding: 24px;
+  border-radius: 8px;
   overflow-y: scroll;
 
   background-color: ${({ theme }) => theme.colors.tertiary};
@@ -254,15 +259,15 @@ const Style = styled.div`
     align-items: center;
     flex-direction: column;
 
-    width: 100%;
-    padding: 0 16px;
+    width: max(100%, 280px);
+    padding: 0 32px 0 16px;
 
     #filters {
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      width: max(100%, 300px);
+      width: 100%;
       border-radius: 8px;
 
       box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.2);
@@ -276,6 +281,8 @@ const Style = styled.div`
         color: ${({ theme }) => theme.colors.secondary};
 
         input {
+          width: 100%;
+
           color: ${({ theme }) => theme.colors.secondary};
           -webkit-text-fill-color: ${({ theme }) => theme.colors.secondary};
 
@@ -327,13 +334,13 @@ const Style = styled.div`
       align-items: center;
 
       margin: 16px 0;
-      width: max(100%, 300px);
+      width: 100%;
       height: 40px;
       border-radius: 8px;
 
+      box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.23);
       color: ${({ theme }) => theme.colors.secondary};
       background-color: ${({ theme }) => theme.colors.primary};
-      box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.23);
 
       .Icon {
         margin-right: 12px;
@@ -382,5 +389,7 @@ const Style = styled.div`
 
 export default Style
 
-Style.displayName = 'Table-Style'
+RoleTd.displayName = 'RoleTd-Style'
 BodyWrapper.displayName = 'BodyWrapper-Style'
+ModalContent.displayName = 'ModalContent-Style'
+Style.displayName = 'Table-Style'

@@ -22,4 +22,4 @@ const Style = styled.main`
 
 export default Style
 
-Style.displayName = 'Home-Style'
+Style.displayName = 'RestOfHome-Style'

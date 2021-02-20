@@ -1,18 +1,18 @@
 import { HTMLMotionProps, motion } from 'framer-motion'
 import styled, { css } from 'styled-components'
 
-interface StyleProps extends HTMLMotionProps<'nav'> {
-  letters: string
-  background: string
-  isOpen: boolean
-}
-
 interface ListItemProps {
   paths: string[]
   pathname: string
   selected: string
   isOpen: boolean
   bottom?: boolean
+}
+
+interface StyleProps extends HTMLMotionProps<'nav'> {
+  letters: string
+  background: string
+  isOpen: boolean
 }
 
 export const ListItem = styled.li<ListItemProps>`
@@ -56,17 +56,8 @@ export const ListItem = styled.li<ListItemProps>`
 export const SidebarNav = styled(motion.nav)<StyleProps>`
   position: fixed;
   left: 0;
-  bottom: 0;
+  top: 0;
   z-index: 3;
-
-  /* ${({ isOpen }) =>
-    isOpen
-      ? css`
-          min-width: 320px;
-        `
-      : css`
-          max-width: 72px;
-        `} */
 
   ${({ background }) =>
     background.search(/gradient/)
@@ -160,11 +151,11 @@ const Style = styled.div`
   flex-direction: column;
 
   overflow-x: hidden;
-  min-width: 320px;
+  min-width: 300px;
 `
 
 export default Style
 
-Style.displayName = 'SidebarWrapper-Style'
-SidebarNav.displayName = 'SidebarNav-Style'
 ListItem.displayName = 'ListItem-Style'
+SidebarNav.displayName = 'SidebarNav-Style'
+Style.displayName = 'SidebarWrapper-Style'

@@ -10,6 +10,7 @@ const Style = styled.div`
   background-color: ${({ theme }) => theme.colors.tertiary};
   color: white;
 `
+
 export default Style
 
 Style.displayName = 'ProfileHome-Style'

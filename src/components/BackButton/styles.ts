@@ -18,3 +18,5 @@ const Style = styled.button`
 `
 
 export default Style
+
+Style.displayName = 'BackButton-Style'

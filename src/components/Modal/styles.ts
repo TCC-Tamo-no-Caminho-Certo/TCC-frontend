@@ -40,4 +40,5 @@ const Style = styled.div<StyleProps>`
 
 export default Style
 
+ModalBackground.displayName = 'ModalBackground-Style'
 Style.displayName = 'Modal-Style'
