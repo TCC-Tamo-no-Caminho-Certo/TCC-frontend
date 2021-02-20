@@ -3,7 +3,7 @@ import Style from './styles'
 
 import Table from './Table'
 
-const Solicitation= () => {
+const Solicitation = () => {
   return (
     <Style>
       <header>

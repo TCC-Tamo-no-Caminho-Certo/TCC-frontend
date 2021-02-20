@@ -40,6 +40,7 @@ export const Form = styled(FormComponent)`
       display: flex;
       align-items: center;
       justify-content: space-evenly;
+      flex-direction: column;
 
       margin: 8px 0 16px 0;
 
@@ -48,12 +49,17 @@ export const Form = styled(FormComponent)`
         justify-content: center;
         align-items: center;
 
+        width: 100%;
         height: 42px;
         border-radius: 4px;
         padding: 12px;
 
         background-color: ${({ theme }) => theme.colors.tertiary};
         color: ${({ theme }) => theme.colors.white};
+
+        & + button {
+          margin-top: 8px;
+        }
       }
     }
 
@@ -88,6 +94,20 @@ export const Form = styled(FormComponent)`
 
             fill: ${({ theme }) => theme.colors.primary};
           }
+        }
+      }
+    }
+  }
+
+  @media screen and (min-width: 425px) {
+    #ways #buttons {
+      flex-direction: row;
+
+      button {
+        width: auto;
+
+        & + button {
+          margin-top: 0px;
         }
       }
     }

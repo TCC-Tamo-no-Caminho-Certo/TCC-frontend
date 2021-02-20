@@ -33,7 +33,6 @@ const Thead = ({ headerData, sort }: TheadProps) => {
   const initialArrows: Arrow[] = headerData.map(({ name }) => {
     return { [name]: 'default' } as Arrow
   })
-
   const [arrows, setArrows] = useState(initialArrows)
 
   const onButtonClick = (id: keyof TableData, index: number) => {
@@ -62,7 +61,7 @@ const Thead = ({ headerData, sort }: TheadProps) => {
               )
 
             return (
-              <th key={name}>
+              <th key={name} className={name}>
                 <button
                   type='button'
                   onClick={() => onButtonClick(name, index)}

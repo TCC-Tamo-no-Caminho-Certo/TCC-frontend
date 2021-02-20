@@ -7,6 +7,7 @@ import ProfessorForm from './Forms/ProfessorForm'
 
 import selectRoleLabel from 'utils/makeRoleLabel'
 
+// import api from 'services/api'
 import { RootState } from 'store'
 import { Role, UserState } from 'store/user'
 
@@ -34,6 +35,7 @@ const AddRole = () => {
 
   useEffect(() => {
     const { pathname } = location
+
     if (roleSelected === undefined)
       allRoles.map(role => pathname.includes(role) && setRoleSelected(role))
   }, [location, roleSelected])
@@ -93,11 +95,13 @@ const AddRole = () => {
             title='Moderador'
             userRoles={labelRoles}
             color={theme.roles.moderator}
-            onClick={() => setRoleSelected('moderator')}
+            onClick={() => {
+              // api.post()
+            }}
             benefits={[
               'Aceitar solicitação de mudança para Revisor ',
-              'Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores' +
-                '(devem estar na mesma instituição)',
+              `Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores
+              (devem estar na mesma instituição)`,
               'Ver usuários da instituição',
               'Alterar status da proposta'
             ]}

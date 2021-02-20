@@ -6,6 +6,7 @@ const Style = styled.div`
   flex-direction: column;
 
   height: 100vh;
+  overflow-y: hidden;
 
   background-color: ${({ theme }) => theme.colors.tertiary};
   color: ${({ theme }) => theme.colors.secondary};
@@ -14,9 +15,15 @@ const Style = styled.div`
     display: flex;
     align-items: center;
 
-    width: 90%;
-    padding: 16px 0;
+    width: 100%;
+    padding: 16px 16px;
     text-align: left;
+  }
+
+  @media screen and (min-width: 545px) {
+    header {
+      padding: 16px 32px;
+    }
   }
 `
 export default Style

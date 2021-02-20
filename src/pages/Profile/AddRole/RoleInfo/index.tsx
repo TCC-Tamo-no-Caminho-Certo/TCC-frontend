@@ -76,7 +76,7 @@ const RoleInfo = ({
   }
 
   return (
-    <Style show={show} color={color} title={title} className='Role'>
+    <Style className='Role' show={show} color={color} title={title}>
       <button
         id='title'
         type='button'

@@ -31,49 +31,80 @@ export const BodyWrapper = styled.div`
     width: 100%;
 
     tbody {
+      border: none;
+
       tr {
         display: flex;
         align-items: center;
+
+        width: 100%;
+        min-height: 32px;
+        padding: 0 8px;
+
+        &:hover {
+          cursor: pointer;
+
+          background-color: ${({ theme }) =>
+            darken(0.1, theme.colors.tertiary)};
+        }
 
         td {
           display: flex;
           align-items: center;
 
-          width: 30%;
-          height: 32px;
-        }
+          height: 100%;
 
-        td.statusCircle {
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          &.statusCircle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-          width: 32px;
-          margin-left: 5%;
-        }
+            min-width: 24px;
+            height: 32px;
+            font-size: 1.6rem;
+          }
 
-        td:last-child {
-          text-align: right;
-          justify-content: flex-end;
+          &.status {
+            display: none;
 
-          margin-right: 5%;
+            min-width: 100px;
+          }
+
+          &.name {
+            width: 100%;
+          }
+
+          &.role {
+            min-width: 80px;
+          }
+
+          &.date {
+            justify-content: flex-end;
+
+            text-align: right;
+            min-width: 64px;
+          }
         }
       }
+    }
+  }
 
-      tr:hover {
-        background-color: ${({ theme }) => darken(0.1, theme.colors.tertiary)};
+  @media screen and (min-width: 545px) {
+    table tbody tr {
+      padding: 0 32px;
 
-        cursor: pointer;
+      td.statusCircle {
+        min-width: 32px;
       }
     }
   }
 `
 
 export const ModalContent = styled.div<ContentProps>`
+  position: relative;
+
   display: flex;
   flex-direction: column;
-
-  position: relative;
 
   padding: 24px;
   border-radius: 8px;
@@ -144,21 +175,66 @@ export const ModalContent = styled.div<ContentProps>`
     button {
       width: 45%;
       padding: 8px 16px;
-      border-radius: 4px;
       margin-top: 12px;
+      border-radius: 0 8px;
+      transition: all 0.2s ease-in-out;
 
       background-color: ${({ theme }) => theme.colors.green};
       color: ${({ theme }) => theme.colors.secondary};
 
+      &:hover {
+        background-color: ${({ theme }) => darken(0.1, theme.colors.green)};
+      }
+
       & + button {
+        border-radius: 8px 0;
+
         background-color: ${({ theme }) => theme.colors.red};
+
+        &:hover {
+          background-color: ${({ theme }) => darken(0.1, theme.colors.red)};
+        }
       }
     }
   }
 
   #doc {
-    min-height: 1200px;
-    background-color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    padding: 32px 0;
+
+    background-color: ${({ theme }) => darken(0.1, theme.colors.tertiary)};
+
+    img {
+      object-fit: contain;
+    }
+  }
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 200px;
+    padding: 8px 16px;
+    border-radius: 0 0 16px 16px;
+    transition: all 0.3s ease-in-out;
+
+    color: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.primary};
+
+    &:hover {
+      background-color: ${({ theme }) => darken(0.1, theme.colors.primary)};
+    }
+
+    .Icon {
+      height: 16px;
+      margin-right: 8px;
+
+      fill: ${({ theme }) => theme.colors.secondary};
+    }
   }
 `
 
@@ -173,44 +249,31 @@ const Style = styled.div`
 
   color: ${({ theme }) => theme.colors.secondary};
 
-  form,
-  #row {
+  form {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
 
-    width: 90%;
-    height: 42px;
-    margin-bottom: 16px;
+    width: 100%;
+    padding: 0 16px;
 
     #filters {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex: 1;
 
-      width: 80%;
-      height: 100%;
+      width: max(100%, 300px);
       border-radius: 8px;
-      margin-right: 24px;
 
-      border: solid 1px ${({ theme }) => theme.colors.secondary};
       box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.2);
+      border: solid 1px ${({ theme }) => theme.colors.secondary};
 
       .Text {
-        border: transparent;
-        background-color: red;
+        width: 100%;
+        height: 40px;
 
-        width: 40%;
-        height: 100%;
-        padding-right: 16px;
-
-        background-color: transparent;
         border: none;
         color: ${({ theme }) => theme.colors.secondary};
-
-        .iconSpace {
-          width: 48px;
-        }
 
         input {
           color: ${({ theme }) => theme.colors.secondary};
@@ -263,9 +326,9 @@ const Style = styled.div`
       justify-content: center;
       align-items: center;
 
-      width: clamp(100px, 15%, 170px);
-
-      height: 100%;
+      margin: 16px 0;
+      width: max(100%, 300px);
+      height: 40px;
       border-radius: 8px;
 
       color: ${({ theme }) => theme.colors.secondary};
@@ -274,8 +337,9 @@ const Style = styled.div`
 
       .Icon {
         margin-right: 12px;
-        fill: ${({ theme }) => theme.colors.secondary};
         height: 20px;
+
+        fill: ${({ theme }) => theme.colors.secondary};
       }
     }
   }
@@ -284,6 +348,35 @@ const Style = styled.div`
     position: absolute;
     top: 0;
     left: 50%;
+  }
+
+  @media screen and (min-width: 545px) {
+    form {
+      padding: 0 32px;
+    }
+  }
+
+  @media screen and (min-width: 620px) {
+    form {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      margin-bottom: 16px;
+      height: 40px;
+
+      #filters {
+        flex: 1;
+        height: 100%;
+        margin-right: 24px;
+        border-radius: 8px;
+      }
+
+      #searchButton {
+        width: clamp(100px, 15%, 170px);
+        margin: 0;
+      }
+    }
   }
 `
 

@@ -21,6 +21,8 @@ import { RootState } from 'store'
 
 import useSortableData from 'hooks/useSortableData'
 
+import Download from 'assets/Download'
+import doc from 'assets/doc.jpg'
 import LoupeIcon from 'assets/Inputs/LoupeIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
@@ -110,22 +112,25 @@ const transformArray = (array: RequestsData[]) => {
 
 const headerData: HeaderData[] = [
   { name: 'statusCircle', label: '' },
+  { name: 'status', label: 'Status' },
   { name: 'name', label: 'Nome' },
   { name: 'role', label: 'Papel' },
-  { name: 'status', label: 'Status' },
   { name: 'date', label: 'Data' }
 ]
 
 const Table = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
-  const tableRef = useRef() as MutableRefObject<HTMLTableElement>
+
   const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>
+  const tableRef = useRef() as MutableRefObject<HTMLTableElement>
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>
   const modalRef = useRef<ModalMethods>(null)
-  const [isClear, setIsClear] = useState(false)
-  const [tablePage, setTablePage] = useState(1)
-  const [showData, setShowData] = useState<TablePageType>(null)
+
   const [clickedItem, setClickedItem] = useState<DataType>(undefined)
+  const [showData, setShowData] = useState<TablePageType>(null)
+  const [tablePage, setTablePage] = useState(1)
+  const [isClear, setIsClear] = useState(false)
+
   const { items, sort } = useSortableData(showData, {
     direction: 'descending',
     indexer: 'name'
@@ -221,13 +226,6 @@ const Table = () => {
                   }}
                 >
                   {headerData.map(({ label, name }) => {
-                    if (name === 'role')
-                      return (
-                        <RoleTd role={item[name]} key={item.id}>
-                          {makeRoleLabel(item[name])}
-                        </RoleTd>
-                      )
-
                     if (name === 'statusCircle')
                       return (
                         <td className='statusCircle' key={name}>
@@ -235,7 +233,29 @@ const Table = () => {
                         </td>
                       )
 
-                    return <td key={label}>{item[name as keyof TableData]}</td>
+                    if (name === 'role')
+                      return (
+                        <RoleTd
+                          className='role'
+                          role={item[name]}
+                          key={item.id}
+                        >
+                          {makeRoleLabel(item[name])}
+                        </RoleTd>
+                      )
+
+                    if (name === 'status')
+                      return (
+                        <td key={label} className='status'>
+                          {item[name as keyof TableData]}
+                        </td>
+                      )
+
+                    return (
+                      <td key={label} className={name}>
+                        {item[name as keyof TableData]}
+                      </td>
+                    )
                   })}
                 </tr>
               ))}
@@ -251,7 +271,7 @@ const Table = () => {
           role={clickedItem?.role}
           status={clickedItem?.statusCircle}
         >
-          <CloseIcon />
+          <CloseIcon onClick={() => modalRef.current?.toggleModal(false)} />
 
           <div id='avatarAndInfo'>
             <Avatar size={88} />
@@ -264,13 +284,20 @@ const Table = () => {
             </div>
           </div>
 
-          <div id='doc' />
+          <div id='doc'>
+            <img src={doc} alt='doc' />
+          </div>
+
+          <a href={doc} download>
+            <Download />
+            Fazer download
+          </a>
 
           <Form path='modal-path'>
             <Textarea
               id='feedback'
               name='feedback'
-              placeholder='Se quiser digite uma resposta...'
+              placeholder='Se quiser, deixe uma resposta...'
             />
 
             <div id='buttons'>

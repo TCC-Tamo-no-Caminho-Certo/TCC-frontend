@@ -3,6 +3,7 @@ import styled from 'styled-components'
 const Style = styled.table`
   border-collapse: collapse;
   width: 100%;
+
   box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.39);
 
   thead {
@@ -13,50 +14,73 @@ const Style = styled.table`
       display: flex;
       align-items: center;
 
-      width: 100%;
+      width: calc(100% - 8px);
       height: 32px;
-    }
+      padding: 0 8px;
 
-    th {
-      width: 30%;
-      height: 100%;
-      text-align: left;
-
-      padding-right: 8px;
-
-      cursor: pointer;
-
-      button {
+      th {
         height: 100%;
         text-align: left;
-        user-select: none;
 
-        color: ${({ theme }) => theme.colors.secondary};
+        cursor: pointer;
 
-        .Icon {
-          width: 12px;
-          margin-right: 8px;
+        button {
+          width: 100%;
+          height: 100%;
+          text-align: left;
+          user-select: none;
 
-          fill: ${({ theme }) => theme.colors.secondary};
+          color: ${({ theme }) => theme.colors.secondary};
+
+          .Icon {
+            width: 12px;
+            margin-right: 4px;
+
+            fill: ${({ theme }) => theme.colors.secondary};
+          }
+        }
+
+        &.statusCircle button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          min-width: 24px;
+        }
+
+        &.status button {
+          display: none;
+        }
+
+        &.name {
+          width: 100%;
+
+          button {
+            width: 100%;
+          }
+        }
+
+        &.role button {
+          min-width: 80px;
+        }
+
+        &.date button {
+          justify-content: flex-end;
+
+          text-align: right;
+          min-width: 64px;
         }
       }
     }
+  }
 
-    th.statusCircle {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  @media screen and (min-width: 545px) {
+    thead tr {
+      padding: 0 32px;
 
-      width: 32px;
-      margin-left: 5%;
-      padding: 0;
-    }
-
-    th:last-child {
-      justify-content: flex-end;
-
-      text-align: right;
-      margin-right: 5%;
+      th.statusCircle button {
+        width: 32px;
+      }
     }
   }
 `

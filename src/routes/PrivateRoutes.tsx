@@ -30,7 +30,13 @@ const PrivateRoutes = () => {
     const { user } = await api.get('user/get')
     const initialRole = getRole(user.roles)
 
-    dispatch(UserActions.updateUserInfo({ ...user, selectedRole: initialRole }))
+    dispatch(
+      UserActions.updateUserInfo({
+        ...user,
+        roles: ['guest'],
+        selectedRole: initialRole
+      })
+    )
     window.history.pushState(null, '', document.URL)
   }, [dispatch])
 
