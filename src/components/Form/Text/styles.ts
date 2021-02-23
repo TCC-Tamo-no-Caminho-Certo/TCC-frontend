@@ -13,11 +13,9 @@ const Style = styled.div<StyleProps>`
   display: ${({ hidden }) => (hidden ? 'none' : 'flex')};
   align-items: center;
 
-  height: max(4.5vh, 35px);
-  min-width: 300px;
-  font-size: calc(1.3rem + 0.5vh);
+  height: clamp(35px, 3vh + 2vw, 44px);
+  min-width: 284px;
   border-radius: 10px;
-  padding: 0 8px;
 
   background-color: transparent;
   border: solid 1px ${({ theme }) => theme.colors.tertiary};
@@ -27,17 +25,17 @@ const Style = styled.div<StyleProps>`
 
     &,
     input::placeholder,
-    .Icon {
+    .iconSpace .Icon {
       fill: ${({ theme }) => theme.colors.primary};
+      stroke: ${({ theme }) => theme.colors.primary};
       -webkit-text-fill-color: ${({ theme }) => theme.colors.primary};
     }
   }
 
   input {
-    flex: 1;
     height: 100%;
-    border: none;
 
+    border: none;
     background-color: transparent;
     color: ${({ color }) => color};
     -webkit-text-fill-color: ${({ color }) => color};
@@ -46,6 +44,15 @@ const Style = styled.div<StyleProps>`
       color: ${({ theme }) => theme.colors.tertiary};
       -webkit-text-fill-color: ${({ theme }) => theme.colors.tertiary};
     }
+
+    ${({ hasEye }) =>
+      hasEye
+        ? css`
+            width: calc(100% - 80px);
+          `
+        : css`
+            width: calc(100% - 40px);
+          `}
   }
 
   .iconSpace {
@@ -53,18 +60,20 @@ const Style = styled.div<StyleProps>`
     justify-content: center;
     align-items: center;
 
-    width: 40px;
+    min-width: 40px;
+    max-width: 40px;
     height: 100%;
+    margin: 0 2%;
 
     .Icon {
-      width: 24px;
-      margin: 0 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: clamp(24px, 2vh, 30px);
+      height: clamp(24px, 2vh, 30px);
 
       fill: ${({ theme }) => theme.colors.tertiary};
-
-      &:hover {
-        fill: ${({ theme }) => theme.colors.primary};
-      }
     }
   }
 
@@ -72,9 +81,9 @@ const Style = styled.div<StyleProps>`
     isFilled &&
     css`
       &,
-      .Icon {
-        color: ${({ theme }) => theme.colors.primary};
+      .iconSpace .Icon {
         fill: ${({ theme }) => theme.colors.primary};
+        stroke: ${({ theme }) => theme.colors.primary};
         -webkit-text-fill-color: ${({ theme }) => theme.colors.primary};
       }
     `}

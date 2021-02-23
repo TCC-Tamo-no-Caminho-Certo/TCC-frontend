@@ -8,6 +8,7 @@ import selectedRoleLabel from 'utils/makeRoleLabel'
 
 import { Role, UserState } from 'store/user'
 import { RootState } from 'store'
+import { ThemeState } from 'store/theme'
 
 import Avatar from 'components/User/Avatar'
 import Card from 'components/Card'
@@ -16,6 +17,7 @@ import Slider from 'components/Slider'
 import { useSelector } from 'react-redux'
 
 const Fields = () => {
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const user = useSelector<RootState, UserState>(state => state.user)
   const modal = useContext(ModalContext)
   const containers = ['personal', ...user.roles]
@@ -30,7 +32,7 @@ const Fields = () => {
                 border
                 size={128}
                 onClick={() => modal?.ref.current?.toggleModal(true)}
-                loaderColor='#D65881'
+                loaderColor={theme.colors.primary}
                 shadow
               />
 

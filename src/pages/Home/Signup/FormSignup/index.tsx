@@ -115,8 +115,8 @@ const FormSignup = () => {
         />
 
         <span>
-          Ao clicar em Concordar e concluir, concordo com os
-          <a href='.link'>Termos de uso</a>, os
+          Ao clicar em Concordar e concluir, concordo com os{' '}
+          <a href='.link'>Termos de uso</a>, os{' '}
           <a href='.link'>Termos de Serviço e Pagamentos</a>, a{' '}
           <a href='.link'>Política de Privacidade</a> e a{' '}
           <a href='.link'>Política de Não Discriminação</a> do Steams Lab.

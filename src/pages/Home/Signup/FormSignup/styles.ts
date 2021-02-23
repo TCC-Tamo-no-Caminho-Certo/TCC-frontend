@@ -10,6 +10,7 @@ const Style = styled.div`
 
   width: max(100vw, 320px);
   min-height: 100vh;
+  padding-bottom: 64px;
 
   background-color: ${({ theme }) => theme.colors.secondary};
 
@@ -22,7 +23,7 @@ const Style = styled.div`
     justify-content: space-between;
 
     width: min(80%, 1000px);
-    height: 4vh;
+    height: 33px;
 
     .ThemeSwitch {
       height: max(100%, 33px);
@@ -42,7 +43,7 @@ const Style = styled.div`
     align-items: center;
     flex-direction: column;
 
-    width: clamp(300px, 80%, 530px);
+    width: clamp(284px, 80%, 530px);
 
     & > * {
       width: 100%;
@@ -55,7 +56,11 @@ const Style = styled.div`
     .dual {
       border-radius: 10px 10px 0 0;
 
-      & + div {
+      &:focus {
+        border-bottom-color: ${({ theme }) => theme.colors.tertiary};
+      }
+
+      & + .dual {
         border-top: 1px solid transparent;
         border-radius: 0 0 10px 10px;
       }

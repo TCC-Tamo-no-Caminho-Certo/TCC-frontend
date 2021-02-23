@@ -37,6 +37,8 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
       icon: Icon,
       pasteAndDrop = true,
       color = '#d65881',
+      className = 'Text',
+      id,
       ...rest
     },
     ref
@@ -77,7 +79,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
 
     return (
       <Style
-        className='Text'
+        className={className}
         color={color}
         hasEye={!!eye}
         hasIcon={!!Icon}
@@ -85,6 +87,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
         isErrored={!!error}
         hidden={rest.hidden}
         onFocus={() => textRef.current?.focus()}
+        id={id}
       >
         <ErrorTooltip error={!!error} content={error} />
 

@@ -13,74 +13,84 @@ export default createGlobalStyle`
   html {
     font-size: 62.5%;
     scroll-behavior: smooth;
-  }
 
-  body {
-    font-size: 1.6rem;
-    color: ${({ theme }) => theme.colors.tertiary};
-    background-color: #D65881;
-    
-    span, p, h1, h2, h3, h4, h5 {
-      cursor: default;
-    }
+    body {
+      background-color: ${({ theme }) => theme.colors.primary};
+      color: ${({ theme }) => theme.colors.tertiary};
 
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover, 
-    input:-webkit-autofill:focus, 
-    input:-webkit-autofill:active  {
-      transition: background-color 5000s ease-in-out 0s;
-    }
+      * {
+        font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
+      }
 
+      span, p, h1, h2, h3, h4, h5 {
+        cursor: default;
+      }
 
-    &::-webkit-scrollbar {
-      width: 16px;
-      background-color:${({ theme }) => darken(0.1, theme.colors.tertiary)};
-    }
-
-    &::-webkit-scrollbar-track {
-      border-radius: 1px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      box-shadow: inset 0 0 10px 1px rgba(255,255,255,0.8);
-      border: solid 2px transparent;
-      border-radius: 4px;
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover, 
+      input:-webkit-autofill:focus, 
+      input:-webkit-autofill:active  {
+        transition: background-color 5000s ease-in-out 0s;
+      }
 
 
-      &:hover {
-        box-shadow: inset 0 0 10px 1px rgba(255,255,255,1);
+      &::-webkit-scrollbar {
+        width: 8px;
+
+        background-color:${({ theme }) => darken(0.1, theme.colors.tertiary)};
+      }
+
+      &::-webkit-scrollbar-track {
+        border-radius: 1px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+
+        border: solid 2px transparent;
+        box-shadow: inset 0 0 10px 1px rgba(255,255,255,0.8);
+
+        &:hover {
+          box-shadow: inset 0 0 10px 1px rgba(255,255,255,1);
+        }
       }
     }
-  }
 
-  a {
-    text-decoration: none;
-    color: #D65881;
-  }
+    a {
+      text-decoration: none;
+      color: ${({ theme }) => theme.colors.primary};
+    }
 
-  li {
-    list-style-type: none;
-  }
+    li {
+      list-style-type: none;
+    }
 
-  button {
-    background-color: transparent;
-    border: none;
-    font-size: 1.6rem;
+    button {
+      background-color: transparent;
+      border: none;
 
-  }
 
-  button, label, input[type="checkbox"] {
-    cursor: pointer
-  }
+    }
 
-  input[type="checkbox"] {
-    &, &:focus, &:hover {
-      box-shadow: initial;
+    button, label, input[type="checkbox"] {
+      cursor: pointer
+    }
+
+    input[type="checkbox"] {
+      &, &:focus, &:hover {
+        box-shadow: initial;
+      }
+    }
+
+    button, input, optgroup, select, textarea { 
+      font-family: 'Roboto', sans-serif;
     }
   }
 
-  button, input, optgroup, select, textarea { 
-    font-family: 'Roboto', sans-serif;
+  @media screen and (min-width: 475px) {
+    html body::-webkit-scrollbar {
+      width: 16px;
+    }
   }
 
 `

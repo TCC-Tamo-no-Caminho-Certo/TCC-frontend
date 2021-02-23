@@ -25,7 +25,7 @@ const Style = styled.div`
   flex-direction: column;
 
   padding: 60px 20px;
-  width: clamp(300px, 70%, 520px);
+  width: clamp(284px, 70%, 520px);
   margin: 0 20px;
   border-radius: 16px;
 

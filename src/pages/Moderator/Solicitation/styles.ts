@@ -18,6 +18,10 @@ const Style = styled.div`
     width: max(100%, 280px);
     padding: 16px 16px;
     text-align: left;
+
+    h1 {
+      font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.9rem);
+    }
   }
 
   @media screen and (min-width: 545px) {

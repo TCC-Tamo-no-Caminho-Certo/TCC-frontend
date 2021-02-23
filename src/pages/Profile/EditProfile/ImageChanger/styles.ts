@@ -8,7 +8,6 @@ export const RightMenu = styled.div`
 
   width: 148px;
   height: 300px;
-
   margin-left: 48px;
 
   > * {
@@ -74,7 +73,7 @@ export const RightMenu = styled.div`
     padding: 0 8px;
     height: 32px;
     margin-bottom: 16px;
-    font-size: 1.2rem;
+    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.3rem);
     text-align: center;
 
     color: ${({ theme }) => theme.colors.secondary};

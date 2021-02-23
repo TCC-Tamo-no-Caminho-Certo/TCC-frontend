@@ -1,7 +1,7 @@
 import React from 'react'
 import Style from './styles'
 
-const Subscribe= () => {
+const Subscribe = () => {
   return (
     <Style>
       <h1>Subscribe</h1>

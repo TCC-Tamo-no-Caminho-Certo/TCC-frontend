@@ -16,13 +16,13 @@ const Style = styled.div`
     height: 800px;
 
     header {
-      font-size: 2.8rem;
+      font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.5rem);
       height: 64px;
     }
 
     #role {
       text-align: center;
-      font-size: 2.8rem;
+      font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.5rem);
       width: 100%;
       margin-bottom: 24px;
 
@@ -80,13 +80,14 @@ const Style = styled.div`
       width: 100%;
 
       button#info {
-        font-size: 2rem;
+        font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2rem);
 
         color: ${({ theme }) => theme.colors.tertiary};
       }
 
       button#cancel {
-        font-size: 2rem;
+        font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2rem);
+
         border-radius: 8px;
         padding: 8px 32px;
 

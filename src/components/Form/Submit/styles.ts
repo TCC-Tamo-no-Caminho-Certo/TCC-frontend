@@ -4,7 +4,8 @@ import styled from 'styled-components'
 const Style = styled.button`
   position: relative;
 
-  height: 44px;
+  height: clamp(35px, 3vh + 2vw, 44px);
+
   border-radius: 8px;
 
   background-color: ${({ theme }) => theme.colors.primary};

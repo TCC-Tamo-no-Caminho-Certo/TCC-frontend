@@ -4,11 +4,14 @@ import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
 export const LoginFailed = styled(motion.div)`
-  width: auto;
-  margin: 0;
+  width: 100%;
+  align-self: flex-end;
 
   color: ${({ theme }) => theme.colors.red};
-  align-self: flex-end;
+
+  p {
+    font-size: clamp(1.4rem, 0.6rem + 2.6vw, 1.8rem);
+  }
 
   .Icon {
     width: 24px;
@@ -17,101 +20,81 @@ export const LoginFailed = styled(motion.div)`
     margin-right: 8px;
   }
 `
-
-export const Register = styled.div`
-  flex-direction: column;
-
-  button {
-    color: ${({ theme }) => theme.colors.primary};
-
-    &:hover {
-      filter: brightness(1.1);
-      transform: scale(1.01);
-    }
-  }
-`
-
 export const Form = styled(RealForm)`
   flex-direction: column;
 
-  width: clamp(300px, 70%, 530px);
+  width: clamp(284px, 70%, 530px);
 
   > * {
     width: 100%;
-    margin-bottom: 2.5vh;
+    margin-bottom: max(2.5vh, 15px);
+  }
 
-    &:last-child {
-      margin-bottom: 0;
+  #submit {
+    display: flex;
+    flex-direction: column;
+
+    a {
+      align-self: flex-end;
+
+      text-align: end;
+      padding-bottom: 4px;
+      font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.9rem);
+
+      color: ${({ theme }) => theme.colors.primary};
+
+      &:hover {
+        filter: brightness(1.1);
+      }
+    }
+
+    .Submit {
+      transition: all 0.2s;
+
+      &:hover {
+        filter: brightness(1.1);
+        transform: scale(1.01);
+      }
+
+      .DotsLoader {
+        position: absolute;
+        right: 10%;
+        top: 50%;
+
+        transform: translateY(-50%);
+      }
     }
   }
 
-  button#login {
-    position: relative;
+  #footer {
+    margin-bottom: 0px;
 
-    height: max(5vh, 35px);
-    transition: all 0.2s;
-    font-size: calc(1.3rem + 0.5vh);
-    border-radius: 8px;
-
-    border: none;
-    color: ${({ theme }) => theme.colors.secondary};
-    background-color: ${({ theme }) => theme.colors.primary};
-
-    &:hover {
-      filter: brightness(1.1);
-      transform: scale(1.01);
+    .Checkbox {
+      padding-bottom: 8px;
+      border-bottom: 2px solid ${({ theme }) => theme.colors.tertiary};
     }
 
-    .DotsLoader {
-      position: absolute;
-      right: 10%;
-      top: 50%;
+    #register {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
 
-      transform: translateY(-50%);
-    }
-  }
+      padding-top: 8px;
 
-  div#fail {
-    position: relative;
-    margin-bottom: 0;
+      &,
+      button {
+        font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.9rem);
+      }
 
-    height: 0;
+      button {
+        color: ${({ theme }) => theme.colors.primary};
 
-    ${LoginFailed} {
-      position: absolute;
-      top: 0;
-      left: 16px;
-    }
-  }
-
-  .Text + .Text {
-    margin-bottom: 0;
-  }
-
-  a {
-    align-self: flex-end;
-
-    padding: 4px 16px 4px 0px;
-    width: auto;
-    margin: 0;
-
-    font-size: calc(1.1rem + 0.5vh);
-    text-align: end;
-
-    color: ${({ theme }) => theme.colors.primary};
-
-    &:hover {
-      filter: brightness(1.1);
-    }
-  }
-
-  #Padlock {
-    width: 16px;
-  }
-
-  @media screen and (min-height: 700px) {
-    form {
-      margin-top: 0;
+        &:hover {
+          filter: brightness(1.1);
+          transform: scale(1.01);
+        }
+      }
     }
   }
 `
@@ -126,16 +109,10 @@ const Style = styled.div`
   background-color: ${({ theme }) => theme.colors.secondary};
 
   &,
-  ${Form}, ${LoginFailed}, ${Register} {
+  ${Form}, ${LoginFailed} {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  .Checkbox {
-    padding-bottom: 8px;
-
-    border-bottom: 2px solid ${({ theme }) => theme.colors.tertiary};
   }
 
   .ThemeSwitch {
@@ -155,6 +132,5 @@ const Style = styled.div`
 export default Style
 
 LoginFailed.displayName = 'LoginFailed-Style'
-Register.displayName = 'Register-Style'
 Form.displayName = 'ContentForm-Style'
 Style.displayName = 'FormLogin-Style'

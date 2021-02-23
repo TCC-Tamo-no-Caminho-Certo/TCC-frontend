@@ -1,7 +1,7 @@
 import React from 'react'
 import Style from './styles'
 
-const Security= () => {
+const Security = () => {
   return (
     <Style>
       <h1>Security</h1>

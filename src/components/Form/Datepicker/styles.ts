@@ -89,7 +89,7 @@ const Style = styled.div<StyleProps>`
     }
 
     .Calendar__monthSelectorItem .Calendar__monthSelectorItemText {
-      font-size: 1.4rem;
+      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
     }
 
     .CalendarSize {

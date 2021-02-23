@@ -197,7 +197,6 @@ const Table = () => {
               type='text'
               autoComplete='off'
               placeholder='Filtrar'
-              className='InputSearch'
               ref={inputRef}
             />
           </div>

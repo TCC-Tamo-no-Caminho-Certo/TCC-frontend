@@ -1,7 +1,7 @@
 import React from 'react'
 import Style from './styles'
 
-const Historic= () => {
+const Historic = () => {
   return (
     <Style>
       <h1>Historic</h1>

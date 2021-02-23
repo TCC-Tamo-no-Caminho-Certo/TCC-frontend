@@ -5,8 +5,8 @@ const dark: ThemeAttributes = {
 
   colors: {
     primary: '#d65881',
-    secondary: '#fcfcfc',
-    tertiary: '#6e4850',
+    secondary: '#121212',
+    tertiary: '#909090',
     white: '#fcfcfc',
     green: '#00d053',
     yellow: '#fff500',

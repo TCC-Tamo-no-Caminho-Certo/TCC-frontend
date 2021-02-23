@@ -3,7 +3,7 @@ import styled from 'styled-components'
 const Style = styled.div`
   display: flex;
 
-  font-size: 1.5rem;
+  font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.5rem);
   height: 40px;
   width: 500px;
   border-radius: 5px;
@@ -37,7 +37,7 @@ const Style = styled.div`
         height: 100%;
 
         text-align: center;
-        font-size: 1.6rem;
+        rem;
         border-radius: 0;
       }
     }

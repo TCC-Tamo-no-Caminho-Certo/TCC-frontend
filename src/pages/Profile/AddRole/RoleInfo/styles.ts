@@ -15,14 +15,14 @@ const Style = styled.div<StyleProps>`
   flex-direction: column;
 
   width: 300px;
-
   margin-top: 24px;
 
   #title {
     display: flex;
     align-items: center;
 
-    font-size: 2.8rem;
+    font-size: clamp(2rem, 0.6rem + 2.6vw, 2.5rem);
+
     margin-bottom: 16px;
     -webkit-user-select: none;
     cursor: pointer;
@@ -48,7 +48,7 @@ const Style = styled.div<StyleProps>`
     ul {
       li {
         opacity: 0;
-        font-size: 1.6rem;
+        rem;
 
         color: ${({ theme }) => theme.colors.secondary};
 

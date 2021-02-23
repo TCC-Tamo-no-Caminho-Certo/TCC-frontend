@@ -35,6 +35,7 @@ export const RoleLi = styled.li<RoleLiProps>`
     width: 100%;
     height: 56px;
     user-select: none;
+    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.5rem);
 
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.primary};
@@ -89,22 +90,21 @@ export const UserInfo = styled.div<UserInfoProps>`
   }
 
   #userRole {
-    font-size: 1.3rem;
+    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
 
     color: ${({ theme, selectedRole }) => theme.roles[selectedRole]};
   }
 
   #userName {
-    font-size: 1.4rem;
+    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.6rem);
 
     color: ${({ theme }) => theme.colors.secondary};
   }
 
   #userActivity {
-    line-height: 16px;
-    font-size: 1.2rem;
+    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.5rem);
 
-    color: #00ff66;
+    color: ${({ theme }) => theme.colors.green};
 
     svg {
       margin: 0 4px 2px 0;
@@ -118,8 +118,7 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
   z-index: 3;
 
   padding: 16px 0;
-  min-width: 300px;
-  width: 100vw;
+  width: max(100vw, 300px);
   height: ${({ height }) => height};
 
   hr {
@@ -169,10 +168,10 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
 
       width: 100%;
       height: 100%;
-      font-size: 1.4rem;
+      user-select: none;
 
       color: ${({ theme }) => theme.colors.secondary};
-      user-select: none;
+      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.5rem);
 
       .Icon {
         height: 24px;
@@ -239,7 +238,7 @@ export const Background = styled.svg<BackgroundProps>`
   z-index: 3;
 
   min-width: 300px;
-  width: 100vw;
+  width: max(100vw, 300px);
 
   height: ${({ isOpen, openHeight, closedHeight }) =>
     isOpen ? openHeight : closedHeight};

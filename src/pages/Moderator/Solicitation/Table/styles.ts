@@ -61,7 +61,6 @@ export const BodyWrapper = styled.div`
 
             min-width: 24px;
             height: 32px;
-            font-size: 1.6rem;
           }
 
           &.status {
@@ -276,6 +275,7 @@ const Style = styled.div`
       .Text {
         width: 100%;
         height: 40px;
+        padding-left: 16px;
 
         border: none;
         color: ${({ theme }) => theme.colors.secondary};

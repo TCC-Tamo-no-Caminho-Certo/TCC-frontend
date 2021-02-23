@@ -19,7 +19,7 @@ export const Form = styled(FormComponent)`
   span {
     text-align: left;
     width: 100%;
-    font-size: 2.3rem;
+    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
   }
 
   button[type='submit'] {
@@ -33,7 +33,7 @@ export const Form = styled(FormComponent)`
       height: 22px;
       margin-top: 16px;
 
-      font-size: 1.6rem;
+      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
     }
 
     #buttons {
@@ -76,7 +76,8 @@ export const Form = styled(FormComponent)`
           justify-content: center;
           align-items: center;
 
-          font-size: 1.4rem;
+          font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
+
           margin-bottom: 8px;
           height: 45px;
 

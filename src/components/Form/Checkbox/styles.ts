@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 interface StyleProps {
   checked: boolean
@@ -12,14 +12,20 @@ const Style = styled.div<StyleProps>`
 
   button + button {
     margin-left: 8px;
-    font-size: calc(1.5rem + 0.2vh);
-
-    color: ${({ theme }) => theme.colors.tertiary};
 
     &:hover {
       color: ${({ theme }) => theme.colors.primary};
       filter: brightness(1.1);
     }
+
+    ${({ checked, theme }) =>
+      checked
+        ? css`
+            color: ${theme.colors.primary};
+          `
+        : css`
+            color: ${theme.colors.tertiary};
+          `}
   }
 
   #checkbox {

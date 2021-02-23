@@ -13,6 +13,7 @@ import api from 'services/api'
 
 import { RootState } from 'store'
 import { UserActions, UserState } from 'store/user'
+import { ThemeState } from 'store/theme'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
@@ -29,6 +30,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 
 const RightMenu = () => {
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const history = useHistory()
   const dispatch = useDispatch()
   const { innerWidth } = useWindowDimensions()
@@ -177,7 +179,7 @@ const RightMenu = () => {
 
               <span id='userActivity'>
                 <svg width='5' height='5' xmlns='http://www.w3.org/2000/svg'>
-                  <circle cx='2.5' cy='2.5' r='2.5' fill='#00FF66' />
+                  <circle cx='2.5' cy='2.5' r='2.5' fill={theme.colors.green} />
                 </svg>
                 Online
               </span>

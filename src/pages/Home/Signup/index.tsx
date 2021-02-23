@@ -4,7 +4,7 @@ import Style from './styles'
 import FormSignup from './FormSignup'
 import Subscribe from './Subscribe'
 
-const Signup= () => {
+const Signup = () => {
   return (
     <Style>
       <FormSignup />

@@ -7,21 +7,34 @@ export const Trigger = styled.div`
   justify-content: center;
   align-items: center;
 
-  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
+  height: 100%;
+  margin: 0 2%;
 
   .Icon {
-    min-width: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: clamp(24px, 2vh, 30px);
+    height: clamp(24px, 2vh, 30px);
 
     fill: ${({ theme }) => theme.colors.red};
   }
 `
 
 const Style = styled(Popup)`
-  font-size: 1.3rem !important;
   border-radius: 10px !important;
+  max-width: 514px !important;
 
   border: none !important;
-  color: white !important;
+  color: ${({ theme }) => theme.colors.secondary} !important;
+
+  .content {
+    padding: 4px;
+    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.9rem);
+  }
 
   &,
   &:before {
@@ -29,6 +42,10 @@ const Style = styled(Popup)`
 
     box-shadow: none !important;
     background-color: ${({ theme }) => theme.colors.primary} !important;
+  }
+
+  &:before {
+    margin-left: 5px !important;
   }
 `
 

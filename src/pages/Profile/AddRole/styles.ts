@@ -16,7 +16,7 @@ const Style = styled(motion.div)`
 
   h2 {
     width: 90%;
-    font-size: 3.2rem;
+    font-size: clamp(2rem, 0.6rem + 2.6vw, 3rem);
   }
 
   p {

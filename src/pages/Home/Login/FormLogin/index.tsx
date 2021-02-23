@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Style, { Form, LoginFailed, Register } from './styles'
+import Style, { Form, LoginFailed } from './styles'
 
 import loginSchema from 'utils/validations/login'
 
@@ -13,7 +13,7 @@ import { Checkbox, Submit, Text } from 'components/Form'
 import Logo from 'components/Logo'
 import ThemeSwitch from 'components/ThemeSwitch'
 
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import { useDispatch } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 
@@ -40,7 +40,7 @@ const FormLogin = () => {
           : 'E-mail não encontrado'
       )
 
-      setTimeout(() => setLoginFailed(''), 3000)
+      setTimeout(() => setLoginFailed(''), 9000)
     }
   }
 
@@ -65,9 +65,9 @@ const FormLogin = () => {
       >
         <Logo />
 
-        <motion.div id='fail' animate={{ height: loginFailed !== '' ? 32 : 0 }}>
-          <AnimatePresence>
-            {loginFailed !== '' && (
+        <AnimatePresence>
+          {loginFailed !== '' && (
+            <div id='fail'>
               <LoginFailed
                 animate={{ x: ['-10%', '0%'], opacity: [0, 1] }}
                 exit={{ x: '-10%', opacity: [1, 0] }}
@@ -75,11 +75,11 @@ const FormLogin = () => {
               >
                 <AlertIcon />
 
-                <div>{loginFailed}</div>
+                <p>{loginFailed}</p>
               </LoginFailed>
-            )}
-          </AnimatePresence>
-        </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
 
         <Text
           name='email'
@@ -97,23 +97,27 @@ const FormLogin = () => {
           icon={PadlockIcon}
         />
 
-        <Link
-          to='/forgot-password'
-          onClick={() => dispatch(HomeActions.update({ initial: false }))}
-        >
-          Não consegue fazer login?
-        </Link>
+        <div id='submit'>
+          <Link
+            to='/forgot-password'
+            onClick={() => dispatch(HomeActions.update({ initial: false }))}
+          >
+            Não consegue fazer login?
+          </Link>
 
-        <Submit id='login'>Efetuar Login</Submit>
+          <Submit>Efetuar Login</Submit>
+        </div>
 
-        <Checkbox name='remember' label='Permanecer conectado' />
+        <div id='footer'>
+          <Checkbox name='remember' label='Permanecer conectado' />
 
-        <Register>
-          Ainda não possui uma conta ?
-          <button type='button' onClick={onRegisterClick} disabled={disable}>
-            Registre-se aqui!
-          </button>
-        </Register>
+          <div id='register'>
+            Ainda não possui uma conta ?
+            <button type='button' onClick={onRegisterClick} disabled={disable}>
+              Registre-se aqui!
+            </button>
+          </div>
+        </div>
       </Form>
     </Style>
   )

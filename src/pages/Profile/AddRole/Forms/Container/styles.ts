@@ -11,7 +11,6 @@ interface ContentProps {
 export const Header = styled(HeaderComponent)`
   justify-content: start;
 
-  font-size: 24px;
   padding: 30px 50px;
 `
 
@@ -21,7 +20,7 @@ export const Content = styled(Card)<ContentProps>`
 
   #role {
     width: 100%;
-    font-size: 22px;
+
     margin: 16px 0;
 
     color: ${({ theme, role }) => theme.roles[role]};

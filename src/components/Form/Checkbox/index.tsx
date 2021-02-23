@@ -3,9 +3,13 @@ import Style from './styles'
 
 import { FormContext, FormState } from '../'
 
+import { ThemeState } from 'store/theme'
+import { RootState } from 'store'
+
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 
 import { motion, Variants } from 'framer-motion'
+import { useSelector } from 'react-redux'
 
 interface CheckboxProps {
   name: string
@@ -31,6 +35,7 @@ const pathAnimation: Variants = {
 }
 
 const Checkbox = ({ name, label }: CheckboxProps) => {
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const checkboxRef = useRef<HTMLInputElement>(null)
   const form = useContext<FormState | null>(FormContext)
   const [checked, setChecked] = useState(false)
@@ -90,9 +95,9 @@ const Checkbox = ({ name, label }: CheckboxProps) => {
               id='checkboxRadial'
               r='1'
             >
-              <stop stopColor='#6e4850' />
+              <stop stopColor={theme.colors.tertiary} />
 
-              <stop offset='1' stopColor='#D65881' />
+              <stop offset='1' stopColor={theme.colors.primary} />
             </motion.radialGradient>
           </defs>
 

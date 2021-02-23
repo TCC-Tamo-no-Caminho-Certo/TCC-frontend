@@ -1,7 +1,7 @@
 import React from 'react'
 import Style from './styles'
 
-const Financial= () => {
+const Financial = () => {
   return (
     <Style>
       <h1>Financial</h1>

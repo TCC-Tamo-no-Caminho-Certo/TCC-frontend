@@ -59,6 +59,8 @@ export const SidebarNav = styled(motion.nav)<StyleProps>`
   top: 0;
   z-index: 3;
 
+  min-width: 320px;
+
   ${({ background }) =>
     background.search(/gradient/)
       ? css`
@@ -90,6 +92,7 @@ export const SidebarNav = styled(motion.nav)<StyleProps>`
     align-items: center;
 
     height: 72px;
+
     white-space: nowrap;
 
     color: ${({ letters }) => letters};
@@ -99,7 +102,7 @@ export const SidebarNav = styled(motion.nav)<StyleProps>`
   }
 
   #title {
-    font-size: 1.8rem;
+    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.9rem);
   }
 
   #header {
@@ -152,6 +155,10 @@ const Style = styled.div`
 
   overflow-x: hidden;
   min-width: 300px;
+
+  * {
+    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
+  }
 `
 
 export default Style
