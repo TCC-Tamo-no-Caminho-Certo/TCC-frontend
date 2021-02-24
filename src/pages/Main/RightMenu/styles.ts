@@ -96,7 +96,7 @@ export const UserInfo = styled.div<UserInfoProps>`
   }
 
   #userName {
-    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.6rem);
+    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.6rem);
 
     color: ${({ theme }) => theme.colors.secondary};
   }
@@ -117,7 +117,6 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
   top: 112px;
   z-index: 3;
 
-  padding: 16px 0;
   width: max(100vw, 300px);
   height: ${({ height }) => height};
 
@@ -140,7 +139,7 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     width: 230px;
   }
 
-  ul#openProfile {
+  #openProfile {
     & > * {
       opacity: 0;
     }
@@ -169,9 +168,9 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
       width: 100%;
       height: 100%;
       user-select: none;
+      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.5rem);
 
       color: ${({ theme }) => theme.colors.secondary};
-      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.5rem);
 
       .Icon {
         height: 24px;
@@ -179,7 +178,7 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     }
   }
 
-  button#logout {
+  #logout {
     position: absolute;
     bottom: 16px;
     right: 16px;
@@ -187,14 +186,15 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     display: flex;
     align-items: center;
 
-    margin-right: 16px;
     height: 24px;
     opacity: 0;
 
     color: ${({ theme }) => theme.colors.secondary};
 
     span {
+      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.5rem);
       user-select: none;
+
       cursor: pointer;
     }
 
@@ -237,7 +237,6 @@ export const Background = styled.svg<BackgroundProps>`
   top: 0;
   z-index: 3;
 
-  min-width: 300px;
   width: max(100vw, 300px);
 
   height: ${({ isOpen, openHeight, closedHeight }) =>

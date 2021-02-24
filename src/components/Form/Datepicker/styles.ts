@@ -12,10 +12,8 @@ const Style = styled.div<StyleProps>`
   ${({ bodyColor, headerColor, selectedColor, disabledColor, arrow }) => css`
     .DatePicker {
       z-index: 0;
-
       width: 100%;
-      height: 4.5vh;
-      min-height: 35px;
+      min-height: max(4.5vh, 35px);
       padding: 0;
     }
 
@@ -43,18 +41,19 @@ const Style = styled.div<StyleProps>`
       }
 
       .Calendar__monthArrowWrapper {
-        width: 25px;
+        width: 24px;
+        height: 24px;
+
+        font-size: 0.3rem;
       }
 
       .Calendar__monthArrowWrapper.-right {
         transform: rotate(180deg);
-
         padding: 0;
       }
 
       .Calendar__monthArrowWrapper.-left {
         transform: rotate(360deg);
-
         padding: 0;
       }
     }
@@ -62,7 +61,6 @@ const Style = styled.div<StyleProps>`
     .Calendar__weekDays {
       margin: 0;
       padding: 0 20px 10px 20px;
-
       background-color: ${headerColor};
 
       .Calendar__weekDay {
@@ -89,12 +87,11 @@ const Style = styled.div<StyleProps>`
     }
 
     .Calendar__monthSelectorItem .Calendar__monthSelectorItemText {
-      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
+      font-size: 1.4rem;
     }
 
     .CalendarSize {
       font-size: 8px !important;
-
       background-color: ${bodyColor};
     }
 
@@ -140,7 +137,6 @@ const Style = styled.div<StyleProps>`
 
       &:disabledcolord {
         opacity: 1;
-
         color: ${disabledColor} !important;
       }
 
@@ -198,4 +194,4 @@ const Style = styled.div<StyleProps>`
 
 export default Style
 
-Style.displayName = 'Datepicker-Style'
+Style.displayName = 'Calendar-Style'

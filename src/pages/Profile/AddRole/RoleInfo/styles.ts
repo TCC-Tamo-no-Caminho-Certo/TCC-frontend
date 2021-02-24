@@ -21,13 +21,15 @@ const Style = styled.div<StyleProps>`
     display: flex;
     align-items: center;
 
-    font-size: clamp(2rem, 0.6rem + 2.6vw, 2.5rem);
-
     margin-bottom: 16px;
     -webkit-user-select: none;
     cursor: pointer;
 
     color: ${({ color }) => color};
+
+    span {
+      font-size: clamp(2rem, 0.6rem + 2.6vw, 2.5rem);
+    }
 
     .Icon {
       width: 18px;
@@ -48,9 +50,11 @@ const Style = styled.div<StyleProps>`
     ul {
       li {
         opacity: 0;
-        rem;
-
         color: ${({ theme }) => theme.colors.secondary};
+
+        & + li {
+          margin-top: 8px;
+        }
 
         .Icon {
           width: 18px;
@@ -59,10 +63,6 @@ const Style = styled.div<StyleProps>`
 
           fill: ${({ theme }) => theme.colors.green};
         }
-      }
-
-      li + li {
-        margin-top: 8px;
       }
     }
 
@@ -83,7 +83,6 @@ const Style = styled.div<StyleProps>`
     }
   }
 `
-
 export default Style
 
 Style.displayName = 'RoleInfo-Style'

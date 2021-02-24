@@ -14,17 +14,13 @@ export default createGlobalStyle`
     font-size: 62.5%;
     scroll-behavior: smooth;
 
+
     body {
       background-color: ${({ theme }) => theme.colors.primary};
       color: ${({ theme }) => theme.colors.tertiary};
+      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
+      line-height: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
 
-      * {
-        font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
-      }
-
-      span, p, h1, h2, h3, h4, h5 {
-        cursor: default;
-      }
 
       input:-webkit-autofill,
       input:-webkit-autofill:hover, 
@@ -33,6 +29,13 @@ export default createGlobalStyle`
         transition: background-color 5000s ease-in-out 0s;
       }
 
+      span, p, h1, h2, h3, h4, h5 {
+        font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
+        line-height: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
+
+        
+        cursor: default;
+      }
 
       &::-webkit-scrollbar {
         width: 8px;
@@ -68,11 +71,12 @@ export default createGlobalStyle`
     button {
       background-color: transparent;
       border: none;
-
-
     }
 
     button, label, input[type="checkbox"] {
+      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
+      line-height: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
+
       cursor: pointer
     }
 

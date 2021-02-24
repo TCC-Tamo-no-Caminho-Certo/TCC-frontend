@@ -4,7 +4,7 @@ import Style from './styles'
 import CheckIcon from 'assets/CheckIcon'
 import ArrowIcon from 'assets/ArrowIcon'
 
-import { AnimatePresence, motion, useCycle } from 'framer-motion'
+import { AnimatePresence, motion, useCycle, Variants } from 'framer-motion'
 
 interface RoleInfoProps {
   title: string
@@ -14,6 +14,45 @@ interface RoleInfoProps {
   onClick?(): void
   noButton?: boolean
   userRoles?: string[]
+}
+
+const container: Variants = {
+  show: {
+    cursor: 'pointer',
+    height: 320,
+    opacity: 1,
+    transition: { staggerChildren: 0.05, type: 'tween', duration: 0.1 }
+  },
+  hidden: {
+    cursor: 'pointer',
+    height: 0,
+    opacity: 0,
+    transition: { staggerChildren: 0.1, staggerDirection: -1 }
+  }
+}
+
+const item: Variants = {
+  show: {
+    y: ['-100%', '0%'],
+    opacity: [0, 1],
+    transition: { type: 'tween', duration: 0.2 }
+  },
+  hidden: {
+    y: ['0%', '-100%'],
+    opacity: [1, 0],
+    transition: { type: 'tween', duration: 0.2 }
+  }
+}
+
+const button: Variants = {
+  show: {
+    opacity: [0, 1],
+    transition: { type: 'tween', duration: 0.2 }
+  },
+  hidden: {
+    opacity: [1, 0],
+    transition: { type: 'tween', duration: 0.2 }
+  }
 }
 
 const RoleInfo = ({
@@ -27,45 +66,6 @@ const RoleInfo = ({
   const [show, toggleShow] = useCycle<boolean>(false, true)
   const [deg, rotate] = useCycle(0, -90)
   const haveThisRole = userRoles?.includes(title)
-
-  const container = {
-    show: {
-      cursor: 'pointer',
-      height: 320,
-      opacity: 1,
-      transition: { staggerChildren: 0.05, type: 'tween', duration: 0.1 }
-    },
-    hidden: {
-      cursor: 'pointer',
-      height: 0,
-      opacity: 0,
-      transition: { staggerChildren: 0.1, staggerDirection: -1 }
-    }
-  }
-
-  const item = {
-    show: {
-      y: ['-100%', '0%'],
-      opacity: [0, 1],
-      transition: { type: 'tween', duration: 0.2 }
-    },
-    hidden: {
-      y: ['0%', '-100%'],
-      opacity: [1, 0],
-      transition: { type: 'tween', duration: 0.2 }
-    }
-  }
-
-  const button = {
-    show: {
-      opacity: [0, 1],
-      transition: { type: 'tween', duration: 0.2 }
-    },
-    hidden: {
-      opacity: [1, 0],
-      transition: { type: 'tween', duration: 0.2 }
-    }
-  }
 
   const onButtonClick = () => {
     onClick !== undefined && onClick()
@@ -100,7 +100,7 @@ const RoleInfo = ({
 
       <AnimatePresence>
         {show && (
-          <motion.div variants={container} animate='show' exit='hidden'>
+          <motion.div animate='show' exit='hidden' variants={container}>
             <ul>
               {benefits.map((benefit, index) => (
                 <motion.li key={index} variants={item}>

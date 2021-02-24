@@ -56,25 +56,25 @@ const AddRole = () => {
 
       <div id='Roles'>
         <RoleInfo
+          noButton
           title='Convidado'
           color={theme.roles.guest}
           benefits={[
             'Solicitar alteração de papel para Estudante ou Professor'
           ]}
-          noButton
         />
 
         <RoleInfo
           title='Estudante'
           userRoles={labelRoles}
           color={theme.roles.student}
+          onClick={() => setRoleSelected('student')}
           benefits={[
             'Participar de propostas',
             'Candidatar-se a um projeto',
             'Aceitar convites para propostas e projetos',
             'Candidatar-se a um projeto'
           ]}
-          onClick={() => setRoleSelected('student')}
         />
 
         <RoleInfo

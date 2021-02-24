@@ -10,8 +10,8 @@ interface ContentProps {
 
 export const Header = styled(HeaderComponent)`
   justify-content: start;
-
-  padding: 30px 50px;
+  font-size: clamp(1.4rem, 0.6rem + 2.6vw, 2rem);
+  padding: 24px 24px;
 `
 
 export const Content = styled(Card)<ContentProps>`
@@ -20,7 +20,7 @@ export const Content = styled(Card)<ContentProps>`
 
   #role {
     width: 100%;
-
+    font-size: clamp(1.4rem, 0.6rem + 2.6vw, 2rem);
     margin: 16px 0;
 
     color: ${({ theme, role }) => theme.roles[role]};
@@ -29,8 +29,8 @@ export const Content = styled(Card)<ContentProps>`
   #scrollButton {
     padding: 8px;
 
-    color: ${({ theme }) => theme.colors.primary};
     margin-bottom: 24px;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 

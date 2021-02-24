@@ -71,14 +71,14 @@ const Datepicker = ({
     return (
       <Text
         readOnly
-        ref={ref}
-        name={name}
-        id={name}
-        icon={Icon}
-        color={valueColor}
-        onClick={onClick}
-        value={InputValue(selectedDate)}
         className='Datepicker'
+        ref={ref}
+        id={name}
+        name={name}
+        icon={Icon}
+        onClick={onClick}
+        color={valueColor}
+        value={InputValue(selectedDate)}
         {...rest}
       />
     )

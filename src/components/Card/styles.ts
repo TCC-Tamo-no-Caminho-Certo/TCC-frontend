@@ -12,8 +12,8 @@ export const Header = styled.header`
   height: 40px;
   border-radius: 16px 16px 0 0;
 
+  color: ${({ theme }) => theme.colors.secondary};
   background-color: ${({ theme }) => theme.colors.primary};
-  color: white;
 `
 
 const Style = styled.div`
@@ -24,13 +24,13 @@ const Style = styled.div`
   justify-content: center;
   flex-direction: column;
 
-  padding: 60px 20px;
-  width: clamp(284px, 70%, 520px);
-  margin: 0 20px;
+  padding: 64px 24px;
+  width: 520px;
+  margin: 0 24px;
   border-radius: 16px;
 
-  background-color: white;
-  box-shadow: 8px 8px 5px 0px rgba(0, 0, 0, 0.49);
+  background-color: ${({ theme }) => theme.colors.secondary};
+  box-shadow: 8px 8px 4px 0px rgba(0, 0, 0, 0.49);
 
   .Field + .Field {
     margin-top: 24px;
