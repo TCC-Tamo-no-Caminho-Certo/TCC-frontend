@@ -1,20 +1,20 @@
-import React, { memo, useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Style, { Dot } from './styles'
 
 import { useAnimation } from 'framer-motion'
 
 interface DotsProps {
-  onLeftClick(): void
-  onRightClick(): void
   size: number
   gap: number
   radius: number
   quantity: number
+  onRightClick(): void
+  onLeftClick(): void
   makeLeftTap?: boolean
   makeRightTap?: boolean
 }
 
-const Dots = ({
+const Dots: React.FC<DotsProps> = ({
   size,
   gap,
   radius,
@@ -23,167 +23,187 @@ const Dots = ({
   onLeftClick,
   makeLeftTap = false,
   makeRightTap = false
-}: DotsProps) => {
-  const [position, setPosition] = useState(0)
-  const move = gap + size
-  const limit = quantity % 2 === 0 ? (quantity - 2) / 2 : (quantity - 1) / 2
+}) => {
+  const isPar = quantity % 2 === 0
+  const [position, setPosition] = useState(isPar ? 1 : 0)
 
-  const newLeft = useAnimation()
-  const left = useAnimation()
-  const center = useAnimation()
-  const right = useAnimation()
-  const newRight = useAnimation()
+  const move = gap + size
+
+  const limit = (quantity - 1) / 2
+
+  const newLeftAnimation = useAnimation()
+  const leftAnimation = useAnimation()
+  const centerAnimation = useAnimation()
+  const rightAnimation = useAnimation()
+  const newRightAnimation = useAnimation()
 
   const transition = useMemo(() => ({ type: 'tween', duration: 0.3 }), [])
   const resetTransition = useMemo(() => ({ duration: 0 }), [])
 
   const leftMove = useCallback(() => {
-    left.start({
+    leftAnimation.start({
       x: -move,
       opacity: [1, 0],
       scale: [1, 0.6],
       transition
     })
 
-    center.start({ x: -move, scale: [1.4, 1], transition })
+    centerAnimation.start({ x: -move, scale: [1.4, 1], transition })
 
-    right.start({ x: -move, scale: [1, 1.4], transition })
+    rightAnimation.start({ x: -move, scale: [1, 1.4], transition })
 
-    return newRight.start({
+    return newRightAnimation.start({
       x: -move,
       opacity: [0, 1],
       scale: [0.6, 1],
       transition
     })
-  }, [left, center, right, newRight, move, transition])
+  }, [
+    leftAnimation,
+    centerAnimation,
+    rightAnimation,
+    newRightAnimation,
+    move,
+    transition
+  ])
 
   const resetLeftMove = useCallback(() => {
-    left.start({
+    leftAnimation.start({
       x: 0,
       opacity: 1,
       scale: 1,
       transition: resetTransition
     })
 
-    center.start({ x: 0, scale: 1.4, transition: resetTransition })
+    centerAnimation.start({ x: 0, scale: 1.4, transition: resetTransition })
 
-    right.start({ x: 0, scale: 1, transition: resetTransition })
+    rightAnimation.start({ x: 0, scale: 1, transition: resetTransition })
 
-    return newRight.start({
+    return newRightAnimation.start({
       x: 0,
       opacity: 0,
       scale: 0.6,
       transition: resetTransition
     })
-  }, [left, center, right, newRight, resetTransition])
+  }, [
+    leftAnimation,
+    centerAnimation,
+    rightAnimation,
+    newRightAnimation,
+    resetTransition
+  ])
 
   const rightMove = useCallback(() => {
-    right.start({
+    rightAnimation.start({
       x: move,
       scale: [1, 0.6],
       opacity: [1, 0],
       transition
     })
 
-    center.start({ x: move, scale: [1.4, 1], transition })
+    centerAnimation.start({ x: move, scale: [1.4, 1], transition })
 
-    left.start({
+    leftAnimation.start({
       x: move,
       scale: [1, 1.4],
       transition
     })
 
-    return newLeft.start({
+    return newLeftAnimation.start({
       x: move,
       opacity: [0, 1],
       scale: [0.6, 1],
       transition
     })
-  }, [newLeft, left, center, right, move, transition])
+  }, [
+    newLeftAnimation,
+    leftAnimation,
+    centerAnimation,
+    rightAnimation,
+    move,
+    transition
+  ])
 
   const resetRightMove = useCallback(() => {
-    right.start({
+    rightAnimation.start({
       x: 0,
       scale: 1,
       opacity: 1,
       transition: resetTransition
     })
 
-    center.start({
+    centerAnimation.start({
       x: 0,
       scale: 1.4,
       transition: resetTransition
     })
 
-    left.start({
+    leftAnimation.start({
       x: 0,
       scale: 1,
       transition: resetTransition
     })
 
-    return newLeft.start({
+    return newLeftAnimation.start({
       x: 0,
       opacity: 0,
       scale: 0.6,
       transition: resetTransition
     })
-  }, [newLeft, left, center, right, resetTransition])
+  }, [
+    newLeftAnimation,
+    leftAnimation,
+    centerAnimation,
+    rightAnimation,
+    resetTransition
+  ])
 
-  const sequenceToLeft = useCallback(
-    async (slide = true) => {
-      if (position > -limit) {
-        slide && onLeftClick()
-        await leftMove()
-        await resetLeftMove()
-        setPosition(position - 1)
-      }
-    },
-    [onLeftClick, leftMove, resetLeftMove, position, limit]
-  )
+  const sequenceToLeft = useCallback(async () => {
+    if (position > -limit) {
+      onLeftClick()
+      await leftMove()
+      await resetLeftMove()
+      setPosition(before => (before - 1 === 0 ? before - 2 : before - 1))
+    }
+  }, [onLeftClick, leftMove, resetLeftMove, position, limit])
 
-  const sequenceToRight = useCallback(
-    async (slide = true) => {
-      if (position < limit) {
-        slide && onRightClick()
-        await rightMove()
-        await resetRightMove()
-        setPosition(position + 1)
-      }
-    },
-    [onRightClick, rightMove, resetRightMove, limit, position]
-  )
+  const sequenceToRight = useCallback(async () => {
+    if (position < limit) {
+      onRightClick()
+      await rightMove()
+      await resetRightMove()
+      setPosition(before => (before + 1 === 0 ? before + 2 : before + 1))
+    }
+  }, [onRightClick, rightMove, resetRightMove, limit, position])
 
-  makeLeftTap && sequenceToLeft(false)
-  makeRightTap && sequenceToRight(false)
+  useEffect(() => {
+    if (makeLeftTap) sequenceToLeft()
+    if (makeRightTap) sequenceToRight()
+  }, [makeLeftTap, makeRightTap, sequenceToLeft, sequenceToRight])
 
   return (
-    <Style
-      className='Dots'
-      size={`${size}px`}
-      gap={`${gap}px`}
-      radius={`${radius}%`}
-    >
-      <Dot id='newLeft' animate={newLeft}>
+    <Style size={`${size}px`} gap={`${gap}px`} radius={`${radius}%`}>
+      <Dot id='newLeft' animate={newLeftAnimation}>
         {'  '}
       </Dot>
 
-      <Dot id='left' animate={left} onTap={sequenceToRight}>
+      <Dot id='left' animate={leftAnimation} onTap={sequenceToRight}>
         {'  '}
       </Dot>
 
-      <Dot id='center' animate={center}>
+      <Dot id='center' animate={centerAnimation}>
         {'  '}
       </Dot>
 
-      <Dot id='right' animate={right} onTap={sequenceToLeft}>
+      <Dot id='right' animate={rightAnimation} onTap={sequenceToLeft}>
         {'  '}
       </Dot>
 
-      <Dot id='newRight' animate={newRight}>
+      <Dot id='newRight' animate={newRightAnimation}>
         {'  '}
       </Dot>
     </Style>
   )
 }
 
-export default memo(Dots)
+export default Dots

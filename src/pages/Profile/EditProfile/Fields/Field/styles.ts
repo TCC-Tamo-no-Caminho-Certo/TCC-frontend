@@ -1,17 +1,20 @@
 import styled from 'styled-components'
 
 const Style = styled.div`
+  position: relative;
+
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: left;
+  flex-direction: column;
+  padding: 10px;
 
-  height: 40px;
   width: 100%;
   font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.5rem);
   border-radius: 5px;
 
   color: ${({ theme }) => theme.colors.tertiary};
-  border: solid 2px ${({ theme }) => theme.colors.tertiary};
+  border: solid 1px ${({ theme }) => theme.colors.tertiary};
 
   button {
     display: flex;
@@ -21,7 +24,7 @@ const Style = styled.div`
     height: 100%;
 
     &.label {
-      width: 25%;
+      margin-bottom: 8px;
     }
 
     &.input {
@@ -46,6 +49,10 @@ const Style = styled.div`
     }
 
     &.icon {
+      position: absolute;
+      top: -12px;
+      right: 4px;
+
       margin: 0 4px;
       width: 24px;
       text-align: right;
@@ -66,6 +73,15 @@ const Style = styled.div`
           stroke-width: 50;
         }
       }
+    }
+  }
+
+  @media screen and (min-width: 545px) {
+    height: 40px;
+    flex-direction: row;
+
+    button.icon {
+      position: static;
     }
   }
 `

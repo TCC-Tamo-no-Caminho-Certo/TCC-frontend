@@ -14,20 +14,19 @@ export const Container = styled(motion.li)<ContainerProps>`
   width: ${({ width }) => width};
 `
 
-const Style = styled.div.attrs({ className: 'Slider' })<StyleProps>`
+const Style = styled.div<StyleProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
 
-  ul {
-    &,
-    form {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  & > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
+  #slider {
     margin-bottom: ${({ gapVertical }) => gapVertical};
 
     ${Container} + ${Container} {

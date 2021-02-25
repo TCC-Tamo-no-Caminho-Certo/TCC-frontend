@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import Style, { Container } from './styles'
 
 import Dots from './Dots'
@@ -18,71 +18,72 @@ const Slider = ({
   width,
   gapVertical = gap
 }: SliderProps) => {
+  const quantity = containers.length
+  const move = width + gap
+  const isPar = quantity % 2 === 0
+  const limit = move * ((quantity - 1) / 2)
+
   const [makeLeftMove, setMakeLeftMove] = useState(false)
   const [makeRightMove, setMakeRightMove] = useState(false)
-  const [xValue, setXValue] = useState(0)
 
-  const move = width + gap
-  const quantity = containers.length
-  const limit =
-    quantity % 2 === 0
-      ? move * ((quantity - 2) / 2)
-      : move * ((quantity - 1) / 2)
+  const [xValue, setXValue] = useState(isPar ? move / 2 : 0)
 
-  const onLeftClick = useCallback(() => {
-    xValue > -limit && setXValue(xValue - move)
+  useEffect(() => setXValue(isPar ? move / 2 : 0), [move, isPar])
+
+  useEffect(() => {
+    console.clear()
+    console.table({ quantity, isPar, move, limit, xValue })
+  }, [isPar, limit, move, quantity, xValue])
+
+  const onLeftClick = () => {
+    if (xValue > -limit) setXValue(xValue - move)
     setMakeLeftMove(false)
-  }, [limit, move, xValue])
+  }
 
-  const onRightClick = useCallback(() => {
-    xValue < limit && setXValue(xValue + move)
+  const onRightClick = () => {
+    if (xValue < limit) setXValue(xValue + move)
     setMakeRightMove(false)
-  }, [limit, move, xValue])
+  }
 
-  const onDragged = useCallback(
-    (event: any, info: any) => {
-      const maxSwipeToAnimate = 300000
-      const offset = info.offset.x
-      const velocity = info.velocity.x
-      const swipe = Math.abs(offset) * velocity
+  const onDragged = (_event: any, info: any) => {
+    const maxSwipeToAnimate = 20000
+    const offset = info.offset.x
+    const velocity = info.velocity.x
+    const swipe = Math.abs(offset) * velocity
 
-      if (swipe < -maxSwipeToAnimate) {
-        setMakeLeftMove(true)
-        onLeftClick()
-      } else if (swipe > maxSwipeToAnimate) {
-        setMakeRightMove(true)
-        onRightClick()
-      }
-    },
-    [onLeftClick, onRightClick]
-  )
+    if (swipe < -maxSwipeToAnimate) {
+      setMakeLeftMove(true)
+      onLeftClick()
+    } else if (swipe > maxSwipeToAnimate) {
+      setMakeRightMove(true)
+      onRightClick()
+    }
+  }
 
   return (
-    <Style gap={`${gap}px`} gapVertical={`${gapVertical}px`}>
+    <Style className='Slider' gap={`${gap}px`} gapVertical={`${gapVertical}px`}>
       <motion.ul
+        id='slider'
         drag='x'
         dragElastic={0}
         dragMomentum={false}
         dragConstraints={{ left: 0, right: 0 }}
         onDragEnd={onDragged}
       >
-        {containers.map(container => {
-          if (!container.key) throw new Error('the children must have a key')
-          return (
-            <Container
-              key={`${container.key}`}
-              width={`${width}px`}
-              animate={{ x: xValue }}
-              transition={{ type: 'tween', duration: 0.5 }}
-            >
-              {container}
-            </Container>
-          )
-        })}
+        {containers.map(container => (
+          <Container
+            key={container.key}
+            width={`${width}px`}
+            animate={{ x: xValue }}
+            transition={{ type: 'tween', duration: 0.5 }}
+          >
+            {container}
+          </Container>
+        ))}
       </motion.ul>
 
       <Dots
-        size={18}
+        size={24}
         gap={16}
         radius={50}
         quantity={quantity}

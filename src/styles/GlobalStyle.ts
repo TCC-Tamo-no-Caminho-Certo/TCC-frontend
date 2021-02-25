@@ -18,8 +18,10 @@ export default createGlobalStyle`
     body {
       background-color: ${({ theme }) => theme.colors.primary};
       color: ${({ theme }) => theme.colors.tertiary};
-      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
-      line-height: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
+
+      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.9rem);
+      line-height: clamp(1.6rem, 0.6rem + 2.6vw, 1.9rem);
+
 
 
       input:-webkit-autofill,
@@ -30,10 +32,6 @@ export default createGlobalStyle`
       }
 
       span, p, h1, h2, h3, h4, h5 {
-        font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
-        line-height: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
-
-        
         cursor: default;
       }
 

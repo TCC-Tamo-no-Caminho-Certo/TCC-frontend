@@ -12,11 +12,12 @@ export const Dot = styled(motion.button).attrs({
   type: 'button'
 })``
 
-const Style = styled.div<StyleProps>`
+const Style = styled.div.attrs({
+  className: 'Dots'
+})<StyleProps>`
   padding: 8px;
 
   ${Dot} {
-    box-shadow: 5px 4px 5px 0px rgba(0, 0, 0, 0.49);
     width: ${({ size }) => size};
     height: ${({ size }) => size};
     border-radius: ${({ radius }) => radius};
@@ -37,8 +38,7 @@ const Style = styled.div<StyleProps>`
     transform: scale(1.4);
   }
 `
-
-export default Style
-
 Dot.displayName = 'Dot-Style'
 Style.displayName = 'Dots-Style'
+
+export default Style

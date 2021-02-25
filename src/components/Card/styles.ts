@@ -25,8 +25,7 @@ const Style = styled.div`
   flex-direction: column;
 
   padding: 64px 24px;
-  width: 520px;
-  margin: 0 24px;
+  width: 100%;
   border-radius: 16px;
 
   background-color: ${({ theme }) => theme.colors.secondary};

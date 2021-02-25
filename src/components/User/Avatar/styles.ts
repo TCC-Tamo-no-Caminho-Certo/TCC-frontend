@@ -21,7 +21,7 @@ const Style = styled.div<StyleProps>`
 
   .circle {
     position: relative;
-    transform: translateY(-105%);
+    transform: translateY(-103%);
 
     width: ${({ size }) => `${size}px`};
     height: ${({ size }) => `${size}px`};
