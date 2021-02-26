@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PadlockIcon= () => {
+const PadlockIcon = () => {
   return (
     <svg
       className='Icon'

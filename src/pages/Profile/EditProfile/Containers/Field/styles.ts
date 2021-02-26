@@ -85,11 +85,49 @@ const Style = styled.div`
     }
   }
 
+  .Datepicker {
+    .CalendarSize {
+      font-size: 12px;
+    }
+
+    .Calendar__day.-ltr {
+      font-size: 1.7rem;
+    }
+
+    .Calendar__section.-shown {
+      padding: 8px 20px;
+    }
+
+    .Calendar__sectionWrapper {
+      min-height: 324px;
+      height: 316px;
+    }
+
+    .Calendar__monthArrow {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 16px;
+      height: 16px;
+      font-size: 1rem;
+    }
+
+    .Calendar__monthSelectorItemText {
+      width: 230px;
+    }
+
+    .Calendar__yearSelector,
+    .Calendar__monthSelector {
+      padding: 0px;
+    }
+  }
+
   @media screen and (min-width: 545px) {
     height: 40px;
     flex-direction: row;
 
-    button.icon {
+    .icon {
       position: static;
     }
   }

@@ -1,7 +1,7 @@
 import React from 'react'
 import Style from './styles'
 
-const Map= () => {
+const Map = () => {
   return <Style />
 }
 

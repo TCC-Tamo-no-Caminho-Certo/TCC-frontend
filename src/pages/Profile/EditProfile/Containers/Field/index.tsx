@@ -32,7 +32,6 @@ const Field = ({ data }: FieldProps) => {
       <Datepicker
         isBirthday
         arrow='bottom'
-        ref={inputRef}
         name={data.inputname}
         bodyColor={theme.colors.secondary}
         headerColor={theme.colors.tertiary}
@@ -64,8 +63,8 @@ const Field = ({ data }: FieldProps) => {
   return (
     <Style key={data.inputname} className='Field'>
       <button
-        className='label'
         type='button'
+        className='label'
         onClick={() => (change ? inputRef.current?.focus() : setChange(true))}
       >
         {data.label}

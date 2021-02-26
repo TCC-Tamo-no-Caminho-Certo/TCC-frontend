@@ -14,15 +14,12 @@ export default createGlobalStyle`
     font-size: 62.5%;
     scroll-behavior: smooth;
 
-
     body {
       background-color: ${({ theme }) => theme.colors.primary};
       color: ${({ theme }) => theme.colors.tertiary};
 
       font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.9rem);
       line-height: clamp(1.6rem, 0.6rem + 2.6vw, 1.9rem);
-
-
 
       input:-webkit-autofill,
       input:-webkit-autofill:hover, 
@@ -94,5 +91,4 @@ export default createGlobalStyle`
       width: 16px;
     }
   }
-
 `

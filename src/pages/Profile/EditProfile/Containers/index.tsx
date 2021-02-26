@@ -1,4 +1,4 @@
-import React, { memo, useContext, useEffect, useState } from 'react'
+import React, { memo, useContext, useEffect, useMemo, useState } from 'react'
 
 import Field from './Field'
 import { ImageRefModalContext } from '../'
@@ -18,20 +18,31 @@ import Slider from 'components/Slider'
 
 import { useSelector } from 'react-redux'
 
+type ContainersRoles = Role | 'personal'
+
 const Containers = () => {
   const { innerWidth } = useWindowDimensions()
   const [sliderWidth, setSliderWidth] = useState(innerWidth >= 600 ? 520 : 284)
 
+  const modalContext = useContext(ImageRefModalContext)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const user = useSelector<RootState, UserState>(state => state.user)
-  const modalContext = useContext(ImageRefModalContext)
-  const containers = ['personal', ...user.roles]
+  const { roles } = user
+
+  const containers: ContainersRoles[] = useMemo(() => ['personal', ...roles], [
+    roles
+  ])
+
   useEffect(() => {
     if (innerWidth <= 430) setSliderWidth(320)
     else if (innerWidth <= 600) setSliderWidth(400)
     else if (innerWidth <= 700) setSliderWidth(450)
     else setSliderWidth(520)
   }, [innerWidth])
+
+  useEffect(() => {
+    console.table({ containers, roles })
+  }, [containers, roles])
 
   return (
     <Slider gap={200} gapVertical={100} width={sliderWidth}>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CameraIcon= () => {
+const CameraIcon = () => {
   return (
     <svg
       className='Icon'

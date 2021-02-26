@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Style, { Container } from './styles'
 
 import Dots from './Dots'
@@ -6,7 +6,7 @@ import Dots from './Dots'
 import { motion } from 'framer-motion'
 
 interface SliderProps {
-  children: ReactElement[]
+  children: any
   width: number
   gap: number
   gapVertical?: number
@@ -31,8 +31,8 @@ const Slider = ({
   useEffect(() => setXValue(isPar ? move / 2 : 0), [move, isPar])
 
   useEffect(() => {
-    console.clear()
-    console.table({ quantity, isPar, move, limit, xValue })
+    // console.clear()
+    // console.table({ quantity, isPar, move, limit, xValue })
   }, [isPar, limit, move, quantity, xValue])
 
   const onLeftClick = () => {
@@ -70,7 +70,7 @@ const Slider = ({
         dragConstraints={{ left: 0, right: 0 }}
         onDragEnd={onDragged}
       >
-        {containers.map(container => (
+        {containers.map((container: any) => (
           <Container
             key={container.key}
             width={`${width}px`}

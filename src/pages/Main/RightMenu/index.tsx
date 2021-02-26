@@ -22,6 +22,7 @@ import LogoutIcon from 'assets/RightMenuOpen/LogoutIcon'
 import ChangeIcon from 'assets/RightMenuOpen/ChangeIcon'
 import GearIcon from 'assets/RightMenuOpen/GearIcon'
 import AddRoleIcon from 'assets/RightMenuOpen/AddRoleIcon'
+import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import Avatar from 'components/User/Avatar'
 
@@ -105,7 +106,7 @@ const RightMenu = () => {
   const dispatch = useDispatch()
   const { innerWidth } = useWindowDimensions()
   const [width, setWidth] = useState(innerWidth)
-  const [editOpen, toggleEditProfile] = useCycle(false, true)
+  const [editOpen, toggleEditOpen] = useCycle(false, true)
   const [isOpen, setIsOpen] = useState(false)
   const [changeRole, setChangeRole] = useState(false)
   const { name, surname, selectedRole, roles } = useSelector<
@@ -118,8 +119,8 @@ const RightMenu = () => {
 
   useEffect(() => {
     ;(async () => {
-      await toggleEditProfile()
-      toggleEditProfile()
+      await toggleEditOpen()
+      toggleEditOpen()
     })()
 
     if (innerWidth <= 300) setWidth(320)
@@ -186,7 +187,13 @@ const RightMenu = () => {
             </UserInfo>
 
             {innerWidth >= 545 && (
-              <button type='button' onClick={() => toggleEditProfile()}>
+              <button
+                type='button'
+                onClick={() => {
+                  setIsOpen(true)
+                  toggleEditOpen()
+                }}
+              >
                 <GearIcon />
               </button>
             )}
@@ -241,9 +248,20 @@ const RightMenu = () => {
 
                   {changeRole && (
                     <motion.div id='selectRoles'>
+                      {innerWidth < 545 && (
+                        <CloseIcon onClick={() => setChangeRole(false)} />
+                      )}
+
                       <ul>
                         {roles.map(role => (
-                          <RoleLi key={role} role={role}>
+                          <RoleLi
+                            key={role}
+                            role={role}
+                            onClick={() => {
+                              setIsOpen(false)
+                              toggleEditOpen()
+                            }}
+                          >
                             <button
                               type='button'
                               onClick={() =>
@@ -278,7 +296,7 @@ const RightMenu = () => {
         <Gear
           onClick={() => {
             setIsOpen(!isOpen)
-            toggleEditProfile()
+            toggleEditOpen()
           }}
         />
       )}

@@ -1,7 +1,7 @@
 import React from 'react'
 import Style from './styles'
 
-const Projects= () => {
+const Projects = () => {
   return <Style>Projects</Style>
 }
 

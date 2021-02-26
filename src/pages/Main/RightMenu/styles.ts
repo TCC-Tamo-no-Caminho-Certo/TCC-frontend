@@ -47,8 +47,6 @@ export const RoleLi = styled.li<RoleLiProps>`
 
   &:first-child {
     button {
-      border-radius: 16px 0 0 0;
-
       &:hover {
         background-color: ${({ theme, role }) => theme.roles[role]};
       }
@@ -57,8 +55,6 @@ export const RoleLi = styled.li<RoleLiProps>`
 
   &:last-child {
     button {
-      border-radius: 0 0 16px 16px;
-
       &:hover {
         background-color: ${({ theme, role }) => theme.roles[role]};
       }
@@ -67,10 +63,28 @@ export const RoleLi = styled.li<RoleLiProps>`
 
   &:only-child {
     button {
-      border-radius: 16px 0 0 16px;
-
       &:hover {
         background-color: ${({ theme, role }) => theme.roles[role]};
+      }
+    }
+  }
+
+  @media screen and (min-width: 545px) {
+    &:first-child {
+      button {
+        border-radius: 16px 0 0 0;
+      }
+    }
+
+    &:last-child {
+      button {
+        border-radius: 0 0 16px 16px;
+      }
+    }
+
+    &:only-child {
+      button {
+        border-radius: 16px 0 0 16px;
       }
     }
   }
@@ -135,9 +149,26 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
   #selectRoles {
     position: absolute;
     top: 0;
-    right: ${({ width }) => width};
+    right: 0;
+    z-index: 2;
 
-    width: 230px;
+    width: 100%;
+    height: 100%;
+
+    .Icon {
+      position: absolute;
+      top: 28px;
+      right: 0;
+      z-index: 2;
+
+      transform: translateY(-50%);
+      width: 16px;
+      margin-right: 35px;
+      height: 16px;
+
+      fill: ${({ theme }) => theme.colors.secondary};
+      stroke: ${({ theme }) => theme.colors.secondary};
+    }
   }
 
   #openProfile {
@@ -200,9 +231,7 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     }
 
     .Icon {
-      min-width: 20px;
       width: 20px;
-      min-height: 20px;
       height: 20px;
       margin: 0px;
       margin-left: 8px;
@@ -216,6 +245,12 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
 
     min-width: 300px;
     width: 300px;
+
+    #selectRoles {
+      right: ${({ width }) => width};
+
+      width: 230px;
+    }
   }
 `
 

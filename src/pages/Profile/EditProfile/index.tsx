@@ -1,7 +1,7 @@
 import React, { createContext, RefObject, useRef } from 'react'
 import Style, { ConfirmForm } from './styles'
 
-import Fields from './Containers'
+import Containers from './Containers'
 import ImageChanger from './ImageChanger'
 
 import { UserActions } from 'store/user'
@@ -47,7 +47,7 @@ const EditProfile = () => {
           getData={getFormData}
           afterResData={submitCallback}
         >
-          <Fields />
+          <Containers />
 
           <button id='discardButton' type='button'>
             Descartar alterações

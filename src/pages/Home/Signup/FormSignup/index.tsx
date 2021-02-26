@@ -53,16 +53,16 @@ const FormSignup = () => {
         }}
       >
         <Text
-          className='dual'
           name='name'
+          className='dual'
           placeholder='Nome'
           autoComplete='given-name'
           icon={WorldIcon}
         />
 
         <Text
-          className='dual'
           name='surname'
+          className='dual'
           placeholder='Sobrenome'
           autoComplete='family-name'
           icon={WorldIcon}
@@ -75,13 +75,13 @@ const FormSignup = () => {
 
         <Datepicker
           isBirthday
+          arrow='top'
           name='birthday'
           placeholder='Data de nascimento'
-          arrow='top'
+          icon={UserLockedIcon}
           bodyColor={theme.colors.secondary}
           headerColor={theme.colors.tertiary}
           selectedColor={theme.colors.primary}
-          icon={UserLockedIcon}
         />
 
         <span>Você precisa ter pelo menos 18 anos</span>
@@ -89,26 +89,26 @@ const FormSignup = () => {
         <Text
           name='email'
           placeholder='E-mail'
-          icon={UserLockedIcon}
           autoComplete='email'
+          icon={UserLockedIcon}
         />
 
         <span>Enviaremos um e-mail para confirmação</span>
 
         <Text
           eye
-          className='dual'
           name='password'
           type='password'
+          className='dual'
           placeholder='Senha'
           autoComplete='new-password'
           icon={UserLockedIcon}
         />
 
         <Text
+          type='password'
           className='dual'
           name='confirmPassword'
-          type='password'
           placeholder='Confirmar Senha'
           autoComplete='new-password'
           icon={UserLockedIcon}

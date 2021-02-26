@@ -39,9 +39,9 @@ interface DatepickerProps extends TextProps {
 }
 
 const Datepicker = ({
+  bodyColor = '#6e4850',
   valueColor = '#d65881',
   headerColor = '#6e4850',
-  bodyColor = '#6e4850',
   selectedColor = '#d65881',
   disabledColor = '#d62828',
   icon: Icon,
@@ -88,21 +88,21 @@ const Datepicker = ({
     <Style
       className='Datepicker'
       arrow={arrow}
-      headerColor={headerColor}
       bodyColor={bodyColor}
+      headerColor={headerColor}
       selectedColor={selectedColor}
       disabledColor={disabledColor}
     >
       <DatePicker
+        calendarClassName='CalendarSize'
         locale={ptbr}
         value={selectedDate}
-        renderInput={renderCustomInput}
         onChange={setSelectedDate}
-        minimumDate={isBirthday ? minimumDate : undefined}
-        maximumDate={isBirthday ? maximumDate : undefined}
+        renderInput={renderCustomInput}
         selectorEndingYear={present.year}
         selectorStartingYear={minimumDate.year}
-        calendarClassName='CalendarSize'
+        maximumDate={isBirthday ? maximumDate : undefined}
+        minimumDate={isBirthday ? minimumDate : undefined}
       />
     </Style>
   )

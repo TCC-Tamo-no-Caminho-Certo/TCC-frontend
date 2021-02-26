@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MailIcon= () => {
+const MailIcon = () => {
   return (
     <svg
       className='Icon'

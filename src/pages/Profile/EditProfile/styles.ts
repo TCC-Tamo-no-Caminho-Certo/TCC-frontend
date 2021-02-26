@@ -85,14 +85,6 @@ const Style = styled(motion.section)`
     flex-direction: column;
   }
 
-  h2 {
-    position: absolute;
-    top: 5%;
-
-    color: white;
-    font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.6rem);
-  }
-
   .Card + .Card {
     margin-left: 60px;
   }

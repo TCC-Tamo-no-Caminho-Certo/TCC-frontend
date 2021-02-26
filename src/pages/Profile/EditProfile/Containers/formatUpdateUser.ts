@@ -11,12 +11,21 @@ export interface InputData {
 export interface ContainerForm {
   personal: InputData[]
   moderator: InputData[]
+  guest: InputData[]
 }
 
 const formatUpdateUser = (
   userData: UserState,
   role: keyof ContainerForm
 ): InputData[] => {
+  const guest: InputData[] = [
+    {
+      label: 'Nome:',
+      inputname: 'name',
+      value: userData.name
+    }
+  ]
+
   const moderator: InputData[] = [
     {
       label: 'Nome:',
@@ -57,7 +66,8 @@ const formatUpdateUser = (
 
   const formInputs: ContainerForm = {
     personal,
-    moderator
+    moderator,
+    guest
   }
 
   return formInputs[role]

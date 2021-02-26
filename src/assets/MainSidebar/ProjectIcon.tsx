@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ProjectIcon= () => {
+const ProjectIcon = () => {
   return (
     <svg
       className='Icon'
