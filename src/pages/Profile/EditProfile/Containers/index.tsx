@@ -1,9 +1,9 @@
 import React, { memo, useContext, useEffect, useState } from 'react'
 
 import Field from './Field'
-import { ModalContext } from '../'
+import { ImageRefModalContext } from '../'
+import formatUpdateUser, { ContainerForm, InputData } from './formatUpdateUser'
 
-import formatUpdateUser, { InputData } from 'utils/formatUpdateUser'
 import selectedRoleLabel from 'utils/makeRoleLabel'
 
 import { Role, UserState } from 'store/user'
@@ -18,15 +18,14 @@ import Slider from 'components/Slider'
 
 import { useSelector } from 'react-redux'
 
-const Fields = () => {
+const Containers = () => {
   const { innerWidth } = useWindowDimensions()
   const [sliderWidth, setSliderWidth] = useState(innerWidth >= 600 ? 520 : 284)
 
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const user = useSelector<RootState, UserState>(state => state.user)
-  const modal = useContext(ModalContext)
+  const modalContext = useContext(ImageRefModalContext)
   const containers = ['personal', ...user.roles]
-
   useEffect(() => {
     if (innerWidth <= 430) setSliderWidth(320)
     else if (innerWidth <= 600) setSliderWidth(400)
@@ -35,21 +34,23 @@ const Fields = () => {
   }, [innerWidth])
 
   return (
-    <Slider width={sliderWidth} gap={200} gapVertical={100}>
+    <Slider gap={200} gapVertical={100} width={sliderWidth}>
       {containers.map(role => {
         if (role === 'personal')
           return (
-            <Card key={role} headerText='Dados Pessoais'>
+            <Card headerText='Dados Pessoais' key={role}>
               <Avatar
                 border
-                size={128}
-                onClick={() => modal?.ref.current?.toggleModal(true)}
-                loaderColor={theme.colors.primary}
                 shadow
+                size={128}
+                loaderColor={theme.colors.primary}
+                onClick={() =>
+                  modalContext?.imageRef.current?.toggleModal(true)
+                }
               />
 
-              {formatUpdateUser(user, 'guest').map((info: InputData) => (
-                <Field key={info.inputname} data={info} />
+              {formatUpdateUser(user, 'personal').map((info: InputData) => (
+                <Field data={info} key={info.inputname} />
               ))}
             </Card>
           )
@@ -59,9 +60,11 @@ const Fields = () => {
             key={role}
             headerText={`Dados de ${selectedRoleLabel(role as Role)}`}
           >
-            {formatUpdateUser(user, role as Role).map((info: InputData) => (
-              <Field key={info.inputname} data={info} />
-            ))}
+            {formatUpdateUser(user, role as keyof ContainerForm).map(
+              (info: InputData) => (
+                <Field key={info.inputname} data={info} />
+              )
+            )}
           </Card>
         )
       })}
@@ -69,4 +72,4 @@ const Fields = () => {
   )
 }
 
-export default memo(Fields)
+export default memo(Containers)

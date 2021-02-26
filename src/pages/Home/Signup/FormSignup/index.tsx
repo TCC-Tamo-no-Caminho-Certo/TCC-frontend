@@ -77,7 +77,7 @@ const FormSignup = () => {
           isBirthday
           name='birthday'
           placeholder='Data de nascimento'
-          arrow='bottom'
+          arrow='top'
           bodyColor={theme.colors.secondary}
           headerColor={theme.colors.tertiary}
           selectedColor={theme.colors.primary}

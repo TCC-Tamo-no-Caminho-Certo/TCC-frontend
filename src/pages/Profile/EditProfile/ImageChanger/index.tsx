@@ -1,7 +1,5 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import Style, { RightMenu } from './styles'
-
-import { ModalContext } from '../'
 
 import api from 'services/api'
 
@@ -17,12 +15,14 @@ import { motion } from 'framer-motion'
 import { Cropper } from 'react-cropper'
 import { useDispatch, useSelector } from 'react-redux'
 
-const ImageChanger = () => {
+interface ImageChangerProps {
+  onCloseClick: () => void
+}
+
+const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const { white, red } = theme.colors
-
   const dispatch = useDispatch()
-  const modal = useContext(ModalContext)
   const [image, setImage] = useState()
   const [cropper, setCropper] = useState<any>()
   const [noImage, setNoImage] = useState(false)
@@ -30,20 +30,14 @@ const ImageChanger = () => {
 
   const onChange = (e: any) => {
     e.preventDefault()
-
     let files
+    const reader = new FileReader()
 
     if (e.dataTransfer) files = e.dataTransfer.files
     else if (e.target) files = e.target.files
 
-    const reader = new FileReader()
-
-    reader.onload = () => {
-      setImage(reader.result as any)
-    }
-
+    reader.onload = () => setImage(reader.result as any)
     reader.readAsDataURL(files[0])
-
     setShowUpload(true)
   }
 
@@ -54,16 +48,14 @@ const ImageChanger = () => {
       })
 
       dispatch(UserActions.updateUserInfo({ avatar: result.object }))
-      modal?.ref.current?.toggleModal(false)
+      onCloseClicked()
     } else {
       setNoImage(true)
       setTimeout(() => setNoImage(false), 300)
     }
   }
 
-  function onCloseClick() {
-    modal?.ref.current?.toggleModal(false)
-  }
+  const onCloseClick = () => onCloseClicked()
 
   return (
     <Style>
@@ -71,11 +63,11 @@ const ImageChanger = () => {
         <motion.label
           htmlFor='first'
           id='firstFileSelect'
+          transition={{ duration: 0.3 }}
           animate={{
             color: noImage ? [white, red, white] : white,
             borderColor: noImage ? [white, red, white] : white
           }}
-          transition={{ duration: 0.3 }}
         >
           Selecionar um arquivo
         </motion.label>
@@ -117,7 +109,7 @@ const ImageChanger = () => {
               <CameraIcon />
             </label>
 
-            <input id='other' type='file' onChange={onChange} />
+            <input type='file' id='other' onChange={onChange} />
           </div>
         )}
 

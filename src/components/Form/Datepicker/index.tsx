@@ -86,6 +86,7 @@ const Datepicker = ({
 
   return (
     <Style
+      className='Datepicker'
       arrow={arrow}
       headerColor={headerColor}
       bodyColor={bodyColor}

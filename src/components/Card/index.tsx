@@ -10,6 +10,7 @@ const Card = ({ headerText, children }: CardProps) => {
   return (
     <Style className='Card'>
       <Header>{headerText}</Header>
+
       {children}
     </Style>
   )

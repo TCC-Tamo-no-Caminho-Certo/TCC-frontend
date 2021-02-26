@@ -11,17 +11,22 @@ interface StyleProps {
 const Style = styled.div<StyleProps>`
   ${({ bodyColor, headerColor, selectedColor, disabledColor, arrow }) => css`
     .DatePicker {
-      z-index: 0;
+      z-index: 1;
 
       width: 100%;
-      min-height: max(4.5vh, 35px);
+      min-height: 35px;
       padding: 0;
+
+      input {
+        cursor: pointer;
+      }
     }
 
     .Calendar {
       --cl-color-primary: ${selectedColor} !important;
       --cl-color-disabledColord: ${disabledColor} !important;
       --cl-color-primary-light: ${bodyColor} !important;
+
       box-shadow: 8px 8px 7px 4px rgba(0, 0, 0, 0.49);
     }
 
@@ -93,17 +98,13 @@ const Style = styled.div<StyleProps>`
     }
 
     .Calendar__monthSelectorItem .Calendar__monthSelectorItemText {
-      font-size: 1.4rem;
+      font-size: 1.4rem !important;
     }
 
     .CalendarSize {
       font-size: 8px !important;
 
       background-color: ${bodyColor};
-    }
-
-    .Calendar__sectionWrapper {
-      min-height: 30em;
     }
 
     .DatePicker__calendarArrow {

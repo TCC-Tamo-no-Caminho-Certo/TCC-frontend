@@ -134,6 +134,7 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
 
   #selectRoles {
     position: absolute;
+    top: 0;
     right: ${({ width }) => width};
 
     width: 230px;

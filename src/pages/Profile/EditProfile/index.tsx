@@ -1,7 +1,7 @@
 import React, { createContext, RefObject, useRef } from 'react'
 import Style, { ConfirmForm } from './styles'
 
-import Fields from './Fields'
+import Fields from './Containers'
 import ImageChanger from './ImageChanger'
 
 import { UserActions } from 'store/user'
@@ -14,18 +14,16 @@ import Modal, { ModalMethods } from 'components/Modal'
 import { useDispatch } from 'react-redux'
 
 export interface ModalState {
-  ref: RefObject<ModalMethods>
+  imageRef: RefObject<ModalMethods>
 }
 
-export const ModalContext = createContext<ModalState | null>(null)
-ModalContext.displayName = 'Modal Context'
+export const ImageRefModalContext = createContext<ModalState | null>(null)
 
 const EditProfile = () => {
+  let updateData: any
+  const dispatch = useDispatch()
   const confirmRefModal = useRef<ModalMethods>(null)
   const imageRefModal = useRef<ModalMethods>(null)
-  const dispatch = useDispatch()
-
-  let updateData: any
 
   const getFormData = (data: any) => {
     if (data.birthday) {
@@ -36,19 +34,18 @@ const EditProfile = () => {
     updateData = data
   }
 
-  const submitCallback = (resData: any) => {
-    if (resData.success) dispatch(UserActions.updateUserInfo(updateData))
-  }
+  const submitCallback = (resData: any) =>
+    resData.success && dispatch(UserActions.updateUserInfo(updateData))
 
   return (
-    <ModalContext.Provider value={{ ref: imageRefModal }}>
+    <ImageRefModalContext.Provider value={{ imageRef: imageRefModal }}>
       <Style>
         <Form
+          loading
+          captcha
           path='user/update'
           getData={getFormData}
           afterResData={submitCallback}
-          loading
-          captcha
         >
           <Fields />
 
@@ -71,6 +68,7 @@ const EditProfile = () => {
           <span>
             Você precisa confirmar sua senha para salvar as alterações!
           </span>
+
           <CloseIcon
             onClick={() => confirmRefModal.current?.toggleModal(false)}
           />
@@ -92,10 +90,14 @@ const EditProfile = () => {
       </Modal>
 
       <Modal ref={imageRefModal}>
-        <ImageChanger />
+        <ImageChanger
+          onCloseClick={() => imageRefModal.current?.toggleModal(false)}
+        />
       </Modal>
-    </ModalContext.Provider>
+    </ImageRefModalContext.Provider>
   )
 }
 
 export default EditProfile
+
+ImageRefModalContext.displayName = 'Modal Context'

@@ -33,10 +33,10 @@ const PrivateRoutes = () => {
     dispatch(
       UserActions.updateUserInfo({
         ...user,
-        roles: ['guest'],
         selectedRole: initialRole
       })
     )
+
     window.history.pushState(null, '', document.URL)
   }, [dispatch])
 

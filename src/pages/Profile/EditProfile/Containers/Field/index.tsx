@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Style from './styles'
 
-import { InputData } from 'utils/formatUpdateUser'
+import { InputData } from '../formatUpdateUser'
 
 import { ThemeState } from 'store/theme'
 import { RootState } from 'store'
@@ -31,11 +31,12 @@ const Field = ({ data }: FieldProps) => {
     data.inputname === 'birthday' ? (
       <Datepicker
         isBirthday
-        color={theme.colors.primary}
+        arrow='bottom'
         ref={inputRef}
         name={data.inputname}
-        value={`${inputDateValue(data.value as string)}`}
-        className='Datepicker'
+        bodyColor={theme.colors.secondary}
+        headerColor={theme.colors.tertiary}
+        selectedColor={theme.colors.primary}
       />
     ) : (
       <Text
@@ -48,6 +49,7 @@ const Field = ({ data }: FieldProps) => {
 
   const setInput = () => {
     if (change) return input
+
     return data.date ? (
       inputDateValue(data.value as string)
     ) : (

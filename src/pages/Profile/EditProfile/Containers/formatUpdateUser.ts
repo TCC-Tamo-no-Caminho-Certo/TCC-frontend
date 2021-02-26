@@ -8,30 +8,24 @@ export interface InputData {
   dontShow?: boolean
 }
 
-interface DataTypes {
-  professor: InputData[]
-  guest: InputData[]
-  student: InputData[]
-  admin: InputData[]
-  aris: InputData[]
-  evaluator: InputData[]
-  customer: InputData[]
+export interface ContainerForm {
+  personal: InputData[]
   moderator: InputData[]
 }
 
 const formatUpdateUser = (
   userData: UserState,
-  role: keyof DataTypes
+  role: keyof ContainerForm
 ): InputData[] => {
-  const professor: InputData[] = []
-  const student: InputData[] = []
-  const admin: InputData[] = []
-  const aris: InputData[] = []
-  const evaluator: InputData[] = []
-  const customer: InputData[] = []
-  const moderator: InputData[] = []
+  const moderator: InputData[] = [
+    {
+      label: 'Nome:',
+      inputname: 'name',
+      value: userData.name
+    }
+  ]
 
-  const guest: InputData[] = [
+  const personal: InputData[] = [
     {
       label: 'Nome:',
       inputname: 'name',
@@ -53,17 +47,16 @@ const formatUpdateUser = (
       value: userData.birthday,
       date: true
     }
-    // { label: 'Senha:', inputname: 'new_password', value: '00000asd', dontShow: true },
+    // {
+    //   label: 'Senha:',
+    //   inputname: 'new_password',
+    //   value: '00000asd',
+    //   dontShow: true
+    // }
   ]
 
-  const formInputs: DataTypes = {
-    professor,
-    student,
-    admin,
-    guest,
-    aris,
-    evaluator,
-    customer,
+  const formInputs: ContainerForm = {
+    personal,
     moderator
   }
 
