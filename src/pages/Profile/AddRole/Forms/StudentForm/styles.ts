@@ -66,6 +66,10 @@ export const Form = styled(FormComponent)`
     #inputs {
       margin-bottom: 16px;
 
+      .Text {
+        padding-left: 8px;
+      }
+
       #receipt {
         display: flex;
         flex-direction: column;

@@ -36,6 +36,10 @@ const courseOptions = [
   { value: 'computer-science6', label: 'Ciência da Computação' }
 ]
 
+const campusOptions = [
+  { value: 'vila-olimpia', label: 'Vila Olímpia' },
+  { value: 'mooca', label: 'Mooca' }
+]
 const emailSize = 35
 const receiptSize = 88
 
@@ -93,6 +97,9 @@ const ProfessorForm = () => {
           options={universityOptions}
           isMulti
         />
+
+        <Select name='campus' placeholder='Campus' options={campusOptions} />
+
         <Select
           name='course'
           placeholder='Curso'

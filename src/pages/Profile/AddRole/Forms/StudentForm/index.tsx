@@ -16,11 +16,17 @@ import { AnimatePresence, motion, Variants } from 'framer-motion'
 
 const emailSize = 35
 const receiptSize = 88
+
 const universityOptions = [
   {
     value: 'universidade-anhembi-morumbi',
     label: 'Universidade Anhembi Morumbi'
   }
+]
+
+const campusOptions = [
+  { value: 'vila-olimpia', label: 'Vila Olímpia' },
+  { value: 'mooca', label: 'Mooca' }
 ]
 
 const courseOptions = [
@@ -95,13 +101,16 @@ const StudentForm = () => {
           placeholder='Universidade'
           options={universityOptions}
         />
+
+        <Select name='campus' placeholder='Campus' options={campusOptions} />
+
         <Select name='course' placeholder='Curso' options={courseOptions} />
+
         <Select
           name='semester'
           placeholder='Semestre'
           options={semesterOptions}
         />
-
         <div id='ways'>
           <span id='label'>Forma de registro</span>
 

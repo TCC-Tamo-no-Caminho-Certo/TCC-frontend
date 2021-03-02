@@ -41,7 +41,7 @@ const Profile = () => {
       },
       {
         icon: () => <ChangeIcon />,
-        label: 'Mudar Papel',
+        label: 'Adicionar Papel',
         paths: [
           '/session/profile/change-role',
           '/session/profile/change-role/student',

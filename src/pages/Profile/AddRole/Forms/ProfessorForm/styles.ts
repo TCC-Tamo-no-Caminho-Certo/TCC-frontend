@@ -62,6 +62,10 @@ export const Form = styled(FormComponent)`
     #inputs {
       margin-bottom: 16px;
 
+      .Text {
+        padding-left: 8px;
+      }
+
       #receipt {
         display: flex;
         flex-direction: column;
@@ -72,8 +76,6 @@ export const Form = styled(FormComponent)`
           justify-content: center;
           align-items: center;
 
-          /*     font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
- */
           margin-bottom: 8px;
           height: 45px;
 
