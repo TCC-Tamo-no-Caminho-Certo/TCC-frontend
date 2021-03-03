@@ -8,6 +8,8 @@ import {
   receiptSchema
 } from 'utils/validations/addRoleForms/student'
 
+import api from 'services/api'
+
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
 import { File, Select, Submit, Text } from 'components/Form'
@@ -16,23 +18,6 @@ import { AnimatePresence, motion, Variants } from 'framer-motion'
 
 const emailSize = 35
 const receiptSize = 88
-
-const universityOptions = [
-  {
-    value: 'universidade-anhembi-morumbi',
-    label: 'Universidade Anhembi Morumbi'
-  }
-]
-
-const campusOptions = [
-  { value: 'vila-olimpia', label: 'Vila Olímpia' },
-  { value: 'mooca', label: 'Mooca' }
-]
-
-const courseOptions = [
-  { value: 'computer-engineering', label: 'Engenharia da Computação' },
-  { value: 'computer-science', label: 'Ciência da Computação' }
-]
 
 const semesterOptions = [
   { value: 'first', label: '1° Semestre' },
@@ -57,6 +42,9 @@ const StudentForm = () => {
   const [wayOfSignup, setWayOfSignup] = useState<
     undefined | 'email' | 'receipt'
   >(undefined)
+  const [universitiesData, setUniversity] = useState()
+  const [campusData, setCampus] = useState()
+  const [courseData, setCourse] = useState()
 
   const method: Variants = {
     initial: {
@@ -82,6 +70,35 @@ const StudentForm = () => {
   }
 
   useEffect(() => {
+    const getSelectsData = async () => {
+      const response = await api.get('/universities')
+      const { universities } = response
+
+      const formatterUniversities = universities.map((university: any) => ({
+        value: university.name,
+        label: university.name
+      }))
+      setUniversity(formatterUniversities)
+
+      const { campus } = await api.get('university/1/campus')
+      const formatterCampus = campus.map((campus: any) => ({
+        value: campus.name,
+        label: campus.name
+      }))
+      setCampus(formatterCampus)
+
+      const { courses } = await api.get('/university/campus/1/course')
+      const formatterCourses = courses.map((courses: any) => ({
+        value: courses,
+        label: courses
+      }))
+      setCourse(formatterCourses)
+    }
+
+    getSelectsData()
+  }, [])
+
+  useEffect(() => {
     setTimeout(() => {
       window.scrollTo(0, document.body.scrollHeight)
     }, 100)
@@ -99,18 +116,19 @@ const StudentForm = () => {
         <Select
           name='university'
           placeholder='Universidade'
-          options={universityOptions}
+          options={universitiesData}
         />
 
-        <Select name='campus' placeholder='Campus' options={campusOptions} />
+        <Select name='campus' placeholder='Câmpus' options={campusData} />
 
-        <Select name='course' placeholder='Curso' options={courseOptions} />
+        <Select name='course' placeholder='Curso' options={courseData} />
 
         <Select
           name='semester'
           placeholder='Semestre'
           options={semesterOptions}
         />
+
         <div id='ways'>
           <span id='label'>Forma de registro</span>
 

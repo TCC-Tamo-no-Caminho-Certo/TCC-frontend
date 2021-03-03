@@ -71,23 +71,22 @@ export const RightMenu = styled.div`
     border-radius: 4px;
 
     padding: 0 8px;
-    height: 32px;
+
     margin-bottom: 16px;
     font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.3rem);
     text-align: center;
+    padding: 8px;
 
     color: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.primary};
 
     cursor: pointer;
 
     border: solid ${({ theme }) => theme.colors.secondary} 1px;
 
-    &:hover {
-      color: ${({ theme }) => theme.colors.primary};
-      border: solid ${({ theme }) => theme.colors.primary} 1px;
-      .Icon {
-        fill: ${({ theme }) => theme.colors.primary};
-      }
+    &:hover,
+    &:focus {
+      filter: brightness(1.1);
     }
 
     .Icon {
@@ -110,12 +109,11 @@ export const RightMenu = styled.div`
   }
 
   #confirmButton {
-    height: 36px;
+    height: max(36px, 32px);
 
     color: ${({ theme }) => theme.colors.secondary};
     background-color: transparent;
     border: solid 1px ${({ theme }) => theme.colors.primary};
-    margin-top: 8px;
 
     transition: box-shadow 300ms ease-in-out;
 
@@ -131,7 +129,7 @@ const Style = styled.div`
 
   display: flex;
 
-  padding: 48px;
+  padding: clamp(8px, 3vw, 48px);
   border-radius: 24px;
 
   background-color: ${({ theme }) => theme.colors.tertiary};

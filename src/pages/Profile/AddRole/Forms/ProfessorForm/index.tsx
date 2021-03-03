@@ -86,25 +86,30 @@ const ProfessorForm = () => {
   return (
     <Container role='professor'>
       <Form
-        path='user/addRole/professor'
-        schema={wayOfSignup === 'email' ? emailSchema : receiptSchema}
-        addData={{ role: 'professor' }}
         loading
+        path='user/addRole/professor'
+        addData={{ role: 'professor' }}
+        schema={wayOfSignup === 'email' ? emailSchema : receiptSchema}
       >
         <Select
+          isMulti
           name='university'
           placeholder='Universidade'
           options={universityOptions}
-          isMulti
         />
 
-        <Select name='campus' placeholder='Campus' options={campusOptions} />
+        <Select
+          isMulti
+          name='campus'
+          placeholder='Câmpus'
+          options={campusOptions}
+        />
 
         <Select
+          isMulti
           name='course'
           placeholder='Curso'
           options={courseOptions}
-          isMulti
         />
 
         <div id='ways'>

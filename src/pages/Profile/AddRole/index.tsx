@@ -18,7 +18,6 @@ import { ThemeContext } from 'styled-components'
 const allRoles: Role[] = [
   'admin',
   'guest',
-  'aris',
   'student',
   'professor',
   'customer',

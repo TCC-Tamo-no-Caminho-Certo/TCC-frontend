@@ -48,7 +48,7 @@ const formatUpdateUser = (
     {
       label: 'E-mail:',
       inputname: 'email',
-      value: userData.emails[0].email
+      value: userData.email[0].address
     },
     {
       label: 'Nascimento:',

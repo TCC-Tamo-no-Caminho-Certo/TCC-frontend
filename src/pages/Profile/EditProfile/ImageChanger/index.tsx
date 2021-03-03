@@ -43,11 +43,11 @@ const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
 
   const onConfirmClick = async () => {
     if (cropper.cropped) {
-      const result = await api.post('/user/avatar/upload', {
+      const result = await api.put('/user/avatar', {
         picture: cropper.getCroppedCanvas().toDataURL()
       })
 
-      dispatch(UserActions.updateUserInfo({ avatar: result.object }))
+      dispatch(UserActions.updateUserInfo({ avatar_uuid: result.object }))
       onCloseClicked()
     } else {
       setNoImage(true)

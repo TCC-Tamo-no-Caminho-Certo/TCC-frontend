@@ -28,7 +28,7 @@ const Avatar = ({
   border = false,
   ...rest
 }: AvatarProps) => {
-  const avatar = useSelector<RootState, string>(state => state.user.avatar)
+  const avatar = useSelector<RootState, string>(state => state.user.avatar_uuid)
 
   const src = `https://s3.steamslab.com/profile/${avatar}`
 

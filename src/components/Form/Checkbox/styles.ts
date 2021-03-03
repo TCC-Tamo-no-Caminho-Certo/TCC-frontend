@@ -13,7 +13,8 @@ const Style = styled.div<StyleProps>`
   button + button {
     margin-left: 8px;
 
-    &:hover {
+    &:hover,
+    &:focus {
       color: ${({ theme }) => theme.colors.primary};
       filter: brightness(1.1);
     }

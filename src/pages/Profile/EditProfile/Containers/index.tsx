@@ -27,6 +27,7 @@ const Containers = () => {
   const modalContext = useContext(ImageRefModalContext)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const user = useSelector<RootState, UserState>(state => state.user)
+
   const { roles } = user
 
   const containers: ContainersRoles[] = useMemo(() => ['personal', ...roles], [

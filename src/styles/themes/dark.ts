@@ -16,7 +16,6 @@ const dark: ThemeAttributes = {
 
   roles: {
     guest: '#fff500',
-    aris: '#f20089',
     student: '#00d053',
     customer: '#ff6b00',
     professor: '#329dff',

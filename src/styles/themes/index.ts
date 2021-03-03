@@ -19,7 +19,6 @@ export interface ThemeAttributes {
 
   roles: {
     guest: string
-    aris: string
     professor: string
     customer: string
     student: string

@@ -2,9 +2,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type Role =
-  | 'admin'
   | 'guest'
-  | 'aris'
+  | 'admin'
   | 'student'
   | 'professor'
   | 'customer'
@@ -12,7 +11,7 @@ export type Role =
   | 'moderator'
 
 interface Email {
-  email: string
+  address: string
   main: boolean
   options?: { [key: string]: any }
 }
@@ -21,39 +20,39 @@ export interface UserState {
   user_id: number
   name: string
   surname: string
-  avatar: string
+  avatar_uuid: string
   birthday: string
   created_at: string
   updated_at: string
   roles: Role[]
   selectedRole: Role
-  emails: Email[]
+  email: Email[]
 }
 
 export interface UserStatePayload {
   user_id?: number
   name?: string
   surname?: string
-  avatar?: string
+  avatar_uuid?: string
   birthday?: string
   created_at?: string
   updated_at?: string
   roles?: Role[]
   selectedRole?: Role
-  emails?: Email[]
+  email?: Email[]
 }
 
 const initialState: UserState = {
   user_id: 0,
   name: '',
   surname: '',
-  avatar: '',
+  avatar_uuid: '',
   birthday: '',
   created_at: '',
   updated_at: '',
   roles: ['guest'],
   selectedRole: 'guest',
-  emails: [{ email: '', main: true }]
+  email: [{ address: '', main: true }]
 }
 
 const User = createSlice({

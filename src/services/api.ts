@@ -51,6 +51,78 @@ const api = {
     } catch (error) {
       return error.response.data
     }
+  },
+
+  put: async (
+    path: string,
+    data?: Data,
+    config?: AxiosRequestConfig
+  ): Promise<any> => {
+    const token = localStorage.getItem('@SLab_ac_token')
+
+    const axiosConfig = token
+      ? {
+          headers: {
+            authorization: `Bearer ${token}`
+          },
+          ...config
+        }
+      : config
+
+    try {
+      const res = await request.put(path, data, axiosConfig)
+      return res.data
+    } catch (error) {
+      return error.response.data
+    }
+  },
+
+  delete: async (
+    path: string,
+    data?: Data,
+    config?: AxiosRequestConfig
+  ): Promise<any> => {
+    const token = localStorage.getItem('@SLab_ac_token')
+
+    const axiosConfig = token
+      ? {
+          headers: {
+            authorization: `Bearer ${token}`
+          },
+          ...config
+        }
+      : config
+
+    try {
+      const res = await request.delete(path, axiosConfig)
+      return res.data
+    } catch (error) {
+      return error.response.data
+    }
+  },
+
+  patch: async (
+    path: string,
+    data?: Data,
+    config?: AxiosRequestConfig
+  ): Promise<any> => {
+    const token = localStorage.getItem('@SLab_ac_token')
+
+    const axiosConfig = token
+      ? {
+          headers: {
+            authorization: `Bearer ${token}`
+          },
+          ...config
+        }
+      : config
+
+    try {
+      const res = await request.patch(path, data, axiosConfig)
+      return res.data
+    } catch (error) {
+      return error.response.data
+    }
   }
 }
 

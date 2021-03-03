@@ -207,7 +207,6 @@ const RightMenu = () => {
                   variants={motionMenu}
                   changeRole={changeRole}
                   height={`${openHeight - closedHeight}px`}
-                  onMouseLeave={() => setChangeRole(false)}
                 >
                   <ul id='openProfile'>
                     <motion.hr variants={motionHr} />
@@ -247,7 +246,11 @@ const RightMenu = () => {
                   </ul>
 
                   {changeRole && (
-                    <motion.div id='selectRoles'>
+                    <motion.div
+                      style={{ border: 'solid red 1px' }}
+                      id='selectRoles'
+                      onMouseLeave={() => setChangeRole(false)}
+                    >
                       {innerWidth < 545 && (
                         <CloseIcon onClick={() => setChangeRole(false)} />
                       )}

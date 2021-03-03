@@ -38,6 +38,7 @@ const Checkbox = ({ name, label }: CheckboxProps) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const checkboxRef = useRef<HTMLInputElement>(null)
   const form = useContext<FormState | null>(FormContext)
+
   const [checked, setChecked] = useState(false)
   const [error, setError] = useState<string>()
 

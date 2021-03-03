@@ -43,15 +43,17 @@ export const Form = styled(RealForm)`
 
       color: ${({ theme }) => theme.colors.primary};
 
-      &:hover {
-        filter: brightness(1.1);
+      &:hover,
+      &:focus {
+        filter: brightness(1.3);
       }
     }
 
     .Submit {
       transition: all 0.2s;
 
-      &:hover {
+      &:hover,
+      &:focus {
         filter: brightness(1.1);
         transform: scale(1.01);
       }
@@ -90,7 +92,8 @@ export const Form = styled(RealForm)`
       button {
         color: ${({ theme }) => theme.colors.primary};
 
-        &:hover {
+        &:hover,
+        &:focus {
           filter: brightness(1.1);
           transform: scale(1.01);
         }

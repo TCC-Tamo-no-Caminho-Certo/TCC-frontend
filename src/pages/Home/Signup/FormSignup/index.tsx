@@ -114,7 +114,7 @@ const FormSignup = () => {
           icon={UserLockedIcon}
         />
 
-        <span>
+        <span id='terms'>
           Ao clicar em Concordar e concluir, concordo com os{' '}
           <a href='.link'>Termos de uso</a>, os{' '}
           <a href='.link'>Termos de Serviço e Pagamentos</a>, a{' '}

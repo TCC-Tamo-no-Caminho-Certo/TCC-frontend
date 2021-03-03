@@ -51,6 +51,10 @@ const Style = styled.div`
 
     span {
       margin: 1.25vh 0;
+
+      &#terms {
+        margin-bottom: 0px;
+      }
     }
 
     .dual {
@@ -68,14 +72,14 @@ const Style = styled.div`
 
     .Submit {
       height: max(5vh, 35px);
-
       transition: all 0.2s;
-      margin-top: 30px;
+      margin-top: 1.25vh;
       border-radius: 8px;
 
       &:hover {
-        filter: brightness(1.1);
         transform: scale(1.01);
+
+        filter: brightness(1.1);
       }
 
       .DotsLoader {

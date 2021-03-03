@@ -176,9 +176,9 @@ const Table = () => {
     makeRequest(1)
   }, [makeRequest])
 
-  useEffect(() => {
-    console.log(showData)
-  }, [showData])
+  // useEffect(() => {
+  //   console.log(showData)
+  // }, [showData])
 
   return (
     <>
