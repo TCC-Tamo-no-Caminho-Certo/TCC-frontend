@@ -14,6 +14,7 @@ export const Form = styled(FormComponent)`
 
   .Select {
     margin-bottom: 16px;
+    background-color: transparent;
   }
 
   span {
@@ -33,7 +34,7 @@ export const Form = styled(FormComponent)`
       height: 22px;
       margin-top: 16px;
 
-      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
+      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.7rem);
     }
 
     #buttons {
@@ -69,37 +70,39 @@ export const Form = styled(FormComponent)`
       .Text {
         padding-left: 8px;
       }
+    }
+  }
 
-      #receipt {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+  #receipt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-        #warning {
-          display: flex;
-          justify-content: center;
-          align-items: center;
+    margin-bottom: 16px;
 
-          font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
+    #warning {
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-          margin-bottom: 8px;
-          height: 45px;
+      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
 
-          color: ${({ theme }) => theme.colors.primary};
+      margin-bottom: 8px;
+      height: 45px;
 
-          b {
-            font-weight: normal;
+      color: ${({ theme }) => theme.colors.primary};
 
-            color: ${({ theme }) => theme.roles.moderator};
-          }
+      b {
+        font-weight: normal;
 
-          .Icon {
-            height: 24px;
-            padding: 0 8px 0 8px;
+        color: ${({ theme }) => theme.roles.moderator};
+      }
 
-            fill: ${({ theme }) => theme.colors.primary};
-          }
-        }
+      .Icon {
+        height: 24px;
+        padding: 0 8px 0 8px;
+
+        fill: ${({ theme }) => theme.colors.primary};
       }
     }
   }
@@ -119,6 +122,28 @@ export const Form = styled(FormComponent)`
   }
 `
 
+export const EmailModal = styled.div`
+  padding: 50px 16px 16px 16px;
+  width: 500px;
+  height: 500px;
+  transform: translateY(70%);
+  border-radius: 24px;
+
+  background-color: ${({ theme }) => theme.colors.secondary};
+
+  .Icon {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+
+    width: 18px;
+    height: 18px;
+
+    stroke: ${({ theme }) => theme.colors.tertiary};
+  }
+`
+
 export default Form
 
 Form.displayName = 'StudentForm-Style'
+EmailModal.displayName = 'StudentEmailModal-Style'

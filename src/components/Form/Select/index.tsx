@@ -37,7 +37,8 @@ const Select = ({ isMulti, ...props }: any) => {
     }),
     control: (before: any) => ({
       ...before,
-      paddingLeft: error ? 40 : 8
+      paddingLeft: error ? 40 : 8,
+      backgroundColor: 'transparent'
     }),
     valueContainer: (before: any) => ({
       ...before,

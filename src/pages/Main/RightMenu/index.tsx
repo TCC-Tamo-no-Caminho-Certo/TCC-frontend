@@ -247,7 +247,6 @@ const RightMenu = () => {
 
                   {changeRole && (
                     <motion.div
-                      style={{ border: 'solid red 1px' }}
                       id='selectRoles'
                       onMouseLeave={() => setChangeRole(false)}
                     >

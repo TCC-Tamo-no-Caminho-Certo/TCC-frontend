@@ -53,6 +53,12 @@ const Style = styled.div<StyleProps>`
         : css`
             width: calc(100% - 40px);
           `}
+
+    ${({ hasIcon }) =>
+      !hasIcon &&
+      css`
+        padding-left: 16px;
+      `}
   }
 
   .iconSpace {

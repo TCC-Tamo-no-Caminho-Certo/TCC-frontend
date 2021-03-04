@@ -15,9 +15,10 @@ import { Cropper, ReactCropperProps } from 'react-cropper'
 interface FileProps extends ReactCropperProps {
   label: string
   name: string
+  onClick?: () => void
 }
 
-const File = ({ label, name, ...props }: FileProps) => {
+const File = ({ label, name, onClick, ...props }: FileProps) => {
   const form = useContext<FormState | null>(FormContext)
   const modalRef = useRef<ModalMethods>(null)
   const fileRef = useRef<HTMLInputElement>(null)
@@ -62,7 +63,7 @@ const File = ({ label, name, ...props }: FileProps) => {
       <div id='fileInput'>
         <ErrorTooltip error={!!error} content={error} />
 
-        <label>
+        <label onClick={() => onClick && onClick()}>
           <CameraIcon />
 
           {label}

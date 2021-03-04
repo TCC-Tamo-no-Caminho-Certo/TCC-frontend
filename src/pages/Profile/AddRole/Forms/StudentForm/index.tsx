@@ -1,25 +1,50 @@
-import React, { useEffect, useState } from 'react'
-import Form from './styles'
+import React, { useEffect, useRef, useState } from 'react'
+import Form, { EmailModal } from './styles'
 
 import Container from '../Container'
-
-import {
-  emailSchema,
-  receiptSchema
-} from 'utils/validations/addRoleForms/student'
 
 import api from 'services/api'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
+import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import { File, Select, Submit, Text } from 'components/Form'
+import Modal, { ModalMethods } from 'components/Modal'
 
-import { AnimatePresence, motion, Variants } from 'framer-motion'
+import { AnimatePresence, motion, Transition, Variants } from 'framer-motion'
 
-const emailSize = 35
-const receiptSize = 88
+interface Option {
+  value: number | string
+  label: string
+}
 
-const semesterOptions = [
+interface Res {
+  value: string
+  id: number
+}
+
+type SelectOptions = Option[] | undefined
+type ResData = Res[] | undefined
+
+const transition: Transition = {
+  duration: 0.3,
+  type: 'tween'
+}
+
+const show: Variants = {
+  enter: {
+    x: [320, 0],
+    opacity: [0, 1],
+    transition
+  },
+  exit: {
+    x: [0, 320],
+    opacity: [1, 0],
+    transition
+  }
+}
+
+const semesterOptions: SelectOptions = [
   { value: 'first', label: '1° Semestre' },
   { value: 'second', label: '2° Semestre' },
   { value: 'third', label: '3° Semestre' },
@@ -32,160 +57,206 @@ const semesterOptions = [
   { value: 'tenth', label: '10° Semestre' }
 ]
 
-const inputs: Variants = {
-  initial: { height: 0 },
-  email: { height: emailSize },
-  receipt: { height: receiptSize }
-}
-
 const StudentForm = () => {
-  const [wayOfSignup, setWayOfSignup] = useState<
-    undefined | 'email' | 'receipt'
-  >(undefined)
-  const [universitiesData, setUniversity] = useState()
-  const [campusData, setCampus] = useState()
-  const [courseData, setCourse] = useState()
+  const emailModalRef = useRef<ModalMethods>(null)
 
-  const method: Variants = {
-    initial: {
-      opacity: 0,
-      height: 0
-    },
-    open: {
-      opacity: 1,
-      x: wayOfSignup === 'email' ? [-300, 0] : [300, 0],
-      transition: {
-        type: 'tween',
-        duration: 0.4
-      }
-    },
-    closed: {
-      opacity: 0,
-      x: wayOfSignup === 'email' ? [0, -300] : [0, 300],
-      transition: {
-        type: 'tween',
-        duration: 0.2
-      }
-    }
+  const [universitiesResData, setUniversity] = useState<ResData>()
+  const [campusResData, setCampus] = useState<ResData>()
+  const [coursesResData, setCourse] = useState<ResData>()
+
+  const [showCampus, setShowCampus] = useState(false)
+  const [showCourse, setShowCourse] = useState(false)
+  const [showSemester, setShowSemester] = useState(false)
+  const [showWays, setShowWays] = useState(false)
+  const [showSubmit, setShowSubmit] = useState(false)
+  const [showReceipt, setShowReceipt] = useState(false)
+
+  const formatterToSelect = (array: ResData): SelectOptions =>
+    array?.map(element => ({
+      value: element.id,
+      label: element.value
+    }))
+
+  const setUniversitiesData = async () => {
+    const { universities } = await api.get('/universities')
+
+    setUniversity(
+      universities.map(
+        (university: any): Res => ({
+          value: university.name,
+          id: university.university_id
+        })
+      )
+    )
+  }
+
+  const setCampusData = async (id: number) => {
+    const { campus } = await api.get(`university/${id}/campus`)
+
+    setCampus(
+      campus.map(
+        (campus: any): Res => ({
+          value: campus.name,
+          id: campus.campus_id
+        })
+      )
+    )
+  }
+
+  const setCoursesData = async (id: number) => {
+    const { courses } = await api.get(`/university/campus/${id}/course`)
+
+    setCourse(
+      courses.map(
+        (course: any): Res => ({
+          value: course,
+          id: course
+        })
+      )
+    )
   }
 
   useEffect(() => {
-    const getSelectsData = async () => {
-      const response = await api.get('/universities')
-      const { universities } = response
-
-      const formatterUniversities = universities.map((university: any) => ({
-        value: university.name,
-        label: university.name
-      }))
-      setUniversity(formatterUniversities)
-
-      const { campus } = await api.get('university/1/campus')
-      const formatterCampus = campus.map((campus: any) => ({
-        value: campus.name,
-        label: campus.name
-      }))
-      setCampus(formatterCampus)
-
-      const { courses } = await api.get('/university/campus/1/course')
-      const formatterCourses = courses.map((courses: any) => ({
-        value: courses,
-        label: courses
-      }))
-      setCourse(formatterCourses)
-    }
-
-    getSelectsData()
+    setUniversitiesData()
   }, [])
 
   useEffect(() => {
-    setTimeout(() => {
-      window.scrollTo(0, document.body.scrollHeight)
-    }, 100)
+    setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100)
   }, [])
 
   return (
-    <Container role='student'>
-      <Form
-        path='user/addRole/student'
-        getData={e => console.log(e)}
-        schema={wayOfSignup === 'email' ? emailSchema : receiptSchema}
-        addData={{ role: 'student' }}
-        loading
-      >
-        <Select
-          name='university'
-          placeholder='Universidade'
-          options={universitiesData}
-        />
+    <>
+      <Container role='student'>
+        <Form
+          loading
+          path='user/addRole/student'
+          getData={e => console.log(e)}
+          addData={{ role: 'student' }}
+        >
+          <Select
+            name='university'
+            placeholder='Universidade'
+            options={formatterToSelect(universitiesResData)}
+            onChange={(e: Option) => {
+              setShowCampus(true)
+              setCampusData(e.value as number)
+            }}
+          />
 
-        <Select name='campus' placeholder='Câmpus' options={campusData} />
+          <AnimatePresence>
+            {showCampus && (
+              <motion.div animate='enter' variants={show}>
+                <Select
+                  name='campus'
+                  placeholder='Câmpus'
+                  options={formatterToSelect(campusResData)}
+                  onChange={(e: Option) => {
+                    setShowCourse(true)
+                    setCoursesData(e.value as number)
+                  }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-        <Select name='course' placeholder='Curso' options={courseData} />
+          <AnimatePresence>
+            {showCourse && (
+              <motion.div animate='enter' exit='exit' variants={show}>
+                <Select
+                  name='course'
+                  placeholder='Curso'
+                  options={formatterToSelect(coursesResData)}
+                  onChange={() => setShowSemester(true)}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-        <Select
-          name='semester'
-          placeholder='Semestre'
-          options={semesterOptions}
-        />
+          <AnimatePresence>
+            {showSemester && (
+              <motion.div animate='enter' exit='exit' variants={show}>
+                <Select
+                  name='semester'
+                  placeholder='Semestre'
+                  options={semesterOptions}
+                  onChange={() => setShowWays(true)}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-        <div id='ways'>
-          <span id='label'>Forma de registro</span>
+          <AnimatePresence>
+            {showWays && (
+              <motion.div id='ways' animate='enter' variants={show}>
+                <span id='label'>Forma de registro</span>
 
-          <div id='buttons'>
-            <button type='button' onClick={() => setWayOfSignup('email')}>
-              E-mail institucional
-            </button>
+                <div id='buttons'>
+                  <button
+                    type='button'
+                    onClick={() => {
+                      setShowReceipt(false)
+                      setShowSubmit(false)
+                      emailModalRef.current?.toggleModal()
+                    }}
+                  >
+                    E-mail institucional
+                  </button>
 
-            <button type='button' onClick={() => setWayOfSignup('receipt')}>
-              Enviar comprovante
-            </button>
-          </div>
+                  <button type='button' onClick={() => setShowReceipt(true)}>
+                    Enviar comprovante
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          <motion.div
-            id='inputs'
-            initial='initial'
-            variants={inputs}
-            animate={wayOfSignup}
-            transition={{ type: 'tween', duration: 0.3 }}
-          >
-            <AnimatePresence>
-              {wayOfSignup === 'email' && (
-                <motion.div variants={method} exit='closed' animate='open'>
-                  <Text name='email' placeholder='E-mail institucional' />
-                </motion.div>
-              )}
-            </AnimatePresence>
+          <AnimatePresence>
+            {showReceipt && (
+              <motion.div
+                id='receipt'
+                variants={show}
+                exit='exit'
+                animate='enter'
+              >
+                <div id='warning'>
+                  <AlertIcon />
 
-            <AnimatePresence>
-              {wayOfSignup === 'receipt' && (
-                <motion.div
-                  id='receipt'
-                  variants={method}
-                  exit='closed'
-                  animate='open'
-                >
-                  <div id='warning'>
-                    <AlertIcon />
-
-                    <div>
-                      Este processo é mais lento pois requer confirmação de um{' '}
-                      <b>Moderador</b> de sua universidade.
-                    </div>
+                  <div>
+                    Este processo é mais lento pois requer confirmação de um{' '}
+                    <b>Moderador</b> da sua universidade.
                   </div>
+                </div>
 
-                  <File guides name='receipt' label='Enviar comprovante' />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        </div>
+                <File
+                  guides
+                  name='receipt'
+                  label='Enviar comprovante'
+                  onClick={() => setShowSubmit(true)}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-        <Submit id='submit' disabled={wayOfSignup === undefined}>
-          Enviar solicitação
-        </Submit>
-      </Form>
-    </Container>
+          <AnimatePresence>
+            {showSubmit && (
+              <motion.div variants={show} animate='enter' exit='exit'>
+                <Submit id='submit'>Enviar solicitação</Submit>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </Form>
+      </Container>
+
+      <Modal ref={emailModalRef}>
+        <EmailModal>
+          <CloseIcon onClick={() => emailModalRef.current?.toggleModal()} />
+
+          <Form path='user/email'>
+            <Text placeholder='E-mail Institucional' />
+          </Form>
+        </EmailModal>
+      </Modal>
+    </>
   )
 }
 
