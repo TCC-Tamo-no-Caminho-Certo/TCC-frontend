@@ -3,7 +3,7 @@ import React, { useCallback, useEffect } from 'react'
 import PrivateRoutes from './PrivateRoutes'
 
 import ForgotPassword from 'pages/ForgotPassword'
-import ConfirmPassword from 'pages/ForgotPassword/ConfirmPassword'
+import ResetPassword from 'pages/ResetPassword'
 import Home from 'pages/Home'
 
 import validateSession from 'utils/validateSession'
@@ -42,7 +42,7 @@ const Routes = () => {
       <Route path='/home' component={Home} />
 
       <Route path='/forgot-password' component={ForgotPassword} />
-      <Route path='/reset-password' component={ConfirmPassword} />
+      <Route path='/reset-password' component={ResetPassword} />
 
       <Route path='/session' component={PrivateRoutes} />
     </Switch>

@@ -18,7 +18,7 @@ const BackButton = ({ to, onTap, ...props }: BackButtonProps) => {
   }
 
   return (
-    <Style onClick={onButtonClick} {...props}>
+    <Style className='BackButton' onClick={onButtonClick} {...props}>
       <RiArrowLeftSLine />
       Voltar
     </Style>

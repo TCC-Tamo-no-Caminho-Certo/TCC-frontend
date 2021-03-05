@@ -1,6 +1,5 @@
 import React, {
   forwardRef,
-  ForwardRefRenderFunction,
   ReactElement,
   useImperativeHandle,
   useRef,
@@ -18,35 +17,34 @@ export interface ModalMethods {
   toggleModal: (_setModal?: boolean) => void
 }
 
-const Modal: ForwardRefRenderFunction<ModalMethods, ModalProps> = (
-  { top = '50%', bottom = '0%', children },
-  ref
-) => {
-  const modalRef = useRef(null)
-  const [openModal, setOpenModal] = useState(false)
+const Modal = forwardRef<ModalMethods, ModalProps>(
+  ({ top = '50%', bottom = '0%', children }, ref) => {
+    const modalRef = useRef(null)
+    const [openModal, setOpenModal] = useState(false)
 
-  const toggleModal = (setModal?: boolean) => {
-    if (setModal === undefined) setOpenModal(!openModal)
-    else setOpenModal(setModal)
+    const toggleModal = (setModal?: boolean) => {
+      if (setModal === undefined) setOpenModal(!openModal)
+      else setOpenModal(setModal)
+    }
+
+    useImperativeHandle(ref, () => ({ toggleModal }))
+
+    window.addEventListener('keydown', e => {
+      e.key === 'Escape' && setOpenModal(false)
+    })
+
+    return openModal ? (
+      <>
+        <ModalBackground onClick={() => setOpenModal(false)} />
+
+        <Style top={top} bottom={bottom} ref={modalRef}>
+          {children}
+        </Style>
+      </>
+    ) : (
+      <></>
+    )
   }
+)
 
-  useImperativeHandle(ref, () => ({ toggleModal }))
-
-  window.addEventListener('keydown', e => {
-    e.key === 'Escape' && setOpenModal(false)
-  })
-
-  return openModal ? (
-    <>
-      <ModalBackground onClick={() => setOpenModal(false)} />
-
-      <Style top={top} bottom={bottom} ref={modalRef}>
-        {children}
-      </Style>
-    </>
-  ) : (
-    <></>
-  )
-}
-
-export default forwardRef(Modal)
+export default Modal

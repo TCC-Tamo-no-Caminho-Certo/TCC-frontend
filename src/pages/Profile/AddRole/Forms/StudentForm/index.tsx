@@ -11,7 +11,13 @@ import CloseIcon from 'assets/Inputs/CloseIcon'
 import { File, Select, Submit, Text } from 'components/Form'
 import Modal, { ModalMethods } from 'components/Modal'
 
-import { AnimatePresence, motion, Transition, Variants } from 'framer-motion'
+import {
+  AnimatePresence,
+  motion,
+  Transition,
+  useCycle,
+  Variants
+} from 'framer-motion'
 
 interface Option {
   value: number | string
@@ -64,12 +70,12 @@ const StudentForm = () => {
   const [campusResData, setCampus] = useState<ResData>()
   const [coursesResData, setCourse] = useState<ResData>()
 
-  const [showCampus, setShowCampus] = useState(false)
-  const [showCourse, setShowCourse] = useState(false)
-  const [showSemester, setShowSemester] = useState(false)
-  const [showWays, setShowWays] = useState(false)
-  const [showSubmit, setShowSubmit] = useState(false)
-  const [showReceipt, setShowReceipt] = useState(false)
+  const [showCampus, toggleCampus] = useCycle(false, true)
+  const [showCourse, toggleCourse] = useCycle(false, true)
+  const [showSemester, toggleSemester] = useCycle(false, true)
+  const [showWays, toggleWays] = useCycle(false, true)
+  const [showReceipt, toggleReceipt] = useCycle(false, true)
+  const [showSubmit, toggleSubmit] = useState(false)
 
   const formatterToSelect = (array: ResData): SelectOptions =>
     array?.map(element => ({
@@ -138,7 +144,7 @@ const StudentForm = () => {
             placeholder='Universidade'
             options={formatterToSelect(universitiesResData)}
             onChange={(e: Option) => {
-              setShowCampus(true)
+              toggleCampus()
               setCampusData(e.value as number)
             }}
           />
@@ -151,7 +157,7 @@ const StudentForm = () => {
                   placeholder='Câmpus'
                   options={formatterToSelect(campusResData)}
                   onChange={(e: Option) => {
-                    setShowCourse(true)
+                    toggleCourse()
                     setCoursesData(e.value as number)
                   }}
                 />
@@ -166,7 +172,7 @@ const StudentForm = () => {
                   name='course'
                   placeholder='Curso'
                   options={formatterToSelect(coursesResData)}
-                  onChange={() => setShowSemester(true)}
+                  onChange={() => toggleSemester()}
                 />
               </motion.div>
             )}
@@ -179,7 +185,7 @@ const StudentForm = () => {
                   name='semester'
                   placeholder='Semestre'
                   options={semesterOptions}
-                  onChange={() => setShowWays(true)}
+                  onChange={() => toggleWays()}
                 />
               </motion.div>
             )}
@@ -194,15 +200,15 @@ const StudentForm = () => {
                   <button
                     type='button'
                     onClick={() => {
-                      setShowReceipt(false)
-                      setShowSubmit(false)
+                      toggleReceipt()
+                      toggleSubmit(false)
                       emailModalRef.current?.toggleModal()
                     }}
                   >
                     E-mail institucional
                   </button>
 
-                  <button type='button' onClick={() => setShowReceipt(true)}>
+                  <button type='button' onClick={() => toggleReceipt()}>
                     Enviar comprovante
                   </button>
                 </div>
@@ -231,7 +237,7 @@ const StudentForm = () => {
                   guides
                   name='receipt'
                   label='Enviar comprovante'
-                  onClick={() => setShowSubmit(true)}
+                  onClick={() => toggleSubmit(true)}
                 />
               </motion.div>
             )}

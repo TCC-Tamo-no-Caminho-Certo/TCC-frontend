@@ -20,7 +20,7 @@ import EyeIcon from 'assets/Inputs/EyeIcon'
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 
 export interface TextProps extends HTMLProps<HTMLInputElement> {
-  handleValue?: (_value: any) => void
+  getValue?: (_value: any) => void
   eye?: boolean
   pasteAndDrop?: boolean
   icon?: FC
@@ -33,7 +33,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
       eye = false,
       type = 'text',
       onBlur,
-      handleValue,
+      getValue,
       icon: Icon,
       pasteAndDrop = true,
       color = '#d65881',
@@ -69,7 +69,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
 
     const valueHandler = (e: FormEvent) => {
       e.preventDefault()
-      handleValue && handleValue(auxRef.current?.value)
+      getValue && getValue(auxRef.current?.value)
     }
 
     const hiddenInput = () => {
