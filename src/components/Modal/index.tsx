@@ -11,6 +11,7 @@ interface ModalProps {
   children: ReactElement
   top?: string
   bottom?: string
+  onBgClick?: () => void
 }
 
 export interface ModalMethods {
@@ -18,7 +19,7 @@ export interface ModalMethods {
 }
 
 const Modal = forwardRef<ModalMethods, ModalProps>(
-  ({ top = '50%', bottom = '0%', children }, ref) => {
+  ({ top = '50%', bottom = '0%', children, onBgClick }, ref) => {
     const modalRef = useRef(null)
     const [openModal, setOpenModal] = useState(false)
 
@@ -35,7 +36,12 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
 
     return openModal ? (
       <>
-        <ModalBackground onClick={() => setOpenModal(false)} />
+        <ModalBackground
+          onClick={() => {
+            setOpenModal(false)
+            onBgClick && onBgClick()
+          }}
+        />
 
         <Style top={top} bottom={bottom} ref={modalRef}>
           {children}

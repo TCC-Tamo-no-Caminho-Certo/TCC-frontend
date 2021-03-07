@@ -1,7 +1,6 @@
 import React, {
   FC,
   FocusEvent,
-  FormEvent,
   forwardRef,
   HTMLProps,
   RefObject,
@@ -20,7 +19,6 @@ import EyeIcon from 'assets/Inputs/EyeIcon'
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 
 export interface TextProps extends HTMLProps<HTMLInputElement> {
-  getValue?: (_value: any) => void
   eye?: boolean
   pasteAndDrop?: boolean
   icon?: FC
@@ -33,7 +31,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
       eye = false,
       type = 'text',
       onBlur,
-      getValue,
+
       icon: Icon,
       pasteAndDrop = true,
       color = '#d65881',
@@ -65,11 +63,6 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
       onBlur && onBlur(e)
       setIsFilled(!!auxRef.current?.value)
       setError(undefined)
-    }
-
-    const valueHandler = (e: FormEvent) => {
-      e.preventDefault()
-      getValue && getValue(auxRef.current?.value)
     }
 
     const hiddenInput = () => {
@@ -105,7 +98,6 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
           id={rest.name}
           type={hiddenInput()}
           onBlur={onInputBlur}
-          onSubmit={valueHandler}
           onPaste={event => pasteAndDrop || event?.preventDefault()}
           onDrop={event => pasteAndDrop || event?.preventDefault()}
           {...rest}

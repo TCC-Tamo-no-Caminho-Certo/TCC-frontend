@@ -19,6 +19,8 @@ import Textarea from './Textarea'
 
 import api from 'services/api'
 
+import Popup, { PopupMethods } from 'components/Popup'
+
 import Captcha from 'react-google-recaptcha'
 import { useHistory } from 'react-router-dom'
 import { ObjectSchema, ValidationError } from 'yup'
@@ -38,6 +40,8 @@ export interface FormState {
 
 export interface FormProps extends HTMLProps<HTMLFormElement> {
   path: string
+  addToPath?: string[]
+  method?: 'post' | 'get' | 'delete' | 'patch' | 'put'
   push?: string
   captcha?: boolean
   loading?: boolean
@@ -59,11 +63,14 @@ const Form = ({
   addData,
   captcha,
   afterResData,
+  method = 'post',
+  addToPath,
   ...rest
 }: FormProps) => {
+  const history = useHistory()
+  const popupRef = useRef<PopupMethods>(null)
   const recaptchaRef = useRef<Captcha>(null)
   const [showLoader, setShowLoader] = useState(false)
-  const history = useHistory()
   const data: { [name: string]: any } = useMemo(() => ({ ...addData }), [
     addData
   ])
@@ -151,10 +158,34 @@ const Form = ({
   }
 
   const makeRequest = async (cbAfterResData?: (_data: any) => void) => {
-    const resData = await api.post(path, data)
-    cbAfterResData && cbAfterResData(resData)
+    const params: { [key: string]: { path: string; data?: any } } = {
+      get: { path },
+      delete: { path },
+      put: { path, data },
+      post: { path, data },
+      patch: { path, data }
+    }
 
+    const firstParam = params[method].path
+    const secondParam = params[method].data
+
+    const resData = await api[method](firstParam, secondParam)
+
+    cbAfterResData && cbAfterResData(resData)
     return resData.success
+  }
+
+  const parsePath = () => {
+    const paths = path.split('*%')
+
+    if (paths.length - 1 !== addToPath?.length)
+      throw new Error('joker lenght is not equal addToPath lenght')
+
+    if (addToPath)
+      path = paths.reduce<string>((acc, curr, idx) => {
+        if (paths.length === idx + 1) return acc + curr
+        return acc + curr + data[addToPath[idx]]
+      }, '')
   }
 
   const onSubmit = async (event: FormEvent) => {
@@ -163,6 +194,7 @@ const Form = ({
     setData()
     getData && getData(data)
     validate()
+    addToPath && parsePath()
 
     if (captcha)
       data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
@@ -173,21 +205,25 @@ const Form = ({
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate {...rest}>
-      {captcha && (
-        <ReCaptcha
-          ref={recaptchaRef}
-          size='invisible'
-          sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
-        />
-      )}
+    <>
+      <form onSubmit={onSubmit} noValidate {...rest}>
+        {captcha && (
+          <ReCaptcha
+            size='invisible'
+            sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
+            ref={recaptchaRef}
+          />
+        )}
 
-      <FormContext.Provider
-        value={{ removeInput, registerInput, loader: showLoader }}
-      >
-        {children}
-      </FormContext.Provider>
-    </form>
+        <FormContext.Provider
+          value={{ removeInput, registerInput, loader: showLoader }}
+        >
+          {children}
+        </FormContext.Provider>
+      </form>
+
+      <Popup ref={popupRef} />
+    </>
   )
 }
 

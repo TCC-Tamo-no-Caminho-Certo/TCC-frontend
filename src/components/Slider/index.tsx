@@ -30,11 +30,6 @@ const Slider = ({
 
   useEffect(() => setXValue(isPar ? move / 2 : 0), [move, isPar])
 
-  useEffect(() => {
-    // console.clear()
-    // console.table({ quantity, isPar, move, limit, xValue })
-  }, [isPar, limit, move, quantity, xValue])
-
   const onLeftClick = () => {
     if (xValue > -limit) setXValue(xValue - move)
     setMakeLeftMove(false)

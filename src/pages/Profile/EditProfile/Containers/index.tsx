@@ -41,10 +41,6 @@ const Containers = () => {
     else setSliderWidth(520)
   }, [innerWidth])
 
-  useEffect(() => {
-    console.table({ containers, roles })
-  }, [containers, roles])
-
   return (
     <Slider gap={200} gapVertical={100} width={sliderWidth}>
       {containers.map(role => {

@@ -176,10 +176,6 @@ const Table = () => {
     makeRequest(1)
   }, [makeRequest])
 
-  // useEffect(() => {
-  //   console.log(showData)
-  // }, [showData])
-
   return (
     <>
       <Style className='Table'>
@@ -319,40 +315,3 @@ const Table = () => {
 }
 
 export default Table
-
-/*
-  useEffect(() => {
-    console.table({
-      clickedItem: clickedItem,
-      isClear: isClear,
-      tablePage: tablePage,
-      filterData: filterData
-    })
-  }, [filterData, clickedItem, showData, isClear, items, tablePage])
-
-  <div id='dates'>
-    <label htmlFor='from'>De</label>
-
-    <Datepicker
-      name='from'
-      icon={ArrowIcon}
-      headerColor={theme.colors.primary}
-      bodyColor={theme.colors.secondary}
-      selectedColor={theme.colors.tertiary}
-      disabledColor={theme.colors.red}
-      valueColor={theme.colors.secondary}
-    />
-
-    <label htmlFor='to'> Até </label>
-
-    <Datepicker
-      name='to'
-      icon={ArrowIcon}
-      valueColor={theme.colors.secondary}
-      headerColor={theme.colors.primary}
-      bodyColor={theme.colors.secondary}
-      selectedColor={theme.colors.tertiary}
-      disabledColor={theme.colors.red}
-    />
-  </div>
-*/

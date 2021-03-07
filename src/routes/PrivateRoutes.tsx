@@ -29,7 +29,6 @@ const PrivateRoutes = () => {
   const onStartInPrivateRoute = useCallback(async () => {
     const response = await api.get('user')
     const { user } = response
-
     const initialRole = getRole(user.role)
 
     dispatch(

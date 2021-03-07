@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Style, { Content } from './styles'
 
 import { passwordSchema } from 'utils/validations/forgotPassword'
@@ -7,57 +7,87 @@ import PadlockIcon from 'assets/Inputs/PadlockIcon'
 
 import Logo from 'components/Logo'
 import { Form, Submit, Text } from 'components/Form'
-import Modal from 'components/Modal'
+import Popup, { PopupMethods } from 'components/Popup'
+
+import { useHistory } from 'react-router'
 
 const ConfirmPassword = () => {
+  const history = useHistory()
+  const popupRef = useRef<PopupMethods>(null)
   const path = window.location.pathname.split('/')
-  const token = path[2] || localStorage.getItem('reset-password-token')
+  const code = path[2] || localStorage.getItem('@SLab_code')
 
-  if (!token) throw new Error('No token provided')
+  if (!code) {
+    popupRef.current?.configPopup({
+      setModal: true,
+      type: 'error',
+      message: 'Código não fornecido'
+    })
 
-  const onResetSubmit = () => console.log('Senha alterada')
+    throw new Error('No code provided')
+  }
+
+  const onResetSubmit = (res: any) => {
+    res.success
+      ? popupRef.current?.configPopup({
+          setModal: true,
+          type: 'success',
+          message: 'Senha alterada!'
+        })
+      : popupRef.current?.configPopup({
+          setModal: true,
+          type: 'error',
+          message: 'Código inválido!'
+        })
+  }
 
   return (
-    <Style>
-      <Modal>
-        <div id='modal'></div>
-      </Modal>
+    <>
+      <Style>
+        <Content>
+          <Logo />
 
-      <Content>
-        <Logo />
+          <Form
+            loading
+            captcha
+            path='reset-password/*%'
+            addToPath={['code']}
+            schema={passwordSchema}
+            afterResData={onResetSubmit}
+          >
+            <p>Digite sua nova senha</p>
 
-        <Form
-          loading
-          captcha
-          path='reset-password'
-          // addData={{ token }}
-          schema={passwordSchema}
-          afterResData={onResetSubmit}
-        >
-          <p>Digite sua nova senha</p>
+            <Text readOnly hidden name='code' value={code} />
 
-          <Text
-            eye
-            name='password'
-            type='password'
-            placeholder='Senha'
-            icon={PadlockIcon}
-          />
+            <Text
+              eye
+              name='password'
+              type='password'
+              placeholder='Senha'
+              icon={PadlockIcon}
+            />
 
-          <p>Confirme sua nova senha</p>
+            <p>Confirme sua nova senha</p>
 
-          <Text
-            eye
-            type='password'
-            name='confirmPassword'
-            placeholder='Confirmar senha'
-            icon={PadlockIcon}
-          />
+            <Text
+              eye
+              type='password'
+              name='confirmPassword'
+              placeholder='Confirmar senha'
+              icon={PadlockIcon}
+            />
 
-          <Submit>Redefinir</Submit>
-        </Form>
-      </Content>
-    </Style>
+            <Submit>Redefinir</Submit>
+          </Form>
+        </Content>
+      </Style>
+
+      <Popup
+        ref={popupRef}
+        onOkClick={() => history.push('/')}
+        onCloseClick={() => history.push('/')}
+      />
+    </>
   )
 }
 

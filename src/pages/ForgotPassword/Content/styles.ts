@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const ConfirmToken = styled.div`
+export const ConfirmCode = styled.div`
   .Submit {
     display: flex;
     justify-content: center;
@@ -63,5 +63,5 @@ const Style = styled.div`
 
 export default Style
 
-ConfirmToken.displayName = 'ConfirmToken-Style'
+ConfirmCode.displayName = 'ConfirmCode-Style'
 Style.displayName = 'Content-Style'

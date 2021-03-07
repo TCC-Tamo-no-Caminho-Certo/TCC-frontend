@@ -109,10 +109,9 @@ const RightMenu = () => {
   const [editOpen, toggleEditOpen] = useCycle(false, true)
   const [isOpen, setIsOpen] = useState(false)
   const [changeRole, setChangeRole] = useState(false)
-  const { name, surname, selectedRole, roles } = useSelector<
-    RootState,
-    UserState
-  >(state => state.user)
+  const { name, selectedRole, roles } = useSelector<RootState, UserState>(
+    state => state.user
+  )
 
   const closedHeight = 112
   const openHeight = 300 + closedHeight
@@ -154,6 +153,19 @@ const RightMenu = () => {
     }
   }
 
+  const formatterName = (name: string): string => {
+    const fullName = name.split(' ')
+    const firstName = fullName[0]
+    const lastName = fullName[1]
+
+    if (lastName)
+      return firstName.length <= 20
+        ? `${firstName} ${lastName.substr(0, 1)}.`
+        : `${firstName}...`
+
+    return firstName.length <= 20 ? `${firstName}` : `${firstName}...`
+  }
+
   return (
     <>
       {(isOpen === true || innerWidth >= 545) && (
@@ -176,7 +188,7 @@ const RightMenu = () => {
             <UserInfo selectedRole={selectedRole} className='UserInfo'>
               <span id='userRole'>{selectRoleLabel(selectedRole)}</span>
 
-              <span id='userName'>{`${name} ${surname}`}</span>
+              <span id='userName'>{formatterName(name)}</span>
 
               <span id='userActivity'>
                 <svg width='5' height='5' xmlns='http://www.w3.org/2000/svg'>

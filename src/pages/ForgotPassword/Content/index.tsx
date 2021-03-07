@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import Style, { ConfirmToken } from './styles'
+import Style, { ConfirmCode } from './styles'
 
 import { emailSchema } from 'utils/validations/forgotPassword'
 
@@ -14,14 +14,15 @@ import Popup, { PopupMethods } from 'components/Popup'
 import { useHistory } from 'react-router-dom'
 
 const Content = () => {
-  const popupRef = useRef<PopupMethods>(null)
   const history = useHistory()
+  const popupRef = useRef<PopupMethods>(null)
+
   const [userEmail, setUserEmail] = useState<string>()
-  const [tokenIsSend, setTokenIsSend] = useState(false)
+  const [codeSend, setCodeSend] = useState(false)
 
   const onEmailSubmit = (result: any) => {
     result.success
-      ? setTokenIsSend(true)
+      ? setTimeout(() => setCodeSend(true), 1)
       : popupRef.current?.configPopup({
           setModal: true,
           type: 'error',
@@ -29,19 +30,17 @@ const Content = () => {
         })
   }
 
-  const onTokenSubmit = (result: any) => {
-    if (result.success) {
-      localStorage.setItem('reset-password-token', result.token)
-      history.push('/reset-password')
-    } else
+  const onCodeSubmit = (result: any) => {
+    if (result.success) setTimeout(() => history.push('/reset-password'), 1)
+    else
       popupRef.current?.configPopup({
         setModal: true,
         type: 'error',
-        message: 'Token inválido!'
+        message: 'Código inválido!'
       })
   }
 
-  const onTokenResent = (result: any) => {
+  const onCodeResent = (result: any) => {
     result.success
       ? popupRef.current?.configPopup({
           setModal: true,
@@ -60,17 +59,45 @@ const Content = () => {
       <Style>
         <Logo />
 
-        {!tokenIsSend ? (
-          <ConfirmToken>
+        {!codeSend && (
+          <Form
+            id='sendE-mail'
+            loading
+            captcha
+            path='forgot-password/*%'
+            method='get'
+            addToPath={['email']}
+            schema={emailSchema}
+            afterResData={onEmailSubmit}
+            getData={value => setUserEmail(value.email)}
+          >
+            <p>Digite seu email para recuperar a senha</p>
+
+            <Text name='email' placeholder='E-mail' icon={MailIcon} />
+
+            <p>
+              Enviaremos uma email para o seguinte endereço contendo instruções
+              para renovação da senha
+            </p>
+
+            <Submit>Enviar</Submit>
+          </Form>
+        )}
+
+        {codeSend && (
+          <ConfirmCode>
             <p>Confirme o código enviado para o seu email</p>
 
             <Form
               captcha
-              path='forgot-password'
+              loading
+              path='forgot-password/*%'
+              method='get'
               className='resendModal'
-              afterResData={onTokenResent}
+              addToPath={['email']}
+              afterResData={onCodeResent}
             >
-              <Text hidden name='email' value={userEmail} />
+              <Text hidden name='email' value={userEmail} readOnly />
 
               <Submit>
                 <SendEmailIcon />
@@ -81,45 +108,16 @@ const Content = () => {
             <Form
               loading
               captcha
-              path='reset-password'
-              afterResData={onTokenSubmit}
+              path='reset-password/*%'
+              addToPath={['code']}
+              afterResData={onCodeSubmit}
+              getData={value => localStorage.setItem('@SLab_code', value.code)}
             >
-              <Text
-                name='token'
-                placeholder='Código'
-                icon={PadlockIcon}
-                getValue={value =>
-                  localStorage.setItem('reset-password-token', value)
-                }
-              />
+              <Text name='code' placeholder='Código' icon={PadlockIcon} />
 
-              <Submit className='submit'>Confirmar</Submit>
+              <Submit>Confirmar</Submit>
             </Form>
-          </ConfirmToken>
-        ) : (
-          <Form
-            loading
-            captcha
-            path='forgot-password'
-            schema={emailSchema}
-            afterResData={onEmailSubmit}
-          >
-            <p>Digite seu email para recuperar a senha</p>
-
-            <Text
-              name='email'
-              placeholder='E-mail'
-              icon={MailIcon}
-              getValue={setUserEmail}
-            />
-
-            <p>
-              Enviaremos uma email para o seguinte endereço contendo instruções
-              para renovação da senha
-            </p>
-
-            <Submit>Enviar</Submit>
-          </Form>
+          </ConfirmCode>
         )}
       </Style>
 

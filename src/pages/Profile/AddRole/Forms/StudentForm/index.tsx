@@ -133,12 +133,7 @@ const StudentForm = () => {
   return (
     <>
       <Container role='student'>
-        <Form
-          loading
-          path='user/addRole/student'
-          getData={e => console.log(e)}
-          addData={{ role: 'student' }}
-        >
+        <Form loading path='user/addRole/student' addData={{ role: 'student' }}>
           <Select
             name='university'
             placeholder='Universidade'
