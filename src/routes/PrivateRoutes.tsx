@@ -32,7 +32,7 @@ const PrivateRoutes = () => {
     const initialRole = getRole(user.role)
 
     dispatch(
-      UserActions.updateUserInfo({
+      UserActions.update({
         ...user,
         selectedRole: initialRole
       })

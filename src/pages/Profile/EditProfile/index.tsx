@@ -35,7 +35,7 @@ const EditProfile = () => {
   }
 
   const submitCallback = (resData: any) =>
-    resData.success && dispatch(UserActions.updateUserInfo(updateData))
+    resData.success && dispatch(UserActions.update(updateData))
 
   return (
     <ImageRefModalContext.Provider value={{ imageRef: imageRefModal }}>

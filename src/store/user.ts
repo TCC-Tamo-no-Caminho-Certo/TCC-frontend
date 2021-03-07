@@ -59,7 +59,7 @@ const User = createSlice({
   name: 'userConfig',
   initialState,
   reducers: {
-    updateUserInfo: (state, action: PayloadAction<UserStatePayload>) => {
+    update: (state, action: PayloadAction<UserStatePayload>) => {
       if (action.payload.selectedRole !== undefined)
         localStorage.setItem('@SLab_selected_role', action.payload.selectedRole)
 

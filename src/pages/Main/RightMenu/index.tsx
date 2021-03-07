@@ -14,6 +14,7 @@ import api from 'services/api'
 import { RootState } from 'store'
 import { UserActions, UserState } from 'store/user'
 import { ThemeState } from 'store/theme'
+import { HomeActions } from 'store/home'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
@@ -129,8 +130,9 @@ const RightMenu = () => {
   }, [innerWidth])
 
   const onLogoutClick = async () => {
-    await api.get('logout', {})
+    await api.get('logout')
     localStorage.removeItem('@SLab_ac_token')
+    HomeActions.update({ initial: true, page: 'login' })
     history.push('/home')
   }
 
@@ -280,7 +282,7 @@ const RightMenu = () => {
                               type='button'
                               onClick={() =>
                                 dispatch(
-                                  UserActions.updateUserInfo({
+                                  UserActions.update({
                                     selectedRole: role
                                   })
                                 )
