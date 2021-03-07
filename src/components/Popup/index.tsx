@@ -12,6 +12,9 @@ import Modal, { ModalMethods } from 'components/Modal'
 export type PopupType = 'error' | 'warning' | 'success' | 'other'
 
 interface PopupProps {
+  top?: string
+  translateY?: string
+  bgHeight?: string
   onOkClick?: () => void
   onCloseClick?: () => void
 }
@@ -28,13 +31,18 @@ export interface PopupMethods {
 }
 
 const Popup = forwardRef<PopupMethods, PopupProps>(
-  ({ onOkClick, onCloseClick }, ref) => {
+  ({ onOkClick, onCloseClick, bgHeight, top, translateY }, ref) => {
     const modalRef = useRef<ModalMethods>(null)
     const [openPopup, setOpenPopup] = useState(false)
 
     const [type, setType] = useState<PopupType>('warning')
     const [title, setTitle] = useState<string | undefined>()
     const [message, setMessage] = useState<string | undefined>()
+
+    const onClick = () => {
+      setOpenPopup(false)
+      onOkClick && onOkClick()
+    }
 
     const configPopup = (content: ConfigPopupProps) => {
       if (content.setModal === undefined) setOpenPopup(!openPopup)
@@ -53,14 +61,9 @@ const Popup = forwardRef<PopupMethods, PopupProps>(
 
     useImperativeHandle(ref, () => ({ configPopup }))
 
-    const onClick = () => {
-      setOpenPopup(false)
-      onOkClick && onOkClick()
-    }
-
     const popup = {
       error: (
-        <Style type='error'>
+        <Style className='Popup' type='error'>
           <span>Error</span>
 
           <hr />
@@ -73,7 +76,7 @@ const Popup = forwardRef<PopupMethods, PopupProps>(
         </Style>
       ),
       warning: (
-        <Style type='warning'>
+        <Style className='Popup' type='warning'>
           <span>Atenção</span>
 
           <hr />
@@ -86,7 +89,7 @@ const Popup = forwardRef<PopupMethods, PopupProps>(
         </Style>
       ),
       success: (
-        <Style type='success'>
+        <Style className='Popup' type='success'>
           <span>Sucesso</span>
 
           <hr />
@@ -99,7 +102,7 @@ const Popup = forwardRef<PopupMethods, PopupProps>(
         </Style>
       ),
       other: (
-        <Style type='success'>
+        <Style className='Popup' type='success'>
           <span>{title}</span>
 
           <hr />
@@ -114,7 +117,13 @@ const Popup = forwardRef<PopupMethods, PopupProps>(
     }
 
     return (
-      <Modal ref={modalRef} onBgClick={onCloseClick}>
+      <Modal
+        ref={modalRef}
+        onBgClick={onCloseClick}
+        top={top}
+        translateY={translateY}
+        bgHeight={bgHeight}
+      >
         {popup[type]}
       </Modal>
     )

@@ -10,7 +10,8 @@ import Style, { ModalBackground } from './styles'
 interface ModalProps {
   children: ReactElement
   top?: string
-  bottom?: string
+  translateY?: string
+  bgHeight?: string
   onBgClick?: () => void
 }
 
@@ -19,7 +20,16 @@ export interface ModalMethods {
 }
 
 const Modal = forwardRef<ModalMethods, ModalProps>(
-  ({ top = '50%', bottom = '0%', children, onBgClick }, ref) => {
+  (
+    {
+      top = '50vh',
+      translateY = '-60%',
+      bgHeight = '100vh',
+      children,
+      onBgClick
+    },
+    ref
+  ) => {
     const modalRef = useRef(null)
     const [openModal, setOpenModal] = useState(false)
 
@@ -37,13 +47,14 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     return openModal ? (
       <>
         <ModalBackground
+          height={bgHeight}
           onClick={() => {
             setOpenModal(false)
             onBgClick && onBgClick()
           }}
         />
 
-        <Style top={top} bottom={bottom} ref={modalRef}>
+        <Style top={top} translateY={translateY} ref={modalRef}>
           {children}
         </Style>
       </>

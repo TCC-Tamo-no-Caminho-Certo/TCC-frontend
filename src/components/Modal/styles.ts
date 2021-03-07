@@ -1,17 +1,21 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
+
+interface ModalBackgroundProps {
+  height: string
+}
 
 interface StyleProps {
   top: string
-  bottom: string
+  translateY: string
 }
 
-export const ModalBackground = styled.div`
+export const ModalBackground = styled.div<ModalBackgroundProps>`
   position: fixed;
   top: 0;
   left: 0;
   z-index: 10;
 
-  height: 100%;
+  height: ${({ height }) => height};
   width: 100%;
 
   background-color: rgba(0, 0, 0, 0.75);
@@ -20,22 +24,14 @@ export const ModalBackground = styled.div`
 const Style = styled.div<StyleProps>`
   position: fixed;
   left: 50%;
+  top: ${({ top }) => top};
   z-index: 11;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  ${({ top, bottom }) =>
-    bottom !== '0%'
-      ? css`
-          bottom: ${bottom};
-          transform: translate(-50%, 50%);
-        `
-      : css`
-          top: ${top};
-          transform: translate(-50%, -50%);
-        `}
+  transform: ${({ translateY }) => `translate(-50%, ${translateY})`};
 `
 
 export default Style

@@ -46,6 +46,8 @@ const Style = styled.div<StyleProps>`
   }
 
   p {
+    width: 90%;
+    text-align: center;
     font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
   }
 
