@@ -10,16 +10,12 @@ import PencilIcon from 'assets/Inputs/PencilIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import { Datepicker, Text } from 'components/Form'
+import { valueToDate } from 'components/Form/Datepicker'
 
 import { useSelector } from 'react-redux'
 
 interface FieldProps {
   data: InputData
-}
-
-const inputDateValue = (value: string) => {
-  const old = value.split('-')
-  return old[0] ? `${old[2]}/${old[1]}/${old[0]}` : ''
 }
 
 const Field = ({ data }: FieldProps) => {
@@ -36,12 +32,13 @@ const Field = ({ data }: FieldProps) => {
         bodyColor={theme.colors.secondary}
         headerColor={theme.colors.tertiary}
         selectedColor={theme.colors.primary}
+        placeholder='Clique para alterar a data'
       />
     ) : (
       <Text
         ref={inputRef}
         name={data.inputname}
-        placeholder={data.dontShow ? '*********' : ''}
+        placeholder={data.dontShow ? '********' : ''}
         defaultValue={data.dontShow ? '' : data.value}
       />
     )
@@ -49,10 +46,10 @@ const Field = ({ data }: FieldProps) => {
   const setInput = () => {
     if (change) return input
 
-    return data.date ? (
-      inputDateValue(data.value as string)
-    ) : (
-      <div id='value'>{data.value}</div>
+    return (
+      <div className='value'>
+        {data.date ? valueToDate(data.value as string) : data.value}
+      </div>
     )
   }
 

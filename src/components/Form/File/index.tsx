@@ -15,10 +15,25 @@ import { Cropper, ReactCropperProps } from 'react-cropper'
 interface FileProps extends ReactCropperProps {
   label: string
   name: string
+  bgHeight?: string
+  tranlateY?: string
+  top?: string
+  bottom?: string
+  noCropper?: boolean
   onClick?: () => void
 }
 
-const File = ({ label, name, onClick, ...props }: FileProps) => {
+const File = ({
+  label,
+  name,
+  onClick,
+  bgHeight,
+  tranlateY,
+  top,
+  bottom,
+  noCropper = false,
+  ...props
+}: FileProps) => {
   const form = useContext<FormState | null>(FormContext)
   const modalRef = useRef<ModalMethods>(null)
   const fileRef = useRef<HTMLInputElement>(null)
@@ -39,29 +54,33 @@ const File = ({ label, name, onClick, ...props }: FileProps) => {
     const { files } = e.target
     const reader = new FileReader()
 
-    if (files[0]) {
-      reader.onload = () => setFile(reader.result)
-      reader.readAsDataURL(files[0])
-    }
+    reader.readAsDataURL(files[0])
+    reader.onload = () => setFile(reader.result)
   }
 
   useEffect(() => {
     const fileForInput = {
-      inputRef: fileRef,
       type: 'file',
-      value: fileData,
+      inputRef: fileRef,
+      value: !noCropper ? fileData : file,
       setError
     }
 
     form?.registerInput(fileForInput)
 
     return () => form?.removeInput(fileForInput)
-  }, [fileRef, form, fileData])
+  }, [fileRef, form, fileData, noCropper, file])
 
   return (
     <Style className='File'>
       <div id='fileInput'>
         <ErrorTooltip error={!!error} content={error} />
+
+        {noCropper && (
+          <div id='fileName'>
+            {fileRef.current?.value.split('C:\\fakepath\\')}
+          </div>
+        )}
 
         <label onClick={() => onClick && onClick()}>
           <CameraIcon />
@@ -69,6 +88,7 @@ const File = ({ label, name, onClick, ...props }: FileProps) => {
           {label}
 
           <input
+            accept='.jpg, .jpeg, .png, .doc, application/pdf'
             type='file'
             name={name}
             ref={fileRef}
@@ -79,37 +99,45 @@ const File = ({ label, name, onClick, ...props }: FileProps) => {
         </label>
       </div>
 
-      <Modal ref={modalRef}>
-        <div id='container'>
-          <CloseIcon onClick={() => modalRef.current?.toggleModal(false)} />
+      {!noCropper && (
+        <Modal
+          bgHeight={bgHeight}
+          translateY={tranlateY}
+          top={top}
+          bottom={bottom}
+          ref={modalRef}
+        >
+          <div id='container'>
+            <CloseIcon onClick={() => modalRef.current?.toggleModal(false)} />
 
-          <Cropper
-            center
-            className='Cropper'
-            dragMode='move'
-            src={file}
-            guides={false}
-            background={false}
-            viewMode={3}
-            aspectRatio={1}
-            minCropBoxHeight={80}
-            minCropBoxWidth={80}
-            checkOrientation={false}
-            onInitialized={instance => setCropper(instance)}
-            {...props}
-          />
+            <Cropper
+              center
+              className='Cropper'
+              dragMode='move'
+              src={file}
+              guides={false}
+              background={false}
+              viewMode={3}
+              aspectRatio={1}
+              minCropBoxHeight={80}
+              minCropBoxWidth={80}
+              checkOrientation={false}
+              onInitialized={instance => setCropper(instance)}
+              {...props}
+            />
 
-          <button
-            type='button'
-            onClick={() => {
-              getCropData()
-              modalRef.current?.toggleModal(false)
-            }}
-          >
-            Selecionar
-          </button>
-        </div>
-      </Modal>
+            <button
+              type='button'
+              onClick={() => {
+                getCropData()
+                modalRef.current?.toggleModal(false)
+              }}
+            >
+              Selecionar
+            </button>
+          </div>
+        </Modal>
+      )}
     </Style>
   )
 }

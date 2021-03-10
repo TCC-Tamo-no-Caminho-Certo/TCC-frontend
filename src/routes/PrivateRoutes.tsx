@@ -37,7 +37,6 @@ const PrivateRoutes = () => {
         selectedRole: initialRole
       })
     )
-
     window.history.pushState(null, '', document.URL)
   }, [dispatch])
 

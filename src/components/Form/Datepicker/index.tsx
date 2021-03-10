@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Style from './styles'
 
 import '../../../../node_modules/react-modern-calendar-datepicker/lib/DatePicker.css'
@@ -38,6 +38,34 @@ interface DatepickerProps extends TextProps {
   isBirthday?: boolean
 }
 
+export const valueToDate = (date: string) => {
+  const dates = date.split('T')[0].split('-')
+  return date ? `${dates[2]}/${dates[1]}/${dates[0]}` : ''
+}
+
+type YearButton = HTMLButtonElement | null
+
+export const dateToValue = (date?: string) => {
+  if (date) {
+    const dates = date.split('/')
+    return `${dates[2]}-${dates[1]}-${dates[0]}`
+  }
+
+  return ''
+}
+
+const datePickerToDate = (date: DayValue) => {
+  const day = date?.day
+  const month = date?.month
+  const year = date?.year
+
+  return day && month && year
+    ? `${day < 10 ? `0${day}` : day}/${
+        month < 10 ? `0${month}` : month
+      }/${year}`
+    : ''
+}
+
 const Datepicker = ({
   bodyColor = '#6e4850',
   valueColor = '#d65881',
@@ -52,37 +80,31 @@ const Datepicker = ({
 }: DatepickerProps) => {
   const [selectedDate, setSelectedDate] = useState<DayValue>(null)
 
-  const renderCustomInput = ({ ref }: any) => {
-    const InputValue = (date: DayValue) => {
-      return date
-        ? `${date.day < 10 ? `0${date.day}` : date.day}/${
-            date.month < 10 ? `0${date.month}` : date.month
-          }/${date.year}`
-        : ''
-    }
+  const renderCustomInput = useCallback(
+    ({ ref }: any) => {
+      const onClick = () => {
+        const year: YearButton = document.querySelector('.Calendar__yearText')
+        if (year && !selectedDate) year.click()
+      }
 
-    const onClick = () => {
-      const year: HTMLButtonElement | null = document.querySelector(
-        '.Calendar__yearText'
+      return (
+        <Text
+          isDate
+          readOnly
+          className='Datepicker'
+          ref={ref}
+          id={name}
+          name={name}
+          icon={Icon}
+          onClick={onClick}
+          color={valueColor}
+          value={datePickerToDate(selectedDate)}
+          {...rest}
+        />
       )
-      if (year && !selectedDate) year.click()
-    }
-
-    return (
-      <Text
-        readOnly
-        className='Datepicker'
-        ref={ref}
-        id={name}
-        name={name}
-        icon={Icon}
-        onClick={onClick}
-        color={valueColor}
-        value={InputValue(selectedDate)}
-        {...rest}
-      />
-    )
-  }
+    },
+    [Icon, name, rest, selectedDate, valueColor]
+  )
 
   return (
     <Style

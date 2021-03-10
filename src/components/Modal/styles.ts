@@ -6,6 +6,7 @@ interface ModalBackgroundProps {
 
 interface StyleProps {
   top: string
+  bottom: string
   translateY: string
 }
 
@@ -15,8 +16,8 @@ export const ModalBackground = styled.div<ModalBackgroundProps>`
   left: 0;
   z-index: 10;
 
-  height: ${({ height }) => height};
   width: 100%;
+  height: ${({ height }) => height};
 
   background-color: rgba(0, 0, 0, 0.75);
 `
@@ -24,7 +25,8 @@ export const ModalBackground = styled.div<ModalBackgroundProps>`
 const Style = styled.div<StyleProps>`
   position: fixed;
   left: 50%;
-  top: ${({ top }) => top};
+  top: ${({ top, bottom }) => (bottom === 'auto' ? top : 'auto')};
+  bottom: ${({ bottom }) => bottom};
   z-index: 11;
 
   display: flex;

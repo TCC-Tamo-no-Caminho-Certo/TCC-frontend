@@ -59,6 +59,12 @@ const Style = styled.div<StyleProps>`
       css`
         padding-left: 16px;
       `}
+
+      ${({ isErrored }) =>
+      isErrored &&
+      css`
+        padding-left: 0px;
+      `}
   }
 
   .iconSpace {

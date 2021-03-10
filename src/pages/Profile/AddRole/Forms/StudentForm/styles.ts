@@ -123,11 +123,10 @@ export const Form = styled(FormComponent)`
 `
 
 export const EmailModal = styled.div`
-  padding: 50px 16px 16px 16px;
   width: 500px;
   height: 500px;
-  transform: translateY(70%);
   border-radius: 24px;
+  padding: 50px 16px 16px 16px;
 
   background-color: ${({ theme }) => theme.colors.secondary};
 
@@ -142,8 +141,6 @@ export const EmailModal = styled.div`
     stroke: ${({ theme }) => theme.colors.tertiary};
   }
 `
-
-export default Form
 
 Form.displayName = 'StudentForm-Style'
 EmailModal.displayName = 'StudentEmailModal-Style'

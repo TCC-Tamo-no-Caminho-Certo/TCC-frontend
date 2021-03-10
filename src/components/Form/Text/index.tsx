@@ -16,27 +16,30 @@ import { FormContext, FormState } from '../'
 import EyeClosedIcon from 'assets/Inputs/EyeClosedIcon'
 import EyeIcon from 'assets/Inputs/EyeIcon'
 
+import { dateToValue } from 'components/Form/Datepicker'
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
+import { Ref } from 'components/Form'
 
 export interface TextProps extends HTMLProps<HTMLInputElement> {
   eye?: boolean
   pasteAndDrop?: boolean
   icon?: FC
   color?: string
+  isDate?: boolean
 }
 
 const Text = forwardRef<HTMLInputElement, TextProps>(
   (
     {
-      eye = false,
-      type = 'text',
-      onBlur,
-
-      icon: Icon,
-      pasteAndDrop = true,
-      color = '#d65881',
-      className = 'Text',
       id,
+      onBlur,
+      icon: Icon,
+      eye = false,
+      pasteAndDrop = true,
+      className = 'Text',
+      type = 'text',
+      color = '#d65881',
+      isDate = false,
       ...rest
     },
     ref
@@ -49,15 +52,16 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
     const [error, setError] = useState<string>()
 
     useEffect(() => {
-      const input = {
+      const input: Ref = {
         inputRef: auxRef,
         setError,
-        type
+        type: isDate ? 'date' : type,
+        value: isDate ? dateToValue(auxRef.current?.value) : undefined
       }
 
       form?.registerInput(input)
       return () => form?.removeInput(input)
-    }, [auxRef, form, type])
+    }, [auxRef, form, type, isDate, auxRef.current?.value])
 
     const onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
       onBlur && onBlur(e)
@@ -102,6 +106,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
           onDrop={event => pasteAndDrop || event?.preventDefault()}
           {...rest}
         />
+
         {eye &&
           (showInput ? (
             <div className='iconSpace'>

@@ -10,6 +10,7 @@ import Style, { ModalBackground } from './styles'
 interface ModalProps {
   children: ReactElement
   top?: string
+  bottom?: string
   translateY?: string
   bgHeight?: string
   onBgClick?: () => void
@@ -22,6 +23,7 @@ export interface ModalMethods {
 const Modal = forwardRef<ModalMethods, ModalProps>(
   (
     {
+      bottom = 'auto',
       top = '50vh',
       translateY = '-60%',
       bgHeight = '100vh',
@@ -54,7 +56,7 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
           }}
         />
 
-        <Style top={top} translateY={translateY} ref={modalRef}>
+        <Style top={top} bottom={bottom} translateY={translateY} ref={modalRef}>
           {children}
         </Style>
       </>

@@ -5,6 +5,11 @@ const Style = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+
+    #fileName {
+      margin-bottom: 8px;
+    }
 
     label {
       padding: 8px 16px;

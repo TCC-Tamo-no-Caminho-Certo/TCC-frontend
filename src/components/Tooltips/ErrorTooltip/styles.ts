@@ -33,7 +33,7 @@ const Style = styled(Popup)`
 
   .content {
     padding: 4px;
-    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.9rem);
+    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.5rem);
   }
 
   &,

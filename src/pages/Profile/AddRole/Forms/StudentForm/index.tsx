@@ -1,15 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Form, { EmailModal } from './styles'
+import { Form } from './styles'
 
 import Container from '../Container'
+import RegisterEmail, {
+  RegisterEmailMethods,
+  University
+} from '../RegisterEmail'
+
+import { studentEmailRegex } from 'utils/validations/regex'
 
 import api from 'services/api'
 
-import AlertIcon from 'assets/Inputs/AlertIcon'
-import CloseIcon from 'assets/Inputs/CloseIcon'
+import { UserState } from 'store/user'
+import { RootState } from 'store'
 
-import { File, Select, Submit, Text } from 'components/Form'
-import Modal, { ModalMethods } from 'components/Modal'
+import AlertIcon from 'assets/Inputs/AlertIcon'
+
+import { File, Select, Submit } from 'components/Form'
 
 import {
   AnimatePresence,
@@ -18,19 +25,28 @@ import {
   useCycle,
   Variants
 } from 'framer-motion'
+import { useSelector } from 'react-redux'
 
 interface Option {
   value: number | string
   label: string
 }
 
-interface Res {
-  value: string
-  id: number
-}
-
+type Universities = University[] | undefined
 type SelectOptions = Option[] | undefined
-type ResData = Res[] | undefined
+
+const semesterOptions: SelectOptions = [
+  { value: 'first', label: '1° Semestre' },
+  { value: 'second', label: '2° Semestre' },
+  { value: 'third', label: '3° Semestre' },
+  { value: 'room', label: '4° Semestre' },
+  { value: 'fifth', label: '5° Semestre' },
+  { value: 'sixth', label: '6° Semestre' },
+  { value: 'seventh', label: '7° Semestre' },
+  { value: 'eighth', label: '8° Semestre' },
+  { value: 'ninth', label: '9° Semestre' },
+  { value: 'tenth', label: '10° Semestre' }
+]
 
 const transition: Transition = {
   duration: 0.3,
@@ -50,47 +66,39 @@ const show: Variants = {
   }
 }
 
-const semesterOptions: SelectOptions = [
-  { value: 'first', label: '1° Semestre' },
-  { value: 'second', label: '2° Semestre' },
-  { value: 'third', label: '3° Semestre' },
-  { value: 'room', label: '4° Semestre' },
-  { value: 'fifth', label: '5° Semestre' },
-  { value: 'sixth', label: '6° Semestre' },
-  { value: 'seventh', label: '7° Semestre' },
-  { value: 'eighth', label: '8° Semestre' },
-  { value: 'ninth', label: '9° Semestre' },
-  { value: 'tenth', label: '10° Semestre' }
-]
+const formatterToSelect = (array: Universities) =>
+  array?.map((university: University) => ({
+    value: university.value,
+    label: university.label
+  }))
 
 const StudentForm = () => {
-  const emailModalRef = useRef<ModalMethods>(null)
+  const registerEmailRef = useRef<RegisterEmailMethods>(null)
+  const user = useSelector<RootState, UserState>(state => state.user)
 
-  const [universitiesResData, setUniversity] = useState<ResData>()
-  const [campusResData, setCampus] = useState<ResData>()
-  const [coursesResData, setCourse] = useState<ResData>()
+  const [selectedUniversity, setSelectedUniversity] = useState<University>()
+  const [universities, setUniversities] = useState<Universities>()
+
+  const [campus, setCampus] = useState<SelectOptions>()
+  const [courses, setCourses] = useState<SelectOptions>()
 
   const [showCampus, toggleCampus] = useCycle(false, true)
   const [showCourse, toggleCourse] = useCycle(false, true)
   const [showSemester, toggleSemester] = useCycle(false, true)
   const [showWays, toggleWays] = useCycle(false, true)
-  const [showReceipt, toggleReceipt] = useCycle(false, true)
+  const [showReceipt, setShowReceipt] = useState(false)
   const [showSubmit, toggleSubmit] = useState(false)
-
-  const formatterToSelect = (array: ResData): SelectOptions =>
-    array?.map(element => ({
-      value: element.id,
-      label: element.value
-    }))
 
   const setUniversitiesData = async () => {
     const { universities } = await api.get('/universities')
 
-    setUniversity(
+    setUniversities(
       universities.map(
-        (university: any): Res => ({
-          value: university.name,
-          id: university.university_id
+        (university: any): University => ({
+          value: university.university_id,
+          label: university.name,
+          studentRegex: university.student_regex,
+          professorRegex: university.professor_regex
         })
       )
     )
@@ -99,11 +107,15 @@ const StudentForm = () => {
   const setCampusData = async (id: number) => {
     const { campus } = await api.get(`university/${id}/campus`)
 
+    setSelectedUniversity(
+      universities?.find((university: University) => university.value === id)
+    )
+
     setCampus(
       campus.map(
-        (campus: any): Res => ({
-          value: campus.name,
-          id: campus.campus_id
+        (campus: any): Option => ({
+          value: campus.campus_id,
+          label: campus.name
         })
       )
     )
@@ -112,152 +124,151 @@ const StudentForm = () => {
   const setCoursesData = async (id: number) => {
     const { courses } = await api.get(`/university/campus/${id}/course`)
 
-    setCourse(
+    setCourses(
       courses.map(
-        (course: any): Res => ({
-          value: course,
-          id: course
+        (course: any): Option => ({
+          label: course,
+          value: course
         })
       )
     )
   }
 
   useEffect(() => {
+    setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100)
     setUniversitiesData()
   }, [])
 
-  useEffect(() => {
-    setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100)
-  }, [])
-
   return (
-    <>
-      <Container role='student'>
-        <Form loading path='user/addRole/student' addData={{ role: 'student' }}>
-          <Select
-            name='university'
-            placeholder='Universidade'
-            options={formatterToSelect(universitiesResData)}
-            onChange={(e: Option) => {
-              toggleCampus()
-              setCampusData(e.value as number)
-            }}
-          />
+    <Container role='student'>
+      <Form loading path='user/addRole/student' addData={{ role: 'student' }}>
+        <Select
+          name='university'
+          placeholder='Universidade'
+          options={formatterToSelect(universities)}
+          onChange={(e: Option) => {
+            toggleCampus()
+            setCampusData(e.value as number)
+          }}
+        />
 
-          <AnimatePresence>
-            {showCampus && (
-              <motion.div animate='enter' variants={show}>
-                <Select
-                  name='campus'
-                  placeholder='Câmpus'
-                  options={formatterToSelect(campusResData)}
-                  onChange={(e: Option) => {
-                    toggleCourse()
-                    setCoursesData(e.value as number)
+        <AnimatePresence>
+          {showCampus && (
+            <motion.div animate='enter' variants={show}>
+              <Select
+                name='campus'
+                placeholder='Câmpus'
+                options={campus}
+                onChange={(e: Option) => {
+                  toggleCourse()
+                  setCoursesData(e.value as number)
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {showCourse && (
+            <motion.div animate='enter' exit='exit' variants={show}>
+              <Select
+                name='course'
+                placeholder='Curso'
+                options={courses}
+                onChange={() => toggleSemester()}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {showSemester && (
+            <motion.div animate='enter' exit='exit' variants={show}>
+              <Select
+                name='semester'
+                placeholder='Semestre'
+                options={semesterOptions}
+                onChange={() => {
+                  studentEmailRegex.test(user.email[0].address)
+                    ? toggleSubmit(true)
+                    : toggleWays()
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {showWays && (
+            <motion.div id='ways' animate='enter' variants={show}>
+              <span id='label'>Forma de registro</span>
+
+              <div id='buttons'>
+                <button
+                  type='button'
+                  onClick={() => {
+                    setShowReceipt(false)
+                    toggleSubmit(false)
+                    registerEmailRef.current?.toggleRegister()
                   }}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+                >
+                  E-mail institucional
+                </button>
 
-          <AnimatePresence>
-            {showCourse && (
-              <motion.div animate='enter' exit='exit' variants={show}>
-                <Select
-                  name='course'
-                  placeholder='Curso'
-                  options={formatterToSelect(coursesResData)}
-                  onChange={() => toggleSemester()}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+                <button type='button' onClick={() => setShowReceipt(true)}>
+                  Enviar comprovante
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-          <AnimatePresence>
-            {showSemester && (
-              <motion.div animate='enter' exit='exit' variants={show}>
-                <Select
-                  name='semester'
-                  placeholder='Semestre'
-                  options={semesterOptions}
-                  onChange={() => toggleWays()}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+        <AnimatePresence>
+          {showReceipt && (
+            <motion.div
+              id='receipt'
+              exit='exit'
+              animate='enter'
+              variants={show}
+            >
+              <div id='warning'>
+                <AlertIcon />
 
-          <AnimatePresence>
-            {showWays && (
-              <motion.div id='ways' animate='enter' variants={show}>
-                <span id='label'>Forma de registro</span>
-
-                <div id='buttons'>
-                  <button
-                    type='button'
-                    onClick={() => {
-                      toggleReceipt()
-                      toggleSubmit(false)
-                      emailModalRef.current?.toggleModal()
-                    }}
-                  >
-                    E-mail institucional
-                  </button>
-
-                  <button type='button' onClick={() => toggleReceipt()}>
-                    Enviar comprovante
-                  </button>
+                <div>
+                  Este processo é mais lento pois requer confirmação de um{' '}
+                  <b>Moderador</b> da sua universidade.
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+              </div>
 
-          <AnimatePresence>
-            {showReceipt && (
-              <motion.div
-                id='receipt'
-                variants={show}
-                exit='exit'
-                animate='enter'
-              >
-                <div id='warning'>
-                  <AlertIcon />
+              <File
+                guides
+                bgHeight='200vh'
+                bottom='50vh'
+                tranlateY='50%'
+                name='receipt'
+                label='Enviar comprovante'
+                noCropper={true}
+                onClick={() => toggleSubmit(true)}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-                  <div>
-                    Este processo é mais lento pois requer confirmação de um{' '}
-                    <b>Moderador</b> da sua universidade.
-                  </div>
-                </div>
+        <AnimatePresence>
+          {showSubmit && (
+            <motion.div animate='enter' exit='exit' variants={show}>
+              <Submit id='submit'>Enviar solicitação</Submit>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </Form>
 
-                <File
-                  guides
-                  name='receipt'
-                  label='Enviar comprovante'
-                  onClick={() => toggleSubmit(true)}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <AnimatePresence>
-            {showSubmit && (
-              <motion.div variants={show} animate='enter' exit='exit'>
-                <Submit id='submit'>Enviar solicitação</Submit>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </Form>
-      </Container>
-
-      <Modal ref={emailModalRef}>
-        <EmailModal>
-          <CloseIcon onClick={() => emailModalRef.current?.toggleModal()} />
-
-          <Form path='user/email'>
-            <Text placeholder='E-mail Institucional' />
-          </Form>
-        </EmailModal>
-      </Modal>
-    </>
+      <RegisterEmail
+        role='student'
+        ref={registerEmailRef}
+        universityData={selectedUniversity}
+      />
+    </Container>
   )
 }
 

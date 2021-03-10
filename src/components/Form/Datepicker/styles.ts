@@ -10,6 +10,12 @@ interface StyleProps {
 
 const Style = styled.div<StyleProps>`
   ${({ bodyColor, headerColor, selectedColor, disabledColor, arrow }) => css`
+    .CalendarSize {
+      font-size: 10px !important;
+
+      background-color: ${bodyColor};
+    }
+
     .DatePicker {
       z-index: 1;
 
@@ -101,12 +107,6 @@ const Style = styled.div<StyleProps>`
       font-size: 1.4rem !important;
     }
 
-    .CalendarSize {
-      font-size: 8px !important;
-
-      background-color: ${bodyColor};
-    }
-
     .DatePicker__calendarArrow {
       ${arrow === 'bottom'
         ? css`
@@ -189,10 +189,6 @@ const Style = styled.div<StyleProps>`
   `}
 
   @media screen and (min-height: 900px) {
-    .CalendarSize {
-      font-size: 10px !important;
-    }
-
     .Calendar__monthSelector.-open,
     .Calendar__yearSelector.-open {
       margin-top: 1%;

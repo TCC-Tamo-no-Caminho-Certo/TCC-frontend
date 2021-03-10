@@ -46,7 +46,7 @@ export interface FormProps extends HTMLProps<HTMLFormElement> {
   captcha?: boolean
   loading?: boolean
   schema?: ObjectSchema
-  addData?: { [key: string]: string }
+  addData?: { [key: string]: any }
   getData?: (_data: any) => void
   afterResData?: (_resData: any) => void
 }
@@ -62,9 +62,9 @@ const Form = ({
   getData,
   addData,
   captcha,
+  addToPath,
   afterResData,
   method = 'post',
-  addToPath,
   ...rest
 }: FormProps) => {
   const history = useHistory()
@@ -96,6 +96,11 @@ const Form = ({
             data[current.name] = current.value
             break
 
+          case 'date':
+            console.log(value)
+            data[current.name] = value
+            break
+
           case 'password':
             data[current.name] = current.value
             break
@@ -121,7 +126,6 @@ const Form = ({
               data[current.props.name] = current.select.props.value.map(
                 (oneValue: { value: string; label: string }) => oneValue.value
               )
-
             break
 
           case 'file':

@@ -34,6 +34,29 @@ const FormSignup = () => {
     }
   }
 
+  const afterFormResData = (res: any) => {
+    if (res.success) {
+      setSuccess(res.success)
+
+      popupRef.current?.configPopup({
+        setModal: true,
+        type: 'success',
+        message: 'Cadastrado com sucesso!'
+      })
+    } else if (res.error === 'User already exists')
+      popupRef.current?.configPopup({
+        setModal: true,
+        type: 'error',
+        message: 'Usuário ja cadastrado, tente fazer login!'
+      })
+    else
+      popupRef.current?.configPopup({
+        setModal: true,
+        type: 'error',
+        message: 'Erro ao cadastrar, tente novamente.'
+      })
+  }
+
   return (
     <>
       <Style>
@@ -57,35 +80,8 @@ const FormSignup = () => {
           loading
           path='register'
           schema={signupSchema}
-          getData={data => {
-            if (data.birthday) {
-              const old = data.birthday.split('/')
-              data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
-            }
-          }}
-          afterResData={(res: any) => {
-            console.log(res)
-            if (res.success) {
-              setSuccess(res.success)
-
-              popupRef.current?.configPopup({
-                setModal: true,
-                type: 'success',
-                message: 'Cadastrado com sucesso!'
-              })
-            } else if (res.error === 'User already exists')
-              popupRef.current?.configPopup({
-                setModal: true,
-                type: 'error',
-                message: 'Usuário ja cadastrado, tente fazer login!'
-              })
-            else
-              popupRef.current?.configPopup({
-                setModal: true,
-                type: 'error',
-                message: 'Erro ao cadastrar, tente novamente.'
-              })
-          }}
+          afterResData={afterFormResData}
+          getData={e => console.log(e)}
         >
           <Text
             name='name'

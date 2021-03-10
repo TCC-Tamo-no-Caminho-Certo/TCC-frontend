@@ -15,111 +15,69 @@ const Style = styled.div`
   color: ${({ theme }) => theme.colors.tertiary};
   border: solid 1px ${({ theme }) => theme.colors.tertiary};
 
-  .label,
-  .input,
-  .icon {
+  button {
     display: flex;
     align-items: center;
     justify-content: center;
 
     height: 100%;
-  }
 
-  .label {
-    margin-bottom: 8px;
-  }
-
-  .input {
-    flex: 1;
-
-    .Text,
-    .Datepicker {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border: none;
-
-      input {
-        text-align: center;
-      }
+    &.label {
+      margin-bottom: 8px;
+      font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
     }
 
-    .Text {
-      width: 100%;
-      height: 100%;
-      border-radius: 0;
+    &.input {
+      flex: 1;
 
-      input {
-        text-align: center;
+      .value,
+      .Datepicker input,
+      .Text {
+        font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
+      }
+
+      .Datepicker,
+      .Text {
         width: 100%;
-        height: 100%;
+        border: none;
+
+        input {
+          width: 100%;
+          text-align: center;
+        }
+      }
+
+      .value {
+        padding-left: 16px;
       }
     }
-  }
 
-  .icon {
-    position: absolute;
-    top: -12px;
-    right: 4px;
+    &.icon {
+      position: absolute;
+      top: -12px;
+      right: 4px;
 
-    margin: 0 4px;
-    width: 24px;
-    text-align: right;
+      margin: 0 4px;
+      width: 24px;
+      text-align: right;
+      font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
 
-    .Icon {
-      width: 18px;
-      height: 18px;
+      .Icon {
+        width: 18px;
+        height: 18px;
 
-      fill: ${({ theme }) => theme.colors.primary};
-      stroke: ${({ theme }) => theme.colors.primary};
-    }
-
-    #CloseIcon {
-      width: 16px;
-      height: 16px;
-
-      path {
-        stroke-width: 50;
+        fill: ${({ theme }) => theme.colors.primary};
+        stroke: ${({ theme }) => theme.colors.primary};
       }
-    }
-  }
 
-  .Datepicker {
-    .CalendarSize {
-      font-size: 12px;
-    }
+      #CloseIcon {
+        width: 16px;
+        height: 16px;
 
-    .Calendar__day.-ltr {
-      font-size: 1.7rem;
-    }
-
-    .Calendar__section.-shown {
-      padding: 8px 20px;
-    }
-
-    .Calendar__sectionWrapper {
-      min-height: 324px;
-      height: 316px;
-    }
-
-    .Calendar__monthArrow {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      width: 16px;
-      height: 16px;
-      font-size: 1rem;
-    }
-
-    .Calendar__monthSelectorItemText {
-      width: 230px;
-    }
-
-    .Calendar__yearSelector,
-    .Calendar__monthSelector {
-      padding: 0px;
+        path {
+          stroke-width: 50;
+        }
+      }
     }
   }
 
@@ -127,7 +85,7 @@ const Style = styled.div`
     height: 40px;
     flex-direction: row;
 
-    .icon {
+    button.icon {
       position: static;
     }
   }

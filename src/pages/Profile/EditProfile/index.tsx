@@ -8,7 +8,7 @@ import { UserActions } from 'store/user'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
-import { Form, Submit, Text } from 'components/Form'
+import { Datepicker, Form, Submit, Text } from 'components/Form'
 import Modal, { ModalMethods } from 'components/Modal'
 
 import { useDispatch } from 'react-redux'
@@ -25,14 +25,7 @@ const EditProfile = () => {
   const confirmRefModal = useRef<ModalMethods>(null)
   const imageRefModal = useRef<ModalMethods>(null)
 
-  const getFormData = (data: any) => {
-    if (data.birthday) {
-      const old = data.birthday.split('/')
-      data.birthday = old[0] ? `${old[2]}-${old[1]}-${old[0]}` : ''
-    }
-
-    updateData = data
-  }
+  const getFormData = () => {}
 
   const submitCallback = (resData: any) =>
     resData.success && dispatch(UserActions.update(updateData))
