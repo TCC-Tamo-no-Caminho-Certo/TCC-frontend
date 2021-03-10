@@ -7,10 +7,10 @@ const Style = styled.div`
   justify-content: center;
   align-items: left;
   flex-direction: column;
-  padding: 10px;
-
+  padding: 0 4px;
   width: 100%;
   border-radius: 5px;
+  height: 80px;
 
   color: ${({ theme }) => theme.colors.tertiary};
   border: solid 1px ${({ theme }) => theme.colors.tertiary};
@@ -20,10 +20,11 @@ const Style = styled.div`
     align-items: center;
     justify-content: center;
 
-    height: 100%;
+    overflow: hidden;
+    height: 40px;
 
     &.label {
-      margin-bottom: 8px;
+      min-width: 64px;
       font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
     }
 
@@ -54,10 +55,9 @@ const Style = styled.div`
 
     &.icon {
       position: absolute;
-      top: -12px;
-      right: 4px;
+      top: 0px;
+      right: 8px;
 
-      margin: 0 4px;
       width: 24px;
       text-align: right;
       font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);

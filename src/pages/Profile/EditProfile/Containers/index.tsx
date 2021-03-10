@@ -42,7 +42,7 @@ const Containers = () => {
   }, [innerWidth])
 
   return (
-    <Slider gap={200} gapVertical={100} width={sliderWidth}>
+    <Slider gap={200} gapVertical={32} width={sliderWidth}>
       {containers.map(role => {
         if (role === 'personal')
           return (

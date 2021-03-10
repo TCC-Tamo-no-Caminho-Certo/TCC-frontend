@@ -73,9 +73,19 @@ export const ConfirmForm = styled(Form)`
 const Style = styled(motion.section)`
   position: relative;
 
-  height: 100vh;
+  min-height: 100vh;
 
   background-color: ${({ theme }) => theme.colors.tertiary};
+
+  form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    height: 100%;
+    width: 100%;
+  }
 
   &,
   ${ConfirmForm} {
@@ -89,44 +99,55 @@ const Style = styled(motion.section)`
     margin-left: 60px;
   }
 
-  #saveButton {
-    position: absolute;
-    right: 10%;
-    bottom: 8%;
+  #submits {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    width: 200px;
-    height: 40px;
-    border-radius: 15px;
+    button {
+      height: 40px;
+      border-radius: 15px;
 
-    color: ${({ theme }) => theme.colors.secondary};
-    background-color: ${({ theme }) => theme.colors.primary};
-    box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.49);
-    transition: transform 1s ease;
+      color: ${({ theme }) => theme.colors.secondary};
+      background-color: transparent;
 
-    &:hover {
-      transform: scale(1.03);
+      &:hover {
+        color: ${({ theme }) => theme.colors.primary};
+      }
     }
-  }
 
-  #discardButton {
-    position: absolute;
-    right: 10%;
-    bottom: 8%;
+    button + button {
+      width: 200px;
+      height: 40px;
+      border-radius: 15px;
 
-    height: 40px;
-    border-radius: 15px;
-    margin-right: 220px;
+      margin-left: 24px;
 
-    color: ${({ theme }) => theme.colors.secondary};
-    background-color: transparent;
+      color: ${({ theme }) => theme.colors.secondary};
+      background-color: ${({ theme }) => theme.colors.primary};
+      box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.49);
+      transition: transform 1s ease;
 
-    &:hover {
-      color: ${({ theme }) => theme.colors.primary};
+      &:hover {
+        transform: scale(1.03);
+      }
     }
   }
 
   .DotsLoader {
     margin: 8px 0 16px 0;
+  }
+
+  .Slider {
+    margin-bottom: 32px;
+  }
+
+  @media screen and (min-width: 1500px) {
+    #submits {
+      align-self: flex-end;
+
+      margin-right: 64px;
+    }
   }
 `
 

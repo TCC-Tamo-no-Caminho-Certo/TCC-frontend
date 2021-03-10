@@ -8,7 +8,7 @@ import { UserActions } from 'store/user'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
-import { Datepicker, Form, Submit, Text } from 'components/Form'
+import { Form, Submit, Text } from 'components/Form'
 import Modal, { ModalMethods } from 'components/Modal'
 
 import { useDispatch } from 'react-redux'
@@ -25,34 +25,25 @@ const EditProfile = () => {
   const confirmRefModal = useRef<ModalMethods>(null)
   const imageRefModal = useRef<ModalMethods>(null)
 
-  const getFormData = () => {}
-
   const submitCallback = (resData: any) =>
     resData.success && dispatch(UserActions.update(updateData))
 
   return (
     <ImageRefModalContext.Provider value={{ imageRef: imageRefModal }}>
       <Style>
-        <Form
-          loading
-          captcha
-          path='user/update'
-          getData={getFormData}
-          afterResData={submitCallback}
-        >
+        <Form loading captcha path='user/update' afterResData={submitCallback}>
           <Containers />
 
-          <button id='discardButton' type='button'>
-            Descartar alterações
-          </button>
+          <div id='submits'>
+            <button type='button'>Descartar alterações</button>
 
-          <button
-            id='saveButton'
-            type='button'
-            onClick={() => confirmRefModal.current?.toggleModal(true)}
-          >
-            Salvar
-          </button>
+            <button
+              type='button'
+              onClick={() => confirmRefModal.current?.toggleModal(true)}
+            >
+              Salvar
+            </button>
+          </div>
         </Form>
       </Style>
 
