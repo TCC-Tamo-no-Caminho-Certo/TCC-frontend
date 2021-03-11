@@ -14,6 +14,7 @@ const Style = styled(motion.div)`
 
     background-color: ${({ theme }) => theme.colors.tertiary};
     color: ${({ theme }) => theme.colors.white};
+    border: solid red 1px;
 
     h2 {
       width: 90%;

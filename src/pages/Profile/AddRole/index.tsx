@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import Style from './styles'
 
 import RoleInfo from './RoleInfo'
@@ -7,7 +13,6 @@ import ProfessorForm from './Forms/ProfessorForm'
 
 import selectRoleLabel from 'utils/makeRoleLabel'
 
-// import api from 'services/api'
 import { RootState } from 'store'
 import { Role, UserState } from 'store/user'
 
@@ -25,12 +30,16 @@ const allRoles: Role[] = [
   'moderator'
 ]
 
+export const AddRoleContext = createContext({ rolesHeight: 0 })
+
 const AddRole = () => {
   const { roles } = useSelector<RootState, UserState>(state => state.user)
   const [roleSelected, setRoleSelected] = useState<Role | undefined>(undefined)
   const labelRoles = roles.map(role => selectRoleLabel(role))
   const theme = useContext(ThemeContext)
   const location = useLocation()
+  const rolesRef = useRef<HTMLDivElement>(null)
+  const [rolesHeight, setRolesHeight] = useState(0)
 
   useEffect(() => {
     const { pathname } = location
@@ -39,9 +48,14 @@ const AddRole = () => {
       allRoles.map(role => pathname.includes(role) && setRoleSelected(role))
   }, [location, roleSelected])
 
+  const onLabelClick = () => {
+    const height = rolesRef.current?.clientHeight
+    setRolesHeight(height || 0)
+  }
+
   return (
     <Style>
-      <section>
+      <section ref={rolesRef}>
         <h2>Escolher Papel</h2>
 
         <p>
@@ -60,6 +74,7 @@ const AddRole = () => {
             noButton
             title='Convidado'
             color={theme.roles.guest}
+            onLabelClick={onLabelClick}
             benefits={[
               'Solicitar alteração de papel para Estudante ou Professor'
             ]}
@@ -70,6 +85,7 @@ const AddRole = () => {
             userRoles={labelRoles}
             color={theme.roles.student}
             onClick={() => setRoleSelected('student')}
+            onLabelClick={onLabelClick}
             benefits={[
               'Participar de propostas',
               'Candidatar-se a um projeto',
@@ -83,6 +99,7 @@ const AddRole = () => {
             userRoles={labelRoles}
             color={theme.roles.professor}
             onClick={() => setRoleSelected('professor')}
+            onLabelClick={onLabelClick}
             benefits={[
               'Pode fazer tudo que um estudante pode fazer',
               'Pedir revisão de propostas',
@@ -96,9 +113,7 @@ const AddRole = () => {
               title='Moderador'
               userRoles={labelRoles}
               color={theme.roles.moderator}
-              onClick={() => {
-                // api.post()
-              }}
+              onLabelClick={onLabelClick}
               benefits={[
                 'Aceitar solicitação de mudança para Revisor ',
                 `Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores
@@ -111,8 +126,10 @@ const AddRole = () => {
         </div>
       </section>
 
-      {roleSelected === 'student' && <StudentForm />}
-      {roleSelected === 'professor' && <ProfessorForm />}
+      <AddRoleContext.Provider value={{ rolesHeight }}>
+        {roleSelected === 'student' && <StudentForm />}
+        {roleSelected === 'professor' && <ProfessorForm />}
+      </AddRoleContext.Provider>
     </Style>
   )
 }

@@ -139,7 +139,7 @@ const Style = styled(motion.section)`
   }
 
   .Slider {
-    margin-bottom: 32px;
+    margin: 32px 0;
   }
 
   @media screen and (min-width: 1500px) {

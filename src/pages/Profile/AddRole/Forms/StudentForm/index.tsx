@@ -88,7 +88,6 @@ const StudentForm = () => {
   const [showWays, toggleWays] = useCycle(false, true)
   const [showReceipt, setShowReceipt] = useState(false)
   const [showSubmit, toggleSubmit] = useState(false)
-
   const setUniversitiesData = async () => {
     const { universities } = await api.get('/universities')
 

@@ -10,16 +10,16 @@ interface RoleInfoProps {
   title: string
   benefits: string[]
   color: string
-
-  onClick?(): void
   noButton?: boolean
   userRoles?: string[]
+  onClick?(): void
+  onLabelClick?(): void
 }
 
 const container: Variants = {
   show: {
     cursor: 'pointer',
-    height: 320,
+    height: 'auto',
     opacity: 1,
     transition: { staggerChildren: 0.05, type: 'tween', duration: 0.1 }
   },
@@ -60,8 +60,9 @@ const RoleInfo = ({
   benefits,
   color,
   onClick,
+  userRoles,
   noButton = false,
-  userRoles
+  onLabelClick
 }: RoleInfoProps) => {
   const [show, toggleShow] = useCycle<boolean>(false, true)
   const [deg, rotate] = useCycle(0, -90)
@@ -83,6 +84,7 @@ const RoleInfo = ({
         onClick={() => {
           toggleShow()
           rotate()
+          setTimeout(() => onLabelClick && onLabelClick(), 301)
         }}
       >
         <ArrowIcon
@@ -104,9 +106,11 @@ const RoleInfo = ({
             <ul>
               {benefits.map((benefit, index) => (
                 <motion.li key={index} variants={item}>
-                  <CheckIcon />
+                  <p>
+                    <CheckIcon />
 
-                  {benefit}
+                    {benefit}
+                  </p>
                 </motion.li>
               ))}
             </ul>

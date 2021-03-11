@@ -1,5 +1,13 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  useContext,
+  useImperativeHandle,
+  useRef,
+  useState
+} from 'react'
 import Style from './styles'
+
+import { AddRoleContext } from '../../index'
 
 import Form, { Submit, Text } from 'components/Form'
 import Popup, { PopupMethods } from 'components/Popup'
@@ -27,6 +35,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
   ({ universityData, role }, ref) => {
     const popupRef = useRef<PopupMethods>(null)
     const modalRef = useRef<ModalMethods>(null)
+    const { rolesHeight } = useContext(AddRoleContext)
 
     const [codeSend, setCodeSend] = useState(false)
 
@@ -60,7 +69,12 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
 
     return (
       <>
-        <Modal ref={modalRef} bgHeight={'200vh'} bottom='50vh' translateY='50%'>
+        <Modal
+          ref={modalRef}
+          bgHeight={`calc(${rolesHeight}px + 100vh)`}
+          bottom='50vh'
+          translateY='50%'
+        >
           <Style>
             <span>{universityData?.label}</span>
 

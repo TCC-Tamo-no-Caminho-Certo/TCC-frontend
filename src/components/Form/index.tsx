@@ -97,7 +97,6 @@ const Form = ({
             break
 
           case 'date':
-            console.log(value)
             data[current.name] = value
             break
 

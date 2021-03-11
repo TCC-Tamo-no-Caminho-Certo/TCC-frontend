@@ -47,32 +47,34 @@ const Style = styled.div<StyleProps>`
 
     opacity: 0;
 
-    ul {
-      li {
-        opacity: 0;
-        color: ${({ theme }) => theme.colors.secondary};
+    ul li {
+      opacity: 0;
+      color: ${({ theme }) => theme.colors.secondary};
+      font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
 
-        & + li {
-          margin-top: 8px;
-        }
+      & + li {
+        margin-top: 8px;
+      }
 
-        .Icon {
-          width: 18px;
-          height: 12px;
-          margin-right: 8px;
+      .Icon {
+        width: 18px;
+        height: 12px;
+        margin-right: 8px;
 
-          fill: ${({ theme }) => theme.colors.green};
-        }
+        fill: ${({ theme }) => theme.colors.green};
       }
     }
 
     button {
+      margin-top: 24px;
+
       width: 100%;
       min-height: 32px;
       height: 32px;
       border-radius: 10px;
       opacity: 0;
 
+      font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
       color: ${({ theme }) => theme.colors.secondary};
       background-color: ${({ color }) => color};
     }

@@ -54,6 +54,7 @@ export const Form = styled(FormComponent)`
         height: 42px;
         border-radius: 4px;
         padding: 12px;
+        font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
 
         background-color: ${({ theme }) => theme.colors.tertiary};
         color: ${({ theme }) => theme.colors.white};
