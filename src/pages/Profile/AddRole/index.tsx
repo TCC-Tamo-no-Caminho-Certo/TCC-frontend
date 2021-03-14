@@ -33,9 +33,9 @@ const allRoles: Role[] = [
 export const AddRoleContext = createContext({ rolesHeight: 0 })
 
 const AddRole = () => {
-  const { roles } = useSelector<RootState, UserState>(state => state.user)
+  const { role } = useSelector<RootState, UserState>(state => state.user)
   const [roleSelected, setRoleSelected] = useState<Role | undefined>(undefined)
-  const labelRoles = roles.map(role => selectRoleLabel(role))
+  const labelRoles = role.map(role => selectRoleLabel(role))
   const theme = useContext(ThemeContext)
   const location = useLocation()
   const rolesRef = useRef<HTMLDivElement>(null)
@@ -108,7 +108,7 @@ const AddRole = () => {
             ]}
           />
 
-          {roles.includes('professor') && (
+          {role.includes('professor') && (
             <RoleInfo
               title='Moderador'
               userRoles={labelRoles}

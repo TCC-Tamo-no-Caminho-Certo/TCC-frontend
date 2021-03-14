@@ -9,6 +9,15 @@ const Style = styled.div<StyleProps>`
 
   margin: 0;
 
+  padding: 0px;
+
+  .Select__single-value {
+    display: flex;
+    align-items: center;
+
+    height: 100%;
+  }
+
   ${({ isErrored }) =>
     isErrored &&
     css`

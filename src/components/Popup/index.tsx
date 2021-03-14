@@ -13,118 +13,88 @@ export type PopupType = 'error' | 'warning' | 'success' | 'other'
 
 interface PopupProps {
   top?: string
+  bottom?: string
   translateY?: string
   bgHeight?: string
-  onOkClick?: () => void
-  onCloseClick?: () => void
 }
 
 interface ConfigPopupProps {
-  setModal?: boolean
   type: PopupType
+  setModal?: boolean
   message?: string
   title?: string
+  onClick?: () => void
+  onOkClick?: () => void
+  onCloseClick?: () => void
 }
 
 export interface PopupMethods {
   configPopup: (_props: ConfigPopupProps) => void
 }
 
+const initialState: ConfigPopupProps = {
+  type: 'warning',
+  setModal: false,
+  message: undefined,
+  title: undefined,
+  onOkClick: undefined,
+  onCloseClick: undefined
+}
+
+const makeTitle = (type: PopupType, title?: string) => {
+  switch (type) {
+    case 'success':
+      return 'Sucesso'
+    case 'warning':
+      return 'Atenção'
+    case 'error':
+      return 'Error'
+    default:
+      return title || ''
+  }
+}
+
 const Popup = forwardRef<PopupMethods, PopupProps>(
-  ({ onOkClick, onCloseClick, bgHeight, top, translateY }, ref) => {
+  ({ bgHeight, top, translateY, bottom }, ref) => {
     const modalRef = useRef<ModalMethods>(null)
-    const [openPopup, setOpenPopup] = useState(false)
+    const [
+      { type, setModal, message, title, onClick, onOkClick, onCloseClick },
+      setConfigState
+    ] = useState<ConfigPopupProps>(initialState)
 
-    const [type, setType] = useState<PopupType>('warning')
-    const [title, setTitle] = useState<string | undefined>()
-    const [message, setMessage] = useState<string | undefined>()
-
-    const onClick = () => {
-      setOpenPopup(false)
-      onOkClick && onOkClick()
+    const onConfirmClick = () => {
+      setConfigState(prev => ({ ...prev, setModal: false }))
+      onClick ? onClick() : onOkClick && onOkClick()
     }
 
-    const configPopup = (content: ConfigPopupProps) => {
-      if (content.setModal === undefined) setOpenPopup(!openPopup)
-      else setOpenPopup(content.setModal)
-
-      if (content) {
-        setTitle(content.title)
-        setMessage(content.message)
-        setType(content.type)
-      }
-    }
-
-    useEffect(() => {
-      modalRef.current?.toggleModal(openPopup)
-    }, [openPopup])
+    const configPopup = (content: ConfigPopupProps) => setConfigState(content)
 
     useImperativeHandle(ref, () => ({ configPopup }))
 
-    const popup = {
-      error: (
-        <Style className='Popup' type='error'>
-          <span>Error</span>
-
-          <hr />
-
-          <p>{message}</p>
-
-          <button type='button' onClick={onClick}>
-            Entendi!
-          </button>
-        </Style>
-      ),
-      warning: (
-        <Style className='Popup' type='warning'>
-          <span>Atenção</span>
-
-          <hr />
-
-          <p>{message}</p>
-
-          <button type='button' onClick={onClick}>
-            Entendi!
-          </button>
-        </Style>
-      ),
-      success: (
-        <Style className='Popup' type='success'>
-          <span>Sucesso</span>
-
-          <hr />
-
-          <p>{message}</p>
-
-          <button type='button' onClick={onClick}>
-            Entendi!
-          </button>
-        </Style>
-      ),
-      other: (
-        <Style className='Popup' type='success'>
-          <span>{title}</span>
-
-          <hr />
-
-          <p>{message}</p>
-
-          <button type='button' onClick={onClick}>
-            Entendi!
-          </button>
-        </Style>
-      )
-    }
+    useEffect(() => {
+      modalRef.current?.toggleModal(setModal)
+    }, [setModal])
 
     return (
       <Modal
         ref={modalRef}
-        onBgClick={onCloseClick}
         top={top}
+        bottom={bottom}
         translateY={translateY}
         bgHeight={bgHeight}
+        onBgClick={onClick || (onCloseClick && onCloseClick)}
       >
-        {popup[type]}
+        <Style type={type}>
+          <span>{makeTitle(type, title)}</span>
+
+          <hr />
+
+          <p>{message}</p>
+
+          <button type='button' onClick={onConfirmClick}>
+            Entendi!
+          </button>
+        </Style>
       </Modal>
     )
   }

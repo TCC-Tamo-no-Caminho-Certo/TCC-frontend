@@ -110,7 +110,7 @@ const RightMenu = () => {
   const [editOpen, toggleEditOpen] = useCycle(false, true)
   const [isOpen, setIsOpen] = useState(false)
   const [changeRole, setChangeRole] = useState(false)
-  const { name, selectedRole, roles } = useSelector<RootState, UserState>(
+  const { name, selectedRole, role } = useSelector<RootState, UserState>(
     state => state.user
   )
 
@@ -269,7 +269,7 @@ const RightMenu = () => {
                       )}
 
                       <ul>
-                        {roles.map(role => (
+                        {role.map(role => (
                           <RoleLi
                             key={role}
                             role={role}

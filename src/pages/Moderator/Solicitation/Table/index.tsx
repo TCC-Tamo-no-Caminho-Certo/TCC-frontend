@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React, {
   MutableRefObject,
   useCallback,

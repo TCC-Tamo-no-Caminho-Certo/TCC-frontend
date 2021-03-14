@@ -1,5 +1,6 @@
-/* eslint-disable camelcase */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import api from 'services/api'
+
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type Role =
   | 'guest'
@@ -17,6 +18,8 @@ interface Email {
 }
 
 export interface UserState {
+  entities: []
+  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
   user_id: number
   name: string
   surname: string
@@ -24,7 +27,7 @@ export interface UserState {
   birthday: string
   created_at: string
   updated_at: string
-  roles: Role[]
+  role: Role[]
   selectedRole: Role
   email: Email[]
 }
@@ -37,12 +40,14 @@ export interface UserStatePayload {
   birthday?: string
   created_at?: string
   updated_at?: string
-  roles?: Role[]
+  role?: Role[]
   selectedRole?: Role
   email?: Email[]
 }
 
 const initialState: UserState = {
+  entities: [],
+  loading: 'idle',
   user_id: 0,
   name: '',
   surname: '',
@@ -50,10 +55,33 @@ const initialState: UserState = {
   birthday: '',
   created_at: '',
   updated_at: '',
-  roles: ['guest'],
+  role: ['guest'],
   selectedRole: 'guest',
   email: [{ address: '', main: true }]
 }
+
+const getRole = (roles: Role[]): Role => {
+  const localRole = localStorage.getItem('@SLab_selected_role') as Role
+
+  if (localRole) {
+    const haveHole = roles.filter(role => role === localRole)
+    if (haveHole.length !== 0) return haveHole[0]
+  }
+
+  localStorage.setItem('@SLab_selected_role', roles[0])
+  return roles[0]
+}
+
+export const getUser = createAsyncThunk('userConfig/getUser', async () => {
+  const response = await api.get('user')
+  const { user } = response
+  const initialRole = getRole(user.role)
+
+  return {
+    ...user,
+    selectedRole: initialRole
+  }
+})
 
 const User = createSlice({
   name: 'userConfig',
@@ -68,6 +96,14 @@ const User = createSlice({
         ...action.payload
       }
     }
+  },
+  extraReducers: builder => {
+    builder.addCase(getUser.fulfilled, (state, action) => {
+      console.log('inside builder.addCase getUser.fulfilled')
+      console.log(action.payload)
+
+      return { ...action.payload }
+    })
   }
 })
 

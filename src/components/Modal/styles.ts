@@ -34,6 +34,17 @@ const Style = styled.div<StyleProps>`
   align-items: center;
 
   transform: ${({ translateY }) => `translate(-50%, ${translateY})`};
+
+  #CloseIcon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+
+    width: 16px;
+    height: 16px;
+
+    stroke: ${({ theme }) => theme.colors.secondary};
+  }
 `
 
 export default Style

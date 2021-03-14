@@ -20,30 +20,26 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 const FormSignup = () => {
+  const popupRef = useRef<PopupMethods>(null)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const dispatch = useDispatch()
   const history = useHistory()
   const [disable, setDisable] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const popupRef = useRef<PopupMethods>(null)
 
-  const onModalClose = () => {
-    if (success) {
-      dispatch(HomeActions.update({ initial: false, page: 'login' }))
-      history.push('/')
-    }
+  const onSuccessClose = () => {
+    dispatch(HomeActions.update({ initial: false, page: 'login' }))
+    history.push('/')
   }
 
   const afterFormResData = (res: any) => {
-    if (res.success) {
-      setSuccess(res.success)
-
+    if (res.success)
       popupRef.current?.configPopup({
         setModal: true,
         type: 'success',
-        message: 'Cadastrado com sucesso!'
+        message: 'Cadastrado com sucesso! Confirme seu e-mail para fazer login',
+        onClick: onSuccessClose
       })
-    } else if (res.error === 'User already exists')
+    else if (res.error === 'User already exists')
       popupRef.current?.configPopup({
         setModal: true,
         type: 'error',
@@ -155,13 +151,7 @@ const FormSignup = () => {
           <Submit>Concordar e concluir</Submit>
         </Form>
 
-        <Popup
-          ref={popupRef}
-          onCloseClick={onModalClose}
-          onOkClick={onModalClose}
-          bgHeight='300vh'
-          top='50vh'
-        />
+        <Popup ref={popupRef} bgHeight='300vh' top='50vh' />
       </Style>
     </>
   )

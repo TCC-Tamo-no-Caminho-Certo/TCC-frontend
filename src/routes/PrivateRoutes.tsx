@@ -4,39 +4,16 @@ import Main from 'pages/Main'
 import Profile from 'pages/Profile'
 import Moderator from 'pages/Moderator'
 
-import api from 'services/api'
-
-import { Role, UserActions } from 'store/user'
+import { getUser } from 'store/user'
 
 import { useDispatch } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
-const getRole = (roles: Role[]): Role => {
-  const localRole = localStorage.getItem('@SLab_selected_role') as Role
-
-  if (localRole) {
-    const haveHole = roles.filter(role => role === localRole)
-    if (haveHole.length !== 0) return haveHole[0]
-  }
-
-  localStorage.setItem('@SLab_selected_role', roles[0])
-  return roles[0]
-}
-
 const PrivateRoutes = () => {
   const dispatch = useDispatch()
 
-  const onStartInPrivateRoute = useCallback(async () => {
-    const response = await api.get('user')
-    const { user } = response
-    const initialRole = getRole(user.role)
-
-    dispatch(
-      UserActions.update({
-        ...user,
-        selectedRole: initialRole
-      })
-    )
+  const onStartInPrivateRoute = useCallback(() => {
+    dispatch(getUser())
     window.history.pushState(null, '', document.URL)
   }, [dispatch])
 

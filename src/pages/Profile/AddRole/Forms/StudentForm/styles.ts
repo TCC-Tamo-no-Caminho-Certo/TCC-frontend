@@ -7,6 +7,10 @@ export const Form = styled(FormComponent)`
 
   color: ${({ theme }) => theme.colors.tertiary};
 
+  .Text {
+    margin-bottom: 16px;
+  }
+
   .Select,
   .Text {
     height: 35px;
@@ -70,6 +74,7 @@ export const Form = styled(FormComponent)`
 
       .Text {
         padding-left: 8px;
+        margin-bottom: 0px;
       }
     }
   }
@@ -86,7 +91,7 @@ export const Form = styled(FormComponent)`
       justify-content: center;
       align-items: center;
 
-      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
+      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.6rem);
 
       margin-bottom: 8px;
       height: 45px;

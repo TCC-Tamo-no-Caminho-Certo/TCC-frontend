@@ -28,10 +28,10 @@ const Containers = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const user = useSelector<RootState, UserState>(state => state.user)
 
-  const { roles } = user
+  const { role } = user
 
-  const containers: ContainersRoles[] = useMemo(() => ['personal', ...roles], [
-    roles
+  const containers: ContainersRoles[] = useMemo(() => ['personal', ...role], [
+    role
   ])
 
   useEffect(() => {

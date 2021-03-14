@@ -21,7 +21,9 @@ const ConfirmPassword = () => {
     popupRef.current?.configPopup({
       setModal: true,
       type: 'error',
-      message: 'Código não fornecido'
+      message: 'Código não fornecido',
+      onOkClick: () => history.push('/'),
+      onCloseClick: () => history.push('/')
     })
 
     throw new Error('No code provided')
@@ -32,12 +34,16 @@ const ConfirmPassword = () => {
       ? popupRef.current?.configPopup({
           setModal: true,
           type: 'success',
-          message: 'Senha alterada!'
+          message: 'Senha alterada!',
+          onOkClick: () => history.push('/'),
+          onCloseClick: () => history.push('/')
         })
       : popupRef.current?.configPopup({
           setModal: true,
           type: 'error',
-          message: 'Código inválido!'
+          message: 'Código inválido!',
+          onCloseClick: () => history.push('/'),
+          onOkClick: () => history.push('/')
         })
   }
 
@@ -82,11 +88,7 @@ const ConfirmPassword = () => {
         </Content>
       </Style>
 
-      <Popup
-        ref={popupRef}
-        onOkClick={() => history.push('/')}
-        onCloseClick={() => history.push('/')}
-      />
+      <Popup ref={popupRef} />
     </>
   )
 }

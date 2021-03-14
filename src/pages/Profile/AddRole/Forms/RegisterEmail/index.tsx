@@ -42,24 +42,47 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
     const professorRegex = new RegExp(
       universityData ? universityData.professorRegex : ''
     )
+
     const studentRegex = new RegExp(
       universityData ? universityData.studentRegex : ''
     )
+
     const regex = role === 'professor' ? professorRegex : studentRegex
+
     const emailSchema = Yup.object({
-      inst_email: Yup.string()
+      email: Yup.string()
         .email('O e-mail deve ser válido!')
         .matches(regex, 'E-mail inválido!')
         .required('Você esqueceu de informar o email!')
     })
 
     const onEmailSubmit = (result: any) => {
+      if (result.success) setTimeout(() => setCodeSend(true), 100)
+      else if (result.error === 'Email already in use!')
+        popupRef.current?.configPopup({
+          setModal: true,
+          type: 'error',
+          message: 'E-mail já cadastrado!'
+        })
+      else
+        popupRef.current?.configPopup({
+          setModal: true,
+          type: 'error',
+          message: 'Código não enviado!'
+        })
+    }
+
+    const onTokenSubmit = (result: any) => {
       result.success
-        ? setTimeout(() => setCodeSend(true), 1)
+        ? popupRef.current?.configPopup({
+            setModal: true,
+            type: 'success',
+            message: 'E-mail confirmado!'
+          })
         : popupRef.current?.configPopup({
             setModal: true,
             type: 'error',
-            message: 'Código não enviado!'
+            message: 'Código inválido!'
           })
     }
 
@@ -76,24 +99,47 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
           translateY='50%'
         >
           <Style>
-            <span>{universityData?.label}</span>
-
             {!codeSend && (
-              <Form
-                path='user/email'
-                addData={{ university_id: universityData?.value }}
-                afterResData={onEmailSubmit}
-                schema={emailSchema}
-              >
-                <Text name='inst_email' placeholder='E-mail institucional' />
+              <>
+                <span>{universityData?.label}</span>
+                <Form
+                  path='user/email'
+                  addData={{ university_id: universityData?.value }}
+                  afterResData={onEmailSubmit}
+                  schema={emailSchema}
+                >
+                  <Text name='email' placeholder='E-mail institucional' />
 
-                <Submit>Enviar código de confirmação</Submit>
+                  <Submit>Enviar código de confirmação</Submit>
+                </Form>
+                w
+              </>
+            )}
+
+            {codeSend && (
+              <Form
+                method='get'
+                id='tokenForm'
+                path='confirm/email/*%'
+                addToPath={['token']}
+                afterResData={onTokenSubmit}
+              >
+                <p>Digite o código de confirmação enviado no seu e-mail.</p>
+
+                <Text name='token' placeholder='Código' />
+
+                <Submit>Validar</Submit>
               </Form>
             )}
           </Style>
         </Modal>
 
-        <Popup ref={popupRef} />
+        <Popup
+          translateY='50%'
+          bottom='50vh'
+          bgHeight={`calc(${rolesHeight}px + 100vh)`}
+          ref={popupRef}
+        />
       </>
     )
   }

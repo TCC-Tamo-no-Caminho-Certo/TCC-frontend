@@ -42,6 +42,7 @@
     "multiline-ternary": "off",
     "indent": "off",
     "curly": [2, "multi"],
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "camelcase": "off"
   }
 }

@@ -21,6 +21,7 @@ interface FileProps extends ReactCropperProps {
   bottom?: string
   noCropper?: boolean
   onClick?: () => void
+  onChange?: () => void
 }
 
 const File = ({
@@ -32,6 +33,7 @@ const File = ({
   top,
   bottom,
   noCropper = false,
+  onChange: receivedOnChange,
   ...props
 }: FileProps) => {
   const form = useContext<FormState | null>(FormContext)
@@ -56,6 +58,7 @@ const File = ({
 
     reader.readAsDataURL(files[0])
     reader.onload = () => setFile(reader.result)
+    receivedOnChange && receivedOnChange()
   }
 
   useEffect(() => {

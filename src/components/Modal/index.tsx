@@ -7,12 +7,14 @@ import React, {
 } from 'react'
 import Style, { ModalBackground } from './styles'
 
+import CloseIcon from 'assets/Inputs/CloseIcon'
+
 interface ModalProps {
   children: ReactElement
   top?: string
   bottom?: string
-  translateY?: string
   bgHeight?: string
+  translateY?: string
   onBgClick?: () => void
 }
 
@@ -23,40 +25,40 @@ export interface ModalMethods {
 const Modal = forwardRef<ModalMethods, ModalProps>(
   (
     {
-      bottom = 'auto',
-      top = '50vh',
-      translateY = '-60%',
-      bgHeight = '100vh',
       children,
-      onBgClick
+      onBgClick,
+      top = '50vh',
+      bottom = 'auto',
+      bgHeight = '100vh',
+      translateY = '-60%'
     },
     ref
   ) => {
     const modalRef = useRef(null)
     const [openModal, setOpenModal] = useState(false)
 
+    window.addEventListener('keydown', ({ key }) => {
+      key === 'Escape' && setOpenModal(false)
+    })
+
     const toggleModal = (setModal?: boolean) => {
-      if (setModal === undefined) setOpenModal(!openModal)
-      else setOpenModal(setModal)
+      setModal === undefined ? setOpenModal(!openModal) : setOpenModal(setModal)
+    }
+
+    const onBackgroundClick = () => {
+      setOpenModal(false)
+      onBgClick && onBgClick()
     }
 
     useImperativeHandle(ref, () => ({ toggleModal }))
 
-    window.addEventListener('keydown', e => {
-      e.key === 'Escape' && setOpenModal(false)
-    })
-
     return openModal ? (
       <>
-        <ModalBackground
-          height={bgHeight}
-          onClick={() => {
-            setOpenModal(false)
-            onBgClick && onBgClick()
-          }}
-        />
+        <ModalBackground height={bgHeight} onClick={onBackgroundClick} />
 
-        <Style top={top} bottom={bottom} translateY={translateY} ref={modalRef}>
+        <Style top={top} bottom={bottom} ref={modalRef} translateY={translateY}>
+          <CloseIcon onClick={onBackgroundClick} />
+
           {children}
         </Style>
       </>

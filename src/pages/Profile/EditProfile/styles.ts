@@ -110,10 +110,6 @@ const Style = styled(motion.section)`
 
       color: ${({ theme }) => theme.colors.secondary};
       background-color: transparent;
-
-      &:hover {
-        color: ${({ theme }) => theme.colors.primary};
-      }
     }
 
     button + button {
