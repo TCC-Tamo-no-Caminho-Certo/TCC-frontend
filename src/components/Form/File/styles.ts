@@ -1,22 +1,41 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-const Style = styled.div`
+interface StyleProps {
+  haveValue?: string
+  flexColumn?: boolean
+}
+
+const Style = styled.div<StyleProps>`
   #fileInput {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+
+    flex-direction: ${({ flexColumn }) => (flexColumn ? 'column' : 'row')};
 
     #fileName {
-      margin-bottom: 8px;
+      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.6rem);
+
+      color: ${({ theme }) => theme.colors.primary};
+
+      ${({ flexColumn, haveValue }) =>
+        flexColumn
+          ? css`
+              margin-bottom: ${haveValue ? '8px' : '0px'};
+            `
+          : css`
+              margin-right: ${haveValue ? '8px' : '0px'};
+            `};
     }
 
     label {
+      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.8rem);
       padding: 8px 16px;
       border-radius: 8px;
 
       background-color: ${({ theme }) => theme.colors.primary};
       color: ${({ theme }) => theme.colors.secondary};
+      box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.39);
 
       .Icon {
         height: 16px;

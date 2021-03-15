@@ -86,7 +86,7 @@ export default createGlobalStyle`
     }
   }
 
-  @media screen and (min-width: 475px) {
+  @media screen and (min-width: 545px) {
     html body::-webkit-scrollbar {
       width: 16px;
     }

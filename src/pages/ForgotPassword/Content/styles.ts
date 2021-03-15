@@ -6,12 +6,6 @@ export const ConfirmCode = styled.div`
     justify-content: center;
     align-items: center;
 
-    &:hover {
-      transform: scale(1.01);
-
-      filter: brightness(1.1);
-    }
-
     .Icon {
       height: 32px;
       width: 32px;
@@ -51,13 +45,6 @@ const Style = styled.div`
   .Submit {
     width: 100%;
     height: 44px;
-    transition: all 0.2s;
-
-    &:hover {
-      transform: scale(1.01);
-
-      filter: brightness(1.1);
-    }
   }
 `
 

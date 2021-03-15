@@ -34,12 +34,6 @@ export const Content = styled.main`
       width: 100%;
       height: 44px;
       transition: all 0.2s;
-
-      &:hover {
-        transform: scale(1.01);
-
-        filter: brightness(1.1);
-      }
     }
   }
 `

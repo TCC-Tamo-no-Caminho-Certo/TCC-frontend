@@ -50,14 +50,6 @@ export const Form = styled(RealForm)`
     }
 
     .Submit {
-      transition: all 0.2s;
-
-      &:hover,
-      &:focus {
-        filter: brightness(1.1);
-        transform: scale(1.01);
-      }
-
       .DotsLoader {
         position: absolute;
         right: 10%;

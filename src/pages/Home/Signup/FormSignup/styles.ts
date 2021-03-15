@@ -72,15 +72,8 @@ const Style = styled.div`
 
     .Submit {
       height: max(5vh, 35px);
-      transition: all 0.2s;
       margin-top: 1.25vh;
       border-radius: 8px;
-
-      &:hover {
-        transform: scale(1.01);
-
-        filter: brightness(1.1);
-      }
 
       .DotsLoader {
         position: absolute;

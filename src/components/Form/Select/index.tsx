@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import Style from './styles'
 
 import { FormContext, FormState } from '../'
@@ -12,7 +18,7 @@ import { lighten } from 'polished'
 import { useSelector } from 'react-redux'
 import RealSelect, { Theme } from 'react-select'
 
-const Select = ({ isMulti, ...props }: any) => {
+const Select = forwardRef(({ isMulti, ...props }: any, ref) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const selectRef = useRef(null)
   const [error, setError] = useState<string>()
@@ -90,7 +96,7 @@ const Select = ({ isMulti, ...props }: any) => {
   })
 
   return (
-    <Style isErrored={!!error} className='Select'>
+    <Style isErrored={!!error} ref={ref as any} className='Select'>
       <ErrorTooltip error={!!error} content={error} />
 
       <RealSelect
@@ -104,6 +110,6 @@ const Select = ({ isMulti, ...props }: any) => {
       />
     </Style>
   )
-}
+})
 
 export default Select

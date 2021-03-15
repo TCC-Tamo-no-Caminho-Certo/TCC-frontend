@@ -11,12 +11,18 @@ interface ContentProps {
 export const Header = styled(HeaderComponent)`
   justify-content: start;
   font-size: clamp(1.4rem, 0.6rem + 2.6vw, 2rem);
-  padding: 24px 24px;
+  padding-left: 24px;
+  border-radius: 0;
+
+  @media screen and (min-width: 620px) {
+    border-radius: 24px 24px 0 0;
+  }
 `
 
 export const Content = styled(Card)<ContentProps>`
-  width: 550px;
+  width: clamp(320px, 100vw, 550px);
   padding-bottom: 0;
+  border-radius: 0;
 
   #role {
     width: 100%;
@@ -28,9 +34,17 @@ export const Content = styled(Card)<ContentProps>`
 
   #scrollButton {
     padding: 8px;
-
     margin-bottom: 24px;
-    color: ${({ theme }) => theme.colors.primary};
+
+    color: ${({ theme }) => theme.colors.tertiary};
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.primary};
+    }
+  }
+
+  @media screen and (min-width: 620px) {
+    border-radius: 24px;
   }
 `
 

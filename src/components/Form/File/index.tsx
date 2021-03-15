@@ -15,6 +15,7 @@ import { Cropper, ReactCropperProps } from 'react-cropper'
 interface FileProps extends ReactCropperProps {
   label: string
   name: string
+  flexColumn?: boolean
   bgHeight?: string
   tranlateY?: string
   top?: string
@@ -33,6 +34,7 @@ const File = ({
   top,
   bottom,
   noCropper = false,
+  flexColumn = false,
   onChange: receivedOnChange,
   ...props
 }: FileProps) => {
@@ -52,10 +54,10 @@ const File = ({
   const onChange = (e: any) => {
     e.preventDefault()
 
-    setError('')
     const { files } = e.target
     const reader = new FileReader()
 
+    setError('')
     reader.readAsDataURL(files[0])
     reader.onload = () => setFile(reader.result)
     receivedOnChange && receivedOnChange()
@@ -65,7 +67,7 @@ const File = ({
     const fileForInput = {
       type: 'file',
       inputRef: fileRef,
-      value: !noCropper ? fileData : file,
+      value: noCropper ? file : fileData,
       setError
     }
 
@@ -75,7 +77,11 @@ const File = ({
   }, [fileRef, form, fileData, noCropper, file])
 
   return (
-    <Style className='File'>
+    <Style
+      className='File'
+      haveValue={fileRef.current?.value}
+      flexColumn={flexColumn}
+    >
       <div id='fileInput'>
         <ErrorTooltip error={!!error} content={error} />
 

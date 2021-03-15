@@ -27,12 +27,13 @@ export interface RegisterEmailMethods {
 }
 
 interface RegisterEmailProps {
+  onSuccess?: () => void
   universityData?: University
   role: 'professor' | 'student'
 }
 
 const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
-  ({ universityData, role }, ref) => {
+  ({ universityData, role, onSuccess }, ref) => {
     const popupRef = useRef<PopupMethods>(null)
     const modalRef = useRef<ModalMethods>(null)
     const { rolesHeight } = useContext(AddRoleContext)
@@ -73,17 +74,20 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
     }
 
     const onTokenSubmit = (result: any) => {
-      result.success
-        ? popupRef.current?.configPopup({
-            setModal: true,
-            type: 'success',
-            message: 'E-mail confirmado!'
-          })
-        : popupRef.current?.configPopup({
-            setModal: true,
-            type: 'error',
-            message: 'Código inválido!'
-          })
+      if (result.success) {
+        popupRef.current?.configPopup({
+          setModal: true,
+          type: 'success',
+          message: 'E-mail confirmado!'
+        })
+
+        onSuccess && onSuccess()
+      } else
+        popupRef.current?.configPopup({
+          setModal: true,
+          type: 'error',
+          message: 'Código inválido!'
+        })
     }
 
     const toggleRegister = () => modalRef.current?.toggleModal()
@@ -99,7 +103,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
           translateY='50%'
         >
           <Style>
-            {!codeSend && (
+            {codeSend && (
               <>
                 <span>{universityData?.label}</span>
                 <Form
@@ -112,11 +116,10 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
 
                   <Submit>Enviar código de confirmação</Submit>
                 </Form>
-                w
               </>
             )}
 
-            {codeSend && (
+            {!codeSend && (
               <Form
                 method='get'
                 id='tokenForm'
@@ -124,7 +127,9 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
                 addToPath={['token']}
                 afterResData={onTokenSubmit}
               >
-                <p>Digite o código de confirmação enviado no seu e-mail.</p>
+                <p>
+                  Digite o código de confirmação que foi enviado no seu e-mail.
+                </p>
 
                 <Text name='token' placeholder='Código' />
 

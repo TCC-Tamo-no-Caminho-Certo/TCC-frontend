@@ -54,83 +54,85 @@ const AddRole = () => {
   }
 
   return (
-    <Style>
-      <section ref={rolesRef}>
-        <h2>Escolher Papel</h2>
+    <>
+      <Style>
+        <section ref={rolesRef}>
+          <h2>Escolher Papel</h2>
 
-        <p>
-          Escolha um papel para poder ter mais acesso ao Steams Labs! Lorem
-          ipsum dolor sit amet, consectetur adipiscing elit. Fusce gravida
-          convallis magna, vel dignissim leo porttitor quis. Donec dolor dolor,
-          sagittis a lacus sed, interdum egestas ipsum. In at odio efficitur,
-          iaculis libero sed, consectetur nibh. Proin euismod auctor tempus.
-          Vivamus eleifend tellus purus, id imperdiet sapien pharetra quis.
-          Praesent mattis dolor a dictum scelerisque. Maecenas et tortor
-          elementum.
-        </p>
+          <p>
+            Escolha um papel para poder ter mais acesso ao Steams Labs! Lorem
+            ipsum dolor sit amet, consectetur adipiscing elit. Fusce gravida
+            convallis magna, vel dignissim leo porttitor quis. Donec dolor
+            dolor, sagittis a lacus sed, interdum egestas ipsum. In at odio
+            efficitur, iaculis libero sed, consectetur nibh. Proin euismod
+            auctor tempus. Vivamus eleifend tellus purus, id imperdiet sapien
+            pharetra quis. Praesent mattis dolor a dictum scelerisque. Maecenas
+            et tortor elementum.
+          </p>
 
-        <div id='roles'>
-          <RoleInfo
-            noButton
-            title='Convidado'
-            color={theme.roles.guest}
-            onLabelClick={onLabelClick}
-            benefits={[
-              'Solicitar alteração de papel para Estudante ou Professor'
-            ]}
-          />
-
-          <RoleInfo
-            title='Estudante'
-            userRoles={labelRoles}
-            color={theme.roles.student}
-            onClick={() => setRoleSelected('student')}
-            onLabelClick={onLabelClick}
-            benefits={[
-              'Participar de propostas',
-              'Candidatar-se a um projeto',
-              'Aceitar convites para propostas e projetos',
-              'Candidatar-se a um projeto'
-            ]}
-          />
-
-          <RoleInfo
-            title='Professor'
-            userRoles={labelRoles}
-            color={theme.roles.professor}
-            onClick={() => setRoleSelected('professor')}
-            onLabelClick={onLabelClick}
-            benefits={[
-              'Pode fazer tudo que um estudante pode fazer',
-              'Pedir revisão de propostas',
-              'Remover estudantes de propostas, somente professor coordenador pode remover outros professores',
-              'Solicitar papel de Revisor'
-            ]}
-          />
-
-          {role.includes('professor') && (
+          <div id='roles'>
             <RoleInfo
-              title='Moderador'
-              userRoles={labelRoles}
-              color={theme.roles.moderator}
+              noButton
+              title='Convidado'
+              color={theme.roles.guest}
               onLabelClick={onLabelClick}
               benefits={[
-                'Aceitar solicitação de mudança para Revisor ',
-                `Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores
-              (devem estar na mesma instituição)`,
-                'Ver usuários da instituição',
-                'Alterar status da proposta'
+                'Solicitar alteração de papel para Estudante ou Professor'
               ]}
             />
-          )}
-        </div>
-      </section>
+
+            <RoleInfo
+              title='Estudante'
+              userRoles={labelRoles}
+              color={theme.roles.student}
+              onClick={() => setRoleSelected('student')}
+              onLabelClick={onLabelClick}
+              benefits={[
+                'Participar de propostas',
+                'Candidatar-se a um projeto',
+                'Aceitar convites para propostas e projetos',
+                'Candidatar-se a um projeto'
+              ]}
+            />
+
+            <RoleInfo
+              title='Professor'
+              userRoles={labelRoles}
+              color={theme.roles.professor}
+              onClick={() => setRoleSelected('professor')}
+              onLabelClick={onLabelClick}
+              benefits={[
+                'Pode fazer tudo que um estudante pode fazer',
+                'Pedir revisão de propostas',
+                'Remover estudantes de propostas, somente professor coordenador pode remover outros professores',
+                'Solicitar papel de Revisor'
+              ]}
+            />
+
+            {role.includes('professor') && (
+              <RoleInfo
+                title='Moderador'
+                userRoles={labelRoles}
+                color={theme.roles.moderator}
+                onLabelClick={onLabelClick}
+                benefits={[
+                  'Aceitar solicitação de mudança para Revisor ',
+                  `Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores
+              (devem estar na mesma instituição)`,
+                  'Ver usuários da instituição',
+                  'Alterar status da proposta'
+                ]}
+              />
+            )}
+          </div>
+        </section>
+      </Style>
 
       <AddRoleContext.Provider value={{ rolesHeight }}>
         {roleSelected === 'student' && <StudentForm />}
         {roleSelected === 'professor' && <ProfessorForm />}
       </AddRoleContext.Provider>
-    </Style>
+    </>
   )
 }
 

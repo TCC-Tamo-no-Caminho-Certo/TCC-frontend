@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 import Main from 'pages/Main'
 import Profile from 'pages/Profile'
@@ -12,14 +12,10 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 const PrivateRoutes = () => {
   const dispatch = useDispatch()
 
-  const onStartInPrivateRoute = useCallback(() => {
+  useEffect(() => {
     dispatch(getUser())
     window.history.pushState(null, '', document.URL)
   }, [dispatch])
-
-  useEffect(() => {
-    onStartInPrivateRoute()
-  }, [onStartInPrivateRoute])
 
   return (
     <Switch>

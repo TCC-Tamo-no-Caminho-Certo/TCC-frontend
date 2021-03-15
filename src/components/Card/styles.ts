@@ -9,11 +9,11 @@ export const Header = styled.header`
   justify-content: center;
 
   width: 100%;
-  height: 40px;
+  height: 48px;
   border-radius: 16px 16px 0 0;
 
   color: ${({ theme }) => theme.colors.secondary};
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.primary}; ;
 `
 
 const Style = styled.div`
@@ -24,7 +24,7 @@ const Style = styled.div`
   justify-content: center;
   flex-direction: column;
 
-  padding: 64px 24px;
+  padding: 64px 20px 64px 12px;
   width: 100%;
   border-radius: 16px;
 
@@ -37,6 +37,10 @@ const Style = styled.div`
 
   .Avatar {
     margin-bottom: 24px;
+  }
+
+  @media screen and (min-width: 620px) {
+    padding: 64px 24px;
   }
 `
 
