@@ -1,67 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Style from './styles'
+
+import makeRoleLabel from 'utils/makeRoleLabel'
+
+import { Role } from 'store/user'
 
 import Card from 'components/Card'
 
 import { motion, useCycle } from 'framer-motion'
 
-const RequestStatus = () => {
-  const [progressTrue, cycleProgressTrue] = useCycle(
+interface RequestStatusProps {
+  role: Role
+}
+
+const RequestStatus = ({ role }: RequestStatusProps) => {
+  const [errorFirst, _setErrorFirst] = useState<boolean | 'nothing'>(false)
+  const [errorSecond, _setErrorSecond] = useState<boolean | 'nothing'>(
+    'nothing'
+  )
+  const [errorThird, _setErrorThird] = useState<boolean | 'nothing'>('nothing')
+
+  const [progressTrue, _cycleProgressTrue] = useCycle(
     ['4%', '4%'],
     ['4%', '27%'],
     ['27%', '50%']
   )
-  const [progressFalse, cycleProgressFalse] = useCycle(
+  const [progressFalse, _cycleProgressFalse] = useCycle(
     ['24%', '24%'],
     ['24%', '47%'],
     ['47%', '70%']
   )
 
-  const [errorFirst, setErrorFirst] = useCycle(false, true)
-  const [errorSecond, setErrorSecond] = useCycle(false, true)
-  const [errorThird, setErrorThird] = useCycle(false, true)
-
   return (
-    <Style>
+    <Style role={role}>
       <Card headerText='Acompanhe sua solicitação'>
-        <div id='role'>Estudante</div>
-
-        <div style={{ display: 'flex' }}>
-          <button
-            type='button'
-            onClick={() => {
-              cycleProgressTrue()
-              cycleProgressFalse()
-            }}
-            style={{ color: 'red', marginLeft: 24 }}
-          >
-            Cycle
-          </button>
-
-          <button
-            type='button'
-            onClick={() => setErrorFirst()}
-            style={{ color: 'red', marginLeft: 24 }}
-          >
-            FirstError
-          </button>
-
-          <button
-            type='button'
-            onClick={() => setErrorSecond()}
-            style={{ color: 'red', marginLeft: 24 }}
-          >
-            SecondError
-          </button>
-
-          <button
-            type='button'
-            onClick={() => setErrorThird()}
-            style={{ color: 'red', marginLeft: 24 }}
-          >
-            ThirdError
-          </button>
-        </div>
+        <div id='role'>{makeRoleLabel(role)}</div>
 
         <div id='requestRow'>
           <div>Solicitação enviada</div>
@@ -84,53 +57,50 @@ const RequestStatus = () => {
               fill='url(#barGradient)'
             />
 
-            {errorThird && (
-              <path
-                className='errorIcon'
-                id='thirdFail'
-                d='M700 41L719 22M719 41L700 22'
-              />
-            )}
+            {errorFirst !== 'nothing' &&
+              (errorFirst ? (
+                <path
+                  className='errorIcon'
+                  id='firstFail'
+                  d='M23 41L42 22M42 41L23 22'
+                />
+              ) : (
+                <path
+                  className='checkIcon'
+                  id='firstCheck'
+                  d='M27.8982 37.5682L21.2604 31.038L19 33.2461L27.8982 42L47 23.2081L44.7555 21L27.8982 37.5682Z'
+                />
+              ))}
 
-            {errorSecond && (
-              <path
-                className='errorIcon'
-                id='secondFail'
-                d='M361 42L380 23M380 42L361 23'
-              />
-            )}
+            {errorThird !== 'nothing' &&
+              (errorThird ? (
+                <path
+                  className='errorIcon'
+                  id='thirdFail'
+                  d='M700 41L719 22M719 41L700 22'
+                />
+              ) : (
+                <path
+                  className='checkIcon'
+                  id='thirdCheck'
+                  d='M704.898 37.5682L698.26 31.038L696 33.2461L704.898 42L724 23.2081L721.756 21L704.898 37.5682Z'
+                />
+              ))}
 
-            {errorFirst && (
-              <path
-                className='errorIcon'
-                id='firstFail'
-                d='M23 41L42 22M42 41L23 22'
-              />
-            )}
-
-            {!errorThird && (
-              <path
-                className='checkIcon'
-                id='thirdCheck'
-                d='M704.898 37.5682L698.26 31.038L696 33.2461L704.898 42L724 23.2081L721.756 21L704.898 37.5682Z'
-              />
-            )}
-
-            {!errorSecond && (
-              <path
-                className='checkIcon'
-                id='secondCheck'
-                d='M365.898 37.5682L359.26 31.038L357 33.2461L365.898 42L385 23.2081L382.756 21L365.898 37.5682Z'
-              />
-            )}
-
-            {!errorFirst && (
-              <path
-                className='checkIcon'
-                id='firstCheck'
-                d='M27.8982 37.5682L21.2604 31.038L19 33.2461L27.8982 42L47 23.2081L44.7555 21L27.8982 37.5682Z'
-              />
-            )}
+            {errorSecond !== 'nothing' &&
+              (errorSecond ? (
+                <path
+                  className='errorIcon'
+                  id='secondFail'
+                  d='M361 42L380 23M380 42L361 23'
+                />
+              ) : (
+                <path
+                  className='checkIcon'
+                  id='secondCheck'
+                  d='M365.898 37.5682L359.26 31.038L357 33.2461L365.898 42L385 23.2081L382.756 21L365.898 37.5682Z'
+                />
+              ))}
           </g>
 
           <defs>
@@ -181,7 +151,7 @@ const RequestStatus = () => {
           </defs>
         </svg>
 
-        <div id='buttonsRow'>
+        {/* <div id='buttonsRow'>
           <button type='button' id='info'>
             Ver informações
           </button>
@@ -189,7 +159,7 @@ const RequestStatus = () => {
           <button type='button' id='cancel'>
             Cancelar solicitação
           </button>
-        </div>
+        </div> */}
       </Card>
     </Style>
   )

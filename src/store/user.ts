@@ -13,6 +13,9 @@ export type Role =
 
 interface Email {
   address: string
+  email_id: number
+  institutional: boolean
+  university_id: number
   main: boolean
   options?: { [key: string]: any }
 }
@@ -20,16 +23,18 @@ interface Email {
 export interface UserState {
   entities: []
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'
+  selectedRole: Role
   user_id: number
+  role: Role[]
   name: string
   surname: string
-  avatar_uuid: string
-  birthday: string
-  created_at: string
-  updated_at: string
-  role: Role[]
-  selectedRole: Role
+  full_name: string
   email: Email[]
+  birthday: string
+  avatar_uuid: string
+  updated_at: string
+  created_at: string
+  phone: null
 }
 
 export interface UserStatePayload {
@@ -47,6 +52,8 @@ export interface UserStatePayload {
 
 const initialState: UserState = {
   entities: [],
+  full_name: '',
+  phone: null,
   loading: 'idle',
   user_id: 0,
   name: '',
@@ -57,29 +64,36 @@ const initialState: UserState = {
   updated_at: '',
   role: ['guest'],
   selectedRole: 'guest',
-  email: [{ address: '', main: true }]
-}
-
-const getRole = (roles: Role[]): Role => {
-  const localRole = localStorage.getItem('@SLab_selected_role') as Role
-
-  if (localRole) {
-    const haveHole = roles.filter(role => role === localRole)
-    if (haveHole.length !== 0) return haveHole[0]
-  }
-
-  localStorage.setItem('@SLab_selected_role', roles[0])
-  return roles[0]
+  email: [
+    {
+      address: '',
+      main: true,
+      institutional: false,
+      email_id: 0,
+      university_id: 0
+    }
+  ]
 }
 
 export const getUser = createAsyncThunk('userConfig/getUser', async () => {
-  const response = await api.get('user')
-  const { user } = response
-  const initialRole = getRole(user.role)
+  const getInitialSelectedRole = (roles: Role[]): Role => {
+    const localRole = localStorage.getItem('@SLab_selected_role') as Role
+
+    if (localRole) {
+      const haveHole = roles.filter(role => role === localRole)
+      if (haveHole.length !== 0) return haveHole[0]
+    }
+
+    localStorage.setItem('@SLab_selected_role', roles[0])
+    return roles[0]
+  }
+
+  const { user } = await api.get('user')
+  console.log(user)
 
   return {
     ...user,
-    selectedRole: initialRole
+    selectedRole: getInitialSelectedRole(user.role)
   }
 })
 
@@ -98,12 +112,9 @@ const User = createSlice({
     }
   },
   extraReducers: builder => {
-    builder.addCase(getUser.fulfilled, (state, action) => {
-      console.log('inside builder.addCase getUser.fulfilled')
-      console.log(action.payload)
-
-      return { ...action.payload }
-    })
+    builder.addCase(getUser.fulfilled, (_state, action) => ({
+      ...action.payload
+    }))
   }
 })
 

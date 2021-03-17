@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import Style from './styles'
 
-import { AddRoleContext } from '../../index'
+import { AddRoleContext } from '../index'
 
 import Form, { Submit, Text } from 'components/Form'
 import Popup, { PopupMethods } from 'components/Popup'
@@ -81,6 +81,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
           message: 'E-mail confirmado!'
         })
 
+        toggleRegister()
         onSuccess && onSuccess()
       } else
         popupRef.current?.configPopup({
@@ -103,9 +104,10 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
           translateY='50%'
         >
           <Style>
-            {codeSend && (
+            {!codeSend && (
               <>
                 <span>{universityData?.label}</span>
+
                 <Form
                   path='user/email'
                   addData={{ university_id: universityData?.value }}
@@ -119,7 +121,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
               </>
             )}
 
-            {!codeSend && (
+            {codeSend && (
               <Form
                 method='get'
                 id='tokenForm'
@@ -128,7 +130,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
                 afterResData={onTokenSubmit}
               >
                 <p>
-                  Digite o código de confirmação que foi enviado no seu e-mail.
+                  Digite o código de confirmação que foi enviado ao seu e-mail.
                 </p>
 
                 <Text name='token' placeholder='Código' />

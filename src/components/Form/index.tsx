@@ -128,6 +128,7 @@ const Form = ({
             break
 
           case 'file':
+            console.log(value)
             value ? (data[current.name] = value) : (data[current.name] = '')
             break
 

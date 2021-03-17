@@ -146,6 +146,7 @@ export const Form = styled(OriginalForm)`
     width: 100%;
 
     box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.39);
+    transition: all 0s ease 0s;
   }
 `
 

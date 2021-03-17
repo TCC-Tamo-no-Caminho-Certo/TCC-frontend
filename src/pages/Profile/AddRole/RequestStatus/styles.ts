@@ -1,6 +1,12 @@
+import { Role } from 'store/user'
+
 import styled from 'styled-components'
 
-const Style = styled.div`
+interface StyleProps {
+  role: Role
+}
+
+const Style = styled.div<StyleProps>`
   width: 100vw;
   height: 100vh;
 
@@ -8,25 +14,35 @@ const Style = styled.div`
   align-items: center;
   justify-content: center;
 
+  background-color: ${({ theme }) => theme.colors.tertiary};
+
   .Card {
     justify-content: center;
-    padding-top: 0;
 
-    width: 800px;
-    height: 800px;
+    padding-bottom: 48px;
+    width: 790px;
+
+    > * {
+      margin-top: 24px;
+    }
 
     header {
       font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.5rem);
       height: 64px;
+      margin-top: 0px;
     }
 
     #role {
       text-align: center;
       font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.5rem);
       width: 100%;
-      margin-bottom: 24px;
 
-      color: #00d053;
+      color: ${({ theme, role }) => theme.roles[role]};
+    }
+
+    svg,
+    #requestRow {
+      padding: 0px 48px;
     }
 
     #requestRow {
@@ -35,10 +51,8 @@ const Style = styled.div`
       justify-content: space-between;
 
       width: 100%;
-      margin-bottom: 24px;
+
       text-align: center;
-      font-size: 1.8rem;
-      padding: 0 24px;
 
       color: ${({ theme }) => theme.colors.tertiary};
 
@@ -49,7 +63,6 @@ const Style = styled.div`
 
     svg {
       width: 100%;
-      padding: 0 48px;
 
       path.checkIcon {
         fill: ${({ theme }) => theme.colors.secondary};
@@ -70,9 +83,6 @@ const Style = styled.div`
     }
 
     #buttonsRow {
-      position: absolute;
-      bottom: 32px;
-
       display: flex;
       justify-content: space-evenly;
       align-items: center;

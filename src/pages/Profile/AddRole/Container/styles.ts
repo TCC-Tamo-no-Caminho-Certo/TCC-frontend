@@ -26,7 +26,7 @@ export const Content = styled(Card)<ContentProps>`
 
   #role {
     width: 100%;
-    font-size: clamp(1.4rem, 0.6rem + 2.6vw, 2rem);
+    font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
     margin: 16px 0;
 
     color: ${({ theme, role }) => theme.roles[role]};
@@ -49,6 +49,15 @@ export const Content = styled(Card)<ContentProps>`
 `
 
 const Style = styled.div`
+  #delete {
+    position: absolute;
+    top: 0;
+    left: 24px;
+    width: 300px;
+    height: 48px;
+    color: transparent;
+  }
+
   position: relative;
 
   display: flex;

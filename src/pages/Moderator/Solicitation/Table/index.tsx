@@ -119,12 +119,10 @@ const headerData: HeaderData[] = [
 
 const Table = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
-
   const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>
   const tableRef = useRef() as MutableRefObject<HTMLTableElement>
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>
   const modalRef = useRef<ModalMethods>(null)
-
   const [clickedItem, setClickedItem] = useState<DataType>(undefined)
   const [showData, setShowData] = useState<TablePageType>(null)
   const [tablePage, setTablePage] = useState(1)
@@ -147,9 +145,7 @@ const Table = () => {
         if (requests && requests.length !== 0) {
           const tableData = transformArray(requests)
 
-          setShowData(before =>
-            before ? [...before, ...tableData] : [...tableData]
-          )
+          setShowData(prev => (prev ? [...prev, ...tableData] : [...tableData]))
         } else setIsClear(true)
       }
     },

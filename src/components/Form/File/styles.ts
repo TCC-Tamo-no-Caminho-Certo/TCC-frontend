@@ -11,24 +11,25 @@ const Style = styled.div<StyleProps>`
     justify-content: center;
     align-items: center;
 
-    flex-direction: ${({ flexColumn }) => (flexColumn ? 'column' : 'row')};
+    flex-direction: column;
 
     #fileName {
       font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.6rem);
 
       color: ${({ theme }) => theme.colors.primary};
 
-      ${({ flexColumn, haveValue }) =>
-        flexColumn
-          ? css`
-              margin-bottom: ${haveValue ? '8px' : '0px'};
-            `
-          : css`
-              margin-right: ${haveValue ? '8px' : '0px'};
-            `};
+      ${({ haveValue }) =>
+        css`
+          margin-bottom: ${haveValue ? '8px' : '0px'};
+        `}
     }
 
     label {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      text-align: center;
       font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.8rem);
       padding: 8px 16px;
       border-radius: 8px;
@@ -131,6 +132,23 @@ const Style = styled.div<StyleProps>`
     .cropper-point.point-e,
     .cropper-point.point-w {
       background-color: transparent;
+    }
+  }
+
+  @media screen and (min-width: 545px) {
+    #fileInput {
+      flex-direction: ${({ flexColumn }) => (flexColumn ? 'column' : 'row')};
+    }
+
+    #fileName {
+      ${({ flexColumn, haveValue }) =>
+        flexColumn
+          ? css`
+              margin-bottom: ${haveValue ? '8px' : '0px'};
+            `
+          : css`
+              margin-right: ${haveValue ? '8px' : '0px'};
+            `};
     }
   }
 `

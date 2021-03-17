@@ -20,15 +20,20 @@ const Style = styled.table`
 
       th {
         height: 100%;
-        text-align: left;
 
         cursor: pointer;
 
         button {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+
           width: 100%;
           height: 100%;
-          text-align: left;
+
           user-select: none;
+          font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
+          line-height: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
 
           color: ${({ theme }) => theme.colors.secondary};
 

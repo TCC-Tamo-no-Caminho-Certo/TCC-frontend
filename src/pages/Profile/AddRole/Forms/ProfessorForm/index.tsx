@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Form from './styles'
 
-import Container from '../Container'
+import Container from '../../Container'
 
 import {
   emailSchema,
