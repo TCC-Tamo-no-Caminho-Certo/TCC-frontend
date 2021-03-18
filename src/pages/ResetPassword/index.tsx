@@ -4,8 +4,8 @@ import Style, { Content } from './styles'
 import { passwordSchema } from 'utils/validations/forgotPassword'
 
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
+import Logo from 'assets/Logo'
 
-import Logo from 'components/Logo'
 import { Form, Submit, Text } from 'components/Form'
 import Popup, { PopupMethods } from 'components/Popup'
 

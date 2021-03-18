@@ -42,7 +42,7 @@ interface RequestsData {
   role_id: number
   showData: string
   status: StatusTypes
-  full_name: string
+  name: string
   role: Role
   created_at: string
   updated_at?: string
@@ -98,10 +98,10 @@ const transformArray = (array: RequestsData[]) => {
   }
 
   return array.map(
-    ({ status, full_name, role, created_at, request_id }: RequestsData) => ({
+    ({ status, name, role, created_at, request_id }: RequestsData) => ({
       role,
       id: request_id,
-      name: full_name,
+      name: name,
       statusCircle: status,
       status: makeStatusLabel(status),
       date: makeDateLabel(created_at)
@@ -138,8 +138,8 @@ const Table = () => {
   const makeRequest = useCallback(
     async (page: number) => {
       if (!isClear) {
-        const { requests } = await api.post(
-          `request/role/get/${page}/${quantity}`
+        const { requests } = await api.get(
+          `user/role/requests?page=${page}&per_page=${quantity}`
         )
 
         if (requests && requests.length !== 0) {

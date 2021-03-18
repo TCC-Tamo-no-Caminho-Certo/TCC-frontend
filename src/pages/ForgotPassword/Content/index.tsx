@@ -6,8 +6,8 @@ import { emailSchema } from 'utils/validations/forgotPassword'
 import SendEmailIcon from 'assets/SendEmailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import MailIcon from 'assets/Inputs/MailIcon'
+import Logo from 'assets/Logo'
 
-import Logo from 'components/Logo'
 import { Form, Submit, Text } from 'components/Form'
 import Popup, { PopupMethods } from 'components/Popup'
 

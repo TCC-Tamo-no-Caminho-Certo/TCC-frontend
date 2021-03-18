@@ -8,9 +8,9 @@ import { HomeActions } from 'store/home'
 import MailIcon from 'assets/Inputs/MailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import AlertIcon from 'assets/Inputs/AlertIcon'
+import Logo from 'assets/Logo'
 
 import { Checkbox, Submit, Text } from 'components/Form'
-import Logo from 'components/Logo'
 import ThemeSwitch from 'components/ThemeSwitch'
 
 import { AnimatePresence } from 'framer-motion'

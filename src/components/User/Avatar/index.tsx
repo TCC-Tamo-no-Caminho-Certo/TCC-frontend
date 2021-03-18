@@ -29,9 +29,7 @@ const Avatar = ({
   ...rest
 }: AvatarProps) => {
   const avatar = useSelector<RootState, string>(state => state.user.avatar_uuid)
-
   const src = `https://s3.steamslab.com/profile/${avatar}`
-
   const [hovering, setHovering] = useState(false)
 
   return avatar ? (

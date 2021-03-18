@@ -9,8 +9,8 @@ import { RootState } from 'store'
 
 import WorldIcon from 'assets/Inputs/WorldIcon'
 import UserLockedIcon from 'assets/Inputs/UserLockedIcon'
+import Logo from 'assets/Logo'
 
-import Logo from 'components/Logo'
 import ThemeSwitch from 'components/ThemeSwitch'
 import { Datepicker, Form, Submit, Text } from 'components/Form'
 import BackButton from 'components/BackButton'
