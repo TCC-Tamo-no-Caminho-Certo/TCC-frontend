@@ -19,6 +19,7 @@ const Slider = ({
   gapVertical = gap
 }: SliderProps) => {
   const quantity = containers.length
+
   const move = width + gap
   const isPar = quantity % 2 === 0
   const limit = move * ((quantity - 1) / 2)

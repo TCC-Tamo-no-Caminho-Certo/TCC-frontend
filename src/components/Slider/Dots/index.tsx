@@ -25,11 +25,10 @@ const Dots: React.FC<DotsProps> = ({
   makeRightTap = false
 }) => {
   const isPar = quantity % 2 === 0
-  const [position, setPosition] = useState(isPar ? 1 : 0)
-
   const move = gap + size
+  const limit = Math.floor(quantity / 2)
 
-  const limit = (quantity - 1) / 2
+  const [position, setPosition] = useState(0)
 
   const newLeftAnimation = useAnimation()
   const leftAnimation = useAnimation()
@@ -163,18 +162,22 @@ const Dots: React.FC<DotsProps> = ({
       onLeftClick()
       await leftMove()
       await resetLeftMove()
-      setPosition(before => (before - 1 === 0 ? before - 2 : before - 1))
+      setPosition(before =>
+        before - 1 === 0 && isPar ? before - 2 : before - 1
+      )
     }
-  }, [onLeftClick, leftMove, resetLeftMove, position, limit])
+  }, [position, limit, onLeftClick, leftMove, resetLeftMove, isPar])
 
   const sequenceToRight = useCallback(async () => {
     if (position < limit) {
       onRightClick()
       await rightMove()
       await resetRightMove()
-      setPosition(before => (before + 1 === 0 ? before + 2 : before + 1))
+      setPosition(before =>
+        before + 1 === 0 && isPar ? before + 2 : before + 1
+      )
     }
-  }, [onRightClick, rightMove, resetRightMove, limit, position])
+  }, [position, limit, onRightClick, rightMove, resetRightMove, isPar])
 
   useEffect(() => {
     if (makeLeftTap) sequenceToLeft()

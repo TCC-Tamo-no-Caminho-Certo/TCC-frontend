@@ -28,9 +28,7 @@ const Containers = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const user = useSelector<RootState, UserState>(state => state.user)
 
-  const { role } = user
-
-  const containers: ContainersRoles[] = ['personal', ...role]
+  const containers: ContainersRoles[] = ['personal', ...user.role]
 
   useEffect(() => {
     if (innerWidth <= 430) setSliderWidth(320)
