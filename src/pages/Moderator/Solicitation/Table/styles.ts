@@ -74,7 +74,7 @@ export const BodyWrapper = styled.div`
           }
 
           &.role {
-            min-width: 80px;
+            min-width: 100px;
           }
 
           &.date {
@@ -87,9 +87,9 @@ export const BodyWrapper = styled.div`
     }
   }
 
-  @media screen and (min-width: 745px) {
-    table tbody tr {
-      padding: 0 8px;
+  @media screen and (min-width: 545px) {
+    table tbody tr td.role {
+      min-width: 165px;
     }
   }
 
@@ -110,8 +110,8 @@ export const ModalContent = styled.div<ModalContentProps>`
   display: flex;
   flex-direction: column;
 
-  width: 70vw;
-  height: 80vh;
+  width: max(100vw, 320px);
+  height: 95vh;
   padding: 24px;
   border-radius: 8px;
   overflow-y: scroll;
@@ -146,8 +146,18 @@ export const ModalContent = styled.div<ModalContentProps>`
 
     #info {
       margin-left: 24px;
+      font-size: clamp(1.2rem, 0.6rem + 2.6vw, 1.7rem);
+
+      div + div {
+        margin-top: 4px;
+      }
+
+      #name {
+        font-size: clamp(1.2rem, 0.6rem + 2.6vw, 1.8rem);
+      }
 
       #status {
+        font-size: clamp(1.2rem, 0.6rem + 2.6vw, 1.6rem);
         color: ${({ theme, status }) => {
           switch (status) {
             case 'accepted':
@@ -221,7 +231,8 @@ export const ModalContent = styled.div<ModalContentProps>`
     justify-content: center;
     align-items: center;
 
-    width: 200px;
+    font-size: clamp(1.2rem, 0.6rem + 2.6vw, 1.6rem);
+    width: 100%;
     padding: 8px 16px;
     border-radius: 0 0 16px 16px;
     transition: all 0.3s ease-in-out;
@@ -239,6 +250,10 @@ export const ModalContent = styled.div<ModalContentProps>`
 
       fill: ${({ theme }) => theme.colors.secondary};
     }
+  }
+
+  @media screen and (min-width: 545px) {
+    width: max(85vw, 320px);
   }
 `
 
@@ -275,7 +290,6 @@ const Style = styled.div`
       .Text {
         width: 100%;
         height: 40px;
-        padding-left: 16px;
 
         border: none;
         color: ${({ theme }) => theme.colors.secondary};

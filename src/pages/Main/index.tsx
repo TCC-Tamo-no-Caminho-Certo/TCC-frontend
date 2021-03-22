@@ -2,8 +2,8 @@ import React, { useContext, useMemo } from 'react'
 
 import Map from './Map'
 import RightMenu from './RightMenu'
-import Projects from './Projects/index'
 
+// import Projects from './Projects/index'
 import { RootState } from 'store'
 import { UserState } from 'store/user'
 
@@ -26,13 +26,13 @@ const Profile = () => {
         paths: ['/session/main', '/session/main/map'],
         label: 'Mapa',
         component: () => <Map />
-      },
-      {
-        icon: () => <ProjectIcon />,
-        paths: ['/session/main/projects'],
-        label: 'Projetos',
-        component: () => <Projects />
       }
+      // {
+      //   icon: () => <ProjectIcon />,
+      //   paths: ['/session/main/projects'],
+      //   label: 'Projetos',
+      //   component: () => <Projects />
+      // }
     ]
 
     if (selectedRole === 'moderator')

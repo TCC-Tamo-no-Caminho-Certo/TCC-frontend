@@ -66,21 +66,19 @@ const Style = styled.table`
         }
 
         &.role button {
-          min-width: 80px;
+          min-width: 100px;
         }
 
         &.date button {
-          justify-content: flex-end;
-
           min-width: 64px;
         }
       }
     }
   }
 
-  @media screen and (min-width: 745px) {
-    table thead tr {
-      padding: 0 8px;
+  @media screen and (min-width: 545px) {
+    table tbody tr th.role button {
+      min-width: 165px;
     }
   }
 

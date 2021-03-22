@@ -19,6 +19,7 @@ import { ThemeState } from 'store/theme'
 import { RootState } from 'store'
 
 import useSortableData from 'hooks/useSortableData'
+import useWindowDimensions from 'hooks/useWindowDimensions'
 
 import Download from 'assets/Download'
 import doc from 'assets/doc.jpg'
@@ -118,6 +119,7 @@ const headerData: HeaderData[] = [
 ]
 
 const Table = () => {
+  const { innerWidth } = useWindowDimensions()
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>
   const tableRef = useRef() as MutableRefObject<HTMLTableElement>
@@ -133,14 +135,16 @@ const Table = () => {
     indexer: 'name'
   })
 
-  const quantity = 20
+  const quantity = 10
 
   const makeRequest = useCallback(
     async (page: number) => {
       if (!isClear) {
-        const { requests } = await api.get(
+        const response = await api.get(
           `user/role/requests?page=${page}&per_page=${quantity}`
         )
+        const { requests } = response
+        console.log(requests)
 
         if (requests && requests.length !== 0) {
           const tableData = transformArray(requests)
@@ -167,6 +171,33 @@ const Table = () => {
     }
   }
 
+  const setLetterLimit = (word: string) => {
+    if (innerWidth < 400) {
+      const cut = word.substr(0, 10)
+      const newWord = cut.split(' ')[0]
+      return cut.split(' ')[1] ? newWord : newWord + '...'
+    }
+
+    if (innerWidth < 620 && innerWidth > 400) {
+      const cut = word.substr(0, 20)
+      const newWord = cut.split(' ')[0]
+      return cut.split(' ')[1] ? newWord : newWord + '...'
+    }
+
+    if (innerWidth > 620 && innerWidth < 720) {
+      const cut = word.substr(0, 30)
+      const newWord = cut.split(' ')[0]
+      return cut.split(' ')[1] ? newWord : newWord + '...'
+    }
+    if (innerWidth > 720 && innerWidth < 900) {
+      const cut = word.substr(0, 40)
+      const newWord = cut.split(' ')[0]
+      return cut.split(' ')[1] ? newWord : newWord + '...'
+    }
+
+    return word.substr(0, 40)
+  }
+
   useEffect(() => {
     makeRequest(1)
   }, [makeRequest])
@@ -176,10 +207,12 @@ const Table = () => {
       <Style className='Table'>
         <Form
           id='row'
-          path={`request/role/get/1/${quantity}`}
-          afterResData={res =>
+          method='get'
+          path={`user/role/requests?page=1&per_page=${quantity}&filter[full_name][]=Jean`}
+          afterResData={res => {
+            console.log(res)
             res !== undefined && setShowData(transformArray(res.requests))
-          }
+          }}
         >
           <div id='filters'>
             <Text
@@ -241,6 +274,15 @@ const Table = () => {
                         </td>
                       )
 
+                    if (name === 'name')
+                      return (
+                        <td key={label} className='name'>
+                          {setLetterLimit(
+                            item[name as keyof TableData] as string
+                          )}
+                        </td>
+                      )
+
                     return (
                       <td key={label} className={name}>
                         {item[name as keyof TableData]}
@@ -256,7 +298,7 @@ const Table = () => {
         {showData === null && <DotsLoader color={theme.colors.secondary} />}
       </Style>
 
-      <Modal ref={modalRef}>
+      <Modal ref={modalRef} top='50vh' translateY='-50%'>
         <ModalContent
           role={clickedItem?.role}
           status={clickedItem?.statusCircle}
@@ -267,7 +309,7 @@ const Table = () => {
             <Avatar size={88} />
 
             <div id='info'>
-              <div>{clickedItem?.name}</div>
+              <div id='name'>{clickedItem?.name}</div>
               <div id='role'>{makeRoleLabel(clickedItem?.role as Role)}</div>
               <div id='status'>{clickedItem?.status}</div>
               <div>{clickedItem?.date}</div>

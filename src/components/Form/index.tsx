@@ -186,7 +186,7 @@ const Form = ({
       throw new Error('joker lenght is not equal addToPath lenght')
 
     if (addToPath)
-      path = paths.reduce<string>((acc, curr, idx) => {
+      path = paths.reduce((acc, curr, idx) => {
         if (paths.length === idx + 1) return acc + curr
         return acc + curr + data[addToPath[idx]]
       }, '')

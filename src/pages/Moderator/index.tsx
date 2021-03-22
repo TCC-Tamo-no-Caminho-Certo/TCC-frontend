@@ -1,8 +1,8 @@
 import React, { useContext, useMemo } from 'react'
 
 import Solicitation from './Solicitation'
-import List from './List'
 
+// import List from './List'
 import MapIcon from 'assets/MainSidebar/MapIcon'
 import ProjectIcon from 'assets/MainSidebar/ProjectIcon'
 
@@ -22,12 +22,12 @@ const Moderator = () => {
         label: 'Solicitações',
         exact: true
       },
-      {
-        icon: () => <ProjectIcon />,
-        component: () => <List />,
-        paths: ['/session/moderator/list'],
-        label: 'Lista de alunos'
-      },
+      // {
+      //   icon: () => <ProjectIcon />,
+      //   component: () => <List />,
+      //   paths: ['/session/moderator/list'],
+      //   label: 'Lista de alunos'
+      // },
       {
         icon: () => <MapIcon />,
         paths: ['/session/main'],

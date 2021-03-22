@@ -97,7 +97,7 @@ const File = ({
           {label}
 
           <input
-            accept='.jpg, .jpeg, .png, .doc, application/pdf'
+            accept='application/pdf'
             type='file'
             name={name}
             ref={fileRef}

@@ -1,12 +1,17 @@
-import React, { createContext, RefObject, useRef } from 'react'
+import React, {
+  createContext,
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useRef,
+  useState
+} from 'react'
 import Style, { ConfirmForm } from './styles'
 
 import Containers from './Containers'
 import ImageChanger from './ImageChanger'
 
 import { UserActions } from 'store/user'
-
-import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import { Form, Submit, Text } from 'components/Form'
 import Modal, { ModalMethods } from 'components/Modal'
@@ -17,9 +22,16 @@ export interface ModalState {
   imageRef: RefObject<ModalMethods>
 }
 
+interface EditProfileContextProps {
+  globalChange?: boolean
+  setGlobalChange?: Dispatch<SetStateAction<boolean>>
+}
+
 export const ImageRefModalContext = createContext<ModalState | null>(null)
+export const EditProfileContext = createContext<EditProfileContextProps>({})
 
 const EditProfile = () => {
+  const [globalChange, setGlobalChange] = useState(false)
   let updateData: any
   const dispatch = useDispatch()
   const confirmRefModal = useRef<ModalMethods>(null)
@@ -32,10 +44,15 @@ const EditProfile = () => {
     <ImageRefModalContext.Provider value={{ imageRef: imageRefModal }}>
       <Style>
         <Form loading captcha path='user/update' afterResData={submitCallback}>
-          <Containers />
-
+          <EditProfileContext.Provider
+            value={{ globalChange, setGlobalChange }}
+          >
+            <Containers />
+          </EditProfileContext.Provider>
           <div id='submits'>
-            <button type='button'>Descartar alterações</button>
+            <button type='button' onClick={() => setGlobalChange(false)}>
+              Descartar alterações
+            </button>
 
             <button
               type='button'
@@ -52,10 +69,6 @@ const EditProfile = () => {
           <span>
             Você precisa confirmar sua senha para salvar as alterações!
           </span>
-
-          <CloseIcon
-            onClick={() => confirmRefModal.current?.toggleModal(false)}
-          />
 
           <Text name='password' placeholder='Confirme sua senha' eye />
 

@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
-import Style from './styles'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import Style, { Icon, Input, Label } from './styles'
 
 import { InputData } from '../formatUpdateUser'
+import { EditProfileContext } from '../../index'
 
 import { ThemeState } from 'store/theme'
 import { RootState } from 'store'
@@ -19,6 +20,7 @@ interface FieldProps {
 }
 
 const Field = ({ data }: FieldProps) => {
+  const { globalChange, setGlobalChange } = useContext(EditProfileContext)
   const [change, setChange] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
@@ -43,6 +45,16 @@ const Field = ({ data }: FieldProps) => {
       />
     )
 
+  const onFieldClick = () => {
+    change ? inputRef.current?.focus() : setChange(true)
+    globalChange === false && setGlobalChange && setGlobalChange(true)
+  }
+
+  const onIconClick = () => {
+    setChange(!change)
+    globalChange === false && setGlobalChange && setGlobalChange(true)
+  }
+
   const setInput = () => {
     if (change) return input
 
@@ -57,27 +69,23 @@ const Field = ({ data }: FieldProps) => {
     if (change) inputRef.current?.focus()
   }, [change])
 
+  useEffect(() => {
+    if (!globalChange) setChange(false)
+  }, [globalChange])
+
   return (
     <Style key={data.inputname} className='Field'>
-      <button
-        type='button'
-        className='label'
-        onClick={() => (change ? inputRef.current?.focus() : setChange(true))}
-      >
+      <Label className='button' onClick={onFieldClick}>
         {data.label}
-      </button>
+      </Label>
 
-      <button
-        type='button'
-        className='input'
-        onClick={() => (change ? inputRef.current?.focus() : setChange(true))}
-      >
+      <Input className='button' onClick={onFieldClick}>
         {setInput()}
-      </button>
+      </Input>
 
-      <button className='icon' type='button' onClick={() => setChange(!change)}>
+      <Icon className='button' onClick={onIconClick}>
         {change ? <CloseIcon /> : <PencilIcon />}
-      </button>
+      </Icon>
     </Style>
   )
 }

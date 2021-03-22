@@ -14,6 +14,10 @@ export const MotionReceipt = styled(motion.div)`
 
   border: solid 1px ${({ theme }) => theme.colors.primary};
 
+  #ar {
+    width: 100%;
+  }
+
   #warning {
     display: flex;
     justify-content: center;
@@ -30,19 +34,25 @@ export const MotionReceipt = styled(motion.div)`
 
     p {
       text-align: center;
+      padding: 0 8px;
+
+      .Icon {
+        height: 16px;
+        margin-right: 8px;
+        transform: translateY(15%);
+
+        fill: ${({ theme }) => theme.colors.primary};
+      }
     }
 
     b {
+      color: ${({ theme }) => theme.colors.primary};
+    }
+
+    b#moderator {
       font-weight: normal;
 
       color: ${({ theme }) => theme.roles.moderator};
-    }
-
-    .Icon {
-      height: 24px;
-      width: 32px;
-
-      fill: ${({ theme }) => theme.colors.primary};
     }
   }
 `

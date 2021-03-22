@@ -2,7 +2,7 @@ import React from 'react'
 import Style from './styles'
 
 const Subscribe = () => {
-  return <Style>Subscribe</Style>
+  return <Style></Style>
 }
 
 export default Subscribe

@@ -7,28 +7,17 @@ export const ConfirmForm = styled(Form)`
   position: relative;
   padding: 24px;
   border-radius: 16px;
-  transform: scale(1.2);
+
   background-color: ${({ theme }) => theme.colors.secondary};
+
+  font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.9rem);
+  line-height: clamp(1.5rem, 0.6rem + 2.6vw, 1.9rem);
+  width: clamp(320px, 90vw, 500px);
 
   span {
     display: block;
-    width: calc(100% - 24px);
+
     text-align: left;
-  }
-
-  #CloseIcon {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    width: 16px;
-
-    stroke: ${({ theme }) => theme.colors.tertiary};
-
-    &:hover {
-      filter: brightness(1.1);
-
-      stroke: ${({ theme }) => theme.colors.primary};
-    }
   }
 
   .Text {
@@ -100,6 +89,9 @@ const Style = styled(motion.section)`
   }
 
   #submits {
+    position: absolute;
+    bottom: 24px;
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -142,7 +134,7 @@ const Style = styled(motion.section)`
     #submits {
       align-self: flex-end;
 
-      margin-right: 64px;
+      right: 64px;
     }
   }
 `

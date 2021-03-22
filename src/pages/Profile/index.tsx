@@ -1,19 +1,19 @@
 import React, { useContext, useMemo } from 'react'
 
-import ProfileHome from './ProfileHome'
+// import ProfileHome from './ProfileHome'
 import EditProfile from './EditProfile'
-import Historic from './Historic'
-import Financial from './Financial'
-import Customization from './Customization'
-import Security from './Security'
+// import Historic from './Historic'
+// import Financial from './Financial'
+// import Customization from './Customization'
+// import Security from './Security'
 import AddRole from './AddRole'
 
-import CardIcon from 'assets/ProfileSidebar/CardIcon'
+// import CardIcon from 'assets/ProfileSidebar/CardIcon'
 import EditUserIcon from 'assets/ProfileSidebar/EditUserIcon'
-import HistoryIcon from 'assets/ProfileSidebar/HistoryIcon'
-import PalleteIcon from 'assets/ProfileSidebar/PalleteIcon'
-import SecurityIcon from 'assets/ProfileSidebar/SecurityIcon'
-import UserIcon from 'assets/ProfileSidebar/UserIcon'
+// import HistoryIcon from 'assets/ProfileSidebar/HistoryIcon'
+// import PalleteIcon from 'assets/ProfileSidebar/PalleteIcon'
+// import SecurityIcon from 'assets/ProfileSidebar/SecurityIcon'
+// import UserIcon from 'assets/ProfileSidebar/UserIcon'
 import MapIcon from 'assets/MainSidebar/MapIcon'
 import ChangeIcon from 'assets/RightMenuOpen/ChangeIcon'
 
@@ -26,13 +26,13 @@ const Profile = () => {
 
   const profileRoutes: RouteProps[] = useMemo(
     () => [
-      {
-        icon: () => <UserIcon />,
-        label: 'Perfil',
-        paths: ['/session/profile/home'],
-        exact: true,
-        component: () => <ProfileHome />
-      },
+      // {
+      //   icon: () => <UserIcon />,
+      //   label: 'Perfil',
+      //   paths: ['/session/profile/home'],
+      //   exact: true,
+      //   component: () => <ProfileHome />
+      // },
       {
         icon: () => <EditUserIcon />,
         label: 'Editar Perfil',
@@ -55,30 +55,30 @@ const Profile = () => {
         component: () => <AddRole />,
         isBigInOther: true
       },
-      {
-        icon: () => <CardIcon />,
-        label: 'Financeiro',
-        paths: ['/session/profile/financial'],
-        component: () => <Financial />
-      },
-      {
-        icon: () => <SecurityIcon />,
-        label: 'Segurança',
-        paths: ['/session/profile/security'],
-        component: () => <Security />
-      },
-      {
-        icon: () => <HistoryIcon />,
-        label: 'Histórico',
-        paths: ['/session/profile/historic'],
-        component: () => <Historic />
-      },
-      {
-        icon: () => <PalleteIcon />,
-        label: 'Customização',
-        paths: ['/session/profile/customization'],
-        component: () => <Customization />
-      },
+      // {
+      //   icon: () => <CardIcon />,
+      //   label: 'Financeiro',
+      //   paths: ['/session/profile/financial'],
+      //   component: () => <Financial />
+      // },
+      // {
+      //   icon: () => <SecurityIcon />,
+      //   label: 'Segurança',
+      //   paths: ['/session/profile/security'],
+      //   component: () => <Security />
+      // },
+      // {
+      //   icon: () => <HistoryIcon />,
+      //   label: 'Histórico',
+      //   paths: ['/session/profile/historic'],
+      //   component: () => <Historic />
+      // },
+      // {
+      //   icon: () => <PalleteIcon />,
+      //   label: 'Customização',
+      //   paths: ['/session/profile/customization'],
+      //   component: () => <Customization />
+      // },
       {
         icon: () => <MapIcon />,
         label: 'Voltar ao mapa',

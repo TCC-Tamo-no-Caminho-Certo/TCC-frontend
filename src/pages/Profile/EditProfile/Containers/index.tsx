@@ -1,4 +1,4 @@
-import React, { memo, useContext, useEffect, useMemo, useState } from 'react'
+import React, { memo, useContext, useEffect, useState } from 'react'
 
 import Field from './Field'
 import { ImageRefModalContext } from '../'
@@ -30,9 +30,7 @@ const Containers = () => {
 
   const { role } = user
 
-  const containers: ContainersRoles[] = useMemo(() => ['personal', ...role], [
-    role
-  ])
+  const containers: ContainersRoles[] = ['personal', ...role]
 
   useEffect(() => {
     if (innerWidth <= 430) setSliderWidth(320)

@@ -15,7 +15,7 @@ export const Logo = () => {
         <g
           id='brown'
           fill='none'
-          strokeWidth='8'
+          strokeWidth='10'
           stroke={theme.colors.tertiary}
         >
           <path

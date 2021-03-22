@@ -13,6 +13,8 @@ import ProfessorForm from './Forms/ProfessorForm'
 
 import selectRoleLabel from 'utils/makeRoleLabel'
 
+import api from 'services/api'
+
 import { RootState } from 'store'
 import { Role, UserState } from 'store/user'
 
@@ -81,11 +83,20 @@ const AddRole = () => {
               ]}
             />
 
+            <button
+              type='button'
+              onClick={async () => await api.delete('user/role/student')}
+            >
+              RemoverEstudante
+            </button>
+
             <RoleInfo
               title='Estudante'
               userRoles={labelRoles}
               color={theme.roles.student}
-              onClick={() => setRoleSelected('student')}
+              onClick={() => {
+                setRoleSelected('student')
+              }}
               onLabelClick={onLabelClick}
               benefits={[
                 'Participar de propostas',

@@ -3,15 +3,20 @@ import Style, { Content } from './styles'
 
 import { passwordSchema } from 'utils/validations/forgotPassword'
 
+import { HomeActions } from 'store/home'
+
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import Logo from 'assets/Logo'
 
 import { Form, Submit, Text } from 'components/Form'
 import Popup, { PopupMethods } from 'components/Popup'
+import BackButton from 'components/BackButton'
 
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 const ConfirmPassword = () => {
+  const dispatch = useDispatch()
   const history = useHistory()
   const popupRef = useRef<PopupMethods>(null)
   const path = window.location.pathname.split('/')
@@ -50,6 +55,18 @@ const ConfirmPassword = () => {
   return (
     <>
       <Style>
+        <BackButton
+          to='/home'
+          onTap={() => {
+            dispatch(
+              HomeActions.update({
+                initial: false,
+                page: 'login'
+              })
+            )
+          }}
+        />
+
         <Content>
           <Logo />
 

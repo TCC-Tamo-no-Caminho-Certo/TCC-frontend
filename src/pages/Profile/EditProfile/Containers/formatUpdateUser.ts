@@ -12,21 +12,24 @@ export interface ContainerForm {
   personal: InputData[]
   moderator: InputData[]
   guest: InputData[]
+  student: InputData[]
 }
 
 const formatUpdateUser = (
   userData: UserState,
   role: keyof ContainerForm
 ): InputData[] => {
-  const guest: InputData[] = [
-    {
-      label: 'Nome:',
-      inputname: 'name',
-      value: userData.name
-    }
-  ]
+  const getStudentEmail = () => {
+    const value = userData.email.filter(
+      current => current.institutional === true
+    )
 
-  const moderator: InputData[] = [
+    return value[0]
+  }
+
+  const instEmail = getStudentEmail()
+
+  const guest: InputData[] = [
     {
       label: 'Nome:',
       inputname: 'name',
@@ -64,10 +67,32 @@ const formatUpdateUser = (
     // }
   ]
 
+  const student: InputData[] = [
+    {
+      label: 'Email:',
+      inputname: 'inst_email',
+      value: instEmail ? instEmail.address : ''
+    },
+    {
+      label: 'Universidade:',
+      inputname: 'university_id',
+      value: instEmail ? instEmail.university_id : ''
+    }
+  ]
+
+  const moderator: InputData[] = [
+    {
+      label: 'Nome:',
+      inputname: 'name',
+      value: userData.name
+    }
+  ]
+
   const formInputs: ContainerForm = {
     personal,
     moderator,
-    guest
+    guest,
+    student
   }
 
   return formInputs[role]

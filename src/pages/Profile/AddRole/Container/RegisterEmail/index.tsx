@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import Style from './styles'
 
-import { AddRoleContext } from '../index'
+import { AddRoleContext } from '../../index'
 
 import Form, { Submit, Text } from 'components/Form'
 import Popup, { PopupMethods } from 'components/Popup'
@@ -58,7 +58,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
     })
 
     const onEmailSubmit = (result: any) => {
-      if (result.success) setTimeout(() => setCodeSend(true), 100)
+      if (result.success) setCodeSend(true)
       else if (result.error === 'Email already in use!')
         popupRef.current?.configPopup({
           setModal: true,
@@ -78,7 +78,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
         popupRef.current?.configPopup({
           setModal: true,
           type: 'success',
-          message: 'E-mail confirmado!'
+          message: 'E-mail confirmado, termine a solicitação!'
         })
 
         toggleRegister()

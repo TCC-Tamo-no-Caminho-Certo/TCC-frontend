@@ -45,8 +45,8 @@ const Style = styled.div<StyleProps>`
       -webkit-text-fill-color: ${({ theme }) => theme.colors.tertiary};
     }
 
-    ${({ hasEye }) =>
-      hasEye
+    ${({ hasEye, hasIcon }) =>
+      hasEye && hasIcon
         ? css`
             width: calc(100% - 80px);
           `

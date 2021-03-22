@@ -5,7 +5,7 @@ import Container from '../../Container'
 import RegisterEmail, {
   RegisterEmailMethods,
   University
-} from '../../RegisterEmail'
+} from '../../Container/RegisterEmail'
 import { AddRoleContext } from '../../index'
 import RequestStatus from '../../RequestStatus'
 
@@ -48,6 +48,7 @@ interface AnimationsState {
   showSemester: boolean
   showWays: boolean
   showReceipt: boolean
+  showAr: boolean
   showSubmit: boolean
   showRequestStatus: boolean
 }
@@ -57,7 +58,6 @@ type Universities = University[] | undefined
 
 const MotionSelect = motion.custom(Select)
 const MotionSubmit = motion.custom(Submit)
-
 const semesterOptions: SelectOptions = [
   { value: 1, label: '1° Semestre' },
   { value: 2, label: '2° Semestre' },
@@ -103,6 +103,7 @@ const initialAnimations: AnimationsState = {
   showSemester: false,
   showWays: false,
   showReceipt: false,
+  showAr: false,
   showSubmit: false,
   showRequestStatus: false
 }
@@ -132,6 +133,7 @@ const StudentForm = () => {
       showWays,
       showReceipt,
       showSubmit,
+      showAr,
       showRequestStatus
     },
     setAnimations
@@ -218,16 +220,16 @@ const StudentForm = () => {
           onClick: () =>
             setAnimations(prev => ({ ...prev, showRequestStatus: true }))
         })
-      else {
+      else
         popupRef.current?.configPopup({
           setModal: true,
           type: 'success',
           message: 'Papel adicionado',
-          onClick: () => history.push('/session/main')
+          onClick: () => {
+            dispatch(getUser())
+            history.push('/session/main')
+          }
         })
-
-        dispatch(getUser())
-      }
     else
       popupRef.current?.configPopup({
         setModal: true,
@@ -249,8 +251,8 @@ const StudentForm = () => {
         <Container role='student'>
           <Form
             loading
-            getData={e => console.log(e)}
             path='user/role/request/student'
+            getData={e => console.log(e)}
             afterResData={onStudentSubmit}
             schema={showReceipt ? receiptSchema : emailSchema}
           >
@@ -259,12 +261,21 @@ const StudentForm = () => {
               placeholder='Universidade'
               options={formatterToSelect(universities)}
               onChange={(e: Option) => {
-                setAnimations(prev => ({ ...prev, showCampus: true }))
+                setAnimations(prev => ({
+                  ...prev,
+                  showCampus: true,
+                  showAr: !verifyInstitucionalEmail()
+                }))
+
                 setCampusData(e.value as number)
               }}
             />
 
-            <Text name='ar' placeholder='Registro Acadêmico' />
+            <Presence condition={showAr}>
+              <motion.div animate='enter' variants={show} id='ar'>
+                <Text name='ar' placeholder='Registro Acadêmico' />
+              </motion.div>
+            </Presence>
 
             <Presence condition={showCampus}>
               <MotionSelect
@@ -340,29 +351,31 @@ const StudentForm = () => {
             </Presence>
 
             <Presence condition={showReceipt}>
-              <MotionReceipt exit='exit' animate='enter' variants={show}>
-                <div id='warning'>
-                  <AlertIcon />
+              <>
+                <MotionReceipt exit='exit' animate='enter' variants={show}>
+                  <div id='warning'>
+                    <p>
+                      <AlertIcon />
+                      Este processo é mais lento pois requer confirmação de um{' '}
+                      <b id='moderator'>Moderador</b> de sua universidade. O
+                      formato do arquivo deve ser <b>PDF</b>.
+                    </p>
+                  </div>
 
-                  <p>
-                    Este processo é mais lento pois requer confirmação de um{' '}
-                    <b>Moderador</b> de sua universidade.
-                  </p>
-                </div>
-
-                <File
-                  guides
-                  bgHeight='200vh'
-                  bottom='50vh'
-                  tranlateY='50%'
-                  name='doc'
-                  label='Enviar comprovante'
-                  noCropper={true}
-                  onChange={() =>
-                    setAnimations(prev => ({ ...prev, showSubmit: true }))
-                  }
-                />
-              </MotionReceipt>
+                  <File
+                    guides
+                    bgHeight='200vh'
+                    bottom='50vh'
+                    tranlateY='50%'
+                    name='doc'
+                    label='Enviar comprovante'
+                    noCropper={true}
+                    onChange={() =>
+                      setAnimations(prev => ({ ...prev, showSubmit: true }))
+                    }
+                  />
+                </MotionReceipt>
+              </>
             </Presence>
 
             <Presence condition={showSubmit}>
@@ -388,9 +401,10 @@ const StudentForm = () => {
                   rgx.test(address)
                 )
 
-                if (teste[0].email_id)
+                if (teste[0].email_id) {
                   await api.delete(`user/email/${teste[0].email_id}`)
-                console.log('deleted')
+                  console.log('deleted')
+                }
               }
             }}
           >
