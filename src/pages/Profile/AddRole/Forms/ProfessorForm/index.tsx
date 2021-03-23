@@ -21,7 +21,7 @@ import { RootState } from 'store'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
-import { File, Select, Submit, Text } from 'components/Form'
+import { Checkbox, File, Select, Submit, Text } from 'components/Form'
 import Popup, { PopupMethods } from 'components/Popup'
 import Presence from 'components/Presence'
 
@@ -240,6 +240,16 @@ const ProfessorForm = () => {
             afterResData={onStudentSubmit}
             schema={showReceipt ? receiptSchema : emailSchema}
           >
+            <Text
+              optional
+              name='lattes'
+              placeholder='Link para: Currículo Lattes'
+            />
+
+            <Text optional name='linkedin' placeholder='Link para: Linkedin' />
+
+            <Text optional name='orcid' placeholder='Link para: ORCID' />
+
             <Select
               name='university_id'
               placeholder='Universidade'
@@ -338,6 +348,8 @@ const ProfessorForm = () => {
                 />
               </MotionReceipt>
             </Presence>
+
+            <Checkbox name='it' label='Sou professor em tempo integral' />
 
             <Presence condition={showSubmit}>
               <MotionSubmit

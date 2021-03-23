@@ -43,12 +43,19 @@ const EditProfile = () => {
   return (
     <ImageRefModalContext.Provider value={{ imageRef: imageRefModal }}>
       <Style>
-        <Form loading captcha path='user/update' afterResData={submitCallback}>
+        <Form
+          loading
+          captcha
+          method='patch'
+          path='user/update'
+          afterResData={submitCallback}
+        >
           <EditProfileContext.Provider
             value={{ globalChange, setGlobalChange }}
           >
             <Containers />
           </EditProfileContext.Provider>
+
           <div id='submits'>
             <button type='button' onClick={() => setGlobalChange(false)}>
               Descartar alterações

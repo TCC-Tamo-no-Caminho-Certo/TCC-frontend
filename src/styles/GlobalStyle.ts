@@ -72,17 +72,13 @@ export default createGlobalStyle`
       font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
       line-height: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
 
-      cursor: pointer
+      cursor: pointer;
     }
 
     input[type="checkbox"] {
       &, &:focus, &:hover {
         box-shadow: initial;
       }
-    }
-
-    button, input, optgroup, select, textarea { 
-      font-family: 'Roboto', sans-serif;
     }
   }
 

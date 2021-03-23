@@ -80,13 +80,7 @@ const formatUpdateUser = (
     }
   ]
 
-  const moderator: InputData[] = [
-    {
-      label: 'Nome:',
-      inputname: 'name',
-      value: userData.name
-    }
-  ]
+  const moderator: InputData[] = []
 
   const formInputs: ContainerForm = {
     personal,

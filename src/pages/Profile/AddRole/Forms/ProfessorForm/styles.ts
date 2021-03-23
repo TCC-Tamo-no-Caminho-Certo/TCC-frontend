@@ -56,13 +56,6 @@ export const MotionReceipt = styled(motion.div)`
 export const MotionWays = styled(motion.div)`
   margin-bottom: 0px;
 
-  #title {
-    height: 22px;
-    margin-top: 16px;
-    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
-    line-height: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
-  }
-
   div {
     display: flex;
     align-items: center;
@@ -99,6 +92,13 @@ export const MotionWays = styled(motion.div)`
     }
   }
 
+  #title {
+    height: 22px;
+    margin-top: 16px;
+    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
+    line-height: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
+  }
+
   #inputs {
     margin-bottom: 16px;
 
@@ -128,8 +128,10 @@ export const Form = styled(OriginalForm)`
 
   color: ${({ theme }) => theme.colors.tertiary};
 
-  .Text {
-    margin-bottom: 16px;
+  span {
+    text-align: left;
+    width: 100%;
+    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
   }
 
   .Select,
@@ -142,10 +144,8 @@ export const Form = styled(OriginalForm)`
     background-color: transparent;
   }
 
-  span {
-    text-align: left;
-    width: 100%;
-    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
+  .Text {
+    margin-bottom: 16px;
   }
 
   .Submit {
@@ -153,6 +153,14 @@ export const Form = styled(OriginalForm)`
 
     box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.39);
     transition: all 0s ease 0s;
+  }
+
+  .Checkbox {
+    margin-bottom: 16px;
+
+    .CheckboxLabel {
+      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.8rem);
+    }
   }
 `
 

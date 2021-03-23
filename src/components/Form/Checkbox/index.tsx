@@ -114,6 +114,7 @@ const Checkbox = ({ name, label }: CheckboxProps) => {
 
       <button
         type='button'
+        className='CheckboxLabel'
         onClick={() => {
           setChecked(!checked)
           setError('')

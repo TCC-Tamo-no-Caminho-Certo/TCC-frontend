@@ -62,6 +62,11 @@ export const ConfirmForm = styled(Form)`
 const Style = styled(motion.section)`
   position: relative;
 
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+
   min-height: 100vh;
 
   background-color: ${({ theme }) => theme.colors.tertiary};
@@ -76,7 +81,6 @@ const Style = styled(motion.section)`
     width: 100%;
   }
 
-  &,
   ${ConfirmForm} {
     display: flex;
     justify-content: center;
@@ -88,40 +92,6 @@ const Style = styled(motion.section)`
     margin-left: 60px;
   }
 
-  #submits {
-    position: absolute;
-    bottom: 24px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    button {
-      height: 40px;
-      border-radius: 15px;
-
-      color: ${({ theme }) => theme.colors.secondary};
-      background-color: transparent;
-    }
-
-    button + button {
-      width: 200px;
-      height: 40px;
-      border-radius: 15px;
-
-      margin-left: 24px;
-
-      color: ${({ theme }) => theme.colors.secondary};
-      background-color: ${({ theme }) => theme.colors.primary};
-      box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.49);
-      transition: transform 1s ease;
-
-      &:hover {
-        transform: scale(1.03);
-      }
-    }
-  }
-
   .DotsLoader {
     margin: 8px 0 16px 0;
   }
@@ -130,11 +100,55 @@ const Style = styled(motion.section)`
     margin: 32px 0;
   }
 
+  #submits {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button {
+      height: 40px;
+      border-radius: 15px;
+      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
+      line-height: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
+
+      background-color: transparent;
+      color: ${({ theme }) => theme.colors.secondary};
+    }
+
+    button + button {
+      width: clamp(120px, 20vw, 200px);
+      height: 40px;
+      border-radius: 15px;
+      margin-left: 16px;
+      transition: transform 1s ease;
+
+      box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.49);
+      color: ${({ theme }) => theme.colors.secondary};
+      background-color: ${({ theme }) => theme.colors.primary};
+
+      &:hover {
+        transform: scale(1.03);
+      }
+    }
+  }
+
+  @media screen and (min-width: 545px) {
+    justify-content: center;
+
+    #submits {
+      position: absolute;
+      bottom: 24px;
+      right: 50%;
+
+      transform: translateX(50%);
+    }
+  }
+
   @media screen and (min-width: 1500px) {
     #submits {
-      align-self: flex-end;
-
       right: 64px;
+
+      transform: translateX(0%);
     }
   }
 `

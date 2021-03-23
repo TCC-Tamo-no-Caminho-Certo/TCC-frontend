@@ -9,13 +9,13 @@ const light: ThemeAttributes = {
     tertiary: '#6e4850',
     white: '#fcfcfc',
     green: '#00d053',
-    yellow: '#fff500',
+    yellow: '#f5d936',
     red: '#ff0000',
     gray: '#C4C4C4'
   },
 
   roles: {
-    guest: '#fff500',
+    guest: '#f5d936',
     student: '#00d053',
     customer: '#ff6b00',
     professor: '#329dff',

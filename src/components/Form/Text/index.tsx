@@ -9,7 +9,7 @@ import React, {
   useRef,
   useState
 } from 'react'
-import Style from './styles'
+import Style, { IconSpace } from './styles'
 
 import { FormContext, FormState } from '../'
 
@@ -22,10 +22,11 @@ import { Ref } from 'components/Form'
 
 export interface TextProps extends HTMLProps<HTMLInputElement> {
   eye?: boolean
-  pasteAndDrop?: boolean
   icon?: FC
   color?: string
   isDate?: boolean
+  pasteAndDrop?: boolean
+  optional?: boolean
 }
 
 const Text = forwardRef<HTMLInputElement, TextProps>(
@@ -33,28 +34,31 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
     {
       id,
       onBlur,
+      hidden,
+      placeholder,
       icon: Icon,
-      eye = false,
-      pasteAndDrop = true,
-      className = 'Text',
       type = 'text',
+      className = 'Text',
       color = '#d65881',
+      eye = false,
       isDate = false,
+      optional = false,
+      pasteAndDrop = true,
       ...rest
     },
     ref
   ) => {
-    const form = useContext<FormState | null>(FormContext)
     const textRef = useRef<HTMLInputElement>(null)
+    const form = useContext<FormState | null>(FormContext)
     const auxRef = (ref as RefObject<HTMLInputElement>) || textRef
-    const [showInput, setShowInput] = useState(false)
-    const [isFilled, setIsFilled] = useState(false)
     const [error, setError] = useState<string>()
+    const [isFilled, setIsFilled] = useState(false)
+    const [showInput, setShowInput] = useState(false)
 
     useEffect(() => {
       const input: Ref = {
-        inputRef: auxRef,
         setError,
+        inputRef: auxRef,
         type: isDate ? 'date' : type,
         value: isDate ? dateToValue(auxRef.current?.value) : undefined
       }
@@ -76,46 +80,48 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
 
     return (
       <Style
-        className={className}
+        id={id}
         color={color}
         hasEye={!!eye}
+        hidden={hidden}
         hasIcon={!!Icon}
         isFilled={isFilled}
+        optional={optional}
         isErrored={!!error}
-        hidden={rest.hidden}
+        className={className}
         onFocus={() => textRef.current?.focus()}
-        id={id}
       >
         <ErrorTooltip error={!!error} content={error} />
 
         {Icon && !error && (
-          <div className='iconSpace'>
+          <IconSpace>
             <button type='button' onClick={() => textRef.current?.focus()}>
               <Icon />
             </button>
-          </div>
+          </IconSpace>
         )}
 
         <input
           spellCheck='false'
-          ref={ref || textRef}
           id={rest.name}
+          ref={ref || textRef}
           type={hiddenInput()}
           onBlur={onInputBlur}
-          onPaste={event => pasteAndDrop || event?.preventDefault()}
           onDrop={event => pasteAndDrop || event?.preventDefault()}
+          onPaste={event => pasteAndDrop || event?.preventDefault()}
+          placeholder={`${placeholder}${optional ? ' - Opcional ' : ''}`}
           {...rest}
         />
 
         {eye &&
           (showInput ? (
-            <div className='iconSpace'>
+            <IconSpace>
               <EyeClosedIcon onClick={() => setShowInput(false)} />
-            </div>
+            </IconSpace>
           ) : (
-            <div className='iconSpace'>
+            <IconSpace>
               <EyeIcon onClick={() => setShowInput(true)} />
-            </div>
+            </IconSpace>
           ))}
       </Style>
     )

@@ -23,12 +23,15 @@ type ContainersRoles = Role | 'personal'
 const Containers = () => {
   const { innerWidth } = useWindowDimensions()
   const [sliderWidth, setSliderWidth] = useState(innerWidth >= 600 ? 520 : 284)
-
   const modalContext = useContext(ImageRefModalContext)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const user = useSelector<RootState, UserState>(state => state.user)
+  const rolesShowed = ['student', 'professor', 'moderator']
+  const rolesWithEdit = user.role.filter(
+    role => rolesShowed.filter(wished => wished === role).length !== 0
+  )
 
-  const containers: ContainersRoles[] = ['personal', ...user.role]
+  const containers: ContainersRoles[] = ['personal', ...rolesWithEdit]
 
   useEffect(() => {
     if (innerWidth <= 430) setSliderWidth(320)

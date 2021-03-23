@@ -1,21 +1,45 @@
+import { lighten } from 'polished'
 import styled, { css } from 'styled-components'
 
 interface StyleProps {
-  hasIcon: boolean
+  color: string
   hasEye: boolean
+  hasIcon: boolean
+  optional: boolean
   isFilled: boolean
   isErrored: boolean
-  color: string
   hidden?: boolean
 }
+
+export const IconSpace = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-width: 40px;
+  max-width: 40px;
+  height: 100%;
+  margin: 0 2%;
+
+  .Icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: clamp(24px, 2vh, 30px);
+    height: clamp(24px, 2vh, 30px);
+
+    fill: ${({ theme }) => theme.colors.tertiary};
+  }
+`
 
 const Style = styled.div<StyleProps>`
   display: ${({ hidden }) => (hidden ? 'none' : 'flex')};
   align-items: center;
 
-  height: clamp(35px, 3vh + 2vw, 44px);
   min-width: 284px;
   border-radius: 10px;
+  height: clamp(35px, 3vh + 2vw, 44px);
 
   background-color: transparent;
   border: solid 1px ${({ theme }) => theme.colors.tertiary};
@@ -25,7 +49,7 @@ const Style = styled.div<StyleProps>`
 
     &,
     input::placeholder,
-    .iconSpace .Icon {
+    ${IconSpace} .Icon {
       fill: ${({ theme }) => theme.colors.primary};
       stroke: ${({ theme }) => theme.colors.primary};
       -webkit-text-fill-color: ${({ theme }) => theme.colors.primary};
@@ -43,6 +67,15 @@ const Style = styled.div<StyleProps>`
     &::placeholder {
       color: ${({ theme }) => theme.colors.tertiary};
       -webkit-text-fill-color: ${({ theme }) => theme.colors.tertiary};
+
+      ${({ optional, theme }) =>
+        optional &&
+        css`
+          font-style: italic;
+
+          color: ${lighten(0.1, theme.colors.tertiary)};
+          -webkit-text-fill-color: ${lighten(0.1, theme.colors.tertiary)};
+        `}
     }
 
     ${({ hasEye, hasIcon }) =>
@@ -60,40 +93,18 @@ const Style = styled.div<StyleProps>`
         padding-left: 16px;
       `}
 
-      ${({ isErrored }) =>
+    ${({ isErrored }) =>
       isErrored &&
       css`
         padding-left: 0px;
       `}
   }
 
-  .iconSpace {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    min-width: 40px;
-    max-width: 40px;
-    height: 100%;
-    margin: 0 2%;
-
-    .Icon {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      width: clamp(24px, 2vh, 30px);
-      height: clamp(24px, 2vh, 30px);
-
-      fill: ${({ theme }) => theme.colors.tertiary};
-    }
-  }
-
   ${({ isFilled }) =>
     isFilled &&
     css`
       &,
-      .iconSpace .Icon {
+      ${IconSpace} .Icon {
         fill: ${({ theme }) => theme.colors.primary};
         stroke: ${({ theme }) => theme.colors.primary};
         -webkit-text-fill-color: ${({ theme }) => theme.colors.primary};
@@ -103,4 +114,5 @@ const Style = styled.div<StyleProps>`
 
 export default Style
 
+IconSpace.displayName = 'IconSpace-Style'
 Style.displayName = 'Text-Style'
