@@ -9,7 +9,7 @@ interface CardProps {
 const Card = ({ headerText, children }: CardProps) => {
   return (
     <Style className='Card'>
-      <Header>{headerText}</Header>
+      <Header className='Header'>{headerText}</Header>
 
       {children}
     </Style>

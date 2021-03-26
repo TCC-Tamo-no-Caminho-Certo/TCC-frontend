@@ -20,16 +20,18 @@ const Style = styled.div<StyleProps>`
     justify-content: center;
 
     padding-bottom: 48px;
-    width: 790px;
+    border-radius: 0px;
+    width: clamp(320px, 100vw, 550px);
 
     > * {
       margin-top: 24px;
     }
 
-    header {
-      font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.5rem);
+    .Header {
       height: 64px;
+      border-radius: 0px;
       margin-top: 0px;
+      font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.5rem);
     }
 
     #role {
@@ -40,18 +42,12 @@ const Style = styled.div<StyleProps>`
       color: ${({ theme, role }) => theme.roles[role]};
     }
 
-    svg,
-    #requestRow {
-      padding: 0px 48px;
-    }
-
     #requestRow {
       display: flex;
       align-items: center;
       justify-content: space-between;
 
       width: 100%;
-
       text-align: center;
 
       color: ${({ theme }) => theme.colors.tertiary};
@@ -103,6 +99,20 @@ const Style = styled.div<StyleProps>`
 
         color: ${({ theme }) => theme.colors.primary};
         border: solid ${({ theme }) => theme.colors.primary} 1px;
+      }
+    }
+  }
+
+  @media screen and (min-width: 620px) {
+    svg {
+      padding: 0px 32px;
+    }
+
+    .Card {
+      border-radius: 24px;
+
+      .Header {
+        border-radius: 24px 24px 0 0;
       }
     }
   }

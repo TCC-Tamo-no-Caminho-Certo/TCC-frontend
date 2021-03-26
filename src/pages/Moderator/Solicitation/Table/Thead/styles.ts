@@ -7,20 +7,16 @@ const Style = styled.table`
   box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.39);
 
   thead {
-    width: 100%;
     padding-right: 8px;
 
     tr {
       display: flex;
       align-items: center;
 
-      width: calc(100% - 8px);
+      width: calc(100% - 9px);
       height: 32px;
-      padding: 0 16px 0 8px;
 
       th {
-        height: 100%;
-
         cursor: pointer;
 
         button {
@@ -28,10 +24,9 @@ const Style = styled.table`
           justify-content: flex-start;
           align-items: center;
 
-          width: 100%;
-          height: 100%;
-
           user-select: none;
+          height: 32px;
+          overflow: hidden;
           font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
           line-height: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
 
@@ -50,7 +45,7 @@ const Style = styled.table`
           justify-content: center;
           align-items: center;
 
-          min-width: 24px;
+          width: 32px;
         }
 
         &.status button {
@@ -77,18 +72,14 @@ const Style = styled.table`
   }
 
   @media screen and (min-width: 545px) {
-    table tbody tr th.role button {
-      min-width: 165px;
+    thead tr th.role button {
+      width: 165px;
     }
   }
 
   @media screen and (min-width: 745px) {
     thead tr {
-      padding: 0 32px;
-
-      th.statusCircle button {
-        width: 32px;
-      }
+      padding: 0 24px;
     }
   }
 `

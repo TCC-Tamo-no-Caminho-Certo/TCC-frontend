@@ -23,7 +23,7 @@ const Submit = forwardRef(({ children, disabled }: SubmitProps, ref) => {
       disabled={disabled}
       ref={ref as any}
     >
-      {children}
+      <div className='label'>{children}</div>
 
       {form?.loader && (
         <DotsLoader dotSize={6} color={theme.colors.secondary} />

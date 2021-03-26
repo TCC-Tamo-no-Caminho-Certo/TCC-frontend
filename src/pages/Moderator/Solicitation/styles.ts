@@ -16,15 +16,21 @@ const Style = styled.div`
     align-items: center;
 
     width: max(100%, 280px);
-    padding: 16px 16px;
+    padding: 16px 16px 16px 8px;
     text-align: left;
 
     h1 {
-      font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.9rem);
+      font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.3rem);
     }
   }
 
   @media screen and (min-width: 545px) {
+    header {
+      padding: 16px 16px;
+    }
+  }
+
+  @media screen and (min-width: 745px) {
     header {
       padding: 16px 32px;
     }

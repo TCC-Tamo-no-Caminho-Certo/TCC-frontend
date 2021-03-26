@@ -1,59 +1,38 @@
-import React, {
-  forwardRef,
-  useContext,
-  useImperativeHandle,
-  useRef,
-  useState
-} from 'react'
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import Style from './styles'
 
-import { AddRoleContext } from '../../index'
+import tokenSchema from 'utils/validations/tokenSchema'
 
 import Form, { Submit, Text } from 'components/Form'
-import Popup, { PopupMethods } from 'components/Popup'
+import Popup, { PopupMethods, PopupProps } from 'components/Popup'
 import Modal, { ModalMethods } from 'components/Modal'
 
 import * as Yup from 'yup'
-
-export interface University {
-  value: string | number
-  label: string
-  studentRegex: string
-  professorRegex: string
-}
 
 export interface RegisterEmailMethods {
   toggleRegister: () => void
 }
 
 interface RegisterEmailProps {
+  addData?: {}
+  regex?: RegExp
+  title?: string
   onSuccess?: () => void
-  universityData?: University
-  role: 'professor' | 'student'
+  placeholder?: string
+  modal: PopupProps
 }
 
 const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
-  ({ universityData, role, onSuccess }, ref) => {
+  ({ title, addData, regex, onSuccess, placeholder, modal }, ref) => {
     const popupRef = useRef<PopupMethods>(null)
     const modalRef = useRef<ModalMethods>(null)
-    const { rolesHeight } = useContext(AddRoleContext)
-
     const [codeSend, setCodeSend] = useState(false)
-
-    const professorRegex = new RegExp(
-      universityData ? universityData.professorRegex : ''
-    )
-
-    const studentRegex = new RegExp(
-      universityData ? universityData.studentRegex : ''
-    )
-
-    const regex = role === 'professor' ? professorRegex : studentRegex
+    const regexToMach = regex || /.*/g
 
     const emailSchema = Yup.object({
       email: Yup.string()
         .email('O e-mail deve ser válido!')
-        .matches(regex, 'E-mail inválido!')
+        .matches(regexToMach, 'E-mail inválido!')
         .required('Você esqueceu de informar o email!')
     })
 
@@ -97,24 +76,19 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
 
     return (
       <>
-        <Modal
-          ref={modalRef}
-          bgHeight={`calc(${rolesHeight}px + 100vh)`}
-          bottom='50vh'
-          translateY='50%'
-        >
+        <Modal ref={modalRef} {...modal}>
           <Style>
             {!codeSend && (
               <>
-                <span>{universityData?.label}</span>
+                <span>{title}</span>
 
                 <Form
                   path='user/email'
-                  addData={{ university_id: universityData?.value }}
+                  addData={addData}
                   afterResData={onEmailSubmit}
                   schema={emailSchema}
                 >
-                  <Text name='email' placeholder='E-mail institucional' />
+                  <Text name='email' placeholder={placeholder} />
 
                   <Submit>Enviar código de confirmação</Submit>
                 </Form>
@@ -127,6 +101,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
                 id='tokenForm'
                 path='confirm/email/*%'
                 addToPath={['token']}
+                schema={tokenSchema}
                 afterResData={onTokenSubmit}
               >
                 <p>
@@ -141,12 +116,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
           </Style>
         </Modal>
 
-        <Popup
-          translateY='50%'
-          bottom='50vh'
-          bgHeight={`calc(${rolesHeight}px + 100vh)`}
-          ref={popupRef}
-        />
+        <Popup {...modal} ref={popupRef} />
       </>
     )
   }

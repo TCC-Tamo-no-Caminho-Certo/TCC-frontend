@@ -39,7 +39,6 @@ export const BodyWrapper = styled.div`
 
         width: 100%;
         min-height: 32px;
-        padding: 0 16px 0 8px;
 
         &:hover {
           cursor: pointer;
@@ -52,14 +51,18 @@ export const BodyWrapper = styled.div`
           display: flex;
           align-items: center;
 
-          height: 100%;
+          overflow: hidden;
+          min-height: 32px;
+          padding: 8px 4px;
+          font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
+          line-height: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
 
           &.statusCircle {
             display: flex;
             align-items: center;
             justify-content: center;
 
-            min-width: 24px;
+            min-width: 32px;
             height: 32px;
           }
 
@@ -78,8 +81,6 @@ export const BodyWrapper = styled.div`
           }
 
           &.date {
-            justify-content: center;
-
             min-width: 64px;
           }
         }
@@ -95,11 +96,7 @@ export const BodyWrapper = styled.div`
 
   @media screen and (min-width: 745px) {
     table tbody tr {
-      padding: 0 32px;
-
-      td.statusCircle {
-        min-width: 32px;
-      }
+      padding: 0 24px;
     }
   }
 `
@@ -251,9 +248,144 @@ export const ModalContent = styled.div<ModalContentProps>`
       fill: ${({ theme }) => theme.colors.secondary};
     }
   }
+`
+
+export const Filters = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  width: max(100%, 280px);
+  padding: 0 16px 0 8px;
+
+  & > * {
+    margin-bottom: 16px;
+
+    box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.23);
+  }
+
+  .Text {
+    width: max(100%, 100px);
+    min-width: 100px;
+    min-height: 44px;
+
+    input {
+      width: 100%;
+      min-height: 44px;
+    }
+  }
+
+  .SelectRole {
+    width: 100%;
+    border-radius: 8px;
+
+    .Select__control {
+      height: 44px;
+    }
+  }
+
+  .SelectFilter {
+    min-width: 100%;
+    border-radius: 8px;
+
+    .Select__control {
+      height: 44px;
+    }
+  }
+
+  .Submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    border-radius: 8px;
+    padding: 8px;
+    min-height: 44px;
+
+    color: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.primary};
+
+    .Icon {
+      margin-right: 12px;
+      height: 20px;
+
+      fill: ${({ theme }) => theme.colors.secondary};
+    }
+  }
+
+  #dates {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 10;
+
+    width: 100%;
+
+    transform: translateY(-2px);
+
+    box-shadow: none;
+
+    .Datepicker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 50%;
+
+      & + .Datepicker {
+        margin-left: 24px;
+      }
+
+      .Text {
+        min-width: 100px;
+
+        box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.23);
+      }
+    }
+  }
 
   @media screen and (min-width: 545px) {
-    width: max(85vw, 320px);
+    padding: 0 16px;
+  }
+
+  @media screen and (min-width: 660px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    margin-bottom: 16px;
+    height: 44px;
+
+    & > * {
+      height: 100%;
+      margin-bottom: 0;
+    }
+
+    .Text,
+    .SelectRole {
+      margin-right: 24px;
+    }
+
+    .SelectFilter {
+      margin-top: 0px;
+      min-width: 120px;
+    }
+
+    .Submit {
+      width: clamp(160px, 20%, 280px);
+      margin-left: 24px;
+    }
+
+    #dates {
+      margin-right: 24px;
+    }
+  }
+
+  @media screen and (min-width: 745px) {
+    padding: 0 32px;
   }
 `
 
@@ -267,138 +399,6 @@ const Style = styled.div`
   width: 100%;
 
   color: ${({ theme }) => theme.colors.secondary};
-
-  form {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-
-    width: max(100%, 280px);
-    padding: 0 32px 0 16px;
-
-    #filters {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      width: 100%;
-      border-radius: 8px;
-
-      box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.2);
-      border: solid 1px ${({ theme }) => theme.colors.secondary};
-
-      .Text {
-        width: 100%;
-        height: 40px;
-
-        border: none;
-        color: ${({ theme }) => theme.colors.secondary};
-
-        input {
-          width: 100%;
-
-          color: ${({ theme }) => theme.colors.secondary};
-          -webkit-text-fill-color: ${({ theme }) => theme.colors.secondary};
-
-          &::placeholder {
-            color: ${({ theme }) => theme.colors.secondary};
-            -webkit-text-fill-color: ${({ theme }) => theme.colors.secondary};
-          }
-        }
-      }
-
-      #dates {
-        display: flex;
-        align-items: center;
-
-        width: 50%;
-
-        .DatePicker {
-          width: 50%;
-
-          .DatePicker,
-          .InputInDate {
-            height: 100%;
-          }
-
-          .Text {
-            border: none;
-
-            .Icon {
-              width: 12px;
-
-              fill: ${({ theme }) => theme.colors.secondary};
-            }
-
-            input::placeholder {
-              color: ${({ theme }) => theme.colors.secondary};
-            }
-          }
-
-          .iconSpace {
-            width: 28px;
-          }
-        }
-      }
-    }
-
-    #searchButton {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      margin: 16px 0;
-      width: 100%;
-      height: 40px;
-      border-radius: 8px;
-
-      box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.23);
-      color: ${({ theme }) => theme.colors.secondary};
-      background-color: ${({ theme }) => theme.colors.primary};
-
-      .Icon {
-        margin-right: 12px;
-        height: 20px;
-
-        fill: ${({ theme }) => theme.colors.secondary};
-      }
-    }
-  }
-
-  .DotsLoader {
-    position: absolute;
-    top: 0;
-    left: 50%;
-  }
-
-  @media screen and (min-width: 545px) {
-    form {
-      padding: 0 32px;
-    }
-  }
-
-  @media screen and (min-width: 620px) {
-    form {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-
-      margin-bottom: 16px;
-      height: 40px;
-
-      #filters {
-        flex: 1;
-        height: 100%;
-        margin-right: 24px;
-        border-radius: 8px;
-      }
-
-      #searchButton {
-        width: clamp(100px, 15%, 170px);
-        margin: 0;
-      }
-    }
-  }
 `
 
 export default Style
@@ -406,4 +406,5 @@ export default Style
 RoleTd.displayName = 'RoleTd-Style'
 BodyWrapper.displayName = 'BodyWrapper-Style'
 ModalContent.displayName = 'ModalContent-Style'
+
 Style.displayName = 'Table-Style'

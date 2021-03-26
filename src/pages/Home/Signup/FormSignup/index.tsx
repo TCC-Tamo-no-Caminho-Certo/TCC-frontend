@@ -4,8 +4,6 @@ import Style from './styles'
 import signupSchema from 'utils/validations/signup'
 
 import { HomeActions } from 'store/home'
-import { ThemeState } from 'store/theme'
-import { RootState } from 'store'
 
 import WorldIcon from 'assets/Inputs/WorldIcon'
 import UserLockedIcon from 'assets/Inputs/UserLockedIcon'
@@ -16,12 +14,11 @@ import { Datepicker, Form, Submit, Text } from 'components/Form'
 import BackButton from 'components/BackButton'
 import Popup, { PopupMethods } from 'components/Popup'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 const FormSignup = () => {
   const popupRef = useRef<PopupMethods>(null)
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const dispatch = useDispatch()
   const history = useHistory()
   const [disable, setDisable] = useState(false)
@@ -101,13 +98,9 @@ const FormSignup = () => {
 
           <Datepicker
             isBirthday
-            arrow='top'
             name='birthday'
             placeholder='Data de nascimento'
             icon={UserLockedIcon}
-            bodyColor={theme.colors.secondary}
-            headerColor={theme.colors.tertiary}
-            selectedColor={theme.colors.primary}
           />
 
           <span>Você precisa ter pelo menos 18 anos</span>

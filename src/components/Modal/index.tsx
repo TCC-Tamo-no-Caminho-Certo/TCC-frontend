@@ -10,7 +10,8 @@ import Style, { ModalBackground } from './styles'
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
 interface ModalProps {
-  children: ReactElement
+  children: ReactElement | ReactElement[]
+  id?: string
   top?: string
   bottom?: string
   bgHeight?: string
@@ -30,7 +31,8 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
       top = '50vh',
       bottom = 'auto',
       bgHeight = '100vh',
-      translateY = '-60%'
+      translateY = '-60%',
+      ...rest
     },
     ref
   ) => {
@@ -56,7 +58,13 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
       <>
         <ModalBackground height={bgHeight} onClick={onBackgroundClick} />
 
-        <Style top={top} bottom={bottom} ref={modalRef} translateY={translateY}>
+        <Style
+          top={top}
+          bottom={bottom}
+          ref={modalRef}
+          translateY={translateY}
+          {...rest}
+        >
           <CloseIcon onClick={onBackgroundClick} />
 
           {children}

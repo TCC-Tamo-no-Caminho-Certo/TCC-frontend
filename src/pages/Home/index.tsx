@@ -3,8 +3,8 @@ import { Shadow } from './styles'
 
 import Login from './Login'
 import Signup from './Signup'
+import RestOfHome from './RestOfHome'
 
-// import RestOfHome from './RestOfHome'
 import { RootState } from 'store'
 import { HomeActions } from 'store/home'
 
@@ -109,7 +109,7 @@ const Home = () => {
         </Switch>
       </AnimatePresence>
 
-      {/* <RestOfHome /> */}
+      <RestOfHome />
     </>
   )
 }

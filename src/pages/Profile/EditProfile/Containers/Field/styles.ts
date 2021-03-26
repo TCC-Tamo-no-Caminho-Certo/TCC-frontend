@@ -20,14 +20,17 @@ export const Input = styled.div`
     border: none;
 
     input {
-      width: 100%;
+      width: calc(100% - 32px);
       height: 40px;
       text-align: center;
     }
   }
 
   .value {
-    padding-left: 16px;
+    display: flex;
+    justify-content: center;
+
+    width: calc(100% - 64px);
   }
 `
 

@@ -8,6 +8,19 @@ import ptbr from 'utils/locales/dates/ptbr'
 
 import DatePicker, { DayValue } from 'react-modern-calendar-datepicker'
 
+export interface DatepickerColors {
+  header?: string
+  body?: string
+  disabled?: string
+  selected?: string
+}
+
+interface DatepickerProps extends TextProps {
+  arrow?: 'auto' | 'top' | 'bottom'
+  isBirthday?: boolean
+  dateColors?: DatepickerColors
+}
+
 const actualDate = new Date()
 
 const present = {
@@ -26,16 +39,6 @@ const maximumDate = {
   year: present.year - 18,
   month: present.month + 1,
   day: present.day
-}
-
-interface DatepickerProps extends TextProps {
-  valueColor?: string
-  headerColor?: string
-  bodyColor?: string
-  disabledColor?: string
-  selectedColor?: string
-  arrow?: string
-  isBirthday?: boolean
 }
 
 export const valueToDate = (date: string) => {
@@ -67,15 +70,16 @@ const datePickerToDate = (date: DayValue) => {
 }
 
 const Datepicker = ({
-  bodyColor = '#6e4850',
-  valueColor = '#d65881',
-  headerColor = '#6e4850',
-  selectedColor = '#d65881',
-  disabledColor = '#d62828',
   icon: Icon,
   isBirthday,
   arrow,
   name,
+  dateColors = {
+    body: '#fcfcfc',
+    header: '#6e4850',
+    selected: '#d65881',
+    disabled: '#d62828'
+  },
   ...rest
 }: DatepickerProps) => {
   const [selectedDate, setSelectedDate] = useState<DayValue>(null)
@@ -91,32 +95,24 @@ const Datepicker = ({
         <Text
           isDate
           readOnly
-          className='Datepicker'
           ref={ref}
           id={name}
           name={name}
           icon={Icon}
           onClick={onClick}
-          color={valueColor}
           value={datePickerToDate(selectedDate)}
           {...rest}
         />
       )
     },
-    [Icon, name, rest, selectedDate, valueColor]
+    [Icon, name, rest, selectedDate]
   )
 
   return (
-    <Style
-      className='Datepicker'
-      arrow={arrow}
-      bodyColor={bodyColor}
-      headerColor={headerColor}
-      selectedColor={selectedColor}
-      disabledColor={disabledColor}
-    >
+    <Style className='Datepicker' arrow={arrow} colors={dateColors}>
       <DatePicker
         calendarClassName='CalendarSize'
+        calendarPopperPosition={arrow}
         locale={ptbr}
         value={selectedDate}
         onChange={setSelectedDate}

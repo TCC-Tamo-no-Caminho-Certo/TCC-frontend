@@ -48,17 +48,23 @@ const formatUpdateUser = (
       inputname: 'surname',
       value: userData.surname
     },
-    {
-      label: 'E-mail:',
-      inputname: 'email',
-      value: userData.email[0].address
-    },
+    // {
+    //   label: 'E-mail:',
+    //   inputname: 'email',
+    //   value: userData.email[0].address
+    // },
     {
       label: 'Nascimento:',
       inputname: 'birthday',
       value: userData.birthday,
       date: true
     }
+    // {
+    //   label: 'Celular:',
+    //   inputname: 'phone',
+    //   value: userData.phone === null ? '' : userData.phone,
+    //   date: true
+    // }
     // {
     //   label: 'Senha:',
     //   inputname: 'new_password',

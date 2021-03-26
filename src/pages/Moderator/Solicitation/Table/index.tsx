@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState
 } from 'react'
-import Style, { BodyWrapper, ModalContent, RoleTd } from './styles'
+import Style, { BodyWrapper, Filters, ModalContent, RoleTd } from './styles'
 
 import Thead from './Thead'
 import Circle from './Circle'
@@ -19,7 +19,6 @@ import { ThemeState } from 'store/theme'
 import { RootState } from 'store'
 
 import useSortableData from 'hooks/useSortableData'
-import useWindowDimensions from 'hooks/useWindowDimensions'
 
 import Download from 'assets/Download'
 import doc from 'assets/doc.jpg'
@@ -28,10 +27,19 @@ import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import Modal, { ModalMethods } from 'components/Modal'
 import DotsLoader from 'components/DotsLoader'
-import { Form, Submit, Text, Textarea } from 'components/Form'
+import {
+  Datepicker,
+  Form,
+  Select,
+  Submit,
+  Text,
+  Textarea
+} from 'components/Form'
 import Avatar from 'components/User/Avatar'
 
+import { lighten } from 'polished'
 import { useSelector } from 'react-redux'
+import { Theme } from 'react-select'
 
 export type StatusTypes = 'accepted' | 'rejected' | 'awaiting'
 type TablePageType = TableData[] | null
@@ -118,8 +126,13 @@ const headerData: HeaderData[] = [
   { name: 'date', label: 'Data' }
 ]
 
+interface Filter {
+  name: JSX.Element
+  role: JSX.Element
+  date: JSX.Element
+}
+
 const Table = () => {
-  const { innerWidth } = useWindowDimensions()
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>
   const tableRef = useRef() as MutableRefObject<HTMLTableElement>
@@ -129,13 +142,13 @@ const Table = () => {
   const [showData, setShowData] = useState<TablePageType>(null)
   const [tablePage, setTablePage] = useState(1)
   const [isClear, setIsClear] = useState(false)
+  const [filter, setFilter] = useState<keyof Filter>('name')
+  const quantity = 10
 
   const { items, sort } = useSortableData(showData, {
     direction: 'descending',
     indexer: 'name'
   })
-
-  const quantity = 10
 
   const makeRequest = useCallback(
     async (page: number) => {
@@ -144,7 +157,6 @@ const Table = () => {
           `user/role/requests?page=${page}&per_page=${quantity}`
         )
         const { requests } = response
-        console.log(requests)
 
         if (requests && requests.length !== 0) {
           const tableData = transformArray(requests)
@@ -155,6 +167,73 @@ const Table = () => {
     },
     [isClear]
   )
+
+  const selectStyle = {
+    container: (before: any) => ({
+      ...before
+    }),
+    menu: (before: any) => ({
+      ...before,
+      zIndex: 3,
+      backgroundColor: theme.colors.primary,
+      color: theme.colors.secondary,
+      border: `solid ${theme.colors.secondary} 1px`
+    }),
+    control: (before: any) => ({
+      ...before,
+      paddingLeft: 8,
+      backgroundColor: 'transparent',
+      border: `solid ${theme.colors.secondary} 1px`,
+      ':hover': {
+        border: `solid ${theme.colors.secondary} 1px`
+      }
+    }),
+    valueContainer: (before: any) => ({
+      ...before,
+      paddingLeft: 0,
+      backgroundColor: 'transparent'
+    }),
+    singleValue: (before: any) => ({
+      ...before,
+      color: theme.colors.secondary
+    }),
+    multiValue: (before: any) => ({
+      ...before,
+      backgroundColor: theme.colors.primary
+    }),
+    multiValueLabel: (before: any) => ({
+      ...before,
+      color: theme.colors.secondary
+    }),
+    multiValueRemove: (before: any) => ({
+      ...before,
+      color: theme.colors.secondary
+    })
+  }
+
+  const selectTheme = (beforeTheme: Theme): Theme => ({
+    ...beforeTheme,
+    colors: {
+      ...beforeTheme.colors,
+      danger: theme.colors.red,
+      dangerLight: lighten(0.5, theme.colors.red),
+      primary: theme.colors.tertiary,
+      primary25: lighten(0.1, theme.colors.tertiary),
+      primary50: lighten(0.2, theme.colors.tertiary),
+      primary75: lighten(0.3, theme.colors.tertiary),
+      neutral0: theme.colors.secondary,
+      neutral5: theme.colors.secondary,
+      neutral10: theme.colors.secondary,
+      neutral20: theme.colors.secondary,
+      neutral30: theme.colors.secondary,
+      neutral40: theme.colors.secondary,
+      neutral50: theme.colors.secondary,
+      neutral60: theme.colors.secondary,
+      neutral70: theme.colors.secondary,
+      neutral80: theme.colors.secondary,
+      neutral90: theme.colors.secondary
+    }
+  })
 
   const onTableScroll = () => {
     const table = tableWrapperRef.current
@@ -171,69 +250,105 @@ const Table = () => {
     }
   }
 
-  const setLetterLimit = (word: string) => {
-    if (innerWidth < 400) {
-      const cut = word.substr(0, 10)
-      const newWord = cut.split(' ')[0]
-      return cut.split(' ')[1] ? newWord : newWord + '...'
-    }
+  const onSearchClick = async () => {
+    const value = inputRef.current.value
+    console.log(value)
 
-    if (innerWidth < 620 && innerWidth > 400) {
-      const cut = word.substr(0, 20)
-      const newWord = cut.split(' ')[0]
-      return cut.split(' ')[1] ? newWord : newWord + '...'
-    }
+    const response = await api.get(
+      `user/role/requests?page=1&per_page=${quantity}&filter[full_name][]=${value}`
+    )
 
-    if (innerWidth > 620 && innerWidth < 720) {
-      const cut = word.substr(0, 30)
-      const newWord = cut.split(' ')[0]
-      return cut.split(' ')[1] ? newWord : newWord + '...'
-    }
-    if (innerWidth > 720 && innerWidth < 900) {
-      const cut = word.substr(0, 40)
-      const newWord = cut.split(' ')[0]
-      return cut.split(' ')[1] ? newWord : newWord + '...'
-    }
-
-    return word.substr(0, 40)
+    console.log(response)
   }
 
   useEffect(() => {
     makeRequest(1)
   }, [makeRequest])
 
+  const filters: Filter = {
+    name: (
+      <Text
+        name='name'
+        type='text'
+        autoComplete='off'
+        placeholder='Filtrar'
+        ref={inputRef}
+        textColors={{
+          focused: theme.colors.secondary,
+          unfocused: theme.colors.secondary
+        }}
+      />
+    ),
+    role: (
+      <Select
+        name='role'
+        className='SelectRole'
+        theming={selectTheme}
+        styling={selectStyle}
+        options={[
+          { label: 'Estudante', value: 'student' },
+          { label: 'Professor', value: 'professor' }
+        ]}
+      />
+    ),
+    date: (
+      <div id='dates'>
+        <Datepicker
+          placeholder='De'
+          dateColors={{
+            body: theme.colors.secondary,
+            header: theme.colors.primary,
+            selected: theme.colors.tertiary,
+            disabled: theme.colors.red
+          }}
+          textColors={{
+            focused: theme.colors.secondary,
+            unfocused: theme.colors.secondary
+          }}
+        />
+
+        <Datepicker
+          placeholder='Até'
+          dateColors={{
+            body: theme.colors.secondary,
+            header: theme.colors.primary,
+            selected: theme.colors.tertiary,
+            disabled: theme.colors.red
+          }}
+          textColors={{
+            focused: theme.colors.secondary,
+            unfocused: theme.colors.secondary
+          }}
+        />
+      </div>
+    )
+  }
+
   return (
     <>
       <Style className='Table'>
-        <Form
-          id='row'
-          method='get'
-          path={`user/role/requests?page=1&per_page=${quantity}&filter[full_name][]=Jean`}
-          afterResData={res => {
-            console.log(res)
-            res !== undefined && setShowData(transformArray(res.requests))
-          }}
-        >
-          <div id='filters'>
-            <Text
-              id='search'
-              name='name'
-              type='text'
-              autoComplete='off'
-              placeholder='Filtrar'
-              ref={inputRef}
-            />
-          </div>
+        <Filters>
+          {filters[filter]}
 
-          <button
-            type='submit'
-            id='searchButton'
-            onClick={() => setTablePage(1)}
-          >
+          <Select
+            name='filter'
+            className='SelectFilter'
+            theming={selectTheme}
+            styling={selectStyle}
+            onChange={({ value }: any) => setFilter(value)}
+            defaultValue={{ label: 'Nome', value: 'name' }}
+            options={[
+              { label: 'Papel', value: 'role' },
+              { label: 'Nome', value: 'name' },
+              { label: 'Data', value: 'date' }
+            ]}
+          />
+
+          <button className='Submit' onClick={onSearchClick} type='button'>
             <LoupeIcon />
             Buscar
           </button>
-        </Form>
+        </Filters>
 
         <Thead headerData={headerData} sort={sort} />
 
@@ -249,13 +364,6 @@ const Table = () => {
                   }}
                 >
                   {headerData.map(({ label, name }) => {
-                    if (name === 'statusCircle')
-                      return (
-                        <td className='statusCircle' key={name}>
-                          <Circle status={item.statusCircle} />
-                        </td>
-                      )
-
                     if (name === 'role')
                       return (
                         <RoleTd
@@ -266,26 +374,16 @@ const Table = () => {
                           {makeRoleLabel(item[name])}
                         </RoleTd>
                       )
-
-                    if (name === 'status')
+                    if (name === 'statusCircle')
                       return (
-                        <td key={label} className='status'>
-                          {item[name as keyof TableData]}
-                        </td>
-                      )
-
-                    if (name === 'name')
-                      return (
-                        <td key={label} className='name'>
-                          {setLetterLimit(
-                            item[name as keyof TableData] as string
-                          )}
+                        <td className='statusCircle' key={name}>
+                          <Circle status={item.statusCircle} />
                         </td>
                       )
 
                     return (
                       <td key={label} className={name}>
-                        {item[name as keyof TableData]}
+                        {item[name]}
                       </td>
                     )
                   })}
@@ -298,7 +396,7 @@ const Table = () => {
         {showData === null && <DotsLoader color={theme.colors.secondary} />}
       </Style>
 
-      <Modal ref={modalRef} top='50vh' translateY='-50%'>
+      <Modal top='50vh' translateY='-50%' ref={modalRef}>
         <ModalContent
           role={clickedItem?.role}
           status={clickedItem?.statusCircle}

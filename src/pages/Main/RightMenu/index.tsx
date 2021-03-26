@@ -110,9 +110,10 @@ const RightMenu = () => {
   const [editOpen, toggleEditOpen] = useCycle(false, true)
   const [isOpen, setIsOpen] = useState(false)
   const [changeRole, setChangeRole] = useState(false)
-  const { name, selectedRole, role } = useSelector<RootState, UserState>(
-    state => state.user
-  )
+  const { name, selectedRole, role, surname } = useSelector<
+    RootState,
+    UserState
+  >(state => state.user)
 
   const closedHeight = 112
   const openHeight = 300 + closedHeight
@@ -158,14 +159,16 @@ const RightMenu = () => {
   const formatterName = (name: string): string => {
     const fullName = name.split(' ')
     const firstName = fullName[0]
-    const lastName = fullName[1]
+    const secondName = fullName[1]
 
-    if (lastName)
+    if (secondName)
       return firstName.length <= 20
-        ? `${firstName} ${lastName.substr(0, 1)}.`
+        ? `${firstName} ${secondName.substr(0, 1)}.`
         : `${firstName}...`
 
-    return firstName.length <= 20 ? `${firstName}` : `${firstName}...`
+    return firstName.length <= 20
+      ? `${firstName} ${surname.substr(0, 1)}.`
+      : `${firstName}...`
   }
 
   return (

@@ -1,13 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Form, MotionReceipt, MotionWays } from './styles'
 
-import Container from '../../Container'
-import RegisterEmail, {
-  RegisterEmailMethods,
-  University
-} from '../../Container/RegisterEmail'
+import Container from '../Container'
 import { AddRoleContext } from '../../index'
-import RequestStatus from '../../RequestStatus'
 
 import {
   emailSchema,
@@ -16,30 +11,27 @@ import {
 
 import api from 'services/api'
 
-import { getUser, UserState } from 'store/user'
+import { getUser, UserActions, UserState } from 'store/user'
 import { RootState } from 'store'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
 import { File, Select, Submit, Text } from 'components/Form'
+import { Option } from 'components/Form/Select'
 import Popup, { PopupMethods } from 'components/Popup'
 import Presence from 'components/Presence'
+import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
-import { motion, Transition, Variants } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
-
-interface Option {
-  value: number | string
-  label: string
-}
 
 interface FormState {
   campus: SelectOptions
   courses: SelectOptions
   haveInstEmail: boolean
   universities: Universities
-  selectedUniversity: University | undefined
+  selectedUniversity?: University
 }
 
 interface AnimationsState {
@@ -53,41 +45,18 @@ interface AnimationsState {
   showRequestStatus: boolean
 }
 
+export interface University {
+  value: string | number
+  label: string
+  studentRegex: RegExp
+  professorRegex: RegExp
+}
+
 type SelectOptions = Option[] | undefined
 type Universities = University[] | undefined
 
 const MotionSelect = motion.custom(Select)
 const MotionSubmit = motion.custom(Submit)
-const semesterOptions: SelectOptions = [
-  { value: 1, label: '1° Semestre' },
-  { value: 2, label: '2° Semestre' },
-  { value: 3, label: '3° Semestre' },
-  { value: 4, label: '4° Semestre' },
-  { value: 5, label: '5° Semestre' },
-  { value: 6, label: '6° Semestre' },
-  { value: 7, label: '7° Semestre' },
-  { value: 8, label: '8° Semestre' },
-  { value: 9, label: '9° Semestre' },
-  { value: 10, label: '10° Semestre' }
-]
-
-const transition: Transition = {
-  duration: 0.3,
-  type: 'tween'
-}
-
-const show: Variants = {
-  enter: {
-    x: [320, 0],
-    opacity: [0, 1],
-    transition
-  },
-  exit: {
-    x: [0, 320],
-    opacity: [1, 0],
-    transition
-  }
-}
 
 const initialFormState: FormState = {
   selectedUniversity: undefined,
@@ -108,7 +77,39 @@ const initialAnimations: AnimationsState = {
   showRequestStatus: false
 }
 
-const formatterToSelect = (array: Universities) =>
+const semesterOptions: SelectOptions = [
+  { value: 1, label: '1° Semestre' },
+  { value: 2, label: '2° Semestre' },
+  { value: 3, label: '3° Semestre' },
+  { value: 4, label: '4° Semestre' },
+  { value: 5, label: '5° Semestre' },
+  { value: 6, label: '6° Semestre' },
+  { value: 7, label: '7° Semestre' },
+  { value: 8, label: '8° Semestre' },
+  { value: 9, label: '9° Semestre' },
+  { value: 10, label: '10° Semestre' }
+]
+
+export const show: Variants = {
+  enter: {
+    x: [320, 0],
+    opacity: [0, 1],
+    transition: {
+      duration: 0.3,
+      type: 'tween'
+    }
+  },
+  exit: {
+    x: [0, 320],
+    opacity: [1, 0],
+    transition: {
+      duration: 0.3,
+      type: 'tween'
+    }
+  }
+}
+
+export const formatterToSelect = (array: Universities) =>
   array?.map((university: University) => ({
     value: university.value,
     label: university.label
@@ -133,14 +134,27 @@ const StudentForm = () => {
       showWays,
       showReceipt,
       showSubmit,
-      showAr,
-      showRequestStatus
+      showAr
     },
     setAnimations
   ] = useState(initialAnimations)
 
   const setShowSubmitTrue = () =>
     setAnimations(prev => ({ ...prev, showSubmit: true, showWays: false }))
+
+  const verifyInstitucionalEmail = () => {
+    if (selectedUniversity) {
+      const rgx = new RegExp(selectedUniversity.professorRegex)
+      const instEmails = user.email.filter(({ address }) => rgx.test(address))
+
+      setFormState(prev => ({
+        ...prev,
+        haveInstEmail: instEmails.length !== 0
+      }))
+
+      return instEmails.length !== 0
+    }
+  }
 
   const setUniversitiesData = async () => {
     const { universities } = await api.get('/universities')
@@ -194,21 +208,7 @@ const StudentForm = () => {
     }))
   }
 
-  const verifyInstitucionalEmail = () => {
-    if (selectedUniversity) {
-      const rgx = new RegExp(selectedUniversity.studentRegex)
-      const instEmails = user.email.filter(({ address }) => rgx.test(address))
-
-      setFormState(prev => ({
-        ...prev,
-        haveInstEmail: instEmails.length !== 0
-      }))
-
-      return instEmails.length !== 0
-    }
-  }
-
-  const onStudentSubmit = (res: any) => {
+  const onSubmit = (res: any) => {
     console.log(res)
 
     if (res.success)
@@ -227,6 +227,7 @@ const StudentForm = () => {
           message: 'Papel adicionado',
           onClick: () => {
             dispatch(getUser())
+            dispatch(UserActions.update({ selectedRole: 'student' }))
             history.push('/session/main')
           }
         })
@@ -245,184 +246,187 @@ const StudentForm = () => {
 
   return (
     <>
-      {showRequestStatus ? (
-        <RequestStatus role='student' />
-      ) : (
-        <Container role='student'>
-          <Form
-            loading
-            path='user/role/request/student'
-            getData={e => console.log(e)}
-            afterResData={onStudentSubmit}
-            schema={showReceipt ? receiptSchema : emailSchema}
-          >
-            <Select
-              name='university_id'
-              placeholder='Universidade'
-              options={formatterToSelect(universities)}
-              onChange={(e: Option) => {
-                setAnimations(prev => ({
-                  ...prev,
-                  showCampus: true,
-                  showAr: !verifyInstitucionalEmail()
-                }))
+      <Container role='student'>
+        <Form
+          loading
+          path='user/role/request/student'
+          getData={e => console.log(e)}
+          afterResData={onSubmit}
+          schema={showReceipt ? receiptSchema : emailSchema}
+        >
+          <Select
+            name='university_id'
+            placeholder='Universidade'
+            options={formatterToSelect(universities)}
+            onChange={(e: Option) => {
+              setAnimations(prev => ({
+                ...prev,
+                showCampus: true,
+                showAr: !verifyInstitucionalEmail()
+              }))
 
-                setCampusData(e.value as number)
+              setCampusData(e.value as number)
+            }}
+          />
+
+          <Presence condition={showAr}>
+            <motion.div animate='enter' id='ar' variants={show}>
+              <Text name='ar' placeholder='Registro Acadêmico' />
+            </motion.div>
+          </Presence>
+
+          <Presence condition={showCampus}>
+            <MotionSelect
+              animate='enter'
+              name='campus_id'
+              placeholder='Câmpus'
+              variants={show}
+              options={campus}
+              onChange={(e: Option) => {
+                setAnimations(prev => ({ ...prev, showCourse: true }))
+                setCoursesData(e.value as number)
               }}
             />
+          </Presence>
 
-            <Presence condition={showAr}>
-              <motion.div animate='enter' variants={show} id='ar'>
-                <Text name='ar' placeholder='Registro Acadêmico' />
-              </motion.div>
-            </Presence>
-
-            <Presence condition={showCampus}>
-              <MotionSelect
-                animate='enter'
-                name='campus_id'
-                placeholder='Câmpus'
-                variants={show}
-                options={campus}
-                onChange={(e: Option) => {
-                  setAnimations(prev => ({ ...prev, showCourse: true }))
-                  setCoursesData(e.value as number)
-                }}
-              />
-            </Presence>
-
-            <Presence condition={showCourse}>
-              <MotionSelect
-                animate='enter'
-                name='course_id'
-                placeholder='Curso'
-                variants={show}
-                options={courses}
-                onChange={() =>
-                  setAnimations(prev => ({ ...prev, showSemester: true }))
-                }
-              />
-            </Presence>
-
-            <Presence condition={showSemester}>
-              <MotionSelect
-                animate='enter'
-                name='semester'
-                placeholder='Semestre'
-                variants={show}
-                options={semesterOptions}
-                onChange={() =>
-                  verifyInstitucionalEmail()
-                    ? setAnimations(prev => ({ ...prev, showSubmit: true }))
-                    : setAnimations(prev => ({ ...prev, showWays: true }))
-                }
-              />
-            </Presence>
-
-            <Presence condition={showWays}>
-              <MotionWays animate='enter' exit='exit' variants={show}>
-                <span id='title'>Forma de registro</span>
-
-                <div>
-                  <button
-                    type='button'
-                    onClick={() => {
-                      setAnimations(prev => ({
-                        ...prev,
-                        showReceipt: false,
-                        showSubmit: false
-                      }))
-                      registerEmailRef.current?.toggleRegister()
-                    }}
-                  >
-                    E-mail institucional
-                  </button>
-
-                  <button
-                    type='button'
-                    onClick={() =>
-                      setAnimations(prev => ({ ...prev, showReceipt: true }))
-                    }
-                  >
-                    Enviar comprovante
-                  </button>
-                </div>
-              </MotionWays>
-            </Presence>
-
-            <Presence condition={showReceipt}>
-              <>
-                <MotionReceipt exit='exit' animate='enter' variants={show}>
-                  <div id='warning'>
-                    <p>
-                      <AlertIcon />
-                      Este processo é mais lento pois requer confirmação de um{' '}
-                      <b id='moderator'>Moderador</b> de sua universidade. O
-                      formato do arquivo deve ser <b>PDF</b>.
-                    </p>
-                  </div>
-
-                  <File
-                    guides
-                    bgHeight='200vh'
-                    bottom='50vh'
-                    tranlateY='50%'
-                    name='doc'
-                    label='Enviar comprovante'
-                    noCropper={true}
-                    onChange={() =>
-                      setAnimations(prev => ({ ...prev, showSubmit: true }))
-                    }
-                  />
-                </MotionReceipt>
-              </>
-            </Presence>
-
-            <Presence condition={showSubmit}>
-              <MotionSubmit
-                initial='exit'
-                animate='enter'
-                exit='exit'
-                variants={show}
-              >
-                Enviar solicitação
-              </MotionSubmit>
-            </Presence>
-          </Form>
-
-          <button
-            id='delete'
-            type='button'
-            onClick={async () => {
-              if (selectedUniversity) {
-                const rgx = new RegExp(selectedUniversity.studentRegex)
-
-                const teste = user.email.filter(({ address }) =>
-                  rgx.test(address)
-                )
-
-                if (teste[0].email_id) {
-                  await api.delete(`user/email/${teste[0].email_id}`)
-                  console.log('deleted')
-                }
+          <Presence condition={showCourse}>
+            <MotionSelect
+              animate='enter'
+              name='course_id'
+              placeholder='Curso'
+              variants={show}
+              options={courses}
+              onChange={() =>
+                setAnimations(prev => ({ ...prev, showSemester: true }))
               }
-            }}
-          >
-            Deletar
-          </button>
-        </Container>
-      )}
+            />
+          </Presence>
+
+          <Presence condition={showSemester}>
+            <MotionSelect
+              animate='enter'
+              name='semester'
+              placeholder='Semestre'
+              variants={show}
+              options={semesterOptions}
+              onChange={() =>
+                verifyInstitucionalEmail()
+                  ? setAnimations(prev => ({ ...prev, showSubmit: true }))
+                  : setAnimations(prev => ({ ...prev, showWays: true }))
+              }
+            />
+          </Presence>
+
+          <Presence condition={showWays}>
+            <MotionWays animate='enter' exit='exit' variants={show}>
+              <span id='title'>Forma de registro</span>
+
+              <div>
+                <button
+                  type='button'
+                  onClick={() => {
+                    setAnimations(prev => ({
+                      ...prev,
+                      showReceipt: false,
+                      showSubmit: false
+                    }))
+                    registerEmailRef.current?.toggleRegister()
+                  }}
+                >
+                  E-mail institucional
+                </button>
+
+                <button
+                  type='button'
+                  onClick={() =>
+                    setAnimations(prev => ({ ...prev, showReceipt: true }))
+                  }
+                >
+                  Enviar comprovante
+                </button>
+              </div>
+            </MotionWays>
+          </Presence>
+
+          <Presence condition={showReceipt}>
+            <>
+              <MotionReceipt exit='exit' animate='enter' variants={show}>
+                <div id='warning'>
+                  <p>
+                    <AlertIcon />
+                    Este processo é mais lento pois requer confirmação de um{' '}
+                    <b id='moderator'>Moderador</b> de sua universidade. O
+                    formato do arquivo deve ser <b>PDF</b>.
+                  </p>
+                </div>
+
+                <File
+                  guides
+                  bgHeight='200vh'
+                  bottom='50vh'
+                  tranlateY='50%'
+                  name='doc'
+                  label='Enviar comprovante'
+                  noCropper={true}
+                  onChange={() =>
+                    setAnimations(prev => ({ ...prev, showSubmit: true }))
+                  }
+                />
+              </MotionReceipt>
+            </>
+          </Presence>
+
+          <Presence condition={showSubmit}>
+            <MotionSubmit
+              initial='exit'
+              animate='enter'
+              exit='exit'
+              variants={show}
+            >
+              Enviar solicitação
+            </MotionSubmit>
+          </Presence>
+        </Form>
+
+        {/* <button
+          id='delete'
+          type='button'
+          onClick={async () => {
+            if (selectedUniversity) {
+              const rgx = new RegExp(selectedUniversity.studentRegex)
+
+              const teste = user.email.filter(({ address }) =>
+                rgx.test(address)
+              )
+
+              if (teste[0].email_id) {
+                await api.delete(`user/email/${teste[0].email_id}`)
+                console.log('deleted')
+              }
+            }
+          }}
+        >
+          Deletar
+        </button> */}
+      </Container>
 
       <RegisterEmail
-        role='student'
+        placeholder='E-mail institucional'
         ref={registerEmailRef}
-        universityData={selectedUniversity}
         onSuccess={setShowSubmitTrue}
+        title={selectedUniversity?.label}
+        regex={selectedUniversity?.studentRegex}
+        addData={{ university_id: selectedUniversity?.value }}
+        modal={{
+          translateY: '50%',
+          bottom: '50vh',
+          bgHeight: `calc(${rolesHeight}px + 100vh)`
+        }}
       />
 
       <Popup
-        translateY='50%'
         bottom='50vh'
+        translateY='50%'
         bgHeight={`calc(${rolesHeight}px + 100vh)`}
         ref={popupRef}
       />

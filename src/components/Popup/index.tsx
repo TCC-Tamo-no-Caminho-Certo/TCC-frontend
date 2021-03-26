@@ -11,7 +11,7 @@ import Modal, { ModalMethods } from 'components/Modal'
 
 export type PopupType = 'error' | 'warning' | 'success' | 'other'
 
-interface PopupProps {
+export interface PopupProps {
   top?: string
   bottom?: string
   translateY?: string

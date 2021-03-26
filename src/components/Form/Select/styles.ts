@@ -8,7 +8,6 @@ const Style = styled.div<StyleProps>`
   position: relative;
 
   margin: 0;
-
   padding: 0px;
 
   .Select__single-value {

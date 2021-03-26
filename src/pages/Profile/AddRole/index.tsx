@@ -8,12 +8,11 @@ import React, {
 import Style from './styles'
 
 import RoleInfo from './RoleInfo'
+import ModeratorForm from './Forms/ModeratorForm'
 import StudentForm from './Forms/StudentForm'
 import ProfessorForm from './Forms/ProfessorForm'
 
 import selectRoleLabel from 'utils/makeRoleLabel'
-
-import api from 'services/api'
 
 import { RootState } from 'store'
 import { Role, UserState } from 'store/user'
@@ -83,12 +82,12 @@ const AddRole = () => {
               ]}
             />
 
-            <button
+            {/* <button
               type='button'
               onClick={async () => await api.delete('user/role/student')}
             >
               RemoverEstudante
-            </button>
+            </button> */}
 
             <RoleInfo
               title='Estudante'
@@ -126,6 +125,7 @@ const AddRole = () => {
                 userRoles={labelRoles}
                 color={theme.roles.moderator}
                 onLabelClick={onLabelClick}
+                onClick={() => setRoleSelected('moderator')}
                 benefits={[
                   'Aceitar solicitação de mudança para Revisor ',
                   `Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores
@@ -142,6 +142,7 @@ const AddRole = () => {
       <AddRoleContext.Provider value={{ rolesHeight }}>
         {roleSelected === 'student' && <StudentForm />}
         {roleSelected === 'professor' && <ProfessorForm />}
+        {roleSelected === 'moderator' && <ModeratorForm />}
       </AddRoleContext.Provider>
     </>
   )

@@ -1,13 +1,15 @@
+import { TextColors } from './'
+
 import { lighten } from 'polished'
 import styled, { css } from 'styled-components'
 
 interface StyleProps {
-  color: string
   hasEye: boolean
   hasIcon: boolean
   optional: boolean
   isFilled: boolean
   isErrored: boolean
+  colors: TextColors
   hidden?: boolean
 }
 
@@ -28,8 +30,6 @@ export const IconSpace = styled.div`
 
     width: clamp(24px, 2vh, 30px);
     height: clamp(24px, 2vh, 30px);
-
-    fill: ${({ theme }) => theme.colors.tertiary};
   }
 `
 
@@ -42,18 +42,22 @@ const Style = styled.div<StyleProps>`
   height: clamp(35px, 3vh + 2vw, 44px);
 
   background-color: transparent;
-  border: solid 1px ${({ theme }) => theme.colors.tertiary};
+  border: solid 1px ${({ colors }) => colors.unfocused};
 
   &:focus-within {
-    border-color: ${({ theme }) => theme.colors.primary};
+    border-color: ${({ colors }) => colors.focused};
 
     &,
     input::placeholder,
     ${IconSpace} .Icon {
-      fill: ${({ theme }) => theme.colors.primary};
-      stroke: ${({ theme }) => theme.colors.primary};
-      -webkit-text-fill-color: ${({ theme }) => theme.colors.primary};
+      fill: ${({ colors }) => colors.focused};
+      stroke: ${({ colors }) => colors.focused};
+      -webkit-text-fill-color: ${({ colors }) => colors.focused};
     }
+  }
+
+  ${IconSpace} .Icon {
+    fill: ${({ colors }) => colors.unfocused};
   }
 
   input {
@@ -65,8 +69,8 @@ const Style = styled.div<StyleProps>`
     -webkit-text-fill-color: ${({ color }) => color};
 
     &::placeholder {
-      color: ${({ theme }) => theme.colors.tertiary};
-      -webkit-text-fill-color: ${({ theme }) => theme.colors.tertiary};
+      color: ${({ colors }) => colors.unfocused};
+      -webkit-text-fill-color: ${({ colors }) => colors.unfocused};
 
       ${({ optional, theme }) =>
         optional &&
@@ -100,14 +104,14 @@ const Style = styled.div<StyleProps>`
       `}
   }
 
-  ${({ isFilled }) =>
+  ${({ isFilled, colors }) =>
     isFilled &&
     css`
       &,
       ${IconSpace} .Icon {
-        fill: ${({ theme }) => theme.colors.primary};
-        stroke: ${({ theme }) => theme.colors.primary};
-        -webkit-text-fill-color: ${({ theme }) => theme.colors.primary};
+        fill: ${colors.focused};
+        stroke: ${colors.focused};
+        -webkit-text-fill-color: ${colors.focused};
       }
     `}
 `

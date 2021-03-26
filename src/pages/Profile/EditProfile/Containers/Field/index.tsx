@@ -30,11 +30,13 @@ const Field = ({ data }: FieldProps) => {
       <Datepicker
         isBirthday
         arrow='bottom'
-        name={data.inputname}
-        bodyColor={theme.colors.secondary}
-        headerColor={theme.colors.tertiary}
-        selectedColor={theme.colors.primary}
         placeholder='Clique para alterar a data'
+        name={data.inputname}
+        dateColors={{
+          body: theme.colors.secondary,
+          header: theme.colors.tertiary,
+          selected: theme.colors.primary
+        }}
       />
     ) : (
       <Text

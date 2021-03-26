@@ -171,7 +171,6 @@ const Form = ({
 
     const firstParam = params[method].path
     const secondParam = params[method].data
-
     const resData = await api[method](firstParam, secondParam)
 
     cbAfterResData && cbAfterResData(resData)
@@ -179,16 +178,24 @@ const Form = ({
   }
 
   const parsePath = () => {
-    const paths = path.split('*%')
+    console.log(addToPath)
 
-    if (paths.length - 1 !== addToPath?.length)
-      throw new Error('joker lenght is not equal addToPath lenght')
+    if (addToPath === null || addToPath === undefined)
+      throw new Error('addToPath is null or undefined')
 
-    if (addToPath)
-      path = paths.reduce((acc, curr, idx) => {
-        if (paths.length === idx + 1) return acc + curr
-        return acc + curr + data[addToPath[idx]]
-      }, '')
+    if (addToPath) {
+      const paths = path.split('*%')
+      const condition = paths.length - 1 !== addToPath.length
+
+      if (condition)
+        throw new Error('joker lenght is not equal addToPath lenght')
+
+      if (addToPath)
+        path = paths.reduce((acc, curr, idx) => {
+          if (paths.length === idx + 1) return acc + curr
+          return acc + curr + data[addToPath[idx]]
+        }, '')
+    }
   }
 
   const onSubmit = async (event: FormEvent) => {
@@ -197,7 +204,7 @@ const Form = ({
     setData()
     getData && getData(data)
     validate()
-    addToPath && parsePath()
+    addToPath !== undefined && parsePath()
 
     if (captcha)
       data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false

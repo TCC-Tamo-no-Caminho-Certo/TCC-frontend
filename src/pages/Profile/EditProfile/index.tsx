@@ -11,6 +11,8 @@ import Style, { ConfirmForm } from './styles'
 import Containers from './Containers'
 import ImageChanger from './ImageChanger'
 
+import editProfileSchema from 'utils/validations/editProfile'
+
 import { UserActions } from 'store/user'
 
 import { Form, Submit, Text } from 'components/Form'
@@ -32,23 +34,29 @@ export const EditProfileContext = createContext<EditProfileContextProps>({})
 
 const EditProfile = () => {
   const [globalChange, setGlobalChange] = useState(false)
-  let updateData: any
   const dispatch = useDispatch()
   const confirmRefModal = useRef<ModalMethods>(null)
   const imageRefModal = useRef<ModalMethods>(null)
 
-  const submitCallback = (resData: any) =>
-    resData.success && dispatch(UserActions.update(updateData))
+  const submitCallback = (resData: any) => {
+    console.log(resData)
+
+    if (resData.success) {
+      dispatch(UserActions.update(resData.user))
+      confirmRefModal.current?.toggleModal()
+    }
+  }
 
   return (
     <ImageRefModalContext.Provider value={{ imageRef: imageRefModal }}>
       <Style>
         <Form
           loading
-          captcha
           method='patch'
-          path='user/update'
+          path='user'
+          schema={editProfileSchema}
           afterResData={submitCallback}
+          getData={e => console.log(e)}
         >
           <EditProfileContext.Provider
             value={{ globalChange, setGlobalChange }}
@@ -68,30 +76,30 @@ const EditProfile = () => {
               Salvar
             </button>
           </div>
+
+          <Modal ref={confirmRefModal}>
+            <ConfirmForm>
+              <span>
+                Você precisa confirmar sua senha para salvar as alterações!
+              </span>
+
+              <Text eye name='password' placeholder='Confirme sua senha' />
+
+              <div id='buttons'>
+                <button
+                  type='button'
+                  id='cancel'
+                  onClick={() => confirmRefModal.current?.toggleModal(false)}
+                >
+                  Cancelar
+                </button>
+
+                <Submit>Confirmar</Submit>
+              </div>
+            </ConfirmForm>
+          </Modal>
         </Form>
       </Style>
-
-      <Modal ref={confirmRefModal}>
-        <ConfirmForm path='confirmUpdate'>
-          <span>
-            Você precisa confirmar sua senha para salvar as alterações!
-          </span>
-
-          <Text name='password' placeholder='Confirme sua senha' eye />
-
-          <div id='buttons'>
-            <button
-              type='button'
-              id='cancel'
-              onClick={() => confirmRefModal.current?.toggleModal(false)}
-            >
-              Cancelar
-            </button>
-
-            <Submit>Confirmar</Submit>
-          </div>
-        </ConfirmForm>
-      </Modal>
 
       <Modal ref={imageRefModal}>
         <ImageChanger

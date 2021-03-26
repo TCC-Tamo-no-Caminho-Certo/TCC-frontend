@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Style from './styles'
+
+import { StatusTypes } from 'pages/Moderator/Solicitation/Table'
 
 import makeRoleLabel from 'utils/makeRoleLabel'
 
@@ -11,15 +13,21 @@ import { motion, useCycle } from 'framer-motion'
 
 interface RequestStatusProps {
   role: Role
+  status: StatusTypes
+}
+
+interface Checks {
+  first: boolean | string
+  second: boolean | string
+  third: boolean | string
 }
 
 const RequestStatus = ({ role }: RequestStatusProps) => {
-  const [errorFirst, _setErrorFirst] = useState<boolean | 'nothing'>(false)
-  const [errorSecond, _setErrorSecond] = useState<boolean | 'nothing'>(
-    'nothing'
-  )
-  const [errorThird, _setErrorThird] = useState<boolean | 'nothing'>('nothing')
-
+  const [{ first, second, third }, setChecks] = useState<Checks>({
+    first: false,
+    second: 'nothing',
+    third: 'nothing'
+  })
   const [progressTrue, _cycleProgressTrue] = useCycle(
     ['4%', '4%'],
     ['4%', '27%'],
@@ -30,6 +38,20 @@ const RequestStatus = ({ role }: RequestStatusProps) => {
     ['24%', '47%'],
     ['47%', '70%']
   )
+
+  useEffect(() => {
+    status === 'awaiting'
+      ? setChecks({
+          first: false,
+          second: false,
+          third: 'nothing'
+        })
+      : setChecks({
+          first: false,
+          second: false,
+          third: true
+        })
+  }, [])
 
   return (
     <Style role={role}>
@@ -44,6 +66,16 @@ const RequestStatus = ({ role }: RequestStatusProps) => {
           <div>Finalizada</div>
         </div>
 
+        {status === 'rejected' ? (
+          <div>
+            <p>Solicitação rejeitada</p>
+
+            <p>{'{resposta do moderador}'}</p>
+          </div>
+        ) : (
+          <></>
+        )}
+
         <svg
           width='750'
           height='72'
@@ -57,8 +89,8 @@ const RequestStatus = ({ role }: RequestStatusProps) => {
               fill='url(#barGradient)'
             />
 
-            {errorFirst !== 'nothing' &&
-              (errorFirst ? (
+            {first !== 'nothing' &&
+              (first ? (
                 <path
                   className='errorIcon'
                   id='firstFail'
@@ -72,8 +104,8 @@ const RequestStatus = ({ role }: RequestStatusProps) => {
                 />
               ))}
 
-            {errorThird !== 'nothing' &&
-              (errorThird ? (
+            {third !== 'nothing' &&
+              (third ? (
                 <path
                   className='errorIcon'
                   id='thirdFail'
@@ -87,8 +119,8 @@ const RequestStatus = ({ role }: RequestStatusProps) => {
                 />
               ))}
 
-            {errorSecond !== 'nothing' &&
-              (errorSecond ? (
+            {second !== 'nothing' &&
+              (second ? (
                 <path
                   className='errorIcon'
                   id='secondFail'

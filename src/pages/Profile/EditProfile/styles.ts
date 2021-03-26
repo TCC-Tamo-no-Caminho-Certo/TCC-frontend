@@ -1,18 +1,19 @@
-import Form from 'components/Form'
-
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
-export const ConfirmForm = styled(Form)`
+export const ConfirmForm = styled.div`
   position: relative;
   padding: 24px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
   border-radius: 16px;
+  width: clamp(320px, 90vw, 500px);
 
   background-color: ${({ theme }) => theme.colors.secondary};
-
-  font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.9rem);
-  line-height: clamp(1.5rem, 0.6rem + 2.6vw, 1.9rem);
-  width: clamp(320px, 90vw, 500px);
 
   span {
     display: block;
@@ -22,6 +23,7 @@ export const ConfirmForm = styled(Form)`
 
   .Text {
     margin: 16px 0;
+    width: 100%;
   }
 
   #buttons {
@@ -29,9 +31,12 @@ export const ConfirmForm = styled(Form)`
     justify-content: flex-end;
     align-items: center;
 
+    width: 100%;
     height: 44px;
 
     button#cancel {
+      margin-right: 16px;
+
       color: ${({ theme }) => theme.colors.tertiary};
 
       &:hover {
@@ -42,18 +47,12 @@ export const ConfirmForm = styled(Form)`
       }
     }
 
-    button + button {
+    .Submit {
       height: 40px;
-      width: 180px;
-      border-radius: 8px;
-      margin-left: 24px;
+      width: 200px;
 
-      background-color: ${({ theme }) => theme.colors.primary};
-      color: ${({ theme }) => theme.colors.secondary};
-
-      &:hover {
-        filter: brightness(1.1);
-        transform: scale(1.01);
+      .DotsLoader {
+        right: 16px;
       }
     }
   }
@@ -81,19 +80,8 @@ const Style = styled(motion.section)`
     width: 100%;
   }
 
-  ${ConfirmForm} {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-
   .Card + .Card {
     margin-left: 60px;
-  }
-
-  .DotsLoader {
-    margin: 8px 0 16px 0;
   }
 
   .Slider {

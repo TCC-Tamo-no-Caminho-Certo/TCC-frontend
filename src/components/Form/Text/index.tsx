@@ -20,13 +20,18 @@ import { dateToValue } from 'components/Form/Datepicker'
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 import { Ref } from 'components/Form'
 
+export interface TextColors {
+  unfocused?: string
+  focused?: string
+}
+
 export interface TextProps extends HTMLProps<HTMLInputElement> {
   eye?: boolean
   icon?: FC
-  color?: string
   isDate?: boolean
   pasteAndDrop?: boolean
   optional?: boolean
+  textColors?: TextColors
 }
 
 const Text = forwardRef<HTMLInputElement, TextProps>(
@@ -39,11 +44,14 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
       icon: Icon,
       type = 'text',
       className = 'Text',
-      color = '#d65881',
       eye = false,
       isDate = false,
       optional = false,
       pasteAndDrop = true,
+      textColors = {
+        unfocused: '#6e4850',
+        focused: '#d65881'
+      },
       ...rest
     },
     ref
@@ -81,13 +89,13 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
     return (
       <Style
         id={id}
-        color={color}
         hasEye={!!eye}
         hidden={hidden}
         hasIcon={!!Icon}
         isFilled={isFilled}
         optional={optional}
         isErrored={!!error}
+        colors={textColors}
         className={className}
         onFocus={() => textRef.current?.focus()}
       >

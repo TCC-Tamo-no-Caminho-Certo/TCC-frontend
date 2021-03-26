@@ -35,7 +35,7 @@ const Containers = () => {
 
   useEffect(() => {
     if (innerWidth <= 430) setSliderWidth(320)
-    else if (innerWidth <= 600) setSliderWidth(400)
+    else if (innerWidth <= 600) setSliderWidth(440)
     else if (innerWidth <= 700) setSliderWidth(450)
     else setSliderWidth(520)
   }, [innerWidth])
