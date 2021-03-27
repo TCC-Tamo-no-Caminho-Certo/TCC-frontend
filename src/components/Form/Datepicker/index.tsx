@@ -70,10 +70,10 @@ const datePickerToDate = (date: DayValue) => {
 }
 
 const Datepicker = ({
-  icon: Icon,
-  isBirthday,
-  arrow,
   name,
+  arrow,
+  isBirthday,
+  icon: Icon,
   dateColors = {
     body: '#fcfcfc',
     header: '#6e4850',

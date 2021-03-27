@@ -40,21 +40,21 @@ export interface FormState {
 
 export interface FormProps extends HTMLProps<HTMLFormElement> {
   path: string
-  addToPath?: string[]
-  method?: 'post' | 'get' | 'delete' | 'patch' | 'put'
   push?: string
   captcha?: boolean
   loading?: boolean
+  addToPath?: string[]
   schema?: ObjectSchema
   addData?: { [key: string]: any }
+  method?: 'post' | 'get' | 'delete' | 'patch' | 'put'
   getData?: (_data: any) => void
   afterResData?: (_resData: any) => void
+  onError?: (_error: any) => void
 }
 
 export const FormContext = createContext<FormState | null>(null)
 
 const Form = ({
-  children,
   path,
   push,
   loading,
@@ -62,6 +62,8 @@ const Form = ({
   getData,
   addData,
   captcha,
+  onError,
+  children,
   addToPath,
   afterResData,
   method = 'post',
@@ -71,9 +73,9 @@ const Form = ({
   const popupRef = useRef<PopupMethods>(null)
   const recaptchaRef = useRef<Captcha>(null)
   const [showLoader, setShowLoader] = useState(false)
-  const data: { [name: string]: any } = useMemo(() => ({ ...addData }), [
-    addData
-  ])
+  const data: {
+    [name: string]: any
+  } = useMemo(() => ({ ...addData }), [addData])
 
   let refs: Ref[] = []
   let haveErrors = false
@@ -143,7 +145,7 @@ const Form = ({
     } catch (error) {
       haveErrors = true
 
-      if (error instanceof ValidationError)
+      if (error instanceof ValidationError) {
         error.inner.forEach(errorElement => {
           const index = refs.findIndex(({ inputRef: { current } }) =>
             current.name
@@ -153,10 +155,31 @@ const Form = ({
 
           refs[index] && refs[index].setError(errorElement.message)
         })
-      else
+
+        onError && onError(error)
+      } else
         throw new Error(
           'Unexpected error on validation! error isnt instanceof Yup.ValidationError'
         )
+    }
+  }
+
+  const parsePath = () => {
+    if (addToPath === null || addToPath === undefined)
+      throw new Error('addToPath is null or undefined')
+
+    if (addToPath) {
+      const paths = path.split('*%')
+      const condition = paths.length - 1 !== addToPath.length
+
+      if (condition)
+        throw new Error('joker lenght is not equal addToPath lenght')
+
+      if (addToPath)
+        path = paths.reduce((acc, curr, idx) => {
+          if (paths.length === idx + 1) return acc + curr
+          return acc + curr + data[addToPath[idx]]
+        }, '')
     }
   }
 
@@ -175,27 +198,6 @@ const Form = ({
 
     cbAfterResData && cbAfterResData(resData)
     return resData.success
-  }
-
-  const parsePath = () => {
-    console.log(addToPath)
-
-    if (addToPath === null || addToPath === undefined)
-      throw new Error('addToPath is null or undefined')
-
-    if (addToPath) {
-      const paths = path.split('*%')
-      const condition = paths.length - 1 !== addToPath.length
-
-      if (condition)
-        throw new Error('joker lenght is not equal addToPath lenght')
-
-      if (addToPath)
-        path = paths.reduce((acc, curr, idx) => {
-          if (paths.length === idx + 1) return acc + curr
-          return acc + curr + data[addToPath[idx]]
-        }, '')
-    }
   }
 
   const onSubmit = async (event: FormEvent) => {

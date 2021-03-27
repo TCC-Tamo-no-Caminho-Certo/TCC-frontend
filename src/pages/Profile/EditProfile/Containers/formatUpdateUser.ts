@@ -3,7 +3,8 @@ import { UserState } from 'store/user'
 export interface InputData {
   label: string
   value: string | number
-  inputname: string
+  name: string
+  editable: boolean
   date?: boolean
   dontShow?: boolean
 }
@@ -32,57 +33,79 @@ const formatUpdateUser = (
   const guest: InputData[] = [
     {
       label: 'Nome:',
-      inputname: 'name',
-      value: userData.name
+      name: 'name',
+      value: userData.name,
+      editable: true
+    },
+    {
+      label: 'Sobrenome:',
+      name: 'surname',
+      value: userData.surname,
+      editable: true
     }
   ]
 
   const personal: InputData[] = [
     {
       label: 'Nome:',
-      inputname: 'name',
-      value: userData.name
+      name: 'name',
+      value: userData.name,
+      editable: true
     },
     {
       label: 'Sobrenome:',
-      inputname: 'surname',
-      value: userData.surname
+      name: 'surname',
+      value: userData.surname,
+      editable: true
     },
-    // {
-    //   label: 'E-mail:',
-    //   inputname: 'email',
-    //   value: userData.email[0].address
-    // },
     {
       label: 'Nascimento:',
-      inputname: 'birthday',
+      name: 'birthday',
       value: userData.birthday,
-      date: true
+      date: true,
+      editable: true
+    },
+    {
+      label: 'Nova senha:',
+      name: 'new_password',
+      value: '',
+      dontShow: true,
+      editable: true
+    },
+    // {
+    //   label: 'Confirmar nova senha:',
+    //   name: 'new_password',
+    //   value: '',
+    //   dontShow: true,
+    //   editable: true
+    // },
+    {
+      label: 'E-mail:',
+      name: 'email',
+      value: userData.email[0].address,
+      editable: false
     }
     // {
     //   label: 'Celular:',
-    //   inputname: 'phone',
-    //   value: userData.phone === null ? '' : userData.phone,
-    //   date: true
-    // }
-    // {
-    //   label: 'Senha:',
-    //   inputname: 'new_password',
-    //   value: '00000asd',
-    //   dontShow: true
+    //   name: 'phone',
+    //   value: userData.phone ? '' : userData.phone,
+    //   date: true,
+    //   editable: true
     // }
   ]
 
   const student: InputData[] = [
     {
       label: 'Email:',
-      inputname: 'inst_email',
-      value: instEmail ? instEmail.address : ''
+      name: 'inst_email',
+      value: instEmail ? instEmail.address : '',
+      editable: false
     },
     {
       label: 'Universidade:',
-      inputname: 'university_id',
-      value: instEmail ? instEmail.university_id : ''
+      name: 'university_id',
+      value: instEmail ? instEmail.university_id : '',
+      editable: false
     }
   ]
 

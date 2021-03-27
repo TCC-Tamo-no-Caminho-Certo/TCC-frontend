@@ -18,7 +18,7 @@ export const ConfirmForm = styled.div`
   span {
     display: block;
 
-    text-align: left;
+    text-align: center;
   }
 
   .Text {

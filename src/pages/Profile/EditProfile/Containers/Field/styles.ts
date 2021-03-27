@@ -26,6 +26,10 @@ export const Input = styled.div`
     }
   }
 
+  .Text .Icon {
+    transform: translateX(-24px);
+  }
+
   .value {
     display: flex;
     justify-content: center;

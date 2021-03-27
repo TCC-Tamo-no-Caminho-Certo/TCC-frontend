@@ -57,7 +57,7 @@ const Containers = () => {
               />
 
               {formatUpdateUser(user, 'personal').map((info: InputData) => (
-                <Field data={info} key={info.inputname} />
+                <Field data={info} key={info.name} />
               ))}
             </Card>
           )
@@ -69,7 +69,7 @@ const Containers = () => {
           >
             {formatUpdateUser(user, role as keyof ContainerForm).map(
               (info: InputData) => (
-                <Field key={info.inputname} data={info} />
+                <Field key={info.name} data={info} />
               )
             )}
           </Card>

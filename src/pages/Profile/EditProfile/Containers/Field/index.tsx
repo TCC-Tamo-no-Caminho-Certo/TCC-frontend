@@ -25,13 +25,15 @@ const Field = ({ data }: FieldProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
+  const { name, label, date, dontShow, value, editable } = data
+
   const input =
-    data.inputname === 'birthday' ? (
+    name === 'birthday' ? (
       <Datepicker
         isBirthday
         arrow='bottom'
         placeholder='Clique para alterar a data'
-        name={data.inputname}
+        name={name}
         dateColors={{
           body: theme.colors.secondary,
           header: theme.colors.tertiary,
@@ -41,29 +43,32 @@ const Field = ({ data }: FieldProps) => {
     ) : (
       <Text
         ref={inputRef}
-        name={data.inputname}
-        placeholder={data.dontShow ? '********' : ''}
-        defaultValue={data.dontShow ? '' : data.value}
+        name={name}
+        placeholder=' '
+        defaultValue={dontShow ? '' : value}
+        eye={dontShow}
       />
     )
 
   const onFieldClick = () => {
-    change ? inputRef.current?.focus() : setChange(true)
-    globalChange === false && setGlobalChange && setGlobalChange(true)
+    if (editable) {
+      change ? inputRef.current?.focus() : setChange(true)
+      globalChange === false && setGlobalChange && setGlobalChange(true)
+    }
   }
 
   const onIconClick = () => {
-    setChange(!change)
-    globalChange === false && setGlobalChange && setGlobalChange(true)
+    if (editable) {
+      setChange(!change)
+      globalChange === false && setGlobalChange && setGlobalChange(true)
+    }
   }
 
   const setInput = () => {
     if (change) return input
 
     return (
-      <div className='value'>
-        {data.date ? valueToDate(data.value as string) : data.value}
-      </div>
+      <div className='value'>{date ? valueToDate(value as string) : value}</div>
     )
   }
 
@@ -76,9 +81,9 @@ const Field = ({ data }: FieldProps) => {
   }, [globalChange])
 
   return (
-    <Style key={data.inputname} className='Field'>
+    <Style key={name} className='Field'>
       <Label className='button' onClick={onFieldClick}>
-        {data.label}
+        {label}
       </Label>
 
       <Input className='button' onClick={onFieldClick}>
@@ -86,7 +91,7 @@ const Field = ({ data }: FieldProps) => {
       </Input>
 
       <Icon className='button' onClick={onIconClick}>
-        {change ? <CloseIcon /> : <PencilIcon />}
+        {editable ? change ? <CloseIcon /> : <PencilIcon /> : <></>}
       </Icon>
     </Style>
   )

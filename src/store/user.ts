@@ -12,26 +12,26 @@ export type Role =
   | 'moderator'
 
 interface Email {
+  main: boolean
   address: string
   email_id: number
   institutional: boolean
   university_id: number
-  main: boolean
   options?: { [key: string]: any }
 }
 
 interface ResData {
-  avatar_uuid: string
-  birthday: string
-  created_at: string
-  full_name: string
   name: string
-  phone: null
   role: Role[]
-  surname: string
-  updated_at: string
-  user_id: number
+  phone: string
   email: Email[]
+  surname: string
+  user_id: number
+  birthday: string
+  full_name: string
+  created_at: string
+  updated_at: string
+  avatar_uuid: string
 }
 
 export interface UserState extends ResData {
@@ -42,42 +42,44 @@ export interface UserState extends ResData {
 
 interface Payload {
   entities?: []
-  loading?: 'idle' | 'pending' | 'succeeded' | 'failed'
   selectedRole?: Role
-  avatar_uuid?: string
-  birthday?: string
-  created_at?: string
-  full_name?: string
-  name?: string
-  phone?: null
+  loading?: 'idle' | 'pending' | 'succeeded' | 'failed'
+
   role?: Role[]
-  surname?: string
-  updated_at?: string
-  user_id?: number
   email?: Email[]
+  name?: string
+  phone?: string
+  surname?: string
+  user_id?: number
+  birthday?: string
+  full_name?: string
+  created_at?: string
+  updated_at?: string
+  avatar_uuid?: string
 }
 
 const initialState: UserState = {
   entities: [],
   loading: 'idle',
   selectedRole: 'student',
-  avatar_uuid: 'default',
-  birthday: '',
-  created_at: '',
-  full_name: '',
+
   name: '',
-  phone: null,
-  role: [],
+  phone: '',
   surname: '',
+  birthday: '',
+  full_name: '',
+  created_at: '',
   updated_at: '',
+  avatar_uuid: 'default',
+  role: [],
   user_id: 0,
   email: [
     {
       address: '',
       email_id: 0,
-      institutional: false,
       university_id: 0,
       main: false,
+      institutional: false,
       options: {}
     }
   ]

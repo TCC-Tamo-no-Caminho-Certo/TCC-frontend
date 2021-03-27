@@ -17,6 +17,7 @@ import { UserActions } from 'store/user'
 
 import { Form, Submit, Text } from 'components/Form'
 import Modal, { ModalMethods } from 'components/Modal'
+import Popup, { PopupMethods } from 'components/Popup'
 
 import { useDispatch } from 'react-redux'
 
@@ -35,78 +36,107 @@ export const EditProfileContext = createContext<EditProfileContextProps>({})
 const EditProfile = () => {
   const [globalChange, setGlobalChange] = useState(false)
   const dispatch = useDispatch()
-  const confirmRefModal = useRef<ModalMethods>(null)
+  const confirmModal = useRef<ModalMethods>(null)
   const imageRefModal = useRef<ModalMethods>(null)
+  const popupRef = useRef<PopupMethods>(null)
 
   const submitCallback = (resData: any) => {
     console.log(resData)
 
-    if (resData.success) {
+    if (resData.error === 'Incorrect password!')
+      popupRef.current?.configPopup({
+        type: 'error',
+        message: 'Senha inválida!',
+        setModal: true
+      })
+    else if (resData.success) {
       dispatch(UserActions.update(resData.user))
-      confirmRefModal.current?.toggleModal()
-    }
+      confirmModal.current?.toggleModal()
+
+      popupRef.current?.configPopup({
+        type: 'success',
+        setModal: true,
+        message: 'Dados alterados',
+        onClick: () => setGlobalChange(false)
+      })
+    } else
+      popupRef.current?.configPopup({
+        type: 'error',
+        message: 'Algo deu errado! tente novamente :D',
+        setModal: true
+      })
   }
 
   return (
-    <ImageRefModalContext.Provider value={{ imageRef: imageRefModal }}>
-      <Style>
-        <Form
-          loading
-          method='patch'
-          path='user'
-          schema={editProfileSchema}
-          afterResData={submitCallback}
-          getData={e => console.log(e)}
-        >
-          <EditProfileContext.Provider
-            value={{ globalChange, setGlobalChange }}
+    <>
+      <ImageRefModalContext.Provider value={{ imageRef: imageRefModal }}>
+        <Style>
+          <Form
+            loading
+            method='patch'
+            path='user'
+            schema={editProfileSchema}
+            afterResData={submitCallback}
+            getData={e => console.log(e)}
+            onError={(error: any) => {
+              if (error.message !== 'Você esqueceu de informar a senha!')
+                confirmModal.current?.toggleModal(false)
+            }}
           >
-            <Containers />
-          </EditProfileContext.Provider>
-
-          <div id='submits'>
-            <button type='button' onClick={() => setGlobalChange(false)}>
-              Descartar alterações
-            </button>
-
-            <button
-              type='button'
-              onClick={() => confirmRefModal.current?.toggleModal(true)}
+            <EditProfileContext.Provider
+              value={{ globalChange, setGlobalChange }}
             >
-              Salvar
-            </button>
-          </div>
+              <Containers />
+            </EditProfileContext.Provider>
 
-          <Modal ref={confirmRefModal}>
-            <ConfirmForm>
-              <span>
-                Você precisa confirmar sua senha para salvar as alterações!
-              </span>
+            <div id='submits'>
+              <button type='button' onClick={() => setGlobalChange(false)}>
+                Descartar alterações
+              </button>
 
-              <Text eye name='password' placeholder='Confirme sua senha' />
+              <button
+                type='button'
+                onClick={() => {
+                  confirmModal.current?.toggleModal(true)
+                }}
+              >
+                Salvar
+              </button>
+            </div>
 
-              <div id='buttons'>
-                <button
-                  type='button'
-                  id='cancel'
-                  onClick={() => confirmRefModal.current?.toggleModal(false)}
-                >
-                  Cancelar
-                </button>
+            <Modal ref={confirmModal}>
+              <ConfirmForm>
+                <span>
+                  Você precisa digitar sua senha para salvar as alterações!
+                </span>
 
-                <Submit>Confirmar</Submit>
-              </div>
-            </ConfirmForm>
-          </Modal>
-        </Form>
-      </Style>
+                <Text eye name='password' placeholder='Senha (Atual)' />
 
-      <Modal ref={imageRefModal}>
-        <ImageChanger
-          onCloseClick={() => imageRefModal.current?.toggleModal(false)}
-        />
-      </Modal>
-    </ImageRefModalContext.Provider>
+                <div id='buttons'>
+                  <button
+                    type='button'
+                    id='cancel'
+                    onClick={() => confirmModal.current?.toggleModal(false)}
+                  >
+                    Cancelar
+                  </button>
+
+                  <Submit>Confirmar</Submit>
+                </div>
+              </ConfirmForm>
+            </Modal>
+          </Form>
+        </Style>
+
+        <Modal ref={imageRefModal}>
+          <ImageChanger
+            onCloseClick={() => imageRefModal.current?.toggleModal(false)}
+          />
+        </Modal>
+      </ImageRefModalContext.Provider>
+
+      <Popup ref={popupRef} />
+    </>
   )
 }
 
