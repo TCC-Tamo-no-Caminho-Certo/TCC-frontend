@@ -20,7 +20,6 @@ import { RootState } from 'store'
 
 import useSortableData from 'hooks/useSortableData'
 
-import Download from 'assets/Download'
 import LoupeIcon from 'assets/Inputs/LoupeIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
@@ -133,6 +132,7 @@ const transformArray = (array: RequestsData[]): TableData[] => {
     }
   )
 }
+
 const headerData: HeaderData[] = [
   { name: 'statusCircle', label: '' },
   { name: 'status', label: 'Status' },
@@ -188,6 +188,7 @@ const Table = () => {
         )
 
         const { requests } = response
+        console.log(requests)
 
         if (requests && requests.length !== 0) {
           const tableData = transformArray(requests)
@@ -297,16 +298,14 @@ const Table = () => {
   }
 
   const setClicked = async (item: TableData) => {
-    console.log(item.doc)
-
-    const response = await api.get(`user/role/request/doc/${item.doc}`)
-
-    console.log(response)
+    const { url } = await api.get(`user/role/request/doc/${item.doc}`)
 
     setTableState(prev => ({
       ...prev,
       clickedItem: item,
-      clickedDoc: response.url
+      clickedDoc: `https://s3.steamslab.com/documents${
+        url.split('/documents')[1]
+      }`
     }))
   }
 
@@ -453,14 +452,42 @@ const Table = () => {
           status={clickedItem?.statusCircle}
         >
           <CloseIcon onClick={() => modalRef.current?.toggleModal(false)} />
+          <div id='info'>
+            <div id='title'>Informações</div>
 
-          <div id='avatarAndInfo'>
-            <Avatar size={88} />
+            <hr />
 
-            <div id='info'>
-              <div id='name'>{clickedItem?.name}</div>
+            <div className='field' id='avatar'>
+              <Avatar size={120} />
+            </div>
+
+            <div className='field'>
+              Nome:
+              <div>{clickedItem?.name}</div>
+            </div>
+
+            <div className='field'>
+              Papel:
               <div id='role'>{makeRoleLabel(clickedItem?.role as Role)}</div>
+            </div>
+
+            <div className='field'>
+              Status:
               <div id='status'>{clickedItem?.status}</div>
+            </div>
+
+            <div className='field'>
+              Email:
+              <div>miguelandradebarreto2@gmail.com</div>
+            </div>
+
+            <div className='field'>
+              Curso:
+              <div>Engenharia da computação</div>
+            </div>
+
+            <div className='field'>
+              Data:
               <div>{clickedItem?.date}</div>
             </div>
           </div>
@@ -469,17 +496,10 @@ const Table = () => {
             <iframe src={clickedDoc} />
           </div>
 
-          <a href={clickedItem?.doc} download>
-            <Download />
-            Fazer download
-          </a>
-
           <Form
             method='patch'
             path='user/role/request/accept/*%'
             addDataToPath={[`${clickedItem?.id}`]}
-            getData={e => console.log(e)}
-            afterResData={e => console.log(e)}
           >
             <Textarea
               id='feedback'

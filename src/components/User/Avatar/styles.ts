@@ -8,7 +8,7 @@ interface StyleProps {
 
 const Style = styled.div<StyleProps>`
   &,
-  #Avatar {
+  #DefaultAvatar {
     width: ${({ size }) => `${size}px`};
     height: ${({ size }) => `${size}px`};
   }

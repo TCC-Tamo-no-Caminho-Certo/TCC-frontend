@@ -34,10 +34,10 @@ const Avatar = ({
 
   return avatar ? (
     <Style
-      border={border}
-      onClick={onClick}
-      shadow={shadow}
       size={size}
+      border={border}
+      shadow={shadow}
+      onClick={onClick}
       className='Avatar'
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}

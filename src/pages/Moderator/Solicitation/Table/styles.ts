@@ -109,7 +109,7 @@ export const ModalContent = styled.div<ModalContentProps>`
 
   width: max(100vw, 320px);
   height: 95vh;
-  padding: 24px;
+  padding: 24px 16px 24px 24px;
   border-radius: 8px;
   overflow-y: scroll;
 
@@ -161,26 +161,56 @@ export const ModalContent = styled.div<ModalContentProps>`
     stroke: ${({ theme }) => theme.colors.secondary};
   }
 
-  #avatarAndInfo {
+  #info {
     display: flex;
-    align-items: center;
+    flex-direction: column;
 
-    margin-bottom: 24px;
+    width: 100%;
+    margin: 32px 0 24px 0;
+    padding-bottom: 16px;
 
-    #info {
-      margin-left: 24px;
-      font-size: clamp(1.2rem, 0.6rem + 2.6vw, 1.7rem);
+    border: solid ${({ theme }) => theme.colors.secondary} 1px;
 
-      div + div {
-        margin-top: 4px;
+    hr {
+      border: solid 1px ${({ theme }) => theme.colors.secondary};
+      margin-bottom: 16px;
+    }
+
+    #avatar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #title {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      background-color: ${({ theme }) => theme.colors.primary};
+      color: ${({ theme }) => theme.colors.secondary};
+      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
+      padding: 16px 0;
+    }
+
+    .field {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
+      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
+      padding: 8px;
+
+      div {
+        margin-top: 8px;
       }
 
-      #name {
-        font-size: clamp(1.2rem, 0.6rem + 2.6vw, 1.8rem);
+      & + .field {
+        margin-top: 16px;
       }
 
       #status {
-        font-size: clamp(1.2rem, 0.6rem + 2.6vw, 1.6rem);
         color: ${({ theme, status }) => {
           switch (status) {
             case 'accepted':
@@ -239,11 +269,8 @@ export const ModalContent = styled.div<ModalContentProps>`
     display: flex;
     justify-content: center;
     flex-direction: column;
-    flex: 1;
 
-    padding: 32px 0;
-
-    background-color: ${({ theme }) => darken(0.1, theme.colors.tertiary)};
+    min-height: 100vh;
 
     iframe {
       width: 100%;
@@ -253,6 +280,16 @@ export const ModalContent = styled.div<ModalContentProps>`
 
   @media screen and (min-width: 545px) {
     width: max(80vw, 320px);
+
+    #info {
+      .field {
+        flex-direction: row;
+
+        div {
+          margin: 0 0 0 8px;
+        }
+      }
+    }
   }
 `
 

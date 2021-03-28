@@ -36,7 +36,7 @@ const Style = styled.div<StyleProps>`
 
     #role {
       text-align: center;
-      font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.5rem);
+      font-size: clamp(2rem, 0.6rem + 2.6vw, 2.5rem);
       width: 100%;
 
       color: ${({ theme, role }) => theme.roles[role]};
@@ -54,6 +54,20 @@ const Style = styled.div<StyleProps>`
 
       div {
         width: 100px;
+      }
+    }
+
+    #rejected {
+      p + p {
+        font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
+        text-align: justify;
+      }
+
+      #title {
+        text-align: center;
+        font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2rem);
+
+        color: ${({ theme }) => theme.colors.red};
       }
     }
 
@@ -77,29 +91,16 @@ const Style = styled.div<StyleProps>`
         stop-color: ${({ theme }) => theme.colors.tertiary};
       }
     }
+  }
 
-    #buttonsRow {
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
+  #scrollButton {
+    width: 100%;
+    padding: 8px;
 
-      width: 100%;
+    color: ${({ theme }) => theme.colors.tertiary};
 
-      button#info {
-        font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2rem);
-
-        color: ${({ theme }) => theme.colors.tertiary};
-      }
-
-      button#cancel {
-        font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2rem);
-
-        border-radius: 8px;
-        padding: 8px 32px;
-
-        color: ${({ theme }) => theme.colors.primary};
-        border: solid ${({ theme }) => theme.colors.primary} 1px;
-      }
+    &:hover {
+      color: ${({ theme }) => theme.colors.primary};
     }
   }
 

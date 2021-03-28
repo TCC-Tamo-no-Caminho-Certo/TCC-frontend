@@ -13,6 +13,7 @@ import { motion } from 'framer-motion'
 
 interface RequestStatusProps {
   role: Role
+  message: string
   status: StatusTypes
 }
 
@@ -30,7 +31,7 @@ interface Checks {
 // middle: ['24%', '47%'],
 // final: ['47%', '70%']
 
-const RequestStatus = ({ role, status }: RequestStatusProps) => {
+const RequestStatus = ({ role, status, message }: RequestStatusProps) => {
   const [{ first, second, third }, setChecks] = useState<Checks>({
     first: false,
     second: 'nothing',
@@ -53,12 +54,18 @@ const RequestStatus = ({ role, status }: RequestStatusProps) => {
         second: false,
         third: 'nothing'
       })
-    } else
+    } else {
+      setProgress({
+        progressTrue: ['27%', '50%'],
+        progressFalse: ['47%', '70%']
+      })
+
       setChecks({
         first: false,
         second: false,
         third: true
       })
+    }
   }, [status])
 
   return (
@@ -73,16 +80,6 @@ const RequestStatus = ({ role, status }: RequestStatusProps) => {
 
           <div>Finalizada</div>
         </div>
-
-        {status === 'rejected' ? (
-          <div>
-            <p>Solicitação rejeitada</p>
-
-            <p>{'{resposta do moderador}'}</p>
-          </div>
-        ) : (
-          <></>
-        )}
 
         <svg
           width='750'
@@ -191,15 +188,23 @@ const RequestStatus = ({ role, status }: RequestStatusProps) => {
           </defs>
         </svg>
 
-        {/* <div id='buttonsRow'>
-          <button type='button' id='info'>
-            Ver informações
-          </button>
+        {status === 'rejected' ? (
+          <div id='rejected'>
+            <p id='title'>Solicitação rejeitada</p>
 
-          <button type='button' id='cancel'>
-            Cancelar solicitação
-          </button>
-        </div> */}
+            <p>{message}</p>
+
+            <button
+              id='scrollButton'
+              type='button'
+              onClick={() => window.scrollTo(0, 0)}
+            >
+              Escolher outro papel
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
       </Card>
     </Style>
   )

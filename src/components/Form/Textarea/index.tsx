@@ -1,4 +1,5 @@
 import React, {
+  forwardRef,
   HTMLProps,
   useContext,
   useEffect,
@@ -11,9 +12,11 @@ import { FormContext, FormState } from '../'
 
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 
+interface TextareaMethods {}
+
 type TextareaProps = HTMLProps<HTMLTextAreaElement>
 
-const Textarea = (props: TextareaProps) => {
+const Textarea = forwardRef<TextareaMethods, TextareaProps>((props, _ref) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [error, setError] = useState<string>()
   const form = useContext<FormState | null>(FormContext)
@@ -40,6 +43,6 @@ const Textarea = (props: TextareaProps) => {
       />
     </>
   )
-}
+})
 
 export default Textarea

@@ -211,8 +211,6 @@ const StudentForm = () => {
   }
 
   const onSubmit = (res: any) => {
-    console.log(res)
-
     if (res.success)
       if (showReceipt)
         popupRef.current?.configPopup({

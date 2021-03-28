@@ -23,6 +23,7 @@ const Container = ({ role, children }: ContainerProps) => {
   const [showStatus, setShowStatus] = useState(false)
   const user = useSelector<RootState, UserState>(state => state.user)
   const [status, setStatus] = useState<StatusTypes>('awaiting')
+  const [message, setMessage] = useState('')
 
   const makeRequest = useCallback(async () => {
     const { requests } = await api.get(
@@ -36,6 +37,7 @@ const Container = ({ role, children }: ContainerProps) => {
     if (roleRequests[0]) {
       setShowStatus(!!roleRequests[0].status)
       setStatus(roleRequests[0].status)
+      setMessage(roleRequests[0].feedback)
     }
   }, [user, role])
 
@@ -50,7 +52,7 @@ const Container = ({ role, children }: ContainerProps) => {
   }, [])
 
   return showStatus ? (
-    <RequestStatus role={role} status={status} />
+    <RequestStatus role={role} status={status} message={message} />
   ) : (
     <Style>
       <Content role={role}>

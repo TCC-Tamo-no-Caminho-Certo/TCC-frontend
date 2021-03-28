@@ -103,7 +103,7 @@ export const getUser = createAsyncThunk('userConfig/getUser', async () => {
 
   return {
     ...user,
-    role: ['professor'],
+    role: ['moderator'],
     selectedRole: getInitialSelectedRole(user.role)
   }
 })

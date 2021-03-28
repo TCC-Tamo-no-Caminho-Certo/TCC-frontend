@@ -4,7 +4,7 @@ const AvatarIcon = () => {
   return (
     <svg
       className='Icon'
-      id='Avatar'
+      id='DefaultAvatar'
       xmlns='http://www.w3.org/2000/svg'
       fill='none'
       viewBox='0 0 591 591'
