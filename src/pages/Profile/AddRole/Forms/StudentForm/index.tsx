@@ -48,8 +48,11 @@ interface AnimationsState {
 export interface University {
   value: string | number
   label: string
-  studentRegex: RegExp
-  professorRegex: RegExp
+  regex: {
+    student: RegExp
+    professor: RegExp
+    register: string
+  }
 }
 
 type SelectOptions = Option[] | undefined
@@ -144,7 +147,7 @@ const StudentForm = () => {
 
   const verifyInstitucionalEmail = () => {
     if (selectedUniversity) {
-      const rgx = new RegExp(selectedUniversity.professorRegex)
+      const rgx = new RegExp(selectedUniversity.regex.student)
       const instEmails = user.email.filter(({ address }) => rgx.test(address))
 
       setFormState(prev => ({
@@ -163,8 +166,7 @@ const StudentForm = () => {
       (university: any): University => ({
         value: university.university_id,
         label: university.name,
-        studentRegex: university.student_regex,
-        professorRegex: university.professor_regex
+        regex: university.regex
       })
     )
 
@@ -250,9 +252,16 @@ const StudentForm = () => {
         <Form
           loading
           path='user/role/request/student'
-          getData={e => console.log(e)}
           afterResData={onSubmit}
-          schema={showReceipt ? receiptSchema : emailSchema}
+          schema={
+            showReceipt
+              ? receiptSchema(
+                  selectedUniversity ? selectedUniversity.regex.register : ''
+                )
+              : emailSchema(
+                  selectedUniversity ? selectedUniversity.regex.register : ''
+                )
+          }
         >
           <Select
             name='university_id'
@@ -271,7 +280,7 @@ const StudentForm = () => {
 
           <Presence condition={showAr}>
             <motion.div animate='enter' id='ar' variants={show}>
-              <Text name='ar' placeholder='Registro Acadêmico' />
+              <Text name='academic_register' placeholder='Registro Acadêmico' />
             </motion.div>
           </Presence>
 
@@ -330,6 +339,7 @@ const StudentForm = () => {
                       showReceipt: false,
                       showSubmit: false
                     }))
+
                     registerEmailRef.current?.toggleRegister()
                   }}
                 >
@@ -349,31 +359,29 @@ const StudentForm = () => {
           </Presence>
 
           <Presence condition={showReceipt}>
-            <>
-              <MotionReceipt exit='exit' animate='enter' variants={show}>
-                <div id='warning'>
-                  <p>
-                    <AlertIcon />
-                    Este processo é mais lento pois requer confirmação de um{' '}
-                    <b id='moderator'>Moderador</b> de sua universidade. O
-                    formato do arquivo deve ser <b>PDF</b>.
-                  </p>
-                </div>
+            <MotionReceipt exit='exit' animate='enter' variants={show}>
+              <div id='warning'>
+                <p>
+                  <AlertIcon />
+                  Este processo é mais lento pois requer confirmação de um{' '}
+                  <b id='moderator'>Moderador</b> de sua universidade. O formato
+                  do arquivo deve ser <b>PDF</b>.
+                </p>
+              </div>
 
-                <File
-                  guides
-                  bgHeight='200vh'
-                  bottom='50vh'
-                  tranlateY='50%'
-                  name='doc'
-                  label='Enviar comprovante'
-                  noCropper={true}
-                  onChange={() =>
-                    setAnimations(prev => ({ ...prev, showSubmit: true }))
-                  }
-                />
-              </MotionReceipt>
-            </>
+              <File
+                guides
+                name='voucher'
+                bottom='50vh'
+                tranlateY='50%'
+                bgHeight='200vh'
+                label='Enviar comprovante'
+                noCropper={true}
+                onChange={() =>
+                  setAnimations(prev => ({ ...prev, showSubmit: true }))
+                }
+              />
+            </MotionReceipt>
           </Presence>
 
           <Presence condition={showSubmit}>
@@ -388,26 +396,24 @@ const StudentForm = () => {
           </Presence>
         </Form>
 
-        {/* <button
+        <button
           id='delete'
           type='button'
           onClick={async () => {
             if (selectedUniversity) {
-              const rgx = new RegExp(selectedUniversity.studentRegex)
+              const rgx = new RegExp(selectedUniversity.regex.student)
 
               const teste = user.email.filter(({ address }) =>
                 rgx.test(address)
               )
 
-              if (teste[0].email_id) {
+              if (teste[0].email_id)
                 await api.delete(`user/email/${teste[0].email_id}`)
-                console.log('deleted')
-              }
             }
           }}
         >
           Deletar
-        </button> */}
+        </button>
       </Container>
 
       <RegisterEmail
@@ -415,7 +421,7 @@ const StudentForm = () => {
         ref={registerEmailRef}
         onSuccess={setShowSubmitTrue}
         title={selectedUniversity?.label}
-        regex={selectedUniversity?.studentRegex}
+        regex={selectedUniversity?.regex.student}
         addData={{ university_id: selectedUniversity?.value }}
         modal={{
           translateY: '50%',

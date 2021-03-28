@@ -5,7 +5,12 @@ interface Data {
 }
 
 const request = axios.create({
-  baseURL: 'https://dev.steamslab.com/api/'
+  baseURL: 'https://dev.steamslab.com/api/',
+  withCredentials: false,
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+  }
 })
 
 const api = {
@@ -29,7 +34,7 @@ const api = {
       const res = await request.post(path, data, axiosConfig)
       return res.data
     } catch (error) {
-      return error.response.data
+      return error
     }
   },
 
@@ -49,7 +54,7 @@ const api = {
       const res = await request.get(path, axiosConfig)
       return res.data
     } catch (error) {
-      return error.response.data
+      return error
     }
   },
 
@@ -73,7 +78,7 @@ const api = {
       const res = await request.put(path, data, axiosConfig)
       return res.data
     } catch (error) {
-      return error.response.data
+      return error
     }
   },
 
@@ -97,7 +102,7 @@ const api = {
       const res = await request.delete(path, axiosConfig)
       return res.data
     } catch (error) {
-      return error.response.data
+      return error
     }
   },
 
@@ -121,7 +126,7 @@ const api = {
       const res = await request.patch(path, data, axiosConfig)
       return res.data
     } catch (error) {
-      return error.response.data
+      return error
     }
   }
 }

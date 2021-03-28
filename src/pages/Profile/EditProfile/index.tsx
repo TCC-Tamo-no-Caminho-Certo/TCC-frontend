@@ -41,8 +41,6 @@ const EditProfile = () => {
   const popupRef = useRef<PopupMethods>(null)
 
   const submitCallback = (resData: any) => {
-    console.log(resData)
-
     if (resData.error === 'Incorrect password!')
       popupRef.current?.configPopup({
         type: 'error',
@@ -77,7 +75,6 @@ const EditProfile = () => {
             path='user'
             schema={editProfileSchema}
             afterResData={submitCallback}
-            getData={e => console.log(e)}
             onError={(error: any) => {
               if (error.message !== 'Você esqueceu de informar a senha!')
                 confirmModal.current?.toggleModal(false)

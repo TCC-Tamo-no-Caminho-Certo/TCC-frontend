@@ -44,6 +44,7 @@ export interface FormProps extends HTMLProps<HTMLFormElement> {
   captcha?: boolean
   loading?: boolean
   addToPath?: string[]
+  addDataToPath?: string[]
   schema?: ObjectSchema
   addData?: { [key: string]: any }
   method?: 'post' | 'get' | 'delete' | 'patch' | 'put'
@@ -66,6 +67,7 @@ const Form = ({
   children,
   addToPath,
   afterResData,
+  addDataToPath,
   method = 'post',
   ...rest
 }: FormProps) => {
@@ -165,21 +167,26 @@ const Form = ({
   }
 
   const parsePath = () => {
-    if (addToPath === null || addToPath === undefined)
-      throw new Error('addToPath is null or undefined')
+    const paths = path.split('*%')
 
     if (addToPath) {
-      const paths = path.split('*%')
-      const condition = paths.length - 1 !== addToPath.length
-
-      if (condition)
+      if (paths.length - 1 !== addToPath?.length)
         throw new Error('joker lenght is not equal addToPath lenght')
 
-      if (addToPath)
-        path = paths.reduce((acc, curr, idx) => {
-          if (paths.length === idx + 1) return acc + curr
-          return acc + curr + data[addToPath[idx]]
-        }, '')
+      path = paths.reduce((acc, curr, idx) => {
+        if (paths.length === idx + 1) return acc + curr
+        return acc + curr + data[addToPath[idx]]
+      }, '')
+    }
+
+    if (addDataToPath) {
+      if (paths.length - 1 !== addDataToPath?.length)
+        throw new Error('joker lenght is not equal addDataToPath lenght')
+
+      path = paths.reduce((acc, curr, idx) => {
+        if (paths.length === idx + 1) return acc + curr
+        return acc + curr + addDataToPath[idx]
+      }, '')
     }
   }
 
@@ -196,7 +203,9 @@ const Form = ({
     const secondParam = params[method].data
     const resData = await api[method](firstParam, secondParam)
 
-    cbAfterResData && cbAfterResData(resData)
+    if (resData.response)
+      cbAfterResData && cbAfterResData(resData.response.data)
+    else cbAfterResData && cbAfterResData(resData)
     return resData.success
   }
 
@@ -206,7 +215,8 @@ const Form = ({
     setData()
     getData && getData(data)
     validate()
-    addToPath !== undefined && parsePath()
+
+    if (addToPath !== undefined || addDataToPath !== undefined) parsePath()
 
     if (captcha)
       data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false

@@ -29,10 +29,14 @@ const Container = ({ role, children }: ContainerProps) => {
       `user/role/requests?per_page=1&filter[user_id][]=${user.user_id}`
     )
 
-    const { status } = requests.filter((request: any) => request.role === role)
+    const roleRequests = requests.filter(
+      (request: any) => request.role === role
+    )
 
-    setShowStatus(!!status)
-    setStatus(status || 'awaiting')
+    if (roleRequests[0]) {
+      setShowStatus(!!roleRequests[0].status)
+      setStatus(roleRequests[0].status)
+    }
   }, [user, role])
 
   useEffect(() => {

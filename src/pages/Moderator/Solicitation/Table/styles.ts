@@ -120,6 +120,32 @@ export const ModalContent = styled.div<ModalContentProps>`
     width: 100%;
   }
 
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: clamp(1.2rem, 0.6rem + 2.6vw, 1.6rem);
+    width: 100%;
+    padding: 8px 16px;
+    border-radius: 0 0 16px 16px;
+    transition: all 0.3s ease-in-out;
+
+    color: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.primary};
+
+    &:hover {
+      background-color: ${({ theme }) => darken(0.1, theme.colors.primary)};
+    }
+
+    .Icon {
+      height: 16px;
+      margin-right: 8px;
+
+      fill: ${({ theme }) => theme.colors.secondary};
+    }
+  }
+
   .Textarea {
     margin-top: 16px;
   }
@@ -213,40 +239,20 @@ export const ModalContent = styled.div<ModalContentProps>`
     display: flex;
     justify-content: center;
     flex-direction: column;
+    flex: 1;
 
     padding: 32px 0;
 
     background-color: ${({ theme }) => darken(0.1, theme.colors.tertiary)};
 
-    img {
-      object-fit: contain;
+    iframe {
+      width: 100%;
+      height: 100%;
     }
   }
 
-  a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-size: clamp(1.2rem, 0.6rem + 2.6vw, 1.6rem);
-    width: 100%;
-    padding: 8px 16px;
-    border-radius: 0 0 16px 16px;
-    transition: all 0.3s ease-in-out;
-
-    color: ${({ theme }) => theme.colors.secondary};
-    background-color: ${({ theme }) => theme.colors.primary};
-
-    &:hover {
-      background-color: ${({ theme }) => darken(0.1, theme.colors.primary)};
-    }
-
-    .Icon {
-      height: 16px;
-      margin-right: 8px;
-
-      fill: ${({ theme }) => theme.colors.secondary};
-    }
+  @media screen and (min-width: 545px) {
+    width: max(80vw, 320px);
   }
 `
 

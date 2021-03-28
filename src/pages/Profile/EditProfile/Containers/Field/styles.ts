@@ -17,6 +17,7 @@ export const Input = styled.div`
   .Datepicker,
   .Text {
     width: 100%;
+    height: 100%;
     border: none;
 
     input {
@@ -33,7 +34,9 @@ export const Input = styled.div`
   .value {
     display: flex;
     justify-content: center;
+    align-items: center;
 
+    height: 100%;
     width: calc(100% - 64px);
   }
 `

@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { Form, MotionReceipt, MotionWays } from './styles'
+import { Form } from './styles'
 
+import { MotionReceipt, MotionWays } from '../StudentForm/styles'
 import Container from '../Container'
-// eslint-disable-next-line prettier/prettier
-import RegisterEmail, { RegisterEmailMethods } from '../../../../../components/RegisterEmail'
 import { AddRoleContext } from '../../index'
 import { formatterToSelect, show, University } from '../StudentForm'
 
@@ -19,6 +18,7 @@ import { RootState } from 'store'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
+import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 import { Checkbox, File, Select, Submit, Text } from 'components/Form'
 import Popup, { PopupMethods } from 'components/Popup'
 import Presence from 'components/Presence'
@@ -98,8 +98,11 @@ const ProfessorForm = () => {
       (university: any): University => ({
         value: university.university_id,
         label: university.name,
-        studentRegex: university.student_regex,
-        professorRegex: university.professor_regex
+        regex: {
+          student: university.regex.professor,
+          professor: university.regex.professor,
+          register: university.regex.register
+        }
       })
     )
 
@@ -145,7 +148,7 @@ const ProfessorForm = () => {
 
   const verifyInstitucionalEmail = () => {
     if (selectedUniversity) {
-      const rgx = new RegExp(selectedUniversity.professorRegex)
+      const rgx = new RegExp(selectedUniversity.regex.student)
       const instEmails = user.email.filter(({ address }) => rgx.test(address))
 
       setFormState(prev => ({
@@ -196,6 +199,7 @@ const ProfessorForm = () => {
         <Form
           loading
           path='user/role/request/professor'
+          getData={e => console.log(e)}
           afterResData={onSubmit}
           schema={showReceipt ? receiptSchema : emailSchema}
         >
@@ -219,7 +223,7 @@ const ProfessorForm = () => {
             }}
           />
 
-          <Text name='ar' placeholder='Registro Acadêmico' />
+          <Text name='academic_register' placeholder='Registro Acadêmico' />
 
           <Presence condition={showCampus}>
             <MotionSelect
@@ -283,7 +287,7 @@ const ProfessorForm = () => {
           </Presence>
 
           <Presence condition={showReceipt}>
-            <MotionReceipt exit='exit' animate='enter' variants={show}>
+            <MotionReceipt animate='enter' exit='exit' variants={show}>
               <div id='warning'>
                 <p>
                   <AlertIcon />
@@ -295,10 +299,10 @@ const ProfessorForm = () => {
 
               <File
                 guides
-                bgHeight='200vh'
+                name='voucher'
                 bottom='50vh'
                 tranlateY='50%'
-                name='doc'
+                bgHeight='200vh'
                 label='Enviar comprovante'
                 noCropper={true}
                 onChange={() =>
@@ -308,13 +312,13 @@ const ProfessorForm = () => {
             </MotionReceipt>
           </Presence>
 
-          <Checkbox name='it' label='Sou professor em tempo integral' />
+          <Checkbox name='full_time' label='Sou professor em tempo integral' />
 
           <Presence condition={showSubmit}>
             <MotionSubmit
+              exit='exit'
               initial='exit'
               animate='enter'
-              exit='exit'
               variants={show}
             >
               Enviar solicitação
@@ -327,7 +331,7 @@ const ProfessorForm = () => {
           type='button'
           onClick={async () => {
             if (selectedUniversity) {
-              const rgx = new RegExp(selectedUniversity.professorRegex)
+              const rgx = new RegExp(selectedUniversity.regex.professor)
 
               const teste = user.email.filter(({ address }) =>
                 rgx.test(address)
@@ -343,21 +347,22 @@ const ProfessorForm = () => {
       </Container>
 
       <RegisterEmail
+        placeholder='E-mail institucional'
         ref={registerEmailRef}
-        regex={selectedUniversity?.professorRegex}
         onSuccess={setShowSubmitTrue}
         title={selectedUniversity?.label}
+        regex={selectedUniversity?.regex.student}
         addData={{ university_id: selectedUniversity?.value }}
         modal={{
-          translateY: '50%',
           bottom: '50vh',
+          translateY: '50%',
           bgHeight: `calc(${rolesHeight}px + 100vh)`
         }}
       />
 
       <Popup
-        translateY='50%'
         bottom='50vh'
+        translateY='50%'
         bgHeight={`calc(${rolesHeight}px + 100vh)`}
         ref={popupRef}
       />

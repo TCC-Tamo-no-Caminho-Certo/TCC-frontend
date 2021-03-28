@@ -14,6 +14,7 @@ export interface ContainerForm {
   moderator: InputData[]
   guest: InputData[]
   student: InputData[]
+  professor: InputData[]
 }
 
 const formatUpdateUser = (
@@ -109,11 +110,27 @@ const formatUpdateUser = (
     }
   ]
 
+  const professor: InputData[] = [
+    {
+      label: 'Email:',
+      name: 'inst_email',
+      value: instEmail ? instEmail.address : '',
+      editable: false
+    },
+    {
+      label: 'Universidade:',
+      name: 'university_id',
+      value: instEmail ? instEmail.university_id : '',
+      editable: false
+    }
+  ]
+
   const moderator: InputData[] = []
 
   const formInputs: ContainerForm = {
     personal,
     moderator,
+    professor,
     guest,
     student
   }

@@ -21,7 +21,6 @@ import { RootState } from 'store'
 import useSortableData from 'hooks/useSortableData'
 
 import Download from 'assets/Download'
-import doc from 'assets/doc.jpg'
 import LoupeIcon from 'assets/Inputs/LoupeIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
@@ -36,14 +35,13 @@ import {
   Textarea
 } from 'components/Form'
 import Avatar from 'components/User/Avatar'
+import { valueToDate } from 'components/Form/Datepicker'
 
 import { lighten } from 'polished'
 import { useSelector } from 'react-redux'
 import { Theme } from 'react-select'
 
 export type StatusTypes = 'accepted' | 'rejected' | 'awaiting'
-type TablePageType = TableData[] | null
-type DataType = TableData | undefined
 
 interface RequestsData {
   request_id: number
@@ -55,6 +53,7 @@ interface RequestsData {
   role: Role
   created_at: string
   updated_at?: string
+  doc_uuid?: string
 }
 
 export interface TableData {
@@ -64,6 +63,7 @@ export interface TableData {
   role: Role
   date: string
   id: number
+  doc?: string
 }
 
 export interface HeaderData {
@@ -71,8 +71,8 @@ export interface HeaderData {
   label: string
 }
 
-const transformArray = (array: RequestsData[]) => {
-  const makeDateLabel = (date: string): string => {
+const transformArray = (array: RequestsData[]): TableData[] => {
+  const _makeDateLabel = (date: string): string => {
     const teste = date.replaceAll('-', '/').split('')
 
     const month = {
@@ -106,18 +106,33 @@ const transformArray = (array: RequestsData[]) => {
     }
   }
 
+  const formatterDate = (date: string) => {
+    const date1 = valueToDate(date).split('/')[0]
+    const date2 = valueToDate(date).split('/')[1]
+    return date1 + '/' + date2
+  }
+
   return array.map(
-    ({ status, name, role, created_at, request_id }: RequestsData) => ({
+    ({
+      status,
+      name,
       role,
-      id: request_id,
-      name: name,
-      statusCircle: status,
-      status: makeStatusLabel(status),
-      date: makeDateLabel(created_at)
-    })
+      created_at,
+      request_id,
+      doc_uuid
+    }: RequestsData) => {
+      return {
+        role,
+        doc: doc_uuid,
+        id: request_id,
+        name: name,
+        statusCircle: status,
+        status: makeStatusLabel(status),
+        date: formatterDate(created_at)
+      }
+    }
   )
 }
-
 const headerData: HeaderData[] = [
   { name: 'statusCircle', label: '' },
   { name: 'status', label: 'Status' },
@@ -125,6 +140,15 @@ const headerData: HeaderData[] = [
   { name: 'role', label: 'Papel' },
   { name: 'date', label: 'Data' }
 ]
+
+interface TableState {
+  isClear: boolean
+  tablePage: number
+  clickedDoc: string
+  filter: keyof Filter
+  showData: TableData[] | null
+  clickedItem: TableData | undefined
+}
 
 interface Filter {
   name: JSX.Element
@@ -138,17 +162,23 @@ const Table = () => {
   const tableRef = useRef() as MutableRefObject<HTMLTableElement>
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>
   const modalRef = useRef<ModalMethods>(null)
-  const [clickedItem, setClickedItem] = useState<DataType>(undefined)
-  const [showData, setShowData] = useState<TablePageType>(null)
-  const [tablePage, setTablePage] = useState(1)
-  const [isClear, setIsClear] = useState(false)
-  const [filter, setFilter] = useState<keyof Filter>('name')
-  const quantity = 10
-
+  const [
+    { clickedItem, clickedDoc, showData, tablePage, isClear, filter },
+    setTableState
+  ] = useState<TableState>({
+    clickedItem: undefined,
+    showData: null,
+    tablePage: 1,
+    isClear: false,
+    filter: 'name',
+    clickedDoc: ''
+  })
   const { items, sort } = useSortableData(showData, {
     direction: 'descending',
     indexer: 'name'
   })
+
+  const quantity = 60
 
   const makeRequest = useCallback(
     async (page: number) => {
@@ -156,13 +186,19 @@ const Table = () => {
         const response = await api.get(
           `user/role/requests?page=${page}&per_page=${quantity}`
         )
+
         const { requests } = response
 
         if (requests && requests.length !== 0) {
           const tableData = transformArray(requests)
 
-          setShowData(prev => (prev ? [...prev, ...tableData] : [...tableData]))
-        } else setIsClear(true)
+          setTableState(prev => ({
+            ...prev,
+            showData: prev.showData
+              ? [...prev.showData, ...tableData]
+              : [...tableData]
+          }))
+        } else setTableState(prev => ({ ...prev, setIsClear: true }))
       }
     },
     [isClear]
@@ -245,20 +281,33 @@ const Table = () => {
 
       if (position <= maxHeight) {
         makeRequest(tablePage + 1)
-        setTablePage(tablePage + 1)
+        setTableState(prev => ({ ...prev, tablePage: prev.tablePage + 1 }))
       }
     }
   }
 
   const onSearchClick = async () => {
     const value = inputRef.current.value
-    console.log(value)
 
-    const response = await api.get(
+    const { requests } = await api.get(
       `user/role/requests?page=1&per_page=${quantity}&filter[full_name][]=${value}`
     )
 
+    setTableState(prev => ({ ...prev, showData: requests, tablePage: 1 }))
+  }
+
+  const setClicked = async (item: TableData) => {
+    console.log(item.doc)
+
+    const response = await api.get(`user/role/request/doc/${item.doc}`)
+
     console.log(response)
+
+    setTableState(prev => ({
+      ...prev,
+      clickedItem: item,
+      clickedDoc: response.url
+    }))
   }
 
   useEffect(() => {
@@ -287,7 +336,7 @@ const Table = () => {
         styling={selectStyle}
         options={[
           { label: 'Estudante', value: 'student' },
-          { label: 'Professor', value: 'professor' }
+          { label: 'Moderador', value: 'moderator' }
         ]}
       />
     ),
@@ -335,13 +384,15 @@ const Table = () => {
             className='SelectFilter'
             theming={selectTheme}
             styling={selectStyle}
-            onChange={({ value }: any) => setFilter(value)}
             defaultValue={{ label: 'Nome', value: 'name' }}
             options={[
               { label: 'Papel', value: 'role' },
               { label: 'Nome', value: 'name' },
               { label: 'Data', value: 'date' }
             ]}
+            onChange={({ value }: any) =>
+              setTableState(prev => ({ ...prev, filter: value }))
+            }
           />
 
           <button className='Submit' onClick={onSearchClick} type='button'>
@@ -360,7 +411,7 @@ const Table = () => {
                   key={item.id}
                   onClick={() => {
                     modalRef.current?.toggleModal(true)
-                    setClickedItem(item)
+                    setClicked(item)
                   }}
                 >
                   {headerData.map(({ label, name }) => {
@@ -415,19 +466,26 @@ const Table = () => {
           </div>
 
           <div id='doc'>
-            <img src={doc} alt='doc' />
+            <iframe src={clickedDoc} />
           </div>
 
-          <a href={doc} download>
+          <a href={clickedItem?.doc} download>
             <Download />
             Fazer download
           </a>
 
-          <Form path='modal-path'>
+          <Form
+            method='patch'
+            path='user/role/request/accept/*%'
+            addDataToPath={[`${clickedItem?.id}`]}
+            getData={e => console.log(e)}
+            afterResData={e => console.log(e)}
+          >
             <Textarea
               id='feedback'
               name='feedback'
               placeholder='Se quiser, deixe uma resposta...'
+              maxLength={500}
             />
 
             <div id='buttons'>

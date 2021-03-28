@@ -37,6 +37,8 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
     })
 
     const onEmailSubmit = (result: any) => {
+      console.log(result)
+
       if (result.success) setCodeSend(true)
       else if (result.error === 'Email already in use!')
         popupRef.current?.configPopup({

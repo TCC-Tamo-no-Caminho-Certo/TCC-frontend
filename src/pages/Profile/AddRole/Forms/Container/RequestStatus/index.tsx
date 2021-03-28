@@ -9,7 +9,7 @@ import { Role } from 'store/user'
 
 import Card from 'components/Card'
 
-import { motion, useCycle } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 interface RequestStatusProps {
   role: Role
@@ -22,36 +22,44 @@ interface Checks {
   third: boolean | string
 }
 
-const RequestStatus = ({ role }: RequestStatusProps) => {
+// initial: ['4%', '4%'],
+// middle: ['4%', '27%'],
+// final: ['27%', '50%']
+
+// initial: ['24%', '24%'],
+// middle: ['24%', '47%'],
+// final: ['47%', '70%']
+
+const RequestStatus = ({ role, status }: RequestStatusProps) => {
   const [{ first, second, third }, setChecks] = useState<Checks>({
     first: false,
     second: 'nothing',
     third: 'nothing'
   })
-  const [progressTrue, _cycleProgressTrue] = useCycle(
-    ['4%', '4%'],
-    ['4%', '27%'],
-    ['27%', '50%']
-  )
-  const [progressFalse, _cycleProgressFalse] = useCycle(
-    ['24%', '24%'],
-    ['24%', '47%'],
-    ['47%', '70%']
-  )
+
+  const [{ progressTrue, progressFalse }, setProgress] = useState({
+    progressTrue: ['4%', '4%'],
+    progressFalse: ['24%', '24%']
+  })
 
   useEffect(() => {
-    status === 'awaiting'
-      ? setChecks({
-          first: false,
-          second: false,
-          third: 'nothing'
-        })
-      : setChecks({
-          first: false,
-          second: false,
-          third: true
-        })
-  }, [])
+    if (status === 'awaiting') {
+      setProgress({
+        progressTrue: ['4%', '27%'],
+        progressFalse: ['24%', '47%']
+      })
+      setChecks({
+        first: false,
+        second: false,
+        third: 'nothing'
+      })
+    } else
+      setChecks({
+        first: false,
+        second: false,
+        third: true
+      })
+  }, [status])
 
   return (
     <Style role={role}>

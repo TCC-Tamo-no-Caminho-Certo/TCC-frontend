@@ -1,20 +1,24 @@
 import * as Yup from 'yup'
 
-const ambiguous = {
-  university_id: Yup.number().required('Você precisa selecionar!'),
-  ar: Yup.string()
-    .matches(/[0-9]/, 'RA precisa ser um número!')
-    .required('Digite seu RA'),
-  campus_id: Yup.number().required('Você precisa selecionar!'),
-  course_id: Yup.number().required('Você precisa selecionar!'),
-  semester: Yup.number().required('Você precisa selecionar!')
+const ambiguous = (register: string) => {
+  const academic_register = new RegExp(register)
+
+  return {
+    university_id: Yup.number().required('Você precisa selecionar!'),
+    campus_id: Yup.number().required('Você precisa selecionar!'),
+    course_id: Yup.number().required('Você precisa selecionar!'),
+    semester: Yup.number().required('Você precisa selecionar!'),
+    register: Yup.string().matches(academic_register)
+  }
 }
 
-export const emailSchema = Yup.object({
-  ...ambiguous
-})
+export const emailSchema = (register: string) => {
+  return Yup.object({ ...ambiguous(register) })
+}
 
-export const receiptSchema = Yup.object({
-  ...ambiguous,
-  doc: Yup.string().required('Você precisa selecionar um comprovante!')
-})
+export const receiptSchema = (register: string) => {
+  return Yup.object({
+    ...ambiguous(register),
+    voucher: Yup.string().required('Você precisa selecionar um comprovante!')
+  })
+}

@@ -6,7 +6,7 @@ import { File, Form } from 'components/Form'
 const RestOfHome = () => {
   return (
     <Style>
-      <Form path='#' getData={e => console.log(e)}>
+      <Form path='#'>
         <File name='teste' label='teste' />
       </Form>
     </Style>

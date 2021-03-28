@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux'
 interface CheckboxProps {
   name: string
   label: string
+  onClick?: () => void
 }
 
 const pathAnimation: Variants = {
@@ -34,7 +35,7 @@ const pathAnimation: Variants = {
   }
 }
 
-const Checkbox = ({ name, label }: CheckboxProps) => {
+const Checkbox = ({ name, label, onClick, ...rest }: CheckboxProps) => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const checkboxRef = useRef<HTMLInputElement>(null)
   const form = useContext<FormState | null>(FormContext)
@@ -54,7 +55,12 @@ const Checkbox = ({ name, label }: CheckboxProps) => {
   }, [form])
 
   return (
-    <Style className='Checkbox' checked={checked} error={!!error}>
+    <Style
+      className='Checkbox'
+      checked={checked}
+      error={!!error}
+      onClick={onClick}
+    >
       <ErrorTooltip error={!!error} content={error} />
 
       <button
@@ -71,6 +77,7 @@ const Checkbox = ({ name, label }: CheckboxProps) => {
           name={name}
           checked={checked}
           ref={checkboxRef}
+          {...rest}
         />
 
         <svg viewBox='0 0 15 15' fill='none' xmlns='http://www.w3.org/2000/svg'>

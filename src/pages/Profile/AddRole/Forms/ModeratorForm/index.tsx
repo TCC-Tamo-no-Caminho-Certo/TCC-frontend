@@ -5,33 +5,51 @@ import Container from '../Container'
 import { AddRoleContext } from '../../index'
 import { show } from '../StudentForm'
 
-import { getUser } from 'store/user'
+import {
+  withFullName,
+  withoutFullName
+} from 'utils/validations/addRoleForms/moderator'
 
-import { Submit } from 'components/Form'
+import { getUser, UserState } from 'store/user'
+import { RootState } from 'store'
+
+import { Checkbox, Submit, Textarea } from 'components/Form'
 import Popup, { PopupMethods } from 'components/Popup'
 import Presence from 'components/Presence'
 
 import { motion } from 'framer-motion'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 interface AnimationsState {
-  showSubmit: boolean
+  showAll: boolean
+  showJustification: boolean
 }
 
-const MotionSubmit = motion.custom(Submit)
+const MotionTextarea = motion.custom(Textarea)
 
 const initialAnimations: AnimationsState = {
-  showSubmit: false
+  showAll: true,
+  showJustification: false
+}
+
+const verifyFullTime = (user: UserState) => {
+  const { email } = user
+  email.filter(email => email.institutional === true)
+  return false
 }
 
 const ModeratorForm = () => {
+  const user = useSelector<RootState, UserState>(state => state.user)
+
   const dispatch = useDispatch()
   const popupRef = useRef<PopupMethods>(null)
   const { rolesHeight } = useContext(AddRoleContext)
   const history = useHistory()
 
-  const [{ showSubmit }] = useState(initialAnimations)
+  const [{ showAll, showJustification }, setAnimations] = useState(
+    initialAnimations
+  )
 
   const onSubmit = (res: any) => {
     if (res.success)
@@ -54,28 +72,58 @@ const ModeratorForm = () => {
 
   useEffect(() => {
     setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100)
-  }, [])
+    const isFullTimeProfessor = verifyFullTime(user)
+
+    setAnimations(prev => ({
+      ...prev,
+      showAll: !isFullTimeProfessor,
+      showSubmit: isFullTimeProfessor,
+      showJustification: !isFullTimeProfessor
+    }))
+  }, [user])
 
   return (
     <>
       <Container role='moderator'>
-        <Form loading path='user/role/request/student' afterResData={onSubmit}>
-          <Presence condition={showSubmit}>
-            <MotionSubmit
-              initial='exit'
-              animate='enter'
-              exit='exit'
-              variants={show}
-            >
-              Enviar solicitação
-            </MotionSubmit>
+        <Form
+          loading
+          path='user/role/request/moderator'
+          afterResData={onSubmit}
+          schema={showJustification ? withFullName : withoutFullName}
+        >
+          <Presence condition={showAll}>
+            <Checkbox
+              name='full_time'
+              label='Sou professor em tempo integral'
+              onClick={() => {
+                setAnimations(prev => ({
+                  ...prev,
+                  showJustification: !prev.showJustification
+                }))
+              }}
+            />
+
+            <Presence condition={showJustification}>
+              <MotionTextarea
+                exit='exit'
+                animate='enter'
+                name='justification'
+                placeholder='Descreva porquê você quer ser Moderador'
+                maxLength={500}
+                variants={show}
+              />
+            </Presence>
           </Presence>
+
+          <Submit>
+            {showJustification ? 'Enviar solicitação' : 'Tornar-se moderador!'}
+          </Submit>
         </Form>
       </Container>
 
       <Popup
-        translateY='50%'
         bottom='50vh'
+        translateY='50%'
         bgHeight={`calc(${rolesHeight}px + 100vh)`}
         ref={popupRef}
       />
