@@ -13,7 +13,7 @@ import ImageChanger from './ImageChanger'
 
 import editProfileSchema from 'utils/validations/editProfile'
 
-import { UserActions } from 'store/user'
+import { getUser, UserActions } from 'store/user'
 
 import { Form, Submit, Text } from 'components/Form'
 import Modal, { ModalMethods } from 'components/Modal'
@@ -73,6 +73,7 @@ const EditProfile = () => {
             loading
             method='patch'
             path='user'
+            getData={e => console.log(e)}
             schema={editProfileSchema}
             afterResData={submitCallback}
             onError={(error: any) => {
@@ -127,7 +128,10 @@ const EditProfile = () => {
 
         <Modal ref={imageRefModal}>
           <ImageChanger
-            onCloseClick={() => imageRefModal.current?.toggleModal(false)}
+            onCloseClick={() => {
+              imageRefModal.current?.toggleModal(false)
+              dispatch(getUser())
+            }}
           />
         </Modal>
       </ImageRefModalContext.Provider>

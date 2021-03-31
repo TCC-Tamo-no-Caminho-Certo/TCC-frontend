@@ -97,7 +97,9 @@ const Form = ({
       else
         switch (type) {
           case 'text':
-            data[current.name] = current.value
+            current.value === ''
+              ? (data[current.name] = undefined)
+              : (data[current.name] = current.value)
             break
 
           case 'date':
@@ -144,9 +146,9 @@ const Form = ({
   const validate = () => {
     try {
       schema && schema.validateSync(data, { abortEarly: false })
-      haveErrors = false
     } catch (error) {
       haveErrors = true
+      console.log(error)
 
       if (error instanceof ValidationError) {
         error.inner.forEach(errorElement => {
@@ -226,6 +228,7 @@ const Form = ({
     if (captcha)
       data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
 
+    console.log('err', haveErrors)
     const submitRes = !haveErrors && (await makeRequest(afterResData))
     loading && setShowLoader(false)
     push && submitRes && history.push(push)

@@ -7,12 +7,6 @@ export const Form = styled(OriginalForm)`
 
   color: ${({ theme }) => theme.colors.tertiary};
 
-  span {
-    text-align: left;
-    width: 100%;
-    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
-  }
-
   .Select,
   .Text {
     height: 35px;

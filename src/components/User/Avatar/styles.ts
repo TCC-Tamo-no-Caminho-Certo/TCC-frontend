@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
-interface StyleProps {
+interface StyledAvatarProps {
   size: number
   shadow: boolean
   border: boolean
 }
 
-const Style = styled.div<StyleProps>`
+export const StyledAvatar = styled.div<StyledAvatarProps>`
   &,
   #DefaultAvatar {
     width: ${({ size }) => `${size}px`};
@@ -72,6 +72,14 @@ const Style = styled.div<StyleProps>`
   }
 `
 
+const Style = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 24px;
+`
+
 export default Style
 
-Style.displayName = 'Avatar-Style'
+StyledAvatar.displayName = 'Avatar-StyledAvatar'

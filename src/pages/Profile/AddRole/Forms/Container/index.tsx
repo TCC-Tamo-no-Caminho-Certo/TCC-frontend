@@ -52,7 +52,7 @@ const Container = ({ role, children }: ContainerProps) => {
   }, [])
 
   return showStatus ? (
-    <RequestStatus role={role} status='rejected' message={message} />
+    <RequestStatus role={role} status={status} message={message} />
   ) : (
     <Style>
       <Content role={role}>

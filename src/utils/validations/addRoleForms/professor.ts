@@ -4,10 +4,16 @@ const ambiguous = (register: string) => {
   const academic_register = new RegExp(register)
 
   return {
+    lattes: Yup.string(),
+    linkedin: Yup.string(),
+    orcid: Yup.string(),
     university_id: Yup.number().required('Você precisa selecionar!'),
-    register: Yup.string().matches(academic_register).required('Digite seu RA'),
+    register: Yup.string()
+      .matches(academic_register, 'Ra inválido!')
+      .required('Digite seu RA'),
     campus_id: Yup.number().required('Você precisa selecionar!'),
     course_id: Yup.number().required('Você precisa selecionar!'),
+    postgraduate: Yup.boolean(),
     full_time: Yup.boolean()
   }
 }
