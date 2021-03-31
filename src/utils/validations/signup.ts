@@ -17,13 +17,10 @@ const signupSchema = Yup.object({
   birthday: Yup.string().required('É necessário informar a data!'),
 
   password: Yup.string()
-    .matches(
-      /^(?=.*[#?!@$%^&+{}()["';,°<>~=_/|\].-])$/,
-      'Sua senha deve conter um caractere especial'
-    )
-    .matches(/^(?=.*[A-Z])$/, 'Sua senha deve conter uma letra maiúscula')
-    .matches(/^(?=.*[a-z])$/, 'Sua senha deve conter uma letra minuscula')
-    .matches(/^(?=.*[0-9])$/, 'Sua senha deve conter um número')
+    .matches(/^(?=.*[@$!%*?&])/, 'Sua senha deve conter um caractere especial')
+    .matches(/^(?=.*[A-Z])/, 'Sua senha deve conter uma letra maiúscula')
+    .matches(/^(?=.*[a-z])/, 'Sua senha deve conter uma letra minuscula')
+    .matches(/^(?=.*\d)/, 'Sua senha deve conter um número')
     .min(8, 'Sua senha deve conter mais que 8 caracteres')
     .required('Você precisa de uma senha!'),
 

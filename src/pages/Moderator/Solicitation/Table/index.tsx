@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState
 } from 'react'
-import Style, { BodyWrapper, Filters, ModalContent, RoleTd } from './styles'
+import Style, { BodyWrapper, Filters, ResponseContent, RoleTd } from './styles'
 
 import Thead from './Thead'
 import Circle from './Circle'
@@ -25,7 +25,7 @@ import useSortableData from 'hooks/useSortableData'
 import LoupeIcon from 'assets/Inputs/LoupeIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
-import Modal, { ModalMethods } from 'components/Modal'
+import ResponseModal, { ModalMethods } from 'components/Modal'
 import DotsLoader from 'components/DotsLoader'
 import {
   Datepicker,
@@ -50,7 +50,8 @@ export interface TableData {
   date: string
   status: string
   statusCircle: StatusTypes
-  doc?: string
+  docId?: string
+  feedback?: string
 }
 
 interface RequestsData {
@@ -58,12 +59,16 @@ interface RequestsData {
   name: string
   user_id: number
   role_id: number
-  showData: string
   request_id: number
   created_at: string
   status: StatusTypes
   voucher_uuid?: string
-  updated_at?: string
+  feedback?: string
+  data: {
+    semester: number
+    course_id: number
+    campus_id: number
+  }
 }
 
 interface TableState {
@@ -76,19 +81,15 @@ interface TableState {
 }
 
 interface Filter {
-  role_id: JSX.Element
+  role: JSX.Element
   date: JSX.Element
-  full_name: JSX.Element
+  name: JSX.Element
 }
 
 export interface HeaderData {
   label: string
   name: keyof TableData
 }
-
-const responseSchema = Yup.object({
-  feedback: Yup.string().required('Ao recusar deve-se enviar uma justificativa')
-})
 
 const headerData: HeaderData[] = [
   { name: 'statusCircle', label: '' },
@@ -98,16 +99,27 @@ const headerData: HeaderData[] = [
   { name: 'date', label: 'Data' }
 ]
 
-const transformArray = (array: RequestsData[]) =>
-  array.map(({ name, role, status, voucher_uuid, created_at, request_id }) => ({
-    role,
-    name: name,
-    doc: voucher_uuid,
-    id: request_id,
-    statusCircle: status,
-    status: getStatusLabel(status),
-    date: isoToDate(created_at, 'day/month')
-  }))
+const transformArray = (array: RequestsData[]): TableData[] =>
+  array.map(
+    ({
+      name,
+      role,
+      status,
+      voucher_uuid,
+      created_at,
+      request_id,
+      feedback
+    }) => ({
+      role,
+      feedback,
+      name: name,
+      docId: voucher_uuid,
+      id: request_id,
+      statusCircle: status,
+      status: getStatusLabel(status),
+      date: isoToDate(created_at, 'day/month')
+    })
+  )
 
 const Table = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
@@ -127,7 +139,7 @@ const Table = () => {
     showData: null,
     tablePage: 1,
     isClear: false,
-    filter: 'full_name',
+    filter: 'name',
     clickedDoc: ''
   })
   const { items, sort } = useSortableData(showData, {
@@ -135,7 +147,7 @@ const Table = () => {
     indexer: 'name'
   })
 
-  const quantity = 60
+  const quantity = 1
   const selectStyle = {
     container: (before: any) => ({
       ...before
@@ -202,9 +214,9 @@ const Table = () => {
     }
   })
   const filters: Filter = {
-    full_name: (
+    name: (
       <Text
-        name='full_name'
+        name='name'
         type='text'
         autoComplete='off'
         placeholder='Filtrar'
@@ -214,9 +226,9 @@ const Table = () => {
         }}
       />
     ),
-    role_id: (
+    role: (
       <Select
-        name='role_id'
+        name='role'
         className='SelectRole'
         ref={selectRef}
         theming={selectTheme}
@@ -267,6 +279,8 @@ const Table = () => {
           `user/role/requests?page=${page}&per_page=${quantity}`
         )
 
+        console.log(requests)
+
         if (requests && requests.length !== 0) {
           const tableData = transformArray(requests)
 
@@ -298,8 +312,8 @@ const Table = () => {
   }
 
   const setClicked = async (item: TableData) => {
-    const docId = item.doc
-    const voucher = await api.get(`user/role/request/voucher/${docId}`)
+    console.log(item.docId)
+    const voucher = await api.get(`user/role/request/voucher/${item.docId}`)
 
     setTableState(prev => ({
       ...prev,
@@ -309,10 +323,14 @@ const Table = () => {
   }
 
   const filterTable = async (value: any) => {
-    if (value.full_name) {
-      const { requests } = await api.get(
-        `user/role/requests?page=1&per_page=${quantity}&filter[${filter}][]=${value.full_name}}`
+    if (value.name) {
+      const response = await api.get(
+        `user/role/requests?page=1&per_page=${quantity}&filter[full_name][]=${value.name}`
       )
+
+      const { requests } = response
+
+      console.log('tst', requests)
 
       setTableState(prev => ({
         ...prev,
@@ -321,13 +339,15 @@ const Table = () => {
       }))
     }
 
-    if (value.role_id) {
-      const roleId = roles.roles.filter(
-        ({ title }) => value.role_id === title
-      )[0].role_id
-      const { requests } = await api.get(
-        `user/role/requests?page=1&per_page=${quantity}&filter[role_id][]=${roleId}}`
+    if (value.role) {
+      const roleId = roles.roles.filter(({ title }) => value.role === title)[0]
+        .role_id
+
+      const response = await api.get(
+        `user/role/requests?page=1&per_page=${quantity}&filter[role_id][]=${roleId}`
       )
+
+      const { requests } = response
 
       setTableState(prev => ({
         ...prev,
@@ -373,8 +393,8 @@ const Table = () => {
             styling={selectStyle}
             defaultValue={{ label: 'Nome', value: 'name' }}
             options={[
-              { label: 'Papel', value: 'role_id' },
-              { label: 'Nome', value: 'full_name' },
+              { label: 'Papel', value: 'role' },
+              { label: 'Nome', value: 'name' },
               { label: 'Data', value: 'date' }
             ]}
             onChange={({ value }: any) =>
@@ -393,9 +413,9 @@ const Table = () => {
         <BodyWrapper ref={tableWrapperRef} onScroll={onTableScroll}>
           <table draggable='false' ref={tableRef}>
             <tbody>
-              {items?.map(item => (
+              {items?.map((item, index) => (
                 <tr
-                  key={item.id}
+                  key={index}
                   onClick={() => {
                     modalRef.current?.toggleModal(true)
                     setClicked(item)
@@ -404,11 +424,7 @@ const Table = () => {
                   {headerData.map(({ label, name }) => {
                     if (name === 'role')
                       return (
-                        <RoleTd
-                          className='role'
-                          role={item[name]}
-                          key={item.id}
-                        >
+                        <RoleTd className='role' role={item[name]} key={index}>
                           {makeRoleLabel(item[name])}
                         </RoleTd>
                       )
@@ -434,8 +450,8 @@ const Table = () => {
         {showData === null && <DotsLoader color={theme.colors.secondary} />}
       </Style>
 
-      <Modal top='50vh' translateY='-50%' ref={modalRef}>
-        <ModalContent
+      <ResponseModal top='50vh' translateY='-50%' ref={modalRef}>
+        <ResponseContent
           role={clickedItem?.role}
           status={clickedItem?.statusCircle}
         >
@@ -467,12 +483,12 @@ const Table = () => {
 
             <div className='field'>
               Email:
-              <div>miguelandradebarreto2@gmail.com</div>
+              <div>Falta isso</div>
             </div>
 
             <div className='field'>
               Curso:
-              <div>Engenharia da computação</div>
+              <div>Falta isso</div>
             </div>
 
             <div className='field'>
@@ -481,9 +497,18 @@ const Table = () => {
             </div>
           </div>
 
-          <div id='doc'>
-            <iframe src={clickedDoc} />
-          </div>
+          {clickedItem?.role !== 'student' ? (
+            <div id='doc'>
+              <iframe src={clickedDoc} />
+            </div>
+          ) : (
+            <div id='feedback'>
+              Justificativa:
+              <p>
+                asdasdasdasdasddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+              </p>
+            </div>
+          )}
 
           <div id='radios'>
             <div>
@@ -521,7 +546,17 @@ const Table = () => {
           <Form
             loading
             method='patch'
-            schema={responseSchema}
+            schema={
+              buttonClicked === 'rejected'
+                ? Yup.object({
+                    feedback: Yup.string().required(
+                      'Ao recusar deve-se enviar uma justificativa'
+                    )
+                  })
+                : Yup.object({
+                    feedback: Yup.string()
+                  })
+            }
             afterResData={onResponseSubmit}
             addDataToPath={[`${clickedItem?.id}`]}
             path={
@@ -530,19 +565,17 @@ const Table = () => {
                 : 'user/role/request/accept/*%'
             }
           >
-            {buttonClicked === 'rejected' && (
-              <Textarea
-                id='feedback'
-                name='feedback'
-                placeholder='Deixe uma resposta...'
-                maxLength={500}
-              />
-            )}
+            <Textarea
+              id='feedback'
+              name='feedback'
+              placeholder='Deixe uma resposta...'
+              maxLength={500}
+            />
 
             <Submit>Enviar resposta</Submit>
           </Form>
-        </ModalContent>
-      </Modal>
+        </ResponseContent>
+      </ResponseModal>
 
       <Popup
         bottom='50vh'

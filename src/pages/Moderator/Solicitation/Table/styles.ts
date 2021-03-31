@@ -11,7 +11,7 @@ interface RoleTdProps {
   role: Role
 }
 
-interface ModalContentProps {
+interface ResponseContentProps {
   role?: Role
   status?: StatusTypes
 }
@@ -103,7 +103,7 @@ export const BodyWrapper = styled.div`
   }
 `
 
-export const ModalContent = styled.div<ModalContentProps>`
+export const ResponseContent = styled.div<ResponseContentProps>`
   position: relative;
 
   display: flex;
@@ -305,6 +305,14 @@ export const ModalContent = styled.div<ModalContentProps>`
     }
   }
 
+  #feedback {
+    p {
+      margin-top: 8px;
+      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
+      word-wrap: break-word;
+    }
+  }
+
   @media screen and (min-width: 545px) {
     width: max(80vw, 320px);
 
@@ -475,6 +483,6 @@ export default Style
 
 RoleTd.displayName = 'RoleTd-Style'
 BodyWrapper.displayName = 'BodyWrapper-Style'
-ModalContent.displayName = 'ModalContent-Style'
+ResponseContent.displayName = 'ResponseContent-Style'
 Filters.displayName = 'Filters-Style'
 Style.displayName = 'Table-Style'

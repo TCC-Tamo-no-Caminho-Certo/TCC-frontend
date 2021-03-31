@@ -53,14 +53,14 @@ export const dateToValue = (date?: string) => {
   return ''
 }
 
-export const datepickerToDate = (date: DayValue) => {
+export const datepickerToIso = (date: DayValue) => {
   const day = date?.day
   const month = date?.month
   const year = date?.year
 
   return day && month && year
-    ? `${day < 10 ? `0${day}` : day}/${
-        month < 10 ? `0${month}` : month
-      }/${year}`
+    ? `${year}-${month < 10 ? `0${month}` : month}-${
+        day < 10 ? `0${day}` : day
+      }`
     : ''
 }

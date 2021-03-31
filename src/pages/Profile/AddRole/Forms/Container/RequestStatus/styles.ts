@@ -7,7 +7,7 @@ interface StyleProps {
 }
 
 const Style = styled.div<StyleProps>`
-  width: 100vw;
+  width: 100%;
   height: 100vh;
 
   display: flex;
@@ -104,13 +104,16 @@ const Style = styled.div<StyleProps>`
     }
   }
 
-  @media screen and (min-width: 620px) {
+  @media screen and (min-width: 545px) {
     svg {
       padding: 0px 32px;
     }
+  }
 
+  @media screen and (min-width: 620px) {
     .Card {
       border-radius: 24px;
+      transform: translateX(-16px);
 
       .Header {
         border-radius: 24px 24px 0 0;
@@ -118,7 +121,6 @@ const Style = styled.div<StyleProps>`
     }
   }
 `
-
 export default Style
 
 Style.displayName = 'RequestStatus-Style'

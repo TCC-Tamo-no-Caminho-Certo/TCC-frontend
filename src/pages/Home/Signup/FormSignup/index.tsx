@@ -74,6 +74,7 @@ const FormSignup = () => {
           path='register'
           schema={signupSchema}
           afterResData={afterFormResData}
+          getData={e => console.log(e)}
         >
           <Text
             name='name'
@@ -134,11 +135,12 @@ const FormSignup = () => {
           />
 
           <span id='terms'>
-            Ao clicar em Concordar e concluir, concordo com os{' '}
-            <a href='.link'>Termos de uso</a>, os{' '}
+            {/* Ao clicar em Concordar e concluir, concordo com os{' '}
+             <a href='.link'>Termos de uso</a>, os{' '}
             <a href='.link'>Termos de Serviço e Pagamentos</a>, a{' '}
             <a href='.link'>Política de Privacidade</a> e a{' '}
-            <a href='.link'>Política de Não Discriminação</a> do Steams Lab.
+            <a href='.link'>Política de Não Discriminação</a>
+             do Steams Lab. */}
           </span>
 
           <Submit>Concordar e concluir</Submit>
