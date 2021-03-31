@@ -37,7 +37,7 @@ const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
     else if (e.target) files = e.target.files
 
     reader.onload = () => setImage(reader.result as any)
-    reader.readAsDataURL(files[0])
+    files[0] && reader.readAsDataURL(files[0])
     setShowUpload(true)
   }
 
@@ -72,7 +72,12 @@ const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
           Selecionar um arquivo
         </motion.label>
 
-        <input id='first' type='file' onChange={onChange} />
+        <input
+          id='first'
+          type='file'
+          accept='image/jpg, image/png'
+          onChange={onChange}
+        />
 
         <Cropper
           center
@@ -103,13 +108,11 @@ const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
 
         {showUpload && (
           <div>
-            <label htmlFor='other' id='otherFileSelect'>
+            <label htmlFor='first' id='otherFileSelect'>
               <div>Enviar outra foto</div>
 
               <CameraIcon />
             </label>
-
-            <input type='file' id='other' onChange={onChange} />
           </div>
         )}
 

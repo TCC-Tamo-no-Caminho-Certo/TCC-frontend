@@ -36,6 +36,7 @@ const File = ({
   noCropper = false,
   flexColumn = false,
   onChange: receivedOnChange,
+  accept,
   ...props
 }: FileProps) => {
   const form = useContext<FormState | null>(FormContext)
@@ -58,7 +59,7 @@ const File = ({
     const reader = new FileReader()
 
     setError('')
-    reader.readAsDataURL(files[0])
+    files[0] && reader.readAsDataURL(files[0])
     reader.onload = () => setFile(reader.result)
     receivedOnChange && receivedOnChange()
   }
@@ -97,12 +98,12 @@ const File = ({
           {label}
 
           <input
-            accept='application/pdf'
             type='file'
             name={name}
             ref={fileRef}
-            style={{ display: 'none' }}
+            accept={accept}
             onChange={onChange}
+            style={{ display: 'none' }}
             onClick={() => modalRef.current?.toggleModal(true)}
           />
         </label>

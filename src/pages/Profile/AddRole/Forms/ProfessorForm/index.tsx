@@ -304,6 +304,7 @@ const ProfessorForm = () => {
                 bottom='50vh'
                 tranlateY='50%'
                 bgHeight='200vh'
+                accept='application/pdf'
                 label='Enviar comprovante'
                 noCropper={true}
                 onChange={() =>
