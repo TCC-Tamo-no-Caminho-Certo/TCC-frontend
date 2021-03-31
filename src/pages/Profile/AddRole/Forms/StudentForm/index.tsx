@@ -149,7 +149,9 @@ const StudentForm = () => {
   const verifyInstitucionalEmail = () => {
     if (selectedUniversity) {
       const regex = new RegExp(selectedUniversity.email.student)
-      const instEmails = user.email.filter(({ address }) => regex.test(address))
+      const instEmails = user.emails.filter(({ address }) =>
+        regex.test(address)
+      )
 
       setFormState(prev => ({
         ...prev,
@@ -391,14 +393,14 @@ const StudentForm = () => {
           </Presence>
         </Form>
 
-        <button
+        {/* <button
           id='delete'
           type='button'
           onClick={async () => {
             if (selectedUniversity) {
               const rgx = new RegExp(selectedUniversity.email.student)
 
-              const teste = user.email.filter(({ address }) =>
+              const teste = user.emails.filter(({ address }) =>
                 rgx.test(address)
               )
 
@@ -408,7 +410,7 @@ const StudentForm = () => {
           }}
         >
           Deletar
-        </button>
+        </button> */}
       </Container>
 
       <RegisterEmail

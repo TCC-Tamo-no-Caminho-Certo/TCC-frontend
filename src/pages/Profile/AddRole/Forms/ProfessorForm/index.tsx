@@ -93,7 +93,6 @@ const ProfessorForm = () => {
 
   const setUniversitiesData = async () => {
     const { universities } = await api.get('/universities')
-    console.log('tst', universities)
 
     setFormState(prev => ({
       ...prev,
@@ -107,6 +106,7 @@ const ProfessorForm = () => {
       )
     }))
   }
+
   const setCampusData = async (id: number) => {
     const { campus } = await api.get(`university/${id}/campus`)
 
@@ -142,8 +142,8 @@ const ProfessorForm = () => {
 
   const verifyInstitucionalEmail = () => {
     if (selectedUniversity) {
-      const rgx = new RegExp(selectedUniversity.email.student)
-      const instEmails = user.email.filter(({ address }) => rgx.test(address))
+      const rgx = new RegExp(selectedUniversity.email.professor)
+      const instEmails = user.emails.filter(({ address }) => rgx.test(address))
 
       setFormState(prev => ({
         ...prev,
@@ -155,7 +155,6 @@ const ProfessorForm = () => {
   }
 
   const onSubmit = (res: any) => {
-    console.log(res)
     if (res.success)
       if (showReceipt)
         popupRef.current?.configPopup({
@@ -195,14 +194,17 @@ const ProfessorForm = () => {
           loading
           path='user/role/request/professor'
           afterResData={onSubmit}
-          getData={e => console.log(e)}
           schema={
             showReceipt
               ? receiptSchema(
-                  selectedUniversity ? selectedUniversity.register.student : ''
+                  selectedUniversity
+                    ? selectedUniversity.register.professor
+                    : ''
                 )
               : emailSchema(
-                  selectedUniversity ? selectedUniversity.register.student : ''
+                  selectedUniversity
+                    ? selectedUniversity.register.professor
+                    : ''
                 )
           }
         >
@@ -332,14 +334,14 @@ const ProfessorForm = () => {
           </Presence>
         </Form>
 
-        <button
+        {/* <button
           id='delete'
           type='button'
           onClick={async () => {
             if (selectedUniversity) {
-              const rgx = new RegExp(selectedUniversity.email.student)
+              const rgx = new RegExp(selectedUniversity.email.professor)
 
-              const teste = user.email.filter(({ address }) =>
+              const teste = user.emails.filter(({ address }) =>
                 rgx.test(address)
               )
 
@@ -349,7 +351,7 @@ const ProfessorForm = () => {
           }}
         >
           Deletar
-        </button>
+        </button> */}
       </Container>
 
       <RegisterEmail
@@ -357,7 +359,7 @@ const ProfessorForm = () => {
         ref={registerEmailRef}
         onSuccess={setShowSubmitTrue}
         title={selectedUniversity?.label}
-        regex={selectedUniversity?.email.student}
+        regex={selectedUniversity?.email.professor}
         addData={{ university_id: selectedUniversity?.value }}
         modal={{
           bottom: '50vh',

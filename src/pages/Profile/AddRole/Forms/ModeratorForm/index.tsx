@@ -34,8 +34,8 @@ const initialAnimations: AnimationsState = {
 }
 
 const verifyFullTime = (user: UserState) => {
-  const { email } = user
-  email.filter(email => email.institutional === true)
+  const { emails } = user
+  emails.filter(email => email.institutional === true)
   return false
 }
 

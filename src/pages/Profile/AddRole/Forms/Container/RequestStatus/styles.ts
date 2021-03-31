@@ -58,9 +58,12 @@ const Style = styled.div<StyleProps>`
     }
 
     #rejected {
-      p + p {
+      width: 100%;
+
+      p {
         font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
         text-align: justify;
+        word-wrap: break-word;
       }
 
       #title {
@@ -68,6 +71,20 @@ const Style = styled.div<StyleProps>`
         font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2rem);
 
         color: ${({ theme }) => theme.colors.red};
+        margin-bottom: 24px;
+      }
+
+      #feedback {
+        padding: 16px;
+        margin-bottom: 16px;
+        width: 100%;
+        border-radius: 8px;
+
+        border: solid 1px ${({ theme }) => theme.colors.primary};
+
+        p {
+          margin-top: 8px;
+        }
       }
     }
 

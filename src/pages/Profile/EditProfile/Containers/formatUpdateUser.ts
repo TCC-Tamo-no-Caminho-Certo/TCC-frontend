@@ -22,7 +22,7 @@ const formatUpdateUser = (
   role: keyof ContainerForm
 ): InputData[] => {
   const getStudentEmail = () => {
-    const value = userData.email.filter(
+    const value = userData.emails.filter(
       current => current.institutional === true
     )
 
@@ -83,7 +83,7 @@ const formatUpdateUser = (
     {
       label: 'E-mail:',
       name: 'email',
-      value: userData.email[0].address,
+      value: userData.emails[0].address,
       editable: false
     }
     // {

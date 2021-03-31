@@ -19,6 +19,7 @@ import api from 'services/api'
 import { RootState } from 'store'
 import { getRoles, Role, RolesState } from 'store/roles'
 import { ThemeState } from 'store/theme'
+import { UserState } from 'store/user'
 
 import useSortableData from 'hooks/useSortableData'
 
@@ -49,6 +50,7 @@ export interface TableData {
   name: string
   date: string
   status: string
+  user_id: number
   statusCircle: StatusTypes
   docId?: string
   feedback?: string
@@ -78,12 +80,14 @@ interface TableState {
   filter: keyof Filter
   showData: TableData[] | null
   clickedItem: TableData | undefined
+  userInfo: UserState | undefined
 }
 
 interface Filter {
   role: JSX.Element
   date: JSX.Element
   name: JSX.Element
+  status: JSX.Element
 }
 
 export interface HeaderData {
@@ -108,9 +112,11 @@ const transformArray = (array: RequestsData[]): TableData[] =>
       voucher_uuid,
       created_at,
       request_id,
-      feedback
+      feedback,
+      user_id
     }) => ({
       role,
+      user_id,
       feedback,
       name: name,
       docId: voucher_uuid,
@@ -128,14 +134,15 @@ const Table = () => {
   const tableRef = useRef() as MutableRefObject<HTMLTableElement>
   const modalRef = useRef<ModalMethods>(null)
   const popupRef = useRef<PopupMethods>(null)
-  const selectRef = useRef<any>(null)
+
   const dispatch = useDispatch()
   const [buttonClicked, setButtonClicked] = useState('rejected')
   const [
-    { clickedItem, clickedDoc, showData, tablePage, isClear, filter },
+    { userInfo, clickedItem, clickedDoc, showData, tablePage, isClear, filter },
     setTableState
   ] = useState<TableState>({
     clickedItem: undefined,
+    userInfo: undefined,
     showData: null,
     tablePage: 1,
     isClear: false,
@@ -147,7 +154,7 @@ const Table = () => {
     indexer: 'name'
   })
 
-  const quantity = 1
+  const quantity = 50
   const selectStyle = {
     container: (before: any) => ({
       ...before
@@ -230,12 +237,24 @@ const Table = () => {
       <Select
         name='role'
         className='SelectRole'
-        ref={selectRef}
         theming={selectTheme}
         styling={selectStyle}
         options={[
           { label: 'Estudante', value: 'student' },
           { label: 'Moderador', value: 'moderator' }
+        ]}
+      />
+    ),
+    status: (
+      <Select
+        name='status'
+        className='SelectRole'
+        theming={selectTheme}
+        styling={selectStyle}
+        options={[
+          { label: 'Aguardando', value: 'awaiting' },
+          { label: 'Aceito', value: 'accepted' },
+          { label: 'Recusado', value: 'rejected' }
         ]}
       />
     ),
@@ -279,8 +298,6 @@ const Table = () => {
           `user/role/requests?page=${page}&per_page=${quantity}`
         )
 
-        console.log(requests)
-
         if (requests && requests.length !== 0) {
           const tableData = transformArray(requests)
 
@@ -312,11 +329,12 @@ const Table = () => {
   }
 
   const setClicked = async (item: TableData) => {
-    console.log(item.docId)
     const voucher = await api.get(`user/role/request/voucher/${item.docId}`)
+    const { users } = await api.get(`users/${item.user_id}`)
 
     setTableState(prev => ({
       ...prev,
+      userInfo: users,
       clickedItem: item,
       clickedDoc: voucher.url
     }))
@@ -325,12 +343,10 @@ const Table = () => {
   const filterTable = async (value: any) => {
     if (value.name) {
       const response = await api.get(
-        `user/role/requests?page=1&per_page=${quantity}&filter[full_name][]=${value.name}`
+        `user/role/requests?page=1&per_page=${quantity}&filter[full_name]=${value.name}`
       )
 
       const { requests } = response
-
-      console.log('tst', requests)
 
       setTableState(prev => ({
         ...prev,
@@ -344,7 +360,21 @@ const Table = () => {
         .role_id
 
       const response = await api.get(
-        `user/role/requests?page=1&per_page=${quantity}&filter[role_id][]=${roleId}`
+        `user/role/requests?page=1&per_page=${quantity}&filter[role_id]=${roleId}`
+      )
+
+      const { requests } = response
+
+      setTableState(prev => ({
+        ...prev,
+        showData: requests,
+        tablePage: 1
+      }))
+    }
+
+    if (value.status) {
+      const response = await api.get(
+        `user/role/requests?page=1&per_page=${quantity}&filter[status]=${value.status}`
       )
 
       const { requests } = response
@@ -364,12 +394,12 @@ const Table = () => {
         message: 'Resposta enviada',
         onClick: () => modalRef.current?.toggleModal()
       })
-
-    popupRef.current?.configPopup({
-      type: 'error',
-      message: 'Algo deu errado',
-      onClick: () => modalRef.current?.toggleModal()
-    })
+    else
+      popupRef.current?.configPopup({
+        type: 'error',
+        message: 'Algo deu errado',
+        onClick: () => modalRef.current?.toggleModal()
+      })
   }
 
   useEffect(() => {
@@ -395,7 +425,8 @@ const Table = () => {
             options={[
               { label: 'Papel', value: 'role' },
               { label: 'Nome', value: 'name' },
-              { label: 'Data', value: 'date' }
+              { label: 'Data', value: 'date' },
+              { label: 'Status', value: 'status' }
             ]}
             onChange={({ value }: any) =>
               setTableState(prev => ({ ...prev, filter: value }))
@@ -463,12 +494,12 @@ const Table = () => {
             <hr />
 
             <div className='field' id='avatar'>
-              <Avatar size={120} />
+              <Avatar size={120} avatarId={userInfo?.avatar_uuid} />
             </div>
 
             <div className='field'>
               Nome:
-              <div>{clickedItem?.name}</div>
+              <div>{userInfo?.name}</div>
             </div>
 
             <div className='field'>
@@ -483,7 +514,9 @@ const Table = () => {
 
             <div className='field'>
               Email:
-              <div>Falta isso</div>
+              <div>
+                {userInfo?.emails.filter(({ main }) => main)[0].address}
+              </div>
             </div>
 
             <div className='field'>
@@ -497,16 +530,14 @@ const Table = () => {
             </div>
           </div>
 
-          {clickedItem?.role !== 'student' ? (
+          {clickedItem?.role === 'student' ? (
             <div id='doc'>
               <iframe src={clickedDoc} />
             </div>
           ) : (
             <div id='feedback'>
               Justificativa:
-              <p>
-                asdasdasdasdasddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-              </p>
+              <p>{clickedItem?.feedback}</p>
             </div>
           )}
 

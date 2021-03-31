@@ -12,12 +12,13 @@ import { motion } from 'framer-motion'
 import { useSelector } from 'react-redux'
 
 interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
-  onShadowClick?(): void
-  onClick?(): void
   size: number
   shadow?: boolean
-  loaderColor?: string
   border?: boolean
+  avatarId?: string
+  loaderColor?: string
+  onClick?(): void
+  onShadowClick?(): void
 }
 const Avatar = ({
   size,
@@ -26,15 +27,17 @@ const Avatar = ({
   loaderColor = '#6e4850',
   shadow = false,
   border = false,
+  avatarId,
   ...rest
 }: AvatarProps) => {
   const avatar = useSelector<RootState, string>(state => state.user.avatar_uuid)
-  const src = `https://s3.steamslab.com/profile/${avatar}`
+  const condition = avatarId || avatar
+  const src = `https://s3.steamslab.com/profile/${condition}`
   const [hovering, setHovering] = useState(false)
 
   return (
     <Style className='Avatar'>
-      {avatar ? (
+      {condition ? (
         <StyledAvatar
           size={size}
           border={border}
@@ -43,7 +46,7 @@ const Avatar = ({
           onMouseEnter={() => setHovering(true)}
           onMouseLeave={() => setHovering(false)}
         >
-          {avatar === 'default' ? (
+          {condition === 'default' ? (
             <AvatarIcon />
           ) : (
             <img src={src} alt='avatar' draggable={false} {...rest} />

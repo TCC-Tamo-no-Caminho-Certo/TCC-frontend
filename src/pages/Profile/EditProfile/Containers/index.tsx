@@ -27,8 +27,9 @@ const Containers = () => {
   const modalContext = useContext(ImageRefModalContext)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const user = useSelector<RootState, UserState>(state => state.user)
+
   const rolesShowed = ['student', 'professor', 'moderator']
-  const rolesWithEdit = user.role.filter(
+  const rolesWithEdit = user.roles.filter(
     role => rolesShowed.filter(wished => wished === role).length !== 0
   )
 

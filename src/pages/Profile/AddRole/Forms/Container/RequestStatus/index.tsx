@@ -191,7 +191,10 @@ const RequestStatus = ({ role, status, message }: RequestStatusProps) => {
           <div id='rejected'>
             <p id='title'>Solicitação rejeitada</p>
 
-            <p>{message}</p>
+            <div id='feedback'>
+              Comentário:
+              <p>{message}</p>
+            </div>
 
             <button
               id='scrollButton'

@@ -73,7 +73,6 @@ const EditProfile = () => {
             loading
             method='patch'
             path='user'
-            getData={e => console.log(e)}
             schema={editProfileSchema}
             afterResData={submitCallback}
             onError={(error: any) => {

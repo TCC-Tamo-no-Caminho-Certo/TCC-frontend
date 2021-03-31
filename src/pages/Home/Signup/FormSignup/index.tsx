@@ -74,7 +74,6 @@ const FormSignup = () => {
           path='register'
           schema={signupSchema}
           afterResData={afterFormResData}
-          getData={e => console.log(e)}
         >
           <Text
             name='name'

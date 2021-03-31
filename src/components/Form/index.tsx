@@ -148,8 +148,6 @@ const Form = ({
       schema && schema.validateSync(data, { abortEarly: false })
     } catch (error) {
       haveErrors = true
-      console.log(error)
-
       if (error instanceof ValidationError) {
         error.inner.forEach(errorElement => {
           const index = refs.findIndex(({ inputRef: { current } }) =>
@@ -228,7 +226,6 @@ const Form = ({
     if (captcha)
       data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
 
-    console.log('err', haveErrors)
     const submitRes = !haveErrors && (await makeRequest(afterResData))
     loading && setShowLoader(false)
     push && submitRes && history.push(push)

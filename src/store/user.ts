@@ -15,9 +15,9 @@ interface Email {
 
 interface ResData {
   name: string
-  role: Role[]
+  roles: Role[]
   phone: string
-  email: Email[]
+  emails: Email[]
   surname: string
   user_id: number
   birthday: string
@@ -38,10 +38,10 @@ interface Payload {
   selectedRole?: Role
   loading?: 'idle' | 'pending' | 'succeeded' | 'failed'
 
-  role?: Role[]
-  email?: Email[]
+  roles?: Role[]
   name?: string
   phone?: string
+  emails?: Email[]
   surname?: string
   user_id?: number
   birthday?: string
@@ -64,9 +64,9 @@ const initialState: UserState = {
   created_at: '',
   updated_at: '',
   avatar_uuid: 'default',
-  role: [],
+  roles: [],
   user_id: 0,
-  email: [
+  emails: [
     {
       address: '',
       email_id: 0,
@@ -92,11 +92,12 @@ export const getUser = createAsyncThunk('userConfig/getUser', async () => {
   }
 
   const { user } = await api.get('user')
-  console.log({ ...user, selectedRole: getInitialSelectedRole(user.role) })
+
+  console.log({ ...user, selectedRole: getInitialSelectedRole(user.roles) })
 
   return {
     ...user,
-    selectedRole: getInitialSelectedRole(user.role)
+    selectedRole: getInitialSelectedRole(user.roles)
   }
 })
 
