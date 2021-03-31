@@ -1,6 +1,8 @@
-import { StatusTypes } from './'
+import { getStatusColor, StatusTypes } from 'utils/status'
 
-import { Role } from 'store/user'
+import { Role } from 'store/roles'
+
+import Form from 'components/Form'
 
 import { darken } from 'polished'
 import styled, { css } from 'styled-components'
@@ -211,18 +213,7 @@ export const ModalContent = styled.div<ModalContentProps>`
       }
 
       #status {
-        color: ${({ theme, status }) => {
-          switch (status) {
-            case 'accepted':
-              return theme.colors.green
-            case 'awaiting':
-              return theme.colors.yellow
-            case 'rejected':
-              return theme.colors.red
-            default:
-              return theme.colors.white
-          }
-        }};
+        color: ${({ theme, status }) => getStatusColor(theme, status)};
       }
 
       ${({ theme, role }) =>
@@ -265,6 +256,42 @@ export const ModalContent = styled.div<ModalContentProps>`
     }
   }
 
+  #radios {
+    display: flex;
+    justify-content: space-evenly;
+
+    margin-top: 16px;
+
+    #acceptLabel {
+      margin-left: 8px;
+    }
+
+    #rejectLabel {
+      margin-left: 8px;
+    }
+
+    color: ${({ theme }) => theme.colors.secondary};
+
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      background-color: ${({ theme }) => theme.colors.green};
+      padding: 8px;
+      border-radius: 8px;
+      width: 45%;
+
+      & + div {
+        background-color: ${({ theme }) => theme.colors.red};
+      }
+    }
+  }
+
+  .Submit {
+    margin-top: 16px;
+  }
+
   #doc {
     display: flex;
     justify-content: center;
@@ -293,7 +320,7 @@ export const ModalContent = styled.div<ModalContentProps>`
   }
 `
 
-export const Filters = styled.div`
+export const Filters = styled(Form)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -449,5 +476,5 @@ export default Style
 RoleTd.displayName = 'RoleTd-Style'
 BodyWrapper.displayName = 'BodyWrapper-Style'
 ModalContent.displayName = 'ModalContent-Style'
-
+Filters.displayName = 'Filters-Style'
 Style.displayName = 'Table-Style'

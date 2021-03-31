@@ -13,10 +13,11 @@ import Style, { IconSpace } from './styles'
 
 import { FormContext, FormState } from '../'
 
+import { dateToValue } from 'utils/dates'
+
 import EyeClosedIcon from 'assets/Inputs/EyeClosedIcon'
 import EyeIcon from 'assets/Inputs/EyeIcon'
 
-import { dateToValue } from 'components/Form/Datepicker'
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 import { Ref } from 'components/Form'
 

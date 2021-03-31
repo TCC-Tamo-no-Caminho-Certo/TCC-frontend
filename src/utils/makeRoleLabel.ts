@@ -1,4 +1,4 @@
-import { Role } from 'store/user'
+import { Role } from 'store/roles'
 
 const role: any = {
   professor: 'Professor',

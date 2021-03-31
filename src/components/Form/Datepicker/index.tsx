@@ -5,6 +5,7 @@ import '../../../../node_modules/react-modern-calendar-datepicker/lib/DatePicker
 import Text, { TextProps } from '../Text'
 
 import ptbr from 'utils/locales/dates/ptbr'
+import { datepickerToDate } from 'utils/dates'
 
 import DatePicker, { DayValue } from 'react-modern-calendar-datepicker'
 
@@ -20,6 +21,8 @@ interface DatepickerProps extends TextProps {
   isBirthday?: boolean
   dateColors?: DatepickerColors
 }
+
+type YearButton = HTMLButtonElement | null
 
 const actualDate = new Date()
 
@@ -39,34 +42,6 @@ const maximumDate = {
   year: present.year - 18,
   month: present.month + 1,
   day: present.day
-}
-
-export const valueToDate = (date: string) => {
-  const dates = date.split('T')[0].split('-')
-  return date ? `${dates[2]}/${dates[1]}/${dates[0]}` : ''
-}
-
-type YearButton = HTMLButtonElement | null
-
-export const dateToValue = (date?: string) => {
-  if (date) {
-    const dates = date.split('/')
-    return `${dates[2]}-${dates[1]}-${dates[0]}`
-  }
-
-  return ''
-}
-
-const datePickerToDate = (date: DayValue) => {
-  const day = date?.day
-  const month = date?.month
-  const year = date?.year
-
-  return day && month && year
-    ? `${day < 10 ? `0${day}` : day}/${
-        month < 10 ? `0${month}` : month
-      }/${year}`
-    : ''
 }
 
 const Datepicker = ({
@@ -100,7 +75,7 @@ const Datepicker = ({
           name={name}
           icon={Icon}
           onClick={onClick}
-          value={datePickerToDate(selectedDate)}
+          value={datepickerToDate(selectedDate)}
           {...rest}
         />
       )

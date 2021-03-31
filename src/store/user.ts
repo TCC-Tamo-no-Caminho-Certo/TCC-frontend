@@ -1,15 +1,8 @@
+import { Role } from './roles'
+
 import api from 'services/api'
 
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-export type Role =
-  | 'guest'
-  | 'admin'
-  | 'student'
-  | 'professor'
-  | 'customer'
-  | 'evaluator'
-  | 'moderator'
 
 interface Email {
   main: boolean

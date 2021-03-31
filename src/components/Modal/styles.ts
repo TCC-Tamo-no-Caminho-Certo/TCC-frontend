@@ -2,19 +2,21 @@ import styled from 'styled-components'
 
 interface ModalBackgroundProps {
   height: string
+  zIndex: number
 }
 
 interface StyleProps {
   top: string
   bottom: string
   translateY: string
+  zIndex: number
 }
 
 export const ModalBackground = styled.div<ModalBackgroundProps>`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 10;
+  z-index: ${({ zIndex }) => zIndex};
 
   width: 100%;
   height: ${({ height }) => height};
@@ -27,7 +29,7 @@ const Style = styled.div<StyleProps>`
   left: 50%;
   top: ${({ top, bottom }) => (bottom === 'auto' ? top : 'auto')};
   bottom: ${({ bottom }) => bottom};
-  z-index: 11;
+  z-index: ${({ zIndex }) => zIndex + 1};
 
   display: flex;
   justify-content: center;

@@ -41,12 +41,10 @@ const verifyFullTime = (user: UserState) => {
 
 const ModeratorForm = () => {
   const user = useSelector<RootState, UserState>(state => state.user)
-
   const dispatch = useDispatch()
   const popupRef = useRef<PopupMethods>(null)
-  const { rolesHeight } = useContext(AddRoleContext)
   const history = useHistory()
-
+  const { rolesHeight } = useContext(AddRoleContext)
   const [{ showAll, showJustification }, setAnimations] = useState(
     initialAnimations
   )

@@ -3,7 +3,7 @@ import dark from './dark'
 
 export { light, dark }
 
-export interface ThemeAttributes {
+interface Themes {
   name: string
 
   colors: {
@@ -33,3 +33,5 @@ export interface ThemeAttributes {
     background: string
   }
 }
+
+export default Themes

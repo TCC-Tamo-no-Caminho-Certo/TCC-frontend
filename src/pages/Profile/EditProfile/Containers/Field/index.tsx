@@ -4,6 +4,8 @@ import Style, { Icon, Input, Label } from './styles'
 import { InputData } from '../formatUpdateUser'
 import { EditProfileContext } from '../../index'
 
+import { isoToDate } from 'utils/dates'
+
 import { ThemeState } from 'store/theme'
 import { RootState } from 'store'
 
@@ -11,7 +13,6 @@ import PencilIcon from 'assets/Inputs/PencilIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import { Datepicker, Text } from 'components/Form'
-import { valueToDate } from 'components/Form/Datepicker'
 
 import { useSelector } from 'react-redux'
 
@@ -68,7 +69,9 @@ const Field = ({ data }: FieldProps) => {
     if (change) return input
 
     return (
-      <div className='value'>{date ? valueToDate(value as string) : value}</div>
+      <div className='value'>
+        {date ? isoToDate(value as string, 'all') : value}
+      </div>
     )
   }
 

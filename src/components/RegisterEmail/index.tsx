@@ -15,7 +15,7 @@ export interface RegisterEmailMethods {
 
 interface RegisterEmailProps {
   addData?: {}
-  regex?: RegExp
+  regex?: string
   title?: string
   onSuccess?: () => void
   placeholder?: string
@@ -27,7 +27,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
     const popupRef = useRef<PopupMethods>(null)
     const modalRef = useRef<ModalMethods>(null)
     const [codeSend, setCodeSend] = useState(false)
-    const regexToMach = regex || /.*/g
+    const regexToMach = new RegExp(regex || '')
 
     const emailSchema = Yup.object({
       email: Yup.string()
@@ -83,10 +83,11 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
                 <span>{title}</span>
 
                 <Form
+                  loading
                   path='user/email'
                   addData={addData}
-                  afterResData={onEmailSubmit}
                   schema={emailSchema}
+                  afterResData={onEmailSubmit}
                 >
                   <Text name='email' placeholder={placeholder} />
 
@@ -97,6 +98,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
 
             {codeSend && (
               <Form
+                loading
                 method='get'
                 id='tokenForm'
                 path='confirm/email/*%'

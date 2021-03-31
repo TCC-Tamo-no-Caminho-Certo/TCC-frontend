@@ -3,14 +3,14 @@ import Style, { Content, Header } from './styles'
 
 import RequestStatus from './RequestStatus'
 
-import { StatusTypes } from 'pages/Moderator/Solicitation/Table'
-
+import { StatusTypes } from 'utils/status'
 import makeRoleLabel from 'utils/makeRoleLabel'
 
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { Role, UserState } from 'store/user'
+import { UserState } from 'store/user'
+import { Role } from 'store/roles'
 
 import { useSelector } from 'react-redux'
 

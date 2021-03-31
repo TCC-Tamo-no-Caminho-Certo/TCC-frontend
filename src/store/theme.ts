@@ -1,4 +1,4 @@
-import { dark, light, ThemeAttributes } from 'styles/themes'
+import Themes, { dark, light } from 'styles/themes'
 
 import { createSlice } from '@reduxjs/toolkit'
 
@@ -21,7 +21,7 @@ const Theme = createSlice({
   }
 })
 
-export type ThemeState = ThemeAttributes
+export type ThemeState = Themes
 
 export const ThemeActions = Theme.actions
 

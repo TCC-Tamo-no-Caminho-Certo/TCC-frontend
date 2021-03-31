@@ -1,3 +1,4 @@
+import Style, { StyledTextarea } from './styles'
 import React, {
   forwardRef,
   HTMLProps,
@@ -6,7 +7,6 @@ import React, {
   useRef,
   useState
 } from 'react'
-import Style from './styles'
 
 import { FormContext, FormState } from '../'
 
@@ -33,15 +33,18 @@ const Textarea = forwardRef<TextareaMethods, TextareaProps>((props, _ref) => {
   }, [textareaRef, form])
 
   return (
-    <>
-      <ErrorTooltip error={!!error} content={error} />
+    <Style error={!!error}>
+      <div className='Error'>
+        <ErrorTooltip error={!!error} content={error} />
+      </div>
 
-      <Style
+      <StyledTextarea
+        onClick={() => setError('')}
         className='Textarea'
         ref={textareaRef as any}
         {...(props as any)}
       />
-    </>
+    </Style>
   )
 })
 

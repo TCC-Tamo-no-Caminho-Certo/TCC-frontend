@@ -13,6 +13,7 @@ interface ModalProps {
   children: ReactElement | ReactElement[]
   id?: string
   top?: string
+  zIndex?: number
   bottom?: string
   bgHeight?: string
   translateY?: string
@@ -32,6 +33,7 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
       bottom = 'auto',
       bgHeight = '100vh',
       translateY = '-60%',
+      zIndex = 10,
       ...rest
     },
     ref
@@ -56,13 +58,18 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
 
     return openModal ? (
       <>
-        <ModalBackground height={bgHeight} onClick={onBackgroundClick} />
+        <ModalBackground
+          height={bgHeight}
+          onClick={onBackgroundClick}
+          zIndex={zIndex}
+        />
 
         <Style
           top={top}
           bottom={bottom}
           ref={modalRef}
           translateY={translateY}
+          zIndex={zIndex}
           {...rest}
         >
           <CloseIcon onClick={onBackgroundClick} />

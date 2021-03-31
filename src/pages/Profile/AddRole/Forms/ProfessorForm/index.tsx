@@ -94,19 +94,17 @@ const ProfessorForm = () => {
   const setUniversitiesData = async () => {
     const { universities } = await api.get('/universities')
 
-    const newUniversities = universities.map(
-      (university: any): University => ({
-        value: university.university_id,
-        label: university.name,
-        regex: {
-          student: university.regex.professor,
-          professor: university.regex.professor,
+    setFormState(prev => ({
+      ...prev,
+      universities: universities.map(
+        (university: any): University => ({
+          value: university.university_id,
+          label: university.name,
+          email: university.regex.email,
           register: university.regex.register
-        }
-      })
-    )
-
-    setFormState(prev => ({ ...prev, universities: newUniversities }))
+        })
+      )
+    }))
   }
 
   const setCampusData = async (id: number) => {
@@ -116,39 +114,35 @@ const ProfessorForm = () => {
       (university: University) => university.value === id
     )
 
-    const newCampus = campus.map(
-      (campus: any): Option => ({
-        value: campus.campus_id,
-        label: campus.name
-      })
-    )
-
     setFormState(prev => ({
       ...prev,
       selectedUniversity: newSelectedUniversity,
-      campus: newCampus
+      campus: campus.map(
+        (campus: any): Option => ({
+          value: campus.campus_id,
+          label: campus.name
+        })
+      )
     }))
   }
 
   const setCoursesData = async (id: number) => {
     const { courses } = await api.get(`/university/campus/${id}/course`)
 
-    const newCourses = courses.map(
-      (course: any): Option => ({
-        value: course.course_id,
-        label: course.name
-      })
-    )
-
     setFormState(prev => ({
       ...prev,
-      courses: newCourses
+      courses: courses.map(
+        (course: any): Option => ({
+          value: course.course_id,
+          label: course.name
+        })
+      )
     }))
   }
 
   const verifyInstitucionalEmail = () => {
     if (selectedUniversity) {
-      const rgx = new RegExp(selectedUniversity.regex.student)
+      const rgx = new RegExp(selectedUniversity.email.professor)
       const instEmails = user.email.filter(({ address }) => rgx.test(address))
 
       setFormState(prev => ({
@@ -200,7 +194,15 @@ const ProfessorForm = () => {
           loading
           path='user/role/request/professor'
           afterResData={onSubmit}
-          schema={showReceipt ? receiptSchema : emailSchema}
+          schema={
+            showReceipt
+              ? receiptSchema(
+                  selectedUniversity ? selectedUniversity.register.student : ''
+                )
+              : emailSchema(
+                  selectedUniversity ? selectedUniversity.register.student : ''
+                )
+          }
         >
           <Text
             optional
@@ -330,7 +332,7 @@ const ProfessorForm = () => {
           type='button'
           onClick={async () => {
             if (selectedUniversity) {
-              const rgx = new RegExp(selectedUniversity.regex.professor)
+              const rgx = new RegExp(selectedUniversity.email.professor)
 
               const teste = user.email.filter(({ address }) =>
                 rgx.test(address)
@@ -350,7 +352,7 @@ const ProfessorForm = () => {
         ref={registerEmailRef}
         onSuccess={setShowSubmitTrue}
         title={selectedUniversity?.label}
-        regex={selectedUniversity?.regex.student}
+        regex={selectedUniversity?.email.professor}
         addData={{ university_id: selectedUniversity?.value }}
         modal={{
           bottom: '50vh',

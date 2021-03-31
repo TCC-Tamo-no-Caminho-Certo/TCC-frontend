@@ -11,12 +11,14 @@ import Thead from './Thead'
 import Circle from './Circle'
 
 import makeRoleLabel from 'utils/makeRoleLabel'
+import { getStatusLabel, StatusTypes } from 'utils/status'
+import { isoToDate } from 'utils/dates'
 
 import api from 'services/api'
 
-import { Role } from 'store/user'
-import { ThemeState } from 'store/theme'
 import { RootState } from 'store'
+import { getRoles, Role, RolesState } from 'store/roles'
+import { ThemeState } from 'store/theme'
 
 import useSortableData from 'hooks/useSortableData'
 
@@ -34,112 +36,35 @@ import {
   Textarea
 } from 'components/Form'
 import Avatar from 'components/User/Avatar'
-import { valueToDate } from 'components/Form/Datepicker'
+import Popup, { PopupMethods } from 'components/Popup'
 
 import { lighten } from 'polished'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Theme } from 'react-select'
-
-export type StatusTypes = 'accepted' | 'rejected' | 'awaiting'
-
-interface RequestsData {
-  request_id: number
-  user_id: number
-  role_id: number
-  showData: string
-  status: StatusTypes
-  name: string
-  role: Role
-  created_at: string
-  updated_at?: string
-  doc_uuid?: string
-}
+import * as Yup from 'yup'
 
 export interface TableData {
-  statusCircle: StatusTypes
-  status: string
-  name: string
   role: Role
-  date: string
   id: number
+  name: string
+  date: string
+  status: string
+  statusCircle: StatusTypes
   doc?: string
 }
 
-export interface HeaderData {
-  name: keyof TableData
-  label: string
+interface RequestsData {
+  role: Role
+  name: string
+  user_id: number
+  role_id: number
+  showData: string
+  request_id: number
+  created_at: string
+  status: StatusTypes
+  voucher_uuid?: string
+  updated_at?: string
 }
-
-const transformArray = (array: RequestsData[]): TableData[] => {
-  const _makeDateLabel = (date: string): string => {
-    const teste = date.replaceAll('-', '/').split('')
-
-    const month = {
-      '01': 'jan',
-      '02': 'fev',
-      '03': 'mar',
-      '04': 'mai',
-      '05': 'abr',
-      '06': 'jun',
-      '07': 'jul',
-      '08': 'ago',
-      '09': 'set',
-      10: 'out',
-      11: 'nov',
-      12: 'dez'
-    }
-
-    const keyOfMonth = teste[5] + teste[6]
-
-    return `${teste[8] + teste[9]} ${month[keyOfMonth as keyof typeof month]}`
-  }
-
-  const makeStatusLabel = (status: StatusTypes): string => {
-    switch (status) {
-      case 'accepted':
-        return 'Aceito'
-      case 'rejected':
-        return 'Recusado'
-      default:
-        return 'Aguardando'
-    }
-  }
-
-  const formatterDate = (date: string) => {
-    const date1 = valueToDate(date).split('/')[0]
-    const date2 = valueToDate(date).split('/')[1]
-    return date1 + '/' + date2
-  }
-
-  return array.map(
-    ({
-      status,
-      name,
-      role,
-      created_at,
-      request_id,
-      doc_uuid
-    }: RequestsData) => {
-      return {
-        role,
-        doc: doc_uuid,
-        id: request_id,
-        name: name,
-        statusCircle: status,
-        status: makeStatusLabel(status),
-        date: formatterDate(created_at)
-      }
-    }
-  )
-}
-
-const headerData: HeaderData[] = [
-  { name: 'statusCircle', label: '' },
-  { name: 'status', label: 'Status' },
-  { name: 'name', label: 'Nome' },
-  { name: 'role', label: 'Papel' },
-  { name: 'date', label: 'Data' }
-]
 
 interface TableState {
   isClear: boolean
@@ -151,17 +76,49 @@ interface TableState {
 }
 
 interface Filter {
-  name: JSX.Element
-  role: JSX.Element
+  role_id: JSX.Element
   date: JSX.Element
+  full_name: JSX.Element
 }
+
+export interface HeaderData {
+  label: string
+  name: keyof TableData
+}
+
+const responseSchema = Yup.object({
+  feedback: Yup.string().required('Ao recusar deve-se enviar uma justificativa')
+})
+
+const headerData: HeaderData[] = [
+  { name: 'statusCircle', label: '' },
+  { name: 'status', label: 'Status' },
+  { name: 'name', label: 'Nome' },
+  { name: 'role', label: 'Papel' },
+  { name: 'date', label: 'Data' }
+]
+
+const transformArray = (array: RequestsData[]) =>
+  array.map(({ name, role, status, voucher_uuid, created_at, request_id }) => ({
+    role,
+    name: name,
+    doc: voucher_uuid,
+    id: request_id,
+    statusCircle: status,
+    status: getStatusLabel(status),
+    date: isoToDate(created_at, 'day/month')
+  }))
 
 const Table = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const roles = useSelector<RootState, RolesState>(state => state.roles)
   const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>
   const tableRef = useRef() as MutableRefObject<HTMLTableElement>
-  const inputRef = useRef() as MutableRefObject<HTMLInputElement>
   const modalRef = useRef<ModalMethods>(null)
+  const popupRef = useRef<PopupMethods>(null)
+  const selectRef = useRef<any>(null)
+  const dispatch = useDispatch()
+  const [buttonClicked, setButtonClicked] = useState('rejected')
   const [
     { clickedItem, clickedDoc, showData, tablePage, isClear, filter },
     setTableState
@@ -170,7 +127,7 @@ const Table = () => {
     showData: null,
     tablePage: 1,
     isClear: false,
-    filter: 'name',
+    filter: 'full_name',
     clickedDoc: ''
   })
   const { items, sort } = useSortableData(showData, {
@@ -179,32 +136,6 @@ const Table = () => {
   })
 
   const quantity = 60
-
-  const makeRequest = useCallback(
-    async (page: number) => {
-      if (!isClear) {
-        const response = await api.get(
-          `user/role/requests?page=${page}&per_page=${quantity}`
-        )
-
-        const { requests } = response
-        console.log(requests)
-
-        if (requests && requests.length !== 0) {
-          const tableData = transformArray(requests)
-
-          setTableState(prev => ({
-            ...prev,
-            showData: prev.showData
-              ? [...prev.showData, ...tableData]
-              : [...tableData]
-          }))
-        } else setTableState(prev => ({ ...prev, setIsClear: true }))
-      }
-    },
-    [isClear]
-  )
-
   const selectStyle = {
     container: (before: any) => ({
       ...before
@@ -247,8 +178,7 @@ const Table = () => {
       color: theme.colors.secondary
     })
   }
-
-  const selectTheme = (beforeTheme: Theme): Theme => ({
+  const selectTheme = (beforeTheme: Theme) => ({
     ...beforeTheme,
     colors: {
       ...beforeTheme.colors,
@@ -271,66 +201,24 @@ const Table = () => {
       neutral90: theme.colors.secondary
     }
   })
-
-  const onTableScroll = () => {
-    const table = tableWrapperRef.current
-    const element = tableRef.current
-
-    if (table && element) {
-      const maxHeight = table.clientHeight
-      const position = Math.ceil(table.scrollHeight - table.scrollTop)
-
-      if (position <= maxHeight) {
-        makeRequest(tablePage + 1)
-        setTableState(prev => ({ ...prev, tablePage: prev.tablePage + 1 }))
-      }
-    }
-  }
-
-  const onSearchClick = async () => {
-    const value = inputRef.current.value
-
-    const { requests } = await api.get(
-      `user/role/requests?page=1&per_page=${quantity}&filter[full_name][]=${value}`
-    )
-
-    setTableState(prev => ({ ...prev, showData: requests, tablePage: 1 }))
-  }
-
-  const setClicked = async (item: TableData) => {
-    const { url } = await api.get(`user/role/request/doc/${item.doc}`)
-
-    setTableState(prev => ({
-      ...prev,
-      clickedItem: item,
-      clickedDoc: `https://s3.steamslab.com/documents${
-        url.split('/documents')[1]
-      }`
-    }))
-  }
-
-  useEffect(() => {
-    makeRequest(1)
-  }, [makeRequest])
-
   const filters: Filter = {
-    name: (
+    full_name: (
       <Text
-        name='name'
+        name='full_name'
         type='text'
         autoComplete='off'
         placeholder='Filtrar'
-        ref={inputRef}
         textColors={{
           focused: theme.colors.secondary,
           unfocused: theme.colors.secondary
         }}
       />
     ),
-    role: (
+    role_id: (
       <Select
-        name='role'
+        name='role_id'
         className='SelectRole'
+        ref={selectRef}
         theming={selectTheme}
         styling={selectStyle}
         options={[
@@ -372,10 +260,110 @@ const Table = () => {
     )
   }
 
+  const makeRequest = useCallback(
+    async (page: number) => {
+      if (!isClear) {
+        const { requests } = await api.get(
+          `user/role/requests?page=${page}&per_page=${quantity}`
+        )
+
+        if (requests && requests.length !== 0) {
+          const tableData = transformArray(requests)
+
+          setTableState(prev => ({
+            ...prev,
+            showData: prev.showData
+              ? [...prev.showData, ...tableData]
+              : [...tableData]
+          }))
+        } else setTableState(prev => ({ ...prev, setIsClear: true }))
+      }
+    },
+    [isClear]
+  )
+
+  const onTableScroll = () => {
+    const table = tableWrapperRef.current
+    const element = tableRef.current
+
+    if (table && element) {
+      const maxHeight = table.clientHeight
+      const position = Math.ceil(table.scrollHeight - table.scrollTop)
+
+      if (position <= maxHeight) {
+        makeRequest(tablePage + 1)
+        setTableState(prev => ({ ...prev, tablePage: prev.tablePage + 1 }))
+      }
+    }
+  }
+
+  const setClicked = async (item: TableData) => {
+    const docId = item.doc
+    const voucher = await api.get(`user/role/request/voucher/${docId}`)
+
+    setTableState(prev => ({
+      ...prev,
+      clickedItem: item,
+      clickedDoc: voucher.url
+    }))
+  }
+
+  const filterTable = async (value: any) => {
+    if (value.full_name) {
+      const { requests } = await api.get(
+        `user/role/requests?page=1&per_page=${quantity}&filter[${filter}][]=${value.full_name}}`
+      )
+
+      setTableState(prev => ({
+        ...prev,
+        showData: requests,
+        tablePage: 1
+      }))
+    }
+
+    if (value.role_id) {
+      const roleId = roles.roles.filter(
+        ({ title }) => value.role_id === title
+      )[0].role_id
+      const { requests } = await api.get(
+        `user/role/requests?page=1&per_page=${quantity}&filter[role_id][]=${roleId}}`
+      )
+
+      setTableState(prev => ({
+        ...prev,
+        showData: requests,
+        tablePage: 1
+      }))
+    }
+  }
+
+  const onResponseSubmit = (res: any) => {
+    if (res.success)
+      popupRef.current?.configPopup({
+        type: 'success',
+        message: 'Resposta enviada',
+        onClick: () => modalRef.current?.toggleModal()
+      })
+
+    popupRef.current?.configPopup({
+      type: 'error',
+      message: 'Algo deu errado',
+      onClick: () => modalRef.current?.toggleModal()
+    })
+  }
+
+  useEffect(() => {
+    makeRequest(1)
+  }, [makeRequest])
+
+  useEffect(() => {
+    dispatch(getRoles())
+  }, [dispatch])
+
   return (
     <>
       <Style className='Table'>
-        <Filters>
+        <Filters getData={filterTable}>
           {filters[filter]}
 
           <Select
@@ -385,8 +373,8 @@ const Table = () => {
             styling={selectStyle}
             defaultValue={{ label: 'Nome', value: 'name' }}
             options={[
-              { label: 'Papel', value: 'role' },
-              { label: 'Nome', value: 'name' },
+              { label: 'Papel', value: 'role_id' },
+              { label: 'Nome', value: 'full_name' },
               { label: 'Data', value: 'date' }
             ]}
             onChange={({ value }: any) =>
@@ -394,7 +382,7 @@ const Table = () => {
             }
           />
 
-          <button className='Submit' onClick={onSearchClick} type='button'>
+          <button type='submit' className='Submit'>
             <LoupeIcon />
             Buscar
           </button>
@@ -452,6 +440,7 @@ const Table = () => {
           status={clickedItem?.statusCircle}
         >
           <CloseIcon onClick={() => modalRef.current?.toggleModal(false)} />
+
           <div id='info'>
             <div id='title'>Informações</div>
 
@@ -496,33 +485,72 @@ const Table = () => {
             <iframe src={clickedDoc} />
           </div>
 
-          <Form
-            method='patch'
-            path='user/role/request/accept/*%'
-            addDataToPath={[`${clickedItem?.id}`]}
-          >
-            <Textarea
-              id='feedback'
-              name='feedback'
-              placeholder='Se quiser, deixe uma resposta...'
-              maxLength={500}
-            />
-
-            <div id='buttons'>
-              <Submit onClick={() => modalRef.current?.toggleModal(false)}>
+          <div id='radios'>
+            <div>
+              <input
+                name='response'
+                value='accept'
+                type='radio'
+                id='accept'
+                onChange={(e: any) => {
+                  e.target.checked && setButtonClicked('accepted')
+                }}
+              />
+              <label htmlFor='accept' id='acceptLabel'>
                 Aceitar
-              </Submit>
-
-              <button
-                type='button'
-                onClick={() => modalRef.current?.toggleModal(false)}
-              >
-                Recusar
-              </button>
+              </label>
             </div>
+
+            <div>
+              <input
+                name='response'
+                value='reject'
+                type='radio'
+                id='reject'
+                defaultChecked
+                onChange={(e: any) => {
+                  e.target.checked && setButtonClicked('rejected')
+                }}
+              />
+              <label htmlFor='reject' id='rejectLabel'>
+                Recusar
+              </label>
+            </div>
+          </div>
+
+          <Form
+            loading
+            method='patch'
+            schema={responseSchema}
+            afterResData={onResponseSubmit}
+            addDataToPath={[`${clickedItem?.id}`]}
+            path={
+              buttonClicked === 'rejected'
+                ? 'user/role/request/reject/*%'
+                : 'user/role/request/accept/*%'
+            }
+          >
+            {buttonClicked === 'rejected' && (
+              <Textarea
+                id='feedback'
+                name='feedback'
+                placeholder='Deixe uma resposta...'
+                maxLength={500}
+              />
+            )}
+
+            <Submit>Enviar resposta</Submit>
           </Form>
         </ModalContent>
       </Modal>
+
+      <Popup
+        bottom='50vh'
+        translateY='50%'
+        bgHeight={'100vh'}
+        ref={popupRef}
+        zIndex={20}
+      />
     </>
   )
 }

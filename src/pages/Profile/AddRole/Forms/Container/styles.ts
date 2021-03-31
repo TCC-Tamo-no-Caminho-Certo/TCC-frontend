@@ -1,4 +1,4 @@
-import { Role } from 'store/user'
+import { Role } from 'store/roles'
 
 import Card, { Header as HeaderComponent } from 'components/Card/styles'
 

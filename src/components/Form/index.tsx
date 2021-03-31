@@ -39,7 +39,7 @@ export interface FormState {
 }
 
 export interface FormProps extends HTMLProps<HTMLFormElement> {
-  path: string
+  path?: string
   push?: string
   captcha?: boolean
   loading?: boolean
@@ -49,8 +49,8 @@ export interface FormProps extends HTMLProps<HTMLFormElement> {
   addData?: { [key: string]: any }
   method?: 'post' | 'get' | 'delete' | 'patch' | 'put'
   getData?: (_data: any) => void
-  afterResData?: (_resData: any) => void
   onError?: (_error: any) => void
+  afterResData?: (_resData: any) => void
 }
 
 export const FormContext = createContext<FormState | null>(null)
@@ -144,6 +144,7 @@ const Form = ({
   const validate = () => {
     try {
       schema && schema.validateSync(data, { abortEarly: false })
+      haveErrors = false
     } catch (error) {
       haveErrors = true
 
@@ -167,46 +168,48 @@ const Form = ({
   }
 
   const parsePath = () => {
-    const paths = path.split('*%')
+    if (path) {
+      const paths = path.split('*%')
 
-    if (addToPath) {
-      if (paths.length - 1 !== addToPath?.length)
-        throw new Error('joker lenght is not equal addToPath lenght')
+      console.table({
+        paths: paths.length,
+        addToPath: addToPath?.length,
+        addDataToPath: addDataToPath?.length
+      })
 
-      path = paths.reduce((acc, curr, idx) => {
-        if (paths.length === idx + 1) return acc + curr
-        return acc + curr + data[addToPath[idx]]
-      }, '')
-    }
+      if (addToPath)
+        path = paths.reduce((acc, curr, idx) => {
+          if (paths.length === idx + 1) return acc + curr
+          return acc + curr + data[addToPath[idx]]
+        }, '')
 
-    if (addDataToPath) {
-      if (paths.length - 1 !== addDataToPath?.length)
-        throw new Error('joker lenght is not equal addDataToPath lenght')
-
-      path = paths.reduce((acc, curr, idx) => {
-        if (paths.length === idx + 1) return acc + curr
-        return acc + curr + addDataToPath[idx]
-      }, '')
+      if (addDataToPath)
+        path = paths.reduce((acc, curr, idx) => {
+          if (paths.length === idx + 1) return acc + curr
+          return acc + curr + addDataToPath[idx]
+        }, '')
     }
   }
 
   const makeRequest = async (cbAfterResData?: (_data: any) => void) => {
-    const params: { [key: string]: { path: string; data?: any } } = {
-      get: { path },
-      delete: { path },
-      put: { path, data },
-      post: { path, data },
-      patch: { path, data }
+    if (path) {
+      const params: { [key: string]: { path: string; data?: any } } = {
+        get: { path },
+        delete: { path },
+        put: { path, data },
+        post: { path, data },
+        patch: { path, data }
+      }
+
+      const firstParam = params[method].path
+      const secondParam = params[method].data
+      const resData = await api[method](firstParam, secondParam)
+
+      if (resData.response)
+        cbAfterResData && cbAfterResData(resData.response.data)
+      else cbAfterResData && cbAfterResData(resData)
+      return resData.success
     }
-
-    const firstParam = params[method].path
-    const secondParam = params[method].data
-    const resData = await api[method](firstParam, secondParam)
-
-    if (resData.response)
-      cbAfterResData && cbAfterResData(resData.response.data)
-    else cbAfterResData && cbAfterResData(resData)
-    return resData.success
   }
 
   const onSubmit = async (event: FormEvent) => {
@@ -214,9 +217,11 @@ const Form = ({
     loading && setShowLoader(true)
     setData()
     getData && getData(data)
+
     validate()
 
-    if (addToPath !== undefined || addDataToPath !== undefined) parsePath()
+    addToPath && parsePath()
+    addDataToPath && parsePath()
 
     if (captcha)
       data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false

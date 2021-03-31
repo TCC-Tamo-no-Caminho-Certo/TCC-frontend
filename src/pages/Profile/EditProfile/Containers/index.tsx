@@ -6,7 +6,8 @@ import formatUpdateUser, { ContainerForm, InputData } from './formatUpdateUser'
 
 import selectedRoleLabel from 'utils/makeRoleLabel'
 
-import { Role, UserState } from 'store/user'
+import { Role } from 'store/roles'
+import { UserState } from 'store/user'
 import { RootState } from 'store'
 import { ThemeState } from 'store/theme'
 

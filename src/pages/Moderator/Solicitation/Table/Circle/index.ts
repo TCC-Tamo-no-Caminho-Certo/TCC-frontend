@@ -1,4 +1,4 @@
-import { StatusTypes } from '../index'
+import { getStatusColor, StatusTypes } from 'utils/status'
 
 import styled from 'styled-components'
 
@@ -11,18 +11,7 @@ const Circle = styled.div<CircleProps>`
   height: 8px;
   border-radius: 50%;
 
-  background-color: ${({ theme, status }) => {
-    switch (status) {
-      case 'accepted':
-        return theme.colors.green
-      case 'awaiting':
-        return theme.colors.yellow
-      case 'rejected':
-        return theme.colors.red
-      default:
-        return theme.colors.white
-    }
-  }};
+  background-color: ${({ theme, status }) => getStatusColor(theme, status)};
 `
 
 export default Circle

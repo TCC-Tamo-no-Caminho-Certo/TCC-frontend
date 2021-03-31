@@ -14,6 +14,7 @@ const PrivateRoutes = () => {
 
   useEffect(() => {
     dispatch(getUser())
+
     window.history.pushState(null, '', document.URL)
   }, [dispatch])
 

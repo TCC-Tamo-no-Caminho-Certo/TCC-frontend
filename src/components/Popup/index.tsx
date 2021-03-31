@@ -14,8 +14,9 @@ export type PopupType = 'error' | 'warning' | 'success' | 'other'
 export interface PopupProps {
   top?: string
   bottom?: string
-  translateY?: string
+  zIndex?: number
   bgHeight?: string
+  translateY?: string
 }
 
 interface ConfigPopupProps {
@@ -55,7 +56,7 @@ const makeTitle = (type: PopupType, title?: string) => {
 }
 
 const Popup = forwardRef<PopupMethods, PopupProps>(
-  ({ bgHeight, top, translateY, bottom }, ref) => {
+  ({ bgHeight, top, translateY, bottom, zIndex }, ref) => {
     const modalRef = useRef<ModalMethods>(null)
     const [
       { type, setModal, message, title, onClick, onOkClick, onCloseClick },
@@ -83,6 +84,7 @@ const Popup = forwardRef<PopupMethods, PopupProps>(
         translateY={translateY}
         bgHeight={bgHeight}
         onBgClick={onClick || (onCloseClick && onCloseClick)}
+        zIndex={zIndex}
       >
         <Style type={type}>
           <span>{makeTitle(type, title)}</span>

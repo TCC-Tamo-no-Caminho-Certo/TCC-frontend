@@ -1,4 +1,4 @@
-import { Role } from 'store/user'
+import { Role } from 'store/roles'
 
 import styled from 'styled-components'
 

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Style from './styles'
 
-import { StatusTypes } from 'pages/Moderator/Solicitation/Table'
-
+import { StatusTypes } from 'utils/status'
 import makeRoleLabel from 'utils/makeRoleLabel'
 
-import { Role } from 'store/user'
+import { Role } from 'store/roles'
 
 import Card from 'components/Card'
 

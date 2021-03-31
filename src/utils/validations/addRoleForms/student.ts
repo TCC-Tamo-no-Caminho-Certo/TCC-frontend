@@ -12,13 +12,11 @@ const ambiguous = (register: string) => {
   }
 }
 
-export const emailSchema = (register: string) => {
-  return Yup.object({ ...ambiguous(register) })
-}
+export const emailSchema = (register: string) =>
+  Yup.object({ ...ambiguous(register) })
 
-export const receiptSchema = (register: string) => {
-  return Yup.object({
+export const receiptSchema = (register: string) =>
+  Yup.object({
     ...ambiguous(register),
     voucher: Yup.string().required('Você precisa selecionar um comprovante!')
   })
-}

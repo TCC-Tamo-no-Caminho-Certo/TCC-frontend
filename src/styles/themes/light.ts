@@ -1,6 +1,6 @@
-import { ThemeAttributes } from './'
+import Themes from './'
 
-const light: ThemeAttributes = {
+const light: Themes = {
   name: 'light',
 
   colors: {
