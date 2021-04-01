@@ -102,70 +102,74 @@ function ResponseContent({
           </div>
         )}
 
-        <div id='radios'>
-          <div>
-            <input
-              name='response'
-              value='accept'
-              type='radio'
-              id='accept'
-              onChange={(e: any) => {
-                e.target.checked && setButtonClicked('accepted')
-              }}
-            />
-            <label htmlFor='accept' id='acceptLabel'>
-              Aceitar
-            </label>
-          </div>
+        {selectedInfo?.statusCircle === 'awaiting' && (
+          <>
+            <div id='radios'>
+              <div>
+                <input
+                  name='response'
+                  value='accept'
+                  type='radio'
+                  id='accept'
+                  onChange={(e: any) => {
+                    e.target.checked && setButtonClicked('accepted')
+                  }}
+                />
+                <label htmlFor='accept' id='acceptLabel'>
+                  Aceitar
+                </label>
+              </div>
 
-          <div>
-            <input
-              name='response'
-              value='reject'
-              type='radio'
-              id='reject'
-              defaultChecked
-              onChange={(e: any) => {
-                e.target.checked && setButtonClicked('rejected')
-              }}
-            />
-            <label htmlFor='reject' id='rejectLabel'>
-              Recusar
-            </label>
-          </div>
-        </div>
+              <div>
+                <input
+                  name='response'
+                  value='reject'
+                  type='radio'
+                  id='reject'
+                  defaultChecked
+                  onChange={(e: any) => {
+                    e.target.checked && setButtonClicked('rejected')
+                  }}
+                />
+                <label htmlFor='reject' id='rejectLabel'>
+                  Recusar
+                </label>
+              </div>
+            </div>
 
-        <Form
-          loading
-          method='patch'
-          schema={
-            buttonClicked === 'rejected'
-              ? Yup.object({
-                  feedback: Yup.string().required(
-                    'Ao recusar deve-se enviar uma justificativa'
-                  )
-                })
-              : Yup.object({
-                  feedback: Yup.string()
-                })
-          }
-          afterResData={onResponseSubmit}
-          addDataToPath={[`${selectedInfo?.id}`]}
-          path={
-            buttonClicked === 'rejected'
-              ? 'user/role/request/reject/*%'
-              : 'user/role/request/accept/*%'
-          }
-        >
-          <Textarea
-            id='feedback'
-            name='feedback'
-            placeholder='Deixe uma resposta...'
-            maxLength={500}
-          />
+            <Form
+              loading
+              method='patch'
+              schema={
+                buttonClicked === 'rejected'
+                  ? Yup.object({
+                      feedback: Yup.string().required(
+                        'Ao recusar deve-se enviar uma justificativa'
+                      )
+                    })
+                  : Yup.object({
+                      feedback: Yup.string()
+                    })
+              }
+              afterResData={onResponseSubmit}
+              addDataToPath={[`${selectedInfo?.id}`]}
+              path={
+                buttonClicked === 'rejected'
+                  ? 'user/role/request/reject/*%'
+                  : 'user/role/request/accept/*%'
+              }
+            >
+              <Textarea
+                id='feedback'
+                name='feedback'
+                placeholder='Deixe uma resposta...'
+                maxLength={500}
+              />
 
-          <Submit>Enviar resposta</Submit>
-        </Form>
+              <Submit>Enviar resposta</Submit>
+            </Form>
+          </>
+        )}
       </Style>
 
       <Popup

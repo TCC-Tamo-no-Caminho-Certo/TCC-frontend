@@ -49,8 +49,9 @@ interface InfosState {
   selectedInfo: ItemData
 }
 
-const transformArray = (array: RequestsData[]): ItemData[] =>
-  array.map(
+export const transformArray = (array: RequestsData[]): ItemData[] => {
+  console.log('arrayItems', array)
+  return array.map(
     ({
       name,
       role,
@@ -72,6 +73,7 @@ const transformArray = (array: RequestsData[]): ItemData[] =>
       date: isoToDate(created_at, 'day/month')
     })
   )
+}
 
 const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
   const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>
@@ -140,6 +142,10 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
   useEffect(() => {
     makeRequest(1)
   }, [makeRequest])
+
+  useEffect(() => {
+    console.log('items', items)
+  }, [items])
 
   return (
     <>

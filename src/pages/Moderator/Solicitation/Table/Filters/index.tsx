@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import Style from './styles'
 
 import { TableContext } from '../'
+import { transformArray } from '../Tbody'
 
 import api from 'services/api'
 
@@ -183,7 +184,7 @@ const Filters = ({ quantity }: FiltersProps) => {
       console.log(requests)
 
       tableContext?.setTableState({
-        showData: requests,
+        showData: transformArray(requests),
         tablePage: 1
       })
     }
@@ -199,7 +200,7 @@ const Filters = ({ quantity }: FiltersProps) => {
       const { requests } = response
 
       tableContext?.setTableState({
-        showData: requests,
+        showData: transformArray(requests),
         tablePage: 1
       })
     }
@@ -212,7 +213,7 @@ const Filters = ({ quantity }: FiltersProps) => {
       const { requests } = response
 
       tableContext?.setTableState({
-        showData: requests,
+        showData: transformArray(requests),
         tablePage: 1
       })
     }
