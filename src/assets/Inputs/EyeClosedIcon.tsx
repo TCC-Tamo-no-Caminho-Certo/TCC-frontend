@@ -8,6 +8,7 @@ const EyeClosedIcon = ({ onClick }: EyeClosedIconProps) => {
   return (
     <svg
       className='Icon'
+      id='EyeClosedIcon'
       onClick={onClick}
       xmlns='http://www.w3.org/2000/svg'
       fill='none'

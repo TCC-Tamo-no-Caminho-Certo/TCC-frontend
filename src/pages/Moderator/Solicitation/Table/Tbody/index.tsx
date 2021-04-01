@@ -50,7 +50,6 @@ interface InfosState {
 }
 
 export const transformArray = (array: RequestsData[]): ItemData[] => {
-  console.log('arrayItems', array)
   return array.map(
     ({
       name,
@@ -142,10 +141,6 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
   useEffect(() => {
     makeRequest(1)
   }, [makeRequest])
-
-  useEffect(() => {
-    console.log('items', items)
-  }, [items])
 
   return (
     <>

@@ -196,7 +196,6 @@ const ProfessorForm = () => {
         <Form
           loading
           path='user/role/request/professor'
-          getData={e => console.log(e)}
           afterResData={onSubmit}
           schema={
             showReceipt

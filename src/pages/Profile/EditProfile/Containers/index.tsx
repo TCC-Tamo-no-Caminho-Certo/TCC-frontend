@@ -10,6 +10,7 @@ import { Role } from 'store/roles'
 import { UserState } from 'store/user'
 import { RootState } from 'store'
 import { ThemeState } from 'store/theme'
+import { getUniversities, UniversitiesState } from 'store/universities'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
@@ -17,7 +18,7 @@ import Avatar from 'components/User/Avatar'
 import Card from 'components/Card'
 import Slider from 'components/Slider'
 
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 type ContainersRoles = Role | 'personal'
 
@@ -27,12 +28,15 @@ const Containers = () => {
   const modalContext = useContext(ImageRefModalContext)
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const user = useSelector<RootState, UserState>(state => state.user)
+  const dispatch = useDispatch()
+  const { universities } = useSelector<RootState, UniversitiesState>(
+    store => store.universities
+  )
 
   const rolesShowed = ['student', 'professor', 'moderator']
   const rolesWithEdit = user.roles.filter(
     role => rolesShowed.filter(wished => wished === role).length !== 0
   )
-
   const containers: ContainersRoles[] = ['personal', ...rolesWithEdit]
 
   useEffect(() => {
@@ -41,6 +45,10 @@ const Containers = () => {
     else if (innerWidth <= 700) setSliderWidth(450)
     else setSliderWidth(520)
   }, [innerWidth])
+
+  useEffect(() => {
+    dispatch(getUniversities())
+  }, [dispatch])
 
   return (
     <Slider gap={200} gapVertical={32} width={sliderWidth}>
@@ -58,9 +66,11 @@ const Containers = () => {
                 }
               />
 
-              {formatUpdateUser(user, 'personal').map((info: InputData) => (
-                <Field data={info} key={info.name} />
-              ))}
+              {formatUpdateUser(universities, user, 'personal').map(
+                (info: InputData) => (
+                  <Field data={info} key={info.name} />
+                )
+              )}
             </Card>
           )
 
@@ -69,11 +79,13 @@ const Containers = () => {
             key={role}
             headerText={`Dados de ${selectedRoleLabel(role as Role)}`}
           >
-            {formatUpdateUser(user, role as keyof ContainerForm).map(
-              (info: InputData) => (
-                <Field key={info.name} data={info} />
-              )
-            )}
+            {formatUpdateUser(
+              universities,
+              user,
+              role as keyof ContainerForm
+            ).map((info: InputData) => (
+              <Field key={info.name} data={info} />
+            ))}
           </Card>
         )
       })}

@@ -27,8 +27,11 @@ export const Input = styled.div`
     }
   }
 
-  .Text .Icon {
-    transform: translateX(-24px);
+  .Text {
+    #EyeClosedIcon,
+    #EyeIcon {
+      transform: translateX(-24px);
+    }
   }
 
   .value {

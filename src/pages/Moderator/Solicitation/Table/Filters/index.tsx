@@ -181,7 +181,6 @@ const Filters = ({ quantity }: FiltersProps) => {
       )
 
       const { requests } = response
-      console.log(requests)
 
       tableContext?.setTableState({
         showData: transformArray(requests),

@@ -1,3 +1,4 @@
+import { University } from 'store/universities'
 import { UserState } from 'store/user'
 
 export interface InputData {
@@ -17,21 +18,58 @@ export interface ContainerForm {
   professor: InputData[]
 }
 
+const removeRepeatly = (array: any[]) =>
+  array.filter((cur, i) => array.indexOf(cur) === i)
+
 const formatUpdateUser = (
+  universities: University[],
   userData: UserState,
   role: keyof ContainerForm
 ): InputData[] => {
-  const getStudentEmail = () => {
-    console.log(userData.emails)
+  const getEmail = (role: 'student' | 'professor') => {
+    const inputObject = []
 
-    const value = userData.emails.filter(
-      current => current.institutional === true
-    )
+    if (universities) {
+      const allUniversitiesIds = removeRepeatly(
+        userData.emails
+          .filter(current => current.institutional === true)
+          .map(email => ({ address: email.address, id: email.university_id }))
+      )
 
-    return value[0]
+      const getUniversitiesByIds = allUniversitiesIds.map(
+        ({ id, address }) => ({
+          address,
+          regex: universities.filter(
+            university => university.university_id === id
+          )[0].regex.email[role],
+          universityName: universities.filter(
+            university => university.university_id === id
+          )[0].name
+        })
+      )
+
+      for (let x = 0; x < getUniversitiesByIds.length; x++) {
+        const regex = new RegExp(getUniversitiesByIds[x].regex)
+
+        if (regex.test(getUniversitiesByIds[x].address)) {
+          inputObject.push({
+            label: 'Universidade:',
+            name: 'university_id',
+            value: getUniversitiesByIds[x].universityName,
+            editable: false
+          })
+          inputObject.push({
+            label: 'Email:',
+            name: 'inst_email',
+            value: getUniversitiesByIds[x].address,
+            editable: false
+          })
+        }
+      }
+    }
+
+    return inputObject
   }
-
-  const instEmail = getStudentEmail()
 
   const guest: InputData[] = [
     {
@@ -97,36 +135,8 @@ const formatUpdateUser = (
     // }
   ]
 
-  const student: InputData[] = [
-    {
-      label: 'Email:',
-      name: 'inst_email',
-      value: instEmail ? instEmail.address : '',
-      editable: false
-    },
-    {
-      label: 'Universidade:',
-      name: 'university_id',
-      value: instEmail ? instEmail.university_id : '',
-      editable: false
-    }
-  ]
-
-  const professor: InputData[] = [
-    {
-      label: 'Email:',
-      name: 'inst_email',
-      value: instEmail ? instEmail.address : '',
-      editable: false
-    },
-    {
-      label: 'Universidade:',
-      name: 'university_id',
-      value: instEmail ? instEmail.university_id : '',
-      editable: false
-    }
-  ]
-
+  const student: InputData[] = getEmail('student')
+  const professor: InputData[] = getEmail('professor')
   const moderator: InputData[] = []
 
   const formInputs: ContainerForm = {

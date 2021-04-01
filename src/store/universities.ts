@@ -1,8 +1,25 @@
 import api from 'services/api'
 
+import { Response } from 'store'
+
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export interface RolesState {
+export interface University {
+  name: string
+  university_id: number
+  regex: {
+    email: {
+      student: RegExp
+      professor: RegExp
+    }
+    register: {
+      student: RegExp
+      professor: RegExp
+    }
+  }
+}
+
+export interface UniversitiesState {
   entities: []
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'
   universities: any
@@ -14,7 +31,7 @@ interface Payload {
   universities?: any
 }
 
-const initialState: RolesState = {
+const initialState: UniversitiesState = {
   entities: [],
   loading: 'idle',
   universities: undefined
@@ -23,9 +40,11 @@ const initialState: RolesState = {
 export const getUniversities = createAsyncThunk(
   'universities/getUniversities',
   async () => {
-    const response = await api.get('info/university')
+    const { universities }: Response<University[]> = await api.get(
+      'info/university'
+    )
 
-    return response.universities
+    return universities
   }
 )
 
@@ -33,16 +52,15 @@ const Universities = createSlice({
   name: 'universities',
   initialState,
   reducers: {
-    update: (state, action: PayloadAction<Payload>) => {
-      return {
-        ...state,
-        ...action.payload
-      }
-    }
+    update: (state, action: PayloadAction<Payload>) => ({
+      ...state,
+      ...action.payload
+    })
   },
   extraReducers: builder => {
-    builder.addCase(getUniversities.fulfilled, (_state, action) => ({
-      ...action.payload
+    builder.addCase(getUniversities.fulfilled, (state, action) => ({
+      ...state,
+      universities: action.payload
     }))
   }
 })
