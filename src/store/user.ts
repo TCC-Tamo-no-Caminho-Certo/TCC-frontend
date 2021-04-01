@@ -93,7 +93,10 @@ export const getUser = createAsyncThunk('userConfig/getUser', async () => {
 
   const { user } = await api.get('user')
 
-  console.log({ ...user, selectedRole: getInitialSelectedRole(user.roles) })
+  console.log('USER', {
+    ...user,
+    selectedRole: getInitialSelectedRole(user.roles)
+  })
 
   return {
     ...user,

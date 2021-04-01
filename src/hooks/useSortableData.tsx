@@ -12,7 +12,7 @@ interface SortableConfig<T> {
 }
 
 const useSortableData = <T, _>(
-  items: T[] | null,
+  items: T[] | undefined,
   config: SortableConfig<T>
 ): Return<T> => {
   const [sortConfig, setSortConfig] = useState(config)

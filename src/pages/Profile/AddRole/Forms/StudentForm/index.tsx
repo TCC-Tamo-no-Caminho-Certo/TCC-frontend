@@ -149,6 +149,7 @@ const StudentForm = () => {
   const verifyInstitucionalEmail = () => {
     if (selectedUniversity) {
       const regex = new RegExp(selectedUniversity.email.student)
+
       const instEmails = user.emails.filter(({ address }) =>
         regex.test(address)
       )

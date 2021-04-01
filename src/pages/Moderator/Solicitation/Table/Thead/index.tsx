@@ -1,20 +1,20 @@
 import React, { memo, useState } from 'react'
 import Style from './styles'
 
-import { HeaderData, TableData } from '../index'
-import Circle from '../Circle'
+import { HeaderData, ItemData } from '../index'
+import { Circle } from '../Tbody/styles'
 
 import ArrowIcon from 'assets/ArrowIcon'
 
 import { Variants } from 'framer-motion'
 
 interface TheadProps {
-  sort?: (_name: keyof TableData) => void
+  sort?: (_name: keyof ItemData) => void
   headerData: HeaderData[]
 }
 
 type Arrow = {
-  [_name in keyof TableData]: 'default' | 'up' | 'down'
+  [_name in keyof ItemData]: 'default' | 'up' | 'down'
 }
 
 const arrow: Variants = {
@@ -35,7 +35,7 @@ const Thead = ({ headerData, sort }: TheadProps) => {
   })
   const [arrows, setArrows] = useState(initialArrows)
 
-  const onButtonClick = (id: keyof TableData, index: number) => {
+  const onButtonClick = (id: keyof ItemData, index: number) => {
     const before = arrows[index][id]
     const resetArrows = initialArrows
 

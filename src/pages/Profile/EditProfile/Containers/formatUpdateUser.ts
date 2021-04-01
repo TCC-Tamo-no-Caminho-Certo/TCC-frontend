@@ -22,6 +22,8 @@ const formatUpdateUser = (
   role: keyof ContainerForm
 ): InputData[] => {
   const getStudentEmail = () => {
+    console.log(userData.emails)
+
     const value = userData.emails.filter(
       current => current.institutional === true
     )

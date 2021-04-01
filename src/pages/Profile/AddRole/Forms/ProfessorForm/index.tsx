@@ -142,8 +142,11 @@ const ProfessorForm = () => {
 
   const verifyInstitucionalEmail = () => {
     if (selectedUniversity) {
-      const rgx = new RegExp(selectedUniversity.email.professor)
-      const instEmails = user.emails.filter(({ address }) => rgx.test(address))
+      const regex = new RegExp(selectedUniversity.email.professor)
+
+      const instEmails = user.emails.filter(({ address }) =>
+        regex.test(address)
+      )
 
       setFormState(prev => ({
         ...prev,
@@ -193,6 +196,7 @@ const ProfessorForm = () => {
         <Form
           loading
           path='user/role/request/professor'
+          getData={e => console.log(e)}
           afterResData={onSubmit}
           schema={
             showReceipt
@@ -318,7 +322,10 @@ const ProfessorForm = () => {
             </MotionReceipt>
           </Presence>
 
-          <Checkbox name='postgraduate' label='Fiz pós-graduação' />
+          <Checkbox
+            name='postgraduate'
+            label='Você leciona na Pós-Graduação (Stricto Sensu)?'
+          />
 
           <Checkbox name='full_time' label='Sou professor em tempo integral' />
 
