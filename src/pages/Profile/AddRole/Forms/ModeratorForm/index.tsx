@@ -11,7 +11,7 @@ import {
 } from 'utils/validations/addRoleForms/moderator'
 
 import { getUser, UserState } from 'store/user'
-import { RootState } from 'store'
+import { Response, RootState } from 'store'
 
 import { Checkbox, Submit, Textarea } from 'components/Form'
 import Popup, { PopupMethods } from 'components/Popup'
@@ -32,7 +32,6 @@ const initialAnimations: AnimationsState = {
   showAll: true,
   showJustification: false
 }
-
 const verifyFullTime = (user: UserState) => {
   const { emails } = user
   emails.filter(email => email.institutional === true)
@@ -49,17 +48,28 @@ const ModeratorForm = () => {
     initialAnimations
   )
 
-  const onSubmit = (res: any) => {
+  const afterSubmit = (res: Response<any>) => {
     if (res.success)
-      popupRef.current?.configPopup({
-        setModal: true,
-        type: 'success',
-        message: 'Papel adicionado',
-        onClick: () => {
-          dispatch(getUser())
-          history.push('/session/main')
-        }
-      })
+      showJustification
+        ? popupRef.current?.configPopup({
+            setModal: true,
+            type: 'success',
+            message:
+              'Justificativa enviada, aguarde a resposta de um moderador.',
+            onClick: () => {
+              dispatch(getUser())
+              history.push('/session/main')
+            }
+          })
+        : popupRef.current?.configPopup({
+            setModal: true,
+            type: 'success',
+            message: 'Papel adicionado',
+            onClick: () => {
+              dispatch(getUser())
+              history.push('/session/main')
+            }
+          })
     else
       popupRef.current?.configPopup({
         setModal: true,
@@ -86,7 +96,7 @@ const ModeratorForm = () => {
         <Form
           loading
           path='user/role/request/moderator'
-          afterResData={onSubmit}
+          afterResData={afterSubmit}
           schema={showJustification ? withFullName : withoutFullName}
         >
           <Presence condition={showAll}>

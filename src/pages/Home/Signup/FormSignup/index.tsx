@@ -4,6 +4,7 @@ import Style from './styles'
 import signupSchema from 'utils/validations/signup'
 
 import { HomeActions } from 'store/home'
+import { Response } from 'store'
 
 import WorldIcon from 'assets/Inputs/WorldIcon'
 import UserLockedIcon from 'assets/Inputs/UserLockedIcon'
@@ -14,10 +15,12 @@ import { Datepicker, Form, Submit, Text } from 'components/Form'
 import BackButton from 'components/BackButton'
 import Popup, { PopupMethods } from 'components/Popup'
 
+import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 const FormSignup = () => {
+  const { t } = useTranslation()
   const popupRef = useRef<PopupMethods>(null)
   const dispatch = useDispatch()
   const history = useHistory()
@@ -28,31 +31,36 @@ const FormSignup = () => {
     history.push('/')
   }
 
-  const afterFormResData = (res: any) => {
+  const afterSubmit = (res: Response<any>) => {
     if (res.success)
       popupRef.current?.configPopup({
         setModal: true,
         type: 'success',
-        message: 'Cadastrado com sucesso! Confirme seu e-mail para fazer login',
+        message: t('signup.popup.success'),
         onClick: onSuccessClose
       })
-    else if (res.error === 'User already exists')
-      popupRef.current?.configPopup({
-        setModal: true,
-        type: 'error',
-        message: 'Usuário já cadastrado, tente conectar!',
-        onClick: () => {
-          setDisable(true)
-          dispatch(HomeActions.update({ initial: true, page: 'login' }))
-          history.push('/home')
-        }
-      })
     else
-      popupRef.current?.configPopup({
-        setModal: true,
-        type: 'error',
-        message: 'Erro ao cadastrar, tente novamente.'
-      })
+      switch (res.error) {
+        case 'User already exists':
+          popupRef.current?.configPopup({
+            setModal: true,
+            type: 'error',
+            message: t('signup.popup.userExists'),
+            onClick: () => {
+              setDisable(true)
+              dispatch(HomeActions.update({ initial: true, page: 'login' }))
+              history.push('/home')
+            }
+          })
+          break
+
+        default:
+          popupRef.current?.configPopup({
+            setModal: true,
+            type: 'error',
+            message: t('signup.popup.defaultError')
+          })
+      }
   }
 
   return (
@@ -78,7 +86,7 @@ const FormSignup = () => {
           loading
           path='register'
           schema={signupSchema}
-          afterResData={afterFormResData}
+          afterResData={afterSubmit}
           getData={e => console.log(e)}
         >
           <Text

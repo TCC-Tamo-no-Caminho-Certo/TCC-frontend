@@ -12,7 +12,7 @@ import {
 import api from 'services/api'
 
 import { getUser, UserActions, UserState } from 'store/user'
-import { RootState } from 'store'
+import { Response, RootState } from 'store'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
@@ -43,7 +43,6 @@ interface AnimationsState {
   showAr: boolean
   showSubmit: boolean
 }
-
 export interface University {
   value: string | number
   label: string
@@ -210,31 +209,30 @@ const StudentForm = () => {
     }))
   }
 
-  const onSubmit = (res: any) => {
+  const afterSubmit = (res: Response<any>) => {
     if (res.success)
-      if (showReceipt)
-        popupRef.current?.configPopup({
-          setModal: true,
-          type: 'success',
-          message: 'Solicitação enviada',
-          onClick: () => history.push('session/profile/change-role')
-        })
-      else
-        popupRef.current?.configPopup({
-          setModal: true,
-          type: 'success',
-          message: 'Papel adicionado',
-          onClick: () => {
-            dispatch(getUser())
-            dispatch(UserActions.update({ selectedRole: 'student' }))
-            history.push('/session/main')
-          }
-        })
+      showReceipt
+        ? popupRef.current?.configPopup({
+            setModal: true,
+            type: 'success',
+            message: 'Solicitação enviada, aguarde a resposta de um moderador.',
+            onClick: () => history.push('session/profile/change-role')
+          })
+        : popupRef.current?.configPopup({
+            setModal: true,
+            type: 'success',
+            message: 'Papel adicionado!',
+            onClick: () => {
+              dispatch(getUser())
+              dispatch(UserActions.update({ selectedRole: 'student' }))
+              history.push('/session/main')
+            }
+          })
     else
       popupRef.current?.configPopup({
         setModal: true,
         type: 'error',
-        message: 'Falha ao enviar solicitação'
+        message: 'Falha ao enviar solicitação :('
       })
   }
 
@@ -249,7 +247,7 @@ const StudentForm = () => {
         <Form
           loading
           path='user/role/request/student'
-          afterResData={onSubmit}
+          afterResData={afterSubmit}
           schema={
             showReceipt
               ? receiptSchema(

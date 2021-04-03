@@ -3,6 +3,8 @@ import Style, { ConfirmCode } from './styles'
 
 import { emailSchema } from 'utils/validations/forgotPassword'
 
+import { Response } from 'store'
+
 import SendEmailIcon from 'assets/SendEmailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import MailIcon from 'assets/Inputs/MailIcon'
@@ -20,28 +22,28 @@ const Content = () => {
   const [userEmail, setUserEmail] = useState<string>()
   const [codeSend, setCodeSend] = useState(false)
 
-  const onEmailSubmit = (result: any) => {
-    result.success
+  const afterEmailSubmit = (res: Response<any>) => {
+    res.success
       ? setTimeout(() => setCodeSend(true), 1)
       : popupRef.current?.configPopup({
           setModal: true,
           type: 'error',
-          message: 'Email não cadastrado em nossa plataforma'
+          message: 'Email não cadastrado em nossa plataforma.'
         })
   }
 
-  const onCodeSubmit = (result: any) => {
-    if (result.success) setTimeout(() => history.push('/reset-password'), 1)
-    else
-      popupRef.current?.configPopup({
-        setModal: true,
-        type: 'error',
-        message: 'Código inválido!'
-      })
+  const afterCodeSubmit = (res: Response<any>) => {
+    res.success
+      ? setTimeout(() => history.push('/reset-password'), 1)
+      : popupRef.current?.configPopup({
+          setModal: true,
+          type: 'error',
+          message: 'Código inválido!'
+        })
   }
 
-  const onCodeResent = (result: any) => {
-    result.success
+  const afterCodeResent = (res: Response<any>) => {
+    res.success
       ? popupRef.current?.configPopup({
           setModal: true,
           type: 'success',
@@ -50,7 +52,7 @@ const Content = () => {
       : popupRef.current?.configPopup({
           setModal: true,
           type: 'error',
-          message: 'Algo inesperado ocorreu'
+          message: 'Ops, algo deu errado :('
         })
   }
 
@@ -68,7 +70,7 @@ const Content = () => {
             method='get'
             addToPath={['email']}
             schema={emailSchema}
-            afterResData={onEmailSubmit}
+            afterResData={afterEmailSubmit}
             getData={value => setUserEmail(value.email)}
           >
             <p>Digite seu email para recuperar a senha</p>
@@ -95,7 +97,7 @@ const Content = () => {
               method='get'
               className='resendModal'
               addToPath={['email']}
-              afterResData={onCodeResent}
+              afterResData={afterCodeResent}
             >
               <Text hidden name='email' value={userEmail} readOnly />
 
@@ -110,7 +112,7 @@ const Content = () => {
               captcha
               path='reset-password/*%'
               addToPath={['code']}
-              afterResData={onCodeSubmit}
+              afterResData={afterCodeSubmit}
               getData={value => localStorage.setItem('@SLab_code', value.code)}
             >
               <Text name='code' placeholder='Código' icon={PadlockIcon} />

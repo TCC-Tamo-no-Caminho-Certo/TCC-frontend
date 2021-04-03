@@ -13,8 +13,8 @@ import {
 
 import api from 'services/api'
 
+import { Response, RootState } from 'store'
 import { getUser, UserState } from 'store/user'
-import { RootState } from 'store'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
@@ -157,7 +157,7 @@ const ProfessorForm = () => {
     }
   }
 
-  const onSubmit = (res: any) => {
+  const afterSubmit = (res: Response<any>) => {
     if (res.success)
       if (showReceipt)
         popupRef.current?.configPopup({
@@ -196,7 +196,7 @@ const ProfessorForm = () => {
         <Form
           loading
           path='user/role/request/professor'
-          afterResData={onSubmit}
+          afterResData={afterSubmit}
           schema={
             showReceipt
               ? receiptSchema(

@@ -4,6 +4,7 @@ import Style, { Content } from './styles'
 import { passwordSchema } from 'utils/validations/forgotPassword'
 
 import { HomeActions } from 'store/home'
+import { Response } from 'store'
 
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import Logo from 'assets/Logo'
@@ -34,7 +35,7 @@ const ConfirmPassword = () => {
     throw new Error('No code provided')
   }
 
-  const onResetSubmit = (res: any) => {
+  const afterResetSubmit = (res: Response<any>) => {
     res.success
       ? popupRef.current?.configPopup({
           setModal: true,
@@ -76,7 +77,7 @@ const ConfirmPassword = () => {
             path='reset-password/*%'
             addToPath={['code']}
             schema={passwordSchema}
-            afterResData={onResetSubmit}
+            afterResData={afterResetSubmit}
           >
             <p>Digite sua nova senha</p>
 

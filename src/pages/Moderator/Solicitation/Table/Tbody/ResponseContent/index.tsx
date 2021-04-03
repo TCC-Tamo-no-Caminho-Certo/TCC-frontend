@@ -5,6 +5,7 @@ import { ItemData } from '../..'
 
 import makeRoleLabel from 'utils/makeRoleLabel'
 
+import { Response } from 'store'
 import { Role } from 'store/roles'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
@@ -29,19 +30,18 @@ function ResponseContent({
   const popupRef = useRef<PopupMethods>(null)
   const [buttonClicked, setButtonClicked] = useState('rejected')
 
-  const onResponseSubmit = (res: any) => {
-    if (res.success)
-      popupRef.current?.configPopup({
-        type: 'success',
-        message: 'Resposta enviada',
-        onClick: onCloseClick
-      })
-    else
-      popupRef.current?.configPopup({
-        type: 'error',
-        message: 'Algo deu errado',
-        onClick: onCloseClick
-      })
+  const afterResponseSubmit = (res: Response<any>) => {
+    res.success
+      ? popupRef.current?.configPopup({
+          type: 'success',
+          message: 'Resposta enviada.',
+          onClick: onCloseClick
+        })
+      : popupRef.current?.configPopup({
+          type: 'error',
+          message: 'Ops, algo deu errado :(',
+          onClick: onCloseClick
+        })
   }
 
   return (
@@ -151,7 +151,7 @@ function ResponseContent({
                       feedback: Yup.string()
                     })
               }
-              afterResData={onResponseSubmit}
+              afterResData={afterResponseSubmit}
               addDataToPath={[`${selectedInfo?.id}`]}
               path={
                 buttonClicked === 'rejected'

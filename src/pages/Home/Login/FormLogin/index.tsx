@@ -4,6 +4,7 @@ import Style, { Form, LoginFailed } from './styles'
 import loginSchema from 'utils/validations/login'
 
 import { HomeActions } from 'store/home'
+import { Response } from 'store'
 
 import MailIcon from 'assets/Inputs/MailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
@@ -30,15 +31,16 @@ const FormLogin = () => {
   const [disable, setDisable] = useState(false)
   const [loginFailed, setLoginFailed] = useState('')
 
-  const onSubmit = (resData: any) => {
-    if (resData.success)
-      localStorage.setItem('@SLab_ac_token', resData.access_token)
+  const afterSubmit = (res: Response<any>) => {
+    if (res.success) localStorage.setItem('@SLab_ac_token', res.access_token)
     else {
-      setLoginFailed(
-        resData.error === 'Incorrect password!'
-          ? 'Senha incorreta, tente novamente'
-          : 'E-mail não encontrado'
-      )
+      switch (res.error) {
+        case 'User not found!':
+          setLoginFailed('E-mail não encontrado')
+          break
+        default:
+          setLoginFailed('Ops, algo deu errado :(')
+      }
 
       setTimeout(() => setLoginFailed(''), 9000)
     }
@@ -46,8 +48,7 @@ const FormLogin = () => {
 
   const onRegisterClick = () => {
     setDisable(true)
-    dispatch(HomeActions.update({ initial: true }))
-    dispatch(HomeActions.update({ page: 'signup' }))
+    dispatch(HomeActions.update({ initial: true, page: 'signup' }))
     history.push('/home/signup')
   }
 
@@ -56,7 +57,7 @@ const FormLogin = () => {
       <ThemeSwitch />
 
       <Form
-        afterResData={onSubmit}
+        afterResData={afterSubmit}
         schema={loginSchema}
         path='login'
         push='/session/main'

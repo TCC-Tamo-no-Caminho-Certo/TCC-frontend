@@ -19,6 +19,8 @@ import Textarea from './Textarea'
 
 import api from 'services/api'
 
+import { Response } from 'store'
+
 import Popup, { PopupMethods } from 'components/Popup'
 
 import Captcha from 'react-google-recaptcha'
@@ -191,7 +193,9 @@ const Form = ({
     }
   }
 
-  const makeRequest = async (cbAfterResData?: (_data: any) => void) => {
+  const makeRequest = async (
+    cbAfterResData?: (_data: Response<any>) => void
+  ) => {
     if (path) {
       const params: { [key: string]: { path: string; data?: any } } = {
         get: { path },

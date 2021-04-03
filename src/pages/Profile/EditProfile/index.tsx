@@ -14,6 +14,7 @@ import ImageChanger from './ImageChanger'
 import editProfileSchema from 'utils/validations/editProfile'
 
 import { getUser, UserActions } from 'store/user'
+import { Response } from 'store'
 
 import { Form, Submit, Text } from 'components/Form'
 import Modal, { ModalMethods } from 'components/Modal'
@@ -32,7 +33,6 @@ interface EditProfileContextProps {
 
 export const ImageRefModalContext = createContext<ModalState | null>(null)
 export const EditProfileContext = createContext<EditProfileContextProps>({})
-
 const EditProfile = () => {
   const [globalChange, setGlobalChange] = useState(false)
   const dispatch = useDispatch()
@@ -40,15 +40,9 @@ const EditProfile = () => {
   const imageRefModal = useRef<ModalMethods>(null)
   const popupRef = useRef<PopupMethods>(null)
 
-  const submitCallback = (resData: any) => {
-    if (resData.error === 'Incorrect password!')
-      popupRef.current?.configPopup({
-        type: 'error',
-        message: 'Senha inválida!',
-        setModal: true
-      })
-    else if (resData.success) {
-      dispatch(UserActions.update(resData.user))
+  const afterSubmit = (res: Response<any>) => {
+    if (res.success) {
+      dispatch(UserActions.update(res.user))
       confirmModal.current?.toggleModal()
 
       popupRef.current?.configPopup({
@@ -58,11 +52,21 @@ const EditProfile = () => {
         onClick: () => setGlobalChange(false)
       })
     } else
-      popupRef.current?.configPopup({
-        type: 'error',
-        message: 'Algo deu errado! tente novamente :D',
-        setModal: true
-      })
+      switch (res.error) {
+        case 'Incorrect password!':
+          popupRef.current?.configPopup({
+            type: 'error',
+            message: 'Senha inválida!',
+            setModal: true
+          })
+          break
+        default:
+          popupRef.current?.configPopup({
+            type: 'error',
+            message: 'Ops, algo deu errado :(',
+            setModal: true
+          })
+      }
   }
 
   return (
@@ -75,7 +79,7 @@ const EditProfile = () => {
             path='user'
             schema={editProfileSchema}
             getData={e => console.log(e)}
-            afterResData={submitCallback}
+            afterResData={afterSubmit}
             onError={(error: any) => {
               if (error.message !== 'Você esqueceu de informar a senha!')
                 confirmModal.current?.toggleModal(false)

@@ -4,8 +4,8 @@ import Style from './styles'
 import '../../../../node_modules/react-modern-calendar-datepicker/lib/DatePicker.css'
 import Text, { TextProps } from '../Text'
 
-import ptbr from 'utils/locales/dates/ptbr'
 import { datepickerToDate } from 'utils/dates'
+import ptbr from 'utils/dates/ptbr'
 
 import DatePicker, { DayValue } from 'react-modern-calendar-datepicker'
 

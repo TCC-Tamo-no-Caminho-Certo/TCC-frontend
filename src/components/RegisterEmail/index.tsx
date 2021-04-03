@@ -3,6 +3,8 @@ import Style from './styles'
 
 import tokenSchema from 'utils/validations/tokenSchema'
 
+import { Response } from 'store'
+
 import Form, { Submit, Text } from 'components/Form'
 import Popup, { PopupMethods, PopupProps } from 'components/Popup'
 import Modal, { ModalMethods } from 'components/Modal'
@@ -36,24 +38,29 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
         .required('Você esqueceu de informar o email!')
     })
 
-    const onEmailSubmit = (result: any) => {
-      if (result.success) setCodeSend(true)
-      else if (result.error === 'Email already in use!')
-        popupRef.current?.configPopup({
-          setModal: true,
-          type: 'error',
-          message: 'E-mail já cadastrado!'
-        })
+    const afterEmailSubmit = (res: Response<any>) => {
+      if (res.success) setCodeSend(true)
       else
-        popupRef.current?.configPopup({
-          setModal: true,
-          type: 'error',
-          message: 'Código não enviado!'
-        })
+        switch (res.error) {
+          case 'Email already in use!':
+            popupRef.current?.configPopup({
+              setModal: true,
+              type: 'error',
+              message: 'E-mail já cadastrado!'
+            })
+            break
+
+          default:
+            popupRef.current?.configPopup({
+              setModal: true,
+              type: 'error',
+              message: 'Código não enviado!'
+            })
+        }
     }
 
-    const onTokenSubmit = (result: any) => {
-      if (result.success) {
+    const afterTokenSubmit = (res: Response<any>) => {
+      if (res.success) {
         popupRef.current?.configPopup({
           setModal: true,
           type: 'success',
@@ -87,7 +94,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
                   path='user/email'
                   addData={addData}
                   schema={emailSchema}
-                  afterResData={onEmailSubmit}
+                  afterResData={afterEmailSubmit}
                 >
                   <Text name='email' placeholder={placeholder} />
 
@@ -104,7 +111,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
                 path='confirm/email/*%'
                 addToPath={['token']}
                 schema={tokenSchema}
-                afterResData={onTokenSubmit}
+                afterResData={afterTokenSubmit}
               >
                 <p>
                   Digite o código de confirmação que foi enviado ao seu e-mail.
