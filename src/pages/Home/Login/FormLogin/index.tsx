@@ -84,8 +84,9 @@ const FormLogin = () => {
         <Text
           name='email'
           placeholder='E-mail'
-          icon={MailIcon}
           autoComplete='email'
+          data-cy='input-login-email'
+          icon={MailIcon}
         />
 
         <Text
@@ -93,6 +94,7 @@ const FormLogin = () => {
           name='password'
           type='password'
           placeholder='Senha'
+          data-cy='input-login-password'
           autoComplete='current-password'
           icon={PadlockIcon}
         />
@@ -105,7 +107,7 @@ const FormLogin = () => {
             Não consegue fazer login?
           </Link>
 
-          <Submit>Efetuar Login</Submit>
+          <Submit data-cy='button-login-submit'>Efetuar Login</Submit>
         </div>
 
         <div id='footer'>
@@ -113,7 +115,12 @@ const FormLogin = () => {
 
           <div id='register'>
             Ainda não possui uma conta ?
-            <button type='button' onClick={onRegisterClick} disabled={disable}>
+            <button
+              type='button'
+              data-cy='button-login-register'
+              onClick={onRegisterClick}
+              disabled={disable}
+            >
               Registre-se aqui!
             </button>
           </div>

@@ -252,6 +252,7 @@ const RightMenu = () => {
 
                     <motion.button
                       id='logout'
+                      data-cy='button-main-logout'
                       animate='open'
                       type='button'
                       variants={motionLogout}

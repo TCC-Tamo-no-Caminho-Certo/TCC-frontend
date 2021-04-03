@@ -49,18 +49,21 @@ export const isoToDate = (date: string, returnType: ReturnType): string => {
 }
 
 export const dateToValue = (date?: string) => {
-  if (date) return date.replaceAll('/', '-')
+  if (date) {
+    const dates = date?.split('/')
+    return `${dates[2]}-${dates[1]}-${dates[0]}`
+  }
   return ''
 }
 
-export const datepickerToIso = (date: DayValue) => {
+export const datepickerToDate = (date: DayValue) => {
   const day = date?.day
   const month = date?.month
   const year = date?.year
 
   return day && month && year
-    ? `${year}-${month < 10 ? `0${month}` : month}-${
-        day < 10 ? `0${day}` : day
-      }`
+    ? `${day < 10 ? `0${day}` : day}/${
+        month < 10 ? `0${month}` : month
+      }/${year}`
     : ''
 }

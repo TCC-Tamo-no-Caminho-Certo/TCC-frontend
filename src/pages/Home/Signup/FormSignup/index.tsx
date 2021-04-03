@@ -40,7 +40,12 @@ const FormSignup = () => {
       popupRef.current?.configPopup({
         setModal: true,
         type: 'error',
-        message: 'Usuário ja cadastrado, tente fazer login!'
+        message: 'Usuário já cadastrado, tente conectar!',
+        onClick: () => {
+          setDisable(true)
+          dispatch(HomeActions.update({ initial: true, page: 'login' }))
+          history.push('/home')
+        }
       })
     else
       popupRef.current?.configPopup({
@@ -74,12 +79,14 @@ const FormSignup = () => {
           path='register'
           schema={signupSchema}
           afterResData={afterFormResData}
+          getData={e => console.log(e)}
         >
           <Text
             name='name'
             className='dual'
             placeholder='Nome'
             autoComplete='given-name'
+            data-cy='input-signup-name'
             icon={WorldIcon}
           />
 
@@ -88,6 +95,7 @@ const FormSignup = () => {
             className='dual'
             placeholder='Sobrenome'
             autoComplete='family-name'
+            data-cy='input-signup-surname'
             icon={WorldIcon}
           />
 
@@ -98,8 +106,10 @@ const FormSignup = () => {
 
           <Datepicker
             isBirthday
+            arrow='top'
             name='birthday'
             placeholder='Data de nascimento'
+            data-cy='input-signup-birthday'
             icon={UserLockedIcon}
           />
 
@@ -109,6 +119,7 @@ const FormSignup = () => {
             name='email'
             placeholder='E-mail'
             autoComplete='email'
+            data-cy='input-signup-email'
             icon={UserLockedIcon}
           />
 
@@ -121,15 +132,18 @@ const FormSignup = () => {
             className='dual'
             placeholder='Senha'
             autoComplete='new-password'
+            data-cy='input-signup-password'
             icon={UserLockedIcon}
           />
 
           <Text
+            eye
             type='password'
             className='dual'
             name='confirmPassword'
             placeholder='Confirmar Senha'
             autoComplete='new-password'
+            data-cy='input-signup-confirmPassword'
             icon={UserLockedIcon}
           />
 
@@ -142,7 +156,7 @@ const FormSignup = () => {
              do Steams Lab. */}
           </span>
 
-          <Submit>Concordar e concluir</Submit>
+          <Submit data-cy='button-signup-submit'>Concordar e concluir</Submit>
         </Form>
 
         <Popup ref={popupRef} bgHeight='300vh' top='50vh' />

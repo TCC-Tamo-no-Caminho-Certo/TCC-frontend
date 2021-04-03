@@ -1,0 +1,7 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "viewportWidth": 320,
+  "viewportHeight": 568,
+  "chromeWebSecurity": false,
+  "scrollBehavior": "center"
+}

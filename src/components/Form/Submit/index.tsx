@@ -10,19 +10,22 @@ import DotsLoader from 'components/DotsLoader'
 
 import { useSelector } from 'react-redux'
 
-type SubmitProps = HTMLProps<HTMLButtonElement>
+interface SubmitProps extends HTMLProps<HTMLButtonElement> {
+  dataCy?: string
+}
 
 const Submit = forwardRef(
-  ({ children, disabled, type = 'submit' }: SubmitProps, ref) => {
+  ({ children, disabled, type = 'submit', ...rest }: SubmitProps, ref) => {
     const form = useContext<FormState | null>(FormContext)
     const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
     return (
       <Style
-        type={type as any}
         className='Submit'
+        type={type as any}
         disabled={disabled}
         ref={ref as any}
+        {...(rest as any)}
       >
         <div className='label'>{children}</div>
 

@@ -5,7 +5,7 @@ import '../../../../node_modules/react-modern-calendar-datepicker/lib/DatePicker
 import Text, { TextProps } from '../Text'
 
 import ptbr from 'utils/locales/dates/ptbr'
-import { datepickerToIso } from 'utils/dates'
+import { datepickerToDate } from 'utils/dates'
 
 import DatePicker, { DayValue } from 'react-modern-calendar-datepicker'
 
@@ -75,7 +75,7 @@ const Datepicker = ({
           name={name}
           icon={Icon}
           onClick={onClick}
-          value={datepickerToIso(selectedDate)}
+          value={datepickerToDate(selectedDate)}
           {...rest}
         />
       )

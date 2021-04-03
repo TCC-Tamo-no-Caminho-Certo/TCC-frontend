@@ -74,6 +74,7 @@ const EditProfile = () => {
             method='patch'
             path='user'
             schema={editProfileSchema}
+            getData={e => console.log(e)}
             afterResData={submitCallback}
             onError={(error: any) => {
               if (error.message !== 'Você esqueceu de informar a senha!')

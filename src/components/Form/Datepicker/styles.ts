@@ -13,7 +13,7 @@ const Style = styled.div<StyleProps>`
 
     return css`
       .CalendarSize {
-        font-size: 10px !important;
+        font-size: 8px !important;
 
         background-color: ${body};
       }
@@ -205,6 +205,12 @@ const Style = styled.div<StyleProps>`
     .Calendar__yearSelector.-open {
       margin-top: 1%;
       padding-bottom: 10%;
+    }
+  }
+
+  @media screen and (min-width: 545px) {
+    .CalendarSize {
+      font-size: 10px !important;
     }
   }
 `
