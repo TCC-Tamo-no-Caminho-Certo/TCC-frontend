@@ -1,4 +1,10 @@
-import React, { ReactNode, useCallback, useEffect, useState } from 'react'
+import React, {
+  forwardRef,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState
+} from 'react'
 import Style, { Content, Header } from './styles'
 
 import RequestStatus from './RequestStatus'
@@ -19,7 +25,7 @@ interface ContainerProps {
   children: ReactNode
 }
 
-const Container = ({ role, children }: ContainerProps) => {
+const Container = forwardRef(({ role, children }: ContainerProps, ref) => {
   const [showStatus, setShowStatus] = useState(false)
   const user = useSelector<RootState, UserState>(state => state.user)
   const [status, setStatus] = useState<StatusTypes>('awaiting')
@@ -30,14 +36,18 @@ const Container = ({ role, children }: ContainerProps) => {
       `user/role/requests?per_page=1&filter[user_id][]=${user.user_id}`
     )
 
-    const roleRequests = requests.filter(
-      (request: any) => request.role === role
-    )
+    console.log(requests)
 
-    if (roleRequests[0]) {
-      setShowStatus(!!roleRequests[0].status)
-      setStatus(roleRequests[0].status)
-      setMessage(roleRequests[0].feedback)
+    if (requests) {
+      const roleRequests = requests.filter(
+        (request: any) => request.role === role
+      )
+
+      if (roleRequests[0]) {
+        setShowStatus(!!roleRequests[0].status)
+        setStatus(roleRequests[0].status)
+        setMessage(roleRequests[0].feedback)
+      }
     }
   }, [user, role])
 
@@ -54,7 +64,7 @@ const Container = ({ role, children }: ContainerProps) => {
   return showStatus ? (
     <RequestStatus role={role} status={status} message={message} />
   ) : (
-    <Style>
+    <Style ref={ref as any}>
       <Content role={role}>
         <Header>Solicitação de perfil</Header>
 
@@ -72,6 +82,6 @@ const Container = ({ role, children }: ContainerProps) => {
       </Content>
     </Style>
   )
-}
+})
 
 export default Container

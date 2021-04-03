@@ -1,10 +1,40 @@
-Cypress.Commands.add('loginMiguel', () => {
-  cy.visit('/home')
-  cy.get('[data-cy=input-login-email]').type('miguelandradebarreto2@gmail.com')
-  cy.get('[data-cy=input-login-password]').type('Miguel@1234')
-  cy.get('[data-cy=button-login-submit]').click()
-  cy.url().should('contains', '/session/main')
-})
+Cypress.Commands.add(
+  'invisibleLogin',
+  (email = 'miguelandradebarreto2@gmail.com', password = 'Miguel@1234') => {
+    cy.request({
+      method: 'POST',
+      url: 'https://dev.steamslab.com/api/login',
+      body: {
+        email,
+        password
+      }
+    }).then(res => {
+      window.localStorage.setItem('@SLab_ac_token', res.access_token)
+      cy.visit('/session/main')
+      cy.url().should('contains', '/session/main')
+    })
+  }
+)
+
+Cypress.Commands.add(
+  'login',
+  (email = 'miguelandradebarreto2@gmail.com', password = 'Miguel@1234') => {
+    cy.visit('/home')
+    cy.get('[data-cy=input-login-email]').type(email)
+    cy.get('[data-cy=input-login-password]').type(password)
+    cy.get('[data-cy=button-login-submit]').click()
+    cy.url().should('contains', '/session/main')
+  }
+)
+
+Cypress.Commands.add(
+  'writeLogin',
+  (email = 'miguelandradebarreto2@gmail.com', password = 'Miguel@1234') => {
+    cy.visit('/home')
+    cy.get('[data-cy=input-login-email]').type(email)
+    cy.get('[data-cy=input-login-password]').type(password)
+  }
+)
 
 Cypress.Commands.add(
   'submitAndVerifyError',

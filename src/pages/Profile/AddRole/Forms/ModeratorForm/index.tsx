@@ -41,12 +41,20 @@ const verifyFullTime = (user: UserState) => {
 const ModeratorForm = () => {
   const user = useSelector<RootState, UserState>(state => state.user)
   const dispatch = useDispatch()
+  const containerRef = useRef<HTMLDivElement>(null)
   const popupRef = useRef<PopupMethods>(null)
   const history = useHistory()
   const { rolesHeight } = useContext(AddRoleContext)
   const [{ showAll, showJustification }, setAnimations] = useState(
     initialAnimations
   )
+
+  const takeBgHeight = () => {
+    const height = containerRef.current?.offsetHeight
+
+    if (height) return `calc(${rolesHeight}px + ${height}px + 48px)`
+    else return `calc(${rolesHeight}px + 100vh)`
+  }
 
   const afterSubmit = (res: Response<any>) => {
     if (res.success)
@@ -92,7 +100,7 @@ const ModeratorForm = () => {
 
   return (
     <>
-      <Container role='moderator'>
+      <Container role='moderator' ref={containerRef}>
         <Form
           loading
           path='user/role/request/moderator'
@@ -115,7 +123,7 @@ const ModeratorForm = () => {
               <MotionTextarea
                 exit='exit'
                 animate='enter'
-                name='justification'
+                name='pretext'
                 placeholder='Descreva porquê você quer ser Moderador'
                 maxLength={500}
                 variants={show}
@@ -132,7 +140,7 @@ const ModeratorForm = () => {
       <Popup
         bottom='50vh'
         translateY='50%'
-        bgHeight={`calc(${rolesHeight}px + 100vh)`}
+        bgHeight={takeBgHeight()}
         ref={popupRef}
       />
     </>

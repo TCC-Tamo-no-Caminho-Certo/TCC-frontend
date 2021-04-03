@@ -22,8 +22,9 @@ export const Header = styled(HeaderComponent)`
 
 export const Content = styled(Card)<ContentProps>`
   width: clamp(320px, 100vw, 550px);
-  padding-bottom: 0;
   border-radius: 0;
+
+  padding-bottom: 16px;
 
   #role {
     width: 100%;
@@ -50,6 +51,19 @@ export const Content = styled(Card)<ContentProps>`
 `
 
 const Style = styled.div`
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 48px 0;
+  min-height: 100vh;
+  width: 100%;
+
+  background-color: ${({ theme }) => theme.colors.tertiary};
+  color: ${({ theme }) => theme.colors.secondary};
+
   #delete {
     position: absolute;
     top: 0;
@@ -58,18 +72,6 @@ const Style = styled.div`
     height: 48px;
     color: transparent;
   }
-
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 100vh;
-  width: 100%;
-
-  background-color: ${({ theme }) => theme.colors.tertiary};
-  color: ${({ theme }) => theme.colors.secondary};
 `
 
 export default Style

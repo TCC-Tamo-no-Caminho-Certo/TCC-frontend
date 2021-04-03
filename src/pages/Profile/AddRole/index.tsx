@@ -14,6 +14,8 @@ import ProfessorForm from './Forms/ProfessorForm'
 
 import selectRoleLabel from 'utils/makeRoleLabel'
 
+import api from 'services/api'
+
 import { RootState } from 'store'
 import { UserState } from 'store/user'
 import { Role } from 'store/roles'
@@ -83,12 +85,12 @@ const AddRole = () => {
               ]}
             />
 
-            {/* <button
+            <button
               type='button'
               onClick={async () => await api.delete('user/role/student')}
             >
               RemoverEstudante
-            </button> */}
+            </button>
 
             <RoleInfo
               title='Estudante'

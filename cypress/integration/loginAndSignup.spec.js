@@ -1,6 +1,6 @@
 describe('Login', () => {
   it('login', () => {
-    cy.loginMiguel()
+    cy.login()
   })
 
   it('logout', () => {
@@ -11,7 +11,7 @@ describe('Login', () => {
 })
 
 describe('Signup', () => {
-  it.only('fazer cadastro', () => {
+  it('fazer cadastro', () => {
     cy.visit('/')
     cy.get('[data-cy=button-login-register]').click()
     cy.url().should('contains', '/home/signup')
@@ -44,8 +44,8 @@ describe('Signup', () => {
     cy.scrollTo(0, 0)
 
     cy.get('.sc-bYEvPH > p').contains('Usuário já cadastrado, tente conectar!')
-    // cy.get('.sc-bYEvPH > button').click()
-    // cy.url().should('not.contains', '/home/signup')
+    cy.get('.sc-bYEvPH > button').click()
+    cy.url().should('not.contains', '/home/signup')
   })
 
   it('validar schema de senha', () => {

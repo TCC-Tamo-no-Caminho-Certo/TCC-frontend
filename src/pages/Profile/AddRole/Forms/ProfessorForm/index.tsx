@@ -74,6 +74,7 @@ const initialAnimations: AnimationsState = {
 
 const ProfessorForm = () => {
   const dispatch = useDispatch()
+  const containerRef = useRef<HTMLDivElement>(null)
   const registerEmailRef = useRef<RegisterEmailMethods>(null)
   const popupRef = useRef<PopupMethods>(null)
   const { rolesHeight } = useContext(AddRoleContext)
@@ -88,6 +89,13 @@ const ProfessorForm = () => {
     setAnimations
   ] = useState(initialAnimations)
 
+  const takeBgHeight = () => {
+    const height = containerRef.current?.offsetHeight
+
+    if (height) return `calc(${rolesHeight}px + ${height}px + 48px)`
+    else return `calc(${rolesHeight}px + 100vh)`
+  }
+
   const setShowSubmitTrue = () =>
     setAnimations(prev => ({ ...prev, showSubmit: true, showWays: false }))
 
@@ -96,14 +104,16 @@ const ProfessorForm = () => {
 
     setFormState(prev => ({
       ...prev,
-      universities: universities.map(
-        (university: any): University => ({
-          value: university.university_id,
-          label: university.name,
-          email: university.regex.email,
-          register: university.regex.register
-        })
-      )
+      universities: universities
+        ? universities.map(
+            (university: any): University => ({
+              value: university.university_id,
+              label: university.name,
+              email: university.regex.email,
+              register: university.regex.register
+            })
+          )
+        : undefined
     }))
   }
 
@@ -117,12 +127,14 @@ const ProfessorForm = () => {
     setFormState(prev => ({
       ...prev,
       selectedUniversity: newSelectedUniversity,
-      campus: campus.map(
-        (campus: any): Option => ({
-          value: campus.campus_id,
-          label: campus.name
-        })
-      )
+      campus: campus
+        ? campus.map(
+            (campus: any): Option => ({
+              value: campus.campus_id,
+              label: campus.name
+            })
+          )
+        : undefined
     }))
   }
 
@@ -163,9 +175,8 @@ const ProfessorForm = () => {
         popupRef.current?.configPopup({
           setModal: true,
           type: 'success',
-          message: 'Solicitação enviada',
-          onClick: () =>
-            setAnimations(prev => ({ ...prev, showRequestStatus: true }))
+          message: 'Solicitação enviada, aguarde a resposta de um moderador.',
+          onClick: () => history.push('/session/main')
         })
       else {
         popupRef.current?.configPopup({
@@ -192,11 +203,12 @@ const ProfessorForm = () => {
 
   return (
     <>
-      <Container role='professor'>
+      <Container ref={containerRef} role='professor'>
         <Form
           loading
           path='user/role/request/professor'
           afterResData={afterSubmit}
+          getData={e => console.log(e)}
           schema={
             showReceipt
               ? receiptSchema(
@@ -370,14 +382,14 @@ const ProfessorForm = () => {
         modal={{
           bottom: '50vh',
           translateY: '50%',
-          bgHeight: `calc(${rolesHeight}px + 100vh)`
+          bgHeight: takeBgHeight()
         }}
       />
 
       <Popup
         bottom='50vh'
         translateY='50%'
-        bgHeight={`calc(${rolesHeight}px + 100vh)`}
+        bgHeight={takeBgHeight()}
         ref={popupRef}
       />
     </>

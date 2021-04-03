@@ -112,13 +112,17 @@ export const show: Variants = {
   }
 }
 
-export const formatterToSelect = (array: Universities) =>
-  array?.map((university: University) => ({
-    value: university.value,
-    label: university.label
-  }))
+export const formatterToSelect = (array: Universities) => {
+  return array
+    ? array.map((university: University) => ({
+        value: university.value,
+        label: university.label
+      }))
+    : undefined
+}
 
 const StudentForm = () => {
+  const containerRef = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
   const registerEmailRef = useRef<RegisterEmailMethods>(null)
   const popupRef = useRef<PopupMethods>(null)
@@ -141,6 +145,13 @@ const StudentForm = () => {
     },
     setAnimations
   ] = useState(initialAnimations)
+
+  const takeBgHeight = () => {
+    const height = containerRef.current?.offsetHeight
+
+    if (height) return `calc(${rolesHeight}px + ${height}px + 48px)`
+    else return `calc(${rolesHeight}px + 100vh)`
+  }
 
   const setShowSubmitTrue = () =>
     setAnimations(prev => ({ ...prev, showSubmit: true, showWays: false }))
@@ -167,14 +178,16 @@ const StudentForm = () => {
 
     setFormState(prev => ({
       ...prev,
-      universities: universities.map(
-        (university: any): University => ({
-          value: university.university_id,
-          label: university.name,
-          email: university.regex.email,
-          register: university.regex.register
-        })
-      )
+      universities: universities
+        ? universities.map(
+            (university: any): University => ({
+              value: university.university_id,
+              label: university.name,
+              email: university.regex.email,
+              register: university.regex.register
+            })
+          )
+        : undefined
     }))
   }
 
@@ -216,7 +229,7 @@ const StudentForm = () => {
             setModal: true,
             type: 'success',
             message: 'Solicitação enviada, aguarde a resposta de um moderador.',
-            onClick: () => history.push('session/profile/change-role')
+            onClick: () => history.push('/session/profile/change-role')
           })
         : popupRef.current?.configPopup({
             setModal: true,
@@ -243,7 +256,7 @@ const StudentForm = () => {
 
   return (
     <>
-      <Container role='student'>
+      <Container role='student' ref={containerRef}>
         <Form
           loading
           path='user/role/request/student'
@@ -429,7 +442,7 @@ const StudentForm = () => {
       <Popup
         bottom='50vh'
         translateY='50%'
-        bgHeight={`calc(${rolesHeight}px + 100vh)`}
+        bgHeight={takeBgHeight()}
         ref={popupRef}
       />
     </>
