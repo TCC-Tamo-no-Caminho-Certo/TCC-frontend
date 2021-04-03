@@ -92,6 +92,7 @@ const Style = styled(motion.section)`
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-bottom: 24px;
 
     button {
       height: 40px;
@@ -100,6 +101,7 @@ const Style = styled(motion.section)`
       line-height: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
 
       background-color: transparent;
+
       color: ${({ theme }) => theme.colors.secondary};
     }
 
@@ -120,7 +122,7 @@ const Style = styled(motion.section)`
     }
   }
 
-  @media screen and (min-width: 545px) {
+  @media screen and (min-width: 545px) and (min-height: 800px) {
     justify-content: center;
 
     #submits {

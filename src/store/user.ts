@@ -30,13 +30,15 @@ interface ResData {
 export interface UserState extends ResData {
   entities: []
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'
+  dataLoading: boolean
   selectedRole: Role
 }
 
 interface Payload {
   entities?: []
-  selectedRole?: Role
   loading?: 'idle' | 'pending' | 'succeeded' | 'failed'
+  selectedRole?: Role
+  dataLoading?: boolean
 
   roles?: Role[]
   name?: string
@@ -55,6 +57,7 @@ const initialState: UserState = {
   entities: [],
   loading: 'idle',
   selectedRole: 'student',
+  dataLoading: true,
 
   name: '',
   phone: '',
@@ -100,7 +103,8 @@ export const getUser = createAsyncThunk('userConfig/getUser', async () => {
 
   return {
     ...user,
-    selectedRole: getInitialSelectedRole(user.roles)
+    selectedRole: getInitialSelectedRole(user.roles),
+    dataLoading: false
   }
 })
 

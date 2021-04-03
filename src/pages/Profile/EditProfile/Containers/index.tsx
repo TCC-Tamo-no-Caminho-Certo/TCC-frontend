@@ -17,6 +17,7 @@ import useWindowDimensions from 'hooks/useWindowDimensions'
 import Avatar from 'components/User/Avatar'
 import Card from 'components/Card'
 import Slider from 'components/Slider'
+import DotsLoader from 'components/DotsLoader'
 
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -66,10 +67,16 @@ const Containers = () => {
                 }
               />
 
-              {formatUpdateUser(universities, user, 'personal').map(
-                (info: InputData) => (
+              {user.dataLoading === false ? (
+                formatUpdateUser(
+                  universities,
+                  user,
+                  'personal'
+                ).map((info: InputData) => (
                   <Field data={info} key={info.name} />
-                )
+                ))
+              ) : (
+                <DotsLoader color={theme.colors.primary} />
               )}
             </Card>
           )
@@ -79,13 +86,16 @@ const Containers = () => {
             key={role}
             headerText={`Dados de ${selectedRoleLabel(role as Role)}`}
           >
-            {formatUpdateUser(
-              universities,
-              user,
-              role as keyof ContainerForm
-            ).map((info: InputData) => (
-              <Field key={info.name} data={info} />
-            ))}
+            {user.dataLoading === false ? (
+              formatUpdateUser(
+                universities,
+                user,
+                role as keyof ContainerForm
+              ).map((info: InputData) => <Field key={info.name} data={info} />)
+            ) : (
+              <DotsLoader color={theme.colors.primary} />
+            )}
+            {}
           </Card>
         )
       })}
