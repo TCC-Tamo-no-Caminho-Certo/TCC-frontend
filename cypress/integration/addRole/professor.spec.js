@@ -1,10 +1,7 @@
-describe('testes em AddRole-ProfessorForm', () => {
-  it('acessar formulário', () => {
-    // cy.login()
-    cy.invisibleLogin()
+describe('Cadastrar papel de professor', () => {
+  it('Enviando voucher', () => {
+    cy.accessAddRole()
 
-    cy.get('#Gear').click()
-    cy.get('#openProfile > :nth-child(4) > a').click()
     cy.get('.lhVFsh > #title').click()
     cy.get('.lhVFsh > div > button').click()
 
@@ -24,5 +21,14 @@ describe('testes em AddRole-ProfessorForm', () => {
     cy.get('.sc-fKFyDc').click()
     cy.get('.sc-bYEvPH > button').click()
     cy.url().should('contains', '/session/main')
+  })
+
+  it.only('Verifica se solicitação foi enviada', () => {
+    cy.accessAddRole()
+
+    cy.get('.lhVFsh > #title').click()
+    cy.get('.lhVFsh > div > button').click()
+
+    cy.get('.sc-iktFzd').should('exist')
   })
 })

@@ -124,6 +124,15 @@ Cypress.Commands.add('verifyPasswordSchema', () => {
   })
 })
 
+Cypress.Commands.add(
+  'accessAddRole',
+  (email = 'miguelandradebarreto2@gmail.com', password = 'Miguel@1234') => {
+    cy.login(email, password)
+    cy.get('#Gear').click()
+    cy.get('#openProfile > :nth-child(4) > a').click()
+  }
+)
+
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite

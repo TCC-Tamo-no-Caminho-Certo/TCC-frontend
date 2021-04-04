@@ -15,6 +15,7 @@ import { RootState } from 'store'
 import { UserActions, UserState } from 'store/user'
 // import { ThemeState } from 'store/theme'
 import { HomeActions } from 'store/home'
+import { ThemeState } from 'store/theme'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
@@ -26,6 +27,7 @@ import AddRoleIcon from 'assets/RightMenuOpen/AddRoleIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import Avatar from 'components/User/Avatar'
+import DotsLoader from 'components/DotsLoader'
 
 import { AnimatePresence, motion, useCycle, Variants } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
@@ -102,7 +104,7 @@ const motionLogout: Variants = {
 }
 
 const RightMenu = () => {
-  // const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const theme = useSelector<RootState, ThemeState>(state => state.theme)
   const history = useHistory()
   const dispatch = useDispatch()
   const { innerWidth } = useWindowDimensions()
@@ -110,7 +112,7 @@ const RightMenu = () => {
   const [editOpen, toggleEditOpen] = useCycle(false, true)
   const [isOpen, setIsOpen] = useState(false)
   const [changeRole, setChangeRole] = useState(false)
-  const { name, selectedRole, roles, surname } = useSelector<
+  const { name, selectedRole, roles, surname, dataLoading } = useSelector<
     RootState,
     UserState
   >(state => state.user)
@@ -191,16 +193,24 @@ const RightMenu = () => {
             <Avatar size={80} />
 
             <UserInfo selectedRole={selectedRole} className='UserInfo'>
-              <span id='userRole'>{selectRoleLabel(selectedRole)}</span>
+              {dataLoading ? (
+                <DotsLoader color={theme.colors.secondary} />
+              ) : (
+                <>
+                  <span id='userRole'>{selectRoleLabel(selectedRole)}</span>
 
-              <span id='userName'>{formatterName(name)}</span>
+                  <span id='userName'>{formatterName(name)}</span>
 
-              <span id='userActivity'>
-                {/* <svg width='5' height='5' xmlns='http://www.w3.org/2000/svg'>
-                  <circle cx='2.5' cy='2.5' r='2.5' fill={theme.colors.green} />
-                </svg>
-                Online */}
-              </span>
+                  {/* ~
+                    <span id='userActivity'>
+                      <svg width='5' height='5' xmlns='http://www.w3.org/2000/svg'>
+                        <circle cx='2.5' cy='2.5' r='2.5' fill={theme.colors.green} />
+                      </svg>
+                      Online
+                    </span>
+                  */}
+                </>
+              )}
             </UserInfo>
 
             {innerWidth >= 545 && (
@@ -263,41 +273,45 @@ const RightMenu = () => {
                     </motion.button>
                   </ul>
 
-                  {changeRole && (
-                    <motion.div
-                      id='selectRoles'
-                      onMouseLeave={() => setChangeRole(false)}
-                    >
-                      {innerWidth < 545 && (
-                        <CloseIcon onClick={() => setChangeRole(false)} />
-                      )}
+                  {dataLoading ? (
+                    <></>
+                  ) : (
+                    changeRole && (
+                      <motion.div
+                        id='selectRoles'
+                        onMouseLeave={() => setChangeRole(false)}
+                      >
+                        {innerWidth < 545 && (
+                          <CloseIcon onClick={() => setChangeRole(false)} />
+                        )}
 
-                      <ul>
-                        {roles.map(role => (
-                          <RoleLi
-                            key={role}
-                            role={role}
-                            onClick={() => {
-                              setIsOpen(false)
-                              toggleEditOpen()
-                            }}
-                          >
-                            <button
-                              type='button'
-                              onClick={() =>
-                                dispatch(
-                                  UserActions.update({
-                                    selectedRole: role
-                                  })
-                                )
-                              }
+                        <ul>
+                          {roles.map(role => (
+                            <RoleLi
+                              key={role}
+                              role={role}
+                              onClick={() => {
+                                setIsOpen(false)
+                                toggleEditOpen()
+                              }}
                             >
-                              {selectRoleLabel(role)}
-                            </button>
-                          </RoleLi>
-                        ))}
-                      </ul>
-                    </motion.div>
+                              <button
+                                type='button'
+                                onClick={() =>
+                                  dispatch(
+                                    UserActions.update({
+                                      selectedRole: role
+                                    })
+                                  )
+                                }
+                              >
+                                {selectRoleLabel(role)}
+                              </button>
+                            </RoleLi>
+                          ))}
+                        </ul>
+                      </motion.div>
+                    )
                   )}
                 </RightMenuOpen>
               )}

@@ -195,18 +195,18 @@ const RequestStatus = ({ role, status, message }: RequestStatusProps) => {
               Comentário:
               <p>{message}</p>
             </div>
-
-            <button
-              id='scrollButton'
-              type='button'
-              onClick={() => window.scrollTo(0, 0)}
-            >
-              Escolher outro papel
-            </button>
           </div>
         ) : (
           <></>
         )}
+
+        <button
+          id='scrollButton'
+          type='button'
+          onClick={() => window.scrollTo(0, 0)}
+        >
+          Escolher outro papel
+        </button>
       </Card>
     </Style>
   )

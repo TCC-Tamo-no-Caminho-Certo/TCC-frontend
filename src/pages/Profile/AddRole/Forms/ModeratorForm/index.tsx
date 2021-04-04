@@ -23,14 +23,14 @@ import { useHistory } from 'react-router'
 
 interface AnimationsState {
   showAll: boolean
-  showJustification: boolean
+  showPretext: boolean
 }
 
 const MotionTextarea = motion.custom(Textarea)
 
 const initialAnimations: AnimationsState = {
   showAll: true,
-  showJustification: false
+  showPretext: false
 }
 const verifyFullTime = (user: UserState) => {
   const { emails } = user
@@ -45,9 +45,7 @@ const ModeratorForm = () => {
   const popupRef = useRef<PopupMethods>(null)
   const history = useHistory()
   const { rolesHeight } = useContext(AddRoleContext)
-  const [{ showAll, showJustification }, setAnimations] = useState(
-    initialAnimations
-  )
+  const [{ showAll, showPretext }, setAnimations] = useState(initialAnimations)
 
   const takeBgHeight = () => {
     const height = containerRef.current?.offsetHeight
@@ -58,7 +56,7 @@ const ModeratorForm = () => {
 
   const afterSubmit = (res: Response<any>) => {
     if (res.success)
-      showJustification
+      showPretext
         ? popupRef.current?.configPopup({
             setModal: true,
             type: 'success',
@@ -94,7 +92,7 @@ const ModeratorForm = () => {
       ...prev,
       showAll: !isFullTimeProfessor,
       showSubmit: isFullTimeProfessor,
-      showJustification: !isFullTimeProfessor
+      showPretext: !isFullTimeProfessor
     }))
   }, [user])
 
@@ -105,7 +103,7 @@ const ModeratorForm = () => {
           loading
           path='user/role/request/moderator'
           afterResData={afterSubmit}
-          schema={showJustification ? withFullName : withoutFullName}
+          schema={showPretext ? withFullName : withoutFullName}
         >
           <Presence condition={showAll}>
             <Checkbox
@@ -114,25 +112,27 @@ const ModeratorForm = () => {
               onClick={() => {
                 setAnimations(prev => ({
                   ...prev,
-                  showJustification: !prev.showJustification
+                  showPretext: !prev.showPretext
                 }))
               }}
             />
 
-            <Presence condition={showJustification}>
-              <MotionTextarea
-                exit='exit'
-                animate='enter'
+            <motion.div
+              animate={{
+                height: showPretext ? 'auto' : 0,
+                opacity: showPretext ? 1 : 0
+              }}
+            >
+              <Textarea
                 name='pretext'
                 placeholder='Descreva porquê você quer ser Moderador'
                 maxLength={500}
-                variants={show}
               />
-            </Presence>
+            </motion.div>
           </Presence>
 
           <Submit>
-            {showJustification ? 'Enviar solicitação' : 'Tornar-se moderador!'}
+            {showPretext ? 'Enviar solicitação' : 'Tornar-se moderador!'}
           </Submit>
         </Form>
       </Container>

@@ -261,6 +261,7 @@ const StudentForm = () => {
           loading
           path='user/role/request/student'
           afterResData={afterSubmit}
+          getData={e => console.log(e)}
           schema={
             showReceipt
               ? receiptSchema(
