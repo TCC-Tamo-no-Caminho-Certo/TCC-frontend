@@ -55,7 +55,7 @@ const Style = styled.div<ResponseContentProps>`
     }
   }
 
-  .Textarea {
+  .Submit {
     margin-top: 16px;
   }
 
@@ -133,70 +133,44 @@ const Style = styled.div<ResponseContentProps>`
     }
   }
 
-  #buttons {
-    display: flex;
-    justify-content: space-between;
-
-    button {
-      width: 45%;
-      padding: 8px 16px;
-      margin-top: 12px;
-      border-radius: 0 8px;
-      transition: all 0.2s ease-in-out;
-
-      background-color: ${({ theme }) => theme.colors.green};
-      color: ${({ theme }) => theme.colors.secondary};
-
-      &:hover {
-        background-color: ${({ theme }) => darken(0.1, theme.colors.green)};
-      }
-
-      & + button {
-        border-radius: 8px 0;
-
-        background-color: ${({ theme }) => theme.colors.red};
-
-        &:hover {
-          background-color: ${({ theme }) => darken(0.1, theme.colors.red)};
-        }
-      }
-    }
-  }
-
   #radios {
     display: flex;
     justify-content: space-evenly;
 
-    margin-top: 16px;
-
-    #acceptLabel {
-      margin-left: 8px;
-    }
-
-    #rejectLabel {
-      margin-left: 8px;
-    }
+    margin: 16px 0;
 
     color: ${({ theme }) => theme.colors.secondary};
 
     div {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
       background-color: ${({ theme }) => theme.colors.green};
       padding: 8px;
-      border-radius: 8px;
-      width: 45%;
+      border-radius: 16px 0 0 16px;
+      width: 50%;
+      height: 100%;
+
+      &,
+      label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
       & + div {
+        border-radius: 0 16px 16px 0;
         background-color: ${({ theme }) => theme.colors.red};
       }
-    }
-  }
 
-  .Submit {
-    margin-top: 16px;
+      input {
+        display: none;
+      }
+
+      .CheckboxIcon {
+        width: 24px;
+        margin-right: 8px;
+
+        fill: ${({ theme }) => theme.colors.secondary};
+      }
+    }
   }
 
   #doc {

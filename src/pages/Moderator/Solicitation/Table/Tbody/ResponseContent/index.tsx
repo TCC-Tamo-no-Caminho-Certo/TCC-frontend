@@ -9,6 +9,7 @@ import { Response } from 'store'
 import { Role } from 'store/roles'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
+import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'
 
 import Popup, { PopupMethods } from 'components/Popup'
 import Avatar from 'components/User/Avatar'
@@ -27,6 +28,8 @@ function ResponseContent({
   selectedInfo,
   userInfo
 }: ResponseContentProps) {
+  const acceptRef = useRef<CheckboxIconMethods>(null)
+  const rejectRef = useRef<CheckboxIconMethods>(null)
   const popupRef = useRef<PopupMethods>(null)
   const [buttonClicked, setButtonClicked] = useState('rejected')
 
@@ -115,7 +118,14 @@ function ResponseContent({
                     e.target.checked && setButtonClicked('accepted')
                   }}
                 />
-                <label htmlFor='accept' id='acceptLabel'>
+                <label
+                  htmlFor='accept'
+                  onClick={() => {
+                    acceptRef.current?.changeCheck(true)
+                    rejectRef.current?.changeCheck(false)
+                  }}
+                >
+                  <CheckboxIcon ref={acceptRef} />
                   Aceitar
                 </label>
               </div>
@@ -131,7 +141,14 @@ function ResponseContent({
                     e.target.checked && setButtonClicked('rejected')
                   }}
                 />
-                <label htmlFor='reject' id='rejectLabel'>
+                <label
+                  htmlFor='reject'
+                  onClick={() => {
+                    acceptRef.current?.changeCheck(false)
+                    rejectRef.current?.changeCheck(true)
+                  }}
+                >
+                  <CheckboxIcon ref={rejectRef} />
                   Recusar
                 </label>
               </div>

@@ -58,6 +58,7 @@ const File = ({
     const { files } = e.target
     const reader = new FileReader()
 
+    console.log(files)
     setError('')
     files[0] && reader.readAsDataURL(files[0])
     reader.onload = () => setFile(reader.result)

@@ -237,7 +237,7 @@ const Form = ({
 
   return (
     <>
-      <form onSubmit={onSubmit} noValidate {...rest}>
+      <form noValidate onSubmit={onSubmit} {...rest}>
         {captcha && (
           <ReCaptcha
             size='invisible'

@@ -1,4 +1,4 @@
-import googleMaps from 'assets/googleMaps.png'
+import googleMaps from 'assets/global/googleMaps.png'
 
 import styled from 'styled-components'
 

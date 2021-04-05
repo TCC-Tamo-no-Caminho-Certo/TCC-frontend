@@ -5,7 +5,7 @@ import { emailSchema } from 'utils/validations/forgotPassword'
 
 import { Response } from 'store'
 
-import SendEmailIcon from 'assets/SendEmailIcon'
+import SendEmailIcon from 'assets/global/SendEmailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import MailIcon from 'assets/Inputs/MailIcon'
 import Logo from 'assets/Logo'

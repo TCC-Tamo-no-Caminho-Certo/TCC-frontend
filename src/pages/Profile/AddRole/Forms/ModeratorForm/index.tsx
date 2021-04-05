@@ -3,7 +3,6 @@ import { Form } from './styles'
 
 import Container from '../Container'
 import { AddRoleContext } from '../../index'
-import { show } from '../StudentForm'
 
 import {
   withFullName,
@@ -25,8 +24,6 @@ interface AnimationsState {
   showAll: boolean
   showPretext: boolean
 }
-
-const MotionTextarea = motion.custom(Textarea)
 
 const initialAnimations: AnimationsState = {
   showAll: true,
@@ -80,7 +77,7 @@ const ModeratorForm = () => {
       popupRef.current?.configPopup({
         setModal: true,
         type: 'error',
-        message: 'Falha ao enviar solicitação'
+        message: 'Falha ao enviar solicitação :('
       })
   }
 
@@ -102,6 +99,7 @@ const ModeratorForm = () => {
         <Form
           loading
           path='user/role/request/moderator'
+          getData={e => console.log(e)}
           afterResData={afterSubmit}
           schema={showPretext ? withFullName : withoutFullName}
         >

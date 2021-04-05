@@ -1,8 +1,8 @@
 import React from 'react'
 import Style from './styles'
 
-import CheckIcon from 'assets/CheckIcon'
-import ArrowIcon from 'assets/ArrowIcon'
+import CheckIcon from 'assets/global/CheckIcon'
+import ArrowIcon from 'assets/global/ArrowIcon'
 
 import { AnimatePresence, motion, useCycle, Variants } from 'framer-motion'
 

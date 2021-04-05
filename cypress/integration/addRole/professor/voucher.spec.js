@@ -22,13 +22,4 @@ describe('Cadastrar papel de professor', () => {
     cy.get('.sc-bYEvPH > button').click()
     cy.url().should('contains', '/session/main')
   })
-
-  it.only('Verifica se solicitação foi enviada', () => {
-    cy.accessAddRole()
-
-    cy.get('.lhVFsh > #title').click()
-    cy.get('.lhVFsh > div > button').click()
-
-    cy.get('.sc-iktFzd').should('exist')
-  })
 })

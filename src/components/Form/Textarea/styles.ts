@@ -23,7 +23,7 @@ const Style = styled.div<StyleProps>`
 
   .Error {
     position: absolute;
-    top: 24px;
+    top: 8px;
   }
 
   ${StyledTextarea} {

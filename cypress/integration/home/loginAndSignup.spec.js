@@ -11,8 +11,18 @@ describe('Login', () => {
 })
 
 describe('Signup', () => {
+  it('validar schema de senha', () => {
+    cy.get('[data-cy=button-login-register]').click()
+    cy.url().should('contains', '/home/signup')
+    cy.wait(1001)
+
+    cy.verifyPasswordSchema()
+
+    cy.visit('/home')
+    cy.wait(1001)
+  })
+
   it('fazer cadastro', () => {
-    cy.visit('/')
     cy.get('[data-cy=button-login-register]').click()
     cy.url().should('contains', '/home/signup')
 
@@ -46,17 +56,5 @@ describe('Signup', () => {
     cy.get('.sc-bYEvPH > p').contains('Usuário já cadastrado, tente conectar!')
     cy.get('.sc-bYEvPH > button').click()
     cy.url().should('not.contains', '/home/signup')
-  })
-
-  it('validar schema de senha', () => {
-    cy.visit('/home')
-    cy.get('[data-cy=button-login-register]').click()
-    cy.url().should('contains', '/home/signup')
-    cy.wait(1001)
-
-    cy.verifyPasswordSchema()
-
-    cy.visit('/home')
-    cy.wait(1001)
   })
 })

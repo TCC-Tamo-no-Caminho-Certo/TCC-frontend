@@ -192,7 +192,7 @@ const ProfessorForm = () => {
       popupRef.current?.configPopup({
         setModal: true,
         type: 'error',
-        message: 'Falha ao enviar solicitação'
+        message: 'Falha ao enviar solicitação :('
       })
   }
 

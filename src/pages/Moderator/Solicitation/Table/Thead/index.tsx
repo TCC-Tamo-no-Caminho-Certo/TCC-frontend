@@ -4,7 +4,7 @@ import Style from './styles'
 import { HeaderData, ItemData } from '../index'
 import { Circle } from '../Tbody/styles'
 
-import ArrowIcon from 'assets/ArrowIcon'
+import ArrowIcon from 'assets/global/ArrowIcon'
 
 import { Variants } from 'framer-motion'
 
