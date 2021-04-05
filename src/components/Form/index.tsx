@@ -46,7 +46,6 @@ export interface FormProps extends HTMLProps<HTMLFormElement> {
   captcha?: boolean
   loading?: boolean
   addToPath?: string[]
-  addDataToPath?: string[]
   schema?: ObjectSchema
   addData?: { [key: string]: any }
   method?: 'post' | 'get' | 'delete' | 'patch' | 'put'
@@ -69,7 +68,6 @@ const Form = ({
   children,
   addToPath,
   afterResData,
-  addDataToPath,
   method = 'post',
   ...rest
 }: FormProps) => {
@@ -147,6 +145,7 @@ const Form = ({
 
   const validate = () => {
     try {
+      haveErrors = false
       schema && schema.validateSync(data, { abortEarly: false })
     } catch (error) {
       haveErrors = true
@@ -166,34 +165,6 @@ const Form = ({
         throw new Error(
           'Unexpected error on validation! error isnt instanceof Yup.ValidationError'
         )
-    }
-  }
-
-  const parsePath = () => {
-    if (path) {
-      const paths = path.split('*%')
-
-      console.log('PARSE-PATH')
-      console.table({
-        paths: paths.length,
-        addToPath: addToPath?.length,
-        addDataToPath: addDataToPath?.length
-      })
-
-      if (paths.length - 1 !== addToPath?.length)
-        throw Error('paths.length - 1 !== addToPath?.length')
-
-      if (addToPath)
-        path = paths.reduce((acc, curr, idx) => {
-          if (paths.length === idx + 1) return acc + curr
-          return acc + curr + data[addToPath[idx]]
-        }, '')
-
-      if (addDataToPath)
-        path = paths.reduce((acc, curr, idx) => {
-          if (paths.length === idx + 1) return acc + curr
-          return acc + curr + addDataToPath[idx]
-        }, '')
     }
   }
 
@@ -220,6 +191,27 @@ const Form = ({
     }
   }
 
+  const parsePath = () => {
+    if (!path) throw new Error('path is undefined')
+
+    const paths = path.split('*%')
+
+    console.log('PARSE-PATH')
+    console.table({
+      paths: paths,
+      pathsLength: paths.length,
+      addToPath: addToPath?.length
+    })
+
+    if (paths.length - 1 !== addToPath?.length)
+      throw new Error('paths.length - 1 !== addToPath?.length')
+
+    path = paths.reduce((acc, curr, idx) => {
+      if (paths.length === idx + 1) return acc + curr
+      return acc + curr + data[addToPath[idx]]
+    }, '')
+  }
+
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault()
     loading && setShowLoader(true)
@@ -228,8 +220,9 @@ const Form = ({
 
     validate()
 
+    console.log('ADDTOPATH', addToPath)
+
     addToPath && parsePath()
-    addDataToPath && parsePath()
 
     if (captcha)
       data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false

@@ -169,11 +169,10 @@ function ResponseContent({
                     })
               }
               afterResData={afterResponseSubmit}
-              addDataToPath={[`${selectedInfo?.id}`]}
               path={
                 buttonClicked === 'rejected'
-                  ? 'user/role/request/reject/*%'
-                  : 'user/role/request/accept/*%'
+                  ? `user/role/request/reject/${selectedInfo?.id}`
+                  : `user/role/request/accept/${selectedInfo?.id}`
               }
             >
               <Textarea

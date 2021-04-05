@@ -60,7 +60,6 @@ const Style = styled.div`
   padding: 48px 0;
   min-height: 100vh;
   width: 100%;
-  border: solid red 1px;
 
   background-color: ${({ theme }) => theme.colors.tertiary};
   color: ${({ theme }) => theme.colors.secondary};

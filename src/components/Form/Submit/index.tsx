@@ -15,7 +15,7 @@ interface SubmitProps extends HTMLProps<HTMLButtonElement> {
 }
 
 const Submit = forwardRef(
-  ({ children, disabled, type = 'submit', ...rest }: SubmitProps, ref) => {
+  ({ children, type = 'submit', ...rest }: SubmitProps, ref) => {
     const form = useContext<FormState | null>(FormContext)
     const theme = useSelector<RootState, ThemeState>(state => state.theme)
 
@@ -23,7 +23,7 @@ const Submit = forwardRef(
       <Style
         className='Submit'
         type={type as any}
-        disabled={disabled}
+        disabled={form?.loader}
         ref={ref as any}
         {...(rest as any)}
       >
