@@ -92,6 +92,13 @@ const AddRole = () => {
               RemoverEstudante
             </button>
 
+            <button
+              type='button'
+              onClick={async () => await api.delete('user/role/professor')}
+            >
+              RemoverProfessor
+            </button>
+
             <RoleInfo
               title='Estudante'
               userRoles={labelRoles}

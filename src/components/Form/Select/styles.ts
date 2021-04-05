@@ -17,6 +17,16 @@ const Style = styled.div<StyleProps>`
     height: 100%;
   }
 
+  #noOptions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .DotsLoader {
+      margin-right: 8px;
+    }
+  }
+
   ${({ isErrored }) =>
     isErrored &&
     css`

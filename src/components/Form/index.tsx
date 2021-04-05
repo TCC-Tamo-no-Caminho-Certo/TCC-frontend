@@ -173,11 +173,15 @@ const Form = ({
     if (path) {
       const paths = path.split('*%')
 
+      console.log('PARSE-PATH')
       console.table({
         paths: paths.length,
         addToPath: addToPath?.length,
         addDataToPath: addDataToPath?.length
       })
+
+      if (paths.length - 1 !== addToPath?.length)
+        throw Error('paths.length - 1 !== addToPath?.length')
 
       if (addToPath)
         path = paths.reduce((acc, curr, idx) => {

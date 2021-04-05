@@ -92,6 +92,8 @@ const ProfessorForm = () => {
   const takeBgHeight = () => {
     const height = containerRef.current?.offsetHeight
 
+    console.log(height, rolesHeight)
+
     if (height) return `calc(${rolesHeight}px + ${height}px + 48px)`
     else return `calc(${rolesHeight}px + 100vh)`
   }
@@ -208,7 +210,7 @@ const ProfessorForm = () => {
           loading
           path='user/role/request/professor'
           afterResData={afterSubmit}
-          getData={e => console.log(e)}
+          getData={e => console.log('ProfessorForm', e)}
           schema={
             showReceipt
               ? receiptSchema(
@@ -352,7 +354,7 @@ const ProfessorForm = () => {
           </Presence>
         </Form>
 
-        {/* <button
+        <button
           id='delete'
           type='button'
           onClick={async () => {
@@ -369,7 +371,7 @@ const ProfessorForm = () => {
           }}
         >
           Deletar
-        </button> */}
+        </button>
       </Container>
 
       <RegisterEmail

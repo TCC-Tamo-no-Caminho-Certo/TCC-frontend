@@ -13,6 +13,7 @@ import { ThemeState } from 'store/theme'
 import { RootState } from 'store'
 
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
+import DotsLoader from 'components/DotsLoader'
 
 import { lighten } from 'polished'
 import { useSelector } from 'react-redux'
@@ -113,6 +114,12 @@ const Select = forwardRef(
           ref={selectRef}
           isMulti={isMulti}
           {...props}
+          noOptionsMessage={() => (
+            <div id='noOptions'>
+              <DotsLoader color={theme.colors.primary} />
+              Carregando opções...
+            </div>
+          )}
         />
       </Style>
     )

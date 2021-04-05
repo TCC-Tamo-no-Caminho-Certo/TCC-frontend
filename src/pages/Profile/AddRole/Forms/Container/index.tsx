@@ -36,8 +36,6 @@ const Container = forwardRef(({ role, children }: ContainerProps, ref) => {
       `user/role/requests?per_page=1&filter[user_id][]=${user.user_id}`
     )
 
-    console.log(requests)
-
     if (requests) {
       const roleRequests = requests.filter(
         (request: any) => request.role === role

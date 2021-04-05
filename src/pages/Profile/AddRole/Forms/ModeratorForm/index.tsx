@@ -47,6 +47,7 @@ const ModeratorForm = () => {
   const takeBgHeight = () => {
     const height = containerRef.current?.offsetHeight
 
+    console.log(height)
     if (height) return `calc(${rolesHeight}px + ${height}px + 48px)`
     else return `calc(${rolesHeight}px + 100vh)`
   }

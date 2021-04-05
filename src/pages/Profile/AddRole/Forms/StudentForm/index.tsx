@@ -176,19 +176,21 @@ const StudentForm = () => {
   const setUniversitiesData = async () => {
     const { universities } = await api.get('/universities')
 
-    setFormState(prev => ({
-      ...prev,
-      universities: universities
-        ? universities.map(
-            (university: any): University => ({
-              value: university.university_id,
-              label: university.name,
-              email: university.regex.email,
-              register: university.regex.register
-            })
-          )
-        : undefined
-    }))
+    setTimeout(() => {
+      setFormState(prev => ({
+        ...prev,
+        universities: universities
+          ? universities.map(
+              (university: any): University => ({
+                value: university.university_id,
+                label: university.name,
+                email: university.regex.email,
+                register: university.regex.register
+              })
+            )
+          : undefined
+      }))
+    }, 3000)
   }
 
   const setCampusData = async (id: number) => {
@@ -406,7 +408,7 @@ const StudentForm = () => {
           </Presence>
         </Form>
 
-        {/* <button
+        <button
           id='delete'
           type='button'
           onClick={async () => {
@@ -423,7 +425,7 @@ const StudentForm = () => {
           }}
         >
           Deletar
-        </button> */}
+        </button>
       </Container>
 
       <RegisterEmail

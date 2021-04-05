@@ -60,6 +60,7 @@ const Style = styled.div`
   padding: 48px 0;
   min-height: 100vh;
   width: 100%;
+  border: solid red 1px;
 
   background-color: ${({ theme }) => theme.colors.tertiary};
   color: ${({ theme }) => theme.colors.secondary};
@@ -67,10 +68,9 @@ const Style = styled.div`
   #delete {
     position: absolute;
     top: 0;
-    left: 24px;
+    left: 100px;
     width: 300px;
     height: 48px;
-    color: transparent;
   }
 `
 
