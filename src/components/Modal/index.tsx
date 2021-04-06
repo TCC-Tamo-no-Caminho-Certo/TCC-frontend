@@ -31,7 +31,7 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
       onBgClick,
       top = '50vh',
       bottom = 'auto',
-      bgHeight = '100vh',
+      bgHeight = '100%',
       translateY = '-60%',
       zIndex = 10,
       ...rest

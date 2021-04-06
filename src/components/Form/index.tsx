@@ -196,19 +196,18 @@ const Form = ({
 
     const paths = path.split('*%')
 
-    console.log('PARSE-PATH')
     console.table({
       paths: paths,
       pathsLength: paths.length,
       addToPath: addToPath?.length
     })
 
-    if (paths.length - 1 !== addToPath?.length)
+    if (paths.length - 1 !== addToPath!.length)
       throw new Error('paths.length - 1 !== addToPath?.length')
 
     path = paths.reduce((acc, curr, idx) => {
       if (paths.length === idx + 1) return acc + curr
-      return acc + curr + data[addToPath[idx]]
+      return acc + curr + data[addToPath![idx]]
     }, '')
   }
 
@@ -219,8 +218,6 @@ const Form = ({
     getData && getData(data)
 
     validate()
-
-    console.log('ADDTOPATH', addToPath)
 
     addToPath && parsePath()
 

@@ -103,15 +103,6 @@ export const MotionWays = styled(motion.div)`
     }
   }
 
-  #inputs {
-    margin-bottom: 16px;
-
-    .Text {
-      padding-left: 8px;
-      margin-bottom: 0px;
-    }
-  }
-
   @media screen and (min-width: 425px) {
     div {
       flex-direction: row;

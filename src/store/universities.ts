@@ -22,29 +22,30 @@ export interface University {
 export interface UniversitiesState {
   entities: []
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  universities: any
+  universities: University[]
 }
 
-interface Payload {
-  entities?: []
-  loading?: 'idle' | 'pending' | 'succeeded' | 'failed'
-  universities?: any
-}
+type Payload = PayloadAction<Partial<UniversitiesState>>
 
 const initialState: UniversitiesState = {
   entities: [],
   loading: 'idle',
-  universities: undefined
+  universities: []
 }
 
 export const getUniversities = createAsyncThunk(
   'universities/getUniversities',
-  async () => {
-    const { universities }: Response<University[]> = await api.get(
-      'info/university'
-    )
+  async (prevState: UniversitiesState) => {
+    const { universities } = prevState
 
-    return universities
+    if (universities.length === 0) {
+      console.log('fez req para uni')
+      const { universities }: Response<University[]> = await api.get(
+        'info/university'
+      )
+
+      return { universities }
+    }
   }
 )
 
@@ -52,7 +53,7 @@ const Universities = createSlice({
   name: 'universities',
   initialState,
   reducers: {
-    update: (state, action: PayloadAction<Payload>) => ({
+    update: (state, action: Payload) => ({
       ...state,
       ...action.payload
     })
@@ -60,7 +61,7 @@ const Universities = createSlice({
   extraReducers: builder => {
     builder.addCase(getUniversities.fulfilled, (state, action) => ({
       ...state,
-      universities: action.payload
+      ...action.payload
     }))
   }
 })

@@ -9,15 +9,12 @@ import Style from './styles'
 
 import { FormContext, FormState } from '../'
 
-import { ThemeState } from 'store/theme'
-import { RootState } from 'store'
-
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 import DotsLoader from 'components/DotsLoader'
 
 import { lighten } from 'polished'
-import { useSelector } from 'react-redux'
 import RealSelect, { Theme } from 'react-select'
+import { ThemeContext } from 'styled-components'
 
 export interface Option {
   label: string
@@ -26,7 +23,8 @@ export interface Option {
 
 const Select = forwardRef(
   ({ isMulti, styling, theming, className = 'Select', ...props }: any, ref) => {
-    const theme = useSelector<RootState, ThemeState>(state => state.theme)
+    const theme = useContext(ThemeContext)
+
     const selectRef = useRef(null)
     const [error, setError] = useState<string>()
     const form = useContext<FormState | null>(FormContext)

@@ -4,7 +4,7 @@ import api from 'services/api'
 
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface Email {
+export interface Email {
   main: boolean
   address: string
   email_id: number
@@ -13,11 +13,14 @@ interface Email {
   options?: { [key: string]: any }
 }
 
-interface ResData {
+export interface UserState {
+  entities: []
+  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
+  dataLoading: boolean
+  selectedRole: Role
   name: string
   roles: Role[]
   phone: string
-  emails: Email[]
   surname: string
   user_id: number
   birthday: string
@@ -25,40 +28,36 @@ interface ResData {
   created_at: string
   updated_at: string
   avatar_uuid: string
+  emails: Email[]
+  moderator?: [
+    {
+      university_id: number
+    }
+  ]
+  professor?: {
+    postgraduate: number
+    linkedin: null
+    lattes: null
+    orcid: null
+    universities: [
+      {
+        university_id: number
+        campus_id: number
+        course_id: number
+        register: number
+        full_time: number
+      }
+    ]
+  }
 }
 
-export interface UserState extends ResData {
-  entities: []
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  dataLoading: boolean
-  selectedRole: Role
-}
-
-interface Payload {
-  entities?: []
-  loading?: 'idle' | 'pending' | 'succeeded' | 'failed'
-  selectedRole?: Role
-  dataLoading?: boolean
-
-  roles?: Role[]
-  name?: string
-  phone?: string
-  emails?: Email[]
-  surname?: string
-  user_id?: number
-  birthday?: string
-  full_name?: string
-  created_at?: string
-  updated_at?: string
-  avatar_uuid?: string
-}
+type Payload = PayloadAction<Partial<UserState>>
 
 const initialState: UserState = {
   entities: [],
   loading: 'idle',
   selectedRole: 'student',
   dataLoading: true,
-
   name: '',
   phone: '',
   surname: '',
@@ -112,7 +111,7 @@ const User = createSlice({
   name: 'userConfig',
   initialState,
   reducers: {
-    update: (state, action: PayloadAction<Payload>) => {
+    update: (state, action: Payload) => {
       if (action.payload.selectedRole !== undefined)
         localStorage.setItem('@SLab_selected_role', action.payload.selectedRole)
 
@@ -123,7 +122,8 @@ const User = createSlice({
     }
   },
   extraReducers: builder => {
-    builder.addCase(getUser.fulfilled, (_state, action) => ({
+    builder.addCase(getUser.fulfilled, (state, action) => ({
+      ...state,
       ...action.payload
     }))
   }

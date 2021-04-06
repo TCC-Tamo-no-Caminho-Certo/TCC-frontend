@@ -9,7 +9,6 @@ import selectedRoleLabel from 'utils/makeRoleLabel'
 import { Role } from 'store/roles'
 import { UserState } from 'store/user'
 import { RootState } from 'store'
-import { ThemeState } from 'store/theme'
 import { getUniversities, UniversitiesState } from 'store/universities'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
@@ -20,6 +19,7 @@ import Slider from 'components/Slider'
 import DotsLoader from 'components/DotsLoader'
 
 import { useDispatch, useSelector } from 'react-redux'
+import { ThemeContext } from 'styled-components'
 
 type ContainersRoles = Role | 'personal'
 
@@ -27,13 +27,14 @@ const Containers = () => {
   const { innerWidth } = useWindowDimensions()
   const [sliderWidth, setSliderWidth] = useState(innerWidth >= 600 ? 520 : 284)
   const modalContext = useContext(ImageRefModalContext)
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const theme = useContext(ThemeContext)
+
   const user = useSelector<RootState, UserState>(state => state.user)
   const dispatch = useDispatch()
-  const { universities } = useSelector<RootState, UniversitiesState>(
+  const storeUniversities = useSelector<RootState, UniversitiesState>(
     store => store.universities
   )
-
+  const { universities } = storeUniversities
   const rolesShowed = ['student', 'professor', 'moderator']
   const rolesWithEdit = user.roles.filter(
     role => rolesShowed.filter(wished => wished === role).length !== 0
@@ -48,8 +49,9 @@ const Containers = () => {
   }, [innerWidth])
 
   useEffect(() => {
-    dispatch(getUniversities())
-  }, [dispatch])
+    dispatch(getUniversities(storeUniversities))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Slider gap={200} gapVertical={32} width={sliderWidth}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Style, {
   Background,
   Gear,
@@ -15,7 +15,6 @@ import { RootState } from 'store'
 import { UserActions, UserState } from 'store/user'
 // import { ThemeState } from 'store/theme'
 import { HomeActions } from 'store/home'
-import { ThemeState } from 'store/theme'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
@@ -32,6 +31,7 @@ import DotsLoader from 'components/DotsLoader'
 import { AnimatePresence, motion, useCycle, Variants } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
+import { ThemeContext } from 'styled-components'
 
 const motionMenu: Variants = {
   open: {
@@ -104,7 +104,7 @@ const motionLogout: Variants = {
 }
 
 const RightMenu = () => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const theme = useContext(ThemeContext)
   const history = useHistory()
   const dispatch = useDispatch()
   const { innerWidth } = useWindowDimensions()

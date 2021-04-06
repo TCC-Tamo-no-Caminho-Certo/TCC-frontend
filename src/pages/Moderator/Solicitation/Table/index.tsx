@@ -2,6 +2,7 @@ import React, {
   createContext,
   Dispatch,
   SetStateAction,
+  useContext,
   useEffect,
   useState
 } from 'react'
@@ -13,15 +14,13 @@ import Thead from './Thead'
 
 import { StatusTypes } from 'utils/status'
 
-import { RootState } from 'store'
 import { Role } from 'store/roles'
-import { ThemeState } from 'store/theme'
 
 import useSortableData from 'hooks/useSortableData'
 
 import DotsLoader from 'components/DotsLoader'
 
-import { useSelector } from 'react-redux'
+import { ThemeContext } from 'styled-components'
 
 export interface ItemData {
   id: number
@@ -64,7 +63,7 @@ export const TableContext = createContext<TableContextProps | undefined>(
 )
 
 const Table = () => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const theme = useContext(ThemeContext)
   const [tableState, setTableState] = useState<TableState>({
     showData: undefined,
     tablePage: 1

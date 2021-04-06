@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Form } from './styles'
 
 import Container from '../Container'
-import { AddRoleContext } from '../../index'
+import { formatterToSelect, University } from '../StudentForm'
 
 import {
   withFullName,
@@ -11,50 +11,56 @@ import {
 
 import { getUser, UserState } from 'store/user'
 import { Response, RootState } from 'store'
+import { getUniversities, UniversitiesState } from 'store/universities'
 
-import { Checkbox, Submit, Textarea } from 'components/Form'
+import { Select, Submit, Textarea } from 'components/Form'
 import Popup, { PopupMethods } from 'components/Popup'
-import Presence from 'components/Presence'
 
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
+import { Option } from 'react-select/src/filters'
 
-interface AnimationsState {
-  showAll: boolean
-  showPretext: boolean
-}
+const verifyFullTime = (user: UserState, university_id: number) => {
+  if (user.professor)
+    return (
+      user.professor.universities.filter(
+        university => university.university_id === university_id
+      )[0].full_time !== 0
+    )
 
-const initialAnimations: AnimationsState = {
-  showAll: true,
-  showPretext: false
-}
-const verifyFullTime = (user: UserState) => {
-  const { emails } = user
-  emails.filter(email => email.institutional === true)
   return false
 }
 
+interface FormState {
+  universities: University[] | undefined
+  selectedUniversity: University | undefined
+}
+
+const initialFormState: FormState = {
+  selectedUniversity: undefined,
+  universities: undefined
+}
+
 const ModeratorForm = () => {
+  const [{ universities }, setFormState] = useState<FormState>(initialFormState)
+  const [isFullTime, setIsFullTime] = useState(false)
+  const storeUniversities = useSelector<RootState, UniversitiesState>(
+    state => state.universities
+  )
   const user = useSelector<RootState, UserState>(state => state.user)
-  const dispatch = useDispatch()
   const containerRef = useRef<HTMLDivElement>(null)
   const popupRef = useRef<PopupMethods>(null)
+  const dispatch = useDispatch()
   const history = useHistory()
-  const { rolesHeight } = useContext(AddRoleContext)
-  const [{ showAll, showPretext }, setAnimations] = useState(initialAnimations)
 
-  const takeBgHeight = () => {
-    const height = containerRef.current?.offsetHeight
-
-    console.log(height)
-    if (height) return `calc(${rolesHeight}px + ${height}px + 48px)`
-    else return `calc(${rolesHeight}px + 100vh)`
+  const onSelectChange = ({ value: id }: Option) => {
+    setIsFullTime(verifyFullTime(user, Number(id)))
   }
 
   const afterSubmit = (res: Response<any>) => {
     if (res.success)
-      showPretext
+      !isFullTime
         ? popupRef.current?.configPopup({
             setModal: true,
             type: 'success',
@@ -84,15 +90,25 @@ const ModeratorForm = () => {
 
   useEffect(() => {
     setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100)
-    const isFullTimeProfessor = verifyFullTime(user)
+    dispatch(getUniversities(storeUniversities))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-    setAnimations(prev => ({
+  useEffect(() => {
+    setFormState((prev: any) => ({
       ...prev,
-      showAll: !isFullTimeProfessor,
-      showSubmit: isFullTimeProfessor,
-      showPretext: !isFullTimeProfessor
+      universities: storeUniversities.universities
+        ? storeUniversities.universities.map(
+            (university: any): University => ({
+              value: university.university_id,
+              label: university.name,
+              email: university.regex.email,
+              register: university.regex.register
+            })
+          )
+        : undefined
     }))
-  }, [user])
+  }, [storeUniversities])
 
   return (
     <>
@@ -100,48 +116,36 @@ const ModeratorForm = () => {
         <Form
           loading
           path='user/role/request/moderator'
-          getData={e => console.log(e)}
           afterResData={afterSubmit}
-          schema={showPretext ? withFullName : withoutFullName}
+          schema={!isFullTime ? withFullName : withoutFullName}
         >
-          <Presence condition={showAll}>
-            <Checkbox
-              name='full_time'
-              label='Sou professor em tempo integral'
-              onClick={() => {
-                setAnimations(prev => ({
-                  ...prev,
-                  showPretext: !prev.showPretext
-                }))
-              }}
-            />
+          <Select
+            name='university_id'
+            placeholder='Universidade'
+            options={formatterToSelect(universities)}
+            onChange={onSelectChange}
+          />
 
-            <motion.div
-              animate={{
-                height: showPretext ? 'auto' : 0,
-                opacity: showPretext ? 1 : 0
-              }}
-            >
-              <Textarea
-                name='pretext'
-                placeholder='Descreva porquê você quer ser Moderador'
-                maxLength={500}
-              />
-            </motion.div>
-          </Presence>
+          <motion.div
+            animate={{
+              height: !isFullTime ? 'auto' : 0,
+              opacity: !isFullTime ? 1 : 0
+            }}
+          >
+            <Textarea
+              name='pretext'
+              placeholder='Descreva porquê você quer ser Moderador...'
+              maxLength={500}
+            />
+          </motion.div>
 
           <Submit>
-            {showPretext ? 'Enviar solicitação' : 'Tornar-se moderador!'}
+            {!isFullTime ? 'Enviar solicitação' : 'Tornar-se moderador!'}
           </Submit>
         </Form>
       </Container>
 
-      <Popup
-        bottom='50vh'
-        translateY='50%'
-        bgHeight={takeBgHeight()}
-        ref={popupRef}
-      />
+      <Popup bottom='50vh' translateY='50%' ref={popupRef} />
     </>
   )
 }

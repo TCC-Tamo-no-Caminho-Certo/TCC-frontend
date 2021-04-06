@@ -1,13 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Style from './styles'
 
-import { RootState } from 'store'
-import { ThemeState } from 'store/theme'
-
-import { useSelector } from 'react-redux'
+import { ThemeContext } from 'styled-components'
 
 export const Logo = () => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const theme = useContext(ThemeContext)
 
   return (
     <Style className='Logo'>

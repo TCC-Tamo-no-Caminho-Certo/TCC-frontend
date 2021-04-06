@@ -1,10 +1,14 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Form } from './styles'
 
 import { MotionReceipt, MotionWays } from '../StudentForm/styles'
 import Container from '../Container'
-import { AddRoleContext } from '../../index'
-import { formatterToSelect, show, University } from '../StudentForm'
+import {
+  formatterToSelect,
+  haveInstitutionalEmail,
+  show,
+  University
+} from '../StudentForm'
 
 import {
   emailSchema,
@@ -15,6 +19,7 @@ import api from 'services/api'
 
 import { Response, RootState } from 'store'
 import { getUser, UserState } from 'store/user'
+import { getUniversities, UniversitiesState } from 'store/universities'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
@@ -22,21 +27,17 @@ import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 import { Checkbox, File, Select, Submit, Text } from 'components/Form'
 import Popup, { PopupMethods } from 'components/Popup'
 import Presence from 'components/Presence'
+import { Option } from 'components/Form/Select'
 
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
-interface Option {
-  value: number | string
-  label: string
-}
-
 interface FormState {
-  campus: SelectOptions
-  courses: SelectOptions
-  haveInstEmail: boolean
-  universities: Universities
+  campus: Option[] | undefined
+  courses: Option[] | undefined
+
+  universities: University[] | undefined
   selectedUniversity: University | undefined
 }
 
@@ -49,18 +50,11 @@ interface AnimationsState {
   showSubmit: boolean
 }
 
-type SelectOptions = Option[] | undefined
-type Universities = University[] | undefined
-
-const MotionSelect = motion.custom(Select)
-const MotionSubmit = motion.custom(Submit)
-
 const initialFormState: FormState = {
   selectedUniversity: undefined,
   campus: undefined,
   courses: undefined,
-  universities: undefined,
-  haveInstEmail: false
+  universities: undefined
 }
 
 const initialAnimations: AnimationsState = {
@@ -72,14 +66,10 @@ const initialAnimations: AnimationsState = {
   showSubmit: false
 }
 
+const MotionSelect = motion.custom(Select)
+const MotionSubmit = motion.custom(Submit)
+
 const ProfessorForm = () => {
-  const dispatch = useDispatch()
-  const containerRef = useRef<HTMLDivElement>(null)
-  const registerEmailRef = useRef<RegisterEmailMethods>(null)
-  const popupRef = useRef<PopupMethods>(null)
-  const { rolesHeight } = useContext(AddRoleContext)
-  const user = useSelector<RootState, UserState>(state => state.user)
-  const history = useHistory()
   const [
     { selectedUniversity, campus, courses, universities },
     setFormState
@@ -88,47 +78,26 @@ const ProfessorForm = () => {
     { showCampus, showCourse, showWays, showReceipt, showSubmit },
     setAnimations
   ] = useState(initialAnimations)
+  const storeUniversities = useSelector<RootState, UniversitiesState>(
+    state => state.universities
+  )
+  const { emails } = useSelector<RootState, UserState>(state => state.user)
+  const registerEmailRef = useRef<RegisterEmailMethods>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const popupRef = useRef<PopupMethods>(null)
+  const dispatch = useDispatch()
+  const history = useHistory()
 
-  const takeBgHeight = () => {
-    const height = containerRef.current?.offsetHeight
+  const onUniversityChange = async ({ value: id }: Option) => {
+    setAnimations(prev => ({ ...prev, showCampus: true }))
 
-    console.log(height, rolesHeight)
-
-    if (height) return `calc(${rolesHeight}px + ${height}px + 48px)`
-    else return `calc(${rolesHeight}px + 100vh)`
-  }
-
-  const setShowSubmitTrue = () =>
-    setAnimations(prev => ({ ...prev, showSubmit: true, showWays: false }))
-
-  const setUniversitiesData = async () => {
-    const { universities } = await api.get('/universities')
-
-    setFormState(prev => ({
-      ...prev,
-      universities: universities
-        ? universities.map(
-            (university: any): University => ({
-              value: university.university_id,
-              label: university.name,
-              email: university.regex.email,
-              register: university.regex.register
-            })
-          )
-        : undefined
-    }))
-  }
-
-  const setCampusData = async (id: number) => {
     const { campus } = await api.get(`university/${id}/campus`)
 
-    const newSelectedUniversity = universities?.find(
-      (university: University) => university.value === id
-    )
-
     setFormState(prev => ({
       ...prev,
-      selectedUniversity: newSelectedUniversity,
+      selectedUniversity: universities?.find(
+        (university: University) => university.value === id
+      ),
       campus: campus
         ? campus.map(
             (campus: any): Option => ({
@@ -140,7 +109,9 @@ const ProfessorForm = () => {
     }))
   }
 
-  const setCoursesData = async (id: number) => {
+  const onCampusChange = async ({ value: id }: Option) => {
+    setAnimations(prev => ({ ...prev, showCourse: true }))
+
     const { courses } = await api.get(`/university/campus/${id}/course`)
 
     setFormState(prev => ({
@@ -154,21 +125,28 @@ const ProfessorForm = () => {
     }))
   }
 
-  const verifyInstitucionalEmail = () => {
-    if (selectedUniversity) {
-      const regex = new RegExp(selectedUniversity.email.professor)
+  const onSelectChange = () => {
+    haveInstitutionalEmail(selectedUniversity?.email.professor, emails)
+      ? setAnimations(prev => ({ ...prev, showSubmit: true }))
+      : setAnimations(prev => ({ ...prev, showWays: true }))
+  }
 
-      const instEmails = user.emails.filter(({ address }) =>
-        regex.test(address)
-      )
+  const onEmailClick = () => {
+    setAnimations(prev => ({
+      ...prev,
+      showReceipt: false,
+      showSubmit: false
+    }))
 
-      setFormState(prev => ({
-        ...prev,
-        haveInstEmail: instEmails.length !== 0
-      }))
+    registerEmailRef.current?.toggleRegister()
+  }
 
-      return instEmails.length !== 0
-    }
+  const onRegisterSuccess = () => {
+    setAnimations(prev => ({
+      ...prev,
+      showSubmit: true,
+      showWays: false
+    }))
   }
 
   const afterSubmit = (res: Response<any>) => {
@@ -198,10 +176,37 @@ const ProfessorForm = () => {
       })
   }
 
+  const formSchema = () => {
+    return showReceipt
+      ? receiptSchema(
+          selectedUniversity ? selectedUniversity.register.professor : ''
+        )
+      : emailSchema(
+          selectedUniversity ? selectedUniversity.register.professor : ''
+        )
+  }
+
   useEffect(() => {
     setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100)
-    setUniversitiesData()
+    dispatch(getUniversities(storeUniversities))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    setFormState(prev => ({
+      ...prev,
+      universities: storeUniversities.universities
+        ? storeUniversities.universities.map(
+            (university: any): University => ({
+              value: university.university_id,
+              label: university.name,
+              email: university.regex.email,
+              register: university.regex.register
+            })
+          )
+        : undefined
+    }))
+  }, [storeUniversities])
 
   return (
     <>
@@ -210,20 +215,7 @@ const ProfessorForm = () => {
           loading
           path='user/role/request/professor'
           afterResData={afterSubmit}
-          getData={e => console.log('ProfessorForm', e)}
-          schema={
-            showReceipt
-              ? receiptSchema(
-                  selectedUniversity
-                    ? selectedUniversity.register.professor
-                    : ''
-                )
-              : emailSchema(
-                  selectedUniversity
-                    ? selectedUniversity.register.professor
-                    : ''
-                )
-          }
+          schema={formSchema()}
         >
           <Text
             optional
@@ -239,10 +231,7 @@ const ProfessorForm = () => {
             name='university_id'
             placeholder='Universidade'
             options={formatterToSelect(universities)}
-            onChange={(e: Option) => {
-              setAnimations(prev => ({ ...prev, showCampus: true }))
-              setCampusData(e.value as number)
-            }}
+            onChange={onUniversityChange}
           />
 
           <Text name='register' placeholder='Registro Acadêmico' />
@@ -254,10 +243,7 @@ const ProfessorForm = () => {
               placeholder='Câmpus'
               variants={show}
               options={campus}
-              onChange={(e: Option) => {
-                setAnimations(prev => ({ ...prev, showCourse: true }))
-                setCoursesData(e.value as number)
-              }}
+              onChange={onCampusChange}
             />
           </Presence>
 
@@ -268,11 +254,7 @@ const ProfessorForm = () => {
               placeholder='Curso com maior carga horária'
               variants={show}
               options={courses}
-              onChange={() =>
-                verifyInstitucionalEmail()
-                  ? setAnimations(prev => ({ ...prev, showSubmit: true }))
-                  : setAnimations(prev => ({ ...prev, showWays: true }))
-              }
+              onChange={onSelectChange}
             />
           </Presence>
 
@@ -281,18 +263,7 @@ const ProfessorForm = () => {
               <span id='title'>Forma de registro</span>
 
               <div>
-                <button
-                  type='button'
-                  onClick={() => {
-                    setAnimations(prev => ({
-                      ...prev,
-                      showReceipt: false,
-                      showSubmit: false
-                    }))
-
-                    registerEmailRef.current?.toggleRegister()
-                  }}
-                >
+                <button type='button' onClick={onEmailClick}>
                   E-mail institucional
                 </button>
 
@@ -361,9 +332,7 @@ const ProfessorForm = () => {
             if (selectedUniversity) {
               const rgx = new RegExp(selectedUniversity.email.professor)
 
-              const teste = user.emails.filter(({ address }) =>
-                rgx.test(address)
-              )
+              const teste = emails.filter(({ address }) => rgx.test(address))
 
               if (teste[0].email_id)
                 await api.delete(`user/email/${teste[0].email_id}`)
@@ -377,23 +346,17 @@ const ProfessorForm = () => {
       <RegisterEmail
         placeholder='E-mail institucional'
         ref={registerEmailRef}
-        onSuccess={setShowSubmitTrue}
         title={selectedUniversity?.label}
         regex={selectedUniversity?.email.professor}
         addData={{ university_id: selectedUniversity?.value }}
+        onSuccess={onRegisterSuccess}
         modal={{
           bottom: '50vh',
-          translateY: '50%',
-          bgHeight: takeBgHeight()
+          translateY: '50%'
         }}
       />
 
-      <Popup
-        bottom='50vh'
-        translateY='50%'
-        bgHeight={takeBgHeight()}
-        ref={popupRef}
-      />
+      <Popup bottom='50vh' translateY='50%' ref={popupRef} />
     </>
   )
 }

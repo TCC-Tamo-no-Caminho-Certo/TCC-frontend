@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
-import { ThemeActions, ThemeState } from 'store/theme'
-import { RootState } from 'store'
+import { ThemeActions } from 'store/theme'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { ThemeContext } from 'styled-components'
 
 const ThemeSwitch = () => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const theme = useContext(ThemeContext)
   const dispatch = useDispatch()
 
   return (

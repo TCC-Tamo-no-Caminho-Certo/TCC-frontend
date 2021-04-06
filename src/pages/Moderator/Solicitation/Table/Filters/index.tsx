@@ -7,7 +7,6 @@ import { transformArray } from '../Tbody'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { ThemeState } from 'store/theme'
 import { getRoles, RolesState } from 'store/roles'
 
 import LoupeIcon from 'assets/Inputs/LoupeIcon'
@@ -17,6 +16,7 @@ import { Datepicker, Select, Text } from 'components/Form'
 import { lighten } from 'polished'
 import { useDispatch, useSelector } from 'react-redux'
 import { Theme } from 'react-select'
+import { ThemeContext } from 'styled-components'
 
 interface Filter {
   role: JSX.Element
@@ -31,7 +31,8 @@ interface FiltersProps {
 
 const Filters = ({ quantity }: FiltersProps) => {
   const tableContext = useContext(TableContext)
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const theme = useContext(ThemeContext)
+
   const roles = useSelector<RootState, RolesState>(state => state.roles)
   const dispatch = useDispatch()
   const [filter, setFilter] = useState<keyof Filter>('name')

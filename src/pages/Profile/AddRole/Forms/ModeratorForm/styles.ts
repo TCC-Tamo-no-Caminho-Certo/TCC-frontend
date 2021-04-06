@@ -7,6 +7,10 @@ export const Form = styled(OriginalForm)`
 
   color: ${({ theme }) => theme.colors.tertiary};
 
+  .Select {
+    margin-bottom: 16px;
+  }
+
   .Checkbox {
     margin-bottom: 16px;
   }

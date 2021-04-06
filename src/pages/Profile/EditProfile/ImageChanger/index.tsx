@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Style, { RightMenu } from './styles'
 
 import api from 'services/api'
 
 import { UserActions } from 'store/user'
-import { RootState } from 'store'
-import { ThemeState } from 'store/theme'
 
 import CameraIcon from 'assets/Inputs/CameraIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
@@ -13,14 +11,14 @@ import CloseIcon from 'assets/Inputs/CloseIcon'
 import 'cropperjs/dist/cropper.css'
 import { motion } from 'framer-motion'
 import { Cropper } from 'react-cropper'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { ThemeContext } from 'styled-components'
 
 interface ImageChangerProps {
   onCloseClick: () => void
 }
-
 const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const theme = useContext(ThemeContext)
   const { white, red } = theme.colors
   const dispatch = useDispatch()
   const [image, setImage] = useState()

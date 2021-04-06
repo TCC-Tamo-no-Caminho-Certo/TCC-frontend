@@ -3,13 +3,10 @@ import Style from './styles'
 
 import { FormContext, FormState } from '../'
 
-import { ThemeState } from 'store/theme'
-import { RootState } from 'store'
-
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 
 import { motion, Variants } from 'framer-motion'
-import { useSelector } from 'react-redux'
+import { ThemeContext } from 'styled-components'
 
 interface CheckboxProps {
   name: string
@@ -36,7 +33,8 @@ const pathAnimation: Variants = {
 }
 
 const Checkbox = ({ name, label, onClick, ...rest }: CheckboxProps) => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const theme = useContext(ThemeContext)
+
   const checkboxRef = useRef<HTMLInputElement>(null)
   const form = useContext<FormState | null>(FormContext)
 

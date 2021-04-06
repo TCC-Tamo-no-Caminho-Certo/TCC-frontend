@@ -1,10 +1,12 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react'
-
-import { RootState } from 'store'
-import { ThemeState } from 'store/theme'
+import React, {
+  forwardRef,
+  useContext,
+  useImperativeHandle,
+  useState
+} from 'react'
 
 import { motion, Variants } from 'framer-motion'
-import { useSelector } from 'react-redux'
+import { ThemeContext } from 'styled-components'
 
 export interface CheckboxIconMethods {
   changeCheck: (_value: boolean) => void
@@ -29,7 +31,7 @@ const pathAnimation: Variants = {
 }
 
 const CheckboxIcon = forwardRef((props, ref) => {
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const theme = useContext(ThemeContext)
   const [checked, setChecked] = useState(false)
 
   const changeCheck = (value: boolean) => {

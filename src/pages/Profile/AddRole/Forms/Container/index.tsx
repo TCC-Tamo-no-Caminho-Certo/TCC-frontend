@@ -75,6 +75,14 @@ const Container = forwardRef(({ role, children }: ContainerProps, ref) => {
           type='button'
           onClick={() => window.scrollTo(0, 0)}
         >
+          Remover solicitação
+        </button>
+
+        <button
+          id='scrollButton'
+          type='button'
+          onClick={() => window.scrollTo(0, 0)}
+        >
           Escolher outro papel
         </button>
       </Content>

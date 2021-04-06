@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState
-} from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Style from './styles'
 
 import RoleInfo from './RoleInfo'
@@ -34,28 +28,18 @@ const allRoles: Role[] = [
   'moderator'
 ]
 
-export const AddRoleContext = createContext({ rolesHeight: 0 })
-
 const AddRole = () => {
   const { roles } = useSelector<RootState, UserState>(state => state.user)
   const [roleSelected, setRoleSelected] = useState<Role | undefined>(undefined)
   const labelRoles = roles.map(role => selectRoleLabel(role))
   const theme = useContext(ThemeContext)
-  const location = useLocation()
+  const { pathname } = useLocation()
   const rolesRef = useRef<HTMLDivElement>(null)
-  const [rolesHeight, setRolesHeight] = useState(0)
 
   useEffect(() => {
-    const { pathname } = location
-
     if (roleSelected === undefined)
       allRoles.map(role => pathname.includes(role) && setRoleSelected(role))
-  }, [location, roleSelected])
-
-  const onLabelClick = () => {
-    const height = rolesRef.current?.clientHeight
-    setRolesHeight(height || 0)
-  }
+  }, [roleSelected, pathname])
 
   return (
     <>
@@ -75,16 +59,6 @@ const AddRole = () => {
           </p>
 
           <div id='roles'>
-            <RoleInfo
-              noButton
-              title='Convidado'
-              color={theme.roles.guest}
-              onLabelClick={onLabelClick}
-              benefits={[
-                'Solicitar alteração de papel para Estudante ou Professor'
-              ]}
-            />
-
             <button
               type='button'
               onClick={async () => await api.delete('user/role/student')}
@@ -99,6 +73,22 @@ const AddRole = () => {
               RemoverProfessor
             </button>
 
+            <button
+              type='button'
+              onClick={async () => await api.delete('user/role/moderator')}
+            >
+              RemoverModerador
+            </button>
+
+            <RoleInfo
+              noButton
+              title='Convidado'
+              color={theme.roles.guest}
+              benefits={[
+                'Solicitar alteração de papel para Estudante ou Professor'
+              ]}
+            />
+
             <RoleInfo
               title='Estudante'
               userRoles={labelRoles}
@@ -106,7 +96,6 @@ const AddRole = () => {
               onClick={() => {
                 setRoleSelected('student')
               }}
-              onLabelClick={onLabelClick}
               benefits={[
                 'Participar de propostas',
                 'Candidatar-se a um projeto',
@@ -120,7 +109,6 @@ const AddRole = () => {
               userRoles={labelRoles}
               color={theme.roles.professor}
               onClick={() => setRoleSelected('professor')}
-              onLabelClick={onLabelClick}
               benefits={[
                 'Pode fazer tudo que um estudante pode fazer',
                 'Pedir revisão de propostas',
@@ -134,12 +122,10 @@ const AddRole = () => {
                 title='Moderador'
                 userRoles={labelRoles}
                 color={theme.roles.moderator}
-                onLabelClick={onLabelClick}
                 onClick={() => setRoleSelected('moderator')}
                 benefits={[
                   'Aceitar solicitação de mudança para Revisor ',
-                  `Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores
-              (devem estar na mesma instituição)`,
+                  'Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores (devem estar na mesma instituição)',
                   'Ver usuários da instituição',
                   'Alterar status da proposta'
                 ]}
@@ -149,11 +135,9 @@ const AddRole = () => {
         </section>
       </Style>
 
-      <AddRoleContext.Provider value={{ rolesHeight }}>
-        {roleSelected === 'student' && <StudentForm />}
-        {roleSelected === 'professor' && <ProfessorForm />}
-        {roleSelected === 'moderator' && <ModeratorForm />}
-      </AddRoleContext.Provider>
+      {roleSelected === 'student' && <StudentForm />}
+      {roleSelected === 'professor' && <ProfessorForm />}
+      {roleSelected === 'moderator' && <ModeratorForm />}
     </>
   )
 }

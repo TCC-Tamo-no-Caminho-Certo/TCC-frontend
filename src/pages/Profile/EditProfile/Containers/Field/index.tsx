@@ -6,15 +6,12 @@ import { EditProfileContext } from '../../index'
 
 import { isoToDate } from 'utils/dates'
 
-import { ThemeState } from 'store/theme'
-import { RootState } from 'store'
-
 import PencilIcon from 'assets/Inputs/PencilIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import { Datepicker, Text } from 'components/Form'
 
-import { useSelector } from 'react-redux'
+import { ThemeContext } from 'styled-components'
 
 interface FieldProps {
   data: InputData
@@ -24,7 +21,7 @@ const Field = ({ data }: FieldProps) => {
   const { globalChange, setGlobalChange } = useContext(EditProfileContext)
   const [change, setChange] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
-  const theme = useSelector<RootState, ThemeState>(state => state.theme)
+  const theme = useContext(ThemeContext)
 
   const { name, label, date, dontShow, value, editable } = data
 

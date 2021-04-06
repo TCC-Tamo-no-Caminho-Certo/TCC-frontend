@@ -3,21 +3,17 @@ import Style from './styles'
 
 import { FormContext, FormState } from '../'
 
-import { RootState } from 'store'
-import { ThemeState } from 'store/theme'
-
 import DotsLoader from 'components/DotsLoader'
 
-import { useSelector } from 'react-redux'
+import { ThemeContext } from 'styled-components'
 
 interface SubmitProps extends HTMLProps<HTMLButtonElement> {
   dataCy?: string
 }
-
 const Submit = forwardRef(
   ({ children, type = 'submit', ...rest }: SubmitProps, ref) => {
     const form = useContext<FormState | null>(FormContext)
-    const theme = useSelector<RootState, ThemeState>(state => state.theme)
+    const theme = useContext(ThemeContext)
 
     return (
       <Style
