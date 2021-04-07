@@ -24,33 +24,32 @@ export interface RolesState {
   roles: RoleType[]
 }
 
-interface Payload {
-  entities?: []
-  loading?: 'idle' | 'pending' | 'succeeded' | 'failed'
-  roles?: RoleType[]
-}
+type Payload = PayloadAction<Partial<RolesState>>
 
 const initialState: RolesState = {
   entities: [],
   loading: 'idle',
-  roles: [
-    {
-      title: 'student',
-      role_id: 3
-    }
-  ]
+  roles: []
 }
 
-export const getRoles = createAsyncThunk('roles/getRoles', async () => {
-  const { roles }: Response<RoleType[]> = await api.get('info/role')
-  return roles
-})
+export const getRoles = createAsyncThunk(
+  'roles/getRoles',
+  async (prevState: RolesState) => {
+    const { roles } = prevState
+
+    if (roles.length === 0) {
+      console.log('REDUX-REQ-ROLES')
+      const response: Response<RoleType[]> = await api.get('info/role')
+      return { roles: response.roles }
+    }
+  }
+)
 
 const Roles = createSlice({
   name: 'roles',
   initialState,
   reducers: {
-    update: (state, action: PayloadAction<Payload>) => ({
+    update: (state, action: Payload) => ({
       ...state,
       ...action.payload
     })
@@ -58,7 +57,7 @@ const Roles = createSlice({
   extraReducers: builder => {
     builder.addCase(getRoles.fulfilled, (state, action) => ({
       ...state,
-      roles: action.payload
+      ...action.payload
     }))
   }
 })

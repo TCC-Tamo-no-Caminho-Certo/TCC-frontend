@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
-const Style = styled(motion.div)`
+const Style = styled(motion.main)`
   section {
     display: flex;
     justify-content: flex-start;

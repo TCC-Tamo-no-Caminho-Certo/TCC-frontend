@@ -142,9 +142,9 @@ const Style = styled.div<ResponseContentProps>`
     color: ${({ theme }) => theme.colors.secondary};
 
     div {
-      background-color: ${({ theme }) => theme.colors.green};
+      border: solid 1px ${({ theme }) => theme.colors.green};
       padding: 8px;
-      border-radius: 16px 0 0 16px;
+      border-radius: 8px 0 0 8px;
       width: 50%;
       height: 100%;
 
@@ -156,8 +156,8 @@ const Style = styled.div<ResponseContentProps>`
       }
 
       & + div {
-        border-radius: 0 16px 16px 0;
-        background-color: ${({ theme }) => theme.colors.red};
+        border-radius: 0 8px 8px 0;
+        border: solid 1px ${({ theme }) => theme.colors.red};
       }
 
       input {
@@ -192,6 +192,15 @@ const Style = styled.div<ResponseContentProps>`
       font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
       word-wrap: break-word;
     }
+  }
+
+  #dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 50%;
   }
 
   @media screen and (min-width: 545px) {

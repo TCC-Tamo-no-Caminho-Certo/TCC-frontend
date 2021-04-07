@@ -79,6 +79,7 @@ const Style = styled.div`
   justify-content: center;
   align-items: left;
   flex-direction: column;
+
   padding: 0 4px;
   width: 100%;
   border-radius: 5px;
@@ -86,6 +87,10 @@ const Style = styled.div`
 
   color: ${({ theme }) => theme.colors.tertiary};
   border: solid 1px ${({ theme }) => theme.colors.tertiary};
+
+  & + & {
+    margin-top: 24px;
+  }
 
   ${Label}, ${Input}, ${Icon} {
     display: flex;

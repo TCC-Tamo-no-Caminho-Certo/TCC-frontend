@@ -14,9 +14,9 @@ import { getUniversities, UniversitiesState } from 'store/universities'
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
 import Avatar from 'components/User/Avatar'
-import Card from 'components/Card'
-import Slider from 'components/Slider'
 import DotsLoader from 'components/DotsLoader'
+import Slider from 'components/Slider'
+import Card from 'components/Card'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'

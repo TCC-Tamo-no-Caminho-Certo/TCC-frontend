@@ -17,9 +17,12 @@ import makeRoleLabel from 'utils/makeRoleLabel'
 
 import api from 'services/api'
 
-import { Role } from 'store/roles'
+import { Role, RolesState } from 'store/roles'
+import { RootState } from 'store'
 
 import Modal, { ModalMethods } from 'components/Modal'
+
+import { useSelector } from 'react-redux'
 
 interface RequestsData {
   role: Role
@@ -35,6 +38,8 @@ interface RequestsData {
     semester: number
     course_id: number
     campus_id: number
+    pretext: string
+    university_id: number
   }
 }
 
@@ -49,19 +54,24 @@ interface InfosState {
   selectedInfo: ItemData
 }
 
-export const transformArray = (array: RequestsData[]): ItemData[] => {
+export const transformArray = (
+  array: RequestsData[],
+  roles: RolesState
+): ItemData[] => {
+  console.log('tst', array)
   return array.map(
     ({
       name,
-      role,
+      role_id,
       status,
       voucher_uuid,
       created_at,
       request_id,
       feedback,
-      user_id
+      user_id,
+      data
     }) => ({
-      role,
+      role: roles.roles.find(role => role.role_id === role_id)?.title as any,
       user_id,
       feedback,
       name: name,
@@ -69,6 +79,8 @@ export const transformArray = (array: RequestsData[]): ItemData[] => {
       id: request_id,
       statusCircle: status,
       status: getStatusLabel(status),
+      pretext: data.pretext,
+      course_id: data.course_id,
       date: isoToDate(created_at, 'day/month')
     })
   )
@@ -80,14 +92,19 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
   const tableContext = useContext(TableContext)
   const modalRef = useRef<ModalMethods>(null)
   const [isClear, setIsClear] = useState(false)
-
+  const roles = useSelector<RootState, RolesState>(state => state.roles)
   const [infos, setInfos] = useState<InfosState | undefined>()
 
   const setSelected = async (item: ItemData) => {
+    console.log('item', item)
     const { url } = await api.get(`user/role/request/voucher/${item.docId}`)
     const { users } = await api.get(`users/${item.user_id}`)
 
-    const newItem: ItemData = { ...item, voucherUrl: url }
+    const newItem: ItemData = {
+      ...item,
+      voucherUrl: url
+    }
+    console.log('tst3', newItem)
 
     setInfos({
       userInfo: users,
@@ -95,27 +112,53 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
     })
   }
 
-  const makeRequest = useCallback(
+  const startRequest = useCallback(
     async (page: number) => {
-      if (!isClear) {
-        const { requests } = await api.get(
-          `user/role/requests?page=${page}&per_page=${quantity}`
-        )
+      if (roles.roles.length !== 0)
+        if (!isClear) {
+          const { requests } = await api.get(
+            `user/role/requests?page=${page}&per_page=${quantity}`
+          )
 
-        if (requests && requests.length !== 0) {
-          const tableData = transformArray(requests)
+          console.log('req', requests)
 
-          tableContext?.setTableState(prev => ({
-            ...prev,
-            showData: prev.showData
-              ? [...prev.showData, ...tableData]
-              : [...tableData]
-          }))
-        } else setIsClear(true)
-      }
+          if (requests && requests.length !== 0) {
+            const tableData = transformArray(requests, roles)
+            console.log('tst2', tableData)
+
+            tableContext?.setTableState(prev => ({
+              ...prev,
+              showData: [...tableData]
+            }))
+          } else setIsClear(true)
+        }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isClear, quantity]
+    [isClear, quantity, roles]
+  )
+
+  const makeRequest = useCallback(
+    async (page: number) => {
+      if (roles.roles.length !== 0)
+        if (!isClear) {
+          const { requests } = await api.get(
+            `user/role/requests?page=${page}&per_page=${quantity}`
+          )
+
+          if (requests && requests.length !== 0) {
+            const tableData = transformArray(requests, roles)
+
+            tableContext?.setTableState(prev => ({
+              ...prev,
+              showData: prev.showData
+                ? [...prev.showData, ...tableData]
+                : [...tableData]
+            }))
+          } else setIsClear(true)
+        }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isClear, quantity, roles]
   )
 
   const onTableScroll = () => {
@@ -139,8 +182,9 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
   }
 
   useEffect(() => {
-    makeRequest(1)
-  }, [makeRequest])
+    startRequest(1)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startRequest])
 
   return (
     <>

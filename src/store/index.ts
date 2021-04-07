@@ -4,6 +4,7 @@ import User from './user'
 import Home from './home'
 import Universities from './universities'
 import Roles from './roles'
+import Courses from './courses'
 
 import { configureStore } from '@reduxjs/toolkit'
 
@@ -21,7 +22,8 @@ const store = configureStore({
     home: Home.reducer,
     sidebar: Sidebar.reducer,
     universities: Universities.reducer,
-    roles: Roles.reducer
+    roles: Roles.reducer,
+    courses: Courses.reducer
   }
 })
 

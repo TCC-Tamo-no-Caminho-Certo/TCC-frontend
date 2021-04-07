@@ -3,11 +3,10 @@ import { Form } from './styles'
 
 import { MotionReceipt, MotionWays } from '../StudentForm/styles'
 import {
-  defaultUniversity,
-  formatterToSelect,
   haveInstitutionalEmail,
   show,
-  University
+  universityArrayToSelect,
+  universityToSelect
 } from '../StudentForm'
 
 import {
@@ -19,7 +18,11 @@ import api from 'services/api'
 
 import { Response, RootState } from 'store'
 import { getUser, UserState } from 'store/user'
-import { getUniversities, UniversitiesState } from 'store/universities'
+import {
+  getUniversities,
+  UniversitiesState,
+  University
+} from 'store/universities'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
@@ -99,7 +102,7 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
     setFormState(prev => ({
       ...prev,
       selectedUniversity: universities?.find(
-        (university: University) => university.value === id
+        (university: University) => university.university_id === id
       ),
       campus: campus
         ? campus.map(
@@ -129,7 +132,7 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
   }
 
   const onSelectChange = () => {
-    haveInstitutionalEmail(selectedUniversity?.email.professor, emails)
+    haveInstitutionalEmail(selectedUniversity?.regex.email.professor, emails)
       ? setAnimations(prev => ({ ...prev, showSubmit: true }))
       : setAnimations(prev => ({ ...prev, showWays: true }))
   }
@@ -182,10 +185,10 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
   const formSchema = () => {
     return showReceipt
       ? receiptSchema(
-          selectedUniversity ? selectedUniversity.register.professor : ''
+          selectedUniversity ? selectedUniversity.regex.register.professor : ''
         )
       : emailSchema(
-          selectedUniversity ? selectedUniversity.register.professor : ''
+          selectedUniversity ? selectedUniversity.regex.register.professor : ''
         )
   }
 
@@ -199,14 +202,7 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
     setFormState(prev => ({
       ...prev,
       universities: storeUniversities.universities
-        ? storeUniversities.universities.map(
-            (university: any): University => ({
-              value: university.university_id,
-              label: university.name,
-              email: university.regex.email,
-              register: university.regex.register
-            })
-          )
+        ? storeUniversities.universities
         : undefined
     }))
   }, [storeUniversities])
@@ -232,14 +228,24 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
         <Select
           name='university_id'
           placeholder='Universidade'
-          options={formatterToSelect(universities)}
           onChange={onUniversityChange}
-          defaultValue={defaultUniversity(beforeData, universities)}
+          options={universityArrayToSelect(universities)}
+          value={universityToSelect(
+            universities?.find(
+              (university: University) =>
+                beforeData &&
+                university.university_id === beforeData.university_id
+            )
+          )}
         />
 
-        <Text name='register' placeholder='Registro Acadêmico' />
+        <Text
+          name='register'
+          placeholder='Registro Acadêmico'
+          defaultValue={beforeData?.register}
+        />
 
-        <Presence condition={showCampus}>
+        <Presence condition={showCampus || beforeData}>
           <MotionSelect
             animate='enter'
             name='campus_id'
@@ -250,7 +256,7 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
           />
         </Presence>
 
-        <Presence condition={showCourse}>
+        <Presence condition={showCourse || beforeData}>
           <MotionSelect
             animate='enter'
             name='course_id'
@@ -261,7 +267,7 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
           />
         </Presence>
 
-        <Presence condition={showWays}>
+        <Presence condition={showWays || beforeData}>
           <MotionWays animate='enter' exit='exit' variants={show}>
             <span id='title'>Forma de registro</span>
 
@@ -282,7 +288,7 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
           </MotionWays>
         </Presence>
 
-        <Presence condition={showReceipt}>
+        <Presence condition={showReceipt || beforeData}>
           <MotionReceipt animate='enter' exit='exit' variants={show}>
             <div id='warning'>
               <p>
@@ -316,7 +322,7 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
 
         <Checkbox name='full_time' label='Sou professor em tempo integral' />
 
-        <Presence condition={showSubmit}>
+        <Presence condition={showSubmit || beforeData}>
           <MotionSubmit
             exit='exit'
             initial='exit'
@@ -333,7 +339,7 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
         type='button'
         onClick={async () => {
           if (selectedUniversity) {
-            const rgx = new RegExp(selectedUniversity.email.professor)
+            const rgx = new RegExp(selectedUniversity.regex.email.professor)
 
             const teste = emails.filter(({ address }) => rgx.test(address))
 
@@ -348,9 +354,9 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
       <RegisterEmail
         placeholder='E-mail institucional'
         ref={registerEmailRef}
-        title={selectedUniversity?.label}
-        regex={selectedUniversity?.email.professor}
-        addData={{ university_id: selectedUniversity?.value }}
+        title={selectedUniversity?.name}
+        regex={selectedUniversity?.regex.email.professor}
+        addData={{ university_id: selectedUniversity?.university_id }}
         onSuccess={onRegisterSuccess}
         modal={{
           bottom: '50vh',

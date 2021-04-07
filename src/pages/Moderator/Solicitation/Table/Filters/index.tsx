@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Style from './styles'
 
 import { TableContext } from '../'
@@ -7,14 +7,14 @@ import { transformArray } from '../Tbody'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { getRoles, RolesState } from 'store/roles'
+import { RolesState } from 'store/roles'
 
 import LoupeIcon from 'assets/Inputs/LoupeIcon'
 
 import { Datepicker, Select, Text } from 'components/Form'
 
 import { lighten } from 'polished'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Theme } from 'react-select'
 import { ThemeContext } from 'styled-components'
 
@@ -34,7 +34,6 @@ const Filters = ({ quantity }: FiltersProps) => {
   const theme = useContext(ThemeContext)
 
   const roles = useSelector<RootState, RolesState>(state => state.roles)
-  const dispatch = useDispatch()
   const [filter, setFilter] = useState<keyof Filter>('name')
 
   const selectStyle = {
@@ -125,7 +124,8 @@ const Filters = ({ quantity }: FiltersProps) => {
         styling={selectStyle}
         options={[
           { label: 'Estudante', value: 'student' },
-          { label: 'Moderador', value: 'moderator' }
+          { label: 'Moderador', value: 'moderator' },
+          { label: 'Professor', value: 'professor' }
         ]}
       />
     ),
@@ -184,7 +184,7 @@ const Filters = ({ quantity }: FiltersProps) => {
       const { requests } = response
 
       tableContext?.setTableState({
-        showData: transformArray(requests),
+        showData: transformArray(requests, roles),
         tablePage: 1
       })
     }
@@ -200,7 +200,7 @@ const Filters = ({ quantity }: FiltersProps) => {
       const { requests } = response
 
       tableContext?.setTableState({
-        showData: transformArray(requests),
+        showData: transformArray(requests, roles),
         tablePage: 1
       })
     }
@@ -213,15 +213,11 @@ const Filters = ({ quantity }: FiltersProps) => {
       const { requests } = response
 
       tableContext?.setTableState({
-        showData: transformArray(requests),
+        showData: transformArray(requests, roles),
         tablePage: 1
       })
     }
   }
-
-  useEffect(() => {
-    dispatch(getRoles())
-  }, [dispatch])
 
   return (
     <Style getData={filterTable}>

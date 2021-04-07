@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 
-const ambiguous = (register: string) => {
-  const academic_register = new RegExp(register)
+const ambiguous = (recievedRegister: string) => {
+  const register = new RegExp(recievedRegister)
 
   return {
     lattes: Yup.string(),
@@ -9,7 +9,7 @@ const ambiguous = (register: string) => {
     orcid: Yup.string(),
     university_id: Yup.number().required('Você precisa selecionar!'),
     register: Yup.string()
-      .matches(academic_register, 'Ra inválido!')
+      .matches(register, 'Ra inválido!')
       .required('Digite seu RA'),
     campus_id: Yup.number().required('Você precisa selecionar!'),
     course_id: Yup.number().required('Você precisa selecionar!'),

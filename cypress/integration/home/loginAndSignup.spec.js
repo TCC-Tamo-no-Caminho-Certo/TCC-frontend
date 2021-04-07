@@ -1,12 +1,7 @@
-describe('Login', () => {
-  it('login', () => {
+describe('Fazer login e logout', () => {
+  it('login e logout', () => {
     cy.login()
-  })
-
-  it('logout', () => {
-    cy.get('#Gear').click()
-    cy.get('[data-cy=button-main-logout]').click()
-    cy.url().should('not.contains', '/session')
+    cy.logout()
   })
 })
 

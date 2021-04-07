@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const Header = styled.header`
+export const Header = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -25,23 +25,19 @@ const Style = styled.div`
   justify-content: center;
   flex-direction: column;
 
-  padding: 64px 20px 64px 12px;
+  padding: 64px 24px 32px 12px;
   width: 100%;
   border-radius: 16px;
 
   background-color: ${({ theme }) => theme.colors.secondary};
   box-shadow: 8px 8px 4px 0px rgba(0, 0, 0, 0.49);
 
-  .Field + .Field {
-    margin-top: 24px;
-  }
-
   .Avatar {
     margin-bottom: 24px;
   }
 
   @media screen and (min-width: 620px) {
-    padding: 64px 24px;
+    padding: 64px 24px 32px 24px;
   }
 `
 

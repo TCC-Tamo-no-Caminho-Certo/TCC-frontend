@@ -29,10 +29,12 @@ export interface ItemData {
   date: string
   status: string
   user_id: number
-  docId?: string
-  feedback?: string
-  voucherUrl?: string
   statusCircle: StatusTypes
+  docId?: string
+  course_id?: number
+  feedback?: string
+  pretext?: string
+  voucherUrl?: string
 }
 
 interface TableContextProps {

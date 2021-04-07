@@ -9,12 +9,12 @@ export interface University {
   university_id: number
   regex: {
     email: {
-      student: RegExp
-      professor: RegExp
+      student: string
+      professor: string
     }
     register: {
-      student: RegExp
-      professor: RegExp
+      student: string
+      professor: string
     }
   }
 }
@@ -39,7 +39,7 @@ export const getUniversities = createAsyncThunk(
     const { universities } = prevState
 
     if (universities.length === 0) {
-      console.log('fez req para uni')
+      console.log('REDUX-REQ-UNIVERSITIES')
       const { universities }: Response<University[]> = await api.get(
         'info/university'
       )

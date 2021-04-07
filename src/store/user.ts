@@ -93,6 +93,7 @@ export const getUser = createAsyncThunk('userConfig/getUser', async () => {
     return roles[roles.length - 1]
   }
 
+  console.log('REDUX-REQ-USERS')
   const { user } = await api.get('user')
 
   console.log('USER', {
@@ -102,7 +103,6 @@ export const getUser = createAsyncThunk('userConfig/getUser', async () => {
 
   return {
     ...user,
-    roles: ['professor'],
     selectedRole: getInitialSelectedRole(user.roles),
     dataLoading: false
   }

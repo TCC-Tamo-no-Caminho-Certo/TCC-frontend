@@ -1,14 +1,14 @@
 import * as Yup from 'yup'
 
-const ambiguous = (register: string) => {
-  const academic_register = new RegExp(register)
+const ambiguous = (recievedRegister: string) => {
+  const register = new RegExp(recievedRegister)
 
   return {
     university_id: Yup.number().required('Você precisa selecionar!'),
     campus_id: Yup.number().required('Você precisa selecionar!'),
     course_id: Yup.number().required('Você precisa selecionar!'),
     semester: Yup.number().required('Você precisa selecionar!'),
-    register: Yup.string().matches(academic_register)
+    register: Yup.string().matches(register)
   }
 }
 

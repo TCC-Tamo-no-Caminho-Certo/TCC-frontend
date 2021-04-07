@@ -39,6 +39,12 @@ interface ContainerState {
   request?: Request
 }
 
+interface Forms {
+  student: JSX.Element
+  professor: JSX.Element
+  moderator: JSX.Element
+}
+
 const Container = forwardRef(({ role }: ContainerProps, ref) => {
   const [{ inRequest, request }, setContainerState] = useState<ContainerState>({
     inRequest: false,
@@ -47,26 +53,34 @@ const Container = forwardRef(({ role }: ContainerProps, ref) => {
   const user = useSelector<RootState, UserState>(state => state.user)
 
   const makeRequest = useCallback(async () => {
-    const { requests } = await api.get(
-      `user/role/requests?per_page=1&filter[user_id][]=${user.user_id}`
-    )
-
-    if (requests) {
-      const roleRequests = requests.filter(
-        (request: any) => request.role === role
+    if (user.user_id !== 0) {
+      const { requests } = await api.get(
+        `user/role/requests?per_page=1&filter[user_id][]=${user.user_id}`
       )
 
-      if (roleRequests[0])
-        setContainerState({
-          inRequest: true,
-          request: roleRequests[0]
-        })
-      else
-        setContainerState({
-          inRequest: false
-        })
+      if (requests) {
+        const roleRequests = requests.filter(
+          (request: any) => request.role === role
+        )
+
+        if (roleRequests[0])
+          setContainerState({
+            inRequest: true,
+            request: roleRequests[0]
+          })
+        else
+          setContainerState({
+            inRequest: false
+          })
+      }
     }
   }, [user, role])
+
+  const forms: Forms = {
+    student: <StudentForm beforeData={request?.data} />,
+    professor: <ProfessorForm beforeData={request?.data} />,
+    moderator: <ModeratorForm beforeData={request?.data} />
+  }
 
   useEffect(() => {
     makeRequest()
@@ -91,7 +105,7 @@ const Container = forwardRef(({ role }: ContainerProps, ref) => {
           <>
             <RequestSvg status={request?.status} />
 
-            {request?.status === 'rejected' ? (
+            {request?.status === 'rejected' && (
               <div>
                 <div id='rejected'>
                   <p>Solicitação rejeitada</p>
@@ -106,15 +120,11 @@ const Container = forwardRef(({ role }: ContainerProps, ref) => {
                   Se quiser tente novamente alterando seus dados abaixo:
                 </p>
               </div>
-            ) : (
-              <></>
             )}
           </>
         )}
 
-        {role === 'student' && <StudentForm beforeData={request?.data} />}
-        {role === 'professor' && <ProfessorForm beforeData={request?.data} />}
-        {role === 'moderator' && <ModeratorForm beforeData={request?.data} />}
+        {request?.status !== 'awaiting' && forms[role as keyof Forms]}
 
         <button
           id='scrollButton'

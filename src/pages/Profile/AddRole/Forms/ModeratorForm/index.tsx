@@ -1,11 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Form } from './styles'
 
-import {
-  defaultUniversity,
-  formatterToSelect,
-  University
-} from '../StudentForm'
+import { universityArrayToSelect, universityToSelect } from '../StudentForm'
 
 import {
   withFullName,
@@ -14,7 +10,11 @@ import {
 
 import { getUser, UserState } from 'store/user'
 import { Response, RootState } from 'store'
-import { getUniversities, UniversitiesState } from 'store/universities'
+import {
+  getUniversities,
+  UniversitiesState,
+  University
+} from 'store/universities'
 
 import { Select, Submit, Textarea } from 'components/Form'
 import Popup, { PopupMethods } from 'components/Popup'
@@ -100,21 +100,10 @@ const ModeratorForm = ({ beforeData }: ModeratorFormProps) => {
   }, [])
 
   useEffect(() => {
-    console.log('data', beforeData)
-  }, [beforeData])
-
-  useEffect(() => {
     setFormState((prev: any) => ({
       ...prev,
       universities: storeUniversities.universities
-        ? storeUniversities.universities.map(
-            (university: any): University => ({
-              value: university.university_id,
-              label: university.name,
-              email: university.regex.email,
-              register: university.regex.register
-            })
-          )
+        ? storeUniversities.universities
         : undefined
     }))
   }, [storeUniversities])
@@ -131,9 +120,15 @@ const ModeratorForm = ({ beforeData }: ModeratorFormProps) => {
         <Select
           name='university_id'
           placeholder='Universidade'
-          options={formatterToSelect(universities)}
           onChange={onSelectChange}
-          value={defaultUniversity(beforeData, universities)}
+          options={universityArrayToSelect(universities)}
+          value={universityToSelect(
+            universities?.find(
+              (university: University) =>
+                beforeData &&
+                university.university_id === beforeData.university_id
+            )
+          )}
         />
 
         <motion.div

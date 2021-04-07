@@ -70,10 +70,6 @@ const RoleInfo = ({
 
   const onButtonClick = () => {
     onClick !== undefined && onClick()
-
-    setTimeout(() => {
-      window.scrollTo(0, document.body.scrollHeight)
-    }, 1)
   }
 
   return (
