@@ -23,15 +23,67 @@ export const Header = styled(HeaderComponent)`
 export const Content = styled(Card)<ContentProps>`
   width: clamp(320px, 100vw, 550px);
   border-radius: 0;
-
   padding-bottom: 16px;
 
   #role {
-    width: 100%;
-    font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
     margin-bottom: 16px;
+  }
+
+  .RequestSvg {
+    margin-bottom: 24px;
+    margin-top: 16px;
+  }
+
+  #role {
+    width: 100%;
+    font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2.2rem);
+    text-align: center;
 
     color: ${({ theme, role }) => theme.roles[role]};
+  }
+
+  #rejected {
+    width: 100%;
+    padding: 16px;
+
+    border: solid 1px ${({ theme }) => theme.colors.primary};
+    border-radius: 8px;
+
+    > p {
+      text-align: justify;
+      word-wrap: break-word;
+
+      text-align: center;
+      font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.1rem);
+      margin-bottom: 16px;
+
+      color: ${({ theme }) => theme.colors.red};
+    }
+
+    div {
+      width: 100%;
+      border-radius: 8px;
+
+      span {
+        color: ${({ theme }) => theme.colors.tertiary};
+      }
+
+      p {
+        margin-top: 8px;
+        font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
+
+        color: ${({ theme }) => theme.colors.primary};
+      }
+    }
+  }
+
+  #tryAgain {
+    margin: 24px 16px;
+    text-align: left;
+    width: 100%;
+    font-size: clamp(1.8rem, 0.6rem + 2.6vw, 1.8rem);
+
+    color: ${({ theme }) => theme.colors.tertiary};
   }
 
   #scrollButton {

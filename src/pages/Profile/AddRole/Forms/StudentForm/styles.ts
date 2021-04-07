@@ -123,24 +123,20 @@ export const Form = styled(OriginalForm)`
 
   color: ${({ theme }) => theme.colors.tertiary};
 
-  .Text {
-    margin-bottom: 16px;
-  }
-
-  .Select,
-  .Text {
-    height: 35px;
-  }
-
-  .Select {
-    margin-bottom: 16px;
-    background-color: transparent;
-  }
-
   span {
     text-align: left;
     width: 100%;
     font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
+  }
+
+  .Select,
+  .Text {
+    margin-bottom: 16px;
+    height: 35px;
+  }
+
+  .Select {
+    background-color: transparent;
   }
 
   .Submit {

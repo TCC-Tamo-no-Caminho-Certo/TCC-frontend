@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Form } from './styles'
 
-import Container from '../Container'
-import { formatterToSelect, University } from '../StudentForm'
+import {
+  defaultUniversity,
+  formatterToSelect,
+  University
+} from '../StudentForm'
 
 import {
   withFullName,
@@ -21,6 +24,20 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { Option } from 'react-select/src/filters'
 
+interface FormState {
+  universities: University[] | undefined
+  selectedUniversity: University | undefined
+}
+
+interface ModeratorFormProps {
+  beforeData?: any
+}
+
+const initialFormState: FormState = {
+  selectedUniversity: undefined,
+  universities: undefined
+}
+
 const verifyFullTime = (user: UserState, university_id: number) => {
   if (user.professor)
     return (
@@ -31,25 +48,13 @@ const verifyFullTime = (user: UserState, university_id: number) => {
 
   return false
 }
-
-interface FormState {
-  universities: University[] | undefined
-  selectedUniversity: University | undefined
-}
-
-const initialFormState: FormState = {
-  selectedUniversity: undefined,
-  universities: undefined
-}
-
-const ModeratorForm = () => {
+const ModeratorForm = ({ beforeData }: ModeratorFormProps) => {
   const [{ universities }, setFormState] = useState<FormState>(initialFormState)
   const [isFullTime, setIsFullTime] = useState(false)
   const storeUniversities = useSelector<RootState, UniversitiesState>(
     state => state.universities
   )
   const user = useSelector<RootState, UserState>(state => state.user)
-  const containerRef = useRef<HTMLDivElement>(null)
   const popupRef = useRef<PopupMethods>(null)
   const dispatch = useDispatch()
   const history = useHistory()
@@ -95,6 +100,10 @@ const ModeratorForm = () => {
   }, [])
 
   useEffect(() => {
+    console.log('data', beforeData)
+  }, [beforeData])
+
+  useEffect(() => {
     setFormState((prev: any) => ({
       ...prev,
       universities: storeUniversities.universities
@@ -112,38 +121,39 @@ const ModeratorForm = () => {
 
   return (
     <>
-      <Container role='moderator' ref={containerRef}>
-        <Form
-          loading
-          path='user/role/request/moderator'
-          afterResData={afterSubmit}
-          schema={!isFullTime ? withFullName : withoutFullName}
+      <Form
+        loading
+        path='user/role/request/moderator'
+        method={beforeData ? 'patch' : 'post'}
+        afterResData={afterSubmit}
+        schema={!isFullTime ? withFullName : withoutFullName}
+      >
+        <Select
+          name='university_id'
+          placeholder='Universidade'
+          options={formatterToSelect(universities)}
+          onChange={onSelectChange}
+          value={defaultUniversity(beforeData, universities)}
+        />
+
+        <motion.div
+          animate={{
+            height: !isFullTime ? 'auto' : 0,
+            opacity: !isFullTime ? 1 : 0
+          }}
         >
-          <Select
-            name='university_id'
-            placeholder='Universidade'
-            options={formatterToSelect(universities)}
-            onChange={onSelectChange}
+          <Textarea
+            name='pretext'
+            placeholder='Descreva porquê você quer ser Moderador...'
+            maxLength={500}
+            defaultValue={beforeData ? beforeData.pretext : ''}
           />
+        </motion.div>
 
-          <motion.div
-            animate={{
-              height: !isFullTime ? 'auto' : 0,
-              opacity: !isFullTime ? 1 : 0
-            }}
-          >
-            <Textarea
-              name='pretext'
-              placeholder='Descreva porquê você quer ser Moderador...'
-              maxLength={500}
-            />
-          </motion.div>
-
-          <Submit>
-            {!isFullTime ? 'Enviar solicitação' : 'Tornar-se moderador!'}
-          </Submit>
-        </Form>
-      </Container>
+        <Submit>
+          {!isFullTime ? 'Enviar solicitação' : 'Tornar-se moderador!'}
+        </Submit>
+      </Form>
 
       <Popup bottom='50vh' translateY='50%' ref={popupRef} />
     </>

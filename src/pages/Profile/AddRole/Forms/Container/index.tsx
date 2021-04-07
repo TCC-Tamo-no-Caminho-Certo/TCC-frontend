@@ -1,13 +1,10 @@
-import React, {
-  forwardRef,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useState
-} from 'react'
+import React, { forwardRef, useCallback, useEffect, useState } from 'react'
 import Style, { Content, Header } from './styles'
 
-import RequestStatus from './RequestStatus'
+import RequestSvg from './RequestSvg'
+import ModeratorForm from '../ModeratorForm'
+import StudentForm from '../StudentForm'
+import ProfessorForm from '../ProfessorForm'
 
 import { StatusTypes } from 'utils/status'
 import makeRoleLabel from 'utils/makeRoleLabel'
@@ -20,16 +17,34 @@ import { Role } from 'store/roles'
 
 import { useSelector } from 'react-redux'
 
-interface ContainerProps {
+interface Request {
+  created_at: string
+  data: any
+  feedback: string
+  name: string
+  request_id: number
   role: Role
-  children: ReactNode
+  role_id: number
+  status: StatusTypes
+  updated_at: string
+  user_id: number
 }
 
-const Container = forwardRef(({ role, children }: ContainerProps, ref) => {
-  const [showStatus, setShowStatus] = useState(false)
+interface ContainerProps {
+  role?: string
+}
+
+interface ContainerState {
+  inRequest: boolean
+  request?: Request
+}
+
+const Container = forwardRef(({ role }: ContainerProps, ref) => {
+  const [{ inRequest, request }, setContainerState] = useState<ContainerState>({
+    inRequest: false,
+    request: undefined
+  })
   const user = useSelector<RootState, UserState>(state => state.user)
-  const [status, setStatus] = useState<StatusTypes>('awaiting')
-  const [message, setMessage] = useState('')
 
   const makeRequest = useCallback(async () => {
     const { requests } = await api.get(
@@ -41,11 +56,15 @@ const Container = forwardRef(({ role, children }: ContainerProps, ref) => {
         (request: any) => request.role === role
       )
 
-      if (roleRequests[0]) {
-        setShowStatus(!!roleRequests[0].status)
-        setStatus(roleRequests[0].status)
-        setMessage(roleRequests[0].feedback)
-      }
+      if (roleRequests[0])
+        setContainerState({
+          inRequest: true,
+          request: roleRequests[0]
+        })
+      else
+        setContainerState({
+          inRequest: false
+        })
     }
   }, [user, role])
 
@@ -59,24 +78,43 @@ const Container = forwardRef(({ role, children }: ContainerProps, ref) => {
     }, 100)
   }, [])
 
-  return showStatus ? (
-    <RequestStatus role={role} status={status} message={message} />
-  ) : (
+  return role !== undefined ? (
     <Style ref={ref as any}>
-      <Content role={role}>
-        <Header>Solicitação de perfil</Header>
+      <Content role={role as Role}>
+        <Header>
+          {inRequest ? 'Acompanhar solicitação' : 'Solicitação de perfil'}
+        </Header>
 
-        <div id='role'>{makeRoleLabel(role)}</div>
+        <h4 id='role'>{makeRoleLabel(role as Role)}</h4>
 
-        {children}
+        {inRequest && (
+          <>
+            <RequestSvg status={request?.status} />
 
-        <button
-          id='scrollButton'
-          type='button'
-          onClick={() => window.scrollTo(0, 0)}
-        >
-          Remover solicitação
-        </button>
+            {request?.status === 'rejected' ? (
+              <div>
+                <div id='rejected'>
+                  <p>Solicitação rejeitada</p>
+
+                  <div>
+                    <span>Resposta do moderador:</span>
+                    <p>{request?.feedback}</p>
+                  </div>
+                </div>
+
+                <p id='tryAgain'>
+                  Se quiser tente novamente alterando seus dados abaixo:
+                </p>
+              </div>
+            ) : (
+              <></>
+            )}
+          </>
+        )}
+
+        {role === 'student' && <StudentForm beforeData={request?.data} />}
+        {role === 'professor' && <ProfessorForm beforeData={request?.data} />}
+        {role === 'moderator' && <ModeratorForm beforeData={request?.data} />}
 
         <button
           id='scrollButton'
@@ -87,6 +125,8 @@ const Container = forwardRef(({ role, children }: ContainerProps, ref) => {
         </button>
       </Content>
     </Style>
+  ) : (
+    <></>
   )
 })
 

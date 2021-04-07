@@ -2,17 +2,17 @@ import { darken } from 'polished'
 import { createGlobalStyle } from 'styled-components'
 
 export default createGlobalStyle`
-  * {
-    margin: 0;
-    padding: 0;
-    outline: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-  }
-
   html {
     font-size: 62.5%;
     scroll-behavior: smooth;
+
+    * {
+      margin: 0;
+      padding: 0;
+      outline: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
 
     body {
       background-color: ${({ theme }) => theme.colors.primary};
@@ -30,6 +30,34 @@ export default createGlobalStyle`
 
       span, p, h1, h2, h3, h4, h5 {
         cursor: default;
+        font-weight: normal;
+      }
+
+      a {
+        text-decoration: none;
+        color: ${({ theme }) => theme.colors.primary};
+      }
+
+      li {
+        list-style-type: none;
+      }
+
+      button {
+        background-color: transparent;
+        border: none;
+      }
+
+      button, label, input[type="checkbox"] {
+        font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
+        line-height: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
+
+        cursor: pointer;
+      }
+
+      input[type="checkbox"] {
+        &, &:focus, &:hover {
+          box-shadow: initial;
+        }
       }
 
       &::-webkit-scrollbar {
@@ -51,33 +79,6 @@ export default createGlobalStyle`
         &:hover {
           box-shadow: inset 0 0 10px 1px rgba(255,255,255,1);
         }
-      }
-    }
-
-    a {
-      text-decoration: none;
-      color: ${({ theme }) => theme.colors.primary};
-    }
-
-    li {
-      list-style-type: none;
-    }
-
-    button {
-      background-color: transparent;
-      border: none;
-    }
-
-    button, label, input[type="checkbox"] {
-      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
-      line-height: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
-
-      cursor: pointer;
-    }
-
-    input[type="checkbox"] {
-      &, &:focus, &:hover {
-        box-shadow: initial;
       }
     }
   }

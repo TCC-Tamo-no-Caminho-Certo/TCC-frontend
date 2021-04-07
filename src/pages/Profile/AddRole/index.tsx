@@ -2,9 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import Style from './styles'
 
 import RoleInfo from './RoleInfo'
-import ModeratorForm from './Forms/ModeratorForm'
-import StudentForm from './Forms/StudentForm'
-import ProfessorForm from './Forms/ProfessorForm'
+import Container from './Forms/Container'
 
 import selectRoleLabel from 'utils/makeRoleLabel'
 
@@ -135,9 +133,7 @@ const AddRole = () => {
         </section>
       </Style>
 
-      {roleSelected === 'student' && <StudentForm />}
-      {roleSelected === 'professor' && <ProfessorForm />}
-      {roleSelected === 'moderator' && <ModeratorForm />}
+      <Container role={roleSelected} />
     </>
   )
 }

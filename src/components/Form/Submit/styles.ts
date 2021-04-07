@@ -12,7 +12,7 @@ const Style = styled.button`
   color: ${({ theme }) => theme.colors.secondary};
 
   &:disabled {
-    background-color: ${({ theme }) => lighten(0.3, theme.colors.primary)};
+    background-color: ${({ theme }) => lighten(0.2, theme.colors.primary)};
   }
 
   &:hover {
