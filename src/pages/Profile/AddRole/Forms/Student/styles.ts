@@ -29,6 +29,7 @@ export const Voucher = styled.div`
     b,
     p {
       font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.6rem);
+      width: 100%;
     }
 
     p {

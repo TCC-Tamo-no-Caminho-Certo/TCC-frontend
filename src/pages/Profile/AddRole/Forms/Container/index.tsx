@@ -1,17 +1,10 @@
-import React, {
-  createContext,
-  forwardRef,
-  useCallback,
-  useEffect,
-  useState
-} from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import Style, { Content, Header } from './styles'
 
 import RequestSvg from './RequestSvg'
 import ProfessorForm from '../ProfessorForm'
-import StudentForm from '../StudentForm'
 import ModeratorForm from '../ModeratorForm'
-import StudentChange from '../StudentChange'
+import Student from '../Student'
 
 import { StatusTypes } from 'utils/status'
 import makeRoleLabel from 'utils/makeRoleLabel'
@@ -19,7 +12,7 @@ import makeRoleLabel from 'utils/makeRoleLabel'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { getRoles, Role, RolesState } from 'store/AsyncThunks/roles'
+import { getRoles, Role, RolesState, RoleType } from 'store/AsyncThunks/roles'
 import {
   getUniversities,
   UniversitiesState,
@@ -29,123 +22,107 @@ import { Course, CoursesState, getCourses } from 'store/AsyncThunks/courses'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-interface Request {
-  created_at: string
-  data: any
-  feedback: string
-  name: string
-  request_id: number
-  role: Role
-  role_id: number
-  status: StatusTypes
-  updated_at: string
-  user_id: number
-}
-
-interface ContainerProps {
-  role?: string
-}
-
-interface ContainerState {
-  inRequest: boolean
-  request?: Request
-}
-
 interface Forms {
   student: JSX.Element
   professor: JSX.Element
   moderator: JSX.Element
 }
 
+export interface Data {
+  register: string
+  semester: number
+  campus_id: number
+  course_id: number
+  university_id: number
+}
+
+interface Request {
+  data: Data
+  role: Role
+  name: string
+  role_id: number
+  user_id: number
+  feedback: string
+  request_id: number
+  updated_at: string
+  created_at: string
+  status: StatusTypes
+}
+
 interface ContainerContextState {
-  storeUniversities: University[]
   storeCourses: Course[]
+  storeRoles: RoleType[]
+  storeUniversities: University[]
+}
+
+interface ContainerProps {
+  role: Role
 }
 
 export const ContainerContext = createContext<ContainerContextState>({
   storeUniversities: [],
-  storeCourses: []
+  storeCourses: [],
+  storeRoles: []
 })
 
-const Container = forwardRef(({ role }: ContainerProps, ref) => {
+const Container = ({ role }: ContainerProps) => {
+  const courses = useSelector<RootState, CoursesState>(({ courses }) => courses)
   const roles = useSelector<RootState, RolesState>(({ roles }) => roles)
   const universities = useSelector<RootState, UniversitiesState>(
     ({ universities }) => universities
   )
-  const courses = useSelector<RootState, CoursesState>(({ courses }) => courses)
 
-  const [{ inRequest, request }, setContainerState] = useState<ContainerState>({
-    inRequest: false,
-    request: undefined
-  })
+  const [requests, setRequests] = useState<Request[] | undefined>(undefined)
+  const selectedRequest = requests?.find(
+    (request: any) =>
+      request.role_id ===
+      roles.roles.find(storeRole => storeRole.title === role)?.role_id
+  )
 
   const dispatch = useDispatch()
 
-  const makeRequest = useCallback(async () => {
-    if (roles.roles.length !== 0) {
-      const { requests } = await api.get('user/role/request')
-
-      const roleId = roles.roles.find(storeRole => storeRole.title === role)
-        ?.role_id
-
-      const roleRequest = requests.find(
-        (request: any) => request.role_id === roleId
-      )
-
-      roleRequest
-        ? setContainerState({
-            inRequest: true,
-            request: roleRequest
-          })
-        : setContainerState({
-            inRequest: false
-          })
-    }
-  }, [role, roles])
-
-  const forms: Forms = {
-    student: request ? <StudentChange data={request.data} /> : <StudentForm />,
+  const forms = {
+    student: <Student requests={requests} />,
     professor: <ProfessorForm />,
     moderator: <ModeratorForm />
   }
 
   useEffect(() => {
-    makeRequest()
-  }, [makeRequest])
+    if (roles.roles.length !== 0)
+      (async () => {
+        const { requests } = await api.get('user/role/request')
+        setRequests(requests)
+      })()
+  }, [roles])
 
   useEffect(() => {
     dispatch(getRoles(roles))
     dispatch(getUniversities(universities))
     dispatch(getCourses(courses))
-
-    setTimeout(() => {
-      window.scrollTo(0, document.body.scrollHeight)
-    }, 100)
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return role !== undefined ? (
-    <Style ref={ref as any}>
-      <Content role={role as Role}>
+  return (
+    <Style>
+      <Content role={role}>
         <Header>
-          {inRequest ? 'Acompanhar solicitação' : 'Solicitação de perfil'}
+          {requests ? 'Acompanhar solicitação' : 'Solicitação de perfil'}
         </Header>
 
-        <h4 id='role'>{makeRoleLabel(role as Role)}</h4>
+        <h4 id='role'>{makeRoleLabel(role)}</h4>
 
-        {inRequest && (
+        {requests && (
           <>
-            <RequestSvg status={request?.status} />
+            <RequestSvg status={selectedRequest?.status} />
 
-            {request?.status === 'rejected' && (
+            {selectedRequest?.status === 'rejected' && (
               <div>
                 <div id='rejected'>
                   <p>Solicitação rejeitada</p>
 
                   <div>
                     <span>Resposta do moderador:</span>
-                    <p>{request?.feedback}</p>
+                    <p>{selectedRequest?.feedback}</p>
                   </div>
                 </div>
 
@@ -160,10 +137,11 @@ const Container = forwardRef(({ role }: ContainerProps, ref) => {
         <ContainerContext.Provider
           value={{
             storeCourses: courses.courses,
-            storeUniversities: universities.universities
+            storeUniversities: universities.universities,
+            storeRoles: roles.roles
           }}
         >
-          {request?.status !== 'awaiting' && forms[role as keyof Forms]}
+          {requests && forms[role as keyof Forms]}
         </ContainerContext.Provider>
 
         <button
@@ -175,9 +153,7 @@ const Container = forwardRef(({ role }: ContainerProps, ref) => {
         </button>
       </Content>
     </Style>
-  ) : (
-    <></>
   )
-})
+}
 
 export default Container

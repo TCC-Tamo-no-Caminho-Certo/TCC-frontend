@@ -41,6 +41,8 @@ const AddRole = () => {
   useEffect(() => {
     if (roleSelected === undefined)
       allRoles.map(role => pathname.includes(role) && setRoleSelected(role))
+
+    window.scrollTo(0, document.body.scrollHeight)
   }, [roleSelected, pathname])
 
   return (
@@ -135,7 +137,7 @@ const AddRole = () => {
         </div>
       </section>
 
-      <Container role={roleSelected} />
+      {roleSelected && <Container role={roleSelected} />}
     </Style>
   )
 }

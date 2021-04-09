@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Form } from './styles'
 
 import { ContainerContext } from '../Container'
-import { Voucher, Ways } from '../StudentForm/styles'
-import { hasInstitutionalEmail, semesterOptions, show } from '../StudentForm'
+import { Voucher, Ways } from '../Student/styles'
+import { hasInstitutionalEmail, show } from '../Student'
 
 import {
   emailSchema,
@@ -30,7 +30,6 @@ import { useHistory } from 'react-router'
 interface Options {
   campus: Option[]
   course: Option[]
-  semester: Option[]
   university: Option[]
 }
 
@@ -41,10 +40,9 @@ interface Animations {
   course: boolean
   submit: boolean
   voucher: boolean
-  semester: boolean
 }
 
-const StudentForm = () => {
+const ProfessorForm = () => {
   const user = useSelector<RootState, UserState>(state => state.user)
   const { storeUniversities, storeCourses } = useContext(ContainerContext)
 
@@ -60,18 +58,16 @@ const StudentForm = () => {
     course: storeCourses.map(course => ({
       label: course.name,
       value: course.course_id
-    })),
-    semester: semesterOptions
+    }))
   })
 
   const [animations, setAnimations] = useState<Animations>({
-    ar: false,
+    ar: true,
     ways: false,
     campus: false,
     course: false,
     submit: false,
-    voucher: false,
-    semester: false
+    voucher: false
   })
 
   const [university, setUniversity] = useState<University>({
@@ -117,23 +113,17 @@ const StudentForm = () => {
       `/university/campus/${selected.value}/course`
     )
 
-    setAnimations(prev => ({ ...prev, showCourse: true }))
-
     setOptions(prev => ({
       ...prev,
-      courses: courses.map(
+      course: courses.map(
         (course: any): Option => ({
           value: course.course_id,
           label: course.name
         })
       )
     }))
-  }
 
-  const onSemesterChange = () => {
-    hasInstitutionalEmail(university.regex.email.student, user.emails)
-      ? setAnimations(prev => ({ ...prev, submit: true }))
-      : setAnimations(prev => ({ ...prev, ways: true }))
+    setAnimations(prev => ({ ...prev, course: true }))
   }
 
   const onRegisterSuccess = () => {
@@ -238,24 +228,9 @@ const StudentForm = () => {
         <Presence animate='enter' variants={show} condition={animations.course}>
           <Select
             name='course_id'
-            placeholder='Curso'
+            placeholder='Curso com maior carga horária'
             options={options.course}
-            onChange={() =>
-              setAnimations(prev => ({ ...prev, showSemester: true }))
-            }
-          />
-        </Presence>
-
-        <Presence
-          animate='enter'
-          variants={show}
-          condition={animations.semester}
-        >
-          <Select
-            name='semester'
-            placeholder='Semestre'
-            options={semesterOptions}
-            onChange={onSemesterChange}
+            onChange={() => setAnimations(prev => ({ ...prev, ways: true }))}
           />
         </Presence>
 
@@ -276,7 +251,7 @@ const StudentForm = () => {
               <button
                 type='button'
                 onClick={() =>
-                  setAnimations(prev => ({ ...prev, showReceipt: true }))
+                  setAnimations(prev => ({ ...prev, voucher: true }))
                 }
               >
                 Enviar comprovante
@@ -311,7 +286,7 @@ const StudentForm = () => {
               label='Enviar comprovante'
               noCropper={true}
               onChange={() =>
-                setAnimations(prev => ({ ...prev, showSubmit: true }))
+                setAnimations(prev => ({ ...prev, submit: true }))
               }
             />
           </Voucher>
@@ -370,4 +345,4 @@ const StudentForm = () => {
   )
 }
 
-export default StudentForm
+export default ProfessorForm
