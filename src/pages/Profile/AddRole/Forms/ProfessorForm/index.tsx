@@ -1,126 +1,125 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Form } from './styles'
 
-import { MotionReceipt, MotionWays } from '../StudentForm/styles'
-import {
-  haveInstitutionalEmail,
-  show,
-  universityArrayToSelect,
-  universityToSelect
-} from '../StudentForm'
+import { ContainerContext } from '../Container'
+import { Voucher, Ways } from '../StudentForm/styles'
+import { hasInstitutionalEmail, semesterOptions, show } from '../StudentForm'
 
 import {
   emailSchema,
-  receiptSchema
-} from 'utils/validations/addRoleForms/professor'
+  voucherSchema
+} from 'utils/validations/addRoleForms/student'
 
 import api from 'services/api'
 
+import { getUser, UserActions, UserState } from 'store/user'
 import { Response, RootState } from 'store'
-import { getUser, UserState } from 'store/user'
-import {
-  getUniversities,
-  UniversitiesState,
-  University
-} from 'store/universities'
+import { University } from 'store/AsyncThunks/universities'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
-import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 import { Checkbox, File, Select, Submit, Text } from 'components/Form'
+import { Option } from 'components/Form/Select'
 import Popup, { PopupMethods } from 'components/Popup'
 import Presence from 'components/Presence'
-import { Option } from 'components/Form/Select'
+import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
-import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
-interface FormState {
-  campus: Option[] | undefined
-  courses: Option[] | undefined
-
-  universities: University[] | undefined
-  selectedUniversity: University | undefined
+interface Options {
+  campus: Option[]
+  course: Option[]
+  semester: Option[]
+  university: Option[]
 }
 
-interface AnimationsState {
-  showCampus: boolean
-  showCourse: boolean
-  showSemester: boolean
-  showWays: boolean
-  showReceipt: boolean
-  showSubmit: boolean
+interface Animations {
+  ar: boolean
+  ways: boolean
+  campus: boolean
+  course: boolean
+  submit: boolean
+  voucher: boolean
+  semester: boolean
 }
 
-interface ProfessorFormData {
-  beforeData?: any
-}
+const StudentForm = () => {
+  const user = useSelector<RootState, UserState>(state => state.user)
+  const { storeUniversities, storeCourses } = useContext(ContainerContext)
 
-const initialFormState: FormState = {
-  selectedUniversity: undefined,
-  campus: undefined,
-  courses: undefined,
-  universities: undefined
-}
-
-const initialAnimations: AnimationsState = {
-  showCampus: false,
-  showCourse: false,
-  showSemester: false,
-  showWays: false,
-  showReceipt: false,
-  showSubmit: false
-}
-
-const MotionSelect = motion.custom(Select)
-const MotionSubmit = motion.custom(Submit)
-
-const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
-  const [
-    { selectedUniversity, campus, courses, universities },
-    setFormState
-  ] = useState<FormState>(initialFormState)
-  const [
-    { showCampus, showCourse, showWays, showReceipt, showSubmit },
-    setAnimations
-  ] = useState(initialAnimations)
-  const storeUniversities = useSelector<RootState, UniversitiesState>(
-    state => state.universities
-  )
-  const { emails } = useSelector<RootState, UserState>(state => state.user)
   const registerEmailRef = useRef<RegisterEmailMethods>(null)
   const popupRef = useRef<PopupMethods>(null)
+
+  const [options, setOptions] = useState<Options>({
+    university: storeUniversities.map(university => ({
+      label: university.name,
+      value: university.university_id
+    })),
+    campus: [],
+    course: storeCourses.map(course => ({
+      label: course.name,
+      value: course.course_id
+    })),
+    semester: semesterOptions
+  })
+
+  const [animations, setAnimations] = useState<Animations>({
+    ar: false,
+    ways: false,
+    campus: false,
+    course: false,
+    submit: false,
+    voucher: false,
+    semester: false
+  })
+
+  const [university, setUniversity] = useState<University>({
+    name: '',
+    regex: {
+      email: { professor: '', student: '' },
+      register: { professor: '', student: '' }
+    },
+    university_id: 0
+  })
+
   const dispatch = useDispatch()
   const history = useHistory()
 
-  const onUniversityChange = async ({ value: id }: Option) => {
-    setAnimations(prev => ({ ...prev, showCampus: true }))
+  const onUniversityChange = async (selected: Option) => {
+    const { campus } = await api.get(`university/${selected.value}/campus`)
 
-    const { campus } = await api.get(`university/${id}/campus`)
+    const selectedUniversity = storeUniversities.find(
+      university => university.university_id === selected.value
+    )
 
-    setFormState(prev => ({
+    selectedUniversity && setUniversity(selectedUniversity)
+
+    setOptions(prev => ({
       ...prev,
-      selectedUniversity: universities?.find(
-        (university: University) => university.university_id === id
-      ),
-      campus: campus
-        ? campus.map(
-            (campus: any): Option => ({
-              value: campus.campus_id,
-              label: campus.name
-            })
-          )
-        : undefined
+      campus: campus.map(
+        (campus: any): Option => ({
+          value: campus.campus_id,
+          label: campus.name
+        })
+      )
+    }))
+
+    setAnimations(prev => ({
+      ...prev,
+      campus: true,
+      ar: !hasInstitutionalEmail(university.regex.email.student, user.emails)
     }))
   }
 
-  const onCampusChange = async ({ value: id }: Option) => {
+  const onCampusChange = async (selected: Option) => {
+    const { courses } = await api.get(
+      `/university/campus/${selected.value}/course`
+    )
+
     setAnimations(prev => ({ ...prev, showCourse: true }))
 
-    const { courses } = await api.get(`/university/campus/${id}/course`)
-
-    setFormState(prev => ({
+    setOptions(prev => ({
       ...prev,
       courses: courses.map(
         (course: any): Option => ({
@@ -131,49 +130,49 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
     }))
   }
 
-  const onSelectChange = () => {
-    haveInstitutionalEmail(selectedUniversity?.regex.email.professor, emails)
-      ? setAnimations(prev => ({ ...prev, showSubmit: true }))
-      : setAnimations(prev => ({ ...prev, showWays: true }))
-  }
-
-  const onEmailClick = () => {
-    setAnimations(prev => ({
-      ...prev,
-      showReceipt: false,
-      showSubmit: false
-    }))
-
-    registerEmailRef.current?.toggleRegister()
+  const onSemesterChange = () => {
+    hasInstitutionalEmail(university.regex.email.student, user.emails)
+      ? setAnimations(prev => ({ ...prev, submit: true }))
+      : setAnimations(prev => ({ ...prev, ways: true }))
   }
 
   const onRegisterSuccess = () => {
     setAnimations(prev => ({
       ...prev,
-      showSubmit: true,
-      showWays: false
+      submit: true,
+      ways: false
     }))
+  }
+
+  const onEmailClick = () => {
+    setAnimations(prev => ({
+      ...prev,
+      receipt: false,
+      submit: false
+    }))
+
+    registerEmailRef.current?.toggleRegister()
   }
 
   const afterSubmit = (res: Response<any>) => {
     if (res.success)
-      if (showReceipt)
-        popupRef.current?.configPopup({
-          setModal: true,
-          type: 'success',
-          message: 'Solicitação enviada, aguarde a resposta de um moderador.',
-          onClick: () => history.push('/session/main')
-        })
-      else {
-        popupRef.current?.configPopup({
-          setModal: true,
-          type: 'success',
-          message: 'Papel adicionado',
-          onClick: () => history.push('/session/main')
-        })
-
-        dispatch(getUser())
-      }
+      animations.voucher
+        ? popupRef.current?.configPopup({
+            setModal: true,
+            type: 'success',
+            message: 'Solicitação enviada, aguarde a resposta de um moderador.',
+            onClick: () => history.push('/session/main')
+          })
+        : popupRef.current?.configPopup({
+            setModal: true,
+            type: 'success',
+            message: 'Papel adicionado!',
+            onClick: () => {
+              dispatch(getUser())
+              dispatch(UserActions.update({ selectedRole: 'student' }))
+              history.push('/session/main')
+            }
+          })
     else
       popupRef.current?.configPopup({
         setModal: true,
@@ -183,37 +182,23 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
   }
 
   const formSchema = () => {
-    return showReceipt
-      ? receiptSchema(
-          selectedUniversity ? selectedUniversity.regex.register.professor : ''
-        )
-      : emailSchema(
-          selectedUniversity ? selectedUniversity.regex.register.professor : ''
-        )
+    return animations.voucher
+      ? voucherSchema(university ? university.regex.register.student : '')
+      : emailSchema(university ? university.regex.register.student : '')
   }
 
   useEffect(() => {
     setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100)
-    dispatch(getUniversities(storeUniversities))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  useEffect(() => {
-    setFormState(prev => ({
-      ...prev,
-      universities: storeUniversities.universities
-        ? storeUniversities.universities
-        : undefined
-    }))
-  }, [storeUniversities])
 
   return (
     <>
       <Form
         loading
-        path='user/role/request/professor'
-        afterResData={afterSubmit}
+        path='user/role/request/student'
         schema={formSchema()}
+        afterResData={afterSubmit}
       >
         <Text
           optional
@@ -228,47 +213,59 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
         <Select
           name='university_id'
           placeholder='Universidade'
+          options={options.university}
           onChange={onUniversityChange}
-          options={universityArrayToSelect(universities)}
-          value={universityToSelect(
-            universities?.find(
-              (university: University) =>
-                beforeData &&
-                university.university_id === beforeData.university_id
-            )
-          )}
         />
 
-        <Text
-          name='register'
-          placeholder='Registro Acadêmico'
-          defaultValue={beforeData?.register}
-        />
+        <Presence
+          id='ar'
+          animate='enter'
+          variants={show}
+          condition={animations.ar}
+        >
+          <Text name='register' placeholder='Registro Acadêmico' />
+        </Presence>
 
-        <Presence condition={showCampus || beforeData}>
-          <MotionSelect
-            animate='enter'
+        <Presence animate='enter' variants={show} condition={animations.campus}>
+          <Select
             name='campus_id'
             placeholder='Câmpus'
-            variants={show}
-            options={campus}
+            options={options.campus}
             onChange={onCampusChange}
           />
         </Presence>
 
-        <Presence condition={showCourse || beforeData}>
-          <MotionSelect
-            animate='enter'
+        <Presence animate='enter' variants={show} condition={animations.course}>
+          <Select
             name='course_id'
-            placeholder='Curso com maior carga horária'
-            variants={show}
-            options={courses}
-            onChange={onSelectChange}
+            placeholder='Curso'
+            options={options.course}
+            onChange={() =>
+              setAnimations(prev => ({ ...prev, showSemester: true }))
+            }
           />
         </Presence>
 
-        <Presence condition={showWays || beforeData}>
-          <MotionWays animate='enter' exit='exit' variants={show}>
+        <Presence
+          animate='enter'
+          variants={show}
+          condition={animations.semester}
+        >
+          <Select
+            name='semester'
+            placeholder='Semestre'
+            options={semesterOptions}
+            onChange={onSemesterChange}
+          />
+        </Presence>
+
+        <Presence
+          exit='exit'
+          animate='enter'
+          variants={show}
+          condition={animations.ways}
+        >
+          <Ways>
             <span id='title'>Forma de registro</span>
 
             <div>
@@ -285,11 +282,16 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
                 Enviar comprovante
               </button>
             </div>
-          </MotionWays>
+          </Ways>
         </Presence>
 
-        <Presence condition={showReceipt || beforeData}>
-          <MotionReceipt animate='enter' exit='exit' variants={show}>
+        <Presence
+          exit='exit'
+          animate='enter'
+          variants={show}
+          condition={animations.voucher}
+        >
+          <Voucher>
             <div id='warning'>
               <p>
                 <AlertIcon />
@@ -312,7 +314,7 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
                 setAnimations(prev => ({ ...prev, showSubmit: true }))
               }
             />
-          </MotionReceipt>
+          </Voucher>
         </Presence>
 
         <Checkbox
@@ -322,15 +324,14 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
 
         <Checkbox name='full_time' label='Sou professor em tempo integral' />
 
-        <Presence condition={showSubmit || beforeData}>
-          <MotionSubmit
-            exit='exit'
-            initial='exit'
-            animate='enter'
-            variants={show}
-          >
-            Enviar solicitação
-          </MotionSubmit>
+        <Presence
+          exit='exit'
+          initial='exit'
+          animate='enter'
+          variants={show}
+          condition={animations.submit}
+        >
+          <Submit>Enviar solicitação</Submit>
         </Presence>
       </Form>
 
@@ -338,10 +339,10 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
         id='delete'
         type='button'
         onClick={async () => {
-          if (selectedUniversity) {
-            const rgx = new RegExp(selectedUniversity.regex.email.professor)
+          if (university) {
+            const rgx = new RegExp(university.regex.email.student)
 
-            const teste = emails.filter(({ address }) => rgx.test(address))
+            const teste = user.emails.filter(({ address }) => rgx.test(address))
 
             if (teste[0].email_id)
               await api.delete(`user/email/${teste[0].email_id}`)
@@ -354,13 +355,13 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
       <RegisterEmail
         placeholder='E-mail institucional'
         ref={registerEmailRef}
-        title={selectedUniversity?.name}
-        regex={selectedUniversity?.regex.email.professor}
-        addData={{ university_id: selectedUniversity?.university_id }}
+        title={university.name}
         onSuccess={onRegisterSuccess}
+        regex={university.regex.email.student}
+        addData={{ university_id: university.university_id }}
         modal={{
-          bottom: '50vh',
-          translateY: '50%'
+          translateY: '50%',
+          bottom: '50vh'
         }}
       />
 
@@ -369,4 +370,4 @@ const ProfessorForm = ({ beforeData }: ProfessorFormData) => {
   )
 }
 
-export default ProfessorForm
+export default StudentForm

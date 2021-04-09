@@ -44,13 +44,13 @@ const Sidebar = ({
   closedWidth = 72,
   width = 210
 }: SidebarProps) => {
+  const open = useSelector<RootState, boolean>(({ sidebar }) => sidebar.open)
   const { innerWidth } = useWindowDimensions()
   const [isLarge, setisLarge] = useState(innerWidth >= 545)
-  const open = useSelector<RootState, boolean>(({ sidebar }) => sidebar.open)
+  const burgerRef = useRef<any>(null)
+  const { pathname } = useLocation()
   const dispatch = useDispatch()
   const history = useHistory()
-  const { pathname } = useLocation()
-  const burgerRef = useRef<any>(null)
 
   const scrollMoveCorrectly = useCallback(
     (index: number): void => {
@@ -77,15 +77,6 @@ const Sidebar = ({
   useEffect(() => {
     setisLarge(innerWidth >= 545)
   }, [innerWidth])
-
-  useEffect(() => {
-    ;(async () => {
-      await dispatch(SidebarActions.toggleSidebar(!open))
-      dispatch(SidebarActions.toggleSidebar(open))
-    })()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLarge])
 
   useEffect(() => {
     const pathArray = routes.map(({ paths }) => (paths[0] === pathname ? 1 : 0))

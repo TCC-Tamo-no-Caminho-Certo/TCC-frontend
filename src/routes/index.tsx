@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 import PrivateRoutes from './PrivateRoutes'
 
@@ -20,18 +20,17 @@ const Routes = () => {
   const { pathname } = useLocation()
   const history = useHistory()
 
-  const onStartRoute = useCallback(async () => {
-    const response = await validateSession()
+  useEffect(() => {
+    ;(async function validateAndRedirect() {
+      const response = await validateSession()
 
-    if (response)
-      pathname.split('/')[1] !== 'session' && history.push('/session/main')
-    else if (pathname.split('/')[1] === 'session') history.push('/home')
+      response
+        ? pathname.split('/')[1] !== 'session' && history.push('/session/main')
+        : pathname.split('/')[1] === 'session' && history.push('/home')
+    })()
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  useEffect(() => {
-    onStartRoute()
-  }, [onStartRoute])
 
   return (
     <Switch>

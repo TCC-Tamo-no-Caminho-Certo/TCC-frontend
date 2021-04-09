@@ -1,4 +1,4 @@
-import { University } from 'store/universities'
+import { University } from 'store/AsyncThunks/universities'
 import { UserState } from 'store/user'
 
 export interface InputData {
@@ -19,56 +19,69 @@ export interface ContainerForm {
 }
 
 const removeRepeatly = (array: any[]) =>
-  array.filter((cur, i) => array.indexOf(cur) === i)
+  array.filter((current, index) => array.indexOf(current) === index)
 
 const formatUpdateUser = (
   universities: University[],
   userData: UserState,
   role: keyof ContainerForm
 ): InputData[] => {
-  const getEmail = (role: 'student' | 'professor') => {
-    const inputObject = []
+  const getEmail = (role: 'student' | 'professor'): InputData[] => {
+    const fields = []
 
-    if (universities) {
-      const allUniversitiesIds = removeRepeatly(
-        userData.emails
-          .filter(current => current.institutional === true)
-          .map(email => ({ address: email.address, id: email.university_id }))
+    const getUniversityRegex = (id: number) => {
+      const university = universities.find(
+        university => university.university_id === id
       )
 
-      const getUniversitiesByIds = allUniversitiesIds.map(
-        ({ id, address }) => ({
+      return university ? university.regex.email[role] : ''
+    }
+
+    const getUniversityName = (id: number) => {
+      const university = universities.find(
+        university => university.university_id === id
+      )
+
+      return university ? university.name : ''
+    }
+
+    const institucionalUniversities = removeRepeatly(
+      userData.emails
+        .filter(current => current.institutional === true)
+        .map(({ address, university_id }) => ({
           address,
-          regex: universities.filter(
-            university => university.university_id === id
-          )[0].regex.email[role],
-          universityName: universities.filter(
-            university => university.university_id === id
-          )[0].name
+          university_id
+        }))
+    )
+
+    const userUniversities = institucionalUniversities.map(
+      ({ university_id, address }) => ({
+        address,
+        regex: getUniversityRegex(university_id),
+        universityName: getUniversityName(university_id)
+      })
+    )
+
+    for (let i = 0; i < userUniversities.length; i++) {
+      const regex = new RegExp(userUniversities[i].regex)
+
+      if (regex.test(userUniversities[i].address)) {
+        fields.push({
+          label: 'Universidade:',
+          name: 'university_id',
+          value: userUniversities[i].universityName,
+          editable: false
         })
-      )
-
-      for (let x = 0; x < getUniversitiesByIds.length; x++) {
-        const regex = new RegExp(getUniversitiesByIds[x].regex)
-
-        if (regex.test(getUniversitiesByIds[x].address)) {
-          inputObject.push({
-            label: 'Universidade:',
-            name: 'university_id',
-            value: getUniversitiesByIds[x].universityName,
-            editable: false
-          })
-          inputObject.push({
-            label: 'Email:',
-            name: 'inst_email',
-            value: getUniversitiesByIds[x].address,
-            editable: false
-          })
-        }
+        fields.push({
+          label: 'Email:',
+          name: 'inst_email',
+          value: userUniversities[i].address,
+          editable: false
+        })
       }
     }
 
-    return inputObject
+    return fields
   }
 
   const guest: InputData[] = [
@@ -135,8 +148,8 @@ const formatUpdateUser = (
     // }
   ]
 
-  const student: InputData[] = getEmail('student')
-  const professor: InputData[] = getEmail('professor')
+  const student: InputData[] = [...getEmail('student')]
+  const professor: InputData[] = [...getEmail('professor')]
   const moderator: InputData[] = []
 
   const formInputs: ContainerForm = {

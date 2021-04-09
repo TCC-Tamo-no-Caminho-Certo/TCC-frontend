@@ -5,6 +5,8 @@ export interface HomeState {
   page: 'login' | 'signup'
 }
 
+type Payload = PayloadAction<Partial<HomeState>>
+
 const initialState: HomeState = {
   initial: false,
   page: 'login'
@@ -14,7 +16,7 @@ const Home = createSlice({
   name: 'sidebar',
   initialState,
   reducers: {
-    update: (state, action: PayloadAction<Partial<HomeState>>) => ({
+    update: (state, action: Payload) => ({
       ...state,
       ...action.payload
     })

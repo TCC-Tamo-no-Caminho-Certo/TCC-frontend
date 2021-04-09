@@ -10,7 +10,7 @@ import api from 'services/api'
 
 import { RootState } from 'store'
 import { UserState } from 'store/user'
-import { Role } from 'store/roles'
+import { Role } from 'store/AsyncThunks/roles'
 
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
@@ -28,11 +28,15 @@ const allRoles: Role[] = [
 
 const AddRole = () => {
   const { roles } = useSelector<RootState, UserState>(state => state.user)
-  const [roleSelected, setRoleSelected] = useState<Role | undefined>(undefined)
-  const labelRoles = roles.map(role => selectRoleLabel(role))
   const theme = useContext(ThemeContext)
-  const { pathname } = useLocation()
+
   const rolesRef = useRef<HTMLDivElement>(null)
+
+  const [roleSelected, setRoleSelected] = useState<Role | undefined>(undefined)
+
+  const { pathname } = useLocation()
+
+  const labelRoles = roles.map(role => selectRoleLabel(role))
 
   useEffect(() => {
     if (roleSelected === undefined)

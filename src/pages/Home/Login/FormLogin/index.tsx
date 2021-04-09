@@ -26,10 +26,11 @@ export interface LoginData {
 }
 
 const FormLogin = () => {
-  const history = useHistory()
-  const dispatch = useDispatch()
-  const [disable, setDisable] = useState(false)
   const [loginFailed, setLoginFailed] = useState('')
+  const [disable, setDisable] = useState(false)
+
+  const dispatch = useDispatch()
+  const history = useHistory()
 
   const afterSubmit = (res: Response<any>) => {
     if (res.success) localStorage.setItem('@SLab_ac_token', res.access_token)

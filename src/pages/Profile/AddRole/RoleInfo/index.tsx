@@ -66,6 +66,7 @@ const RoleInfo = ({
 }: RoleInfoProps) => {
   const [show, toggleShow] = useCycle<boolean>(false, true)
   const [deg, rotate] = useCycle(0, -90)
+
   const haveThisRole = userRoles?.includes(title)
 
   const onButtonClick = () => {

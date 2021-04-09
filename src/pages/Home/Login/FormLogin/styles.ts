@@ -20,6 +20,7 @@ export const LoginFailed = styled(motion.div)`
     margin-right: 8px;
   }
 `
+
 export const Form = styled(RealForm)`
   flex-direction: column;
 
@@ -94,7 +95,7 @@ export const Form = styled(RealForm)`
   }
 `
 
-const Style = styled.div`
+const Style = styled.aside`
   position: relative;
   z-index: 2;
 

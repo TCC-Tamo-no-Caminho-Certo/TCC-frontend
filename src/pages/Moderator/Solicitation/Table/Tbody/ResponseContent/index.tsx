@@ -1,13 +1,12 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import Style from './styles'
 
-import { ItemData } from '../..'
+import { ItemData, TableContext } from '../..'
 
 import makeRoleLabel from 'utils/makeRoleLabel'
 
-import { Response, RootState } from 'store'
-import { Role } from 'store/roles'
-import { CoursesState } from 'store/courses'
+import { Response } from 'store'
+import { Role } from 'store/AsyncThunks/roles'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
 import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'
@@ -17,7 +16,6 @@ import Avatar from 'components/User/Avatar'
 import Form, { Submit, Textarea } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
 
-import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 import * as Yup from 'yup'
 
@@ -32,30 +30,41 @@ function ResponseContent({
   selectedInfo,
   userInfo
 }: ResponseContentProps) {
-  const courses = useSelector<RootState, CoursesState>(state => state.courses)
+  const tableContext = useContext(TableContext)
+
   const acceptRef = useRef<CheckboxIconMethods>(null)
   const rejectRef = useRef<CheckboxIconMethods>(null)
   const popupRef = useRef<PopupMethods>(null)
+
   const [buttonClicked, setButtonClicked] = useState('rejected')
+
   const theme = useContext(ThemeContext)
 
   const afterResponseSubmit = (res: Response<any>) => {
-    res.success
-      ? popupRef.current?.configPopup({
-          type: 'success',
-          message: 'Resposta enviada.',
-          onClick: onCloseClick
-        })
-      : popupRef.current?.configPopup({
-          type: 'error',
-          message: 'Ops, algo deu errado :(',
-          onClick: onCloseClick
-        })
-  }
+    if (res.success)
+      popupRef.current?.configPopup({
+        type: 'success',
+        message: 'Resposta enviada.',
+        onClick: onCloseClick
+      })
+    else
+      switch (res.error) {
+        case 'Request not found!':
+          popupRef.current?.configPopup({
+            setModal: true,
+            type: 'error',
+            message: 'Solicitação não encontrada ou já aceita.'
+          })
+          break
 
-  useEffect(() => {
-    console.log('tst4', selectedInfo)
-  }, [selectedInfo])
+        default:
+          popupRef.current?.configPopup({
+            type: 'error',
+            message: 'Ops, algo deu errado :(',
+            onClick: onCloseClick
+          })
+      }
+  }
 
   return (
     <>
@@ -99,7 +108,7 @@ function ResponseContent({
                 Curso:
                 <div>
                   {
-                    courses.courses.find(
+                    tableContext.courses.find(
                       course => course.course_id === selectedInfo?.course_id
                     )?.name
                   }

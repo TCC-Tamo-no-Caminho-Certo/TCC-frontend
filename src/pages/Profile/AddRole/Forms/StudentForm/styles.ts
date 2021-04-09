@@ -1,9 +1,8 @@
 import OriginalForm from 'components/Form'
 
-import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
-export const MotionReceipt = styled(motion.div)`
+export const Voucher = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -57,7 +56,7 @@ export const MotionReceipt = styled(motion.div)`
   }
 `
 
-export const MotionWays = styled(motion.div)`
+export const Ways = styled.div`
   margin-bottom: 0px;
 
   #title {
@@ -147,6 +146,6 @@ export const Form = styled(OriginalForm)`
   }
 `
 
-MotionReceipt.displayName = 'MotionReceipt-Style'
-MotionWays.displayName = 'MotionWays-Style'
+Voucher.displayName = 'Voucher-Style'
+Ways.displayName = 'Ways-Style'
 Form.displayName = 'Form-Style'

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const Style = styled.div`
+const Style = styled.aside`
   position: relative;
 
   display: flex;

@@ -1,8 +1,19 @@
-import { Response } from './'
+import { Response } from '../'
 
 import api from 'services/api'
 
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+
+export interface RoleType {
+  title: Role
+  role_id: number
+}
+
+export interface RolesState {
+  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
+  entities: []
+  roles: RoleType[]
+}
 
 export type Role =
   | 'guest'
@@ -13,31 +24,16 @@ export type Role =
   | 'evaluator'
   | 'moderator'
 
-interface RoleType {
-  title: Role
-  role_id: number
-}
-
-export interface RolesState {
-  entities: []
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  roles: RoleType[]
-}
-
-type Payload = PayloadAction<Partial<RolesState>>
-
 const initialState: RolesState = {
-  entities: [],
   loading: 'idle',
+  entities: [],
   roles: []
 }
 
 export const getRoles = createAsyncThunk(
   'roles/getRoles',
   async (prevState: RolesState) => {
-    const { roles } = prevState
-
-    if (roles.length === 0) {
+    if (prevState.roles.length === 0) {
       console.log('REDUX-REQ-ROLES')
       const response: Response<RoleType[]> = await api.get('info/role')
       return { roles: response.roles }
@@ -48,12 +44,7 @@ export const getRoles = createAsyncThunk(
 const Roles = createSlice({
   name: 'roles',
   initialState,
-  reducers: {
-    update: (state, action: Payload) => ({
-      ...state,
-      ...action.payload
-    })
-  },
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(getRoles.fulfilled, (state, action) => ({
       ...state,

@@ -7,8 +7,8 @@ const Style = styled.div`
 
   height: 100vh;
 
-  background-color: ${({ theme }) => theme.colors.tertiary};
   color: ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => theme.colors.tertiary};
 `
 export default Style
 

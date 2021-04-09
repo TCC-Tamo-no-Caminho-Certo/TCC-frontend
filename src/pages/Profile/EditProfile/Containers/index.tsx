@@ -6,10 +6,13 @@ import formatUpdateUser, { ContainerForm, InputData } from './formatUpdateUser'
 
 import selectedRoleLabel from 'utils/makeRoleLabel'
 
-import { Role } from 'store/roles'
+import { Role } from 'store/AsyncThunks/roles'
 import { UserState } from 'store/user'
 import { RootState } from 'store'
-import { getUniversities, UniversitiesState } from 'store/universities'
+import {
+  getUniversities,
+  UniversitiesState
+} from 'store/AsyncThunks/universities'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
@@ -24,20 +27,22 @@ import { ThemeContext } from 'styled-components'
 type ContainersRoles = Role | 'personal'
 
 const Containers = () => {
-  const { innerWidth } = useWindowDimensions()
-  const [sliderWidth, setSliderWidth] = useState(innerWidth >= 600 ? 520 : 284)
+  const storeUniversities = useSelector<RootState, UniversitiesState>(
+    state => state.universities
+  )
+  const user = useSelector<RootState, UserState>(state => state.user)
   const modalContext = useContext(ImageRefModalContext)
   const theme = useContext(ThemeContext)
 
-  const user = useSelector<RootState, UserState>(state => state.user)
+  const { innerWidth } = useWindowDimensions()
+  const [sliderWidth, setSliderWidth] = useState(innerWidth >= 600 ? 520 : 284)
+
   const dispatch = useDispatch()
-  const storeUniversities = useSelector<RootState, UniversitiesState>(
-    store => store.universities
-  )
+
   const { universities } = storeUniversities
-  const rolesShowed = ['student', 'professor', 'moderator']
-  const rolesWithEdit = user.roles.filter(
-    role => rolesShowed.filter(wished => wished === role).length !== 0
+  const rolesToShow = ['student', 'professor', 'moderator']
+  const rolesWithEdit = user.roles.filter(role =>
+    rolesToShow.find(wished => wished === role)
   )
   const containers: ContainersRoles[] = ['personal', ...rolesWithEdit]
 

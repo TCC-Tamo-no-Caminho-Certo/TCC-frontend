@@ -15,6 +15,7 @@ import { Route, Switch, useLocation } from 'react-router-dom'
 const Home = () => {
   const page = useSelector<RootState, string>(state => state.home.page)
   const initial = useSelector<RootState, boolean>(state => state.home.initial)
+
   const dispatch = useDispatch()
   const location = useLocation()
 
@@ -70,46 +71,52 @@ const Home = () => {
 
   return (
     <>
-      <Shadow
-        page={page}
-        variants={shadowAnimation}
-        animate={page}
-        transition={shadowAnimation.transition}
-      />
+      <section>
+        <Shadow
+          page={page}
+          variants={shadowAnimation}
+          animate={page}
+          transition={shadowAnimation.transition}
+        />
 
-      <AnimatePresence>
-        <Switch location={location} key={location.key}>
-          <Route path='/home' exact>
-            {page !== 'signup' && (
-              <motion.div
-                variants={loginAnimation}
-                transition={transition}
-                initial='initial'
-                animate='default'
-                exit='exit'
-              >
-                <Login />
-              </motion.div>
-            )}
-          </Route>
+        <AnimatePresence>
+          <Switch location={location} key={location.key}>
+            <Route path='/home' exact>
+              {page !== 'signup' && (
+                <motion.div
+                  variants={loginAnimation}
+                  transition={transition}
+                  initial='initial'
+                  animate='default'
+                  exit='exit'
+                >
+                  <Login />
+                </motion.div>
+              )}
+            </Route>
 
-          <Route path='/home/signup'>
-            {page === 'signup' && (
-              <motion.div
-                variants={signupAnimation}
-                transition={transition}
-                initial='initial'
-                animate='default'
-                exit='exit'
-              >
-                <Signup />
-              </motion.div>
-            )}
-          </Route>
-        </Switch>
-      </AnimatePresence>
+            <Route path='/home/signup'>
+              {page === 'signup' && (
+                <motion.div
+                  variants={signupAnimation}
+                  transition={transition}
+                  initial='initial'
+                  animate='default'
+                  exit='exit'
+                >
+                  <Signup />
+                </motion.div>
+              )}
+            </Route>
+          </Switch>
+        </AnimatePresence>
+      </section>
+
       {/*
-      <RestOfHome /> */}
+      <section>
+        <RestOfHome />
+      </section>
+       */}
     </>
   )
 }

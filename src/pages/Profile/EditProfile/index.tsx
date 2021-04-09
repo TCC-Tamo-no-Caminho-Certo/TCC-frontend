@@ -34,11 +34,13 @@ interface EditProfileContextProps {
 export const ImageRefModalContext = createContext<ModalState | null>(null)
 export const EditProfileContext = createContext<EditProfileContextProps>({})
 const EditProfile = () => {
-  const [globalChange, setGlobalChange] = useState(false)
-  const dispatch = useDispatch()
-  const confirmModal = useRef<ModalMethods>(null)
   const imageRefModal = useRef<ModalMethods>(null)
+  const confirmModal = useRef<ModalMethods>(null)
   const popupRef = useRef<PopupMethods>(null)
+
+  const [globalChange, setGlobalChange] = useState(false)
+
+  const dispatch = useDispatch()
 
   const afterSubmit = (res: Response<any>) => {
     if (res.success) {

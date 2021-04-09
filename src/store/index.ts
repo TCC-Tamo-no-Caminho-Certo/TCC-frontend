@@ -2,9 +2,9 @@ import Theme from './theme'
 import Sidebar from './sidebar'
 import User from './user'
 import Home from './home'
-import Universities from './universities'
-import Roles from './roles'
-import Courses from './courses'
+import Universities from './AsyncThunks/universities'
+import Roles from './AsyncThunks/roles'
+import Courses from './AsyncThunks/courses'
 
 import { configureStore } from '@reduxjs/toolkit'
 
@@ -14,6 +14,8 @@ export interface Response<T> {
   error?: string
   [key: string]: T | any
 }
+
+export type RootState = ReturnType<typeof store.getState>
 
 const store = configureStore({
   reducer: {
@@ -26,7 +28,5 @@ const store = configureStore({
     courses: Courses.reducer
   }
 })
-
-export type RootState = ReturnType<typeof store.getState>
 
 export default store

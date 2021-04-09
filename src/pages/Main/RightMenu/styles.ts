@@ -1,4 +1,4 @@
-import { Role } from 'store/roles'
+import { Role } from 'store/AsyncThunks/roles'
 
 import GearIcon from 'assets/RightMenuOpen/GearIcon'
 
@@ -222,9 +222,10 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
 
     color: ${({ theme }) => theme.colors.secondary};
 
-    span {
+    span#leave {
       font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.5rem);
       user-select: none;
+      margin-left: 8px;
 
       cursor: pointer;
     }

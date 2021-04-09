@@ -1,4 +1,4 @@
-import { Role } from 'store/roles'
+import { Role } from 'store/AsyncThunks/roles'
 
 import Card, { Header as HeaderComponent } from 'components/Card/styles'
 
@@ -102,7 +102,7 @@ export const Content = styled(Card)<ContentProps>`
   }
 `
 
-const Style = styled.div`
+const Style = styled.section`
   position: relative;
 
   display: flex;

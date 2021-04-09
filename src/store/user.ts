@@ -1,4 +1,4 @@
-import { Role } from './roles'
+import { Role } from './AsyncThunks/roles'
 
 import api from 'services/api'
 

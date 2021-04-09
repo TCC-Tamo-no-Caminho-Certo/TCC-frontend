@@ -9,12 +9,11 @@ const Style = styled.div`
 
   height: 100vh;
 
-  background-color: ${({ theme }) => theme.colors.secondary};
-  color: ${({ theme }) => theme.colors.tertiary};
-  background-image: url(${googleMaps});
   background-repeat: no-repeat;
-
   background-size: cover;
+  background-image: url(${googleMaps});
+  color: ${({ theme }) => theme.colors.tertiary};
+  background-color: ${({ theme }) => theme.colors.secondary};
 `
 
 export default Style

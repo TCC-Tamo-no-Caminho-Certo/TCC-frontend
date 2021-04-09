@@ -19,9 +19,11 @@ interface FieldProps {
 
 const Field = ({ data }: FieldProps) => {
   const { globalChange, setGlobalChange } = useContext(EditProfileContext)
-  const [change, setChange] = useState(false)
-  const inputRef = useRef<HTMLInputElement>(null)
   const theme = useContext(ThemeContext)
+
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const [change, setChange] = useState(false)
 
   const { name, label, date, dontShow, value, editable } = data
 

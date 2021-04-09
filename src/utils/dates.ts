@@ -1,6 +1,7 @@
 import { DayValue } from 'react-modern-calendar-datepicker'
 
 type ReturnType = 'all' | 'day/month' | 'day/month/2-year' | 'day/inFull-year'
+
 type Month =
   | '01'
   | '02'
@@ -37,15 +38,24 @@ const getMonthLabel = (month: Month) => {
 export const isoToDate = (date: string, returnType: ReturnType): string => {
   const dates = date.split('T')[0].split('-')
 
-  if (returnType === 'all') return `${dates[2]}/${dates[1]}/${dates[0]}`
-  if (returnType === 'day/month') return `${dates[2]}/${dates[1]}`
-  if (returnType === 'day/month/2-year') {
-    const year = dates[0].split('')
-    return `${dates[2]}/${dates[1]}/${year[2] + year[3]}`
+  switch (returnType) {
+    case 'all':
+      return `${dates[2]}/${dates[1]}/${dates[0]}`
+
+    case 'day/month':
+      return `${dates[2]}/${dates[1]}`
+
+    case 'day/month/2-year': {
+      const year = dates[0].split('')
+      return `${dates[2]}/${dates[1]}/${year[2] + year[3]}`
+    }
+
+    case 'day/inFull-year':
+      return date[2] + getMonthLabel(date[1] as Month)
+
+    default:
+      return ''
   }
-  if (returnType === 'day/inFull-year')
-    return date[2] + getMonthLabel(date[1] as Month)
-  return ''
 }
 
 export const dateToValue = (date?: string) => {
@@ -53,6 +63,7 @@ export const dateToValue = (date?: string) => {
     const dates = date?.split('/')
     return `${dates[2]}-${dates[1]}-${dates[0]}`
   }
+
   return ''
 }
 

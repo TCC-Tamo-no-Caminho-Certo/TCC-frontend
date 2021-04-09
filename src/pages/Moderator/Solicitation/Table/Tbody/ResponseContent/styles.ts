@@ -1,6 +1,6 @@
 import { getStatusColor, StatusTypes } from 'utils/status'
 
-import { Role } from 'store/roles'
+import { Role } from 'store/AsyncThunks/roles'
 
 import { darken } from 'polished'
 import styled, { css } from 'styled-components'

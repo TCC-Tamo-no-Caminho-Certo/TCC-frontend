@@ -16,6 +16,7 @@ import { ThemeProvider } from 'styled-components'
 
 const App = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
+
   const { i18n } = useTranslation()
 
   useEffect(() => {

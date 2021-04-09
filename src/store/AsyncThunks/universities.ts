@@ -2,7 +2,7 @@ import api from 'services/api'
 
 import { Response } from 'store'
 
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 export interface University {
   name: string
@@ -20,30 +20,25 @@ export interface University {
 }
 
 export interface UniversitiesState {
-  entities: []
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'
+  entities: []
   universities: University[]
 }
 
-type Payload = PayloadAction<Partial<UniversitiesState>>
-
 const initialState: UniversitiesState = {
-  entities: [],
   loading: 'idle',
+  entities: [],
   universities: []
 }
 
 export const getUniversities = createAsyncThunk(
   'universities/getUniversities',
   async (prevState: UniversitiesState) => {
-    const { universities } = prevState
-
-    if (universities.length === 0) {
+    if (prevState.universities.length === 0) {
       console.log('REDUX-REQ-UNIVERSITIES')
       const { universities }: Response<University[]> = await api.get(
         'info/university'
       )
-
       return { universities }
     }
   }
@@ -52,12 +47,7 @@ export const getUniversities = createAsyncThunk(
 const Universities = createSlice({
   name: 'universities',
   initialState,
-  reducers: {
-    update: (state, action: Payload) => ({
-      ...state,
-      ...action.payload
-    })
-  },
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(getUniversities.fulfilled, (state, action) => ({
       ...state,

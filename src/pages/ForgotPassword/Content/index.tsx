@@ -16,11 +16,12 @@ import Popup, { PopupMethods } from 'components/Popup'
 import { useHistory } from 'react-router-dom'
 
 const Content = () => {
-  const history = useHistory()
   const popupRef = useRef<PopupMethods>(null)
 
   const [userEmail, setUserEmail] = useState<string>()
   const [codeSend, setCodeSend] = useState(false)
+
+  const history = useHistory()
 
   const afterEmailSubmit = (res: Response<any>) => {
     res.success

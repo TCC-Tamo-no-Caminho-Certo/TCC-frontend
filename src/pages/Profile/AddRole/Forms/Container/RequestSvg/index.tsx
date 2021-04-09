@@ -21,7 +21,6 @@ const RequestSvg = ({ status = 'awaiting' }: RequestSvgProps) => {
     second: 'nothing',
     third: 'nothing'
   })
-
   const [{ progressTrue, progressFalse }, setProgress] = useState({
     progressTrue: ['4%', '4%'],
     progressFalse: ['24%', '24%']

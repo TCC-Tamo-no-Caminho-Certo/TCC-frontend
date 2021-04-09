@@ -17,12 +17,9 @@ import makeRoleLabel from 'utils/makeRoleLabel'
 
 import api from 'services/api'
 
-import { Role, RolesState } from 'store/roles'
-import { RootState } from 'store'
+import { Role, RoleType } from 'store/AsyncThunks/roles'
 
 import Modal, { ModalMethods } from 'components/Modal'
-
-import { useSelector } from 'react-redux'
 
 interface RequestsData {
   role: Role
@@ -56,9 +53,8 @@ interface InfosState {
 
 export const transformArray = (
   array: RequestsData[],
-  roles: RolesState
+  roles: RoleType[]
 ): ItemData[] => {
-  console.log('tst', array)
   return array.map(
     ({
       name,
@@ -71,7 +67,7 @@ export const transformArray = (
       user_id,
       data
     }) => ({
-      role: roles.roles.find(role => role.role_id === role_id)?.title as any,
+      role: roles.find(role => role.role_id === role_id)?.title as any,
       user_id,
       feedback,
       name: name,
@@ -87,78 +83,35 @@ export const transformArray = (
 }
 
 const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
+  const tableContext = useContext(TableContext)
+
   const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>
   const tableRef = useRef() as MutableRefObject<HTMLTableElement>
-  const tableContext = useContext(TableContext)
   const modalRef = useRef<ModalMethods>(null)
-  const [isClear, setIsClear] = useState(false)
-  const roles = useSelector<RootState, RolesState>(state => state.roles)
+
   const [infos, setInfos] = useState<InfosState | undefined>()
-
-  const setSelected = async (item: ItemData) => {
-    console.log('item', item)
-    const { url } = await api.get(`user/role/request/voucher/${item.docId}`)
-    const { users } = await api.get(`users/${item.user_id}`)
-
-    const newItem: ItemData = {
-      ...item,
-      voucherUrl: url
-    }
-    console.log('tst3', newItem)
-
-    setInfos({
-      userInfo: users,
-      selectedInfo: newItem
-    })
-  }
-
-  const startRequest = useCallback(
-    async (page: number) => {
-      if (roles.roles.length !== 0)
-        if (!isClear) {
-          const { requests } = await api.get(
-            `user/role/requests?page=${page}&per_page=${quantity}`
-          )
-
-          console.log('req', requests)
-
-          if (requests && requests.length !== 0) {
-            const tableData = transformArray(requests, roles)
-            console.log('tst2', tableData)
-
-            tableContext?.setTableState(prev => ({
-              ...prev,
-              showData: [...tableData]
-            }))
-          } else setIsClear(true)
-        }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isClear, quantity, roles]
-  )
+  const [isClear, setIsClear] = useState(false)
 
   const makeRequest = useCallback(
     async (page: number) => {
-      if (roles.roles.length !== 0)
-        if (!isClear) {
-          const { requests } = await api.get(
-            `user/role/requests?page=${page}&per_page=${quantity}`
-          )
+      if (!isClear) {
+        const { requests } = await api.get(
+          `user/role/requests?page=${page}&per_page=${quantity}`
+        )
 
-          if (requests && requests.length !== 0) {
-            const tableData = transformArray(requests, roles)
+        if (requests && requests.length !== 0) {
+          const tableData = transformArray(requests, tableContext.roles)
 
-            tableContext?.setTableState(prev => ({
-              ...prev,
-              showData: prev.showData
-                ? [...prev.showData, ...tableData]
-                : [...tableData]
-            }))
-          } else setIsClear(true)
-        }
+          tableContext?.setTableState(prev => ({
+            ...prev,
+            showData: prev.showData
+              ? [...prev.showData, ...tableData]
+              : [...tableData]
+          }))
+        } else setIsClear(true)
+      }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isClear, quantity, roles]
+    [isClear, quantity, tableContext]
   )
 
   const onTableScroll = () => {
@@ -181,10 +134,41 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
     }
   }
 
-  useEffect(() => {
-    startRequest(1)
+  const setSelected = async (item: ItemData) => {
+    const { url } = await api.get(`user/role/request/voucher/${item.docId}`)
+    const { users } = await api.get(`users/${item.user_id}`)
+
+    setInfos({
+      userInfo: users,
+      selectedInfo: {
+        ...item,
+        voucherUrl: url
+      }
+    })
+  }
+
+  const startRequest = useCallback(async () => {
+    const { requests } = await api.get(
+      `user/role/requests?page=1&per_page=${quantity}`
+    )
+
+    const tableData = transformArray(requests, tableContext.roles)
+
+    tableContext?.setTableState({
+      tablePage: 1,
+      showData: tableData
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startRequest])
+  }, [])
+
+  useEffect(() => {
+    tableContext.roles.length !== 0 && startRequest()
+    return tableContext?.setTableState({
+      showData: undefined,
+      tablePage: 1
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tableContext.roles, startRequest])
 
   return (
     <>
@@ -229,7 +213,10 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
         <ResponseContent
           userInfo={infos?.userInfo}
           selectedInfo={infos?.selectedInfo}
-          onCloseClick={() => modalRef.current?.toggleModal(false)}
+          onCloseClick={() => {
+            modalRef.current?.toggleModal(false)
+            startRequest()
+          }}
         />
       </Modal>
     </>

@@ -14,12 +14,15 @@ import Thead from './Thead'
 
 import { StatusTypes } from 'utils/status'
 
-import { Role } from 'store/roles'
+import { getRoles, Role, RolesState, RoleType } from 'store/AsyncThunks/roles'
+import { RootState } from 'store'
+import { Course, CoursesState, getCourses } from 'store/AsyncThunks/courses'
 
 import useSortableData from 'hooks/useSortableData'
 
 import DotsLoader from 'components/DotsLoader'
 
+import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
 export interface ItemData {
@@ -39,6 +42,8 @@ export interface ItemData {
 
 interface TableContextProps {
   setTableState: Dispatch<SetStateAction<TableState>>
+  courses: Course[]
+  roles: RoleType[]
   tableState: TableState
 }
 
@@ -60,12 +65,21 @@ const headerData: HeaderData[] = [
   { name: 'date', label: 'Data' }
 ]
 
-export const TableContext = createContext<TableContextProps | undefined>(
-  undefined
-)
+export const TableContext = createContext<TableContextProps>({
+  roles: [],
+  courses: [],
+  setTableState: () => {},
+  tableState: {
+    tablePage: 1,
+    showData: undefined
+  }
+})
 
 const Table = () => {
+  const courses = useSelector<RootState, CoursesState>(state => state.courses)
+  const roles = useSelector<RootState, RolesState>(state => state.roles)
   const theme = useContext(ThemeContext)
+
   const [tableState, setTableState] = useState<TableState>({
     showData: undefined,
     tablePage: 1
@@ -75,23 +89,42 @@ const Table = () => {
     indexer: 'name'
   })
 
+  const dispatch = useDispatch()
+
   const quantity = 50
 
-  useEffect(() => console.log('TABLE-STATE', tableState), [tableState])
+  useEffect(() => {
+    dispatch(getRoles(roles))
+    dispatch(getCourses(courses))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    console.log('Roles:', roles)
+  }, [roles])
 
   return (
     <>
       <Style className='Table'>
-        <TableContext.Provider value={{ tableState, setTableState }}>
+        <TableContext.Provider
+          value={{
+            tableState,
+            setTableState,
+            roles: roles.roles,
+            courses: courses.courses
+          }}
+        >
           <Filters quantity={quantity} />
 
           <Thead headerData={headerData} sort={sort} />
 
-          <Tbody headerData={headerData} items={items} quantity={quantity} />
-
-          {tableState.showData === null && (
-            <DotsLoader color={theme.colors.secondary} />
+          {!tableState.showData && (
+            <div id='loader'>
+              <DotsLoader color={theme.colors.secondary} />
+            </div>
           )}
+
+          <Tbody headerData={headerData} items={items} quantity={quantity} />
         </TableContext.Provider>
       </Style>
     </>

@@ -104,40 +104,25 @@ const motionLogout: Variants = {
 }
 
 const RightMenu = () => {
-  const theme = useContext(ThemeContext)
-  const history = useHistory()
-  const dispatch = useDispatch()
-  const { innerWidth } = useWindowDimensions()
-  const [width, setWidth] = useState(innerWidth)
-  const [editOpen, toggleEditOpen] = useCycle(false, true)
-  const [isOpen, setIsOpen] = useState(false)
-  const [changeRole, setChangeRole] = useState(false)
   const { name, selectedRole, roles, surname, dataLoading } = useSelector<
     RootState,
     UserState
   >(state => state.user)
 
+  const [changeRole, setChangeRole] = useState(false)
+  const { innerWidth } = useWindowDimensions()
+  const [width, setWidth] = useState(innerWidth)
+  const [isOpen, setIsOpen] = useState(false)
+  const [logoutLoading, setLogoutLoading] = useState(false)
+
+  const theme = useContext(ThemeContext)
+
+  const [editOpen, toggleEditOpen] = useCycle(false, true)
+  const dispatch = useDispatch()
+  const history = useHistory()
+
   const closedHeight = 112
   const openHeight = 300 + closedHeight
-
-  useEffect(() => {
-    ;(async () => {
-      await toggleEditOpen()
-      toggleEditOpen()
-    })()
-
-    if (innerWidth <= 300) setWidth(320)
-    else innerWidth >= 545 ? setWidth(300) : setWidth(innerWidth)
-
-    // eslint-disable-next-line
-  }, [innerWidth])
-
-  const onLogoutClick = async () => {
-    await api.get('logout')
-    localStorage.removeItem('@SLab_ac_token')
-    HomeActions.update({ initial: true, page: 'login' })
-    history.push('/home')
-  }
 
   const motionPath: Variants = {
     closed: {
@@ -158,6 +143,15 @@ const RightMenu = () => {
     }
   }
 
+  const onLogoutClick = async () => {
+    setLogoutLoading(true)
+    await api.get('logout')
+    setLogoutLoading(false)
+    localStorage.removeItem('@SLab_ac_token')
+    HomeActions.update({ initial: true, page: 'login' })
+    history.push('/home')
+  }
+
   const formatterName = (name: string): string => {
     const fullName = name.split(' ')
     const firstName = fullName[0]
@@ -172,6 +166,11 @@ const RightMenu = () => {
       ? `${firstName} ${surname.substr(0, 1)}.`
       : `${firstName}...`
   }
+
+  useEffect(() => {
+    if (innerWidth <= 300) setWidth(320)
+    else innerWidth >= 545 ? setWidth(300) : setWidth(innerWidth)
+  }, [innerWidth, toggleEditOpen])
 
   return (
     <>
@@ -268,7 +267,10 @@ const RightMenu = () => {
                       variants={motionLogout}
                       onClick={onLogoutClick}
                     >
-                      <span>Sair</span>
+                      {logoutLoading && (
+                        <DotsLoader color={theme.colors.secondary} />
+                      )}
+                      <span id='leave'>Sair</span>
                       <LogoutIcon />
                     </motion.button>
                   </ul>

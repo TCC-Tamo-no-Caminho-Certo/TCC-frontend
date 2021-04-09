@@ -19,12 +19,15 @@ interface ImageChangerProps {
 }
 const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
   const theme = useContext(ThemeContext)
-  const { white, red } = theme.colors
-  const dispatch = useDispatch()
-  const [image, setImage] = useState()
+
+  const [showUpload, setShowUpload] = useState(false)
   const [cropper, setCropper] = useState<any>()
   const [noImage, setNoImage] = useState(false)
-  const [showUpload, setShowUpload] = useState(false)
+  const [image, setImage] = useState()
+
+  const dispatch = useDispatch()
+
+  const { white, red } = theme.colors
 
   const onChange = (e: any) => {
     e.preventDefault()

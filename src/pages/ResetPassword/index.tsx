@@ -17,9 +17,11 @@ import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 const ConfirmPassword = () => {
+  const popupRef = useRef<PopupMethods>(null)
+
   const dispatch = useDispatch()
   const history = useHistory()
-  const popupRef = useRef<PopupMethods>(null)
+
   const path = window.location.pathname.split('/')
   const code = path[2] || localStorage.getItem('@SLab_code')
 

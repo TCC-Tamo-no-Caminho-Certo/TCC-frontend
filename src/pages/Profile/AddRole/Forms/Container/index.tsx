@@ -1,10 +1,17 @@
-import React, { forwardRef, useCallback, useEffect, useState } from 'react'
+import React, {
+  createContext,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useState
+} from 'react'
 import Style, { Content, Header } from './styles'
 
 import RequestSvg from './RequestSvg'
-import ModeratorForm from '../ModeratorForm'
-import StudentForm from '../StudentForm'
 import ProfessorForm from '../ProfessorForm'
+import StudentForm from '../StudentForm'
+import ModeratorForm from '../ModeratorForm'
+import StudentChange from '../StudentChange'
 
 import { StatusTypes } from 'utils/status'
 import makeRoleLabel from 'utils/makeRoleLabel'
@@ -12,10 +19,15 @@ import makeRoleLabel from 'utils/makeRoleLabel'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { UserState } from 'store/user'
-import { Role } from 'store/roles'
+import { getRoles, Role, RolesState } from 'store/AsyncThunks/roles'
+import {
+  getUniversities,
+  UniversitiesState,
+  University
+} from 'store/AsyncThunks/universities'
+import { Course, CoursesState, getCourses } from 'store/AsyncThunks/courses'
 
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 interface Request {
   created_at: string
@@ -45,41 +57,56 @@ interface Forms {
   moderator: JSX.Element
 }
 
+interface ContainerContextState {
+  storeUniversities: University[]
+  storeCourses: Course[]
+}
+
+export const ContainerContext = createContext<ContainerContextState>({
+  storeUniversities: [],
+  storeCourses: []
+})
+
 const Container = forwardRef(({ role }: ContainerProps, ref) => {
+  const roles = useSelector<RootState, RolesState>(({ roles }) => roles)
+  const universities = useSelector<RootState, UniversitiesState>(
+    ({ universities }) => universities
+  )
+  const courses = useSelector<RootState, CoursesState>(({ courses }) => courses)
+
   const [{ inRequest, request }, setContainerState] = useState<ContainerState>({
     inRequest: false,
     request: undefined
   })
-  const user = useSelector<RootState, UserState>(state => state.user)
+
+  const dispatch = useDispatch()
 
   const makeRequest = useCallback(async () => {
-    if (user.user_id !== 0) {
-      const { requests } = await api.get(
-        `user/role/requests?per_page=1&filter[user_id][]=${user.user_id}`
+    if (roles.roles.length !== 0) {
+      const { requests } = await api.get('user/role/request')
+
+      const roleId = roles.roles.find(storeRole => storeRole.title === role)
+        ?.role_id
+
+      const roleRequest = requests.find(
+        (request: any) => request.role_id === roleId
       )
 
-      if (requests) {
-        const roleRequests = requests.filter(
-          (request: any) => request.role === role
-        )
-
-        if (roleRequests[0])
-          setContainerState({
+      roleRequest
+        ? setContainerState({
             inRequest: true,
-            request: roleRequests[0]
+            request: roleRequest
           })
-        else
-          setContainerState({
+        : setContainerState({
             inRequest: false
           })
-      }
     }
-  }, [user, role])
+  }, [role, roles])
 
   const forms: Forms = {
-    student: <StudentForm beforeData={request?.data} />,
-    professor: <ProfessorForm beforeData={request?.data} />,
-    moderator: <ModeratorForm beforeData={request?.data} />
+    student: request ? <StudentChange data={request.data} /> : <StudentForm />,
+    professor: <ProfessorForm />,
+    moderator: <ModeratorForm />
   }
 
   useEffect(() => {
@@ -87,9 +114,15 @@ const Container = forwardRef(({ role }: ContainerProps, ref) => {
   }, [makeRequest])
 
   useEffect(() => {
+    dispatch(getRoles(roles))
+    dispatch(getUniversities(universities))
+    dispatch(getCourses(courses))
+
     setTimeout(() => {
       window.scrollTo(0, document.body.scrollHeight)
     }, 100)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return role !== undefined ? (
@@ -124,7 +157,14 @@ const Container = forwardRef(({ role }: ContainerProps, ref) => {
           </>
         )}
 
-        {request?.status !== 'awaiting' && forms[role as keyof Forms]}
+        <ContainerContext.Provider
+          value={{
+            storeCourses: courses.courses,
+            storeUniversities: universities.universities
+          }}
+        >
+          {request?.status !== 'awaiting' && forms[role as keyof Forms]}
+        </ContainerContext.Provider>
 
         <button
           id='scrollButton'

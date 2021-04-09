@@ -12,8 +12,8 @@ const Style = styled.main`
   width: 100vw;
   height: 100vh;
 
-  color: ${({ theme }) => theme.colors.secondary};
   background-color: transparent;
+  color: ${({ theme }) => theme.colors.secondary};
 
   @media screen and (min-width: 1200px) {
     top: 100vh;

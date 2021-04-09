@@ -15,11 +15,11 @@ export default createGlobalStyle`
     }
 
     body {
-      background-color: ${({ theme }) => theme.colors.primary};
-      color: ${({ theme }) => theme.colors.tertiary};
-
       font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.9rem);
       line-height: clamp(1.6rem, 0.6rem + 2.6vw, 1.9rem);
+
+      color: ${({ theme }) => theme.colors.tertiary};
+      background-color: ${({ theme }) => theme.colors.primary};
 
       input:-webkit-autofill,
       input:-webkit-autofill:hover, 
@@ -35,6 +35,7 @@ export default createGlobalStyle`
 
       a {
         text-decoration: none;
+
         color: ${({ theme }) => theme.colors.primary};
       }
 
@@ -43,8 +44,8 @@ export default createGlobalStyle`
       }
 
       button {
-        background-color: transparent;
         border: none;
+        background-color: transparent;
       }
 
       button, label, input[type="checkbox"] {

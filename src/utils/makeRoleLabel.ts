@@ -1,6 +1,10 @@
-import { Role } from 'store/roles'
+import { Role } from 'store/AsyncThunks/roles'
 
-const role: any = {
+type RoleLabels = {
+  [_key in Role]: string
+}
+
+const roles: RoleLabels = {
   professor: 'Professor',
   customer: 'Proponente',
   student: 'Estudante',
@@ -10,4 +14,4 @@ const role: any = {
   guest: 'Convidado'
 }
 
-export default (roleKey: Role): Role => role[roleKey]
+export default (roleKey: Role): string => roles[roleKey]

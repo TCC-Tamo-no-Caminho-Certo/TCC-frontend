@@ -1,37 +1,33 @@
-import { Response } from './'
+import { Response } from '../'
 
 import api from 'services/api'
 
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-interface CourseType {
+export interface Course {
   name: string
   course_id: number
 }
 
 export interface CoursesState {
-  entities: []
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  courses: CourseType[]
+  entities: []
+  courses: Course[]
 }
 
-type Payload = PayloadAction<Partial<CoursesState>>
-
 const initialState: CoursesState = {
-  entities: [],
   loading: 'idle',
+  entities: [],
   courses: []
 }
 
 export const getCourses = createAsyncThunk(
   'course/getCourses',
   async (prevState: CoursesState) => {
-    const { courses } = prevState
-
-    if (courses.length === 0) {
+    if (prevState.courses.length === 0) {
       console.log('REDUX-REQ-COURSES')
-      const response: Response<CourseType[]> = await api.get('info/course')
-      return { courses: response.courses }
+      const { courses }: Response<Course[]> = await api.get('info/course')
+      return { courses }
     }
   }
 )
@@ -39,12 +35,7 @@ export const getCourses = createAsyncThunk(
 const Courses = createSlice({
   name: 'courses',
   initialState,
-  reducers: {
-    update: (state, action: Payload) => ({
-      ...state,
-      ...action.payload
-    })
-  },
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(getCourses.fulfilled, (state, action) => ({
       ...state,

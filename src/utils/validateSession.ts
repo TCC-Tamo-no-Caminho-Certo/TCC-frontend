@@ -5,13 +5,13 @@ async function validateSession(): Promise<boolean> {
 
   if (!token) return false
 
-  const response = await api.get('validate-session', {
+  const { success } = await api.get('validate-session', {
     headers: {
       authorization: `Bearer ${token}`
     }
   })
 
-  return response.success
+  return success
 }
 
 export default validateSession

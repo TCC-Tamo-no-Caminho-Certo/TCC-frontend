@@ -5,12 +5,7 @@ interface Data {
 }
 
 const request = axios.create({
-  baseURL: 'https://dev.steamslab.com/api/',
-  withCredentials: false,
-  headers: {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
-  }
+  baseURL: 'https://dev.steamslab.com/api/'
 })
 
 const api = {

@@ -20,11 +20,13 @@ import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 const FormSignup = () => {
-  const { t } = useTranslation()
   const popupRef = useRef<PopupMethods>(null)
+
+  const [disable, setDisable] = useState(false)
+
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const history = useHistory()
-  const [disable, setDisable] = useState(false)
 
   const onSuccessClose = () => {
     dispatch(HomeActions.update({ initial: false, page: 'login' }))

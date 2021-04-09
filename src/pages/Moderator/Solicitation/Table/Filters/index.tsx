@@ -6,15 +6,11 @@ import { transformArray } from '../Tbody'
 
 import api from 'services/api'
 
-import { RootState } from 'store'
-import { RolesState } from 'store/roles'
-
 import LoupeIcon from 'assets/Inputs/LoupeIcon'
 
 import { Datepicker, Select, Text } from 'components/Form'
 
 import { lighten } from 'polished'
-import { useSelector } from 'react-redux'
 import { Theme } from 'react-select'
 import { ThemeContext } from 'styled-components'
 
@@ -30,11 +26,10 @@ interface FiltersProps {
 }
 
 const Filters = ({ quantity }: FiltersProps) => {
+  const [filter, setFilter] = useState<keyof Filter>('name')
+
   const tableContext = useContext(TableContext)
   const theme = useContext(ThemeContext)
-
-  const roles = useSelector<RootState, RolesState>(state => state.roles)
-  const [filter, setFilter] = useState<keyof Filter>('name')
 
   const selectStyle = {
     container: (before: any) => ({
@@ -182,15 +177,14 @@ const Filters = ({ quantity }: FiltersProps) => {
       )
 
       const { requests } = response
-
       tableContext?.setTableState({
-        showData: transformArray(requests, roles),
+        showData: transformArray(requests, tableContext.roles),
         tablePage: 1
       })
     }
 
     if (role) {
-      const roleId = roles.roles.filter(({ title }) => role === title)[0]
+      const roleId = tableContext.roles.filter(({ title }) => role === title)[0]
         .role_id
 
       const response = await api.get(
@@ -200,7 +194,7 @@ const Filters = ({ quantity }: FiltersProps) => {
       const { requests } = response
 
       tableContext?.setTableState({
-        showData: transformArray(requests, roles),
+        showData: transformArray(requests, tableContext.roles),
         tablePage: 1
       })
     }
@@ -213,7 +207,7 @@ const Filters = ({ quantity }: FiltersProps) => {
       const { requests } = response
 
       tableContext?.setTableState({
-        showData: transformArray(requests, roles),
+        showData: transformArray(requests, tableContext.roles),
         tablePage: 1
       })
     }
