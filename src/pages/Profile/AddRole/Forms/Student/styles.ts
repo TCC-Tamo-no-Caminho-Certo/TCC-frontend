@@ -60,13 +60,6 @@ export const Voucher = styled.div`
 export const Ways = styled.div`
   margin-bottom: 0px;
 
-  #title {
-    height: 22px;
-    margin-top: 16px;
-    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
-    line-height: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
-  }
-
   div {
     display: flex;
     align-items: center;
@@ -101,6 +94,13 @@ export const Ways = styled.div`
         margin-top: 8px;
       }
     }
+  }
+
+  #title {
+    height: 22px;
+    margin-top: 16px;
+    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
+    line-height: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
   }
 
   @media screen and (min-width: 425px) {

@@ -99,10 +99,6 @@ const Table = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    console.log('Roles:', roles)
-  }, [roles])
-
   return (
     <>
       <Style className='Table'>

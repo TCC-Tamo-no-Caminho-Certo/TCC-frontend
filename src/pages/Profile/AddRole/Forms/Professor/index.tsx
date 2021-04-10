@@ -5,47 +5,47 @@ import React, {
   useRef,
   useState
 } from 'react'
-import { Form, Voucher, Ways } from './styles'
+import { Form } from './styles'
 
+import { Voucher, Ways } from '../Student/styles'
 import { Request } from '../Container'
+import { show } from '../Student'
 import { AddRoleContext } from '../../index'
 
 import {
   emailSchema,
   voucherSchema
-} from 'utils/validations/addRoleForms/student'
+} from 'utils/validations/addRoleForms/professor'
 
 import api from 'services/api'
 
-import { Response, RootState } from 'store'
+import { Response } from 'store'
 import { University } from 'store/AsyncThunks/universities'
-import { Email, UserState } from 'store/user'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
-import { File, Select, Submit, Text } from 'components/Form'
+import { Checkbox, File, Select, Submit, Text } from 'components/Form'
 import Popup, { PopupMethods } from 'components/Popup'
 import { Option } from 'components/Form/Select'
 import Presence from 'components/Presence'
 import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
-import { Variants } from 'framer-motion'
-import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
 
 interface Data {
+  orcid: string
   lattes: string
   linkedin: string
   register: string
-  semester: number
   campus_id: number
   course_id: number
   university_id: number
+  postgraduate: boolean
 }
 
 interface Options {
   campus: Option[]
   course: Option[]
-  semester: Option[]
   university: Option[]
 }
 
@@ -61,57 +61,14 @@ interface Animations {
   course: boolean
   campus: boolean
   submit: boolean
-  semester: boolean
   voucher: boolean
 }
 
-interface StudentChangeProps {
+interface ProfessorProps {
   request?: Request<Data>
 }
 
-const semesterOptions: Option[] = [
-  { value: 1, label: '1° Semestre' },
-  { value: 2, label: '2° Semestre' },
-  { value: 3, label: '3° Semestre' },
-  { value: 4, label: '4° Semestre' },
-  { value: 5, label: '5° Semestre' },
-  { value: 6, label: '6° Semestre' },
-  { value: 7, label: '7° Semestre' },
-  { value: 8, label: '8° Semestre' },
-  { value: 9, label: '9° Semestre' },
-  { value: 10, label: '10° Semestre' }
-]
-
-export const show: Variants = {
-  enter: {
-    x: [320, 0],
-    opacity: [0, 1],
-    transition: {
-      duration: 0.3,
-      type: 'tween'
-    }
-  },
-  exit: {
-    x: [0, 320],
-    opacity: [1, 0],
-    transition: {
-      duration: 0.3,
-      type: 'tween'
-    }
-  }
-}
-
-export const hasInstitutionalEmail = (regex: string, emails: Email[]) =>
-  emails.find(({ address }) => new RegExp(regex).test(address))
-
-export const universityArrayToSelect = (array: University[]): Option[] =>
-  array.map(({ university_id, name }: University) => ({
-    value: university_id,
-    label: name
-  }))
-
-function StudentChange({ request }: StudentChangeProps) {
-  const user = useSelector<RootState, UserState>(state => state.user)
+function Professor({ request }: ProfessorProps) {
   const { courses, universities } = useContext(AddRoleContext)
 
   const popupRef = useRef<PopupMethods>(null)
@@ -126,8 +83,7 @@ function StudentChange({ request }: StudentChangeProps) {
     course: courses.map(course => ({
       label: course.name,
       value: course.course_id
-    })),
-    semester: semesterOptions
+    }))
   })
 
   const [values, setValues] = useState<Values>({
@@ -142,7 +98,6 @@ function StudentChange({ request }: StudentChangeProps) {
     ways: false,
     submit: false,
     ar: false,
-    semester: false,
     voucher: false
   })
 
@@ -155,9 +110,11 @@ function StudentChange({ request }: StudentChangeProps) {
     university_id: 0
   })
 
+  const history = useHistory()
+
   const registerRegex = universities.find(
     university => university.university_id === values.university?.value
-  )?.regex.register.student
+  )?.regex.register.professor
 
   const setInitialCampusOptions = useCallback(async () => {
     if (request) {
@@ -247,13 +204,6 @@ function StudentChange({ request }: StudentChangeProps) {
     }
   }
 
-  const onSemesterChange = () => {
-    if (!request)
-      hasInstitutionalEmail(selectedUniversity.regex.email.student, user.emails)
-        ? setAnimations(prev => ({ ...prev, submit: true }))
-        : setAnimations(prev => ({ ...prev, ways: true }))
-  }
-
   const afterSubmit = (res: Response<any>) => {
     if (res.success)
       popupRef.current?.configPopup({
@@ -293,28 +243,10 @@ function StudentChange({ request }: StudentChangeProps) {
           campus: true,
           course: true,
           submit: false,
-          voucher: true,
-          semester: true
+          voucher: true
         })
       })()
 
-    return () => {
-      setValues({
-        university: undefined,
-        campus: undefined,
-        course: undefined
-      })
-
-      setAnimations({
-        ar: false,
-        ways: false,
-        campus: false,
-        course: false,
-        submit: false,
-        voucher: false,
-        semester: false
-      })
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request, setInitialCampusOptions])
 
@@ -322,18 +254,18 @@ function StudentChange({ request }: StudentChangeProps) {
     <>
       <Form
         loading
+        afterResData={afterSubmit}
+        getData={e => console.log(e)}
         path={
           request
-            ? `user/role/request/student/${request.request_id}`
-            : 'user/role/request/student'
+            ? `user/role/request/professor/${request.request_id}`
+            : 'user/role/request/professor'
         }
         schema={
           animations.voucher
             ? voucherSchema(registerRegex || '')
             : emailSchema(registerRegex || '')
         }
-        afterResData={afterSubmit}
-        getData={e => console.log(e)}
       >
         <Text
           optional
@@ -347,6 +279,13 @@ function StudentChange({ request }: StudentChangeProps) {
           name='linkedin'
           placeholder='Link para: Linkedin'
           defaultValue={request?.data.linkedin}
+        />
+
+        <Text
+          optional
+          name='orcid'
+          placeholder='Link para: ORCID'
+          defaultValue={request?.data.orcid}
         />
 
         <Select
@@ -383,29 +322,13 @@ function StudentChange({ request }: StudentChangeProps) {
         <Presence animate='enter' variants={show} condition={animations.course}>
           <Select
             name='course_id'
-            placeholder='Curso'
+            placeholder='Curso com maior carga horária'
             value={values.course}
             options={options.course}
             onChange={(selected: Option) => {
               setValues(prev => ({ ...prev, course: selected }))
-              setAnimations(prev => ({ ...prev, semester: true }))
+              setAnimations(prev => ({ ...prev, ways: true }))
             }}
-          />
-        </Presence>
-
-        <Presence
-          animate='enter'
-          variants={show}
-          condition={animations.semester}
-        >
-          <Select
-            name='semester'
-            placeholder='Semestre'
-            options={options.semester}
-            onChange={onSemesterChange}
-            defaultValue={options.semester.find(
-              option => option.value === request?.data.semester
-            )}
           />
         </Presence>
 
@@ -484,6 +407,13 @@ function StudentChange({ request }: StudentChangeProps) {
           </Voucher>
         </Presence>
 
+        <Checkbox
+          name='postgraduate'
+          label='Você leciona na Pós-Graduação (Stricto Sensu)?'
+        />
+
+        <Checkbox name='full_time' label='Sou professor em tempo integral' />
+
         <Presence
           exit='exit'
           initial='exit'
@@ -500,7 +430,7 @@ function StudentChange({ request }: StudentChangeProps) {
           placeholder='E-mail institucional'
           ref={registerEmailRef}
           title={selectedUniversity.name}
-          regex={selectedUniversity.regex.email.student}
+          regex={selectedUniversity.regex.email.professor}
           addData={{ university_id: selectedUniversity.university_id }}
           modal={{
             translateY: '50%',
@@ -521,4 +451,4 @@ function StudentChange({ request }: StudentChangeProps) {
   )
 }
 
-export default StudentChange
+export default Professor

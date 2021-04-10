@@ -20,6 +20,7 @@ interface FileProps extends ReactCropperProps {
   tranlateY?: string
   top?: string
   bottom?: string
+  maxSize?: string
   noCropper?: boolean
   onClick?: () => void
   onChange?: () => void
@@ -36,6 +37,7 @@ const File = ({
   noCropper = false,
   flexColumn = false,
   onChange: receivedOnChange,
+  maxSize = '2048',
   accept,
   ...props
 }: FileProps) => {
@@ -56,11 +58,17 @@ const File = ({
     e.preventDefault()
 
     const { files } = e.target
-    const reader = new FileReader()
-    setError('')
-    files[0] && reader.readAsDataURL(files[0])
-    reader.onload = () => setFile(reader.result)
-    receivedOnChange && receivedOnChange()
+    console.log(files[0].size < 100000)
+
+    setError('O arquivo é muito grande!')
+
+    if (files[0].size < 100000) {
+      const reader = new FileReader()
+      setError('')
+      files[0] && reader.readAsDataURL(files[0])
+      reader.onload = () => setFile(reader.result)
+      receivedOnChange && receivedOnChange()
+    }
   }
 
   useEffect(() => {
@@ -87,7 +95,7 @@ const File = ({
 
         {noCropper && (
           <div id='fileName'>
-            {fileRef.current?.value.split('C:\\fakepath\\')}
+            {!error && fileRef.current?.value.split('C:\\fakepath\\')}
           </div>
         )}
 
@@ -98,6 +106,7 @@ const File = ({
 
           <input
             type='file'
+            data-max-size={maxSize}
             name={name}
             ref={fileRef}
             accept={accept}

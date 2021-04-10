@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Form } from './styles'
 
-import { ContainerContext } from '../Container'
+import { Request } from '../Container'
+import { AddRoleContext } from '../../index'
 
 import {
   withFullName,
@@ -19,6 +20,15 @@ import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
+interface Data {
+  university_id: number
+  pretext: string
+}
+
+interface ModeratorProps {
+  request?: Request<Data>
+}
+
 const verifyFullTime = (user: UserState, university_id: number) => {
   if (user.professor)
     return (
@@ -30,9 +40,9 @@ const verifyFullTime = (user: UserState, university_id: number) => {
   return false
 }
 
-const ModeratorForm = () => {
+const ModeratorForm = ({ request }: ModeratorProps) => {
   const user = useSelector<RootState, UserState>(state => state.user)
-  const { storeUniversities } = useContext(ContainerContext)
+  const { universities } = useContext(AddRoleContext)
 
   const popupRef = useRef<PopupMethods>(null)
 
@@ -47,26 +57,23 @@ const ModeratorForm = () => {
 
   const afterSubmit = (res: Response<any>) => {
     if (res.success)
-      !fullTime
-        ? popupRef.current?.configPopup({
-            setModal: true,
-            type: 'success',
-            message:
-              'Justificativa enviada, aguarde a resposta de um moderador.',
-            onClick: () => {
-              dispatch(getUser())
-              history.push('/session/main')
-            }
-          })
-        : popupRef.current?.configPopup({
-            setModal: true,
-            type: 'success',
-            message: 'Papel adicionado',
-            onClick: () => {
-              dispatch(getUser())
-              history.push('/session/main')
-            }
-          })
+      if (fullTime)
+        popupRef.current?.configPopup({
+          setModal: true,
+          type: 'success',
+          message: 'Papel adicionado',
+          onClick: () => {
+            dispatch(getUser())
+            history.push('/session/main')
+          }
+        })
+      else
+        popupRef.current?.configPopup({
+          setModal: true,
+          type: 'success',
+          message: request ? 'Solicitação reenviada!' : 'Solicitação enviada!',
+          onClick: () => history.go(0)
+        })
     else
       popupRef.current?.configPopup({
         setModal: true,
@@ -92,10 +99,11 @@ const ModeratorForm = () => {
           name='university_id'
           placeholder='Universidade'
           onChange={onSelectChange}
-          options={storeUniversities.map(university => ({
+          options={universities.map(university => ({
             label: university.name,
             value: university.university_id
           }))}
+          value={request?.data.university_id}
         />
 
         <motion.div
@@ -108,6 +116,7 @@ const ModeratorForm = () => {
             name='pretext'
             placeholder='Descreva porquê você quer ser Moderador...'
             maxLength={500}
+            defaultValue={request?.data.pretext}
           />
         </motion.div>
 

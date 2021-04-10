@@ -1,26 +1,18 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Style, { Content, Header } from './styles'
 
 import RequestSvg from './RequestSvg'
-import ProfessorForm from '../ProfessorForm'
-import ModeratorForm from '../ModeratorForm'
+import Professor from '../Professor'
+import ModeratorForm from '../Moderator'
 import Student from '../Student'
+import { AddRoleContext } from '../..'
 
 import { StatusTypes } from 'utils/status'
 import makeRoleLabel from 'utils/makeRoleLabel'
 
 import api from 'services/api'
 
-import { RootState } from 'store'
-import { getRoles, Role, RolesState, RoleType } from 'store/AsyncThunks/roles'
-import {
-  getUniversities,
-  UniversitiesState,
-  University
-} from 'store/AsyncThunks/universities'
-import { Course, CoursesState, getCourses } from 'store/AsyncThunks/courses'
-
-import { useDispatch, useSelector } from 'react-redux'
+import { Role } from 'store/AsyncThunks/roles'
 
 interface Forms {
   student: JSX.Element
@@ -28,16 +20,8 @@ interface Forms {
   moderator: JSX.Element
 }
 
-export interface Data {
-  register: string
-  semester: number
-  campus_id: number
-  course_id: number
-  university_id: number
-}
-
-interface Request {
-  data: Data
+export interface Request<DataType> {
+  data: DataType
   role: Role
   name: string
   role_id: number
@@ -49,80 +33,58 @@ interface Request {
   status: StatusTypes
 }
 
-interface ContainerContextState {
-  storeCourses: Course[]
-  storeRoles: RoleType[]
-  storeUniversities: University[]
-}
-
 interface ContainerProps {
   role: Role
 }
 
-export const ContainerContext = createContext<ContainerContextState>({
-  storeUniversities: [],
-  storeCourses: [],
-  storeRoles: []
-})
-
 const Container = ({ role }: ContainerProps) => {
-  const courses = useSelector<RootState, CoursesState>(({ courses }) => courses)
-  const roles = useSelector<RootState, RolesState>(({ roles }) => roles)
-  const universities = useSelector<RootState, UniversitiesState>(
-    ({ universities }) => universities
-  )
-
-  const [requests, setRequests] = useState<Request[] | undefined>(undefined)
-  const selectedRequest = requests?.find(
-    (request: any) =>
-      request.role_id ===
-      roles.roles.find(storeRole => storeRole.title === role)?.role_id
-  )
-
-  const dispatch = useDispatch()
+  const { roles } = useContext(AddRoleContext)
+  const [request, setRequest] = useState<any>(undefined)
 
   const forms = {
-    student: <Student requests={requests} />,
-    professor: <ProfessorForm />,
-    moderator: <ModeratorForm />
+    student: <Student request={request} />,
+    professor: <Professor request={request} />,
+    moderator: <ModeratorForm request={request} />
   }
 
   useEffect(() => {
-    if (roles.roles.length !== 0)
+    if (roles.length !== 0)
       (async () => {
         const { requests } = await api.get('user/role/request')
-        setRequests(requests)
-      })()
-  }, [roles])
+        console.log(requests)
+        const filterByRole = requests?.find(
+          (request: any) =>
+            request.role_id ===
+            roles.find(storeRole => storeRole.title === role)?.role_id
+        )
 
-  useEffect(() => {
-    dispatch(getRoles(roles))
-    dispatch(getUniversities(universities))
-    dispatch(getCourses(courses))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+        setRequest(filterByRole)
+      })()
+
+    return setRequest(undefined)
+  }, [role, roles])
 
   return (
     <Style>
       <Content role={role}>
         <Header>
-          {requests ? 'Acompanhar solicitação' : 'Solicitação de perfil'}
+          {request ? 'Acompanhar solicitação' : 'Solicitação de perfil'}
         </Header>
 
         <h4 id='role'>{makeRoleLabel(role)}</h4>
 
-        {requests && (
+        {request && (
           <>
-            <RequestSvg status={selectedRequest?.status} />
+            <RequestSvg status={request?.status} />
 
-            {selectedRequest?.status === 'rejected' && (
+            {request?.status === 'rejected' && (
               <div>
                 <div id='rejected'>
                   <p>Solicitação rejeitada</p>
 
                   <div>
                     <span>Resposta do moderador:</span>
-                    <p>{selectedRequest?.feedback}</p>
+                    <p>{request?.feedback}</p>
                   </div>
                 </div>
 
@@ -134,15 +96,7 @@ const Container = ({ role }: ContainerProps) => {
           </>
         )}
 
-        <ContainerContext.Provider
-          value={{
-            storeCourses: courses.courses,
-            storeUniversities: universities.universities,
-            storeRoles: roles.roles
-          }}
-        >
-          {requests && forms[role as keyof Forms]}
-        </ContainerContext.Provider>
+        {request?.status !== 'awaiting' && forms[role as keyof Forms]}
 
         <button
           id='scrollButton'

@@ -25,7 +25,6 @@ export const getCourses = createAsyncThunk(
   'course/getCourses',
   async (prevState: CoursesState) => {
     if (prevState.courses.length === 0) {
-      console.log('REDUX-REQ-COURSES')
       const { courses }: Response<Course[]> = await api.get('info/course')
       return { courses }
     }

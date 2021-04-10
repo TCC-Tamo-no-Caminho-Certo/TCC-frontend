@@ -34,7 +34,6 @@ export const getRoles = createAsyncThunk(
   'roles/getRoles',
   async (prevState: RolesState) => {
     if (prevState.roles.length === 0) {
-      console.log('REDUX-REQ-ROLES')
       const response: Response<RoleType[]> = await api.get('info/role')
       return { roles: response.roles }
     }

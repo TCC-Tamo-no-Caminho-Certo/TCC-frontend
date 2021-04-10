@@ -35,7 +35,6 @@ export const getUniversities = createAsyncThunk(
   'universities/getUniversities',
   async (prevState: UniversitiesState) => {
     if (prevState.universities.length === 0) {
-      console.log('REDUX-REQ-UNIVERSITIES')
       const { universities }: Response<University[]> = await api.get(
         'info/university'
       )
