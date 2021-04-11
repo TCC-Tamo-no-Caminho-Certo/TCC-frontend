@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react'
 
-import Solicitation from './Solicitation'
+import Requests from './Requests'
 
 // import List from './List'
 import MapIcon from 'assets/MainSidebar/MapIcon'
@@ -17,7 +17,7 @@ const Moderator = () => {
     (): RouteProps[] => [
       {
         icon: () => <ProjectIcon />,
-        component: () => <Solicitation />,
+        component: () => <Requests />,
         paths: ['/session/moderator', '/session/moderator/solicitation'],
         label: 'Solicitações',
         exact: true

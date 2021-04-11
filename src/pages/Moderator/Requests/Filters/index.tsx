@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import Style from './styles'
 
-import { TableContext } from '../'
+import { RequestsContext } from '../'
 import { transformArray } from '../Tbody'
 
 import api from 'services/api'
@@ -26,10 +26,10 @@ interface FiltersProps {
 }
 
 const Filters = ({ quantity }: FiltersProps) => {
-  const [filter, setFilter] = useState<keyof Filter>('name')
-
-  const tableContext = useContext(TableContext)
+  const requestsContext = useContext(RequestsContext)
   const theme = useContext(ThemeContext)
+
+  const [filter, setFilter] = useState<keyof Filter>('name')
 
   const selectStyle = {
     container: (before: any) => ({
@@ -177,15 +177,16 @@ const Filters = ({ quantity }: FiltersProps) => {
       )
 
       const { requests } = response
-      tableContext?.setTableState({
-        showData: transformArray(requests, tableContext.roles),
+      requestsContext?.setTableState({
+        showData: transformArray(requests, requestsContext.roles),
         tablePage: 1
       })
     }
 
     if (role) {
-      const roleId = tableContext.roles.filter(({ title }) => role === title)[0]
-        .role_id
+      const roleId = requestsContext.roles.filter(
+        ({ title }) => role === title
+      )[0].role_id
 
       const response = await api.get(
         `user/role/requests?page=1&per_page=${quantity}&filter[role_id]=${roleId}`
@@ -193,8 +194,8 @@ const Filters = ({ quantity }: FiltersProps) => {
 
       const { requests } = response
 
-      tableContext?.setTableState({
-        showData: transformArray(requests, tableContext.roles),
+      requestsContext?.setTableState({
+        showData: transformArray(requests, requestsContext.roles),
         tablePage: 1
       })
     }
@@ -206,8 +207,8 @@ const Filters = ({ quantity }: FiltersProps) => {
 
       const { requests } = response
 
-      tableContext?.setTableState({
-        showData: transformArray(requests, tableContext.roles),
+      requestsContext?.setTableState({
+        showData: transformArray(requests, requestsContext.roles),
         tablePage: 1
       })
     }

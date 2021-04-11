@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState
 } from 'react'
-import Style from './styles'
+import Style, { Table } from './styles'
 
 import Filters from './Filters'
 import Tbody from './Tbody'
@@ -40,7 +40,7 @@ export interface ItemData {
   voucherUrl?: string
 }
 
-interface TableContextProps {
+interface RequestsContextProps {
   setTableState: Dispatch<SetStateAction<TableState>>
   courses: Course[]
   roles: RoleType[]
@@ -65,7 +65,7 @@ const headerData: HeaderData[] = [
   { name: 'date', label: 'Data' }
 ]
 
-export const TableContext = createContext<TableContextProps>({
+export const RequestsContext = createContext<RequestsContextProps>({
   roles: [],
   courses: [],
   setTableState: () => {},
@@ -75,15 +75,17 @@ export const TableContext = createContext<TableContextProps>({
   }
 })
 
-const Table = () => {
+const Requests = () => {
+  const theme = useContext(ThemeContext)
+
   const courses = useSelector<RootState, CoursesState>(state => state.courses)
   const roles = useSelector<RootState, RolesState>(state => state.roles)
-  const theme = useContext(ThemeContext)
 
   const [tableState, setTableState] = useState<TableState>({
     showData: undefined,
     tablePage: 1
   })
+
   const { items, sort } = useSortableData(tableState.showData, {
     direction: 'descending',
     indexer: 'name'
@@ -92,6 +94,7 @@ const Table = () => {
   const dispatch = useDispatch()
 
   const quantity = 50
+  const condition = roles.roles.length !== 0 && courses.courses.length !== 0
 
   useEffect(() => {
     dispatch(getRoles(roles))
@@ -100,9 +103,13 @@ const Table = () => {
   }, [])
 
   return (
-    <>
-      <Style className='Table'>
-        <TableContext.Provider
+    <Style>
+      <header>
+        <h1>Solicitações</h1>
+      </header>
+
+      {condition ? (
+        <RequestsContext.Provider
           value={{
             tableState,
             setTableState,
@@ -110,21 +117,27 @@ const Table = () => {
             courses: courses.courses
           }}
         >
-          <Filters quantity={quantity} />
+          <Table className='Table'>
+            <Filters quantity={quantity} />
 
-          <Thead headerData={headerData} sort={sort} />
+            <Thead headerData={headerData} sort={sort} />
 
-          {!tableState.showData && (
-            <div id='loader'>
-              <DotsLoader color={theme.colors.secondary} />
-            </div>
-          )}
+            {!tableState.showData && (
+              <div className='loader'>
+                <DotsLoader color={theme.colors.secondary} />
+              </div>
+            )}
 
-          <Tbody headerData={headerData} items={items} quantity={quantity} />
-        </TableContext.Provider>
-      </Style>
-    </>
+            <Tbody headerData={headerData} items={items} quantity={quantity} />
+          </Table>
+        </RequestsContext.Provider>
+      ) : (
+        <div className='loader'>
+          <DotsLoader color={theme.colors.secondary} />
+        </div>
+      )}
+    </Style>
   )
 }
 
-export default Table
+export default Requests

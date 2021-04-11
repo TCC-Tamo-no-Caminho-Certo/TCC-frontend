@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import Style, { Circle, RoleTd } from './styles'
 
-import { HeaderData, ItemData, TableContext } from '../index'
+import { HeaderData, ItemData, RequestsContext } from '../index'
 import ResponseContent from './ResponseContent'
 
 import { getStatusLabel, StatusTypes } from 'utils/status'
@@ -83,7 +83,7 @@ export const transformArray = (
 }
 
 const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
-  const tableContext = useContext(TableContext)
+  const requestsContext = useContext(RequestsContext)
 
   const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>
   const tableRef = useRef() as MutableRefObject<HTMLTableElement>
@@ -100,9 +100,9 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
         )
 
         if (requests && requests.length !== 0) {
-          const tableData = transformArray(requests, tableContext.roles)
+          const tableData = transformArray(requests, requestsContext.roles)
 
-          tableContext?.setTableState(prev => ({
+          requestsContext?.setTableState(prev => ({
             ...prev,
             showData: prev.showData
               ? [...prev.showData, ...tableData]
@@ -111,7 +111,7 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
         } else setIsClear(true)
       }
     },
-    [isClear, quantity, tableContext]
+    [isClear, quantity, requestsContext]
   )
 
   const onTableScroll = () => {
@@ -123,10 +123,10 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
       const position = Math.ceil(table.scrollHeight - table.scrollTop)
 
       if (position <= maxHeight) {
-        tableContext?.tableState.tablePage &&
-          makeRequest(tableContext?.tableState.tablePage + 1)
+        requestsContext?.tableState.tablePage &&
+          makeRequest(requestsContext?.tableState.tablePage + 1)
 
-        tableContext?.setTableState(prev => ({
+        requestsContext?.setTableState(prev => ({
           ...prev,
           tablePage: prev.tablePage + 1
         }))
@@ -152,9 +152,9 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
       `user/role/requests?page=1&per_page=${quantity}`
     )
 
-    const tableData = transformArray(requests, tableContext.roles)
+    const tableData = transformArray(requests, requestsContext.roles)
 
-    tableContext?.setTableState({
+    requestsContext?.setTableState({
       tablePage: 1,
       showData: tableData
     })
@@ -162,13 +162,19 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
   }, [])
 
   useEffect(() => {
-    tableContext.roles.length !== 0 && startRequest()
-    return tableContext?.setTableState({
+    requestsContext?.setTableState({
+      showData: undefined,
+      tablePage: 1
+    })
+
+    startRequest()
+
+    return requestsContext?.setTableState({
       showData: undefined,
       tablePage: 1
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tableContext.roles, startRequest])
+  }, [startRequest])
 
   return (
     <>

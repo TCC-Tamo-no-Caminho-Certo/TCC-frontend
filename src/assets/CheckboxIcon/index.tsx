@@ -12,6 +12,11 @@ export interface CheckboxIconMethods {
   changeCheck: (_value: boolean) => void
 }
 
+interface CheckboxInconProps {
+  primary?: string
+  secondary?: string
+}
+
 const pathAnimation: Variants = {
   check: {
     pathLength: 1,
@@ -29,61 +34,62 @@ const pathAnimation: Variants = {
     }
   }
 }
+const CheckboxIcon = forwardRef<CheckboxIconMethods, CheckboxInconProps>(
+  ({ primary, secondary }, ref) => {
+    const theme = useContext(ThemeContext)
+    const [checked, setChecked] = useState(false)
 
-const CheckboxIcon = forwardRef((props, ref) => {
-  const theme = useContext(ThemeContext)
-  const [checked, setChecked] = useState(false)
+    const changeCheck = (value: boolean) => {
+      setChecked(value)
+    }
 
-  const changeCheck = (value: boolean) => {
-    setChecked(value)
+    useImperativeHandle(ref, () => ({ changeCheck }))
+
+    return (
+      <svg
+        fill='none'
+        viewBox='0 0 15 15'
+        className='CheckboxIcon'
+        xmlns='http://www.w3.org/2000/svg'
+      >
+        <rect
+          x='0.5'
+          y='0.5'
+          width='14'
+          height='14'
+          stroke='url(#checkboxRadial)'
+        />
+
+        <defs>
+          <motion.radialGradient
+            r='1'
+            id='checkboxRadial'
+            animate={{
+              cx: [0, 1, 1, 0, 0],
+              cy: [0, 0, 1, 1, 0]
+            }}
+            transition={{
+              type: 'tween',
+              duration: 3,
+              repeat: Infinity
+            }}
+          >
+            <stop stopColor={secondary || theme.colors.tertiary} />
+
+            <stop offset='1' stopColor={primary || theme.colors.primary} />
+          </motion.radialGradient>
+        </defs>
+
+        <motion.path
+          d=''
+          stroke='url(#checkboxRadial)'
+          initial={false}
+          variants={pathAnimation}
+          animate={checked ? 'check' : 'unCheck'}
+        />
+      </svg>
+    )
   }
-
-  useImperativeHandle(ref, () => ({ changeCheck }))
-
-  return (
-    <svg
-      className='CheckboxIcon'
-      viewBox='0 0 15 15'
-      fill='none'
-      xmlns='http://www.w3.org/2000/svg'
-    >
-      <rect
-        x='0.5'
-        y='0.5'
-        width='14'
-        height='14'
-        stroke='url(#checkboxRadial)'
-      />
-
-      <defs>
-        <motion.radialGradient
-          animate={{
-            cx: [0, 1, 1, 0, 0],
-            cy: [0, 0, 1, 1, 0]
-          }}
-          transition={{
-            type: 'tween',
-            duration: 3,
-            repeat: Infinity
-          }}
-          id='checkboxRadial'
-          r='1'
-        >
-          <stop stopColor={theme.colors.tertiary} />
-
-          <stop offset='1' stopColor={theme.colors.primary} />
-        </motion.radialGradient>
-      </defs>
-
-      <motion.path
-        d=''
-        initial={false}
-        variants={pathAnimation}
-        animate={checked ? 'check' : 'unCheck'}
-        stroke='url(#checkboxRadial)'
-      />
-    </svg>
-  )
-})
+)
 
 export default CheckboxIcon

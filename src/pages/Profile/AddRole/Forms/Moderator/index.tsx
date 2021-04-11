@@ -5,8 +5,8 @@ import { Request } from '../Container'
 import { AddRoleContext } from '../../index'
 
 import {
-  withFullName,
-  withoutFullName
+  withFullTime,
+  withoutFullTime
 } from 'utils/validations/addRoleForms/moderator'
 
 import { getUser, UserState } from 'store/user'
@@ -23,6 +23,14 @@ import { useHistory } from 'react-router'
 interface Data {
   university_id: number
   pretext: string
+}
+
+interface Options {
+  university: Option[]
+}
+
+interface Values {
+  university: Option | null | undefined
 }
 
 interface ModeratorProps {
@@ -48,12 +56,40 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
 
   const [fullTime, setFullTime] = useState(false)
 
+  const [options, _setOptions] = useState<Options>({
+    university: universities.map(university => ({
+      label: university.name,
+      value: university.university_id
+    }))
+  })
+
+  const [values, setValues] = useState<Values>({
+    university: undefined
+  })
+
   const dispatch = useDispatch()
   const history = useHistory()
 
-  const onSelectChange = ({ value: id }: Option) => {
-    setFullTime(verifyFullTime(user, Number(id)))
+  const onUniversityChange = (selected: Option) => {
+    setFullTime(verifyFullTime(user, Number(selected.value)))
+
+    setValues(prev => ({
+      ...prev,
+      university: selected
+    }))
   }
+
+  useEffect(() => {
+    request &&
+      setValues({
+        university: options.university.find(
+          option => option.value === request.data.university_id
+        )
+      })
+
+    console.log(request)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [request])
 
   const afterSubmit = (res: Response<any>) => {
     if (res.success)
@@ -82,28 +118,20 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
       })
   }
 
-  useEffect(() => {
-    setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   return (
     <>
       <Form
         loading
         path='user/role/request/moderator'
         afterResData={afterSubmit}
-        schema={!fullTime ? withFullName : withoutFullName}
+        schema={!fullTime ? withFullTime : withoutFullTime}
       >
         <Select
           name='university_id'
           placeholder='Universidade'
-          onChange={onSelectChange}
-          options={universities.map(university => ({
-            label: university.name,
-            value: university.university_id
-          }))}
-          value={request?.data.university_id}
+          options={options.university}
+          onChange={onUniversityChange}
+          value={values.university}
         />
 
         <motion.div

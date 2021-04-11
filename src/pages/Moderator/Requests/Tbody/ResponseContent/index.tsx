@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from 'react'
-import Style from './styles'
+import Style, { Field, Infos } from './styles'
 
-import { ItemData, TableContext } from '../..'
+import { ItemData, RequestsContext } from '../..'
 
 import makeRoleLabel from 'utils/makeRoleLabel'
 
@@ -30,7 +30,8 @@ function ResponseContent({
   selectedInfo,
   userInfo
 }: ResponseContentProps) {
-  const tableContext = useContext(TableContext)
+  const requestsContext = useContext(RequestsContext)
+  const theme = useContext(ThemeContext)
 
   const acceptRef = useRef<CheckboxIconMethods>(null)
   const rejectRef = useRef<CheckboxIconMethods>(null)
@@ -38,9 +39,8 @@ function ResponseContent({
 
   const [buttonClicked, setButtonClicked] = useState('rejected')
 
-  const theme = useContext(ThemeContext)
-
   const afterResponseSubmit = (res: Response<any>) => {
+    console.log(selectedInfo)
     if (res.success)
       popupRef.current?.configPopup({
         type: 'success',
@@ -50,11 +50,19 @@ function ResponseContent({
     else
       switch (res.error) {
         case 'Request not found!':
-          popupRef.current?.configPopup({
-            setModal: true,
-            type: 'error',
-            message: 'Solicitação não encontrada ou já aceita.'
-          })
+          if (selectedInfo?.status === 'rejected')
+            popupRef.current?.configPopup({
+              setModal: true,
+              type: 'error',
+              message: 'Solicitação já foi recusada.'
+            })
+          else
+            popupRef.current?.configPopup({
+              setModal: true,
+              type: 'error',
+              message: 'Solicitação não encontrada ou já aceita.'
+            })
+
           break
 
         default:
@@ -68,58 +76,63 @@ function ResponseContent({
 
   return (
     <>
-      <Style role={selectedInfo?.role} status={selectedInfo?.statusCircle}>
+      <Style>
         {userInfo && selectedInfo ? (
           <>
             <CloseIcon onClick={onCloseClick} />
 
-            <div id='info'>
+            <Infos
+              role={selectedInfo?.role}
+              status={selectedInfo?.statusCircle}
+            >
               <div id='title'>Informações</div>
 
               <hr />
 
-              <div className='field' id='avatar'>
+              <Field id='avatar'>
                 <Avatar size={120} avatarId={userInfo?.avatar_uuid} />
-              </div>
+              </Field>
 
-              <div className='field'>
+              <Field>
                 Nome:
                 <div>{userInfo?.name}</div>
-              </div>
+              </Field>
 
-              <div className='field'>
+              <Field>
                 Papel:
                 <div id='role'>{makeRoleLabel(selectedInfo?.role as Role)}</div>
-              </div>
+              </Field>
 
-              <div className='field'>
+              <Field>
                 Status:
                 <div id='status'>{selectedInfo?.status}</div>
-              </div>
+              </Field>
 
-              <div className='field'>
+              <Field>
                 Email:
                 <div>
                   {userInfo?.emails.filter(({ main }: any) => main)[0].address}
                 </div>
-              </div>
+              </Field>
 
-              <div className='field'>
-                Curso:
-                <div>
-                  {
-                    tableContext.courses.find(
-                      course => course.course_id === selectedInfo?.course_id
-                    )?.name
-                  }
-                </div>
-              </div>
+              {selectedInfo.role !== 'moderator' && (
+                <Field>
+                  Curso:
+                  <div>
+                    {
+                      requestsContext.courses.find(
+                        course => course.course_id === selectedInfo?.course_id
+                      )?.name
+                    }
+                  </div>
+                </Field>
+              )}
 
-              <div className='field'>
+              <Field>
                 Data:
                 <div>{selectedInfo?.date}</div>
-              </div>
-            </div>
+              </Field>
+            </Infos>
 
             {selectedInfo?.role === 'student' ? (
               <div id='doc'>
@@ -131,9 +144,10 @@ function ResponseContent({
                 <p>{selectedInfo?.pretext}</p>
               </div>
             )}
+
             <>
               <div id='radios'>
-                <div>
+                <div id='radioAccept'>
                   <input
                     name='response'
                     value='accept'
@@ -143,6 +157,7 @@ function ResponseContent({
                       e.target.checked && setButtonClicked('accepted')
                     }}
                   />
+
                   <label
                     htmlFor='accept'
                     onClick={() => {
@@ -150,12 +165,17 @@ function ResponseContent({
                       rejectRef.current?.changeCheck(false)
                     }}
                   >
-                    <CheckboxIcon ref={acceptRef} />
+                    <CheckboxIcon
+                      ref={acceptRef}
+                      secondary={theme.colors.secondary}
+                    />
                     Aceitar
                   </label>
+
+                  <div className='wrapper' />
                 </div>
 
-                <div>
+                <div id='radioReject'>
                   <input
                     name='response'
                     value='reject'
@@ -166,6 +186,7 @@ function ResponseContent({
                       e.target.checked && setButtonClicked('rejected')
                     }}
                   />
+
                   <label
                     htmlFor='reject'
                     onClick={() => {
@@ -176,6 +197,8 @@ function ResponseContent({
                     <CheckboxIcon ref={rejectRef} />
                     Recusar
                   </label>
+
+                  <div className='wrapper' />
                 </div>
               </div>
 

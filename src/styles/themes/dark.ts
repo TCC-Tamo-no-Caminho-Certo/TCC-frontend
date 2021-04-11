@@ -10,7 +10,7 @@ const dark: Themes = {
     white: '#fcfcfc',
     green: '#00d053',
     yellow: '#fff500',
-    red: '#ff0000',
+    red: '#d62828',
     gray: '#C4C4C4'
   },
 

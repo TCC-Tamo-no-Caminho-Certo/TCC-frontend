@@ -65,7 +65,7 @@ interface Animations {
   voucher: boolean
 }
 
-interface StudentChangeProps {
+interface StudentProps {
   request?: Request<Data>
 }
 
@@ -110,7 +110,7 @@ export const universityArrayToSelect = (array: University[]): Option[] =>
     label: name
   }))
 
-function StudentChange({ request }: StudentChangeProps) {
+function Student({ request }: StudentProps) {
   const user = useSelector<RootState, UserState>(state => state.user)
   const { courses, universities } = useContext(AddRoleContext)
 
@@ -521,4 +521,4 @@ function StudentChange({ request }: StudentChangeProps) {
   )
 }
 
-export default StudentChange
+export default Student

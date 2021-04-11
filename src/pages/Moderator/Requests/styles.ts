@@ -1,6 +1,28 @@
 import styled from 'styled-components'
 
-const Style = styled.div`
+export const Table = styled.div`
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+
+  color: ${({ theme }) => theme.colors.secondary};
+
+  .loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 48px;
+  }
+`
+
+const Style = styled.section`
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -36,6 +58,8 @@ const Style = styled.div`
     }
   }
 `
+
 export default Style
 
-Style.displayName = 'Solicitation-Style'
+Table.displayName = 'Table-Style'
+Style.displayName = 'Requests-Style'

@@ -10,7 +10,7 @@ const light: Themes = {
     white: '#fcfcfc',
     green: '#00d053',
     yellow: '#f5d936',
-    red: '#ff0000',
+    red: '#d62828',
     gray: '#C4C4C4'
   },
 
