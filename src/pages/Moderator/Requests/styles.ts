@@ -38,7 +38,7 @@ const Style = styled.section`
     align-items: center;
 
     width: max(100%, 280px);
-    padding: 16px 16px 16px 8px;
+    padding: 16px 8px 16px 16px;
     text-align: left;
 
     h1 {

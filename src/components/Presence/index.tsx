@@ -20,7 +20,11 @@ const Presence = ({
   ...props
 }: PresenceProps) => (
   <AnimatePresence {...presenceProps}>
-    {condition && <motion.div {...props}>{children}</motion.div>}
+    {condition && (
+      <motion.div className='Presence' {...props}>
+        {children}
+      </motion.div>
+    )}
   </AnimatePresence>
 )
 

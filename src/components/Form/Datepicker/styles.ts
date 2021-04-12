@@ -14,7 +14,6 @@ const Style = styled.div<StyleProps>`
     return css`
       .CalendarSize {
         font-size: 8px !important;
-
         background-color: ${body};
       }
 
@@ -22,16 +21,15 @@ const Style = styled.div<StyleProps>`
         z-index: 1;
 
         width: 100%;
-        min-height: 35px;
-        max-height: 40px;
         padding: 0;
 
         border-radius: 8px;
 
-        .Text input {
-          width: 100%;
-
-          cursor: pointer;
+        .Text {
+          input {
+            width: 100%;
+            cursor: pointer;
+          }
         }
       }
 

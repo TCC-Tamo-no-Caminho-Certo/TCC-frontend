@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Style from './styles'
 
 import '../../../../node_modules/react-modern-calendar-datepicker/lib/DatePicker.css'
@@ -49,6 +49,7 @@ const Datepicker = ({
   arrow,
   isBirthday,
   icon: Icon,
+  value,
   dateColors = {
     body: '#fcfcfc',
     header: '#6e4850',
@@ -83,14 +84,18 @@ const Datepicker = ({
     [Icon, name, rest, selectedDate]
   )
 
+  useEffect(() => {
+    setSelectedDate(value as DayValue)
+  }, [value])
+
   return (
     <Style className='Datepicker' arrow={arrow} colors={dateColors}>
       <DatePicker
         calendarClassName='CalendarSize'
-        calendarPopperPosition={arrow}
         locale={ptbr}
         value={selectedDate}
         onChange={setSelectedDate}
+        calendarPopperPosition={arrow}
         renderInput={renderCustomInput}
         selectorEndingYear={present.year}
         selectorStartingYear={minimumDate.year}

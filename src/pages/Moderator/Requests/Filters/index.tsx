@@ -8,28 +8,47 @@ import api from 'services/api'
 
 import LoupeIcon from 'assets/Inputs/LoupeIcon'
 
-import { Datepicker, Select, Text } from 'components/Form'
+import { Datepicker, Select, Submit, Text } from 'components/Form'
+import Presence from 'components/Presence'
 
+import { motion, Transition, Variants } from 'framer-motion'
 import { lighten } from 'polished'
 import { Theme } from 'react-select'
 import { ThemeContext } from 'styled-components'
 
-interface Filter {
-  role: JSX.Element
-  date: JSX.Element
-  name: JSX.Element
-  status: JSX.Element
-}
-
 interface FiltersProps {
   quantity: number
+}
+
+const transition: Transition = {
+  duration: 0.3,
+  type: 'tween'
+}
+
+const reset: Variants = {
+  enter: {
+    opacity: [0, 1],
+    marginTop: [-168, 0],
+    // rotate: [240, 0],
+    // x: [500, 0],
+    // y: [-100, 0],
+    transition
+  },
+  exit: {
+    opacity: [1, 0],
+    marginTop: [0, -168],
+    // rotate: [0, 240],
+    // y: [0, -100],
+    // x: [0, 500],
+    transition
+  }
 }
 
 const Filters = ({ quantity }: FiltersProps) => {
   const requestsContext = useContext(RequestsContext)
   const theme = useContext(ThemeContext)
 
-  const [filter, setFilter] = useState<keyof Filter>('name')
+  const [values, setValues] = useState<any>(true)
 
   const selectStyle = {
     container: (before: any) => ({
@@ -98,111 +117,44 @@ const Filters = ({ quantity }: FiltersProps) => {
     }
   })
 
-  const filters: Filter = {
-    name: (
-      <Text
-        name='name'
-        type='text'
-        autoComplete='off'
-        placeholder='Filtrar'
-        textColors={{
-          focused: theme.colors.secondary,
-          unfocused: theme.colors.secondary
-        }}
-      />
-    ),
-    role: (
-      <Select
-        name='role'
-        className='SelectRole'
-        theming={selectTheme}
-        styling={selectStyle}
-        options={[
-          { label: 'Estudante', value: 'student' },
-          { label: 'Moderador', value: 'moderator' },
-          { label: 'Professor', value: 'professor' }
-        ]}
-      />
-    ),
-    status: (
-      <Select
-        name='status'
-        className='SelectRole'
-        theming={selectTheme}
-        styling={selectStyle}
-        options={[
-          { label: 'Aguardando', value: 'awaiting' },
-          { label: 'Aceito', value: 'accepted' },
-          { label: 'Recusado', value: 'rejected' }
-        ]}
-      />
-    ),
-    date: (
-      <div id='dates'>
-        <Datepicker
-          placeholder='De'
-          dateColors={{
-            body: theme.colors.secondary,
-            header: theme.colors.primary,
-            selected: theme.colors.tertiary,
-            disabled: theme.colors.red
-          }}
-          textColors={{
-            focused: theme.colors.secondary,
-            unfocused: theme.colors.secondary
-          }}
-        />
+  const filterTable = async ({ name, role, status, from, to }: any) => {
+    const callStartCondition =
+      (!name && !role && !status && !from && !to) ||
+      (!name && role === 'all' && status === 'all' && !from && !to) ||
+      (!name && role === 'all' && !status && !from && !to) ||
+      (!name && !role && status === 'all' && !from && !to)
 
-        <Datepicker
-          placeholder='Até'
-          dateColors={{
-            body: theme.colors.secondary,
-            header: theme.colors.primary,
-            selected: theme.colors.tertiary,
-            disabled: theme.colors.red
-          }}
-          textColors={{
-            focused: theme.colors.secondary,
-            unfocused: theme.colors.secondary
-          }}
-        />
-      </div>
-    )
-  }
+    console.log(name, role, status, from, to)
 
-  const filterTable = async ({ name, role, status }: any) => {
-    if (name) {
-      const response = await api.get(
-        `user/role/requests?page=1&per_page=${quantity}&filter[full_name]=${name}`
+    if (callStartCondition) {
+      const { requests } = await api.get(
+        `user/role/requests?page=1&per_page=${quantity}`
       )
 
-      const { requests } = response
-      requestsContext?.setTableState({
-        showData: transformArray(requests, requestsContext.roles),
-        tablePage: 1
-      })
-    }
+      const tableData = transformArray(requests, requestsContext.roles)
 
-    if (role) {
+      requestsContext?.setTableState({
+        tablePage: 1,
+        showData: tableData
+      })
+    } else {
       const roleId = requestsContext.roles.filter(
         ({ title }) => role === title
-      )[0].role_id
+      )[0]
 
-      const response = await api.get(
-        `user/role/requests?page=1&per_page=${quantity}&filter[role_id]=${roleId}`
+      console.log(
+        `user/role/requests?page=1&per_page=${quantity}
+        ${name ? `&filter[full_name]=${name}` : ''}
+        ${roleId ? `&filter[role_id]=${roleId.role_id}` : ''}
+        ${status ? `&filter[status]=${status}` : ''}`
       )
 
-      const { requests } = response
-
-      requestsContext?.setTableState({
-        showData: transformArray(requests, requestsContext.roles),
-        tablePage: 1
-      })
-    }
-
-    if (status) {
       const response = await api.get(
-        `user/role/requests?page=1&per_page=${quantity}&filter[status]=${status}`
+        `user/role/requests?page=1&per_page=${quantity}${
+          name ? `&filter[full_name]=${name}` : ''
+        }${roleId ? `&filter[role_id]=${roleId.role_id}` : ''}${
+          status ? `&filter[status]=${status}` : ''
+        }`
       )
 
       const { requests } = response
@@ -216,27 +168,103 @@ const Filters = ({ quantity }: FiltersProps) => {
 
   return (
     <Style getData={filterTable}>
-      {filters[filter]}
+      <Presence
+        condition={values}
+        variants={reset}
+        exit='exit'
+        animate='enter'
+        presenceProps={{ exitBeforeEnter: true }}
+      >
+        <Text
+          name='name'
+          type='text'
+          autoComplete='off'
+          placeholder='Nome'
+          textColors={{
+            focused: theme.colors.secondary,
+            unfocused: theme.colors.secondary
+          }}
+        />
 
-      <Select
-        name='filter'
-        className='SelectFilter'
-        theming={selectTheme}
-        styling={selectStyle}
-        onChange={(e: any) => setFilter(e.value)}
-        defaultValue={{ label: 'Nome', value: 'name' }}
-        options={[
-          { label: 'Papel', value: 'role' },
-          { label: 'Nome', value: 'name' },
-          { label: 'Data', value: 'date' },
-          { label: 'Status', value: 'status' }
-        ]}
-      />
+        <div id='row'>
+          <Select
+            name='role'
+            placeholder='Papel'
+            theming={selectTheme}
+            styling={selectStyle}
+            options={[
+              { label: 'Estudante', value: 'student' },
+              { label: 'Moderador', value: 'moderator' },
+              { label: 'Professor', value: 'professor' },
+              { label: 'Todos', value: 'all' }
+            ]}
+          />
 
-      <button type='submit' className='Submit'>
-        <LoupeIcon />
-        Buscar
-      </button>
+          <Select
+            name='status'
+            placeholder='Status'
+            theming={selectTheme}
+            styling={selectStyle}
+            options={[
+              { label: 'Aguardando', value: 'awaiting' },
+              { label: 'Aceito', value: 'accepted' },
+              { label: 'Recusado', value: 'rejected' },
+              { label: 'Todos', value: 'all' }
+            ]}
+          />
+        </div>
+
+        <div id='row'>
+          <Datepicker
+            name='from'
+            placeholder='De'
+            dateColors={{
+              body: theme.colors.secondary,
+              header: theme.colors.primary,
+              selected: theme.colors.tertiary,
+              disabled: theme.colors.red
+            }}
+            textColors={{
+              focused: theme.colors.secondary,
+              unfocused: theme.colors.secondary
+            }}
+          />
+
+          <Datepicker
+            name='to'
+            placeholder='Até'
+            dateColors={{
+              body: theme.colors.secondary,
+              header: theme.colors.primary,
+              selected: theme.colors.tertiary,
+              disabled: theme.colors.red
+            }}
+            textColors={{
+              focused: theme.colors.secondary,
+              unfocused: theme.colors.secondary
+            }}
+          />
+        </div>
+      </Presence>
+
+      <motion.div id='buttons' animate={{ paddingTop: [700, 0], transition }}>
+        <Submit>
+          <LoupeIcon />
+          Buscar
+        </Submit>
+
+        <button
+          type='button'
+          onClick={() => {
+            setValues(false)
+            setTimeout(() => {
+              setValues(true)
+            }, 600)
+          }}
+        >
+          Limpar filtros
+        </button>
+      </motion.div>
     </Style>
   )
 }

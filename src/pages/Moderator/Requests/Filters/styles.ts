@@ -8,136 +8,113 @@ const Style = styled(Form)`
   justify-content: center;
   flex-direction: column;
 
-  width: max(100%, 280px);
   padding: 0 16px 0 8px;
+  margin-bottom: 16px;
+  width: max(100%, 280px);
 
-  & > * {
-    margin-bottom: 16px;
+  .Presence {
+    width: 100%;
 
-    box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.23);
-  }
-
-  .Text {
-    width: max(100%, 100px);
-    min-width: 100px;
-    min-height: 44px;
-
-    input {
+    & > * {
       width: 100%;
-      min-height: 44px;
+      margin-bottom: 16px;
     }
-  }
 
-  .SelectRole {
-    width: 100%;
-    border-radius: 8px;
-
-    .Select__control {
-      height: 44px;
+    .Text {
+      height: 40px;
     }
-  }
 
-  .SelectFilter {
-    min-width: 100%;
-    border-radius: 8px;
+    .Select {
+      height: 40px;
+      border-radius: 8px;
 
-    .Select__control {
-      height: 44px;
+      .Select__control {
+        height: 40px;
+      }
     }
-  }
 
-  .Submit {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 100%;
-    border-radius: 8px;
-    padding: 8px;
-    min-height: 44px;
-
-    color: ${({ theme }) => theme.colors.secondary};
-    background-color: ${({ theme }) => theme.colors.primary};
-
-    .Icon {
-      margin-right: 12px;
-      height: 20px;
-
-      fill: ${({ theme }) => theme.colors.secondary};
-    }
-  }
-
-  #dates {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    z-index: 10;
-
-    width: 100%;
-
-    transform: translateY(-2px);
-
-    box-shadow: none;
-
-    .Datepicker {
+    #row {
       display: flex;
       align-items: center;
       justify-content: center;
 
-      width: 50%;
+      box-shadow: none;
 
-      & + .Datepicker {
-        margin-left: 24px;
+      & > * {
+        width: 100%;
+
+        & + * {
+          margin-left: 24px;
+        }
       }
 
-      .Text {
-        min-width: 100px;
+      .Datepicker {
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-        box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.23);
+        height: 40px;
+
+        .Text {
+          height: 40px;
+          min-width: 100px;
+
+          input {
+            height: 40px;
+          }
+        }
       }
     }
   }
 
-  @media screen and (min-width: 545px) {
-    padding: 0 16px;
-  }
-
-  @media screen and (min-width: 660px) {
+  #buttons {
     display: flex;
     flex-direction: row;
-    justify-content: center;
 
-    margin-bottom: 16px;
-    height: 44px;
-
-    & > * {
-      height: 100%;
-      margin-bottom: 0;
-    }
-
-    .Text,
-    .SelectRole {
-      margin-right: 24px;
-    }
-
-    .SelectFilter {
-      margin-top: 0px;
-      min-width: 120px;
-    }
+    width: 100%;
 
     .Submit {
-      width: clamp(160px, 20%, 280px);
-      margin-left: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 100%;
+      height: 40px;
+
+      border-radius: 16px 0 0 16px;
+
+      color: ${({ theme }) => theme.colors.secondary};
+      box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.23);
+      background-color: ${({ theme }) => theme.colors.primary};
+
+      .Icon {
+        margin-right: 12px;
+        height: 16px;
+
+        fill: ${({ theme }) => theme.colors.secondary};
+      }
     }
 
-    #dates {
-      margin-right: 24px;
-    }
-  }
+    .Submit + button {
+      align-self: flex-end;
 
-  @media screen and (min-width: 745px) {
-    padding: 0 32px;
+      padding: 4px 16px;
+      width: 200px;
+      height: 40px;
+
+      transition: all 0.2s;
+      border-radius: 0 16px 16px 0;
+      font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
+
+      box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.23);
+      color: ${({ theme }) => theme.colors.primary};
+      background-color: ${({ theme }) => theme.colors.secondary};
+
+      &:hover {
+        transform: scale(1.01);
+        filter: brightness(1.1);
+      }
+    }
   }
 `
 
