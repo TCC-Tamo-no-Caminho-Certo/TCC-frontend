@@ -136,13 +136,30 @@ const Style = styled.div`
 
   #CloseIcon {
     position: absolute;
-    top: 24px;
+    top: 22px;
     right: 24px;
 
     height: 16px;
     width: 16px;
 
     stroke: ${({ theme }) => theme.colors.secondary};
+  }
+
+  #TrashIcon {
+    position: absolute;
+    top: 16px;
+    left: 24px;
+
+    width: 24px;
+    height: 24px;
+
+    #verticalStrokes {
+      fill: ${({ theme }) => theme.colors.red};
+    }
+
+    #background {
+      fill: ${({ theme }) => theme.colors.red};
+    }
   }
 
   #radios {

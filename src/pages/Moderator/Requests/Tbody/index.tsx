@@ -88,6 +88,7 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
   const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>
   const tableRef = useRef() as MutableRefObject<HTMLTableElement>
   const modalRef = useRef<ModalMethods>(null)
+  const removeRef = useRef<ModalMethods>(null)
 
   const [infos, setInfos] = useState<InfosState | undefined>()
   const [isClear, setIsClear] = useState(false)
@@ -175,41 +176,42 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startRequest])
-
   return (
     <>
       <Style ref={tableWrapperRef} onScroll={onTableScroll}>
         <table draggable='false' ref={tableRef}>
           <tbody>
             {items?.map((item, index) => (
-              <tr
-                key={index}
-                onClick={() => {
-                  modalRef.current?.toggleModal(true)
-                  setSelected(item)
-                }}
-              >
-                {headerData.map(({ label, name }) => {
-                  if (name === 'role')
+              <>
+                <tr
+                  key={index}
+                  onClick={() => {
+                    modalRef.current?.toggleModal(true)
+                    setSelected(item)
+                  }}
+                >
+                  {headerData.map(({ label, name }) => {
+                    if (name === 'role')
+                      return (
+                        <RoleTd className='role' role={item[name]} key={index}>
+                          {makeRoleLabel(item[name])}
+                        </RoleTd>
+                      )
+                    if (name === 'statusCircle')
+                      return (
+                        <td className='statusCircle' key={name}>
+                          <Circle status={item.statusCircle} />
+                        </td>
+                      )
+
                     return (
-                      <RoleTd className='role' role={item[name]} key={index}>
-                        {makeRoleLabel(item[name])}
-                      </RoleTd>
-                    )
-                  if (name === 'statusCircle')
-                    return (
-                      <td className='statusCircle' key={name}>
-                        <Circle status={item.statusCircle} />
+                      <td key={label} className={name}>
+                        {item[name]}
                       </td>
                     )
-
-                  return (
-                    <td key={label} className={name}>
-                      {item[name]}
-                    </td>
-                  )
-                })}
-              </tr>
+                  })}
+                </tr>
+              </>
             ))}
           </tbody>
         </table>
@@ -224,6 +226,14 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
             startRequest()
           }}
         />
+      </Modal>
+
+      <Modal top='50vh' translateY='-50%' ref={removeRef}>
+        <div id='removeModal'>
+          Você tem certeza que deseja excluir permanente esta solicitação?
+          <button type='button'>Não</button>
+          <button type='button'>Cancelar</button>
+        </div>
       </Modal>
     </>
   )

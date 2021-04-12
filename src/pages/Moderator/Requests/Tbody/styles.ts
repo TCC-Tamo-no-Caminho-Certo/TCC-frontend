@@ -39,6 +39,7 @@ const Style = styled.div`
 
     tbody {
       border: none;
+      position: relative;
 
       tr {
         display: flex;
@@ -55,9 +56,10 @@ const Style = styled.div`
         }
 
         td {
+          z-index: 0;
+
           display: flex;
           align-items: center;
-
           overflow: hidden;
           min-height: 32px;
           padding: 8px 4px;

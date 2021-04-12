@@ -5,11 +5,14 @@ import { ItemData, RequestsContext } from '../..'
 
 import makeRoleLabel from 'utils/makeRoleLabel'
 
+import api from 'services/api'
+
 import { Response } from 'store'
 import { Role } from 'store/AsyncThunks/roles'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
 import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'
+import TrashIcon from 'assets/global/TrashIcon'
 
 import Popup, { PopupMethods } from 'components/Popup'
 import Avatar from 'components/User/Avatar'
@@ -79,6 +82,21 @@ function ResponseContent({
       <Style>
         {userInfo && selectedInfo ? (
           <>
+            <TrashIcon
+              onClick={() => {
+                popupRef.current?.configPopup({
+                  type: 'warning',
+                  message: 'Tem certeza que deseja remover esta solicitação?',
+
+                  onOkClick: async () => {
+                    onCloseClick()
+
+                    api.delete(`user/role/request/${selectedInfo.id}`)
+                  }
+                })
+              }}
+            />
+
             <CloseIcon onClick={onCloseClick} />
 
             <Infos
