@@ -95,6 +95,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
                   addData={addData}
                   schema={emailSchema}
                   afterResData={afterEmailSubmit}
+                  getData={data => console.log('Student-Email-Data', data)}
                 >
                   <Text name='email' placeholder={placeholder} />
 
@@ -110,6 +111,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
                 id='tokenForm'
                 path='confirm/email/*%'
                 addToPath={['token']}
+                getData={data => console.log('Student-Token-Data', data)}
                 schema={tokenSchema}
                 afterResData={afterTokenSubmit}
               >

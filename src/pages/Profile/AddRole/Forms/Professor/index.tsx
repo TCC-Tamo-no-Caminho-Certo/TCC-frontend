@@ -21,6 +21,7 @@ import api from 'services/api'
 
 import { Response } from 'store'
 import { University } from 'store/AsyncThunks/universities'
+import { getUser } from 'store/user'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
@@ -30,6 +31,7 @@ import { Option } from 'components/Form/Select'
 import Presence from 'components/Presence'
 import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 interface Data {
@@ -39,8 +41,9 @@ interface Data {
   register: string
   campus_id: number
   course_id: number
-  university_id: number
+  full_time: boolean
   postgraduate: boolean
+  university_id: number
 }
 
 interface Options {
@@ -75,15 +78,9 @@ function Professor({ request }: ProfessorProps) {
   const registerEmailRef = useRef<RegisterEmailMethods>(null)
 
   const [options, setOptions] = useState<Options>({
-    university: universities.map(university => ({
-      label: university.name,
-      value: university.university_id
-    })),
     campus: [],
-    course: courses.map(course => ({
-      label: course.name,
-      value: course.course_id
-    }))
+    course: [],
+    university: []
   })
 
   const [values, setValues] = useState<Values>({
@@ -110,6 +107,7 @@ function Professor({ request }: ProfessorProps) {
     university_id: 0
   })
 
+  const dispatch = useDispatch()
   const history = useHistory()
 
   const registerRegex = universities.find(
@@ -210,7 +208,13 @@ function Professor({ request }: ProfessorProps) {
         setModal: true,
         type: 'success',
         message: request ? 'Solicitação reenviada!' : 'Solicitação enviada!',
-        onClick: () => history.go(0)
+        onClick: () => {
+          if (animations.voucher) history.go(0)
+          else {
+            dispatch(getUser)
+            history.push('/session/main')
+          }
+        }
       })
     else
       popupRef.current?.configPopup({
@@ -250,12 +254,31 @@ function Professor({ request }: ProfessorProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request, setInitialCampusOptions])
 
+  useEffect(() => {
+    setOptions(prev => ({
+      ...prev,
+      university: universities.map(university => ({
+        label: university.name,
+        value: university.university_id
+      }))
+    }))
+  }, [universities])
+
+  useEffect(() => {
+    setOptions(prev => ({
+      ...prev,
+      course: courses.map(course => ({
+        label: course.name,
+        value: course.course_id
+      }))
+    }))
+  }, [courses])
+
   return (
     <>
       <Form
         loading
         afterResData={afterSubmit}
-        getData={e => console.log(e)}
         path={
           request
             ? `user/role/request/professor/${request.request_id}`
@@ -289,6 +312,7 @@ function Professor({ request }: ProfessorProps) {
         />
 
         <Select
+          id='cy-university'
           name='university_id'
           placeholder='Universidade'
           options={options.university}
@@ -311,6 +335,7 @@ function Professor({ request }: ProfessorProps) {
 
         <Presence animate='enter' variants={show} condition={animations.campus}>
           <Select
+            id='cy-campus'
             name='campus_id'
             placeholder='Câmpus'
             options={options.campus}
@@ -321,6 +346,7 @@ function Professor({ request }: ProfessorProps) {
 
         <Presence animate='enter' variants={show} condition={animations.course}>
           <Select
+            id='cy-course'
             name='course_id'
             placeholder='Curso com maior carga horária'
             value={values.course}
@@ -344,6 +370,7 @@ function Professor({ request }: ProfessorProps) {
 
               <div>
                 <button
+                  id='cy-email'
                   type='button'
                   onClick={() => {
                     setAnimations(prev => ({
@@ -359,6 +386,7 @@ function Professor({ request }: ProfessorProps) {
                 </button>
 
                 <button
+                  id='cy-voucher'
                   type='button'
                   onClick={() =>
                     setAnimations(prev => ({ ...prev, voucher: true }))
@@ -408,11 +436,18 @@ function Professor({ request }: ProfessorProps) {
         </Presence>
 
         <Checkbox
+          id='cy-postgraduate'
           name='postgraduate'
           label='Você leciona na Pós-Graduação (Stricto Sensu)?'
+          defaultCheck={request?.data.postgraduate}
         />
 
-        <Checkbox name='full_time' label='Sou professor em tempo integral' />
+        <Checkbox
+          id='cy-full_time'
+          name='full_time'
+          label='Sou professor em tempo integral'
+          defaultCheck={request?.data.full_time}
+        />
 
         <Presence
           exit='exit'
@@ -421,7 +456,7 @@ function Professor({ request }: ProfessorProps) {
           variants={show}
           condition={animations.submit}
         >
-          <Submit>Enviar solicitação</Submit>
+          <Submit id='cy-submit'>Enviar solicitação</Submit>
         </Presence>
       </Form>
 

@@ -124,8 +124,6 @@ const Filters = ({ quantity }: FiltersProps) => {
       (!name && role === 'all' && !status && !from && !to) ||
       (!name && !role && status === 'all' && !from && !to)
 
-    console.log(name, role, status, from, to)
-
     if (callStartCondition) {
       const { requests } = await api.get(
         `user/role/requests?page=1&per_page=${quantity}`
@@ -141,13 +139,6 @@ const Filters = ({ quantity }: FiltersProps) => {
       const roleId = requestsContext.roles.filter(
         ({ title }) => role === title
       )[0]
-
-      console.log(
-        `user/role/requests?page=1&per_page=${quantity}
-        ${name ? `&filter[full_name]=${name}` : ''}
-        ${roleId ? `&filter[role_id]=${roleId.role_id}` : ''}
-        ${status ? `&filter[status]=${status}` : ''}`
-      )
 
       const response = await api.get(
         `user/role/requests?page=1&per_page=${quantity}${

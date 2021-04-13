@@ -219,7 +219,7 @@ const Form = ({
 
     validate()
 
-    addToPath && parsePath()
+    !haveErrors && addToPath && parsePath()
 
     if (captcha)
       data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false

@@ -83,6 +83,11 @@ const Style = styled.div<StyleProps>`
       background-color: transparent;
       border: solid 1px ${({ color }) => color};
     }
+
+    #deleteRole {
+      background-color: ${({ theme }) => theme.colors.red};
+      margin-top: 16px;
+    }
   }
 `
 export default Style

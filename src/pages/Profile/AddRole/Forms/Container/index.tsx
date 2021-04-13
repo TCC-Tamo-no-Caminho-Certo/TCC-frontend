@@ -51,7 +51,7 @@ const Container = ({ role }: ContainerProps) => {
     if (roles.length !== 0)
       (async () => {
         const { requests } = await api.get('user/role/request')
-        console.log(requests)
+
         const filterByRole = requests?.find(
           (request: any) =>
             request.role_id ===
@@ -67,7 +67,7 @@ const Container = ({ role }: ContainerProps) => {
   return (
     <Style>
       <Content role={role}>
-        <Header>
+        <Header id='cy-follow'>
           {request ? 'Acompanhar solicitação' : 'Solicitação de perfil'}
         </Header>
 

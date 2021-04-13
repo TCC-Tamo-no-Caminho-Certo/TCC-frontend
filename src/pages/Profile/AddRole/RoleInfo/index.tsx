@@ -1,15 +1,21 @@
 import React from 'react'
 import Style from './styles'
 
+import api from 'services/api'
+
+import { Role } from 'store/AsyncThunks/roles'
+
 import CheckIcon from 'assets/global/CheckIcon'
 import ArrowIcon from 'assets/global/ArrowIcon'
 
 import { AnimatePresence, motion, useCycle, Variants } from 'framer-motion'
 
 interface RoleInfoProps {
+  id: string
+  role: Role
   title: string
-  benefits: string[]
   color: string
+  benefits: string[]
   noButton?: boolean
   userRoles?: string[]
   onClick?(): void
@@ -56,13 +62,15 @@ const button: Variants = {
 }
 
 const RoleInfo = ({
+  id,
+  role,
   title,
-  benefits,
   color,
   onClick,
+  benefits,
   userRoles,
-  noButton = false,
-  onLabelClick
+  onLabelClick,
+  noButton = false
 }: RoleInfoProps) => {
   const [show, toggleShow] = useCycle<boolean>(false, true)
   const [deg, rotate] = useCycle(0, -90)
@@ -74,7 +82,7 @@ const RoleInfo = ({
   }
 
   return (
-    <Style className='RoleInfo' show={show} color={color} title={title}>
+    <Style className='RoleInfo' id={id} show={show} color={color} title={title}>
       <button
         id='title'
         type='button'
@@ -122,13 +130,27 @@ const RoleInfo = ({
                   Quero ser {title}!
                 </motion.button>
               ) : (
-                <motion.button
-                  disabled
-                  id='roleAlreadyExists'
-                  variants={button}
-                >
-                  Já sou {title}!
-                </motion.button>
+                <>
+                  <motion.button
+                    disabled
+                    id='roleAlreadyExists'
+                    variants={button}
+                  >
+                    Já sou {title}!
+                  </motion.button>
+
+                  <motion.button
+                    onClick={async () => {
+                      await api.delete(`user/role/${role}`)
+                      console.log('papel removido')
+                      history.go(0)
+                    }}
+                    variants={button}
+                    id='deleteRole'
+                  >
+                    Remover papel
+                  </motion.button>
+                </>
               ))}
           </motion.div>
         )}

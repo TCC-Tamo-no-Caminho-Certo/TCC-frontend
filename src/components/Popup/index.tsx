@@ -93,7 +93,7 @@ const Popup = forwardRef<PopupMethods, PopupProps>(
 
           <p>{message}</p>
 
-          <button type='button' onClick={onConfirmClick}>
+          <button id='cy-confirm-popup' type='button' onClick={onConfirmClick}>
             Entendi!
           </button>
         </Style>

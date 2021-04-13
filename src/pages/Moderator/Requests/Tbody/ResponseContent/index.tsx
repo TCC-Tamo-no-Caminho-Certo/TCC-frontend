@@ -43,7 +43,6 @@ function ResponseContent({
   const [buttonClicked, setButtonClicked] = useState('rejected')
 
   const afterResponseSubmit = (res: Response<any>) => {
-    console.log(selectedInfo)
     if (res.success)
       popupRef.current?.configPopup({
         type: 'success',
@@ -89,9 +88,9 @@ function ResponseContent({
                   message: 'Tem certeza que deseja remover esta solicitação?',
 
                   onOkClick: async () => {
-                    onCloseClick()
+                    await api.delete(`user/role/request/${selectedInfo.id}`)
 
-                    api.delete(`user/role/request/${selectedInfo.id}`)
+                    onCloseClick()
                   }
                 })
               }}

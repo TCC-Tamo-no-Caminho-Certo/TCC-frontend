@@ -182,36 +182,34 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
         <table draggable='false' ref={tableRef}>
           <tbody>
             {items?.map((item, index) => (
-              <>
-                <tr
-                  key={index}
-                  onClick={() => {
-                    modalRef.current?.toggleModal(true)
-                    setSelected(item)
-                  }}
-                >
-                  {headerData.map(({ label, name }) => {
-                    if (name === 'role')
-                      return (
-                        <RoleTd className='role' role={item[name]} key={index}>
-                          {makeRoleLabel(item[name])}
-                        </RoleTd>
-                      )
-                    if (name === 'statusCircle')
-                      return (
-                        <td className='statusCircle' key={name}>
-                          <Circle status={item.statusCircle} />
-                        </td>
-                      )
-
+              <tr
+                key={`${item}${index}`}
+                onClick={() => {
+                  modalRef.current?.toggleModal(true)
+                  setSelected(item)
+                }}
+              >
+                {headerData.map(({ label, name }) => {
+                  if (name === 'role')
                     return (
-                      <td key={label} className={name}>
-                        {item[name]}
+                      <RoleTd className='role' role={item[name]} key={index}>
+                        {makeRoleLabel(item[name])}
+                      </RoleTd>
+                    )
+                  if (name === 'statusCircle')
+                    return (
+                      <td className='statusCircle' key={name}>
+                        <Circle status={item.statusCircle} />
                       </td>
                     )
-                  })}
-                </tr>
-              </>
+
+                  return (
+                    <td key={label} className={name}>
+                      {item[name]}
+                    </td>
+                  )
+                })}
+              </tr>
             ))}
           </tbody>
         </table>

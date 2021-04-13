@@ -19,7 +19,7 @@ import api from 'services/api'
 
 import { Response, RootState } from 'store'
 import { University } from 'store/AsyncThunks/universities'
-import { Email, UserState } from 'store/user'
+import { Email, getUser, UserState } from 'store/user'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
@@ -30,7 +30,8 @@ import Presence from 'components/Presence'
 import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
 import { Variants } from 'framer-motion'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
 
 interface Data {
   lattes: string
@@ -118,15 +119,9 @@ function Student({ request }: StudentProps) {
   const registerEmailRef = useRef<RegisterEmailMethods>(null)
 
   const [options, setOptions] = useState<Options>({
-    university: universities.map(university => ({
-      label: university.name,
-      value: university.university_id
-    })),
     campus: [],
-    course: courses.map(course => ({
-      label: course.name,
-      value: course.course_id
-    })),
+    course: [],
+    university: [],
     semester: semesterOptions
   })
 
@@ -154,6 +149,9 @@ function Student({ request }: StudentProps) {
     },
     university_id: 0
   })
+
+  const history = useHistory()
+  const dispatch = useDispatch()
 
   const registerRegex = universities.find(
     university => university.university_id === values.university?.value
@@ -260,7 +258,13 @@ function Student({ request }: StudentProps) {
         setModal: true,
         type: 'success',
         message: request ? 'Solicitação reenviada!' : 'Solicitação enviada!',
-        onClick: () => history.go(0)
+        onClick: () => {
+          if (animations.voucher) history.go(0)
+          else {
+            dispatch(getUser())
+            history.push('/session/main')
+          }
+        }
       })
     else
       popupRef.current?.configPopup({
@@ -318,6 +322,26 @@ function Student({ request }: StudentProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request, setInitialCampusOptions])
 
+  useEffect(() => {
+    setOptions(prev => ({
+      ...prev,
+      university: universities.map(university => ({
+        label: university.name,
+        value: university.university_id
+      }))
+    }))
+  }, [universities])
+
+  useEffect(() => {
+    setOptions(prev => ({
+      ...prev,
+      course: courses.map(course => ({
+        label: course.name,
+        value: course.course_id
+      }))
+    }))
+  }, [courses])
+
   return (
     <>
       <Form
@@ -333,8 +357,19 @@ function Student({ request }: StudentProps) {
             : emailSchema(registerRegex || '')
         }
         afterResData={afterSubmit}
-        getData={e => console.log(e)}
       >
+        <button
+          type='button'
+          onClick={() => {
+            user.emails.forEach(email => {
+              if (email.institutional === true)
+                api.delete(`user/email/${email.email_id}`)
+            })
+          }}
+        >
+          Remover E-mail
+        </button>
+
         <Text
           optional
           name='lattes'
@@ -350,6 +385,7 @@ function Student({ request }: StudentProps) {
         />
 
         <Select
+          id='cy-university'
           name='university_id'
           placeholder='Universidade'
           options={options.university}
@@ -372,6 +408,7 @@ function Student({ request }: StudentProps) {
 
         <Presence animate='enter' variants={show} condition={animations.campus}>
           <Select
+            id='cy-campus'
             name='campus_id'
             placeholder='Câmpus'
             options={options.campus}
@@ -382,6 +419,7 @@ function Student({ request }: StudentProps) {
 
         <Presence animate='enter' variants={show} condition={animations.course}>
           <Select
+            id='cy-course'
             name='course_id'
             placeholder='Curso'
             value={values.course}
@@ -399,6 +437,7 @@ function Student({ request }: StudentProps) {
           condition={animations.semester}
         >
           <Select
+            id='cy-semester'
             name='semester'
             placeholder='Semestre'
             options={options.semester}
@@ -421,6 +460,7 @@ function Student({ request }: StudentProps) {
 
               <div>
                 <button
+                  id='cy-email'
                   type='button'
                   onClick={() => {
                     setAnimations(prev => ({
@@ -436,6 +476,7 @@ function Student({ request }: StudentProps) {
                 </button>
 
                 <button
+                  id='cy-voucher'
                   type='button'
                   onClick={() =>
                     setAnimations(prev => ({ ...prev, voucher: true }))
@@ -491,7 +532,7 @@ function Student({ request }: StudentProps) {
           variants={show}
           condition={animations.submit}
         >
-          <Submit>Enviar solicitação</Submit>
+          <Submit id='cy-submit'>Enviar solicitação</Submit>
         </Presence>
       </Form>
 

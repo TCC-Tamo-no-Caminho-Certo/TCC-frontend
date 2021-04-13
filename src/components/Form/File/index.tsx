@@ -58,7 +58,6 @@ const File = ({
     e.preventDefault()
 
     const { files } = e.target
-    console.log(files[0].size < 100000)
 
     setError('O arquivo é muito grande!')
 

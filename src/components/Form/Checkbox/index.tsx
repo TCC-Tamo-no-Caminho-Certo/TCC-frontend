@@ -9,8 +9,10 @@ import { motion, Variants } from 'framer-motion'
 import { ThemeContext } from 'styled-components'
 
 interface CheckboxProps {
-  name: string
   label: string
+  name: string
+  defaultCheck?: boolean
+  id?: string
   onClick?: () => void
 }
 
@@ -32,7 +34,14 @@ const pathAnimation: Variants = {
   }
 }
 
-const Checkbox = ({ name, label, onClick, ...rest }: CheckboxProps) => {
+const Checkbox = ({
+  name,
+  label,
+  onClick,
+  id,
+  defaultCheck,
+  ...rest
+}: CheckboxProps) => {
   const theme = useContext(ThemeContext)
 
   const checkboxRef = useRef<HTMLInputElement>(null)
@@ -40,6 +49,10 @@ const Checkbox = ({ name, label, onClick, ...rest }: CheckboxProps) => {
 
   const [checked, setChecked] = useState(false)
   const [error, setError] = useState<string>()
+
+  useEffect(() => {
+    setChecked(defaultCheck || false)
+  }, [defaultCheck])
 
   useEffect(() => {
     const checkbox = {
@@ -58,6 +71,7 @@ const Checkbox = ({ name, label, onClick, ...rest }: CheckboxProps) => {
       checked={checked}
       error={!!error}
       onClick={onClick}
+      id={id}
     >
       <ErrorTooltip error={!!error} content={error} />
 

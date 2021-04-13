@@ -1,22 +1,4 @@
 Cypress.Commands.add(
-  'invisibleLogin',
-  (email = 'miguelandradebarreto2@gmail.com', password = 'Miguel@1234') => {
-    cy.request({
-      method: 'POST',
-      url: 'https://dev.steamslab.com/api/login',
-      body: {
-        email,
-        password
-      }
-    }).then(res => {
-      window.localStorage.setItem('@SLab_ac_token', res.access_token)
-      cy.visit('/session/main')
-      cy.url().should('contains', '/session/main')
-    })
-  }
-)
-
-Cypress.Commands.add(
   'login',
   (email = 'miguelandradebarreto2@gmail.com', password = 'Miguel@1234') => {
     cy.visit('/home')
@@ -27,14 +9,12 @@ Cypress.Commands.add(
   }
 )
 
-Cypress.Commands.add(
-  'writeLogin',
-  (email = 'miguelandradebarreto2@gmail.com', password = 'Miguel@1234') => {
-    cy.visit('/home')
-    cy.get('[data-cy=input-login-email]').type(email)
-    cy.get('[data-cy=input-login-password]').type(password)
-  }
-)
+Cypress.Commands.add('logout', () => {
+  cy.url().should('exist', '/session/main')
+  cy.get('#Gear').click()
+  cy.get('[data-cy=button-main-logout]').click()
+  cy.url().should('not.contains', '/session')
+})
 
 Cypress.Commands.add(
   'submitAndVerifyError',
@@ -133,9 +113,22 @@ Cypress.Commands.add(
   }
 )
 
-Cypress.Commands.add('logout', () => {
-  cy.url().should('exist', '/session/main')
-  cy.get('#Gear').click()
-  cy.get('[data-cy=button-main-logout]').click()
-  cy.url().should('not.contains', '/session')
+Cypress.Commands.add(
+  'verifyIfRequestExist',
+  (id = '#cy-student', label = 'Estudante') => {
+    cy.get(id).click()
+    cy.get(`${id} > div > button`).click()
+
+    cy.get('#cy-follow').contains('Acompanhar solicitação')
+    cy.get('#role').contains(label)
+    cy.get('#-session-main-map').click()
+    cy.logout()
+  }
+)
+
+Cypress.Commands.add('verifyIfRoleHasChange', (id = '#cy-student') => {
+  cy.visit('/session/profile/change-role')
+  cy.get(id).click()
+  cy.wait(100)
+  cy.get('#roleAlreadyExists').should('be.disabled')
 })

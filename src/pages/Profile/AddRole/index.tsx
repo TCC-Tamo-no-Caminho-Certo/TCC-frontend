@@ -12,8 +12,6 @@ import Container from './Forms/Container'
 
 import selectRoleLabel from 'utils/makeRoleLabel'
 
-import api from 'services/api'
-
 import { RootState } from 'store'
 import { UserState } from 'store/user'
 import { getRoles, Role, RolesState, RoleType } from 'store/AsyncThunks/roles'
@@ -83,6 +81,10 @@ const AddRole = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    console.log(storeUniversities)
+  }, [storeUniversities])
+
   return (
     <Style>
       <section ref={rolesRef}>
@@ -100,29 +102,10 @@ const AddRole = () => {
         </p>
 
         <div id='roles'>
-          <button
-            type='button'
-            onClick={async () => await api.delete('user/role/student')}
-          >
-            RemoverEstudante
-          </button>
-
-          <button
-            type='button'
-            onClick={async () => await api.delete('user/role/professor')}
-          >
-            RemoverProfessor
-          </button>
-
-          <button
-            type='button'
-            onClick={async () => await api.delete('user/role/moderator')}
-          >
-            RemoverModerador
-          </button>
-
           <RoleInfo
             noButton
+            id='cy-guest'
+            role='guest'
             title='Convidado'
             color={theme.roles.guest}
             benefits={[
@@ -131,7 +114,9 @@ const AddRole = () => {
           />
 
           <RoleInfo
+            id='cy-student'
             title='Estudante'
+            role='student'
             userRoles={labelRoles}
             color={theme.roles.student}
             onClick={() => {
@@ -146,6 +131,8 @@ const AddRole = () => {
           />
 
           <RoleInfo
+            id='cy-professor'
+            role='professor'
             title='Professor'
             userRoles={labelRoles}
             color={theme.roles.professor}
@@ -158,8 +145,11 @@ const AddRole = () => {
             ]}
           />
 
-          {user.roles.includes('professor') && (
+          {(user.roles.includes('professor') ||
+            user.roles.includes('moderator')) && (
             <RoleInfo
+              role='moderator'
+              id='cy-moderator'
               title='Moderador'
               userRoles={labelRoles}
               color={theme.roles.moderator}

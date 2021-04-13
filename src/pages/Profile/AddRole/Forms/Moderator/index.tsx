@@ -56,7 +56,7 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
 
   const [fullTime, setFullTime] = useState(false)
 
-  const [options, _setOptions] = useState<Options>({
+  const [options, setOptions] = useState<Options>({
     university: universities.map(university => ({
       label: university.name,
       value: university.university_id
@@ -87,7 +87,6 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
         )
       })
 
-    console.log(request)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request])
 
@@ -118,6 +117,16 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
       })
   }
 
+  useEffect(() => {
+    setOptions(prev => ({
+      ...prev,
+      university: universities.map(university => ({
+        label: university.name,
+        value: university.university_id
+      }))
+    }))
+  }, [universities])
+
   return (
     <>
       <Form
@@ -125,8 +134,10 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
         path='user/role/request/moderator'
         afterResData={afterSubmit}
         schema={!fullTime ? withFullTime : withoutFullTime}
+        getData={e => console.log(e)}
       >
         <Select
+          id='cy-university'
           name='university_id'
           placeholder='Universidade'
           options={options.university}
@@ -141,6 +152,7 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
           }}
         >
           <Textarea
+            id='cy-pretext'
             name='pretext'
             placeholder='Descreva porquê você quer ser Moderador...'
             maxLength={500}
@@ -148,7 +160,7 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
           />
         </motion.div>
 
-        <Submit>
+        <Submit id='cy-submit'>
           {!fullTime ? 'Enviar solicitação' : 'Tornar-se moderador!'}
         </Submit>
       </Form>
