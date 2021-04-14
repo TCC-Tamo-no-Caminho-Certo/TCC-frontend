@@ -116,6 +116,9 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   'verifyIfRequestExist',
   (id = '#cy-student', label = 'Estudante') => {
+    cy.get('#Gear').click()
+    cy.get(':nth-child(4) > a').click()
+
     cy.get(id).click()
     cy.get(`${id} > div > button`).click()
 

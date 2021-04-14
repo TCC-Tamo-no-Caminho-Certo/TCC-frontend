@@ -46,12 +46,13 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     })
 
     const toggleModal = (setModal?: boolean) => {
-      setModal === undefined ? setOpenModal(!openModal) : setOpenModal(setModal)
+      if (setModal === undefined) setOpenModal(!openModal)
+      else setOpenModal(setModal)
     }
 
     const onBackgroundClick = () => {
-      setOpenModal(false)
       onBgClick && onBgClick()
+      setOpenModal(false)
     }
 
     useImperativeHandle(ref, () => ({ toggleModal }))

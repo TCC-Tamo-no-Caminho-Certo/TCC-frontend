@@ -58,34 +58,36 @@ export const transformArray = (
   array: RequestsData[],
   roles: RoleType[]
 ): ItemData[] => {
-  return array.map(
-    ({
-      name,
-      role_id,
-      status,
-      voucher_uuid,
-      created_at,
-      request_id,
-      feedback,
-      user_id,
-      data
-    }) => ({
-      role: roles.find(role => role.role_id === role_id)?.title as any,
-      user_id,
-      lattes: data.lattes,
-      linkedin: data.linkedin,
-      orcid: data.orcid,
-      feedback,
-      name: name,
-      docId: voucher_uuid,
-      id: request_id,
-      statusCircle: status,
-      status: getStatusLabel(status),
-      pretext: data.pretext,
-      course_id: data.course_id,
-      date: isoToDate(created_at, 'day/month')
-    })
-  )
+  if (array)
+    return array.map(
+      ({
+        name,
+        role_id,
+        status,
+        voucher_uuid,
+        created_at,
+        request_id,
+        feedback,
+        user_id,
+        data
+      }) => ({
+        role: roles.find(role => role.role_id === role_id)?.title as any,
+        user_id,
+        lattes: data.lattes,
+        linkedin: data.linkedin,
+        orcid: data.orcid,
+        feedback,
+        name: name,
+        docId: voucher_uuid,
+        id: request_id,
+        statusCircle: status,
+        status: getStatusLabel(status),
+        pretext: data.pretext,
+        course_id: data.course_id,
+        date: isoToDate(created_at, 'day/month')
+      })
+    )
+  return []
 }
 
 const Tbody = ({ headerData, quantity, items }: TbodyProps) => {

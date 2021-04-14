@@ -216,6 +216,8 @@ function Professor({ request }: ProfessorProps) {
   }
 
   const afterSubmit = (res: Response<any>) => {
+    console.log('AfterSubmit Response', res)
+
     if (res.success)
       popupRef.current?.configPopup({
         setModal: true,
@@ -235,7 +237,7 @@ function Professor({ request }: ProfessorProps) {
               user.emails
             )
           )
-            history.go(0)
+            history.push('/session/main')
           else {
             dispatch(getUser())
             history.push('/session/main')
@@ -495,13 +497,7 @@ function Professor({ request }: ProfessorProps) {
             translateY: '50%',
             bottom: '50vh'
           }}
-          onSuccess={() => {
-            setAnimations(prev => ({
-              ...prev,
-              submit: true,
-              ways: false
-            }))
-          }}
+          onSuccess={() => {}}
         />
       )}
 

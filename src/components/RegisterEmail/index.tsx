@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
 
 export interface RegisterEmailMethods {
-  toggleRegister: () => void
+  toggleRegister: (_setRegister?: boolean) => void
 }
 
 interface RegisterEmailProps {
@@ -75,7 +75,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
 
         dispatch(getUser())
         onSuccess && onSuccess()
-        modalRef.current?.toggleModal()
+        toggleRegister()
       } else
         popupRef.current?.configPopup({
           setModal: true,
@@ -84,7 +84,8 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
         })
     }
 
-    const toggleRegister = () => modalRef.current?.toggleModal()
+    const toggleRegister = (open?: boolean) =>
+      modalRef.current?.toggleModal(open)
 
     useImperativeHandle(ref, () => ({ toggleRegister }))
 
@@ -113,8 +114,8 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
               loading
               method='get'
               id='tokenForm'
-              path='confirm/email/*%'
               addToPath={['token']}
+              path='confirm/email/*%'
               schema={tokenSchema}
               afterResData={afterTokenSubmit}
             >

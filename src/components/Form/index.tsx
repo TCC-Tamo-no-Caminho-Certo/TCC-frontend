@@ -23,6 +23,7 @@ import { Response } from 'store'
 
 import Popup, { PopupMethods } from 'components/Popup'
 
+import axios from 'axios'
 import Captcha from 'react-google-recaptcha'
 import { useHistory } from 'react-router-dom'
 import { ObjectSchema, ValidationError } from 'yup'
@@ -75,12 +76,15 @@ const Form = ({
   const popupRef = useRef<PopupMethods>(null)
   const recaptchaRef = useRef<Captcha>(null)
   const [showLoader, setShowLoader] = useState(false)
+
   const data: {
     [name: string]: any
   } = useMemo(() => ({ ...addData }), [addData])
 
   let refs: Ref[] = []
   let haveErrors = false
+  const signal = axios.CancelToken.source()
+
   const registerInput = (input: Ref) => refs.push(input)
 
   const removeInput = (input: Ref) => {
@@ -182,7 +186,8 @@ const Form = ({
       const firstParam = params[method].path
       const secondParam = params[method].data
       const resData = await api[method](firstParam, {
-        ...secondParam
+        ...secondParam,
+        cancelToken: signal.token
       })
 
       if (resData.response)

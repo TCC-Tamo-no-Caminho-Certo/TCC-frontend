@@ -262,7 +262,7 @@ function ResponseContent({
                   maxLength={500}
                 />
 
-                <Submit>Enviar resposta</Submit>
+                <Submit id='cy-submit'>Enviar resposta</Submit>
               </Form>
             </>
           </>

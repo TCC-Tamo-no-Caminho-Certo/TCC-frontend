@@ -274,7 +274,7 @@ function Student({ request }: StudentProps) {
               user.emails
             )
           )
-            history.go(0)
+            history.push('/session/main')
           else {
             dispatch(getUser())
             history.push('/session/main')
