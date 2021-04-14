@@ -53,6 +53,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
         unfocused: '#6e4850',
         focused: '#d65881'
       },
+      value,
       ...rest
     },
     ref
@@ -64,17 +65,19 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
     const [isFilled, setIsFilled] = useState(false)
     const [showInput, setShowInput] = useState(false)
 
+    const [textValue, setTextValue] = useState<string | undefined>(undefined)
+
     useEffect(() => {
       const input: Ref = {
         setError,
         inputRef: auxRef,
         type: isDate ? 'date' : type,
-        value: isDate ? dateToValue(auxRef.current?.value) : undefined
+        value: textValue
       }
 
       form?.registerInput(input)
       return () => form?.removeInput(input)
-    }, [auxRef, form, type, isDate, auxRef.current?.value])
+    }, [auxRef, form, type, isDate, textValue])
 
     const onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
       onBlur && onBlur(e)
@@ -86,6 +89,12 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
       if (eye) return showInput ? 'text' : 'password'
       return type
     }
+
+    useEffect(() => {
+      isDate
+        ? setTextValue(dateToValue(auxRef.current?.value))
+        : setTextValue(value as string)
+    }, [value, isDate, auxRef])
 
     return (
       <Style
@@ -119,6 +128,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
           onDrop={event => pasteAndDrop || event?.preventDefault()}
           onPaste={event => pasteAndDrop || event?.preventDefault()}
           placeholder={`${placeholder}${optional ? ' - Opcional ' : ''}`}
+          value={value}
           {...rest}
         />
 

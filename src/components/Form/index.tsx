@@ -107,6 +107,7 @@ const Form = ({
 
           case 'date':
             data[current.name] = value
+            console.log('datevalue', value)
             break
 
           case 'password':
@@ -215,6 +216,7 @@ const Form = ({
     event.preventDefault()
     loading && setShowLoader(true)
     setData()
+    console.log('data', data)
     getData && getData(data)
 
     validate()

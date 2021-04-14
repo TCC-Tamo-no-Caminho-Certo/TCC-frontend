@@ -118,6 +118,8 @@ const Filters = ({ quantity }: FiltersProps) => {
   })
 
   const filterTable = async ({ name, role, status, from, to }: any) => {
+    console.log('to', to)
+
     const callStartCondition =
       (!name && !role && !status && !from && !to) ||
       (!name && role === 'all' && status === 'all' && !from && !to) ||
@@ -145,6 +147,10 @@ const Filters = ({ quantity }: FiltersProps) => {
           name ? `&filter[full_name]=${name}` : ''
         }${roleId ? `&filter[role_id]=${roleId.role_id}` : ''}${
           status ? `&filter[status]=${status}` : ''
+        }${
+          from && to
+            ? `&filter[created_at][]=${from}&filter[created_at][]=${to}`
+            : ''
         }`
       )
 
