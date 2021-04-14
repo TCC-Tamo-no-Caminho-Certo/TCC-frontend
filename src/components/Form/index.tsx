@@ -3,7 +3,6 @@ import React, {
   FormEvent,
   HTMLProps,
   RefObject,
-  useEffect,
   useMemo,
   useRef,
   useState
@@ -24,7 +23,6 @@ import { Response } from 'store'
 
 import Popup, { PopupMethods } from 'components/Popup'
 
-import axios from 'axios'
 import Captcha from 'react-google-recaptcha'
 import { useHistory } from 'react-router-dom'
 import { ObjectSchema, ValidationError } from 'yup'
