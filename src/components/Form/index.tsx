@@ -3,6 +3,7 @@ import React, {
   FormEvent,
   HTMLProps,
   RefObject,
+  useEffect,
   useMemo,
   useRef,
   useState
@@ -23,6 +24,7 @@ import { Response } from 'store'
 
 import Popup, { PopupMethods } from 'components/Popup'
 
+import axios from 'axios'
 import Captcha from 'react-google-recaptcha'
 import { useHistory } from 'react-router-dom'
 import { ObjectSchema, ValidationError } from 'yup'
@@ -81,7 +83,6 @@ const Form = ({
 
   let refs: Ref[] = []
   let haveErrors = false
-
   const registerInput = (input: Ref) => refs.push(input)
 
   const removeInput = (input: Ref) => {
@@ -182,7 +183,9 @@ const Form = ({
 
       const firstParam = params[method].path
       const secondParam = params[method].data
-      const resData = await api[method](firstParam, secondParam)
+      const resData = await api[method](firstParam, {
+        ...secondParam
+      })
 
       if (resData.response)
         cbAfterResData && cbAfterResData(resData.response.data)
@@ -195,12 +198,6 @@ const Form = ({
     if (!path) throw new Error('path is undefined')
 
     const paths = path.split('*%')
-
-    console.table({
-      paths: paths,
-      pathsLength: paths.length,
-      addToPath: addToPath?.length
-    })
 
     if (paths.length - 1 !== addToPath!.length)
       throw new Error('paths.length - 1 !== addToPath?.length')

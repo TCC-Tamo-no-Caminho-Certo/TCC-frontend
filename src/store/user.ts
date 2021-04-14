@@ -29,11 +29,6 @@ export interface UserState {
   updated_at: string
   avatar_uuid: string
   emails: Email[]
-  moderator?: [
-    {
-      university_id: number
-    }
-  ]
   professor?: {
     postgraduate: number
     linkedin: null
@@ -46,6 +41,30 @@ export interface UserState {
         course_id: number
         register: number
         full_time: number
+      }
+    ]
+  }
+  student?: {
+    lattes?: string
+    linkedin?: string
+    universities: [
+      {
+        course_id: number
+        campus_id: number
+        register: number
+        semester: number
+        university_id: number
+      }
+    ]
+  }
+  moderator?: {
+    universities: [
+      {
+        course_id: number
+        campus_id: number
+        register: number
+        semester: number
+        university_id: number
       }
     ]
   }

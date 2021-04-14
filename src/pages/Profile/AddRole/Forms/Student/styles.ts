@@ -7,6 +7,8 @@ export const Voucher = styled.div`
   flex-direction: column;
   align-items: center;
 
+  width: 100%;
+
   margin-bottom: 16px;
   padding: 8px 16px;
   border-radius: 16px;
@@ -54,6 +56,10 @@ export const Voucher = styled.div`
 
       color: ${({ theme }) => theme.roles.moderator};
     }
+  }
+
+  .File {
+    width: 100%;
   }
 `
 

@@ -26,6 +26,14 @@ const formatUpdateUser = (
   userData: UserState,
   role: keyof ContainerForm
 ): InputData[] => {
+  const getUniversityName = (id: number) => {
+    const university = universities.find(
+      university => university.university_id === id
+    )
+
+    return university ? university.name : ''
+  }
+
   const getEmail = (role: 'student' | 'professor'): InputData[] => {
     const fields = []
 
@@ -35,14 +43,6 @@ const formatUpdateUser = (
       )
 
       return university ? university.regex.email[role] : ''
-    }
-
-    const getUniversityName = (id: number) => {
-      const university = universities.find(
-        university => university.university_id === id
-      )
-
-      return university ? university.name : ''
     }
 
     const institucionalUniversities = removeRepeatly(
@@ -65,20 +65,20 @@ const formatUpdateUser = (
     for (let i = 0; i < userUniversities.length; i++) {
       const regex = new RegExp(userUniversities[i].regex)
 
-      if (regex.test(userUniversities[i].address)) {
-        fields.push({
-          label: 'Universidade:',
-          name: 'university_id',
-          value: userUniversities[i].universityName,
-          editable: false
-        })
+      fields.push({
+        label: 'Universidade:',
+        name: 'university_id',
+        value: userUniversities[i].universityName,
+        editable: false
+      })
+
+      if (regex.test(userUniversities[i].address))
         fields.push({
           label: 'Email:',
           name: 'inst_email',
           value: userUniversities[i].address,
           editable: false
         })
-      }
     }
 
     return fields
@@ -148,9 +148,82 @@ const formatUpdateUser = (
     // }
   ]
 
-  const student: InputData[] = [...getEmail('student')]
-  const professor: InputData[] = [...getEmail('professor')]
-  const moderator: InputData[] = []
+  const student: InputData[] = [
+    ...getEmail('student'),
+    {
+      label: 'Linkedin:',
+      name: 'linkedin',
+      value: userData.student?.linkedin || '',
+      editable: true
+    },
+    {
+      label: 'Lattes:',
+      name: 'lattes',
+      value: userData.student?.lattes || '',
+      editable: true
+    },
+    {
+      label: 'Semestre:',
+      name: 'semester',
+      value: userData.student?.universities
+        ? `${userData.student.universities[0].semester}° Semestre`
+        : '',
+      editable: true
+    }
+  ]
+
+  const professor: InputData[] = [
+    ...getEmail('professor'),
+    {
+      label: 'Linkedin:',
+      name: 'linkedin',
+      value: userData.professor?.linkedin || '',
+      editable: true
+    },
+    {
+      label: 'Lattes:',
+      name: 'lattes',
+      value: userData.professor?.lattes || '',
+      editable: true
+    },
+    {
+      label: 'Orcid:',
+      name: 'orcid',
+      value: userData.professor?.orcid || '',
+      editable: true
+    },
+    {
+      label: 'Pós-graduação:',
+      name: 'postgraduate',
+      value: userData.professor?.postgraduate || '',
+      editable: true
+    },
+    {
+      label: 'Tempo integral:',
+      name: 'full_time',
+      value: userData.professor?.universities
+        ? userData.professor?.universities[0].full_time
+          ? 'Sim'
+          : 'Não'
+        : '',
+      editable: true
+    }
+  ]
+
+  const moderator: InputData[] = [
+    {
+      label: 'Universidade',
+      name: 'university',
+      value:
+        (userData.moderator &&
+          userData.moderator.universities &&
+          getUniversityName(
+            userData.moderator.universities[0].university_id
+          )) ||
+        '',
+      editable: true
+    }
+  ]
 
   const formInputs: ContainerForm = {
     personal,

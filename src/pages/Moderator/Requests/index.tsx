@@ -38,6 +38,9 @@ export interface ItemData {
   feedback?: string
   pretext?: string
   voucherUrl?: string
+  lattes?: string
+  orcid?: string
+  linkedin?: string
 }
 
 interface RequestsContextProps {

@@ -92,6 +92,7 @@ const Containers = () => {
           <Card
             key={role}
             headerText={`Dados de ${selectedRoleLabel(role as Role)}`}
+            role={role}
           >
             {user.dataLoading === false ? (
               formatUpdateUser(
@@ -102,7 +103,6 @@ const Containers = () => {
             ) : (
               <DotsLoader color={theme.colors.primary} />
             )}
-            {}
           </Card>
         )
       })}

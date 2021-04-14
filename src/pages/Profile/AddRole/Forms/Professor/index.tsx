@@ -9,7 +9,7 @@ import { Form } from './styles'
 
 import { Voucher, Ways } from '../Student/styles'
 import { Request } from '../Container'
-import { show } from '../Student'
+import { hasInstitutionalEmail, show } from '../Student'
 import { AddRoleContext } from '../../index'
 
 import {
@@ -19,9 +19,9 @@ import {
 
 import api from 'services/api'
 
-import { Response } from 'store'
+import { Response, RootState } from 'store'
 import { University } from 'store/AsyncThunks/universities'
-import { getUser } from 'store/user'
+import { getUser, UserState } from 'store/user'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
@@ -31,7 +31,7 @@ import { Option } from 'components/Form/Select'
 import Presence from 'components/Presence'
 import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 interface Data {
@@ -73,6 +73,7 @@ interface ProfessorProps {
 
 function Professor({ request }: ProfessorProps) {
   const { courses, universities } = useContext(AddRoleContext)
+  const user = useSelector<RootState, UserState>(state => state.user)
 
   const popupRef = useRef<PopupMethods>(null)
   const registerEmailRef = useRef<RegisterEmailMethods>(null)
@@ -202,16 +203,41 @@ function Professor({ request }: ProfessorProps) {
     }
   }
 
+  const onCourseChange = (selected: Option) => {
+    setValues(prev => ({ ...prev, course: selected }))
+
+    if (!request)
+      hasInstitutionalEmail(
+        selectedUniversity.regex.email.professor,
+        user.emails
+      )
+        ? setAnimations(prev => ({ ...prev, submit: true }))
+        : setAnimations(prev => ({ ...prev, ways: true }))
+  }
+
   const afterSubmit = (res: Response<any>) => {
     if (res.success)
       popupRef.current?.configPopup({
         setModal: true,
         type: 'success',
-        message: request ? 'Solicitação reenviada!' : 'Solicitação enviada!',
+        message: request
+          ? 'Solicitação reenviada!'
+          : hasInstitutionalEmail(
+              selectedUniversity.regex.email.professor,
+              user.emails
+            )
+          ? 'Papel Adicionado'
+          : 'Solicitação enviada!',
         onClick: () => {
-          if (animations.voucher) history.go(0)
+          if (
+            !hasInstitutionalEmail(
+              selectedUniversity.regex.email.professor,
+              user.emails
+            )
+          )
+            history.go(0)
           else {
-            dispatch(getUser)
+            dispatch(getUser())
             history.push('/session/main')
           }
         }
@@ -279,6 +305,7 @@ function Professor({ request }: ProfessorProps) {
       <Form
         loading
         afterResData={afterSubmit}
+        method={request ? 'patch' : 'post'}
         path={
           request
             ? `user/role/request/professor/${request.request_id}`
@@ -351,10 +378,7 @@ function Professor({ request }: ProfessorProps) {
             placeholder='Curso com maior carga horária'
             value={values.course}
             options={options.course}
-            onChange={(selected: Option) => {
-              setValues(prev => ({ ...prev, course: selected }))
-              setAnimations(prev => ({ ...prev, ways: true }))
-            }}
+            onChange={onCourseChange}
           />
         </Presence>
 

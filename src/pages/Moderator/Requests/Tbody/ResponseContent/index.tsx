@@ -126,6 +126,21 @@ function ResponseContent({
               </Field>
 
               <Field>
+                Linkedin:
+                <div>{selectedInfo.linkedin}</div>
+              </Field>
+
+              <Field>
+                Lattes:
+                <div>{selectedInfo?.lattes}</div>
+              </Field>
+
+              <Field>
+                Orcid:
+                <div>{selectedInfo.orcid}</div>
+              </Field>
+
+              <Field>
                 Email:
                 <div>
                   {userInfo?.emails.filter(({ main }: any) => main)[0].address}

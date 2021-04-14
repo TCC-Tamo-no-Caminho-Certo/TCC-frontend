@@ -81,10 +81,6 @@ const AddRole = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    console.log(storeUniversities)
-  }, [storeUniversities])
-
   return (
     <Style>
       <section ref={rolesRef}>

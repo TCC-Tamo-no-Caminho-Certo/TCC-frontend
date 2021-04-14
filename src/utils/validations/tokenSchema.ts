@@ -2,9 +2,9 @@ import * as Yup from 'yup'
 
 const tokenSchema = Yup.object({
   token: Yup.string()
-    .matches(/^([a-z0-9]\s?)+$/, 'Código válido!')
-    .min(6, 'Código válido!')
-    .max(6, 'Código válido!')
+    .matches(/^([a-z0-9]\s?)+$/, 'Código inválido!')
+    .min(6, 'Código inválido!')
+    .max(6, 'Código inválido!')
     .required('Você precisa informar seu nome!')
 })
 

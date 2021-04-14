@@ -142,7 +142,6 @@ const RoleInfo = ({
                   <motion.button
                     onClick={async () => {
                       await api.delete(`user/role/${role}`)
-                      console.log('papel removido')
                       history.go(0)
                     }}
                     variants={button}

@@ -4,11 +4,13 @@ import Style from './styles'
 import tokenSchema from 'utils/validations/tokenSchema'
 
 import { Response } from 'store'
+import { getUser } from 'store/user'
 
 import Form, { Submit, Text } from 'components/Form'
 import Popup, { PopupMethods, PopupProps } from 'components/Popup'
 import Modal, { ModalMethods } from 'components/Modal'
 
+import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
 
 export interface RegisterEmailMethods {
@@ -28,7 +30,11 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
   ({ title, addData, regex, onSuccess, placeholder, modal }, ref) => {
     const popupRef = useRef<PopupMethods>(null)
     const modalRef = useRef<ModalMethods>(null)
+
     const [codeSend, setCodeSend] = useState(false)
+
+    const dispatch = useDispatch()
+
     const regexToMach = new RegExp(regex || '')
 
     const emailSchema = Yup.object({
@@ -67,8 +73,9 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
           message: 'E-mail confirmado, termine a solicitação!'
         })
 
-        toggleRegister()
+        dispatch(getUser())
         onSuccess && onSuccess()
+        modalRef.current?.toggleModal()
       } else
         popupRef.current?.configPopup({
           setModal: true,
@@ -85,45 +92,45 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
       <>
         <Modal ref={modalRef} {...modal}>
           <Style>
-            {!codeSend && (
-              <>
-                <span>{title}</span>
-
-                <Form
-                  loading
-                  path='user/email'
-                  addData={addData}
-                  schema={emailSchema}
-                  afterResData={afterEmailSubmit}
-                  getData={data => console.log('Student-Email-Data', data)}
-                >
+            <Form
+              loading
+              path='user/email'
+              addData={addData}
+              schema={emailSchema}
+              afterResData={afterEmailSubmit}
+            >
+              {!codeSend && (
+                <>
+                  <span>{title}</span>
                   <Text name='email' placeholder={placeholder} />
 
                   <Submit>Enviar código de confirmação</Submit>
-                </Form>
-              </>
-            )}
+                </>
+              )}
+            </Form>
 
-            {codeSend && (
-              <Form
-                loading
-                method='get'
-                id='tokenForm'
-                path='confirm/email/*%'
-                addToPath={['token']}
-                getData={data => console.log('Student-Token-Data', data)}
-                schema={tokenSchema}
-                afterResData={afterTokenSubmit}
-              >
-                <p>
-                  Digite o código de confirmação que foi enviado ao seu e-mail.
-                </p>
+            <Form
+              loading
+              method='get'
+              id='tokenForm'
+              path='confirm/email/*%'
+              addToPath={['token']}
+              schema={tokenSchema}
+              afterResData={afterTokenSubmit}
+            >
+              {codeSend && (
+                <>
+                  <p>
+                    Digite o código de confirmação que foi enviado ao seu
+                    e-mail.
+                  </p>
 
-                <Text name='token' placeholder='Código' />
+                  <Text name='token' placeholder='Código' />
 
-                <Submit>Validar</Submit>
-              </Form>
-            )}
+                  <Submit>Validar</Submit>
+                </>
+              )}
+            </Form>
           </Style>
         </Modal>
 

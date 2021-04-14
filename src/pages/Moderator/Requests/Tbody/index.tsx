@@ -32,6 +32,9 @@ interface RequestsData {
   voucher_uuid?: string
   feedback?: string
   data: {
+    lattes: string
+    linkedin: string
+    orcid: string
     semester: number
     course_id: number
     campus_id: number
@@ -69,6 +72,9 @@ export const transformArray = (
     }) => ({
       role: roles.find(role => role.role_id === role_id)?.title as any,
       user_id,
+      lattes: data.lattes,
+      linkedin: data.linkedin,
+      orcid: data.orcid,
       feedback,
       name: name,
       docId: voucher_uuid,

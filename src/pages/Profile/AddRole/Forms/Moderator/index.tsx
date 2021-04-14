@@ -131,18 +131,22 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
     <>
       <Form
         loading
-        path='user/role/request/moderator'
+        path={
+          request
+            ? `user/role/request/moderator/${request.request_id}`
+            : 'user/role/request/moderator'
+        }
+        method={request ? 'patch' : 'post'}
         afterResData={afterSubmit}
         schema={!fullTime ? withFullTime : withoutFullTime}
-        getData={e => console.log(e)}
       >
         <Select
           id='cy-university'
           name='university_id'
           placeholder='Universidade'
+          value={values.university}
           options={options.university}
           onChange={onUniversityChange}
-          value={values.university}
         />
 
         <motion.div

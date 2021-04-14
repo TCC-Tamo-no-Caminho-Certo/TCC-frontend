@@ -1,6 +1,12 @@
+import { Role } from 'store/AsyncThunks/roles'
+
 import styled from 'styled-components'
 
-export const Header = styled.div`
+interface HeaderProps {
+  role?: Role
+}
+
+export const Header = styled.div<HeaderProps>`
   position: absolute;
   top: 0;
   left: 0;
@@ -14,7 +20,8 @@ export const Header = styled.div`
   border-radius: 16px 16px 0 0;
 
   color: ${({ theme }) => theme.colors.secondary};
-  background-color: ${({ theme }) => theme.colors.primary}; ;
+  background-color: ${({ theme, role }) =>
+    role ? theme.roles[role] : theme.colors.primary}; ;
 `
 
 const Style = styled.div`

@@ -102,8 +102,10 @@ export const show: Variants = {
   }
 }
 
-export const hasInstitutionalEmail = (regex: string, emails: Email[]) =>
-  emails.find(({ address }) => new RegExp(regex).test(address))
+export const hasInstitutionalEmail = (regex: string, emails: Email[]) => {
+  const rgx = new RegExp(regex)
+  return !!emails.find(({ address }) => rgx.test(address))
+}
 
 export const universityArrayToSelect = (array: University[]): Option[] =>
   array.map(({ university_id, name }: University) => ({
@@ -257,9 +259,22 @@ function Student({ request }: StudentProps) {
       popupRef.current?.configPopup({
         setModal: true,
         type: 'success',
-        message: request ? 'Solicitação reenviada!' : 'Solicitação enviada!',
+        message: request
+          ? 'Solicitação reenviada!'
+          : hasInstitutionalEmail(
+              selectedUniversity.regex.email.student,
+              user.emails
+            )
+          ? 'Papel Adicionado'
+          : 'Solicitação enviada!',
         onClick: () => {
-          if (animations.voucher) history.go(0)
+          if (
+            !hasInstitutionalEmail(
+              selectedUniversity.regex.email.student,
+              user.emails
+            )
+          )
+            history.go(0)
           else {
             dispatch(getUser())
             history.push('/session/main')
@@ -346,6 +361,8 @@ function Student({ request }: StudentProps) {
     <>
       <Form
         loading
+        afterResData={afterSubmit}
+        method={request ? 'patch' : 'post'}
         path={
           request
             ? `user/role/request/student/${request.request_id}`
@@ -356,7 +373,6 @@ function Student({ request }: StudentProps) {
             ? voucherSchema(registerRegex || '')
             : emailSchema(registerRegex || '')
         }
-        afterResData={afterSubmit}
       >
         <button
           type='button'
@@ -388,9 +404,9 @@ function Student({ request }: StudentProps) {
           id='cy-university'
           name='university_id'
           placeholder='Universidade'
+          value={values.university}
           options={options.university}
           onChange={onUniversityChange}
-          value={values.university}
         />
 
         <Presence
@@ -411,9 +427,9 @@ function Student({ request }: StudentProps) {
             id='cy-campus'
             name='campus_id'
             placeholder='Câmpus'
+            value={values.campus}
             options={options.campus}
             onChange={onCampusChange}
-            value={values.campus}
           />
         </Presence>
 
