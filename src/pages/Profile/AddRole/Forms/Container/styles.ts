@@ -25,16 +25,23 @@ export const Content = styled(Card)<ContentProps>`
   border-radius: 0;
   padding-bottom: 16px;
 
-  #role {
-    margin-bottom: 16px;
-  }
-
   .RequestSvg {
     margin-bottom: 24px;
     margin-top: 16px;
   }
 
+  #feedback {
+    width: 100%;
+
+    p {
+      width: 100%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+  }
+
   #role {
+    margin-bottom: 16px;
     width: 100%;
     font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2.2rem);
     text-align: center;

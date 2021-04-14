@@ -98,7 +98,7 @@ const AddRole = () => {
         </p>
 
         <div id='roles'>
-          <RoleInfo
+          {/* <RoleInfo
             noButton
             id='cy-guest'
             role='guest'
@@ -107,7 +107,7 @@ const AddRole = () => {
             benefits={[
               'Solicitar alteração de papel para Estudante ou Professor'
             ]}
-          />
+          /> */}
 
           <RoleInfo
             id='cy-student'

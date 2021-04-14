@@ -199,7 +199,8 @@ function ResponseContent({
                   >
                     <CheckboxIcon
                       ref={acceptRef}
-                      secondary={theme.colors.secondary}
+                      secondary={theme.colors.primary}
+                      primary={theme.colors.secondary}
                     />
                     Aceitar
                   </label>

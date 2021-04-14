@@ -31,6 +31,7 @@ export interface Request<DataType> {
   updated_at: string
   created_at: string
   status: StatusTypes
+  voucher_uuid: string
 }
 
 interface ContainerProps {
@@ -78,11 +79,11 @@ const Container = ({ role }: ContainerProps) => {
             <RequestSvg status={request?.status} />
 
             {request?.status === 'rejected' && (
-              <div>
+              <>
                 <div id='rejected'>
                   <p>Solicitação rejeitada</p>
 
-                  <div>
+                  <div id='feedback'>
                     <span>Resposta do moderador:</span>
                     <p>{request?.feedback}</p>
                   </div>
@@ -91,7 +92,7 @@ const Container = ({ role }: ContainerProps) => {
                 <p id='tryAgain'>
                   Se quiser tente novamente alterando seus dados abaixo:
                 </p>
-              </div>
+              </>
             )}
           </>
         )}

@@ -293,7 +293,6 @@ function Student({ request }: StudentProps) {
     if (request)
       (async () => {
         const campusOptions = await setInitialCampusOptions()
-
         setValues({
           university: options.university.find(
             option => option.value === request.data.university_id
@@ -524,7 +523,6 @@ function Student({ request }: StudentProps) {
                 do arquivo deve ser <b>PDF</b>.
               </p>
             </div>
-
             <File
               guides
               bottom='50vh'

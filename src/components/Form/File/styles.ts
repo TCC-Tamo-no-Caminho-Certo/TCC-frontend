@@ -17,11 +17,6 @@ const Style = styled.div<StyleProps>`
       font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.6rem);
 
       color: ${({ theme }) => theme.colors.primary};
-
-      ${({ haveValue }) =>
-        css`
-          margin-bottom: ${haveValue ? '8px' : '0px'};
-        `}
     }
 
     label {
@@ -44,6 +39,14 @@ const Style = styled.div<StyleProps>`
 
         fill: ${({ theme }) => theme.colors.secondary};
       }
+    }
+
+    #DownloadIcon {
+      height: 16px;
+      margin-right: 8px;
+
+      fill: ${({ theme }) => theme.colors.red};
+      stroke: ${({ theme }) => theme.colors.red};
     }
   }
 

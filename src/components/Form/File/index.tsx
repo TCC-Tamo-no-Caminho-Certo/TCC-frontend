@@ -5,6 +5,7 @@ import { FormContext, FormState } from '../'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
 import CameraIcon from 'assets/Inputs/CameraIcon'
+import DownloadIcon from 'assets/global/Download'
 
 import Modal, { ModalMethods } from 'components/Modal'
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
@@ -13,37 +14,42 @@ import 'cropperjs/dist/cropper.css'
 import { Cropper, ReactCropperProps } from 'react-cropper'
 
 interface FileProps extends ReactCropperProps {
-  label: string
-  name: string
-  flexColumn?: boolean
-  bgHeight?: string
-  tranlateY?: string
   top?: string
+  name: string
+  label: string
   bottom?: string
   maxSize?: string
+  bgHeight?: string
+  download?: boolean
+  tranlateY?: string
   noCropper?: boolean
+  flexColumn?: boolean
   onClick?: () => void
   onChange?: () => void
 }
 
 const File = ({
-  label,
+  top,
   name,
+  label,
+  bottom,
+  accept,
   onClick,
   bgHeight,
   tranlateY,
-  top,
-  bottom,
+  download = true,
+  maxSize = '2048',
   noCropper = false,
   flexColumn = false,
   onChange: receivedOnChange,
-  maxSize = '2048',
-  accept,
+
   ...props
 }: FileProps) => {
   const form = useContext<FormState | null>(FormContext)
+
   const modalRef = useRef<ModalMethods>(null)
   const fileRef = useRef<HTMLInputElement>(null)
+
   const [fileData, setFileData] = useState<string>()
   const [cropper, setCropper] = useState<any>()
   const [error, setError] = useState<string>()
@@ -96,6 +102,15 @@ const File = ({
           <div id='fileName'>
             {!error && fileRef.current?.value.split('C:\\fakepath\\')}
           </div>
+        )}
+
+        {noCropper && fileRef.current?.value && download && (
+          <a
+            href={file}
+            download={fileRef.current?.value.split('C:\\fakepath\\')[1]}
+          >
+            <DownloadIcon />
+          </a>
         )}
 
         <label onClick={() => onClick && onClick()}>
