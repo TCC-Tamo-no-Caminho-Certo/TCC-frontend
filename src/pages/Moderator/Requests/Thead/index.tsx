@@ -1,10 +1,14 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useContext, useState } from 'react'
 import Style from './styles'
 
-import { HeaderData, ItemData } from '../index'
+import { HeaderData, ItemData, RequestsContext } from '../index'
 import { Circle } from '../Tbody/styles'
+import { transformArray } from '../Tbody'
+
+import api from 'services/api'
 
 import ArrowIcon from 'assets/global/ArrowIcon'
+import RefreshIcon from 'assets/global/RefreshIcon'
 
 import { Variants } from 'framer-motion'
 
@@ -30,26 +34,46 @@ const arrow: Variants = {
 }
 
 const Thead = ({ headerData, sort }: TheadProps) => {
+  const requestsContext = useContext(RequestsContext)
+
   const initialArrows: Arrow[] = headerData.map(({ name }) => {
     return { [name]: 'default' } as Arrow
   })
   const [arrows, setArrows] = useState(initialArrows)
-
-  const onButtonClick = (id: keyof ItemData, index: number) => {
+  const onThClick = (id: keyof ItemData, index: number) => {
     const before = arrows[index][id]
     const resetArrows = initialArrows
 
-    if (before === 'default' || before === 'down') resetArrows[index][id] = 'up'
-    else resetArrows[index][id] = 'down'
+    before === 'default' || before === 'down'
+      ? (resetArrows[index][id] = 'up')
+      : (resetArrows[index][id] = 'down')
 
     setArrows(resetArrows)
     sort && sort(id)
+  }
+
+  const onRefreshClick = async () => {
+    requestsContext?.setTableState({
+      tablePage: 1,
+      showData: []
+    })
+
+    const { requests } = await api.get(
+      `user/role/requests?page=1&per_page=${requestsContext.quantity}`
+    )
+
+    requestsContext?.setTableState({
+      tablePage: 1,
+      showData: transformArray(requests, requestsContext.roles)
+    })
   }
 
   return (
     <Style draggable='false'>
       <thead>
         <tr>
+          <RefreshIcon onClick={onRefreshClick} />
+
           {headerData.map(({ label, name }, index) => {
             if (name === 'statusCircle')
               return (
@@ -62,13 +86,10 @@ const Thead = ({ headerData, sort }: TheadProps) => {
 
             return (
               <th key={name} className={name}>
-                <button
-                  type='button'
-                  onClick={() => onButtonClick(name, index)}
-                >
+                <button type='button' onClick={() => onThClick(name, index)}>
                   <ArrowIcon
-                    variants={arrow}
                     initial={false}
+                    variants={arrow}
                     animate={arrows[index][name]}
                   />
                   {label}

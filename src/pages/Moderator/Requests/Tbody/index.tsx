@@ -46,7 +46,6 @@ interface RequestsData {
 interface TbodyProps {
   headerData: HeaderData[]
   items: ItemData[] | undefined
-  quantity: number
 }
 
 interface InfosState {
@@ -90,7 +89,7 @@ export const transformArray = (
   return []
 }
 
-const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
+const Tbody = ({ headerData, items }: TbodyProps) => {
   const requestsContext = useContext(RequestsContext)
 
   const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>
@@ -105,7 +104,7 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
     async (page: number) => {
       if (!isClear) {
         const { requests } = await api.get(
-          `user/role/requests?page=${page}&per_page=${quantity}`
+          `user/role/requests?page=${page}&per_page=${requestsContext.quantity}`
         )
 
         if (requests && requests.length !== 0) {
@@ -120,8 +119,23 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
         } else setIsClear(true)
       }
     },
-    [isClear, quantity, requestsContext]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isClear, requestsContext.quantity]
   )
+
+  const startRequest = useCallback(async () => {
+    const { requests } = await api.get(
+      `user/role/requests?page=1&per_page=${requestsContext.quantity}`
+    )
+
+    const tableData = transformArray(requests, requestsContext.roles)
+
+    requestsContext?.setTableState({
+      tablePage: 1,
+      showData: tableData
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const onTableScroll = () => {
     const table = tableWrapperRef.current
@@ -156,20 +170,6 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
     })
   }
 
-  const startRequest = useCallback(async () => {
-    const { requests } = await api.get(
-      `user/role/requests?page=1&per_page=${quantity}`
-    )
-
-    const tableData = transformArray(requests, requestsContext.roles)
-
-    requestsContext?.setTableState({
-      tablePage: 1,
-      showData: tableData
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   useEffect(() => {
     requestsContext?.setTableState({
       showData: undefined,
@@ -184,6 +184,7 @@ const Tbody = ({ headerData, quantity, items }: TbodyProps) => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startRequest])
+
   return (
     <>
       <Style ref={tableWrapperRef} onScroll={onTableScroll}>

@@ -30,7 +30,7 @@ describe('Cadastrar papel de estudante', () => {
     cy.logout()
   })
 
-  it.only('Cadastrando e-mail institucional', () => {
+  it('Cadastrando e-mail institucional', () => {
     cy.accessAddRole()
 
     cy.get('#cy-student').click()
@@ -71,7 +71,7 @@ describe('Cadastrar papel de estudante', () => {
     cy.logout()
   })
 
-  it('Enviando voucher', () => {
+  it.only('Enviando voucher', () => {
     cy.accessAddRole()
 
     cy.get('#cy-student').click()

@@ -14,6 +14,7 @@ const Style = styled.div<StyleProps>`
     return css`
       .CalendarSize {
         font-size: 8px !important;
+
         background-color: ${body};
       }
 
@@ -25,11 +26,9 @@ const Style = styled.div<StyleProps>`
 
         border-radius: 8px;
 
-        .Text {
-          input {
-            width: 100%;
-            cursor: pointer;
-          }
+        .Text input {
+          width: 100%;
+          cursor: pointer;
         }
       }
 
@@ -72,13 +71,11 @@ const Style = styled.div<StyleProps>`
 
         .Calendar__monthArrowWrapper.-right {
           transform: rotate(180deg);
-
           padding: 0;
         }
 
         .Calendar__monthArrowWrapper.-left {
           transform: rotate(360deg);
-
           padding: 0;
         }
       }

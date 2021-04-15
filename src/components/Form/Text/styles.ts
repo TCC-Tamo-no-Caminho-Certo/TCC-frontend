@@ -4,12 +4,12 @@ import { lighten } from 'polished'
 import styled, { css } from 'styled-components'
 
 interface StyleProps {
+  colors: TextColors
   hasEye: boolean
   hasIcon: boolean
   optional: boolean
   isFilled: boolean
   isErrored: boolean
-  colors: TextColors
   hidden?: boolean
 }
 
@@ -25,8 +25,8 @@ export const IconSpace = styled.div`
 
   .Icon {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     width: clamp(24px, 2vh, 30px);
     height: clamp(24px, 2vh, 30px);

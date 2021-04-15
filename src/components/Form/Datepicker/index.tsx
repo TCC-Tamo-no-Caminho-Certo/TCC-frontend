@@ -10,8 +10,8 @@ import ptbr from 'utils/dates/ptbr'
 import DatePicker, { DayValue } from 'react-modern-calendar-datepicker'
 
 export interface DatepickerColors {
-  header?: string
   body?: string
+  header?: string
   disabled?: string
   selected?: string
 }
@@ -47,9 +47,9 @@ const maximumDate = {
 const Datepicker = ({
   name,
   arrow,
-  isBirthday,
-  icon: Icon,
   value,
+  icon: Icon,
+  isBirthday,
   dateColors = {
     body: '#fcfcfc',
     header: '#6e4850',

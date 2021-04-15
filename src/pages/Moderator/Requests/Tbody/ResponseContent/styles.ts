@@ -56,6 +56,7 @@ export const Infos = styled.div<InfosProps>`
 
     padding: 16px 0;
     font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
+
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.primary};
   }
@@ -109,11 +110,11 @@ const Style = styled.div`
     justify-content: center;
     align-items: center;
 
-    font-size: clamp(1.2rem, 0.6rem + 2.6vw, 1.6rem);
     width: 100%;
     padding: 8px 16px;
     border-radius: 0 0 16px 16px;
     transition: all 0.3s ease-in-out;
+    font-size: clamp(1.2rem, 0.6rem + 2.6vw, 1.6rem);
 
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.primary};
@@ -139,26 +140,45 @@ const Style = styled.div`
     top: 22px;
     right: 24px;
 
-    height: 16px;
-    width: 16px;
-
     stroke: ${({ theme }) => theme.colors.secondary};
+
+    path {
+      height: 16px;
+      width: 16px;
+    }
   }
 
-  #TrashIcon {
+  #delete {
     position: absolute;
     top: 16px;
     left: 24px;
 
-    width: 24px;
-    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
 
-    #verticalStrokes {
-      fill: ${({ theme }) => theme.colors.red};
-    }
+    width: auto;
+    padding: 8px;
+    height: 32px;
+    font-size: 1.6rem;
+    border-radius: 8px;
 
-    #background {
-      fill: ${({ theme }) => theme.colors.red};
+    background-color: ${({ theme }) => theme.colors.red};
+    color: ${({ theme }) => theme.colors.secondary};
+
+    #TrashIcon {
+      min-width: 18px;
+      min-height: 18px;
+      margin-right: 8px;
+
+      #verticalStrokes {
+        fill: ${({ theme }) => theme.colors.primary};
+      }
+
+      #background {
+        fill: ${({ theme }) => theme.colors.secondary};
+      }
     }
   }
 
@@ -177,7 +197,6 @@ const Style = styled.div`
       width: 50%;
       height: 100%;
       border-radius: 8px 0 0 8px;
-
       transition: all 300ms ease;
 
       &,
@@ -260,8 +279,8 @@ const Style = styled.div`
   #feedback {
     p {
       margin-top: 8px;
-      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
       word-wrap: break-word;
+      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
     }
   }
 
@@ -275,9 +294,9 @@ const Style = styled.div`
   }
 
   #pretext {
-    background-color: ${({ theme }) => theme.colors.primary};
     padding: 16px;
     border-radius: 8px;
+    background-color: ${({ theme }) => theme.colors.primary};
 
     p {
       padding: 8px 16px;

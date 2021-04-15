@@ -31,23 +31,24 @@ export interface ItemData {
   name: string
   date: string
   status: string
-  user_id: number
-  statusCircle: StatusTypes
   docId?: string
-  course_id?: number
-  feedback?: string
-  pretext?: string
-  voucherUrl?: string
-  lattes?: string
   orcid?: string
+  user_id: number
+  lattes?: string
+  pretext?: string
+  feedback?: string
   linkedin?: string
+  course_id?: number
+  voucherUrl?: string
+  statusCircle: StatusTypes
 }
 
 interface RequestsContextProps {
-  setTableState: Dispatch<SetStateAction<TableState>>
+  quantity: number
   courses: Course[]
   roles: RoleType[]
   tableState: TableState
+  setTableState: Dispatch<SetStateAction<TableState>>
 }
 
 interface TableState {
@@ -70,6 +71,7 @@ const headerData: HeaderData[] = [
 
 export const RequestsContext = createContext<RequestsContextProps>({
   roles: [],
+  quantity: 0,
   courses: [],
   setTableState: () => {},
   tableState: {
@@ -114,6 +116,7 @@ const Requests = () => {
       {condition ? (
         <RequestsContext.Provider
           value={{
+            quantity,
             tableState,
             setTableState,
             roles: roles.roles,
@@ -121,7 +124,7 @@ const Requests = () => {
           }}
         >
           <Table className='Table'>
-            <Filters quantity={quantity} />
+            <Filters />
 
             <Thead headerData={headerData} sort={sort} />
 
@@ -131,7 +134,7 @@ const Requests = () => {
               </div>
             )}
 
-            <Tbody headerData={headerData} items={items} quantity={quantity} />
+            <Tbody headerData={headerData} items={items} />
           </Table>
         </RequestsContext.Provider>
       ) : (

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const GearIcon = () => {
+const SendEmailIcon = () => {
   return (
     <svg
       className='Icon'
@@ -12,4 +12,4 @@ const GearIcon = () => {
   )
 }
 
-export default GearIcon
+export default SendEmailIcon

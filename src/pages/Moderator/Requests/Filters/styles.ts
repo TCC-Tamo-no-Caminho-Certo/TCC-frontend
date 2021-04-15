@@ -116,6 +116,10 @@ const Style = styled(Form)`
       }
     }
   }
+
+  @media screen and (min-width: 545px) {
+    padding: 0 16px;
+  }
 `
 
 export default Style

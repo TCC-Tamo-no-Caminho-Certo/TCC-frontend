@@ -7,14 +7,26 @@ const Style = styled.table`
   box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.39);
 
   thead {
-    padding-right: 8px;
-
     tr {
+      position: relative;
+
       display: flex;
       align-items: center;
 
-      width: calc(100% - 9px);
+      width: calc(100% - 8px);
+      padding: 0 8px 0 24px;
       height: 32px;
+
+      #RefreshIcon {
+        position: absolute;
+        left: 8px;
+
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+
+        fill: ${({ theme }) => theme.colors.secondary};
+      }
 
       th {
         cursor: pointer;

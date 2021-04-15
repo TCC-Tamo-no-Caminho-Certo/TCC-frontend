@@ -58,14 +58,16 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
     },
     ref
   ) => {
-    const textRef = useRef<HTMLInputElement>(null)
     const form = useContext<FormState | null>(FormContext)
-    const auxRef = (ref as RefObject<HTMLInputElement>) || textRef
+
+    const textRef = useRef<HTMLInputElement>(null)
+
     const [error, setError] = useState<string>()
     const [isFilled, setIsFilled] = useState(false)
     const [showInput, setShowInput] = useState(false)
-
     const [textValue, setTextValue] = useState<string | undefined>(undefined)
+
+    const auxRef = (ref as RefObject<HTMLInputElement>) || textRef
 
     useEffect(() => {
       const input: Ref = {
@@ -81,8 +83,8 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
 
     const onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
       onBlur && onBlur(e)
-      setIsFilled(!!auxRef.current?.value)
       setError(undefined)
+      setIsFilled(!!auxRef.current?.value)
     }
 
     const hiddenInput = () => {
@@ -121,6 +123,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
 
         <input
           spellCheck='false'
+          value={value}
           id={rest.name}
           ref={ref || textRef}
           type={hiddenInput()}
@@ -128,7 +131,6 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
           onDrop={event => pasteAndDrop || event?.preventDefault()}
           onPaste={event => pasteAndDrop || event?.preventDefault()}
           placeholder={`${placeholder}${optional ? ' - Opcional ' : ''}`}
-          value={value}
           {...rest}
         />
 

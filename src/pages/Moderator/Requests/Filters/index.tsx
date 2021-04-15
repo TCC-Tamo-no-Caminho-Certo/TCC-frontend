@@ -16,10 +16,6 @@ import { lighten } from 'polished'
 import { Theme } from 'react-select'
 import { ThemeContext } from 'styled-components'
 
-interface FiltersProps {
-  quantity: number
-}
-
 const transition: Transition = {
   duration: 0.3,
   type: 'tween'
@@ -29,22 +25,16 @@ const reset: Variants = {
   enter: {
     opacity: [0, 1],
     marginTop: [-168, 0],
-    // rotate: [240, 0],
-    // x: [500, 0],
-    // y: [-100, 0],
     transition
   },
   exit: {
     opacity: [1, 0],
     marginTop: [0, -168],
-    // rotate: [0, 240],
-    // y: [0, -100],
-    // x: [0, 500],
     transition
   }
 }
 
-const Filters = ({ quantity }: FiltersProps) => {
+const Filters = () => {
   const requestsContext = useContext(RequestsContext)
   const theme = useContext(ThemeContext)
 
@@ -128,7 +118,7 @@ const Filters = ({ quantity }: FiltersProps) => {
 
     if (callStartCondition) {
       const { requests } = await api.get(
-        `user/role/requests?page=1&per_page=${quantity}`
+        `user/role/requests?page=1&per_page=${requestsContext.quantity}`
       )
 
       const tableData = transformArray(requests, requestsContext.roles)
@@ -143,7 +133,7 @@ const Filters = ({ quantity }: FiltersProps) => {
       )[0]
 
       const response = await api.get(
-        `user/role/requests?page=1&per_page=${quantity}${
+        `user/role/requests?page=1&per_page=${requestsContext.quantity}${
           name ? `&filter[full_name]=${name}` : ''
         }${roleId ? `&filter[role_id]=${roleId.role_id}` : ''}${
           status ? `&filter[status]=${status}` : ''

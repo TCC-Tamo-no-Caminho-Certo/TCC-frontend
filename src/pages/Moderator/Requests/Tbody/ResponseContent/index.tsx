@@ -19,6 +19,7 @@ import Avatar from 'components/User/Avatar'
 import Form, { Submit, Textarea } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
 
+import { motion } from 'framer-motion'
 import { ThemeContext } from 'styled-components'
 import * as Yup from 'yup'
 
@@ -81,20 +82,23 @@ function ResponseContent({
       <Style>
         {userInfo && selectedInfo ? (
           <>
-            <TrashIcon
+            <motion.button
+              id='delete'
+              type='button'
               onClick={() => {
                 popupRef.current?.configPopup({
                   type: 'warning',
                   message: 'Tem certeza que deseja remover esta solicitação?',
-
                   onOkClick: async () => {
                     await api.delete(`user/role/request/${selectedInfo.id}`)
-
                     onCloseClick()
                   }
                 })
               }}
-            />
+            >
+              <TrashIcon />
+              Excluir solicitação
+            </motion.button>
 
             <CloseIcon onClick={onCloseClick} />
 
@@ -177,95 +181,93 @@ function ResponseContent({
               </div>
             )}
 
-            <>
-              <div id='radios'>
-                <div id='radioAccept'>
-                  <input
-                    name='response'
-                    value='accept'
-                    type='radio'
-                    id='accept'
-                    onChange={(e: any) => {
-                      e.target.checked && setButtonClicked('accepted')
-                    }}
-                  />
-
-                  <label
-                    htmlFor='accept'
-                    onClick={() => {
-                      acceptRef.current?.changeCheck(true)
-                      rejectRef.current?.changeCheck(false)
-                    }}
-                  >
-                    <CheckboxIcon
-                      ref={acceptRef}
-                      secondary={theme.colors.primary}
-                      primary={theme.colors.secondary}
-                    />
-                    Aceitar
-                  </label>
-
-                  <div className='wrapper' />
-                </div>
-
-                <div id='radioReject'>
-                  <input
-                    name='response'
-                    value='reject'
-                    type='radio'
-                    id='reject'
-                    defaultChecked
-                    onChange={(e: any) => {
-                      e.target.checked && setButtonClicked('rejected')
-                    }}
-                  />
-
-                  <label
-                    htmlFor='reject'
-                    onClick={() => {
-                      acceptRef.current?.changeCheck(false)
-                      rejectRef.current?.changeCheck(true)
-                    }}
-                  >
-                    <CheckboxIcon ref={rejectRef} />
-                    Recusar
-                  </label>
-
-                  <div className='wrapper' />
-                </div>
-              </div>
-
-              <Form
-                loading
-                method='patch'
-                schema={
-                  buttonClicked === 'rejected'
-                    ? Yup.object({
-                        feedback: Yup.string().required(
-                          'Ao recusar deve-se enviar uma justificativa'
-                        )
-                      })
-                    : Yup.object({
-                        feedback: Yup.string()
-                      })
-                }
-                afterResData={afterResponseSubmit}
-                path={
-                  buttonClicked === 'rejected'
-                    ? `user/role/request/reject/${selectedInfo?.id}`
-                    : `user/role/request/accept/${selectedInfo?.id}`
-                }
-              >
-                <Textarea
-                  id='feedback'
-                  name='feedback'
-                  placeholder='Deixe uma resposta...'
-                  maxLength={500}
+            <div id='radios'>
+              <div id='radioAccept'>
+                <input
+                  name='response'
+                  value='accept'
+                  type='radio'
+                  id='accept'
+                  onChange={(e: any) => {
+                    e.target.checked && setButtonClicked('accepted')
+                  }}
                 />
 
-                <Submit id='cy-submit'>Enviar resposta</Submit>
-              </Form>
-            </>
+                <label
+                  htmlFor='accept'
+                  onClick={() => {
+                    acceptRef.current?.changeCheck(true)
+                    rejectRef.current?.changeCheck(false)
+                  }}
+                >
+                  <CheckboxIcon
+                    ref={acceptRef}
+                    secondary={theme.colors.primary}
+                    primary={theme.colors.secondary}
+                  />
+                  Aceitar
+                </label>
+
+                <div className='wrapper' />
+              </div>
+
+              <div id='radioReject'>
+                <input
+                  name='response'
+                  value='reject'
+                  type='radio'
+                  id='reject'
+                  defaultChecked
+                  onChange={(e: any) => {
+                    e.target.checked && setButtonClicked('rejected')
+                  }}
+                />
+
+                <label
+                  htmlFor='reject'
+                  onClick={() => {
+                    acceptRef.current?.changeCheck(false)
+                    rejectRef.current?.changeCheck(true)
+                  }}
+                >
+                  <CheckboxIcon ref={rejectRef} />
+                  Recusar
+                </label>
+
+                <div className='wrapper' />
+              </div>
+            </div>
+
+            <Form
+              loading
+              method='patch'
+              schema={
+                buttonClicked === 'rejected'
+                  ? Yup.object({
+                      feedback: Yup.string().required(
+                        'Ao recusar deve-se enviar uma justificativa'
+                      )
+                    })
+                  : Yup.object({
+                      feedback: Yup.string()
+                    })
+              }
+              afterResData={afterResponseSubmit}
+              path={
+                buttonClicked === 'rejected'
+                  ? `user/role/request/reject/${selectedInfo?.id}`
+                  : `user/role/request/accept/${selectedInfo?.id}`
+              }
+            >
+              <Textarea
+                id='feedback'
+                name='feedback'
+                placeholder='Deixe uma resposta...'
+                maxLength={500}
+              />
+
+              <Submit id='cy-submit'>Enviar resposta</Submit>
+            </Form>
           </>
         ) : (
           <div id='dots'>
@@ -277,9 +279,9 @@ function ResponseContent({
       <Popup
         bottom='50vh'
         translateY='50%'
-        bgHeight={'100vh'}
-        ref={popupRef}
+        bgHeight='100vh'
         zIndex={20}
+        ref={popupRef}
       />
     </>
   )
