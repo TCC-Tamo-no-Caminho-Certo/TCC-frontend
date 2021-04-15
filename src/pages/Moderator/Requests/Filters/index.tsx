@@ -108,8 +108,6 @@ const Filters = () => {
   })
 
   const filterTable = async ({ name, role, status, from, to }: any) => {
-    console.log('to', to)
-
     const callStartCondition =
       (!name && !role && !status && !from && !to) ||
       (!name && role === 'all' && status === 'all' && !from && !to) ||

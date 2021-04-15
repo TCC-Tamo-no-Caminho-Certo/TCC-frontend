@@ -4,13 +4,11 @@ import Style from './styles'
 import tokenSchema from 'utils/validations/tokenSchema'
 
 import { Response } from 'store'
-import { getUser } from 'store/user'
 
 import Form, { Submit, Text } from 'components/Form'
 import Popup, { PopupMethods, PopupProps } from 'components/Popup'
 import Modal, { ModalMethods } from 'components/Modal'
 
-import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
 
 export interface RegisterEmailMethods {
@@ -32,8 +30,6 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
     const modalRef = useRef<ModalMethods>(null)
 
     const [codeSend, setCodeSend] = useState(false)
-
-    const dispatch = useDispatch()
 
     const regexToMach = new RegExp(regex || '')
 
@@ -73,7 +69,6 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
           message: 'E-mail confirmado, termine a solicitação!'
         })
 
-        dispatch(getUser())
         onSuccess && onSuccess()
         toggleRegister()
       } else

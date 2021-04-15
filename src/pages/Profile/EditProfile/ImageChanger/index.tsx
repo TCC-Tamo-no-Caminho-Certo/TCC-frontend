@@ -48,6 +48,7 @@ const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
         picture: cropper.getCroppedCanvas().toDataURL()
       })
 
+      console.log(result.object)
       dispatch(UserActions.update({ avatar_uuid: result.object }))
       onCloseClicked()
     } else {

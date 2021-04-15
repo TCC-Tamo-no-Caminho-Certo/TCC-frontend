@@ -74,6 +74,7 @@ interface ProfessorProps {
 function Professor({ request }: ProfessorProps) {
   const { courses, universities } = useContext(AddRoleContext)
   const user = useSelector<RootState, UserState>(state => state.user)
+  const [registerByEmail, setRegisterByEmail] = useState(false)
 
   const popupRef = useRef<PopupMethods>(null)
   const registerEmailRef = useRef<RegisterEmailMethods>(null)
@@ -216,7 +217,9 @@ function Professor({ request }: ProfessorProps) {
   }
 
   const afterSubmit = (res: Response<any>) => {
-    console.log('AfterSubmit Response', res)
+    const byEmail =
+      registerByEmail ||
+      hasInstitutionalEmail(selectedUniversity.regex.email.student, user.emails)
 
     if (res.success)
       popupRef.current?.configPopup({
@@ -224,24 +227,12 @@ function Professor({ request }: ProfessorProps) {
         type: 'success',
         message: request
           ? 'Solicitação reenviada!'
-          : hasInstitutionalEmail(
-              selectedUniversity.regex.email.professor,
-              user.emails
-            )
+          : byEmail
           ? 'Papel Adicionado'
           : 'Solicitação enviada!',
         onClick: () => {
-          if (
-            !hasInstitutionalEmail(
-              selectedUniversity.regex.email.professor,
-              user.emails
-            )
-          )
-            history.push('/session/main')
-          else {
-            dispatch(getUser())
-            history.push('/session/main')
-          }
+          byEmail && dispatch(getUser())
+          history.push('/session/main')
         }
       })
     else
@@ -497,7 +488,15 @@ function Professor({ request }: ProfessorProps) {
             translateY: '50%',
             bottom: '50vh'
           }}
-          onSuccess={() => {}}
+          onSuccess={() => {
+            setAnimations(prev => ({
+              ...prev,
+              submit: true,
+              ways: false
+            }))
+
+            setRegisterByEmail(true)
+          }}
         />
       )}
 

@@ -120,6 +120,8 @@ function Student({ request }: StudentProps) {
   const popupRef = useRef<PopupMethods>(null)
   const registerEmailRef = useRef<RegisterEmailMethods>(null)
 
+  const [registerByEmail, setRegisterByEmail] = useState(false)
+
   const [options, setOptions] = useState<Options>({
     campus: [],
     course: [],
@@ -255,30 +257,22 @@ function Student({ request }: StudentProps) {
   }
 
   const afterSubmit = (res: Response<any>) => {
+    const byEmail =
+      registerByEmail ||
+      hasInstitutionalEmail(selectedUniversity.regex.email.student, user.emails)
+
     if (res.success)
       popupRef.current?.configPopup({
         setModal: true,
         type: 'success',
         message: request
           ? 'Solicitação reenviada!'
-          : hasInstitutionalEmail(
-              selectedUniversity.regex.email.student,
-              user.emails
-            )
+          : byEmail
           ? 'Papel Adicionado'
           : 'Solicitação enviada!',
         onClick: () => {
-          if (
-            !hasInstitutionalEmail(
-              selectedUniversity.regex.email.student,
-              user.emails
-            )
-          )
-            history.push('/session/main')
-          else {
-            dispatch(getUser())
-            history.push('/session/main')
-          }
+          byEmail && dispatch(getUser())
+          history.push('/session/main')
         }
       })
     else
@@ -567,6 +561,8 @@ function Student({ request }: StudentProps) {
               submit: true,
               ways: false
             }))
+
+            setRegisterByEmail(true)
           }}
         />
       )}

@@ -130,7 +130,10 @@ Cypress.Commands.add(
 )
 
 Cypress.Commands.add('verifyIfRoleHasChange', (id = '#cy-student') => {
-  cy.visit('/session/profile/change-role')
+  cy.wait(1000)
+  cy.get('#Gear').click()
+  cy.get(':nth-child(4) > a').click()
+
   cy.get(id).click()
   cy.wait(100)
   cy.get('#roleAlreadyExists').should('be.disabled')
