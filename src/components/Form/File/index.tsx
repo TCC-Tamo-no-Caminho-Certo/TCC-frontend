@@ -65,15 +65,13 @@ const File = ({
 
     const { files } = e.target
 
-    setError('O arquivo é muito grande!')
-
-    if (files[0].size < 100000) {
+    if (files[0].size < 5242880) {
+      console.log(files[0].size)
       const reader = new FileReader()
-      setError('')
       files[0] && reader.readAsDataURL(files[0])
       reader.onload = () => setFile(reader.result)
       receivedOnChange && receivedOnChange()
-    }
+    } else setError('O arquivo é muito grande!')
   }
 
   useEffect(() => {

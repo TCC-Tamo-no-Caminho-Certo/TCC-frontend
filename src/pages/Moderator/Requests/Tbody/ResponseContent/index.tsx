@@ -7,8 +7,9 @@ import makeRoleLabel from 'utils/makeRoleLabel'
 
 import api from 'services/api'
 
-import { Response } from 'store'
+import { Response, RootState } from 'store'
 import { Role } from 'store/AsyncThunks/roles'
+import { UserState } from 'store/user'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
 import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'
@@ -20,6 +21,7 @@ import Form, { Submit, Textarea } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
 
 import { motion } from 'framer-motion'
+import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 import * as Yup from 'yup'
 
@@ -34,6 +36,7 @@ function ResponseContent({
   selectedInfo,
   userInfo
 }: ResponseContentProps) {
+  const user = useSelector<RootState, UserState>(state => state.user)
   const requestsContext = useContext(RequestsContext)
   const theme = useContext(ThemeContext)
 
@@ -42,6 +45,8 @@ function ResponseContent({
   const popupRef = useRef<PopupMethods>(null)
 
   const [buttonClicked, setButtonClicked] = useState('rejected')
+
+  const himselfModeratorRequest = user.user_id === userInfo?.user_id
 
   const afterResponseSubmit = (res: Response<any>) => {
     if (res.success)
@@ -82,24 +87,32 @@ function ResponseContent({
       <Style>
         {userInfo && selectedInfo ? (
           <>
-            <motion.button
-              id='delete'
-              type='button'
-              onClick={() => {
-                popupRef.current?.configPopup({
-                  type: 'warning',
-                  message: 'Tem certeza que deseja remover esta solicitação?',
-                  onOkClick: async () => {
-                    await api.delete(`user/role/request/${selectedInfo.id}`)
-                    onCloseClick()
-                  }
-                })
-              }}
-            >
-              <TrashIcon />
-              Excluir solicitação
-            </motion.button>
-
+            {!himselfModeratorRequest && (
+              <motion.button
+                id='delete'
+                type='button'
+                onClick={() => {
+                  popupRef.current?.configPopup({
+                    type: 'warning',
+                    message: 'Tem certeza que deseja remover esta solicitação?',
+                    onOkClick: async () => {
+                      await api.delete(`user/role/request/${selectedInfo.id}`)
+                      onCloseClick()
+                    },
+                    onCloseClick: () => {
+                      popupRef.current?.configPopup({
+                        setModal: false,
+                        message: '',
+                        type: 'warning'
+                      })
+                    }
+                  })
+                }}
+              >
+                <TrashIcon />
+                Excluir solicitação
+              </motion.button>
+            )}
             <CloseIcon onClick={onCloseClick} />
 
             <Infos
@@ -181,93 +194,97 @@ function ResponseContent({
               </div>
             )}
 
-            <div id='radios'>
-              <div id='radioAccept'>
-                <input
-                  name='response'
-                  value='accept'
-                  type='radio'
-                  id='accept'
-                  onChange={(e: any) => {
-                    e.target.checked && setButtonClicked('accepted')
-                  }}
-                />
+            {!himselfModeratorRequest && (
+              <>
+                {' '}
+                <div id='radios'>
+                  <div id='radioAccept'>
+                    <input
+                      name='response'
+                      value='accept'
+                      type='radio'
+                      id='accept'
+                      onChange={(e: any) => {
+                        e.target.checked && setButtonClicked('accepted')
+                      }}
+                    />
 
-                <label
-                  htmlFor='accept'
-                  onClick={() => {
-                    acceptRef.current?.changeCheck(true)
-                    rejectRef.current?.changeCheck(false)
-                  }}
+                    <label
+                      htmlFor='accept'
+                      onClick={() => {
+                        acceptRef.current?.changeCheck(true)
+                        rejectRef.current?.changeCheck(false)
+                      }}
+                    >
+                      <CheckboxIcon
+                        ref={acceptRef}
+                        secondary={theme.colors.primary}
+                        primary={theme.colors.secondary}
+                      />
+                      Aceitar
+                    </label>
+
+                    <div className='wrapper' />
+                  </div>
+
+                  <div id='radioReject'>
+                    <input
+                      name='response'
+                      value='reject'
+                      type='radio'
+                      id='reject'
+                      defaultChecked
+                      onChange={(e: any) => {
+                        e.target.checked && setButtonClicked('rejected')
+                      }}
+                    />
+
+                    <label
+                      htmlFor='reject'
+                      onClick={() => {
+                        acceptRef.current?.changeCheck(false)
+                        rejectRef.current?.changeCheck(true)
+                      }}
+                    >
+                      <CheckboxIcon ref={rejectRef} />
+                      Recusar
+                    </label>
+
+                    <div className='wrapper' />
+                  </div>
+                </div>
+                <Form
+                  loading
+                  method='patch'
+                  schema={
+                    buttonClicked === 'rejected'
+                      ? Yup.object({
+                          feedback: Yup.string().required(
+                            'Ao recusar deve-se enviar uma justificativa'
+                          )
+                        })
+                      : Yup.object({
+                          feedback: Yup.string()
+                        })
+                  }
+                  afterResData={afterResponseSubmit}
+                  path={
+                    buttonClicked === 'rejected'
+                      ? `user/role/request/reject/${selectedInfo?.id}`
+                      : `user/role/request/accept/${selectedInfo?.id}`
+                  }
                 >
-                  <CheckboxIcon
-                    ref={acceptRef}
-                    secondary={theme.colors.primary}
-                    primary={theme.colors.secondary}
+                  <Textarea
+                    id='feedback'
+                    name='feedback'
+                    placeholder='Deixe uma resposta...'
+                    maxLength={500}
                   />
-                  Aceitar
-                </label>
 
-                <div className='wrapper' />
-              </div>
-
-              <div id='radioReject'>
-                <input
-                  name='response'
-                  value='reject'
-                  type='radio'
-                  id='reject'
-                  defaultChecked
-                  onChange={(e: any) => {
-                    e.target.checked && setButtonClicked('rejected')
-                  }}
-                />
-
-                <label
-                  htmlFor='reject'
-                  onClick={() => {
-                    acceptRef.current?.changeCheck(false)
-                    rejectRef.current?.changeCheck(true)
-                  }}
-                >
-                  <CheckboxIcon ref={rejectRef} />
-                  Recusar
-                </label>
-
-                <div className='wrapper' />
-              </div>
-            </div>
-
-            <Form
-              loading
-              method='patch'
-              schema={
-                buttonClicked === 'rejected'
-                  ? Yup.object({
-                      feedback: Yup.string().required(
-                        'Ao recusar deve-se enviar uma justificativa'
-                      )
-                    })
-                  : Yup.object({
-                      feedback: Yup.string()
-                    })
-              }
-              afterResData={afterResponseSubmit}
-              path={
-                buttonClicked === 'rejected'
-                  ? `user/role/request/reject/${selectedInfo?.id}`
-                  : `user/role/request/accept/${selectedInfo?.id}`
-              }
-            >
-              <Textarea
-                id='feedback'
-                name='feedback'
-                placeholder='Deixe uma resposta...'
-                maxLength={500}
-              />
-
-              <Submit id='cy-submit'>Enviar resposta</Submit>
-            </Form>
+                  <Submit id='cy-submit'>Enviar resposta</Submit>
+                </Form>
+              </>
+            )}
           </>
         ) : (
           <div id='dots'>

@@ -56,8 +56,8 @@ const Avatar = ({
             <motion.div
               className='circle'
               onClick={onShadowClick}
-              animate={{ opacity: hovering ? 0.9 : 0.7 }}
               transition={{ duration: 0.3 }}
+              animate={{ opacity: hovering ? 0.9 : 0.7 }}
             >
               <CameraIcon />
             </motion.div>

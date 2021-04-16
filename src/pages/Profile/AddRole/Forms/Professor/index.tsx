@@ -219,7 +219,10 @@ function Professor({ request }: ProfessorProps) {
   const afterSubmit = (res: Response<any>) => {
     const byEmail =
       registerByEmail ||
-      hasInstitutionalEmail(selectedUniversity.regex.email.student, user.emails)
+      hasInstitutionalEmail(
+        selectedUniversity.regex.email.professor,
+        user.emails
+      )
 
     if (res.success)
       popupRef.current?.configPopup({
@@ -296,6 +299,7 @@ function Professor({ request }: ProfessorProps) {
   return (
     <>
       <Form
+        getData={e => console.log(e)}
         loading
         afterResData={afterSubmit}
         method={request ? 'patch' : 'post'}

@@ -104,6 +104,7 @@ export const show: Variants = {
 
 export const hasInstitutionalEmail = (regex: string, emails: Email[]) => {
   const rgx = new RegExp(regex)
+
   return !!emails.find(({ address }) => rgx.test(address))
 }
 

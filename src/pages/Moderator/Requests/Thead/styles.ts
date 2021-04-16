@@ -17,15 +17,17 @@ const Style = styled.table`
       padding: 0 8px 0 24px;
       height: 32px;
 
-      #RefreshIcon {
+      #refresh {
         position: absolute;
         left: 8px;
 
-        width: 18px;
-        height: 18px;
-        cursor: pointer;
+        #RefreshIcon {
+          width: 18px;
+          height: 18px;
+          cursor: pointer;
 
-        fill: ${({ theme }) => theme.colors.secondary};
+          fill: ${({ theme }) => theme.colors.secondary};
+        }
       }
 
       th {

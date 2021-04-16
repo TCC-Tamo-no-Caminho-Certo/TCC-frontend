@@ -72,7 +72,9 @@ const Thead = ({ headerData, sort }: TheadProps) => {
     <Style draggable='false'>
       <thead>
         <tr>
-          <RefreshIcon onClick={onRefreshClick} />
+          <td id='refresh'>
+            <RefreshIcon onClick={onRefreshClick} />
+          </td>
 
           {headerData.map(({ label, name }, index) => {
             if (name === 'statusCircle')

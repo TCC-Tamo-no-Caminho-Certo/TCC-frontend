@@ -195,8 +195,8 @@ const formatUpdateUser = (
     {
       label: 'Pós-graduação:',
       name: 'postgraduate',
-      value: userData.professor?.postgraduate || '',
-      editable: true
+      value: userData.professor?.postgraduate ? 'Sim' : 'Não',
+      editable: false
     },
     {
       label: 'Tempo integral:',
@@ -206,17 +206,18 @@ const formatUpdateUser = (
           ? 'Sim'
           : 'Não'
         : '',
-      editable: true
+      editable: false
     }
   ]
+
+  console.log(userData)
 
   const moderator: InputData[] = [
     {
       label: 'Universidade',
       name: 'university',
       value:
-        (userData.moderator &&
-          userData.moderator.universities &&
+        (userData.moderator?.universities &&
           getUniversityName(
             userData.moderator.universities[0].university_id
           )) ||
