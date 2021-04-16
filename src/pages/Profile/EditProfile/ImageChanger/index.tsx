@@ -7,8 +7,10 @@ import { UserActions } from 'store/user'
 
 import CameraIcon from 'assets/Inputs/CameraIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
+import AlertIcon from 'assets/Inputs/AlertIcon'
 
-import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
+import { Submit } from 'components/Form'
+import DotsLoader from 'components/DotsLoader'
 
 import 'cropperjs/dist/cropper.css'
 import { motion } from 'framer-motion'
@@ -19,6 +21,7 @@ import { ThemeContext } from 'styled-components'
 interface ImageChangerProps {
   onCloseClick: () => void
 }
+
 const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
   const theme = useContext(ThemeContext)
 
@@ -27,6 +30,7 @@ const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
   const [noImage, setNoImage] = useState(false)
   const [image, setImage] = useState()
   const [error, setError] = useState('')
+  const [loader, setLoading] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -40,22 +44,25 @@ const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
     if (e.dataTransfer) files = e.dataTransfer.files
     else if (e.target) files = e.target.files
 
-    if (files[0].size < 5242880) {
-      reader.onload = () => setImage(reader.result as any)
-      files[0] && reader.readAsDataURL(files[0])
-      setShowUpload(true)
-    } else setError('Esta imagem é muito grande!')
+    if (files[0])
+      if (files[0].size < 5242880) {
+        reader.onload = () => setImage(reader.result as any)
+        files[0] && reader.readAsDataURL(files[0])
+        setShowUpload(true)
+      } else
+        setError('Esta imagem é muito grande! tente novamente com uma menor.')
   }
 
   const onConfirmClick = async () => {
     if (cropper.cropped) {
+      setLoading(true)
+
       const result = await api.put('/user/avatar', {
         picture: cropper.getCroppedCanvas().toDataURL()
       })
 
-      console.log(result)
-
       dispatch(UserActions.update({ avatar_uuid: result.object }))
+      setLoading(false)
       onCloseClicked()
     } else {
       setNoImage(true)
@@ -78,9 +85,20 @@ const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
           }}
         >
           Selecionar um arquivo
+          {!!error && (
+            <div id='error'>
+              <AlertIcon />
+              {error}
+            </div>
+          )}
         </motion.label>
 
-        <input id='first' type='file' accept='image/*' onChange={onChange} />
+        <input
+          id='first'
+          type='file'
+          accept='image/png,image/jpeg'
+          onChange={onChange}
+        />
 
         <Cropper
           center
@@ -99,9 +117,7 @@ const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
         />
       </div>
 
-      <ErrorTooltip error={!!error} content={error} />
-
-      <RightMenu>
+      <RightMenu loader={loader}>
         <CloseIcon onClick={onCloseClick} />
 
         <div id='preview'>
@@ -121,9 +137,16 @@ const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
           </div>
         )}
 
-        <button type='button' id='confirmButton' onClick={onConfirmClick}>
-          Salvar
-        </button>
+        <Submit
+          type='button'
+          id='confirmButton'
+          onClick={onConfirmClick}
+          disabled={loader}
+        >
+          <span id='save'>Salvar</span>
+
+          {loader && <DotsLoader color={theme.colors.secondary} />}
+        </Submit>
       </RightMenu>
     </Style>
   )

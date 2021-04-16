@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 
-export const RightMenu = styled.div`
+interface RightMenuProps {
+  loader: boolean
+}
+
+export const RightMenu = styled.div<RightMenuProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,6 +22,7 @@ export const RightMenu = styled.div`
     position: absolute;
     top: 24px;
     right: 24px;
+    z-index: 2000;
 
     width: 16px;
     height: 16px;
@@ -111,15 +116,8 @@ export const RightMenu = styled.div`
   #confirmButton {
     height: max(36px, 32px);
 
-    color: ${({ theme }) => theme.colors.secondary};
-    background-color: transparent;
-    border: solid 1px ${({ theme }) => theme.colors.primary};
-
-    transition: box-shadow 300ms ease-in-out;
-
-    &:hover {
-      box-shadow: inset -74px 0 0 0 ${({ theme }) => theme.colors.primary},
-        inset 74px 0 0 0 ${({ theme }) => theme.colors.primary};
+    #save {
+      margin-right: ${({ loader }) => (loader ? '24px' : '0')};
     }
   }
 `
@@ -144,10 +142,35 @@ const Style = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 
     width: 300px;
     height: 300px;
-    border-radius: 5px;
+    border-radius: 8px;
+
+    .Icon {
+      width: 24px;
+      fill: ${({ theme }) => theme.colors.white};
+      padding: 16px 0;
+    }
+
+    #error {
+      position: absolute;
+      bottom: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      text-align: center;
+      border-radius: 8px;
+      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
+      padding-bottom: 16px;
+
+      color: ${({ theme }) => theme.colors.white};
+      background-color: ${({ theme }) => theme.colors.primary};
+    }
 
     color: ${({ theme }) => theme.colors.secondary};
     border: ${({ theme }) => theme.colors.secondary} dashed 1px;
@@ -162,9 +185,12 @@ const Style = styled.div`
   .Cropper {
     width: 300px;
     height: 300px;
+    border-radius: 8px;
+
+    overflow: hidden;
 
     .cropper-modal {
-      border-radius: 5px;
+      border-radius: 8px;
 
       border: ${({ theme }) => theme.colors.secondary} dashed 1px;
     }
