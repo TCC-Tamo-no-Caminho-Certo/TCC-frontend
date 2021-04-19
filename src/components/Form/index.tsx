@@ -21,8 +21,6 @@ import api from 'services/api'
 
 import { Response } from 'store'
 
-import Popup, { PopupMethods } from 'components/Popup'
-
 import axios from 'axios'
 import Captcha from 'react-google-recaptcha'
 import { useHistory } from 'react-router-dom'
@@ -70,11 +68,10 @@ const Form = ({
   addToPath,
   afterResData,
   method = 'post',
-  className = 'Form',
   ...rest
 }: FormProps) => {
   const history = useHistory()
-  const popupRef = useRef<PopupMethods>(null)
+
   const recaptchaRef = useRef<Captcha>(null)
   const [showLoader, setShowLoader] = useState(false)
 
@@ -232,25 +229,21 @@ const Form = ({
   }
 
   return (
-    <>
-      <form noValidate className={className} onSubmit={onSubmit} {...rest}>
-        {captcha && (
-          <ReCaptcha
-            size='invisible'
-            sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
-            ref={recaptchaRef}
-          />
-        )}
+    <form noValidate onSubmit={onSubmit} {...rest}>
+      {captcha && (
+        <ReCaptcha
+          size='invisible'
+          sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
+          ref={recaptchaRef}
+        />
+      )}
 
-        <FormContext.Provider
-          value={{ removeInput, registerInput, loader: showLoader }}
-        >
-          {children}
-        </FormContext.Provider>
-      </form>
-
-      <Popup ref={popupRef} />
-    </>
+      <FormContext.Provider
+        value={{ removeInput, registerInput, loader: showLoader }}
+      >
+        {children}
+      </FormContext.Provider>
+    </form>
   )
 }
 

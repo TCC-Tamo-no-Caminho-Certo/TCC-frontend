@@ -26,11 +26,11 @@ import { getUser, UserState } from 'store/user'
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
 import { Checkbox, File, Select, Submit, Text } from 'components/Form'
-import Popup, { PopupMethods } from 'components/Popup'
 import { Option } from 'components/Form/Select'
 import Presence from 'components/Presence'
 import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
+import { GlobalContext, GlobalContextProps } from 'App'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
@@ -76,7 +76,7 @@ function Professor({ request }: ProfessorProps) {
   const user = useSelector<RootState, UserState>(state => state.user)
   const [registerByEmail, setRegisterByEmail] = useState(false)
 
-  const popupRef = useRef<PopupMethods>(null)
+  const { popup } = useContext<GlobalContextProps>(GlobalContext)
   const registerEmailRef = useRef<RegisterEmailMethods>(null)
 
   const [options, setOptions] = useState<Options>({
@@ -225,7 +225,7 @@ function Professor({ request }: ProfessorProps) {
       )
 
     if (res.success)
-      popupRef.current?.configPopup({
+      popup?.popupRef?.current?.configPopup({
         setModal: true,
         type: 'success',
         message: request
@@ -239,7 +239,7 @@ function Professor({ request }: ProfessorProps) {
         }
       })
     else
-      popupRef.current?.configPopup({
+      popup?.popupRef?.current?.configPopup({
         setModal: true,
         type: 'error',
         message: 'Algo deu errado :('
@@ -502,8 +502,6 @@ function Professor({ request }: ProfessorProps) {
           }}
         />
       )}
-
-      <Popup bottom='50vh' translateY='50%' ref={popupRef} />
     </>
   )
 }

@@ -10,7 +10,7 @@ import Style, { ModalBackground } from './styles'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
-import { OverflowContext } from 'App'
+import { GlobalContext, GlobalContextProps } from 'App'
 
 interface ModalProps {
   children: ReactElement | ReactElement[]
@@ -41,8 +41,9 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     },
     ref
   ) => {
-    const overflowContext = useContext(OverflowContext)
+    const { overflow } = useContext<GlobalContextProps>(GlobalContext)
     const modalRef = useRef(null)
+
     const [openModal, setOpenModal] = useState(false)
 
     window.addEventListener('keydown', ({ key }) => {
@@ -52,12 +53,14 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     const toggleModal = (setModal?: boolean) => {
       if (setModal === undefined) {
         setOpenModal(!openModal)
-        overflowContext.setOverflow &&
-          overflowContext.setOverflow(!setModal ? 'hidden' : 'visible')
+
+        overflow?.setOverflow &&
+          overflow?.setOverflow(!setModal ? 'hidden' : 'visible')
       } else {
         setOpenModal(setModal)
-        overflowContext.setOverflow &&
-          overflowContext.setOverflow(setModal ? 'hidden' : 'visible')
+
+        overflow?.setOverflow &&
+          overflow?.setOverflow(setModal ? 'hidden' : 'visible')
       }
     }
 

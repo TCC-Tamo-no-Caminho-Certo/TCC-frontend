@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Style, { Field, Infos } from './styles'
 
 import { ItemData, RequestsContext } from '../..'
@@ -15,11 +15,11 @@ import CloseIcon from 'assets/Inputs/CloseIcon'
 import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'
 import TrashIcon from 'assets/global/TrashIcon'
 
-import Popup, { PopupMethods } from 'components/Popup'
 import Avatar from 'components/User/Avatar'
 import Form, { Submit, Textarea } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
 
+import { GlobalContext } from 'App'
 import { motion } from 'framer-motion'
 import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
@@ -39,18 +39,18 @@ function ResponseContent({
   const user = useSelector<RootState, UserState>(state => state.user)
   const requestsContext = useContext(RequestsContext)
   const theme = useContext(ThemeContext)
+  const { popup } = useContext(GlobalContext)
+  const popupRef = popup?.popupRef
 
   const acceptRef = useRef<CheckboxIconMethods>(null)
   const rejectRef = useRef<CheckboxIconMethods>(null)
-  const popupRef = useRef<PopupMethods>(null)
-
   const [buttonClicked, setButtonClicked] = useState('rejected')
 
   const himselfModeratorRequest = user.user_id === userInfo?.user_id
 
   const afterResponseSubmit = (res: Response<any>) => {
     if (res.success)
-      popupRef.current?.configPopup({
+      popupRef?.current?.configPopup({
         type: 'success',
         message: 'Resposta enviada.',
         onClick: onCloseClick
@@ -58,14 +58,14 @@ function ResponseContent({
     else
       switch (res.error) {
         case 'Request not found!':
-          if (selectedInfo?.status === 'rejected')
-            popupRef.current?.configPopup({
+          if (selectedInfo?.status === 'Recusado')
+            popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
               message: 'Solicitação já foi recusada.'
             })
           else
-            popupRef.current?.configPopup({
+            popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
               message: 'Solicitação não encontrada ou já aceita.'
@@ -74,7 +74,7 @@ function ResponseContent({
           break
 
         default:
-          popupRef.current?.configPopup({
+          popupRef?.current?.configPopup({
             type: 'error',
             message: 'Ops, algo deu errado :(',
             onClick: onCloseClick
@@ -82,226 +82,225 @@ function ResponseContent({
       }
   }
 
+  useEffect(() => {
+    popup?.setPopupProps &&
+      popup.setPopupProps({
+        bottom: '50vh',
+        translateY: '50%',
+        bgHeight: '100vh',
+        zIndex: 20
+      })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
-    <>
-      <Style>
-        {userInfo && selectedInfo ? (
-          <>
-            {!himselfModeratorRequest && (
-              <motion.button
-                id='delete'
-                type='button'
-                onClick={() => {
-                  popupRef.current?.configPopup({
-                    type: 'warning',
-                    message: 'Tem certeza que deseja remover esta solicitação?',
-                    onOkClick: async () => {
-                      await api.delete(`user/role/request/${selectedInfo.id}`)
-                      onCloseClick()
-                    },
-                    onCloseClick: () => {
-                      popupRef.current?.configPopup({
-                        setModal: false,
-                        message: '',
-                        type: 'warning'
-                      })
-                    }
-                  })
-                }}
-              >
-                <TrashIcon />
-                Excluir solicitação
-              </motion.button>
-            )}
-
-            <CloseIcon onClick={onCloseClick} />
-
-            <Infos
-              role={selectedInfo?.role}
-              status={selectedInfo?.statusCircle}
+    <Style>
+      {userInfo && selectedInfo ? (
+        <>
+          {!himselfModeratorRequest && (
+            <motion.button
+              id='delete'
+              type='button'
+              onClick={() => {
+                popupRef?.current?.configPopup({
+                  type: 'warning',
+                  message: 'Tem certeza que deseja remover esta solicitação?',
+                  onOkClick: async () => {
+                    await api.delete(`user/role/request/${selectedInfo.id}`)
+                    onCloseClick()
+                  },
+                  onCloseClick: () => {
+                    popupRef?.current?.configPopup({
+                      setModal: false,
+                      message: '',
+                      type: 'warning'
+                    })
+                  }
+                })
+              }}
             >
-              <div id='title'>Informações</div>
+              <TrashIcon />
+              Excluir solicitação
+            </motion.button>
+          )}
 
-              <hr />
+          <CloseIcon onClick={onCloseClick} />
 
-              <Field id='avatar'>
-                <Avatar size={120} avatarId={userInfo?.avatar_uuid} />
-              </Field>
+          <Infos role={selectedInfo?.role} status={selectedInfo?.statusCircle}>
+            <div id='title'>Informações</div>
 
+            <hr />
+
+            <Field id='avatar'>
+              <Avatar size={120} avatarId={userInfo?.avatar_uuid} />
+            </Field>
+
+            <Field>
+              Nome:
+              <div>{userInfo?.name}</div>
+            </Field>
+
+            <Field>
+              Papel:
+              <div id='role'>{makeRoleLabel(selectedInfo?.role as Role)}</div>
+            </Field>
+
+            <Field>
+              Status:
+              <div id='status'>{selectedInfo?.status}</div>
+            </Field>
+
+            <Field>
+              Linkedin:
+              <div>{selectedInfo.linkedin}</div>
+            </Field>
+
+            <Field>
+              Lattes:
+              <div>{selectedInfo?.lattes}</div>
+            </Field>
+
+            <Field>
+              Orcid:
+              <div>{selectedInfo.orcid}</div>
+            </Field>
+
+            <Field>
+              Email:
+              <div>
+                {userInfo?.emails.filter(({ main }: any) => main)[0].address}
+              </div>
+            </Field>
+
+            {selectedInfo.role !== 'moderator' && (
               <Field>
-                Nome:
-                <div>{userInfo?.name}</div>
-              </Field>
-
-              <Field>
-                Papel:
-                <div id='role'>{makeRoleLabel(selectedInfo?.role as Role)}</div>
-              </Field>
-
-              <Field>
-                Status:
-                <div id='status'>{selectedInfo?.status}</div>
-              </Field>
-
-              <Field>
-                Linkedin:
-                <div>{selectedInfo.linkedin}</div>
-              </Field>
-
-              <Field>
-                Lattes:
-                <div>{selectedInfo?.lattes}</div>
-              </Field>
-
-              <Field>
-                Orcid:
-                <div>{selectedInfo.orcid}</div>
-              </Field>
-
-              <Field>
-                Email:
+                Curso:
                 <div>
-                  {userInfo?.emails.filter(({ main }: any) => main)[0].address}
+                  {
+                    requestsContext.courses.find(
+                      course => course.course_id === selectedInfo?.course_id
+                    )?.name
+                  }
                 </div>
               </Field>
-
-              {selectedInfo.role !== 'moderator' && (
-                <Field>
-                  Curso:
-                  <div>
-                    {
-                      requestsContext.courses.find(
-                        course => course.course_id === selectedInfo?.course_id
-                      )?.name
-                    }
-                  </div>
-                </Field>
-              )}
-
-              <Field>
-                Data:
-                <div>{selectedInfo?.date}</div>
-              </Field>
-            </Infos>
-
-            {selectedInfo?.role === 'student' ? (
-              <div id='doc'>
-                <iframe src={selectedInfo?.voucherUrl} />
-              </div>
-            ) : (
-              <div id='pretext'>
-                Justificativa:
-                <p>{selectedInfo?.pretext}</p>
-              </div>
             )}
 
-            {!himselfModeratorRequest && (
-              <>
-                <div id='radios'>
-                  <div id='radioAccept'>
-                    <input
-                      name='response'
-                      value='accept'
-                      type='radio'
-                      id='accept'
-                      onChange={(e: any) => {
-                        e.target.checked && setButtonClicked('accepted')
-                      }}
-                    />
+            <Field>
+              Data:
+              <div>{selectedInfo?.date}</div>
+            </Field>
+          </Infos>
 
-                    <label
-                      htmlFor='accept'
-                      onClick={() => {
-                        acceptRef.current?.changeCheck(true)
-                        rejectRef.current?.changeCheck(false)
-                      }}
-                    >
-                      <CheckboxIcon
-                        ref={acceptRef}
-                        secondary={theme.colors.primary}
-                        primary={theme.colors.secondary}
-                      />
-                      Aceitar
-                    </label>
+          {selectedInfo?.role === 'student' ? (
+            <div id='doc'>
+              <iframe src={selectedInfo?.voucherUrl} />
+            </div>
+          ) : (
+            <div id='pretext'>
+              Justificativa:
+              <p>{selectedInfo?.pretext}</p>
+            </div>
+          )}
 
-                    <div className='wrapper' />
-                  </div>
-
-                  <div id='radioReject'>
-                    <input
-                      name='response'
-                      value='reject'
-                      type='radio'
-                      id='reject'
-                      defaultChecked
-                      onChange={(e: any) => {
-                        e.target.checked && setButtonClicked('rejected')
-                      }}
-                    />
-
-                    <label
-                      htmlFor='reject'
-                      onClick={() => {
-                        acceptRef.current?.changeCheck(false)
-                        rejectRef.current?.changeCheck(true)
-                      }}
-                    >
-                      <CheckboxIcon ref={rejectRef} />
-                      Recusar
-                    </label>
-
-                    <div className='wrapper' />
-                  </div>
-                </div>
-
-                <Form
-                  loading
-                  method='patch'
-                  afterResData={afterResponseSubmit}
-                  schema={
-                    buttonClicked === 'rejected'
-                      ? Yup.object({
-                          feedback: Yup.string().required(
-                            'Ao recusar deve-se enviar uma justificativa'
-                          )
-                        })
-                      : Yup.object({
-                          feedback: Yup.string()
-                        })
-                  }
-                  path={
-                    buttonClicked === 'rejected'
-                      ? `user/role/request/reject/${selectedInfo?.id}`
-                      : `user/role/request/accept/${selectedInfo?.id}`
-                  }
-                >
-                  <Textarea
-                    id='feedback'
-                    name='feedback'
-                    placeholder='Deixe uma resposta...'
-                    maxLength={500}
+          {!himselfModeratorRequest && (
+            <>
+              <div id='radios'>
+                <div id='radioAccept'>
+                  <input
+                    name='response'
+                    value='accept'
+                    type='radio'
+                    id='accept'
+                    onChange={(e: any) => {
+                      e.target.checked && setButtonClicked('accepted')
+                    }}
                   />
 
-                  <Submit id='cy-submit'>Enviar resposta</Submit>
-                </Form>
-              </>
-            )}
-          </>
-        ) : (
-          <div id='dots'>
-            <DotsLoader color={theme.colors.secondary} />
-          </div>
-        )}
-      </Style>
+                  <label
+                    htmlFor='accept'
+                    onClick={() => {
+                      acceptRef.current?.changeCheck(true)
+                      rejectRef.current?.changeCheck(false)
+                    }}
+                  >
+                    <CheckboxIcon
+                      ref={acceptRef}
+                      secondary={theme.colors.primary}
+                      primary={theme.colors.secondary}
+                    />
+                    Aceitar
+                  </label>
 
-      <Popup
-        bottom='50vh'
-        translateY='50%'
-        bgHeight='100vh'
-        zIndex={20}
-        ref={popupRef}
-      />
-    </>
+                  <div className='wrapper' />
+                </div>
+
+                <div id='radioReject'>
+                  <input
+                    name='response'
+                    value='reject'
+                    type='radio'
+                    id='reject'
+                    defaultChecked
+                    onChange={(e: any) => {
+                      e.target.checked && setButtonClicked('rejected')
+                    }}
+                  />
+
+                  <label
+                    htmlFor='reject'
+                    onClick={() => {
+                      acceptRef.current?.changeCheck(false)
+                      rejectRef.current?.changeCheck(true)
+                    }}
+                  >
+                    <CheckboxIcon ref={rejectRef} />
+                    Recusar
+                  </label>
+
+                  <div className='wrapper' />
+                </div>
+              </div>
+
+              <Form
+                loading
+                method='patch'
+                afterResData={afterResponseSubmit}
+                schema={
+                  buttonClicked === 'rejected'
+                    ? Yup.object({
+                        feedback: Yup.string().required(
+                          'Ao recusar deve-se enviar uma justificativa'
+                        )
+                      })
+                    : Yup.object({
+                        feedback: Yup.string()
+                      })
+                }
+                path={
+                  buttonClicked === 'rejected'
+                    ? `user/role/request/reject/${selectedInfo?.id}`
+                    : `user/role/request/accept/${selectedInfo?.id}`
+                }
+              >
+                <Textarea
+                  id='feedback'
+                  name='feedback'
+                  placeholder='Deixe uma resposta...'
+                  maxLength={500}
+                />
+
+                <Submit id='cy-submit'>Enviar resposta</Submit>
+              </Form>
+            </>
+          )}
+        </>
+      ) : (
+        <div id='dots'>
+          <DotsLoader color={theme.colors.secondary} />
+        </div>
+      )}
+    </Style>
   )
 }
 

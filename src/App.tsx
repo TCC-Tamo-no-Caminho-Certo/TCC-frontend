@@ -1,8 +1,10 @@
 import React, {
   createContext,
   Dispatch,
+  RefObject,
   SetStateAction,
   useEffect,
+  useRef,
   useState
 } from 'react'
 
@@ -15,26 +17,36 @@ import Routes from 'routes'
 import { ThemeState } from 'store/theme'
 import { RootState } from 'store'
 
+import Popup, { PopupMethods, PopupProps } from 'components/Popup'
+
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 
-interface OverflowContextType {
-  overflow?: string
-  setOverflow?: Dispatch<SetStateAction<string>>
+export interface GlobalContextProps {
+  overflow?: {
+    overflow?: string
+    setOverflow?: Dispatch<SetStateAction<string>>
+  }
+  popup?: {
+    popupRef?: RefObject<PopupMethods>
+    popupProps?: PopupProps
+    setPopupProps?: Dispatch<SetStateAction<PopupProps>>
+  }
 }
 
-export const OverflowContext = createContext<OverflowContextType>({})
+export const GlobalContext = createContext<GlobalContextProps>({})
 
 const App = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
-  const [overflow, setOverflow] = useState('visible')
-  const { i18n } = useTranslation()
 
-  useEffect(() => {
-    console.log(overflow)
-  }, [overflow])
+  const popupRef = useRef<PopupMethods>(null)
+
+  const [overflow, setOverflow] = useState('visible')
+  const [popupProps, setPopupProps] = useState({})
+
+  const { i18n } = useTranslation()
 
   useEffect(() => {
     i18n.changeLanguage('pt-BR')
@@ -42,13 +54,23 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <OverflowContext.Provider value={{ overflow, setOverflow }}>
+      <GlobalContext.Provider
+        value={{
+          popup: { popupRef, popupProps, setPopupProps },
+          overflow: {
+            overflow,
+            setOverflow
+          }
+        }}
+      >
         <GlobalStyle overflow={overflow} />
 
         <BrowserRouter>
           <Routes />
         </BrowserRouter>
-      </OverflowContext.Provider>
+
+        <Popup ref={popupRef} {...popupProps} />
+      </GlobalContext.Provider>
     </ThemeProvider>
   )
 }

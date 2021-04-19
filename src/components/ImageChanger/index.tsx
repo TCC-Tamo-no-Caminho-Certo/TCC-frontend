@@ -16,9 +16,9 @@ import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import { Submit } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
-import Popup, { PopupMethods } from 'components/Popup'
 import Modal, { ModalMethods } from 'components/Modal'
 
+import { GlobalContext, GlobalContextProps } from 'App'
 import 'cropperjs/dist/cropper.css'
 import { motion } from 'framer-motion'
 import { Cropper } from 'react-cropper'
@@ -30,9 +30,8 @@ export interface ImageChangerMethods {
 }
 
 const ImageChanger = forwardRef((_props, ref) => {
+  const { popup } = useContext<GlobalContextProps>(GlobalContext)
   const theme = useContext(ThemeContext)
-
-  const popupRef = useRef<PopupMethods>(null)
   const modalRef = useRef<ModalMethods>(null)
 
   const [image, setImage] = useState()
@@ -74,7 +73,7 @@ const ImageChanger = forwardRef((_props, ref) => {
         setShowUploadAnother(false)
         onCloseClick()
 
-        popupRef.current?.configPopup({
+        popup?.popupRef?.current?.configPopup({
           type: 'error',
           message: 'Esta imagem é muito grande! tente novamente com uma menor.'
         })
@@ -108,79 +107,75 @@ const ImageChanger = forwardRef((_props, ref) => {
   useImperativeHandle(ref, () => ({ toggleImageChanger }))
 
   return (
-    <>
-      <Modal ref={modalRef}>
-        <Style>
-          <div>
-            <motion.label
-              htmlFor='first'
-              id='firstFileSelect'
-              transition={{ duration: 0.3 }}
-              animate={{
-                color: noImage ? [white, red, white] : white,
-                borderColor: noImage ? [white, red, white] : white
-              }}
-            >
-              Selecionar um arquivo
-            </motion.label>
+    <Modal ref={modalRef}>
+      <Style>
+        <div>
+          <motion.label
+            htmlFor='first'
+            id='firstFileSelect'
+            transition={{ duration: 0.3 }}
+            animate={{
+              color: noImage ? [white, red, white] : white,
+              borderColor: noImage ? [white, red, white] : white
+            }}
+          >
+            Selecionar um arquivo
+          </motion.label>
 
-            <input
-              id='first'
-              type='file'
-              accept='image/png,image/jpeg'
-              onChange={onChange}
-            />
+          <input
+            id='first'
+            type='file'
+            accept='image/png,image/jpeg'
+            onChange={onChange}
+          />
 
-            <Cropper
-              center
-              dragMode='move'
-              className='Cropper'
-              preview='#img-preview'
-              src={image}
-              viewMode={3}
-              guides={false}
-              aspectRatio={1}
-              background={false}
-              minCropBoxWidth={80}
-              minCropBoxHeight={80}
-              checkOrientation={false}
-              onInitialized={instance => setCropper(instance)}
-            />
+          <Cropper
+            center
+            dragMode='move'
+            className='Cropper'
+            preview='#img-preview'
+            src={image}
+            viewMode={3}
+            guides={false}
+            aspectRatio={1}
+            background={false}
+            minCropBoxWidth={80}
+            minCropBoxHeight={80}
+            checkOrientation={false}
+            onInitialized={instance => setCropper(instance)}
+          />
+        </div>
+
+        <RightMenu loader={loader}>
+          <CloseIcon onClick={onCloseClick} />
+
+          <div id='preview'>
+            <span>Antevisão</span>
+
+            <div id='img-preview' />
+            <div id='before-img-preview' />
           </div>
 
-          <RightMenu loader={loader}>
-            <CloseIcon onClick={onCloseClick} />
+          {showUploadAnother && (
+            <label htmlFor='first' id='otherFileSelect'>
+              Enviar outra foto
+              <CameraIcon />
+            </label>
+          )}
 
-            <div id='preview'>
-              <span>Antevisão</span>
+          <Submit
+            type='button'
+            id='confirmButton'
+            disabled={loader}
+            onClick={onConfirmClick}
+          >
+            <span id='save'>Salvar</span>
 
-              <div id='img-preview' />
-              <div id='before-img-preview' />
-            </div>
-
-            {showUploadAnother && (
-              <label htmlFor='first' id='otherFileSelect'>
-                Enviar outra foto
-                <CameraIcon />
-              </label>
-            )}
-
-            <Submit
-              type='button'
-              id='confirmButton'
-              disabled={loader}
-              onClick={onConfirmClick}
-            >
-              <span id='save'>Salvar</span>
-
-              {loader && <DotsLoader color={theme.colors.secondary} />}
-            </Submit>
-          </RightMenu>
-        </Style>
-      </Modal>
-
-      <Popup ref={popupRef} />
-    </>
+            {loader && <DotsLoader color={theme.colors.secondary} />}
+          </Submit>
+        </RightMenu>
+      </Style>
+    </Modal>
   )
 })
 

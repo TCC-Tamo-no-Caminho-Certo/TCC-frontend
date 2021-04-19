@@ -1,4 +1,10 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  useContext,
+  useImperativeHandle,
+  useRef,
+  useState
+} from 'react'
 import Style from './styles'
 
 import tokenSchema from 'utils/validations/tokenSchema'
@@ -6,9 +12,10 @@ import tokenSchema from 'utils/validations/tokenSchema'
 import { Response } from 'store'
 
 import Form, { Submit, Text } from 'components/Form'
-import Popup, { PopupMethods, PopupProps } from 'components/Popup'
+import { PopupProps } from 'components/Popup'
 import Modal, { ModalMethods } from 'components/Modal'
 
+import { GlobalContext, GlobalContextProps } from 'App'
 import * as Yup from 'yup'
 
 export interface RegisterEmailMethods {
@@ -26,7 +33,7 @@ interface RegisterEmailProps {
 
 const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
   ({ title, addData, regex, onSuccess, placeholder, modal }, ref) => {
-    const popupRef = useRef<PopupMethods>(null)
+    const { popup } = useContext<GlobalContextProps>(GlobalContext)
     const modalRef = useRef<ModalMethods>(null)
 
     const [codeSend, setCodeSend] = useState(false)
@@ -45,7 +52,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
       else
         switch (res.error) {
           case 'Email already in use!':
-            popupRef.current?.configPopup({
+            popup?.popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
               message: 'E-mail já cadastrado!'
@@ -53,7 +60,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
             break
 
           default:
-            popupRef.current?.configPopup({
+            popup?.popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
               message: 'Código não enviado!'
@@ -63,7 +70,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
 
     const afterTokenSubmit = (res: Response<any>) => {
       if (res.success) {
-        popupRef.current?.configPopup({
+        popup?.popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: 'E-mail confirmado, termine a solicitação!'
@@ -72,7 +79,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
         onSuccess && onSuccess()
         toggleRegister()
       } else
-        popupRef.current?.configPopup({
+        popup?.popupRef?.current?.configPopup({
           setModal: true,
           type: 'error',
           message: 'Código inválido!'
@@ -85,53 +92,48 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
     useImperativeHandle(ref, () => ({ toggleRegister }))
 
     return (
-      <>
-        <Modal ref={modalRef} {...modal}>
-          <Style>
-            <Form
-              loading
-              path='user/email'
-              addData={addData}
-              schema={emailSchema}
-              afterResData={afterEmailSubmit}
-            >
-              {!codeSend && (
-                <>
-                  <span>{title}</span>
-                  <Text name='email' placeholder={placeholder} />
+      <Modal ref={modalRef} {...modal}>
+        <Style>
+          <Form
+            loading
+            path='user/email'
+            addData={addData}
+            schema={emailSchema}
+            afterResData={afterEmailSubmit}
+          >
+            {!codeSend && (
+              <>
+                <span>{title}</span>
+                <Text name='email' placeholder={placeholder} />
 
-                  <Submit>Enviar código de confirmação</Submit>
-                </>
-              )}
-            </Form>
+                <Submit>Enviar código de confirmação</Submit>
+              </>
+            )}
+          </Form>
 
-            <Form
-              loading
-              method='get'
-              id='tokenForm'
-              addToPath={['token']}
-              path='confirm/email/*%'
-              schema={tokenSchema}
-              afterResData={afterTokenSubmit}
-            >
-              {codeSend && (
-                <>
-                  <p>
-                    Digite o código de confirmação que foi enviado ao seu
-                    e-mail.
-                  </p>
+          <Form
+            loading
+            method='get'
+            id='tokenForm'
+            addToPath={['token']}
+            path='confirm/email/*%'
+            schema={tokenSchema}
+            afterResData={afterTokenSubmit}
+          >
+            {codeSend && (
+              <>
+                <p>
+                  Digite o código de confirmação que foi enviado ao seu e-mail.
+                </p>
 
-                  <Text name='token' placeholder='Código' />
+                <Text name='token' placeholder='Código' />
 
-                  <Submit>Validar</Submit>
-                </>
-              )}
-            </Form>
-          </Style>
-        </Modal>
-
-        <Popup {...modal} ref={popupRef} />
-      </>
+                <Submit>Validar</Submit>
+              </>
+            )}
+          </Form>
+        </Style>
+      </Modal>
     )
   }
 )

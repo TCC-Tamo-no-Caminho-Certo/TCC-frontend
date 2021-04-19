@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Form } from './styles'
 
 import { Request } from '../Container'
@@ -13,9 +13,9 @@ import { getUser, UserState } from 'store/user'
 import { Response, RootState } from 'store'
 
 import { Select, Submit, Textarea } from 'components/Form'
-import Popup, { PopupMethods } from 'components/Popup'
 import { Option } from 'components/Form/Select'
 
+import { GlobalContext, GlobalContextProps } from 'App'
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
@@ -52,7 +52,7 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
   const user = useSelector<RootState, UserState>(state => state.user)
   const { universities } = useContext(AddRoleContext)
 
-  const popupRef = useRef<PopupMethods>(null)
+  const { popup } = useContext<GlobalContextProps>(GlobalContext)
 
   const [fullTime, setFullTime] = useState(false)
 
@@ -93,7 +93,7 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
   const afterSubmit = (res: Response<any>) => {
     if (res.success)
       if (fullTime)
-        popupRef.current?.configPopup({
+        popup?.popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: 'Papel adicionado',
@@ -103,14 +103,14 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
           }
         })
       else
-        popupRef.current?.configPopup({
+        popup?.popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: request ? 'Solicitação reenviada!' : 'Solicitação enviada!',
           onClick: () => history.push('/session/main')
         })
     else
-      popupRef.current?.configPopup({
+      popup?.popupRef?.current?.configPopup({
         setModal: true,
         type: 'error',
         message: 'Falha ao enviar solicitação :('
@@ -128,49 +128,45 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
   }, [universities])
 
   return (
-    <>
-      <Form
-        loading
-        path={
-          request
-            ? `user/role/request/moderator/${request.request_id}`
-            : 'user/role/request/moderator'
-        }
-        method={request ? 'patch' : 'post'}
-        afterResData={afterSubmit}
-        schema={!fullTime ? withFullTime : withoutFullTime}
+    <Form
+      loading
+      path={
+        request
+          ? `user/role/request/moderator/${request.request_id}`
+          : 'user/role/request/moderator'
+      }
+      method={request ? 'patch' : 'post'}
+      afterResData={afterSubmit}
+      schema={!fullTime ? withFullTime : withoutFullTime}
+    >
+      <Select
+        id='cy-university'
+        name='university_id'
+        placeholder='Universidade'
+        value={values.university}
+        options={options.university}
+        onChange={onUniversityChange}
+      />
+
+      <motion.div
+        animate={{
+          height: !fullTime ? 'auto' : 0,
+          opacity: !fullTime ? 1 : 0
+        }}
       >
-        <Select
-          id='cy-university'
-          name='university_id'
-          placeholder='Universidade'
-          value={values.university}
-          options={options.university}
-          onChange={onUniversityChange}
+        <Textarea
+          id='cy-pretext'
+          name='pretext'
+          placeholder='Descreva porquê você quer ser Moderador...'
+          maxLength={500}
+          defaultValue={request?.data.pretext}
         />
+      </motion.div>
 
-        <motion.div
-          animate={{
-            height: !fullTime ? 'auto' : 0,
-            opacity: !fullTime ? 1 : 0
-          }}
-        >
-          <Textarea
-            id='cy-pretext'
-            name='pretext'
-            placeholder='Descreva porquê você quer ser Moderador...'
-            maxLength={500}
-            defaultValue={request?.data.pretext}
-          />
-        </motion.div>
-
-        <Submit id='cy-submit'>
-          {!fullTime ? 'Enviar solicitação' : 'Tornar-se moderador!'}
-        </Submit>
-      </Form>
-
-      <Popup bottom='50vh' translateY='50%' ref={popupRef} />
-    </>
+      <Submit id='cy-submit'>
+        {!fullTime ? 'Enviar solicitação' : 'Tornar-se moderador!'}
+      </Submit>
+    </Form>
   )
 }
 
