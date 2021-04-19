@@ -57,7 +57,7 @@ const Aside = () => {
     <Style>
       {/* <ThemeSwitch /> */}
 
-      <article>
+      <div id='content'>
         <header>
           <Logo />
         </header>
@@ -122,7 +122,7 @@ const Aside = () => {
             Registre-se aqui!
           </button>
         </footer>
-      </article>
+      </div>
     </Style>
   )
 }

@@ -33,8 +33,9 @@ const Style = styled.aside`
   width: max(100vw + 1px, 320px);
 
   background-color: ${({ theme }) => theme.colors.secondary};
+  box-shadow: -8px 8px 6px 4px rgba(0, 0, 0, 0.14);
 
-  article {
+  #content {
     display: flex;
     align-items: center;
     flex-direction: column;

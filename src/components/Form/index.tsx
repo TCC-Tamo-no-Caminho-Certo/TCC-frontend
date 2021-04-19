@@ -70,6 +70,7 @@ const Form = ({
   addToPath,
   afterResData,
   method = 'post',
+  className = 'Form',
   ...rest
 }: FormProps) => {
   const history = useHistory()
@@ -232,7 +233,7 @@ const Form = ({
 
   return (
     <>
-      <form noValidate onSubmit={onSubmit} {...rest} className='Form'>
+      <form noValidate className={className} onSubmit={onSubmit} {...rest}>
         {captcha && (
           <ReCaptcha
             size='invisible'

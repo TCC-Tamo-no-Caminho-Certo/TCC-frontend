@@ -1,4 +1,10 @@
-import React, { useEffect } from 'react'
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState
+} from 'react'
 
 import './i18n'
 
@@ -14,10 +20,21 @@ import { useSelector } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 
+interface OverflowContextType {
+  overflow?: string
+  setOverflow?: Dispatch<SetStateAction<string>>
+}
+
+export const OverflowContext = createContext<OverflowContextType>({})
+
 const App = () => {
   const theme = useSelector<RootState, ThemeState>(state => state.theme)
-
+  const [overflow, setOverflow] = useState('visible')
   const { i18n } = useTranslation()
+
+  useEffect(() => {
+    console.log(overflow)
+  }, [overflow])
 
   useEffect(() => {
     i18n.changeLanguage('pt-BR')
@@ -25,11 +42,13 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <GlobalStyle />
+      <OverflowContext.Provider value={{ overflow, setOverflow }}>
+        <GlobalStyle overflow={overflow} />
 
-      <BrowserRouter>
-        <Routes />
-      </BrowserRouter>
+        <BrowserRouter>
+          <Routes />
+        </BrowserRouter>
+      </OverflowContext.Provider>
     </ThemeProvider>
   )
 }

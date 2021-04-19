@@ -56,7 +56,7 @@ const makeTitle = (type: PopupType, title?: string) => {
 }
 
 const Popup = forwardRef<PopupMethods, PopupProps>(
-  ({ bgHeight, top, translateY, bottom, zIndex }, ref) => {
+  ({ bgHeight = '100vh', top, translateY, bottom, zIndex }, ref) => {
     const modalRef = useRef<ModalMethods>(null)
     const [
       { type, setModal, message, title, onClick, onOkClick, onCloseClick },
@@ -74,6 +74,9 @@ const Popup = forwardRef<PopupMethods, PopupProps>(
 
     useEffect(() => {
       modalRef.current?.toggleModal(setModal)
+      setModal
+        ? (document.documentElement.style.overflow = 'hidden')
+        : (document.documentElement.style.overflow = 'auto')
     }, [setModal])
 
     return (

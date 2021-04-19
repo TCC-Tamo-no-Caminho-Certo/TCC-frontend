@@ -1,8 +1,6 @@
 import React from 'react'
 import Style from './styles'
 
-const Subscribe = () => {
-  return <Style></Style>
-}
+const Subscribe = () => <Style />
 
 export default Subscribe

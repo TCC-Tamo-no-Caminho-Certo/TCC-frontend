@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { Shadow } from './styles'
 
 import Login from './Login'
 import Signup from './Signup'
@@ -50,19 +49,6 @@ const Home = () => {
     }
   }
 
-  const shadowAnimation = {
-    login: {
-      x: '62vw'
-    },
-    signup: {
-      x: '-38vw'
-    },
-    transition: {
-      type: 'tween',
-      duration: initial ? 1 : 0
-    }
-  }
-
   useEffect(() => {
     location.pathname === '/home/signup'
       ? dispatch(HomeActions.update({ page: 'signup', initial: false }))
@@ -71,46 +57,37 @@ const Home = () => {
 
   return (
     <>
-      <section>
-        <Shadow
-          page={page}
-          animate={page}
-          variants={shadowAnimation}
-          transition={shadowAnimation.transition}
-        />
+      <AnimatePresence>
+        <Switch location={location} key={location.key}>
+          <Route path='/home' exact>
+            {page !== 'signup' && (
+              <motion.div
+                variants={loginAnimation}
+                transition={transition}
+                initial='initial'
+                animate='default'
+                exit='exit'
+              >
+                <Login />
+              </motion.div>
+            )}
+          </Route>
 
-        <AnimatePresence>
-          <Switch location={location} key={location.key}>
-            <Route path='/home' exact>
-              {page !== 'signup' && (
-                <motion.div
-                  variants={loginAnimation}
-                  transition={transition}
-                  initial='initial'
-                  animate='default'
-                  exit='exit'
-                >
-                  <Login />
-                </motion.div>
-              )}
-            </Route>
-
-            <Route path='/home/signup'>
-              {page === 'signup' && (
-                <motion.div
-                  variants={signupAnimation}
-                  transition={transition}
-                  initial='initial'
-                  animate='default'
-                  exit='exit'
-                >
-                  <Signup />
-                </motion.div>
-              )}
-            </Route>
-          </Switch>
-        </AnimatePresence>
-      </section>
+          <Route path='/home/signup'>
+            {page === 'signup' && (
+              <motion.div
+                variants={signupAnimation}
+                transition={transition}
+                initial='initial'
+                animate='default'
+                exit='exit'
+              >
+                <Signup />
+              </motion.div>
+            )}
+          </Route>
+        </Switch>
+      </AnimatePresence>
 
       {/*
       <section>

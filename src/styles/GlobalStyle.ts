@@ -1,7 +1,11 @@
 import { darken } from 'polished'
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle, css } from 'styled-components'
 
-export default createGlobalStyle`
+interface GlobalProps {
+  overflow: string
+}
+
+export default createGlobalStyle<GlobalProps>`
   html {
     font-size: 62.5%;
     scroll-behavior: smooth;
@@ -14,7 +18,14 @@ export default createGlobalStyle`
       font-family: 'Roboto', sans-serif;
     }
 
+  
     body {
+     ${({ overflow }) =>
+       overflow === 'hidden' &&
+       css`
+         overflow: hidden;
+       `}
+       
       font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.9rem);
       line-height: clamp(1.6rem, 0.6rem + 2.6vw, 1.9rem);
 

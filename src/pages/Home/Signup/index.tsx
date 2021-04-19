@@ -1,17 +1,14 @@
 import React from 'react'
 import Style from './styles'
 
-import FormSignup from './FormSignup'
+import Aside from './Aside'
 import Subscribe from './Subscribe'
 
-const Signup = () => {
-  return (
-    <Style>
-      <FormSignup />
-
-      <Subscribe />
-    </Style>
-  )
-}
+const Signup = () => (
+  <Style>
+    <Aside />
+    <Subscribe />
+  </Style>
+)
 
 export default Signup

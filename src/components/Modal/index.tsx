@@ -1,6 +1,7 @@
 import React, {
   forwardRef,
   ReactElement,
+  useContext,
   useImperativeHandle,
   useRef,
   useState
@@ -8,6 +9,8 @@ import React, {
 import Style, { ModalBackground } from './styles'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
+
+import { OverflowContext } from 'App'
 
 interface ModalProps {
   children: ReactElement | ReactElement[]
@@ -38,6 +41,7 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     },
     ref
   ) => {
+    const overflowContext = useContext(OverflowContext)
     const modalRef = useRef(null)
     const [openModal, setOpenModal] = useState(false)
 
@@ -46,8 +50,15 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     })
 
     const toggleModal = (setModal?: boolean) => {
-      if (setModal === undefined) setOpenModal(!openModal)
-      else setOpenModal(setModal)
+      if (setModal === undefined) {
+        setOpenModal(!openModal)
+        overflowContext.setOverflow &&
+          overflowContext.setOverflow(!setModal ? 'hidden' : 'visible')
+      } else {
+        setOpenModal(setModal)
+        overflowContext.setOverflow &&
+          overflowContext.setOverflow(setModal ? 'hidden' : 'visible')
+      }
     }
 
     const onBackgroundClick = () => {
