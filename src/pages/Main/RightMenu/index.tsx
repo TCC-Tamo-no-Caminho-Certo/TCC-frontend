@@ -109,6 +109,7 @@ const RightMenu = () => {
     UserState
   >(state => state.user)
 
+  const [disabledLogout, setDisabledLogout] = useState(false)
   const [changeRole, setChangeRole] = useState(false)
   const { innerWidth } = useWindowDimensions()
   const [width, setWidth] = useState(innerWidth)
@@ -144,6 +145,7 @@ const RightMenu = () => {
   }
 
   const onLogoutClick = async () => {
+    setDisabledLogout(true)
     setLogoutLoading(true)
     HomeActions.update({ initial: false, page: 'login' })
     localStorage.removeItem('@SLab_ac_token')
@@ -267,6 +269,7 @@ const RightMenu = () => {
                       type='button'
                       variants={motionLogout}
                       onClick={onLogoutClick}
+                      disabled={disabledLogout}
                     >
                       {logoutLoading && (
                         <DotsLoader color={theme.colors.secondary} />

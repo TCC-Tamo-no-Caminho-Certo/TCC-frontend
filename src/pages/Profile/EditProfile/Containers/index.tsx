@@ -15,7 +15,7 @@ import {
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
-import ImageChanger from 'components/Form/ImageChanger'
+import ImageChanger, { ImageChangerMethods } from 'components/ImageChanger'
 import Avatar from 'components/User/Avatar'
 import DotsLoader from 'components/DotsLoader'
 import Slider from 'components/Slider'
@@ -31,16 +31,17 @@ const Containers = () => {
     state => state.universities
   )
   const user = useSelector<RootState, UserState>(state => state.user)
-  const imageRef = useRef<any>(null)
   const theme = useContext(ThemeContext)
+
+  const imageRef = useRef<ImageChangerMethods>(null)
 
   const { innerWidth } = useWindowDimensions()
   const [sliderWidth, setSliderWidth] = useState(innerWidth >= 600 ? 520 : 284)
 
   const dispatch = useDispatch()
 
-  const { universities } = storeUniversities
   const rolesToShow = ['student', 'professor', 'moderator']
+  const { universities } = storeUniversities
   const rolesWithEdit = user.roles.filter(role =>
     rolesToShow.find(wished => wished === role)
   )
@@ -70,7 +71,7 @@ const Containers = () => {
                   shadow
                   size={128}
                   loaderColor={theme.colors.primary}
-                  onClick={() => imageRef.current.toggleImageChanger()}
+                  onClick={() => imageRef.current?.toggleImageChanger()}
                 />
 
                 {user.dataLoading === false ? (

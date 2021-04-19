@@ -104,15 +104,6 @@ export const RightMenu = styled.div<RightMenuProps>`
     }
   }
 
-  #discardButton {
-    transition: color 200ms ease-in-out;
-    color: ${({ theme }) => theme.colors.secondary};
-
-    &:hover {
-      color: ${({ theme }) => theme.colors.primary};
-    }
-  }
-
   #confirmButton {
     height: max(36px, 32px);
 

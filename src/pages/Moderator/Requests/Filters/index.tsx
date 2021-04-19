@@ -12,7 +12,7 @@ import { Datepicker, Select, Submit, Text } from 'components/Form'
 import Presence from 'components/Presence'
 
 import { motion, Transition, Variants } from 'framer-motion'
-import { lighten } from 'polished'
+import { darken, lighten } from 'polished'
 import { Theme } from 'react-select'
 import { ThemeContext } from 'styled-components'
 
@@ -205,7 +205,7 @@ const Filters = () => {
             placeholder='De'
             dateColors={{
               body: theme.colors.secondary,
-              header: theme.colors.primary,
+              header: darken(0.06, theme.colors.tertiary),
               selected: theme.colors.tertiary,
               disabled: theme.colors.red
             }}
@@ -220,7 +220,7 @@ const Filters = () => {
             placeholder='Até'
             dateColors={{
               body: theme.colors.secondary,
-              header: theme.colors.primary,
+              header: darken(0.06, theme.colors.tertiary),
               selected: theme.colors.tertiary,
               disabled: theme.colors.red
             }}

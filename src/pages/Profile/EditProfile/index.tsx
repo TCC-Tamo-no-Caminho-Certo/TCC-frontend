@@ -1,7 +1,6 @@
 import React, {
   createContext,
   Dispatch,
-  RefObject,
   SetStateAction,
   useRef,
   useState
@@ -21,17 +20,13 @@ import Popup, { PopupMethods } from 'components/Popup'
 
 import { useDispatch } from 'react-redux'
 
-export interface ModalState {
-  imageRef: RefObject<ModalMethods>
-}
-
 interface EditProfileContextProps {
   globalChange?: boolean
   setGlobalChange?: Dispatch<SetStateAction<boolean>>
 }
 
-export const ImageRefModalContext = createContext<ModalState | null>(null)
 export const EditProfileContext = createContext<EditProfileContextProps>({})
+
 const EditProfile = () => {
   const confirmModal = useRef<ModalMethods>(null)
   const popupRef = useRef<PopupMethods>(null)
@@ -134,5 +129,3 @@ const EditProfile = () => {
 }
 
 export default EditProfile
-
-ImageRefModalContext.displayName = 'Modal Context'

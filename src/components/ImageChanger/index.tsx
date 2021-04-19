@@ -1,4 +1,3 @@
-/* eslint-disable space-before-function-paren */
 import React, {
   forwardRef,
   useContext,
@@ -26,6 +25,10 @@ import { Cropper } from 'react-cropper'
 import { useDispatch } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
+export interface ImageChangerMethods {
+  toggleImageChanger: () => void
+}
+
 const ImageChanger = forwardRef((_props, ref) => {
   const theme = useContext(ThemeContext)
 
@@ -49,7 +52,7 @@ const ImageChanger = forwardRef((_props, ref) => {
   ) => {
     const reader = new FileReader()
     reader.readAsDataURL(file)
-    reader.onload = function () {
+    reader.onload = () => {
       callback(reader.result)
     }
   }
@@ -68,14 +71,13 @@ const ImageChanger = forwardRef((_props, ref) => {
           setImage(file)
         }, file)
       } else {
+        setShowUploadAnother(false)
         onCloseClick()
 
         popupRef.current?.configPopup({
           type: 'error',
           message: 'Esta imagem é muito grande! tente novamente com uma menor.'
         })
-
-        setShowUploadAnother(false)
       }
   }
 
@@ -157,20 +159,17 @@ const ImageChanger = forwardRef((_props, ref) => {
             </div>
 
             {showUploadAnother && (
-              <div>
-                <label htmlFor='first' id='otherFileSelect'>
-                  <div>Enviar outra foto</div>
-
-                  <CameraIcon />
-                </label>
-              </div>
+              <label htmlFor='first' id='otherFileSelect'>
+                Enviar outra foto
+                <CameraIcon />
+              </label>
             )}
 
             <Submit
               type='button'
               id='confirmButton'
-              onClick={onConfirmClick}
               disabled={loader}
+              onClick={onConfirmClick}
             >
               <span id='save'>Salvar</span>
 
