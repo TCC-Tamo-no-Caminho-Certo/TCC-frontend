@@ -232,7 +232,7 @@ const Form = ({
 
   return (
     <>
-      <form noValidate onSubmit={onSubmit} {...rest}>
+      <form noValidate onSubmit={onSubmit} {...rest} className='Form'>
         {captcha && (
           <ReCaptcha
             size='invisible'

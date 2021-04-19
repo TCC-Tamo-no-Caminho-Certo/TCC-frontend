@@ -6,7 +6,7 @@ const Style = styled.div`
   align-items: center;
   flex-direction: column;
 
-  width: 80%;
+  width: 100%;
 
   svg + svg {
     overflow: visible;

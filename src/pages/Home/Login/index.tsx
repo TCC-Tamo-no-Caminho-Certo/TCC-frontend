@@ -1,17 +1,14 @@
 import React from 'react'
 import Style from './styles'
 
-import FormLogin from './FormLogin'
+import Aside from './Aside'
 import About from './About'
 
-const Login = () => {
-  return (
-    <Style>
-      <FormLogin />
-
-      <About />
-    </Style>
-  )
-}
+const Login = () => (
+  <Style>
+    <Aside />
+    <About />
+  </Style>
+)
 
 export default Login
