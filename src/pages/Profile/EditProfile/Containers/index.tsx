@@ -1,7 +1,6 @@
-import React, { memo, useContext, useEffect, useState } from 'react'
+import React, { memo, useContext, useEffect, useRef, useState } from 'react'
 
 import Field from './Field'
-import { ImageRefModalContext } from '../'
 import formatUpdateUser, { ContainerForm, InputData } from './formatUpdateUser'
 
 import selectedRoleLabel from 'utils/makeRoleLabel'
@@ -16,6 +15,7 @@ import {
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
+import ImageChanger from 'components/Form/ImageChanger'
 import Avatar from 'components/User/Avatar'
 import DotsLoader from 'components/DotsLoader'
 import Slider from 'components/Slider'
@@ -31,7 +31,7 @@ const Containers = () => {
     state => state.universities
   )
   const user = useSelector<RootState, UserState>(state => state.user)
-  const modalContext = useContext(ImageRefModalContext)
+  const imageRef = useRef<any>(null)
   const theme = useContext(ThemeContext)
 
   const { innerWidth } = useWindowDimensions()
@@ -59,54 +59,58 @@ const Containers = () => {
   }, [])
 
   return (
-    <Slider gap={200} gapVertical={32} width={sliderWidth}>
-      {containers.map(role => {
-        if (role === 'personal')
-          return (
-            <Card headerText='Dados Pessoais' key={role}>
-              <Avatar
-                border
-                shadow
-                size={128}
-                loaderColor={theme.colors.primary}
-                onClick={() =>
-                  modalContext?.imageRef.current?.toggleModal(true)
-                }
-              />
+    <>
+      <Slider gap={200} gapVertical={32} width={sliderWidth}>
+        {containers.map(role => {
+          if (role === 'personal')
+            return (
+              <Card headerText='Dados Pessoais' key={role}>
+                <Avatar
+                  border
+                  shadow
+                  size={128}
+                  loaderColor={theme.colors.primary}
+                  onClick={() => imageRef.current.toggleImageChanger()}
+                />
 
+                {user.dataLoading === false ? (
+                  formatUpdateUser(
+                    universities,
+                    user,
+                    'personal'
+                  ).map((info: InputData) => (
+                    <Field data={info} key={info.name} />
+                  ))
+                ) : (
+                  <DotsLoader color={theme.colors.primary} />
+                )}
+              </Card>
+            )
+
+          return (
+            <Card
+              key={role}
+              headerText={`Dados de ${selectedRoleLabel(role as Role)}`}
+              role={role}
+            >
               {user.dataLoading === false ? (
                 formatUpdateUser(
                   universities,
                   user,
-                  'personal'
+                  role as keyof ContainerForm
                 ).map((info: InputData) => (
-                  <Field data={info} key={info.name} />
+                  <Field key={info.name} data={info} />
                 ))
               ) : (
                 <DotsLoader color={theme.colors.primary} />
               )}
             </Card>
           )
+        })}
+      </Slider>
 
-        return (
-          <Card
-            key={role}
-            headerText={`Dados de ${selectedRoleLabel(role as Role)}`}
-            role={role}
-          >
-            {user.dataLoading === false ? (
-              formatUpdateUser(
-                universities,
-                user,
-                role as keyof ContainerForm
-              ).map((info: InputData) => <Field key={info.name} data={info} />)
-            ) : (
-              <DotsLoader color={theme.colors.primary} />
-            )}
-          </Card>
-        )
-      })}
-    </Slider>
+      <ImageChanger ref={imageRef} />
+    </>
   )
 }
 

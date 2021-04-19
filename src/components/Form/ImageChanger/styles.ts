@@ -127,6 +127,8 @@ const Style = styled.div`
 
   display: flex;
 
+  width: auto;
+
   padding: clamp(8px, 3vw, 48px);
   border-radius: 24px;
 

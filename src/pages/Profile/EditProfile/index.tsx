@@ -9,11 +9,10 @@ import React, {
 import Style, { ConfirmForm } from './styles'
 
 import Containers from './Containers'
-import ImageChanger from '../../../components/Form/ImageChanger'
 
 import editProfileSchema from 'utils/validations/editProfile'
 
-import { getUser, UserActions } from 'store/user'
+import { UserActions } from 'store/user'
 import { Response } from 'store'
 
 import { Form, Submit, Text } from 'components/Form'
@@ -34,7 +33,6 @@ interface EditProfileContextProps {
 export const ImageRefModalContext = createContext<ModalState | null>(null)
 export const EditProfileContext = createContext<EditProfileContextProps>({})
 const EditProfile = () => {
-  const imageRefModal = useRef<ModalMethods>(null)
   const confirmModal = useRef<ModalMethods>(null)
   const popupRef = useRef<PopupMethods>(null)
 
@@ -73,73 +71,62 @@ const EditProfile = () => {
 
   return (
     <>
-      <ImageRefModalContext.Provider value={{ imageRef: imageRefModal }}>
-        <Style>
-          <Form
-            loading
-            method='patch'
-            path='user'
-            schema={editProfileSchema}
-            afterResData={afterSubmit}
-            onError={(error: any) => {
-              if (error.message !== 'Você esqueceu de informar a senha!')
-                confirmModal.current?.toggleModal(false)
-            }}
+      <Style>
+        <Form
+          loading
+          path='user'
+          method='patch'
+          schema={editProfileSchema}
+          afterResData={afterSubmit}
+          onError={(error: any) => {
+            if (error.message !== 'Você esqueceu de informar a senha!')
+              confirmModal.current?.toggleModal(false)
+          }}
+        >
+          <EditProfileContext.Provider
+            value={{ globalChange, setGlobalChange }}
           >
-            <EditProfileContext.Provider
-              value={{ globalChange, setGlobalChange }}
+            <Containers />
+          </EditProfileContext.Provider>
+
+          <div id='submits'>
+            <button type='button' onClick={() => setGlobalChange(false)}>
+              Descartar alterações
+            </button>
+
+            <button
+              type='button'
+              onClick={() => {
+                confirmModal.current?.toggleModal(true)
+              }}
             >
-              <Containers />
-            </EditProfileContext.Provider>
+              Salvar
+            </button>
+          </div>
 
-            <div id='submits'>
-              <button type='button' onClick={() => setGlobalChange(false)}>
-                Descartar alterações
-              </button>
+          <Modal ref={confirmModal}>
+            <ConfirmForm>
+              <span>
+                Você precisa digitar sua senha para salvar as alterações!
+              </span>
 
-              <button
-                type='button'
-                onClick={() => {
-                  confirmModal.current?.toggleModal(true)
-                }}
-              >
-                Salvar
-              </button>
-            </div>
+              <Text eye name='password' placeholder='Senha (Atual)' />
 
-            <Modal ref={confirmModal}>
-              <ConfirmForm>
-                <span>
-                  Você precisa digitar sua senha para salvar as alterações!
-                </span>
+              <div id='buttons'>
+                <button
+                  type='button'
+                  id='cancel'
+                  onClick={() => confirmModal.current?.toggleModal(false)}
+                >
+                  Cancelar
+                </button>
 
-                <Text eye name='password' placeholder='Senha (Atual)' />
-
-                <div id='buttons'>
-                  <button
-                    type='button'
-                    id='cancel'
-                    onClick={() => confirmModal.current?.toggleModal(false)}
-                  >
-                    Cancelar
-                  </button>
-
-                  <Submit>Confirmar</Submit>
-                </div>
-              </ConfirmForm>
-            </Modal>
-          </Form>
-        </Style>
-
-        <Modal ref={imageRefModal}>
-          <ImageChanger
-            onCloseClick={() => {
-              imageRefModal.current?.toggleModal(false)
-              dispatch(getUser())
-            }}
-          />
-        </Modal>
-      </ImageRefModalContext.Provider>
+                <Submit>Confirmar</Submit>
+              </div>
+            </ConfirmForm>
+          </Modal>
+        </Form>
+      </Style>
 
       <Popup ref={popupRef} />
     </>
