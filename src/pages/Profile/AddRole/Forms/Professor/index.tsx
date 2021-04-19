@@ -299,7 +299,6 @@ function Professor({ request }: ProfessorProps) {
   return (
     <>
       <Form
-        getData={e => console.log(e)}
         loading
         afterResData={afterSubmit}
         method={request ? 'patch' : 'post'}

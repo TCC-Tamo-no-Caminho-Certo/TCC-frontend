@@ -9,7 +9,7 @@ import React, {
 import Style, { ConfirmForm } from './styles'
 
 import Containers from './Containers'
-import ImageChanger from './ImageChanger'
+import ImageChanger from '../../../components/Form/ImageChanger'
 
 import editProfileSchema from 'utils/validations/editProfile'
 

@@ -65,8 +65,8 @@ const Home = () => {
 
   useEffect(() => {
     location.pathname === '/home/signup'
-      ? dispatch(HomeActions.update({ page: 'signup' }))
-      : dispatch(HomeActions.update({ page: 'login' }))
+      ? dispatch(HomeActions.update({ page: 'signup', initial: false }))
+      : dispatch(HomeActions.update({ page: 'login', initial: false }))
   }, [dispatch, location.pathname])
 
   return (
@@ -74,8 +74,8 @@ const Home = () => {
       <section>
         <Shadow
           page={page}
-          variants={shadowAnimation}
           animate={page}
+          variants={shadowAnimation}
           transition={shadowAnimation.transition}
         />
 

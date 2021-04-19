@@ -1,3 +1,7 @@
+/* eslint-disable space-before-function-paren */
+// cropper.crossOriginUrl
+// cropper.getCanvasData().toDataUrl('image/jpeg' ,)
+
 import React, { useContext, useState } from 'react'
 import Style, { RightMenu } from './styles'
 
@@ -29,6 +33,7 @@ const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
   const [cropper, setCropper] = useState<any>()
   const [noImage, setNoImage] = useState(false)
   const [image, setImage] = useState()
+  const [type, setType] = useState('image/png')
   const [error, setError] = useState('')
   const [loader, setLoading] = useState(false)
 
@@ -36,34 +41,42 @@ const ImageChanger = ({ onCloseClick: onCloseClicked }: ImageChangerProps) => {
 
   const { white, red } = theme.colors
 
+  const read = (callback: any, file: any) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = function () {
+      callback(reader.result)
+    }
+  }
+
   const onChange = (e: any) => {
     e.preventDefault()
-    let files
-    const reader = new FileReader()
+    const file = e.target.files[0]
+    setType(file.type)
 
-    if (e.dataTransfer) files = e.dataTransfer.files
-    else if (e.target) files = e.target.files
+    read((file: any) => {
+      setImage(file)
+    }, file)
 
-    if (files[0])
-      if (files[0].size < 5242880) {
-        reader.onload = () => setImage(reader.result as any)
-        files[0] && reader.readAsDataURL(files[0])
-        setShowUpload(true)
-      } else
-        setError('Esta imagem é muito grande! tente novamente com uma menor.')
+    file.size < 5242880
+      ? setShowUpload(true)
+      : setError('Esta imagem é muito grande! tente novamente com uma menor.')
   }
 
   const onConfirmClick = async () => {
     if (cropper.cropped) {
       setLoading(true)
 
-      const result = await api.put('/user/avatar', {
-        picture: cropper.getCroppedCanvas().toDataURL()
+      console.log(type)
+      console.log(cropper.getCroppedCanvas().toDataURL(type))
+
+      const response = await api.put('/user/avatar', {
+        picture: cropper.getCroppedCanvas().toDataURL(type)
       })
 
-      dispatch(UserActions.update({ avatar_uuid: result.object }))
-      setLoading(false)
+      dispatch(UserActions.update({ avatar_uuid: response.avatar_uuid }))
       onCloseClicked()
+      setLoading(false)
     } else {
       setNoImage(true)
       setTimeout(() => setNoImage(false), 300)

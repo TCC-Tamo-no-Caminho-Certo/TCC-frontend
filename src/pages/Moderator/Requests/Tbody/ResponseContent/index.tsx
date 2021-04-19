@@ -113,6 +113,7 @@ function ResponseContent({
                 Excluir solicitação
               </motion.button>
             )}
+
             <CloseIcon onClick={onCloseClick} />
 
             <Infos
@@ -196,7 +197,6 @@ function ResponseContent({
 
             {!himselfModeratorRequest && (
               <>
-                {' '}
                 <div id='radios'>
                   <div id='radioAccept'>
                     <input
@@ -253,9 +253,11 @@ function ResponseContent({
                     <div className='wrapper' />
                   </div>
                 </div>
+
                 <Form
                   loading
                   method='patch'
+                  afterResData={afterResponseSubmit}
                   schema={
                     buttonClicked === 'rejected'
                       ? Yup.object({
@@ -267,7 +269,6 @@ function ResponseContent({
                           feedback: Yup.string()
                         })
                   }
-                  afterResData={afterResponseSubmit}
                   path={
                     buttonClicked === 'rejected'
                       ? `user/role/request/reject/${selectedInfo?.id}`

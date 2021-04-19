@@ -12,8 +12,8 @@ import AlertIcon from 'assets/Inputs/AlertIcon'
 import Logo from 'assets/Logo'
 
 import { Checkbox, Submit, Text } from 'components/Form'
-import ThemeSwitch from 'components/ThemeSwitch'
 
+// import ThemeSwitch from 'components/ThemeSwitch'
 import { AnimatePresence } from 'framer-motion'
 import { useDispatch } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
@@ -55,7 +55,7 @@ const FormLogin = () => {
 
   return (
     <Style>
-      <ThemeSwitch />
+      {/* <ThemeSwitch /> */}
 
       <Form
         afterResData={afterSubmit}
@@ -102,12 +102,7 @@ const FormLogin = () => {
         />
 
         <div id='submit'>
-          <Link
-            to='/forgot-password'
-            onClick={() => dispatch(HomeActions.update({ initial: false }))}
-          >
-            Não consegue fazer login?
-          </Link>
+          <Link to='/forgot-password'>Não consegue fazer login?</Link>
 
           <Submit data-cy='button-login-submit'>Efetuar Login</Submit>
         </div>

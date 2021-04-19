@@ -5,8 +5,8 @@ const dark: Themes = {
 
   colors: {
     primary: '#d65881',
-    secondary: '#121212',
-    tertiary: '#909090',
+    secondary: '#909090',
+    tertiary: '#121212',
     white: '#fcfcfc',
     green: '#00d053',
     yellow: '#fff500',

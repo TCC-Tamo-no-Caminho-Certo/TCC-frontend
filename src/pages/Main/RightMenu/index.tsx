@@ -145,10 +145,11 @@ const RightMenu = () => {
 
   const onLogoutClick = async () => {
     setLogoutLoading(true)
+    HomeActions.update({ initial: false, page: 'login' })
+    localStorage.removeItem('@SLab_ac_token')
     await api.get('logout')
     setLogoutLoading(false)
-    localStorage.removeItem('@SLab_ac_token')
-    HomeActions.update({ initial: true, page: 'login' })
+
     history.push('/home')
   }
 

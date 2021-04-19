@@ -154,13 +154,13 @@ const formatUpdateUser = (
       label: 'Linkedin:',
       name: 'linkedin',
       value: userData.student?.linkedin || '',
-      editable: true
+      editable: false
     },
     {
       label: 'Lattes:',
       name: 'lattes',
       value: userData.student?.lattes || '',
-      editable: true
+      editable: false
     },
     {
       label: 'Semestre:',
@@ -168,7 +168,7 @@ const formatUpdateUser = (
       value: userData.student?.universities
         ? `${userData.student.universities[0].semester}° Semestre`
         : '',
-      editable: true
+      editable: false
     }
   ]
 
@@ -178,19 +178,19 @@ const formatUpdateUser = (
       label: 'Linkedin:',
       name: 'linkedin',
       value: userData.professor?.linkedin || '',
-      editable: true
+      editable: false
     },
     {
       label: 'Lattes:',
       name: 'lattes',
       value: userData.professor?.lattes || '',
-      editable: true
+      editable: false
     },
     {
       label: 'Orcid:',
       name: 'orcid',
       value: userData.professor?.orcid || '',
-      editable: true
+      editable: false
     },
     {
       label: 'Pós-graduação:',
@@ -210,19 +210,17 @@ const formatUpdateUser = (
     }
   ]
 
-  console.log(userData)
-
   const moderator: InputData[] = [
     {
       label: 'Universidade',
-      name: 'university',
+      name: 'university_id',
       value:
         (userData.moderator?.universities &&
           getUniversityName(
             userData.moderator.universities[0].university_id
           )) ||
         '',
-      editable: true
+      editable: false
     }
   ]
 
