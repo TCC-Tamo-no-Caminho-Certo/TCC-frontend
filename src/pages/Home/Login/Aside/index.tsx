@@ -10,7 +10,7 @@ import { getValidation } from 'store/AsyncThunks/validation'
 import MailIcon from 'assets/Inputs/MailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import AlertIcon from 'assets/Inputs/AlertIcon'
-import Logo from 'assets/Logo'
+import Logo from 'assets/FullLogo'
 
 import Form, { Checkbox, Submit, Text } from 'components/Form'
 import Presence from 'components/Presence'

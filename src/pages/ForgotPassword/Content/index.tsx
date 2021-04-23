@@ -8,7 +8,7 @@ import { Response } from 'store'
 import SendEmailIcon from 'assets/global/SendEmailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import MailIcon from 'assets/Inputs/MailIcon'
-import Logo from 'assets/Logo'
+import Logo from 'assets/FullLogo'
 
 import { Form, Submit, Text } from 'components/Form'
 

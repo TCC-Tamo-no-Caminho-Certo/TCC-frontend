@@ -72,7 +72,7 @@ export interface UserState {
 
 type Payload = PayloadAction<Partial<UserState>>
 
-const initialState: UserState = {
+export const initialState: UserState = {
   entities: [],
   loading: 'idle',
   selectedRole: 'student',
@@ -111,20 +111,28 @@ const getInitialSelectedRole = (roles: Role[]): Role => {
   return roles[roles.length - 1]
 }
 
-export const getUser = createAsyncThunk('userConfig/getUser', async () => {
-  const { user } = await api.get('user')
+export const getUser = createAsyncThunk(
+  'userConfig/getUser',
+  async (callback?: () => void) => {
+    const { user } = await api.get('user')
 
-  return {
-    ...user,
-    selectedRole: getInitialSelectedRole(user.roles),
-    dataLoading: false
+    callback && callback()
+
+    return {
+      ...user,
+      selectedRole: getInitialSelectedRole(user.roles),
+      dataLoading: false
+    }
   }
-})
+)
 
 const User = createSlice({
   name: 'userConfig',
   initialState,
   reducers: {
+    reset: () => {
+      return initialState
+    },
     update: (state, action: Payload) => {
       if (action.payload.selectedRole !== undefined)
         localStorage.setItem('@SLab_selected_role', action.payload.selectedRole)

@@ -38,7 +38,7 @@ const Style = styled.div`
     margin-top: 16px;
   }
 
-  .Logo {
+  .FullLogo {
     margin-bottom: 16px;
   }
 

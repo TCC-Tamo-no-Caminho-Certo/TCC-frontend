@@ -7,7 +7,7 @@ import { HomeActions } from 'store/home'
 import { Response } from 'store'
 
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
-import Logo from 'assets/Logo'
+import Logo from 'assets/FullLogo'
 
 import { Form, Submit, Text } from 'components/Form'
 import BackButton from 'components/BackButton'

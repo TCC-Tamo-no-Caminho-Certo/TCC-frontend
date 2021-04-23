@@ -145,12 +145,12 @@ const RightMenu = () => {
 
   const onLogoutClick = async () => {
     setDisabledLogout(true)
-    setLogoutLoading(true)
     localStorage.removeItem('@SLab_ac_token')
+    setLogoutLoading(true)
 
     await api.get('logout')
 
-    setLogoutLoading(false)
+    dispatch(UserActions.reset())
     dispatch(getValidation())
     dispatch(HomeActions.update({ initial: false, page: 'login' }))
   }
