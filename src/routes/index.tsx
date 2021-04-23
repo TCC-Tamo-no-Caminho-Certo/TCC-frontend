@@ -33,6 +33,7 @@ const Routes = () => {
 
   useEffect(() => {
     const path = location.pathname.split('/')[1]
+    console.log(path !== 'session')
 
     if (validation.logged) path !== 'session' && history.push('/session/main')
     else path === 'session' && history.push('/home')

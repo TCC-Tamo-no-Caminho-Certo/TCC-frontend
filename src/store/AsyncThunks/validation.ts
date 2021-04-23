@@ -11,7 +11,7 @@ export interface ValidationState {
 const initialState: ValidationState = {
   loading: 'idle',
   entities: [],
-  logged: false
+  logged: !!localStorage.getItem('@SLab_ac_token')
 }
 
 export const getValidation = createAsyncThunk(
