@@ -60,6 +60,8 @@ const AddRole = () => {
   const theme = useContext(ThemeContext)
 
   const rolesRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+
   const [roleSelected, setRoleSelected] = useState<Role | undefined>(undefined)
 
   const dispatch = useDispatch()
@@ -70,7 +72,6 @@ const AddRole = () => {
   useEffect(() => {
     if (roleSelected === undefined)
       allRoles.map(role => pathname.includes(role) && setRoleSelected(role))
-    window.scrollTo(0, document.body.scrollHeight)
   }, [roleSelected, pathname])
 
   useEffect(() => {
@@ -81,8 +82,8 @@ const AddRole = () => {
   }, [])
 
   return (
-    <Style>
-      <section id='addRole' ref={rolesRef}>
+    <>
+      <Style ref={rolesRef}>
         <h2>Escolher Papel</h2>
 
         <p>
@@ -115,6 +116,8 @@ const AddRole = () => {
             userRoles={labelRoles}
             color={theme.roles.student}
             onClick={() => {
+              if (containerRef.current)
+                containerRef.current.scrollIntoView({ behavior: 'smooth' })
               setRoleSelected('student')
             }}
             benefits={[
@@ -131,7 +134,11 @@ const AddRole = () => {
             title='Professor'
             userRoles={labelRoles}
             color={theme.roles.professor}
-            onClick={() => setRoleSelected('professor')}
+            onClick={() => {
+              if (containerRef.current)
+                containerRef.current.scrollIntoView({ behavior: 'smooth' })
+              setRoleSelected('professor')
+            }}
             benefits={[
               'Pode fazer tudo que um estudante pode fazer',
               'Pedir revisão de propostas',
@@ -148,7 +155,11 @@ const AddRole = () => {
               title='Moderador'
               userRoles={labelRoles}
               color={theme.roles.moderator}
-              onClick={() => setRoleSelected('moderator')}
+              onClick={() => {
+                if (containerRef.current)
+                  containerRef.current.scrollIntoView({ behavior: 'smooth' })
+                setRoleSelected('moderator')
+              }}
               benefits={[
                 'Aceitar solicitação de mudança para Revisor ',
                 'Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores (devem estar na mesma instituição)',
@@ -158,7 +169,7 @@ const AddRole = () => {
             />
           )}
         </div>
-      </section>
+      </Style>
 
       <AddRoleContext.Provider
         value={{
@@ -167,9 +178,15 @@ const AddRole = () => {
           universities: storeUniversities.universities
         }}
       >
-        {roleSelected && <Container role={roleSelected} />}
+        {roleSelected && (
+          <Container
+            ref={containerRef}
+            role={roleSelected}
+            rolesRef={rolesRef}
+          />
+        )}
       </AddRoleContext.Provider>
-    </Style>
+    </>
   )
 }
 

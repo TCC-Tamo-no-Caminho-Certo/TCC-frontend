@@ -108,5 +108,22 @@ export const Content = styled(Card)<ContentProps>`
     border-radius: 24px;
   }
 `
+
+const Style = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  width: 100%;
+  min-height: 100vh;
+
+  background-color: ${({ theme }) => theme.colors.tertiary};
+  color: ${({ theme }) => theme.colors.white};
+`
+
+export default Style
+
+Style.displayName = 'Container-Style'
 Header.displayName = 'Header-Style'
 Content.displayName = 'Content-Style'

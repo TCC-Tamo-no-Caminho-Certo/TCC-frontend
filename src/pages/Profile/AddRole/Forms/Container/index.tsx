@@ -1,5 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Content, Header } from './styles'
+import React, {
+  forwardRef,
+  RefObject,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
+import Style, { Content, Header } from './styles'
 
 import RequestSvg from './RequestSvg'
 import Professor from '../Professor'
@@ -13,6 +20,8 @@ import makeRoleLabel from 'utils/makeRoleLabel'
 import api from 'services/api'
 
 import { Role } from 'store/AsyncThunks/roles'
+
+import useCombinedRefs from 'hooks/useCombinedRefs'
 
 interface Forms {
   student: JSX.Element
@@ -36,9 +45,12 @@ export interface Request<DataType> {
 
 interface ContainerProps {
   role: Role
+  rolesRef: RefObject<HTMLDivElement>
 }
 
-const Container = ({ role }: ContainerProps) => {
+const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
+  const hereRef = useRef<HTMLDivElement>(null)
+  const conbinedRefs = useCombinedRefs(ref, hereRef)
   const { roles } = useContext(AddRoleContext)
   const [request, setRequest] = useState<any>(undefined)
 
@@ -65,8 +77,12 @@ const Container = ({ role }: ContainerProps) => {
     return setRequest(undefined)
   }, [role, roles])
 
+  useEffect(() => {
+    hereRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [])
+
   return (
-    <section>
+    <Style id='container' ref={conbinedRefs}>
       <Content role={role}>
         <Header id='cy-follow'>
           {request ? 'Acompanhar solicitação' : 'Solicitação de perfil'}
@@ -79,7 +95,7 @@ const Container = ({ role }: ContainerProps) => {
             <RequestSvg status={request?.status} />
 
             {request?.status === 'rejected' && (
-              <>
+              <div>
                 <div id='rejected'>
                   <p>Solicitação rejeitada</p>
 
@@ -92,7 +108,7 @@ const Container = ({ role }: ContainerProps) => {
                 <p id='tryAgain'>
                   Se quiser tente novamente alterando seus dados abaixo:
                 </p>
-              </>
+              </div>
             )}
           </>
         )}
@@ -102,13 +118,15 @@ const Container = ({ role }: ContainerProps) => {
         <button
           id='scrollButton'
           type='button'
-          onClick={() => window.scrollTo(0, 0)}
+          onClick={() =>
+            rolesRef.current?.scrollIntoView({ behavior: 'smooth' })
+          }
         >
           Escolher outro papel
         </button>
       </Content>
-    </section>
+    </Style>
   )
-}
+})
 
 export default Container

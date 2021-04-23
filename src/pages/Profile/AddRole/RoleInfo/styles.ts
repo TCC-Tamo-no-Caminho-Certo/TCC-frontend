@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 interface StyleProps {
   color: string
-  show: boolean
   title: string
 }
 
@@ -17,7 +16,7 @@ const Style = styled.div<StyleProps>`
   width: 300px;
   margin-top: 24px;
 
-  #title {
+  .title {
     display: flex;
     align-items: center;
 
@@ -26,10 +25,7 @@ const Style = styled.div<StyleProps>`
     cursor: pointer;
 
     color: ${({ color }) => color};
-
-    span {
-      font-size: clamp(2rem, 0.6rem + 2.6vw, 2.5rem);
-    }
+    font-size: clamp(2rem, 0.6rem + 2.6vw, 2.2rem);
 
     .Icon {
       width: 18px;

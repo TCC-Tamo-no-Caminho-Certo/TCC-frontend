@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Style from './styles'
 
 import api from 'services/api'
@@ -8,7 +8,9 @@ import { Role } from 'store/AsyncThunks/roles'
 import CheckIcon from 'assets/global/CheckIcon'
 import ArrowIcon from 'assets/global/ArrowIcon'
 
-import { AnimatePresence, motion, useCycle, Variants } from 'framer-motion'
+import Presence from 'components/Presence'
+
+import { motion, useCycle, Variants } from 'framer-motion'
 
 interface RoleInfoProps {
   id: string
@@ -27,13 +29,22 @@ const container: Variants = {
     cursor: 'pointer',
     height: 'auto',
     opacity: 1,
-    transition: { staggerChildren: 0.05, type: 'tween', duration: 0.1 }
+    transition: {
+      type: 'tween',
+      duration: 0.2,
+      staggerChildren: 0.05
+    }
   },
   hidden: {
     cursor: 'pointer',
     height: 0,
     opacity: 0,
-    transition: { staggerChildren: 0.1, staggerDirection: -1 }
+    transition: {
+      type: 'tween',
+      duration: 0.2,
+      staggerChildren: 0.1,
+      staggerDirection: -1
+    }
   }
 }
 
@@ -72,7 +83,7 @@ const RoleInfo = ({
   onLabelClick,
   noButton = false
 }: RoleInfoProps) => {
-  const [show, toggleShow] = useCycle<boolean>(false, true)
+  const [show, toggleShow] = useState(false)
   const [deg, rotate] = useCycle(0, -90)
 
   const haveThisRole = userRoles?.includes(title)
@@ -81,15 +92,19 @@ const RoleInfo = ({
     onClick !== undefined && onClick()
   }
 
+  useEffect(() => {
+    console.log('tst', show)
+  }, [show])
+
   return (
-    <Style className='RoleInfo' id={id} show={show} color={color} title={title}>
+    <Style className='RoleInfo' id={id} color={color} title={title}>
       <button
-        id='title'
+        className='title'
         type='button'
         onClick={() => {
-          toggleShow()
+          toggleShow(!show)
           rotate()
-          setTimeout(() => onLabelClick && onLabelClick(), 301)
+          onLabelClick && onLabelClick()
         }}
       >
         <ArrowIcon
@@ -102,58 +117,61 @@ const RoleInfo = ({
           }}
         />
 
-        <span>{title}</span>
+        {title}
       </button>
 
-      <AnimatePresence>
-        {show && (
-          <motion.div animate='show' exit='hidden' variants={container}>
-            <ul>
-              {benefits.map((benefit, index) => (
-                <motion.li key={index} variants={item}>
-                  <p>
-                    <CheckIcon />
+      <Presence
+        animate='show'
+        exit='hidden'
+        condition={show}
+        variants={container}
+      >
+        <ul>
+          {benefits.map((benefit, index) => (
+            <motion.li key={index} variants={item}>
+              <p>
+                <CheckIcon />
 
-                    {benefit}
-                  </p>
-                </motion.li>
-              ))}
-            </ul>
+                {benefit}
+              </p>
+            </motion.li>
+          ))}
+        </ul>
 
-            {!noButton &&
-              (!haveThisRole ? (
+        <>
+          {!noButton &&
+            (!haveThisRole ? (
+              <motion.button
+                type='button'
+                variants={button}
+                onClick={onButtonClick}
+              >
+                Quero ser {title}!
+              </motion.button>
+            ) : (
+              <>
                 <motion.button
-                  type='button'
+                  disabled
+                  id='roleAlreadyExists'
                   variants={button}
-                  onClick={onButtonClick}
                 >
-                  Quero ser {title}!
+                  Já sou {title}!
                 </motion.button>
-              ) : (
-                <>
-                  <motion.button
-                    disabled
-                    id='roleAlreadyExists'
-                    variants={button}
-                  >
-                    Já sou {title}!
-                  </motion.button>
 
-                  <motion.button
-                    onClick={async () => {
-                      await api.delete(`user/role/${role}`)
-                      history.go(0)
-                    }}
-                    variants={button}
-                    id='deleteRole'
-                  >
-                    Remover papel
-                  </motion.button>
-                </>
-              ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+                <motion.button
+                  onClick={async () => {
+                    await api.delete(`user/role/${role}`)
+                    history.go(0)
+                  }}
+                  variants={button}
+                  id='deleteRole'
+                >
+                  Remover papel
+                </motion.button>
+              </>
+            ))}
+        </>
+      </Presence>
     </Style>
   )
 }

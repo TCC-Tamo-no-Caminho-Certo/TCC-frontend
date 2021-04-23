@@ -18,20 +18,34 @@ export default createGlobalStyle<GlobalProps>`
       font-family: 'Roboto', sans-serif;
     }
 
-  
     body {
-     ${({ overflow }) =>
-       overflow === 'hidden' &&
-       css`
-         overflow: hidden;
-       `}
-       
       font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.9rem);
       line-height: clamp(1.6rem, 0.6rem + 2.6vw, 1.9rem);
 
       color: ${({ theme }) => theme.colors.tertiary};
       background-color: ${({ theme }) => theme.colors.primary};
 
+      &::-webkit-scrollbar {
+        width: 8px;
+
+        background-color:${({ theme }) => darken(0.1, theme.colors.tertiary)};
+      }
+
+      &::-webkit-scrollbar-track {
+        border-radius: 1px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+
+        border: solid 2px transparent;
+        box-shadow: inset 0 0 10px 1px rgba(255,255,255,0.8);
+
+        &:hover {
+          box-shadow: inset 0 0 10px 1px rgba(255,255,255,1);
+        }
+      }
+      
       input:-webkit-autofill,
       input:-webkit-autofill:hover, 
       input:-webkit-autofill:focus, 
@@ -72,26 +86,12 @@ export default createGlobalStyle<GlobalProps>`
         }
       }
 
-      &::-webkit-scrollbar {
-        width: 8px;
-
-        background-color:${({ theme }) => darken(0.1, theme.colors.tertiary)};
-      }
-
-      &::-webkit-scrollbar-track {
-        border-radius: 1px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        border-radius: 4px;
-
-        border: solid 2px transparent;
-        box-shadow: inset 0 0 10px 1px rgba(255,255,255,0.8);
-
-        &:hover {
-          box-shadow: inset 0 0 10px 1px rgba(255,255,255,1);
-        }
-      }
+      ${({ overflow }) =>
+        overflow === 'hidden' &&
+        css`
+          overflow: hidden;
+        `}
+       
     }
   }
 
