@@ -34,6 +34,7 @@ const Aside = () => {
   const dispatch = useDispatch()
 
   const afterSubmit = (res: Response<any>) => {
+    console.log('tst2', res)
     if (res.success) {
       localStorage.setItem('@SLab_ac_token', res.access_token)
       dispatch(getValidation())
@@ -46,7 +47,7 @@ const Aside = () => {
           setLoginFailed('Ops, algo deu errado :(')
       }
 
-      setTimeout(() => setLoginFailed(''), 9000)
+      setTimeout(() => setLoginFailed(''), 3000)
     }
   }
 

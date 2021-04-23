@@ -191,9 +191,11 @@ const Form = ({
         cancelToken: signal.token
       })
 
-      if (resData.response)
+      if (resData.response?.data) {
+        loading && setShowLoader(false)
         cbAfterResData && cbAfterResData(resData.response.data)
-      else cbAfterResData && cbAfterResData(resData)
+      } else cbAfterResData && cbAfterResData(resData)
+
       return resData.success
     }
   }
@@ -219,6 +221,9 @@ const Form = ({
     getData && getData(data)
 
     validate()
+    console.log(haveErrors)
+
+    haveErrors && loading && setShowLoader(false)
 
     !haveErrors && addToPath && parsePath()
 
@@ -226,7 +231,6 @@ const Form = ({
       data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
 
     const submitRes = !haveErrors && (await makeRequest(afterResData))
-    loading && setShowLoader(false)
     push && submitRes && history.push(push)
   }
 
