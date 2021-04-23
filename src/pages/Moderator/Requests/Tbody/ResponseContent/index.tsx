@@ -9,7 +9,7 @@ import api from 'services/api'
 
 import { Response, RootState } from 'store'
 import { Role } from 'store/AsyncThunks/roles'
-import { UserState } from 'store/user'
+import { UserState } from 'store/AsyncThunks/user'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
 import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'

@@ -19,7 +19,7 @@ import api from 'services/api'
 
 import { Response, RootState } from 'store'
 import { University } from 'store/AsyncThunks/universities'
-import { Email, getUser, UserState } from 'store/user'
+import { Email, getUser, UserState } from 'store/AsyncThunks/user'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 

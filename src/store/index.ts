@@ -1,6 +1,6 @@
 import Theme from './theme'
 import Sidebar from './sidebar'
-import User from './user'
+import User from './AsyncThunks/user'
 import Home from './home'
 import Universities from './AsyncThunks/universities'
 import Roles from './AsyncThunks/roles'

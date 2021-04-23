@@ -9,7 +9,7 @@ import {
   withoutFullTime
 } from 'utils/validations/addRoleForms/moderator'
 
-import { getUser, UserState } from 'store/user'
+import { getUser, UserState } from 'store/AsyncThunks/user'
 import { Response, RootState } from 'store'
 
 import { Select, Submit, Textarea } from 'components/Form'

@@ -4,7 +4,7 @@ import Main from 'pages/Main'
 import Profile from 'pages/Profile'
 import Moderator from 'pages/Moderator'
 
-import { getUser } from 'store/user'
+import { getUser } from 'store/AsyncThunks/user'
 
 import { useDispatch } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
@@ -14,7 +14,6 @@ const PrivateRoutes = () => {
 
   useEffect(() => {
     dispatch(getUser())
-    window.history.pushState(null, '', document.URL)
   }, [dispatch])
 
   return (

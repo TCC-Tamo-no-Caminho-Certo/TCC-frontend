@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import PrivateRoutes from './PrivateRoutes'
 
@@ -19,18 +19,25 @@ import {
 const Routes = () => {
   const { pathname } = useLocation()
   const history = useHistory()
+  const [logged, setLogged] = useState(false)
 
   useEffect(() => {
     ;(async function validateAndRedirect() {
       const response = await validateSession()
 
-      response
-        ? pathname.split('/')[1] !== 'session' && history.push('/session/main')
-        : pathname.split('/')[1] === 'session' && history.push('/home')
+      setLogged(response)
     })()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [pathname])
+
+  useEffect(() => {
+    console.log(logged)
+
+    logged
+      ? pathname.split('/')[1] !== 'session' && history.push('/session/main')
+      : pathname.split('/')[1] === 'session' && history.push('/home')
+  }, [logged, history, pathname])
 
   return (
     <Switch>

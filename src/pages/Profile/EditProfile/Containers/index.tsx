@@ -6,7 +6,7 @@ import formatUpdateUser, { ContainerForm, InputData } from './formatUpdateUser'
 import selectedRoleLabel from 'utils/makeRoleLabel'
 
 import { Role } from 'store/AsyncThunks/roles'
-import { UserState } from 'store/user'
+import { UserState } from 'store/AsyncThunks/user'
 import { RootState } from 'store'
 import {
   getUniversities,

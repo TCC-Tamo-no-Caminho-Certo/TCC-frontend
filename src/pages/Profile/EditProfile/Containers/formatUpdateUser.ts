@@ -1,5 +1,5 @@
 import { University } from 'store/AsyncThunks/universities'
-import { UserState } from 'store/user'
+import { UserState } from 'store/AsyncThunks/user'
 
 export interface InputData {
   label: string

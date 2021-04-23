@@ -13,7 +13,7 @@ import Container from './Forms/Container'
 import selectRoleLabel from 'utils/makeRoleLabel'
 
 import { RootState } from 'store'
-import { UserState } from 'store/user'
+import { UserState } from 'store/AsyncThunks/user'
 import { getRoles, Role, RolesState, RoleType } from 'store/AsyncThunks/roles'
 import {
   getUniversities,

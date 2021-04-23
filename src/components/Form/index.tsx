@@ -48,6 +48,7 @@ export interface FormProps extends HTMLProps<HTMLFormElement> {
   schema?: ObjectSchema
   addData?: { [key: string]: any }
   method?: 'post' | 'get' | 'delete' | 'patch' | 'put'
+  className?: string
   getData?: (_data: any) => void
   onError?: (_error: any) => void
   afterResData?: (_resData: any) => void
@@ -68,6 +69,7 @@ const Form = ({
   addToPath,
   afterResData,
   method = 'post',
+  className = 'Form',
   ...rest
 }: FormProps) => {
   const history = useHistory()
@@ -229,7 +231,7 @@ const Form = ({
   }
 
   return (
-    <form noValidate onSubmit={onSubmit} {...rest}>
+    <form noValidate className={className} onSubmit={onSubmit} {...rest}>
       {captcha && (
         <ReCaptcha
           size='invisible'

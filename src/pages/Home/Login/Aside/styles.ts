@@ -92,7 +92,8 @@ const Style = styled.aside`
 
         .Submit {
           width: 100%;
-          margin-top: 4px;
+
+          height: max(5vh, 35px);
         }
       }
     }

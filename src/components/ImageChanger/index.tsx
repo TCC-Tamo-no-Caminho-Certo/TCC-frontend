@@ -9,7 +9,7 @@ import Style, { RightMenu } from './styles'
 
 import api from 'services/api'
 
-import { UserActions } from 'store/user'
+import { UserActions } from 'store/AsyncThunks/user'
 
 import CameraIcon from 'assets/Inputs/CameraIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'

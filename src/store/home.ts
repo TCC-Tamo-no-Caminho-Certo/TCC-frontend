@@ -16,7 +16,7 @@ const Home = createSlice({
   name: 'home',
   initialState,
   reducers: {
-    update: (state, action: Payload) => ({
+    update: (_state, action: Payload) => ({
       ...action.payload
     })
   }

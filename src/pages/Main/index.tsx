@@ -5,7 +5,7 @@ import RightMenu from './RightMenu'
 
 // import Projects from './Projects/index'
 import { RootState } from 'store'
-import { UserState } from 'store/user'
+import { UserState } from 'store/AsyncThunks/user'
 
 import MapIcon from 'assets/MainSidebar/MapIcon'
 import ProjectIcon from 'assets/MainSidebar/ProjectIcon'

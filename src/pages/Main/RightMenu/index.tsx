@@ -12,7 +12,7 @@ import selectRoleLabel from 'utils/makeRoleLabel'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { UserActions, UserState } from 'store/user'
+import { UserActions, UserState } from 'store/AsyncThunks/user'
 // import { ThemeState } from 'store/theme'
 import { HomeActions } from 'store/home'
 
@@ -147,11 +147,12 @@ const RightMenu = () => {
   const onLogoutClick = async () => {
     setDisabledLogout(true)
     setLogoutLoading(true)
-    HomeActions.update({ initial: false, page: 'login' })
+
     localStorage.removeItem('@SLab_ac_token')
     await api.get('logout')
     setLogoutLoading(false)
 
+    dispatch(HomeActions.update({ initial: false, page: 'login' }))
     history.push('/home')
   }
 

@@ -12,7 +12,7 @@ import Containers from './Containers'
 
 import editProfileSchema from 'utils/validations/editProfile'
 
-import { UserActions } from 'store/user'
+import { UserActions } from 'store/AsyncThunks/user'
 import { Response } from 'store'
 
 import { Form, Submit, Text } from 'components/Form'
