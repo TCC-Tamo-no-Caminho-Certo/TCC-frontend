@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 import PrivateRoutes from './PrivateRoutes'
 
@@ -6,8 +6,10 @@ import ForgotPassword from 'pages/ForgotPassword'
 import ResetPassword from 'pages/ResetPassword'
 import Home from 'pages/Home'
 
-import validateSession from 'utils/validateSession'
+import { getValidation, ValidationState } from 'store/AsyncThunks/validation'
+import { RootState } from 'store'
 
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Redirect,
   Route,
@@ -17,27 +19,24 @@ import {
 } from 'react-router-dom'
 
 const Routes = () => {
-  const { pathname } = useLocation()
+  const validation = useSelector<RootState, ValidationState>(
+    state => state.validation
+  )
+
+  const dispatch = useDispatch()
   const history = useHistory()
-  const [logged, setLogged] = useState(false)
+  const location = useLocation()
 
   useEffect(() => {
-    ;(async function validateAndRedirect() {
-      const response = await validateSession()
-
-      setLogged(response)
-    })()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
+    dispatch(getValidation())
+  }, [dispatch])
 
   useEffect(() => {
-    console.log(logged)
+    const path = location.pathname.split('/')[1]
 
-    logged
-      ? pathname.split('/')[1] !== 'session' && history.push('/session/main')
-      : pathname.split('/')[1] === 'session' && history.push('/home')
-  }, [logged, history, pathname])
+    if (validation.logged) path !== 'session' && history.push('/session/main')
+    else path === 'session' && history.push('/home')
+  }, [location, history, validation.logged])
 
   return (
     <Switch>

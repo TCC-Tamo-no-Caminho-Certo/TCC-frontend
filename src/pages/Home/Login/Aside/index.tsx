@@ -5,6 +5,7 @@ import loginSchema from 'utils/validations/login'
 
 import { HomeActions } from 'store/home'
 import { Response } from 'store'
+import { getValidation } from 'store/AsyncThunks/validation'
 
 import MailIcon from 'assets/Inputs/MailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
@@ -28,13 +29,15 @@ export interface LoginData {
 const Aside = () => {
   const [loginFailed, setLoginFailed] = useState('')
   const [disabled, setDisabled] = useState(false)
-
-  const dispatch = useDispatch()
   const history = useHistory()
 
+  const dispatch = useDispatch()
+
   const afterSubmit = (res: Response<any>) => {
-    if (res.success) localStorage.setItem('@SLab_ac_token', res.access_token)
-    else {
+    if (res.success) {
+      localStorage.setItem('@SLab_ac_token', res.access_token)
+      dispatch(getValidation())
+    } else {
       switch (res.error) {
         case 'User not found!':
           setLoginFailed('E-mail não encontrado')
@@ -66,7 +69,6 @@ const Aside = () => {
           captcha
           loading
           path='login'
-          push='/session/main'
           schema={loginSchema}
           afterResData={afterSubmit}
         >

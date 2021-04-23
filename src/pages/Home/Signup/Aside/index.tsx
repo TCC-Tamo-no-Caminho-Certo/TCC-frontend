@@ -30,7 +30,7 @@ const Aside = () => {
 
   const onSuccessClose = () => {
     dispatch(HomeActions.update({ initial: false, page: 'login' }))
-    history.push('/')
+    history.push('/home')
   }
 
   const afterSubmit = (res: Response<any>) => {

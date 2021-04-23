@@ -15,6 +15,7 @@ import { RootState } from 'store'
 import { UserActions, UserState } from 'store/AsyncThunks/user'
 // import { ThemeState } from 'store/theme'
 import { HomeActions } from 'store/home'
+import { getValidation } from 'store/AsyncThunks/validation'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
@@ -30,7 +31,7 @@ import DotsLoader from 'components/DotsLoader'
 
 import { AnimatePresence, motion, useCycle, Variants } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ThemeContext } from 'styled-components'
 
 const motionMenu: Variants = {
@@ -120,8 +121,6 @@ const RightMenu = () => {
 
   const [editOpen, toggleEditOpen] = useCycle(false, true)
   const dispatch = useDispatch()
-  const history = useHistory()
-
   const closedHeight = 112
   const openHeight = 300 + closedHeight
 
@@ -147,13 +146,13 @@ const RightMenu = () => {
   const onLogoutClick = async () => {
     setDisabledLogout(true)
     setLogoutLoading(true)
-
     localStorage.removeItem('@SLab_ac_token')
-    await api.get('logout')
-    setLogoutLoading(false)
 
+    await api.get('logout')
+
+    setLogoutLoading(false)
+    dispatch(getValidation())
     dispatch(HomeActions.update({ initial: false, page: 'login' }))
-    history.push('/home')
   }
 
   const formatterName = (name: string): string => {
