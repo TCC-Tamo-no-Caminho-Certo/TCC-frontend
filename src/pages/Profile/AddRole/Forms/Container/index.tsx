@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import Style, { Content, Header } from './styles'
+import { Content, Header } from './styles'
 
 import RequestSvg from './RequestSvg'
 import Professor from '../Professor'
@@ -66,7 +66,7 @@ const Container = ({ role }: ContainerProps) => {
   }, [role, roles])
 
   return (
-    <Style>
+    <section>
       <Content role={role}>
         <Header id='cy-follow'>
           {request ? 'Acompanhar solicitação' : 'Solicitação de perfil'}
@@ -107,7 +107,7 @@ const Container = ({ role }: ContainerProps) => {
           Escolher outro papel
         </button>
       </Content>
-    </Style>
+    </section>
   )
 }
 

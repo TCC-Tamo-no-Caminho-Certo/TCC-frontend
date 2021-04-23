@@ -35,7 +35,7 @@ const Profile = () => {
       // }
     ]
 
-    if (selectedRole === 'moderator')
+    if (selectedRole === 'moderator' || selectedRole === 'admin')
       sidebarSections.push({
         icon: () => <ProjectIcon />,
         paths: ['/session/moderator'],

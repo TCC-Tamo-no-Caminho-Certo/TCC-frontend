@@ -108,32 +108,5 @@ export const Content = styled(Card)<ContentProps>`
     border-radius: 24px;
   }
 `
-
-const Style = styled.section`
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 48px 0;
-  min-height: 100vh;
-  width: 100%;
-
-  background-color: ${({ theme }) => theme.colors.tertiary};
-  color: ${({ theme }) => theme.colors.secondary};
-
-  #delete {
-    position: absolute;
-    top: 0;
-    left: 100px;
-    width: 300px;
-    height: 48px;
-  }
-`
-
-export default Style
-
 Header.displayName = 'Header-Style'
 Content.displayName = 'Content-Style'
-Style.displayName = 'Container-Style'

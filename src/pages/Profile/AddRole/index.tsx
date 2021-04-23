@@ -70,7 +70,6 @@ const AddRole = () => {
   useEffect(() => {
     if (roleSelected === undefined)
       allRoles.map(role => pathname.includes(role) && setRoleSelected(role))
-
     window.scrollTo(0, document.body.scrollHeight)
   }, [roleSelected, pathname])
 
@@ -83,7 +82,7 @@ const AddRole = () => {
 
   return (
     <Style>
-      <section ref={rolesRef}>
+      <section id='addRole' ref={rolesRef}>
         <h2>Escolher Papel</h2>
 
         <p>
