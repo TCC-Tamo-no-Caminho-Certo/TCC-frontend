@@ -7,9 +7,9 @@ interface StyleProps {
 }
 
 export const MotionRect = styled(motion.rect).attrs({
+  rx: '2',
   width: '24',
-  height: '3',
-  rx: '2'
+  height: '3'
 })``
 
 const Style = styled.button.attrs({

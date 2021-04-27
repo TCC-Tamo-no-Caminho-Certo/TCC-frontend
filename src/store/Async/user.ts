@@ -112,7 +112,7 @@ const getInitialSelectedRole = (roles: Role[]): Role => {
 }
 
 export const getUser = createAsyncThunk(
-  'userConfig/getUser',
+  'user/getUser',
   async (callback?: () => void) => {
     const { user } = await api.get('user')
 
@@ -127,7 +127,7 @@ export const getUser = createAsyncThunk(
 )
 
 const User = createSlice({
-  name: 'userConfig',
+  name: 'user',
   initialState,
   reducers: {
     reset: () => {

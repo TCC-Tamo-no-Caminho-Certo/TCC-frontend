@@ -9,8 +9,8 @@ const Style = styled.div`
 
   height: 100vh;
 
-  background-repeat: no-repeat;
   background-size: cover;
+  background-repeat: no-repeat;
   background-image: url(${googleMaps});
   color: ${({ theme }) => theme.colors.tertiary};
   background-color: ${({ theme }) => theme.colors.secondary};

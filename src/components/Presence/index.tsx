@@ -8,14 +8,14 @@ import {
 } from 'framer-motion'
 
 interface PresenceProps extends HTMLMotionProps<'div'> {
-  presenceProps?: AnimatePresenceProps
   condition: boolean
   children: ReactElement | ReactElement[]
+  presenceProps?: AnimatePresenceProps
 }
 
 const Presence = ({
-  condition,
   children,
+  condition,
   presenceProps,
   ...props
 }: PresenceProps) => (

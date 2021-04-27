@@ -5,7 +5,7 @@ import Signup from './Signup'
 
 // import RestOfHome from './RestOfHome'
 import { RootState } from 'store'
-import { HomeActions, HomeState } from 'store/home'
+import { HomeActions, HomeState } from 'store/Sync/home'
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,7 +13,7 @@ import { Route, Switch, useLocation } from 'react-router-dom'
 
 const Home = () => {
   const { page, initial } = useSelector<RootState, HomeState>(
-    state => state.home
+    ({ home }) => home
   )
 
   const dispatch = useDispatch()
@@ -68,11 +68,11 @@ const Home = () => {
           <Route path='/home' exact>
             {page !== 'signup' && (
               <motion.div
-                variants={loginAnimation}
-                transition={transition}
-                initial='initial'
-                animate='default'
                 exit='exit'
+                animate='default'
+                initial='initial'
+                transition={transition}
+                variants={loginAnimation}
               >
                 <Login />
               </motion.div>
@@ -82,11 +82,11 @@ const Home = () => {
           <Route path='/home/signup'>
             {page === 'signup' && (
               <motion.div
-                variants={signupAnimation}
-                transition={transition}
+                exit='exit'
                 initial='initial'
                 animate='default'
-                exit='exit'
+                variants={signupAnimation}
+                transition={transition}
               >
                 <Signup />
               </motion.div>

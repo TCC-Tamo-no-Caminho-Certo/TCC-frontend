@@ -1,6 +1,6 @@
 import { getStatusColor, StatusTypes } from 'utils/status'
 
-import { Role } from 'store/AsyncThunks/roles'
+import { Role } from 'store/Async/roles'
 
 import { darken } from 'polished'
 import styled, { css } from 'styled-components'
@@ -12,12 +12,12 @@ interface InfosProps {
 
 export const Field = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
 
-  font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
   padding: 8px;
+  font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
 
   div {
     margin-top: 8px;
@@ -33,26 +33,27 @@ export const Infos = styled.div<InfosProps>`
   flex-direction: column;
 
   width: 100%;
-  margin: 32px 0 24px 0;
   padding-bottom: 16px;
+  margin: 32px 0 24px 0;
 
   border: solid ${({ theme }) => theme.colors.secondary} 1px;
 
   hr {
-    border: solid 1px ${({ theme }) => theme.colors.secondary};
     margin-bottom: 16px;
+
+    border: solid 1px ${({ theme }) => theme.colors.secondary};
   }
 
   #avatar {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
   }
 
   #title {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     padding: 16px 0;
     font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
@@ -92,11 +93,11 @@ const Style = styled.div`
   display: flex;
   flex-direction: column;
 
-  width: max(100vw, 320px);
   height: 95vh;
-  padding: 24px 16px 24px 24px;
   border-radius: 8px;
   overflow-y: scroll;
+  width: max(100vw, 320px);
+  padding: 24px 16px 24px 24px;
 
   background-color: ${({ theme }) => theme.colors.tertiary};
 
@@ -107,8 +108,8 @@ const Style = styled.div`
 
   a {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     width: 100%;
     padding: 8px 16px;
@@ -143,8 +144,8 @@ const Style = styled.div`
     stroke: ${({ theme }) => theme.colors.secondary};
 
     path {
-      height: 16px;
       width: 16px;
+      height: 16px;
     }
   }
 
@@ -154,9 +155,9 @@ const Style = styled.div`
     left: 24px;
 
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: row;
+    justify-content: center;
 
     width: auto;
     padding: 8px;
@@ -164,8 +165,8 @@ const Style = styled.div`
     font-size: 1.6rem;
     border-radius: 8px;
 
-    background-color: ${({ theme }) => theme.colors.red};
     color: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.red};
 
     #TrashIcon {
       min-width: 18px;
@@ -193,19 +194,19 @@ const Style = styled.div`
     div {
       position: relative;
 
-      padding: 8px;
       width: 50%;
       height: 100%;
-      border-radius: 8px 0 0 8px;
+      padding: 8px;
       transition: all 300ms ease;
+      border-radius: 8px 0 0 8px;
 
       &,
       label {
         z-index: 1;
 
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
 
         width: 100%;
       }
@@ -236,8 +237,9 @@ const Style = styled.div`
         }
 
         .wrapper {
-          border-radius: 0px 8px 8px 0px;
           left: 0px;
+
+          border-radius: 0px 8px 8px 0px;
         }
       }
 
@@ -265,8 +267,8 @@ const Style = styled.div`
 
   #doc {
     display: flex;
-    justify-content: center;
     flex-direction: column;
+    justify-content: center;
 
     min-height: 100vh;
 
@@ -286,8 +288,8 @@ const Style = styled.div`
 
   #dots {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     width: 100%;
     height: 50%;
@@ -296,6 +298,7 @@ const Style = styled.div`
   #pretext {
     padding: 16px;
     border-radius: 8px;
+
     background-color: ${({ theme }) => theme.colors.primary};
 
     p {

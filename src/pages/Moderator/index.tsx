@@ -16,23 +16,23 @@ const Moderator = () => {
   const moderatorRoutes = useMemo(
     (): RouteProps[] => [
       {
+        label: 'Solicitações',
+        exact: true,
         icon: () => <ProjectIcon />,
         component: () => <Requests />,
-        paths: ['/session/moderator', '/session/moderator/solicitation'],
-        label: 'Solicitações',
-        exact: true
+        paths: ['/session/moderator', '/session/moderator/solicitation']
       },
       // {
-      //   icon: () => <ProjectIcon />,
+      //   label: 'Lista de alunos',
       //   component: () => <List />,
+      //   icon: () => <ProjectIcon />,
       //   paths: ['/session/moderator/list'],
-      //   label: 'Lista de alunos'
       // },
       {
-        icon: () => <MapIcon />,
-        paths: ['/session/main'],
         label: 'Voltar ao mapa',
-        bottom: true
+        bottom: true,
+        icon: () => <MapIcon />,
+        paths: ['/session/main']
       }
     ],
     []
@@ -42,9 +42,9 @@ const Moderator = () => {
     <Sidebar
       title='Moderador'
       routes={moderatorRoutes}
+      letters={sidebar.letters}
       selected={sidebar.selected}
       background={sidebar.background}
-      letters={sidebar.letters}
     />
   )
 }

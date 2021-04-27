@@ -13,14 +13,14 @@ import Container from './Forms/Container'
 import selectRoleLabel from 'utils/makeRoleLabel'
 
 import { RootState } from 'store'
-import { UserState } from 'store/AsyncThunks/user'
-import { getRoles, Role, RolesState, RoleType } from 'store/AsyncThunks/roles'
+import { UserState } from 'store/Async/user'
+import { getRoles, Role, RolesState, RoleType } from 'store/Async/roles'
 import {
   getUniversities,
   UniversitiesState,
   University
-} from 'store/AsyncThunks/universities'
-import { Course, CoursesState, getCourses } from 'store/AsyncThunks/courses'
+} from 'store/Async/universities'
+import { Course, CoursesState, getCourses } from 'store/Async/courses'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
@@ -43,26 +43,26 @@ interface AddRoleState {
 }
 
 export const AddRoleContext = createContext<AddRoleState>({
-  courses: [],
   roles: [],
+  courses: [],
   universities: []
 })
 
 const AddRole = () => {
-  const user = useSelector<RootState, UserState>(state => state.user)
+  const storeRoles = useSelector<RootState, RolesState>(({ roles }) => roles)
   const storeUniversities = useSelector<RootState, UniversitiesState>(
-    state => state.universities
+    ({ universities }) => universities
   )
+  const user = useSelector<RootState, UserState>(({ user }) => user)
   const storeCourses = useSelector<RootState, CoursesState>(
-    state => state.courses
+    ({ courses }) => courses
   )
-  const storeRoles = useSelector<RootState, RolesState>(state => state.roles)
   const theme = useContext(ThemeContext)
 
-  const rolesRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const rolesRef = useRef<HTMLDivElement>(null)
 
-  const [roleSelected, setRoleSelected] = useState<Role | undefined>(undefined)
+  const [roleSelected, setRoleSelected] = useState<Role>()
 
   const dispatch = useDispatch()
   const { pathname } = useLocation()
@@ -70,7 +70,7 @@ const AddRole = () => {
   const labelRoles = user.roles.map(role => selectRoleLabel(role))
 
   useEffect(() => {
-    if (roleSelected === undefined)
+    roleSelected === undefined &&
       allRoles.map(role => pathname.includes(role) && setRoleSelected(role))
   }, [roleSelected, pathname])
 
@@ -116,8 +116,7 @@ const AddRole = () => {
             userRoles={labelRoles}
             color={theme.roles.student}
             onClick={() => {
-              if (containerRef.current)
-                containerRef.current.scrollIntoView({ behavior: 'smooth' })
+              containerRef.current?.scrollIntoView({ behavior: 'smooth' })
               setRoleSelected('student')
             }}
             benefits={[
@@ -135,8 +134,7 @@ const AddRole = () => {
             userRoles={labelRoles}
             color={theme.roles.professor}
             onClick={() => {
-              if (containerRef.current)
-                containerRef.current.scrollIntoView({ behavior: 'smooth' })
+              containerRef.current?.scrollIntoView({ behavior: 'smooth' })
               setRoleSelected('professor')
             }}
             benefits={[
@@ -156,8 +154,7 @@ const AddRole = () => {
               userRoles={labelRoles}
               color={theme.roles.moderator}
               onClick={() => {
-                if (containerRef.current)
-                  containerRef.current.scrollIntoView({ behavior: 'smooth' })
+                containerRef.current?.scrollIntoView({ behavior: 'smooth' })
                 setRoleSelected('moderator')
               }}
               benefits={[
@@ -173,8 +170,8 @@ const AddRole = () => {
 
       <AddRoleContext.Provider
         value={{
-          courses: storeCourses.courses,
           roles: storeRoles.roles,
+          courses: storeCourses.courses,
           universities: storeUniversities.universities
         }}
       >

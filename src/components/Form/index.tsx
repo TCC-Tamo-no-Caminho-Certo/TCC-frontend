@@ -44,11 +44,11 @@ export interface FormProps extends HTMLProps<HTMLFormElement> {
   push?: string
   captcha?: boolean
   loading?: boolean
+  className?: string
   addToPath?: string[]
   schema?: ObjectSchema
   addData?: { [key: string]: any }
   method?: 'post' | 'get' | 'delete' | 'patch' | 'put'
-  className?: string
   getData?: (_data: any) => void
   onError?: (_error: any) => void
   afterResData?: (_resData: any) => void
@@ -72,10 +72,11 @@ const Form = ({
   className = 'Form',
   ...rest
 }: FormProps) => {
-  const history = useHistory()
-
   const recaptchaRef = useRef<Captcha>(null)
+
   const [showLoader, setShowLoader] = useState(false)
+
+  const history = useHistory()
 
   const data: {
     [name: string]: any

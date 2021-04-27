@@ -1,4 +1,4 @@
-import { Role } from 'store/AsyncThunks/roles'
+import { Role } from 'store/Async/roles'
 
 import Card, { Header as HeaderComponent } from 'components/Card/styles'
 
@@ -11,9 +11,9 @@ interface ContentProps {
 export const Header = styled(HeaderComponent)`
   justify-content: start;
 
-  font-size: clamp(1.4rem, 0.6rem + 2.6vw, 2.1rem);
-  padding-left: 24px;
   border-radius: 0;
+  padding-left: 24px;
+  font-size: clamp(1.4rem, 0.6rem + 2.6vw, 2.1rem);
 
   @media screen and (min-width: 620px) {
     border-radius: 24px 24px 0 0;
@@ -21,13 +21,13 @@ export const Header = styled(HeaderComponent)`
 `
 
 export const Content = styled(Card)<ContentProps>`
-  width: clamp(320px, 100vw, 550px);
   border-radius: 0;
   padding-bottom: 16px;
+  width: clamp(320px, 100vw, 550px);
 
   .RequestSvg {
-    margin-bottom: 24px;
     margin-top: 16px;
+    margin-bottom: 24px;
   }
 
   #feedback {
@@ -41,10 +41,10 @@ export const Content = styled(Card)<ContentProps>`
   }
 
   #role {
-    margin-bottom: 16px;
     width: 100%;
-    font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2.2rem);
     text-align: center;
+    margin-bottom: 16px;
+    font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2.2rem);
 
     color: ${({ theme, role }) => theme.roles[role]};
   }
@@ -52,17 +52,15 @@ export const Content = styled(Card)<ContentProps>`
   #rejected {
     width: 100%;
     padding: 16px;
-
-    border: solid 1px ${({ theme }) => theme.colors.primary};
     border-radius: 8px;
 
-    > p {
-      text-align: justify;
-      word-wrap: break-word;
+    border: solid 1px ${({ theme }) => theme.colors.primary};
 
+    > p {
       text-align: center;
-      font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.1rem);
       margin-bottom: 16px;
+      word-wrap: break-word;
+      font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.1rem);
 
       color: ${({ theme }) => theme.colors.red};
     }
@@ -85,9 +83,9 @@ export const Content = styled(Card)<ContentProps>`
   }
 
   #tryAgain {
-    margin: 24px 16px;
-    text-align: left;
     width: 100%;
+    text-align: left;
+    margin: 24px 16px;
     font-size: clamp(1.8rem, 0.6rem + 2.6vw, 1.8rem);
 
     color: ${({ theme }) => theme.colors.tertiary};
@@ -111,19 +109,19 @@ export const Content = styled(Card)<ContentProps>`
 
 const Style = styled.section`
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
 
   width: 100%;
   min-height: 100vh;
 
-  background-color: ${({ theme }) => theme.colors.tertiary};
   color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.tertiary};
 `
 
 export default Style
 
-Style.displayName = 'Container-Style'
 Header.displayName = 'Header-Style'
 Content.displayName = 'Content-Style'
+Style.displayName = 'Container-Style'

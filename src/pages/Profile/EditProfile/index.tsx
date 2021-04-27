@@ -2,7 +2,6 @@ import React, {
   createContext,
   Dispatch,
   SetStateAction,
-  useContext,
   useRef,
   useState
 } from 'react'
@@ -12,14 +11,14 @@ import Containers from './Containers'
 
 import editProfileSchema from 'utils/validations/editProfile'
 
-import { UserActions } from 'store/AsyncThunks/user'
-import { Response } from 'store'
+import { UserActions } from 'store/Async/user'
+import { Response, RootState } from 'store'
+import { PopupState } from 'store/Sync/popup'
 
 import { Form, Submit, Text } from 'components/Form'
 import Modal, { ModalMethods } from 'components/Modal'
 
-import { GlobalContext, GlobalContextProps } from 'App'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 interface EditProfileContextProps {
   globalChange?: boolean
@@ -29,8 +28,9 @@ interface EditProfileContextProps {
 export const EditProfileContext = createContext<EditProfileContextProps>({})
 
 const EditProfile = () => {
+  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
+
   const confirmModal = useRef<ModalMethods>(null)
-  const { popup } = useContext<GlobalContextProps>(GlobalContext)
 
   const [globalChange, setGlobalChange] = useState(false)
 
@@ -41,7 +41,7 @@ const EditProfile = () => {
       dispatch(UserActions.update(res.user))
       confirmModal.current?.toggleModal()
 
-      popup?.popupRef?.current?.configPopup({
+      popupRef?.current?.configPopup({
         type: 'success',
         setModal: true,
         message: 'Dados alterados',
@@ -50,14 +50,14 @@ const EditProfile = () => {
     } else
       switch (res.error) {
         case 'Incorrect password!':
-          popup?.popupRef?.current?.configPopup({
+          popupRef?.current?.configPopup({
             type: 'error',
             message: 'Senha inválida!',
             setModal: true
           })
           break
         default:
-          popup?.popupRef?.current?.configPopup({
+          popupRef?.current?.configPopup({
             type: 'error',
             message: 'Ops, algo deu errado :(',
             setModal: true
@@ -74,14 +74,10 @@ const EditProfile = () => {
         schema={editProfileSchema}
         afterResData={afterSubmit}
         onError={(error: any) => {
-          if (error.message !== 'Você esqueceu de informar a senha!')
+          error.message !== 'Você esqueceu de informar a senha!' &&
             confirmModal.current?.toggleModal(false)
         }}
       >
-        <EditProfileContext.Provider value={{ globalChange, setGlobalChange }}>
-          <Containers />
-        </EditProfileContext.Provider>
-
         <div id='submits'>
           <button type='button' onClick={() => setGlobalChange(false)}>
             Descartar alterações
@@ -97,6 +93,10 @@ const EditProfile = () => {
           </button>
         </div>
 
+        <EditProfileContext.Provider value={{ globalChange, setGlobalChange }}>
+          <Containers />
+        </EditProfileContext.Provider>
+
         <Modal ref={confirmModal}>
           <ConfirmForm>
             <span>
@@ -107,8 +107,8 @@ const EditProfile = () => {
 
             <div id='buttons'>
               <button
-                type='button'
                 id='cancel'
+                type='button'
                 onClick={() => confirmModal.current?.toggleModal(false)}
               >
                 Cancelar

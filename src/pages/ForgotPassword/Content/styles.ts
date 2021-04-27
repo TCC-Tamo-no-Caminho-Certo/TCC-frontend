@@ -3,12 +3,12 @@ import styled from 'styled-components'
 export const ConfirmCode = styled.div`
   .Submit {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     .Icon {
-      height: 32px;
       width: 32px;
+      height: 32px;
       margin-right: 8px;
 
       fill: ${({ theme }) => theme.colors.secondary};
@@ -18,20 +18,20 @@ export const ConfirmCode = styled.div`
 
 const Style = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
 
-  width: min(90%, 500px);
   padding: 16px;
   border-radius: 10px;
+  width: min(90%, 500px);
 
-  background: ${({ theme }) => theme.colors.secondary};
   box-shadow: -8px 8px 10px -4px rgba(0, 0, 0, 0.49);
+  background: ${({ theme }) => theme.colors.secondary};
 
   p {
-    text-align: center;
     margin: 0;
+    text-align: center;
   }
 
   form > * {

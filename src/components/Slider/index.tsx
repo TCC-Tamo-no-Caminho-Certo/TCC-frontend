@@ -18,9 +18,8 @@ const Slider = ({
   width,
   gapVertical = gap
 }: SliderProps) => {
-  const quantity = containers.length
-
   const move = width + gap
+  const quantity = containers.length
   const isPar = quantity % 2 === 0
   const limit = move * ((quantity - 1) / 2)
 
@@ -59,12 +58,12 @@ const Slider = ({
   return (
     <Style className='Slider' gap={`${gap}px`} gapVertical={`${gapVertical}px`}>
       <motion.ul
-        id='slider'
         drag='x'
+        id='slider'
         dragElastic={0}
         dragMomentum={false}
-        dragConstraints={{ left: 0, right: 0 }}
         onDragEnd={onDragged}
+        dragConstraints={{ left: 0, right: 0 }}
       >
         {containers.map((container: any) => (
           <Container
@@ -79,13 +78,13 @@ const Slider = ({
       </motion.ul>
 
       <Dots
-        size={24}
         gap={16}
+        size={24}
         radius={50}
         quantity={quantity}
-        onRightClick={onRightClick}
         onLeftClick={onLeftClick}
         makeLeftTap={makeLeftMove}
+        onRightClick={onRightClick}
         makeRightTap={makeRightMove}
       />
     </Style>

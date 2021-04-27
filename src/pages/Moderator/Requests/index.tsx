@@ -14,9 +14,9 @@ import Thead from './Thead'
 
 import { StatusTypes } from 'utils/status'
 
-import { getRoles, Role, RolesState, RoleType } from 'store/AsyncThunks/roles'
+import { getRoles, Role, RolesState } from 'store/Async/roles'
 import { RootState } from 'store'
-import { Course, CoursesState, getCourses } from 'store/AsyncThunks/courses'
+import { CoursesState, getCourses } from 'store/Async/courses'
 
 import useSortableData from 'hooks/useSortableData'
 
@@ -45,15 +45,13 @@ export interface ItemData {
 
 interface RequestsContextProps {
   quantity: number
-  courses: Course[]
-  roles: RoleType[]
   tableState: TableState
   setTableState: Dispatch<SetStateAction<TableState>>
 }
 
 interface TableState {
   tablePage: number
-  showData: ItemData[] | undefined
+  showData?: ItemData[]
 }
 
 export interface HeaderData {
@@ -70,30 +68,27 @@ const headerData: HeaderData[] = [
 ]
 
 export const RequestsContext = createContext<RequestsContextProps>({
-  roles: [],
   quantity: 0,
-  courses: [],
-  setTableState: () => {},
   tableState: {
     tablePage: 1,
     showData: undefined
-  }
+  },
+  setTableState: () => {}
 })
 
 const Requests = () => {
   const theme = useContext(ThemeContext)
-
-  const courses = useSelector<RootState, CoursesState>(state => state.courses)
-  const roles = useSelector<RootState, RolesState>(state => state.roles)
+  const roles = useSelector<RootState, RolesState>(({ roles }) => roles)
+  const courses = useSelector<RootState, CoursesState>(({ courses }) => courses)
 
   const [tableState, setTableState] = useState<TableState>({
-    showData: undefined,
-    tablePage: 1
+    tablePage: 1,
+    showData: undefined
   })
 
   const { items, sort } = useSortableData(tableState.showData, {
-    direction: 'descending',
-    indexer: 'name'
+    indexer: 'name',
+    direction: 'descending'
   })
 
   const dispatch = useDispatch()
@@ -118,12 +113,10 @@ const Requests = () => {
           value={{
             quantity,
             tableState,
-            setTableState,
-            roles: roles.roles,
-            courses: courses.courses
+            setTableState
           }}
         >
-          <Table className='Table'>
+          <Table>
             <Filters />
 
             <Thead headerData={headerData} sort={sort} />

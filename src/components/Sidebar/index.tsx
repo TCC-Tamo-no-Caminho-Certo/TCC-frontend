@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Style, { ListItem, SidebarNav } from './styles'
 
-import { SidebarActions } from 'store/sidebar'
+import { SidebarActions } from 'store/Sync/sidebar'
 import { RootState } from 'store'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
@@ -13,44 +13,47 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Route, useHistory, useLocation } from 'react-router-dom'
 
 export interface RouteProps {
+  label: string
+  paths: string[]
+  exact?: boolean
+  bottom?: boolean
+  noContentMove?: boolean
   icon?: () => JSX.Element
   component?: () => JSX.Element
-  label: string
-  bottom?: boolean
-  exact?: boolean
-  noContentMove?: boolean
-  paths: string[]
 }
 
 interface SidebarProps {
-  routes: RouteProps[]
-  selected: string
   letters: string
+  selected: string
   background: string
+  routes: RouteProps[]
   title?: string
+  width?: number
   samePage?: boolean
   closedWidth?: number
-  width?: number
   scrollBarSize?: number
 }
 
 const Sidebar = ({
   routes,
-  selected,
   letters,
+  selected,
   background,
   title = '',
-  samePage = false,
+  width = 210,
   closedWidth = 72,
-  width = 210
+  samePage = false
 }: SidebarProps) => {
+  const open = useSelector<RootState, boolean>(({ sidebar }) => sidebar.open)
+
+  const burgerRef = useRef<any>(null)
+
   const { innerWidth } = useWindowDimensions()
   const [isLarge, setisLarge] = useState(innerWidth >= 545)
-  const open = useSelector<RootState, boolean>(({ sidebar }) => sidebar.open)
-  const dispatch = useDispatch()
+
   const history = useHistory()
+  const dispatch = useDispatch()
   const { pathname } = useLocation()
-  const burgerRef = useRef<any>(null)
 
   const scrollMoveCorrectly = useCallback(
     (index: number): void => {
@@ -74,6 +77,13 @@ const Sidebar = ({
     [routes]
   )
 
+  const onToggle = () => dispatch(SidebarActions.toggleSidebar(!open))
+
+  const contentSize = (): string => {
+    if (open) return isLarge ? `calc(100vw - ${width}px)` : '100vw'
+    return isLarge ? `calc(100vw - ${closedWidth}px)` : '100vw'
+  }
+
   useEffect(() => {
     setisLarge(innerWidth >= 545)
   }, [innerWidth])
@@ -92,13 +102,6 @@ const Sidebar = ({
     const selectedIndex = pathArray.indexOf(1)
     scrollMoveCorrectly(selectedIndex)
   }, [scrollMoveCorrectly, pathname, routes])
-
-  const onToggle = () => dispatch(SidebarActions.toggleSidebar(!open))
-
-  const contentSize = (): string => {
-    if (open) return isLarge ? `calc(100vw - ${width}px)` : '100vw'
-    return isLarge ? `calc(100vw - ${closedWidth}px)` : '100vw'
-  }
 
   const motionContent: Variants = {
     open: {
@@ -167,23 +170,23 @@ const Sidebar = ({
     <Style draggable='false'>
       <SidebarNav
         isOpen={open}
+        letters={letters}
+        background={background}
         variants={motionBackground}
         animate={open ? 'open' : 'closed'}
         initial={!isLarge ? 'open' : 'closed'}
-        letters={letters}
-        background={background}
       >
         <div id='header'>
           <Hamburger
-            ref={burgerRef}
-            toggle={onToggle}
             state={open}
+            ref={burgerRef}
             color={letters}
+            toggle={onToggle}
           />
 
           <AnimatePresence>
             {open && (
-              <motion.div variants={motionTitle} initial='initial' id='title'>
+              <motion.div id='title' initial='initial' variants={motionTitle}>
                 {title}
               </motion.div>
             )}
@@ -197,8 +200,8 @@ const Sidebar = ({
               key={paths[0]}
               bottom={bottom}
               selected={selected}
-              paths={paths?.map(path => path.replaceAll('/', '-'))}
               pathname={pathname.replaceAll('/', '-')}
+              paths={paths?.map(path => path.replaceAll('/', '-'))}
               onClick={() => {
                 !isLarge && onToggle()
               }}
@@ -256,8 +259,8 @@ const Sidebar = ({
       {routes.map(({ paths, component, noContentMove, exact }, index) => (
         <motion.div
           key={paths[0]}
-          id={paths[0].replaceAll('/', '--')}
           variants={motionContent}
+          id={paths[0].replaceAll('/', '--')}
           animate={open && !noContentMove ? 'open' : 'closed'}
           initial={open && !noContentMove ? 'open' : 'closed'}
           style={{

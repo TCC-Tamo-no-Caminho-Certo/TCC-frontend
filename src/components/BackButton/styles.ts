@@ -4,8 +4,9 @@ const Style = styled.button`
   display: flex;
   align-items: center;
 
-  color: ${({ theme }) => theme.colors.tertiary};
   transition: all 0.2s;
+
+  color: ${({ theme }) => theme.colors.tertiary};
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};

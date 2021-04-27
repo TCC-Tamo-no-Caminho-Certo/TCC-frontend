@@ -15,13 +15,13 @@ interface StyleProps {
 
 export const IconSpace = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
-  min-width: 40px;
-  max-width: 40px;
   height: 100%;
   margin: 0 2%;
+  max-width: 40px;
+  min-width: 40px;
 
   .Icon {
     display: flex;

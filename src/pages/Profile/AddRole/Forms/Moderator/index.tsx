@@ -9,13 +9,13 @@ import {
   withoutFullTime
 } from 'utils/validations/addRoleForms/moderator'
 
-import { getUser, UserState } from 'store/AsyncThunks/user'
+import { getUser, UserState } from 'store/Async/user'
 import { Response, RootState } from 'store'
+import { PopupState } from 'store/Sync/popup'
 
 import { Select, Submit, Textarea } from 'components/Form'
 import { Option } from 'components/Form/Select'
 
-import { GlobalContext, GlobalContextProps } from 'App'
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
@@ -41,7 +41,7 @@ const verifyFullTime = (user: UserState, university_id: number) => {
   if (user.professor)
     return (
       user.professor.universities.filter(
-        university => university.university_id === university_id
+        userUniversity => userUniversity.university_id === university_id
       )[0].full_time !== 0
     )
 
@@ -49,23 +49,20 @@ const verifyFullTime = (user: UserState, university_id: number) => {
 }
 
 const ModeratorForm = ({ request }: ModeratorProps) => {
-  const user = useSelector<RootState, UserState>(state => state.user)
+  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
+  const user = useSelector<RootState, UserState>(({ user }) => user)
   const { universities } = useContext(AddRoleContext)
 
-  const { popup } = useContext<GlobalContextProps>(GlobalContext)
-
-  const [fullTime, setFullTime] = useState(false)
-
   const [options, setOptions] = useState<Options>({
-    university: universities.map(university => ({
-      label: university.name,
-      value: university.university_id
+    university: universities.map(({ name, university_id }) => ({
+      label: name,
+      value: university_id
     }))
   })
-
   const [values, setValues] = useState<Values>({
     university: undefined
   })
+  const [fullTime, setFullTime] = useState(false)
 
   const dispatch = useDispatch()
   const history = useHistory()
@@ -93,7 +90,7 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
   const afterSubmit = (res: Response<any>) => {
     if (res.success)
       if (fullTime)
-        popup?.popupRef?.current?.configPopup({
+        popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: 'Papel adicionado',
@@ -103,14 +100,14 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
           }
         })
       else
-        popup?.popupRef?.current?.configPopup({
+        popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: request ? 'Solicitação reenviada!' : 'Solicitação enviada!',
           onClick: () => history.push('/session/main')
         })
     else
-      popup?.popupRef?.current?.configPopup({
+      popupRef?.current?.configPopup({
         setModal: true,
         type: 'error',
         message: 'Falha ao enviar solicitação :('
@@ -120,9 +117,9 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
   useEffect(() => {
     setOptions(prev => ({
       ...prev,
-      university: universities.map(university => ({
-        label: university.name,
-        value: university.university_id
+      university: universities.map(({ university_id, name }) => ({
+        label: name,
+        value: university_id
       }))
     }))
   }, [universities])

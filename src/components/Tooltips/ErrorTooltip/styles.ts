@@ -4,13 +4,13 @@ import styled from 'styled-components'
 
 export const Trigger = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
-  min-width: 40px;
-  max-width: 40px;
   height: 100%;
   margin: 0 2%;
+  min-width: 40px;
+  max-width: 40px;
 
   .Icon {
     display: flex;
@@ -25,10 +25,10 @@ export const Trigger = styled.div`
 `
 
 const Style = styled(Popup)`
-  border-radius: 10px !important;
-  max-width: 514px !important;
-
   border: none !important;
+  max-width: 514px !important;
+  border-radius: 10px !important;
+
   color: ${({ theme }) => theme.colors.secondary} !important;
 
   .content {

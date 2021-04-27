@@ -20,8 +20,9 @@ import {
 import api from 'services/api'
 
 import { Response, RootState } from 'store'
-import { University } from 'store/AsyncThunks/universities'
-import { getUser, UserState } from 'store/AsyncThunks/user'
+import { University } from 'store/Async/universities'
+import { getUser, UserState } from 'store/Async/user'
+import { PopupState } from 'store/Sync/popup'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
@@ -30,7 +31,6 @@ import { Option } from 'components/Form/Select'
 import Presence from 'components/Presence'
 import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
-import { GlobalContext, GlobalContextProps } from 'App'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
@@ -53,9 +53,9 @@ interface Options {
 }
 
 interface Values {
-  university: Option | null | undefined
-  course: Option | null | undefined
-  campus: Option | null | undefined
+  course?: Option
+  campus?: Option
+  university?: Option
 }
 
 interface Animations {
@@ -72,33 +72,13 @@ interface ProfessorProps {
 }
 
 function Professor({ request }: ProfessorProps) {
+  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
+  const user = useSelector<RootState, UserState>(({ user }) => user)
   const { courses, universities } = useContext(AddRoleContext)
-  const user = useSelector<RootState, UserState>(state => state.user)
+
   const [registerByEmail, setRegisterByEmail] = useState(false)
 
-  const { popup } = useContext<GlobalContextProps>(GlobalContext)
   const registerEmailRef = useRef<RegisterEmailMethods>(null)
-
-  const [options, setOptions] = useState<Options>({
-    campus: [],
-    course: [],
-    university: []
-  })
-
-  const [values, setValues] = useState<Values>({
-    university: undefined,
-    campus: undefined,
-    course: undefined
-  })
-
-  const [animations, setAnimations] = useState<Animations>({
-    campus: false,
-    course: false,
-    ways: false,
-    submit: false,
-    ar: false,
-    voucher: false
-  })
 
   const [selectedUniversity, setSelectedUniversity] = useState<University>({
     name: '',
@@ -108,12 +88,30 @@ function Professor({ request }: ProfessorProps) {
     },
     university_id: 0
   })
+  const [animations, setAnimations] = useState<Animations>({
+    campus: false,
+    course: false,
+    ways: false,
+    submit: false,
+    ar: false,
+    voucher: false
+  })
+  const [options, setOptions] = useState<Options>({
+    campus: [],
+    course: [],
+    university: []
+  })
+  const [values, setValues] = useState<Values>({
+    university: undefined,
+    campus: undefined,
+    course: undefined
+  })
 
   const dispatch = useDispatch()
   const history = useHistory()
 
   const registerRegex = universities.find(
-    university => university.university_id === values.university?.value
+    ({ university_id }) => university_id === values.university?.value
   )?.regex.register.professor
 
   const setInitialCampusOptions = useCallback(async () => {
@@ -154,14 +152,14 @@ function Professor({ request }: ProfessorProps) {
 
       setValues(prev => ({
         ...prev,
-        university: selected,
-        campus: null,
-        course: null
+        campus: undefined,
+        course: undefined,
+        university: selected
       }))
 
       if (!request) {
         const newSelected = universities.find(
-          university => university.university_id === selected.value
+          ({ university_id }) => university_id === selected.value
         )
 
         newSelected && setSelectedUniversity(newSelected)
@@ -194,7 +192,7 @@ function Professor({ request }: ProfessorProps) {
       setValues(prev => ({
         ...prev,
         campus: selected,
-        course: prev.campus ? null : prev.course
+        course: prev.campus ? undefined : prev.course
       }))
 
       setAnimations(prev => ({
@@ -225,7 +223,7 @@ function Professor({ request }: ProfessorProps) {
       )
 
     if (res.success)
-      popup?.popupRef?.current?.configPopup({
+      popupRef?.current?.configPopup({
         setModal: true,
         type: 'success',
         message: request
@@ -239,7 +237,7 @@ function Professor({ request }: ProfessorProps) {
         }
       })
     else
-      popup?.popupRef?.current?.configPopup({
+      popupRef?.current?.configPopup({
         setModal: true,
         type: 'error',
         message: 'Algo deu errado :('
@@ -249,17 +247,17 @@ function Professor({ request }: ProfessorProps) {
   useEffect(() => {
     if (request)
       (async () => {
-        const campusOptions = await setInitialCampusOptions()
+        const campusOptions: Option[] = await setInitialCampusOptions()
 
         setValues({
           university: options.university.find(
-            option => option.value === request.data.university_id
+            ({ value }) => value === request.data.university_id
           ),
           campus: campusOptions.find(
-            (option: Option) => option.value === request.data.campus_id
+            ({ value }) => value === request.data.campus_id
           ),
           course: options.course.find(
-            option => option.value === request.data.course_id
+            ({ value }) => value === request.data.course_id
           )
         })
 
@@ -279,9 +277,9 @@ function Professor({ request }: ProfessorProps) {
   useEffect(() => {
     setOptions(prev => ({
       ...prev,
-      university: universities.map(university => ({
-        label: university.name,
-        value: university.university_id
+      university: universities.map(({ university_id, name }) => ({
+        label: name,
+        value: university_id
       }))
     }))
   }, [universities])
@@ -289,9 +287,9 @@ function Professor({ request }: ProfessorProps) {
   useEffect(() => {
     setOptions(prev => ({
       ...prev,
-      course: courses.map(course => ({
-        label: course.name,
-        value: course.course_id
+      course: courses.map(({ name, course_id }) => ({
+        label: name,
+        value: course_id
       }))
     }))
   }, [courses])
@@ -338,9 +336,9 @@ function Professor({ request }: ProfessorProps) {
           id='cy-university'
           name='university_id'
           placeholder='Universidade'
+          value={values.university}
           options={options.university}
           onChange={onUniversityChange}
-          value={values.university}
         />
 
         <Presence
@@ -361,9 +359,9 @@ function Professor({ request }: ProfessorProps) {
             id='cy-campus'
             name='campus_id'
             placeholder='Câmpus'
+            value={values.campus}
             options={options.campus}
             onChange={onCampusChange}
-            value={values.campus}
           />
         </Presence>
 

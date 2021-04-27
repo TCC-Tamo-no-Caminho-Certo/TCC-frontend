@@ -27,11 +27,11 @@ export interface TextColors {
 }
 
 export interface TextProps extends HTMLProps<HTMLInputElement> {
-  eye?: boolean
   icon?: FC
+  eye?: boolean
   isDate?: boolean
-  pasteAndDrop?: boolean
   optional?: boolean
+  pasteAndDrop?: boolean
   textColors?: TextColors
 }
 
@@ -39,21 +39,21 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
   (
     {
       id,
+      value,
       onBlur,
       hidden,
-      placeholder,
       icon: Icon,
-      type = 'text',
-      className = 'Text',
+      placeholder,
       eye = false,
+      type = 'text',
       isDate = false,
       optional = false,
+      className = 'Text',
       pasteAndDrop = true,
       textColors = {
         unfocused: '#6e4850',
         focused: '#d65881'
       },
-      value,
       ...rest
     },
     ref
@@ -69,6 +69,17 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
 
     const auxRef = (ref as RefObject<HTMLInputElement>) || textRef
 
+    const onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
+      onBlur && onBlur(e)
+      setError(undefined)
+      setIsFilled(!!auxRef.current?.value)
+    }
+
+    const hiddenInput = () => {
+      if (eye) return showInput ? 'text' : 'password'
+      return type
+    }
+
     useEffect(() => {
       const input: Ref = {
         setError,
@@ -80,17 +91,6 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
       form?.registerInput(input)
       return () => form?.removeInput(input)
     }, [auxRef, form, type, isDate, textValue])
-
-    const onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
-      onBlur && onBlur(e)
-      setError(undefined)
-      setIsFilled(!!auxRef.current?.value)
-    }
-
-    const hiddenInput = () => {
-      if (eye) return showInput ? 'text' : 'password'
-      return type
-    }
 
     useEffect(() => {
       isDate

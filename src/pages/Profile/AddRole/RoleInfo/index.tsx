@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Style from './styles'
 
 import api from 'services/api'
 
-import { Role } from 'store/AsyncThunks/roles'
+import { Role } from 'store/Async/roles'
 
 import CheckIcon from 'assets/global/CheckIcon'
 import ArrowIcon from 'assets/global/ArrowIcon'
@@ -26,8 +26,8 @@ interface RoleInfoProps {
 
 const container: Variants = {
   show: {
-    cursor: 'pointer',
     height: 'auto',
+    cursor: 'pointer',
     opacity: 1,
     transition: {
       type: 'tween',
@@ -42,8 +42,8 @@ const container: Variants = {
     transition: {
       type: 'tween',
       duration: 0.2,
-      staggerChildren: 0.1,
-      staggerDirection: -1
+      staggerDirection: -1,
+      staggerChildren: 0.1
     }
   }
 }
@@ -92,15 +92,11 @@ const RoleInfo = ({
     onClick !== undefined && onClick()
   }
 
-  useEffect(() => {
-    console.log('tst', show)
-  }, [show])
-
   return (
     <Style className='RoleInfo' id={id} color={color} title={title}>
       <button
-        className='title'
         type='button'
+        className='title'
         onClick={() => {
           toggleShow(!show)
           rotate()
@@ -121,8 +117,8 @@ const RoleInfo = ({
       </button>
 
       <Presence
-        animate='show'
         exit='hidden'
+        animate='show'
         condition={show}
         variants={container}
       >
@@ -159,12 +155,12 @@ const RoleInfo = ({
                 </motion.button>
 
                 <motion.button
+                  id='deleteRole'
+                  variants={button}
                   onClick={async () => {
                     await api.delete(`user/role/${role}`)
                     history.go(0)
                   }}
-                  variants={button}
-                  id='deleteRole'
                 >
                   Remover papel
                 </motion.button>

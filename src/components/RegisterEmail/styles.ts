@@ -13,7 +13,6 @@ const Style = styled.div`
 
   span {
     text-align: center;
-
     font-size: clamp(1.5rem, 0.6rem + 2.6vw, 2rem);
     line-height: clamp(1.5rem, 0.6rem + 2.6vw, 2rem);
 
@@ -35,9 +34,8 @@ const Style = styled.div`
   }
 
   #tokenForm p {
-    text-align: center;
-
     margin: 0;
+    text-align: center;
     font-size: clamp(1.5rem, 0.6rem + 2.6vw, 2rem);
     line-height: clamp(1.5rem, 0.6rem + 2.6vw, 2rem);
 

@@ -9,8 +9,8 @@ export const Voucher = styled.div`
 
   width: 100%;
 
-  margin-bottom: 16px;
   padding: 8px 16px;
+  margin-bottom: 16px;
   border-radius: 16px;
 
   border: solid 1px ${({ theme }) => theme.colors.primary};
@@ -21,8 +21,8 @@ export const Voucher = styled.div`
 
   #warning {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     margin-bottom: 8px;
 
@@ -30,13 +30,13 @@ export const Voucher = styled.div`
 
     b,
     p {
-      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.6rem);
       width: 100%;
+      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.6rem);
     }
 
     p {
-      text-align: center;
       padding: 0 8px;
+      text-align: center;
 
       .Icon {
         height: 16px;
@@ -69,26 +69,26 @@ export const Ways = styled.div`
   div {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
     flex-direction: column;
+    justify-content: space-evenly;
 
     margin: 16px 0;
 
     button {
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
 
       width: 100%;
       height: 42px;
-      border-radius: 4px;
       padding: 12px;
+      border-radius: 4px;
       transition: all 0.2s;
       font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
 
-      background-color: ${({ theme }) => theme.colors.tertiary};
       color: ${({ theme }) => theme.colors.white};
       box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.39);
+      background-color: ${({ theme }) => theme.colors.tertiary};
 
       &:hover {
         transform: scale(1.01);
@@ -130,15 +130,15 @@ export const Form = styled(OriginalForm)`
   color: ${({ theme }) => theme.colors.tertiary};
 
   span {
-    text-align: left;
     width: 100%;
+    text-align: left;
     font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
   }
 
   .Select,
   .Text {
-    margin-bottom: 16px;
     height: 35px;
+    margin-bottom: 16px;
   }
 
   .Select {
@@ -147,12 +147,12 @@ export const Form = styled(OriginalForm)`
 
   .Submit {
     width: 100%;
+    transition: all 0s ease 0s;
 
     box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.39);
-    transition: all 0s ease 0s;
   }
 `
 
-Voucher.displayName = 'Voucher-Style'
-Ways.displayName = 'Ways-Style'
-Form.displayName = 'Form-Style'
+Voucher.displayName = 'Student-Voucher-Style'
+Ways.displayName = 'Student-Ways-Style'
+Form.displayName = 'Student-Form-Style'

@@ -2,9 +2,9 @@ import styled from 'styled-components'
 
 const Style = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
 
   width: 100%;
 
@@ -28,4 +28,4 @@ const Style = styled.div`
 
 export default Style
 
-Style.displayName = 'Logo-Style'
+Style.displayName = 'FullLogo-Style'

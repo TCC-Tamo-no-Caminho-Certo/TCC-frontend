@@ -7,18 +7,18 @@ import { transformArray } from '../Tbody'
 
 import api from 'services/api'
 
+import { RootState } from 'store'
+import { RolesState } from 'store/Async/roles'
+
 import ArrowIcon from 'assets/global/ArrowIcon'
 import RefreshIcon from 'assets/global/RefreshIcon'
 
 import { Variants } from 'framer-motion'
+import { useSelector } from 'react-redux'
 
 interface TheadProps {
   sort?: (_name: keyof ItemData) => void
   headerData: HeaderData[]
-}
-
-type Arrow = {
-  [_name in keyof ItemData]: 'default' | 'up' | 'down'
 }
 
 const arrow: Variants = {
@@ -35,11 +35,11 @@ const arrow: Variants = {
 
 const Thead = ({ headerData, sort }: TheadProps) => {
   const requestsContext = useContext(RequestsContext)
+  const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
 
-  const initialArrows: Arrow[] = headerData.map(({ name }) => {
-    return { [name]: 'default' } as Arrow
-  })
+  const initialArrows = headerData.map(({ name }) => ({ [name]: 'default' }))
   const [arrows, setArrows] = useState(initialArrows)
+
   const onThClick = (id: keyof ItemData, index: number) => {
     const before = arrows[index][id]
     const resetArrows = initialArrows
@@ -64,7 +64,7 @@ const Thead = ({ headerData, sort }: TheadProps) => {
 
     requestsContext?.setTableState({
       tablePage: 1,
-      showData: transformArray(requests, requestsContext.roles)
+      showData: transformArray(requests, roles)
     })
   }
 

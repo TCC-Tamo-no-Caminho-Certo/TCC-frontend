@@ -1,10 +1,11 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Style, { Content } from './styles'
 
 import { passwordSchema } from 'utils/validations/forgotPassword'
 
-import { HomeActions } from 'store/home'
-import { Response } from 'store'
+import { HomeActions } from 'store/Sync/home'
+import { Response, RootState } from 'store'
+import { PopupState } from 'store/Sync/popup'
 
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import Logo from 'assets/FullLogo'
@@ -12,12 +13,11 @@ import Logo from 'assets/FullLogo'
 import { Form, Submit, Text } from 'components/Form'
 import BackButton from 'components/BackButton'
 
-import { GlobalContext, GlobalContextProps } from 'App'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 const ConfirmPassword = () => {
-  const { popup } = useContext<GlobalContextProps>(GlobalContext)
+  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
 
   const dispatch = useDispatch()
   const history = useHistory()
@@ -26,7 +26,7 @@ const ConfirmPassword = () => {
   const code = path[2] || localStorage.getItem('@SLab_code')
 
   if (!code) {
-    popup?.popupRef?.current?.configPopup({
+    popupRef?.current?.configPopup({
       setModal: true,
       type: 'error',
       message: 'Código não fornecido',
@@ -39,14 +39,14 @@ const ConfirmPassword = () => {
 
   const afterResetSubmit = (res: Response<any>) => {
     res.success
-      ? popup?.popupRef?.current?.configPopup({
+      ? popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: 'Senha alterada!',
           onOkClick: () => history.push('/'),
           onCloseClick: () => history.push('/')
         })
-      : popup?.popupRef?.current?.configPopup({
+      : popupRef?.current?.configPopup({
           setModal: true,
           type: 'error',
           message: 'Código inválido!',
@@ -59,14 +59,14 @@ const ConfirmPassword = () => {
     <Style>
       <BackButton
         to='/home'
-        onTap={() => {
+        onTap={() =>
           dispatch(
             HomeActions.update({
               initial: false,
               page: 'login'
             })
           )
-        }}
+        }
       />
 
       <Content>
@@ -76,9 +76,9 @@ const ConfirmPassword = () => {
           loading
           captcha
           path='reset-password/*%'
-          addToPath={['code']}
           schema={passwordSchema}
           afterResData={afterResetSubmit}
+          addToPath={['code']}
         >
           <p>Digite sua nova senha</p>
 

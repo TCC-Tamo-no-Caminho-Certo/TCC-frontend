@@ -6,6 +6,9 @@ import { transformArray } from '../Tbody'
 
 import api from 'services/api'
 
+import { RootState } from 'store'
+import { RolesState } from 'store/Async/roles'
+
 import LoupeIcon from 'assets/Inputs/LoupeIcon'
 
 import { Datepicker, Select, Submit, Text } from 'components/Form'
@@ -13,6 +16,7 @@ import Presence from 'components/Presence'
 
 import { motion, Transition, Variants } from 'framer-motion'
 import { darken, lighten } from 'polished'
+import { useSelector } from 'react-redux'
 import { Theme } from 'react-select'
 import { ThemeContext } from 'styled-components'
 
@@ -35,7 +39,8 @@ const reset: Variants = {
 }
 
 const Filters = () => {
-  const requestsContext = useContext(RequestsContext)
+  const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
+  const { quantity, setTableState } = useContext(RequestsContext)
   const theme = useContext(ThemeContext)
 
   const [values, setValues] = useState<any>(true)
@@ -47,8 +52,8 @@ const Filters = () => {
     menu: (before: any) => ({
       ...before,
       zIndex: 3,
-      backgroundColor: theme.colors.primary,
       color: theme.colors.secondary,
+      backgroundColor: theme.colors.primary,
       border: `solid ${theme.colors.secondary} 1px`
     }),
     control: (before: any) => ({
@@ -108,45 +113,41 @@ const Filters = () => {
   })
 
   const filterTable = async ({ name, role, status, from, to }: any) => {
-    const callStartCondition =
-      (!name && !role && !status && !from && !to) ||
-      (!name && role === 'all' && status === 'all' && !from && !to) ||
-      (!name && role === 'all' && !status && !from && !to) ||
-      (!name && !role && status === 'all' && !from && !to)
+    const callStartCondition = !name && !role && !status && !from && !to
 
     if (callStartCondition) {
       const { requests } = await api.get(
-        `user/role/requests?page=1&per_page=${requestsContext.quantity}`
+        `user/role/requests?page=1&per_page=${quantity}`
       )
 
-      const tableData = transformArray(requests, requestsContext.roles)
+      const tableData = transformArray(requests, roles)
 
-      requestsContext?.setTableState({
+      setTableState({
         tablePage: 1,
         showData: tableData
       })
     } else {
-      const roleId = requestsContext.roles.filter(
-        ({ title }) => role === title
-      )[0]
+      const roleId = roles.filter(({ title }) => title === role)[0]
 
-      const response = await api.get(
-        `user/role/requests?page=1&per_page=${requestsContext.quantity}${
-          name ? `&filter[full_name]=${name}` : ''
-        }${roleId ? `&filter[role_id]=${roleId.role_id}` : ''}${
-          status ? `&filter[status]=${status}` : ''
-        }${
-          from && to
-            ? `&filter[created_at][]=${from}&filter[created_at][]=${to}`
-            : ''
-        }`
+      const nameFilter = name ? `&filter[full_name]=${name}` : ''
+      const statusFilter =
+        status && status !== 'all' ? `&filter[status]=${status}` : ''
+      const roleFilter =
+        roleId && role !== 'all' ? `&filter[role_id]=${roleId.role_id}` : ''
+      const dateFilter =
+        from && to
+          ? `&filter[created_at][]=${from}&filter[created_at][]=${to}`
+          : ''
+
+      const allFilters = nameFilter + roleFilter + statusFilter + dateFilter
+
+      const { requests } = await api.get(
+        `user/role/requests?page=1&per_page=${quantity}${allFilters}`
       )
 
-      const { requests } = response
-
-      requestsContext?.setTableState({
-        showData: transformArray(requests, requestsContext.roles),
-        tablePage: 1
+      setTableState({
+        tablePage: 1,
+        showData: transformArray(requests, roles)
       })
     }
   }
@@ -154,10 +155,10 @@ const Filters = () => {
   return (
     <Style getData={filterTable}>
       <Presence
-        condition={values}
-        variants={reset}
         exit='exit'
         animate='enter'
+        variants={reset}
+        condition={values}
         presenceProps={{ exitBeforeEnter: true }}
       >
         <Text
@@ -179,8 +180,8 @@ const Filters = () => {
             styling={selectStyle}
             options={[
               { label: 'Estudante', value: 'student' },
-              { label: 'Moderador', value: 'moderator' },
               { label: 'Professor', value: 'professor' },
+              { label: 'Moderador', value: 'moderator' },
               { label: 'Todos', value: 'all' }
             ]}
           />
@@ -204,10 +205,10 @@ const Filters = () => {
             name='from'
             placeholder='De'
             dateColors={{
+              disabled: theme.colors.red,
               body: theme.colors.secondary,
-              header: darken(0.06, theme.colors.tertiary),
               selected: theme.colors.tertiary,
-              disabled: theme.colors.red
+              header: darken(0.06, theme.colors.tertiary)
             }}
             textColors={{
               focused: theme.colors.secondary,
@@ -219,10 +220,10 @@ const Filters = () => {
             name='to'
             placeholder='Até'
             dateColors={{
+              disabled: theme.colors.red,
               body: theme.colors.secondary,
-              header: darken(0.06, theme.colors.tertiary),
               selected: theme.colors.tertiary,
-              disabled: theme.colors.red
+              header: darken(0.06, theme.colors.tertiary)
             }}
             textColors={{
               focused: theme.colors.secondary,

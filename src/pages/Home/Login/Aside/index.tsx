@@ -3,9 +3,9 @@ import Style, { LoginFailure } from './styles'
 
 import loginSchema from 'utils/validations/login'
 
-import { HomeActions } from 'store/home'
+import { HomeActions } from 'store/Sync/home'
 import { Response } from 'store'
-import { getValidation } from 'store/AsyncThunks/validation'
+import { getValidation } from 'store/Async/validation'
 
 import MailIcon from 'assets/Inputs/MailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
@@ -34,7 +34,6 @@ const Aside = () => {
   const dispatch = useDispatch()
 
   const afterSubmit = (res: Response<any>) => {
-    console.log('tst2', res)
     if (res.success) {
       localStorage.setItem('@SLab_ac_token', res.access_token)
       dispatch(getValidation())

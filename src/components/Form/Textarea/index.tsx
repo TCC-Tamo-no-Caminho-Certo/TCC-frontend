@@ -17,9 +17,11 @@ interface TextareaMethods {}
 type TextareaProps = HTMLProps<HTMLTextAreaElement>
 
 const Textarea = forwardRef<TextareaMethods, TextareaProps>((props, _ref) => {
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const [error, setError] = useState<string>()
   const form = useContext<FormState | null>(FormContext)
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  const [error, setError] = useState<string>()
 
   useEffect(() => {
     const sendRef = {
@@ -39,9 +41,9 @@ const Textarea = forwardRef<TextareaMethods, TextareaProps>((props, _ref) => {
       </div>
 
       <StyledTextarea
-        onClick={() => setError('')}
         className='Textarea'
         ref={textareaRef as any}
+        onClick={() => setError('')}
         {...(props as any)}
       />
     </Style>

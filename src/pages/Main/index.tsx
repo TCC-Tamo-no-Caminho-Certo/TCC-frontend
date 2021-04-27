@@ -5,7 +5,7 @@ import RightMenu from './RightMenu'
 
 // import Projects from './Projects/index'
 import { RootState } from 'store'
-import { UserState } from 'store/AsyncThunks/user'
+import { UserState } from 'store/Async/user'
 
 import MapIcon from 'assets/MainSidebar/MapIcon'
 import ProjectIcon from 'assets/MainSidebar/ProjectIcon'
@@ -22,25 +22,25 @@ const Profile = () => {
   const mainRoutes = useMemo((): RouteProps[] => {
     const sidebarSections: RouteProps[] = [
       {
-        icon: () => <MapIcon />,
-        paths: ['/session/main', '/session/main/map'],
         label: 'Mapa',
-        component: () => <Map />
+        icon: () => <MapIcon />,
+        component: () => <Map />,
+        paths: ['/session/main', '/session/main/map']
       }
       // {
-      //   icon: () => <ProjectIcon />,
-      //   paths: ['/session/main/projects'],
       //   label: 'Projetos',
-      //   component: () => <Projects />
+      //   icon: () => <ProjectIcon />,
+      //   component: () => <Projects />,
+      //   paths: ['/session/main/projects']
       // }
     ]
 
     if (selectedRole === 'moderator' || selectedRole === 'admin')
       sidebarSections.push({
-        icon: () => <ProjectIcon />,
-        paths: ['/session/moderator'],
         label: 'Moderador',
-        bottom: true
+        bottom: true,
+        icon: () => <ProjectIcon />,
+        paths: ['/session/moderator']
       })
 
     return sidebarSections
@@ -49,12 +49,12 @@ const Profile = () => {
   return (
     <>
       <Sidebar
+        samePage
         title='Principal'
         routes={mainRoutes}
+        letters={sidebar.letters}
         selected={sidebar.selected}
         background={sidebar.background}
-        letters={sidebar.letters}
-        samePage
       />
 
       <RightMenu />

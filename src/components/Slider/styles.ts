@@ -16,14 +16,14 @@ export const Container = styled(motion.li)<ContainerProps>`
 
 const Style = styled.div<StyleProps>`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   flex-direction: column;
+  justify-content: space-between;
 
   & > * {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
   }
 
   #slider {

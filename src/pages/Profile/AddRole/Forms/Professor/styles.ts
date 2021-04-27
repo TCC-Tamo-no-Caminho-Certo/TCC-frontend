@@ -37,4 +37,4 @@ export const Form = styled(OriginalForm)`
   }
 `
 
-Form.displayName = 'Form-Style'
+Form.displayName = 'Professor-Form-Style'

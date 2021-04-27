@@ -18,8 +18,9 @@ import {
 import api from 'services/api'
 
 import { Response, RootState } from 'store'
-import { University } from 'store/AsyncThunks/universities'
-import { Email, getUser, UserState } from 'store/AsyncThunks/user'
+import { University } from 'store/Async/universities'
+import { Email, getUser, UserState } from 'store/Async/user'
+import { PopupState } from 'store/Sync/popup'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
@@ -28,7 +29,6 @@ import { Option } from 'components/Form/Select'
 import Presence from 'components/Presence'
 import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
-import { GlobalContext, GlobalContextProps } from 'App'
 import { Variants } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
@@ -51,9 +51,9 @@ interface Options {
 }
 
 interface Values {
-  university: Option | null | undefined
-  course: Option | null | undefined
-  campus: Option | null | undefined
+  course?: Option
+  campus?: Option
+  university?: Option
 }
 
 interface Animations {
@@ -62,8 +62,8 @@ interface Animations {
   course: boolean
   campus: boolean
   submit: boolean
-  semester: boolean
   voucher: boolean
+  semester: boolean
 }
 
 interface StudentProps {
@@ -114,38 +114,34 @@ export const universityArrayToSelect = (array: University[]): Option[] =>
     label: name
   }))
 
-function Student({ request }: StudentProps) {
-  const user = useSelector<RootState, UserState>(state => state.user)
+const Student = ({ request }: StudentProps) => {
+  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
+  const user = useSelector<RootState, UserState>(({ user }) => user)
   const { courses, universities } = useContext(AddRoleContext)
-  const { popup } = useContext<GlobalContextProps>(GlobalContext)
 
   const registerEmailRef = useRef<RegisterEmailMethods>(null)
 
   const [registerByEmail, setRegisterByEmail] = useState(false)
-
+  const [animations, setAnimations] = useState<Animations>({
+    ar: false,
+    ways: false,
+    campus: false,
+    course: false,
+    submit: false,
+    voucher: false,
+    semester: false
+  })
   const [options, setOptions] = useState<Options>({
     campus: [],
     course: [],
     university: [],
     semester: semesterOptions
   })
-
   const [values, setValues] = useState<Values>({
     university: undefined,
     campus: undefined,
     course: undefined
   })
-
-  const [animations, setAnimations] = useState<Animations>({
-    campus: false,
-    course: false,
-    ways: false,
-    submit: false,
-    ar: false,
-    semester: false,
-    voucher: false
-  })
-
   const [selectedUniversity, setSelectedUniversity] = useState<University>({
     name: '',
     regex: {
@@ -159,7 +155,7 @@ function Student({ request }: StudentProps) {
   const dispatch = useDispatch()
 
   const registerRegex = universities.find(
-    university => university.university_id === values.university?.value
+    ({ university_id }) => university_id === values.university?.value
   )?.regex.register.student
 
   const setInitialCampusOptions = useCallback(async () => {
@@ -191,23 +187,23 @@ function Student({ request }: StudentProps) {
       setOptions(prev => ({
         ...prev,
         campus: campus.map(
-          (campus: any): Option => ({
-            value: campus.campus_id,
-            label: campus.name
+          ({ name, campus_id }: any): Option => ({
+            label: name,
+            value: campus_id
           })
         )
       }))
 
       setValues(prev => ({
         ...prev,
-        university: selected,
-        campus: null,
-        course: null
+        campus: undefined,
+        course: undefined,
+        university: selected
       }))
 
       if (!request) {
         const newSelected = universities.find(
-          university => university.university_id === selected.value
+          ({ university_id }) => university_id === selected.value
         )
 
         newSelected && setSelectedUniversity(newSelected)
@@ -215,8 +211,8 @@ function Student({ request }: StudentProps) {
 
       setAnimations(prev => ({
         ...prev,
-        campus: true,
-        ar: true
+        ar: true,
+        campus: true
       }))
     }
   }
@@ -230,9 +226,9 @@ function Student({ request }: StudentProps) {
       setOptions(prev => ({
         ...prev,
         course: courses.map(
-          (course: any): Option => ({
-            value: course.course_id,
-            label: course.name
+          ({ course_id, name }: any): Option => ({
+            value: course_id,
+            label: name
           })
         )
       }))
@@ -240,7 +236,7 @@ function Student({ request }: StudentProps) {
       setValues(prev => ({
         ...prev,
         campus: selected,
-        course: prev.campus ? null : prev.course
+        course: prev.campus ? undefined : prev.course
       }))
 
       setAnimations(prev => ({
@@ -257,13 +253,13 @@ function Student({ request }: StudentProps) {
         : setAnimations(prev => ({ ...prev, ways: true }))
   }
 
-  const afterSubmit = (res: Response<any>) => {
+  const afterSubmit = ({ success }: Response<any>) => {
     const byEmail =
       registerByEmail ||
       hasInstitutionalEmail(selectedUniversity.regex.email.student, user.emails)
 
-    if (res.success)
-      popup?.popupRef?.current?.configPopup({
+    if (success)
+      popupRef?.current?.configPopup({
         setModal: true,
         type: 'success',
         message: request
@@ -277,26 +273,27 @@ function Student({ request }: StudentProps) {
         }
       })
     else
-      popup?.popupRef?.current?.configPopup({
-        setModal: true,
+      popupRef?.current?.configPopup({
         type: 'error',
-        message: 'Algo deu errado :('
+        message: 'Algo deu errado :(',
+        setModal: true
       })
   }
 
   useEffect(() => {
     if (request)
       (async () => {
-        const campusOptions = await setInitialCampusOptions()
+        const campusOptions: Option[] = await setInitialCampusOptions()
+
         setValues({
           university: options.university.find(
-            option => option.value === request.data.university_id
+            ({ value }) => value === request.data.university_id
           ),
           campus: campusOptions.find(
-            (option: Option) => option.value === request.data.campus_id
+            ({ value }) => value === request.data.campus_id
           ),
           course: options.course.find(
-            option => option.value === request.data.course_id
+            ({ value }) => value === request.data.course_id
           )
         })
 
@@ -313,9 +310,9 @@ function Student({ request }: StudentProps) {
 
     return () => {
       setValues({
-        university: undefined,
         campus: undefined,
-        course: undefined
+        course: undefined,
+        university: undefined
       })
 
       setAnimations({
@@ -334,9 +331,9 @@ function Student({ request }: StudentProps) {
   useEffect(() => {
     setOptions(prev => ({
       ...prev,
-      university: universities.map(university => ({
-        label: university.name,
-        value: university.university_id
+      university: universities.map(({ name, university_id }) => ({
+        label: name,
+        value: university_id
       }))
     }))
   }, [universities])
@@ -344,9 +341,9 @@ function Student({ request }: StudentProps) {
   useEffect(() => {
     setOptions(prev => ({
       ...prev,
-      course: courses.map(course => ({
-        label: course.name,
-        value: course.course_id
+      course: courses.map(({ name, course_id }) => ({
+        label: name,
+        value: course_id
       }))
     }))
   }, [courses])
@@ -371,9 +368,8 @@ function Student({ request }: StudentProps) {
         <button
           type='button'
           onClick={() => {
-            user.emails.forEach(email => {
-              if (email.institutional === true)
-                api.delete(`user/email/${email.email_id}`)
+            user.emails.forEach(({ institutional, email_id }) => {
+              institutional === true && api.delete(`user/email/${email_id}`)
             })
           }}
         >
@@ -453,7 +449,7 @@ function Student({ request }: StudentProps) {
             options={options.semester}
             onChange={onSemesterChange}
             defaultValue={options.semester.find(
-              option => option.value === request?.data.semester
+              ({ value }) => value === request?.data.semester
             )}
           />
         </Presence>
@@ -475,8 +471,8 @@ function Student({ request }: StudentProps) {
                   onClick={() => {
                     setAnimations(prev => ({
                       ...prev,
-                      voucher: false,
-                      submit: false
+                      submit: false,
+                      voucher: false
                     }))
 
                     registerEmailRef.current?.toggleRegister()
@@ -486,8 +482,8 @@ function Student({ request }: StudentProps) {
                 </button>
 
                 <button
-                  id='cy-voucher'
                   type='button'
+                  id='cy-voucher'
                   onClick={() =>
                     setAnimations(prev => ({ ...prev, voucher: true }))
                   }
@@ -518,6 +514,7 @@ function Student({ request }: StudentProps) {
                 do arquivo deve ser <b>PDF</b>.
               </p>
             </div>
+
             <File
               guides
               bottom='50vh'
@@ -559,8 +556,8 @@ function Student({ request }: StudentProps) {
           onSuccess={() => {
             setAnimations(prev => ({
               ...prev,
-              submit: true,
-              ways: false
+              ways: false,
+              submit: true
             }))
 
             setRegisterByEmail(true)

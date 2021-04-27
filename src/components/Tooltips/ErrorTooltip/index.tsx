@@ -12,8 +12,8 @@ interface ErrorTooltipProps extends PopupProps {
 const ErrorTooltip = ({ error, ...props }: ErrorTooltipProps) => {
   return error ? (
     <Style
-      className='ErrorTooltip'
       position='top left'
+      className='ErrorTooltip'
       trigger={
         <Trigger className='Trigger'>
           <AlertIcon />

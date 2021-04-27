@@ -1,8 +1,5 @@
 import React from 'react'
 import Style from './styles'
 
-const List = () => {
-  return <Style>List</Style>
-}
-
+const List = () => <Style>List</Style>
 export default List

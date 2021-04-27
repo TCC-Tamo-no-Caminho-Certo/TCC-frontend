@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react'
 import Style, { Header } from './styles'
 
-import { Role } from 'store/AsyncThunks/roles'
+import { Role } from 'store/Async/roles'
 
 interface CardProps {
-  children: (ReactElement | ReactElement[])[] | ReactElement
   headerText: string
+  children: (ReactElement | ReactElement[])[] | ReactElement
   role?: Role
 }
 

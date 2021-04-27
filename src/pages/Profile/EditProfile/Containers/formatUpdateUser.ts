@@ -1,21 +1,21 @@
-import { University } from 'store/AsyncThunks/universities'
-import { UserState } from 'store/AsyncThunks/user'
+import { University } from 'store/Async/universities'
+import { UserState } from 'store/Async/user'
 
 export interface InputData {
-  label: string
-  value: string | number
   name: string
+  label: string
   editable: boolean
+  value: string | number
   date?: boolean
   dontShow?: boolean
 }
 
 export interface ContainerForm {
-  personal: InputData[]
-  moderator: InputData[]
   guest: InputData[]
   student: InputData[]
+  personal: InputData[]
   professor: InputData[]
+  moderator: InputData[]
 }
 
 const removeRepeatly = (array: any[]) =>
@@ -66,16 +66,16 @@ const formatUpdateUser = (
       const regex = new RegExp(userUniversities[i].regex)
 
       fields.push({
-        label: 'Universidade:',
         name: 'university_id',
+        label: 'Universidade:',
         value: userUniversities[i].universityName,
         editable: false
       })
 
       if (regex.test(userUniversities[i].address))
         fields.push({
-          label: 'Email:',
           name: 'inst_email',
+          label: 'Email:',
           value: userUniversities[i].address,
           editable: false
         })
@@ -86,14 +86,14 @@ const formatUpdateUser = (
 
   const guest: InputData[] = [
     {
-      label: 'Nome:',
       name: 'name',
+      label: 'Nome:',
       value: userData.name,
       editable: true
     },
     {
-      label: 'Sobrenome:',
       name: 'surname',
+      label: 'Sobrenome:',
       value: userData.surname,
       editable: true
     }
@@ -101,47 +101,47 @@ const formatUpdateUser = (
 
   const personal: InputData[] = [
     {
-      label: 'Nome:',
       name: 'name',
+      label: 'Nome:',
       value: userData.name,
       editable: true
     },
     {
-      label: 'Sobrenome:',
       name: 'surname',
+      label: 'Sobrenome:',
       value: userData.surname,
       editable: true
     },
     {
-      label: 'Nascimento:',
       name: 'birthday',
+      label: 'Nascimento:',
       value: userData.birthday,
-      date: true,
-      editable: true
+      editable: true,
+      date: true
     },
     {
-      label: 'Nova senha:',
       name: 'new_password',
+      label: 'Nova senha:',
       value: '',
-      dontShow: true,
-      editable: true
+      editable: true,
+      dontShow: true
     },
     // {
-    //   label: 'Confirmar nova senha:',
     //   name: 'new_password',
+    //   label: 'Confirmar nova senha:',
     //   value: '',
     //   dontShow: true,
     //   editable: true
     // },
     {
-      label: 'E-mail:',
       name: 'email',
+      label: 'E-mail:',
       value: userData.emails[0].address,
       editable: false
     }
     // {
-    //   label: 'Celular:',
     //   name: 'phone',
+    //   label: 'Celular:',
     //   value: userData.phone ? '' : userData.phone,
     //   date: true,
     //   editable: true
@@ -151,20 +151,20 @@ const formatUpdateUser = (
   const student: InputData[] = [
     ...getEmail('student'),
     {
-      label: 'Linkedin:',
       name: 'linkedin',
+      label: 'Linkedin:',
       value: userData.student?.linkedin || '',
       editable: false
     },
     {
-      label: 'Lattes:',
       name: 'lattes',
+      label: 'Lattes:',
       value: userData.student?.lattes || '',
       editable: false
     },
     {
-      label: 'Semestre:',
       name: 'semester',
+      label: 'Semestre:',
       value: userData.student?.universities
         ? `${userData.student.universities[0].semester}° Semestre`
         : '',
@@ -175,32 +175,32 @@ const formatUpdateUser = (
   const professor: InputData[] = [
     ...getEmail('professor'),
     {
-      label: 'Linkedin:',
       name: 'linkedin',
+      label: 'Linkedin:',
       value: userData.professor?.linkedin || '',
       editable: false
     },
     {
-      label: 'Lattes:',
       name: 'lattes',
+      label: 'Lattes:',
       value: userData.professor?.lattes || '',
       editable: false
     },
     {
-      label: 'Orcid:',
       name: 'orcid',
+      label: 'Orcid:',
       value: userData.professor?.orcid || '',
       editable: false
     },
     {
-      label: 'Pós-graduação:',
       name: 'postgraduate',
+      label: 'Pós-graduação:',
       value: userData.professor?.postgraduate ? 'Sim' : 'Não',
       editable: false
     },
     {
-      label: 'Tempo integral:',
       name: 'full_time',
+      label: 'Tempo integral:',
       value: userData.professor?.universities
         ? userData.professor?.universities[0].full_time
           ? 'Sim'
@@ -212,8 +212,8 @@ const formatUpdateUser = (
 
   const moderator: InputData[] = [
     {
-      label: 'Universidade',
       name: 'university_id',
+      label: 'Universidade',
       value:
         (userData.moderator?.universities &&
           getUniversityName(
@@ -225,11 +225,11 @@ const formatUpdateUser = (
   ]
 
   const formInputs: ContainerForm = {
-    personal,
-    moderator,
-    professor,
     guest,
-    student
+    student,
+    personal,
+    professor,
+    moderator
   }
 
   return formInputs[role]

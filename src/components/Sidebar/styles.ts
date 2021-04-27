@@ -16,9 +16,9 @@ interface StyleProps extends HTMLMotionProps<'nav'> {
 }
 
 export const ListItem = styled.li<ListItemProps>`
-  visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
-
   cursor: pointer;
+
+  visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
 
   button {
     font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
@@ -96,13 +96,11 @@ export const SidebarNav = styled(motion.nav)<StyleProps>`
     align-items: center;
 
     height: 72px;
-
+    width: 100%;
+    user-select: none;
     white-space: nowrap;
 
     color: ${({ letters }) => letters};
-
-    user-select: none;
-    width: 100%;
   }
 
   #title {
@@ -129,8 +127,8 @@ export const SidebarNav = styled(motion.nav)<StyleProps>`
     top: 0;
     left: 0;
 
-    height: 100%;
     width: 100%;
+    height: 100%;
 
     li,
     button {
@@ -143,8 +141,8 @@ export const SidebarNav = styled(motion.nav)<StyleProps>`
   }
 
   @media screen and (min-width: 545px) {
-    min-width: 72px;
     width: 72px;
+    min-width: 72px;
     height: 100vh;
 
     #header {
@@ -157,8 +155,8 @@ const Style = styled.div`
   display: flex;
   flex-direction: column;
 
-  overflow-x: hidden;
   min-width: 300px;
+  overflow-x: hidden;
 `
 
 export default Style

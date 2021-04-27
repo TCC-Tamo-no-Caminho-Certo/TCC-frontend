@@ -27,13 +27,13 @@ export const ModalBackground = styled.div<ModalBackgroundProps>`
 const Style = styled.div<StyleProps>`
   position: fixed;
   left: 50%;
-  top: ${({ top, bottom }) => (bottom === 'auto' ? top : 'auto')};
   bottom: ${({ bottom }) => bottom};
   z-index: ${({ zIndex }) => zIndex + 1};
+  top: ${({ top, bottom }) => (bottom === 'auto' ? top : 'auto')};
 
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
   transform: ${({ translateY }) => `translate(-50%, ${translateY})`};
 

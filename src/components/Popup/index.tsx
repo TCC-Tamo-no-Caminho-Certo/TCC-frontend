@@ -21,9 +21,9 @@ export interface PopupProps {
 
 interface ConfigPopupProps {
   type: PopupType
-  setModal?: boolean
-  message?: string
   title?: string
+  message?: string
+  setModal?: boolean
   onClick?: () => void
   onOkClick?: () => void
   onCloseClick?: () => void
@@ -36,8 +36,8 @@ export interface PopupMethods {
 const initialState: ConfigPopupProps = {
   type: 'warning',
   setModal: false,
-  message: undefined,
   title: undefined,
+  message: undefined,
   onOkClick: undefined,
   onCloseClick: undefined
 }
@@ -81,13 +81,13 @@ const Popup = forwardRef<PopupMethods, PopupProps>(
 
     return (
       <Modal
-        ref={modalRef}
         top={top}
-        bottom={bottom}
-        translateY={translateY}
-        bgHeight={bgHeight}
-        onBgClick={onClick || (onCloseClick && onCloseClick)}
+        ref={modalRef}
         zIndex={zIndex}
+        bottom={bottom}
+        bgHeight={bgHeight}
+        translateY={translateY}
+        onBgClick={onClick || (onCloseClick && onCloseClick)}
       >
         <Style type={type}>
           <span>{makeTitle(type, title)}</span>

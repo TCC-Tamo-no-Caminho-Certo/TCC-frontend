@@ -16,8 +16,8 @@ const Style = styled.div<StyleProps>`
   padding: 16px;
   border-radius: 8px;
 
-  background-color: ${({ theme }) => theme.colors.tertiary};
   color: ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => theme.colors.tertiary};
 
   > * {
     margin-bottom: 16px;
@@ -62,8 +62,8 @@ const Style = styled.div<StyleProps>`
     margin-bottom: 0px;
     border-radius: 8px;
 
-    background-color: ${({ theme }) => theme.colors.primary};
     color: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.primary};
   }
 `
 

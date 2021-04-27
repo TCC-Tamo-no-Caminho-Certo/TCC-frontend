@@ -74,10 +74,9 @@ export default createGlobalStyle<GlobalProps>`
       }
 
       button, label, input[type="checkbox"] {
+        cursor: pointer;
         font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
         line-height: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
-
-        cursor: pointer;
       }
 
       input[type="checkbox"] {
@@ -91,7 +90,6 @@ export default createGlobalStyle<GlobalProps>`
         css`
           overflow: hidden;
         `}
-       
     }
   }
 

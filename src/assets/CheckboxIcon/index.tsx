@@ -38,6 +38,7 @@ const pathAnimation: Variants = {
 const CheckboxIcon = forwardRef<CheckboxIconMethods, CheckboxInconProps>(
   ({ primary, secondary }, ref) => {
     const theme = useContext(ThemeContext)
+
     const [checked, setChecked] = useState(false)
 
     const changeCheck = (value: boolean) => {

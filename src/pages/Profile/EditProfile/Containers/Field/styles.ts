@@ -21,9 +21,9 @@ export const Input = styled.div`
     border: none;
 
     input {
-      width: calc(100% - 32px);
       height: 40px;
       text-align: center;
+      width: calc(100% - 32px);
     }
   }
 
@@ -36,8 +36,8 @@ export const Input = styled.div`
 
   .value {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     height: 100%;
     width: calc(100% - 64px);
@@ -48,7 +48,7 @@ export const Icon = styled.div`
   position: absolute;
   top: 0px;
   right: 8px;
-  z-index: 1;
+  z-index: 1000;
 
   width: 24px;
   text-align: right;
@@ -76,14 +76,14 @@ const Style = styled.div`
   position: relative;
 
   display: flex;
-  justify-content: center;
   align-items: left;
   flex-direction: column;
+  justify-content: center;
 
-  padding: 0 4px;
   width: 100%;
-  border-radius: 5px;
   height: 80px;
+  padding: 0 4px;
+  border-radius: 5px;
 
   color: ${({ theme }) => theme.colors.tertiary};
   border: solid 1px ${({ theme }) => theme.colors.tertiary};

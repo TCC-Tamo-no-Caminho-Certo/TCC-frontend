@@ -5,11 +5,11 @@ import styled from 'styled-components'
 const Style = styled(Form)`
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
+  justify-content: center;
 
-  padding: 0 16px 0 8px;
   margin-bottom: 16px;
+  padding: 0 16px 0 8px;
   width: max(100%, 280px);
 
   .Presence {
@@ -75,8 +75,8 @@ const Style = styled(Form)`
 
     .Submit {
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
 
       width: 100%;
       height: 40px;
@@ -88,37 +88,37 @@ const Style = styled(Form)`
       background-color: ${({ theme }) => theme.colors.primary};
 
       .Icon {
-        margin-right: 12px;
         height: 16px;
+        margin-right: 12px;
 
         fill: ${({ theme }) => theme.colors.secondary};
       }
-    }
 
-    .Submit + button {
-      align-self: flex-end;
+      & + button {
+        align-self: flex-end;
 
-      padding: 4px 16px;
-      width: 200px;
-      height: 40px;
+        height: 40px;
+        width: 200px;
+        padding: 4px 16px;
+        transition: all 0.2s;
+        border-radius: 0 16px 16px 0;
+        font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
 
-      transition: all 0.2s;
-      border-radius: 0 16px 16px 0;
-      font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
+        box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.23);
+        color: ${({ theme }) => theme.colors.primary};
+        background-color: ${({ theme }) => theme.colors.secondary};
 
-      box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.23);
-      color: ${({ theme }) => theme.colors.primary};
-      background-color: ${({ theme }) => theme.colors.secondary};
+        &:hover {
+          transform: scale(1.01);
 
-      &:hover {
-        transform: scale(1.01);
-        filter: brightness(1.1);
+          filter: brightness(1.1);
+        }
       }
     }
   }
 
   @media screen and (min-width: 545px) {
-    padding: 0 16px;
+    padding: 0 32px;
   }
 `
 

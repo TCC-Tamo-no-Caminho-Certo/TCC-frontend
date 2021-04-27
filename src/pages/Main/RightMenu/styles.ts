@@ -1,4 +1,4 @@
-import { Role } from 'store/AsyncThunks/roles'
+import { Role } from 'store/Async/roles'
 
 import GearIcon from 'assets/RightMenuOpen/GearIcon'
 
@@ -15,15 +15,15 @@ interface UserInfoProps {
 }
 
 interface RightMenuOpenProps {
-  height: string
   width: string
+  height: string
   changeRole: boolean
 }
 
 interface BackgroundProps {
-  closedHeight: string
-  openHeight: string
   isOpen: boolean
+  openHeight: string
+  closedHeight: string
 }
 
 interface StyleProps {
@@ -94,13 +94,12 @@ export const UserInfo = styled.div<UserInfoProps>`
   display: flex;
   flex-direction: column;
 
+  cursor: default;
   margin-left: 16px;
 
-  cursor: default;
-
   span {
-    line-height: 16px;
     text-align: left;
+    line-height: 16px;
   }
 
   #userRole {
@@ -139,8 +138,8 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     top: 0;
     left: 16px;
 
-    width: calc(100% - 32px);
     height: 2px;
+    width: calc(100% - 32px);
 
     border: none;
     background-color: ${({ theme }) => theme.colors.secondary};
@@ -160,10 +159,10 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
       right: 0;
       z-index: 2;
 
-      transform: translateY(-50%);
       width: 16px;
-      margin-right: 35px;
       height: 16px;
+      margin-right: 35px;
+      transform: translateY(-50%);
 
       fill: ${({ theme }) => theme.colors.secondary};
       stroke: ${({ theme }) => theme.colors.secondary};
@@ -211,29 +210,29 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
 
   #logout {
     position: absolute;
-    bottom: 16px;
     right: 16px;
+    bottom: 16px;
 
     display: flex;
     align-items: center;
 
-    height: 24px;
     opacity: 0;
+    height: 24px;
 
     color: ${({ theme }) => theme.colors.secondary};
 
     span#leave {
-      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.5rem);
-      user-select: none;
       margin-left: 8px;
+      user-select: none;
+      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.5rem);
 
       cursor: pointer;
     }
 
     .Icon {
       width: 20px;
-      height: 20px;
       margin: 0px;
+      height: 20px;
       margin-left: 8px;
 
       fill: ${({ theme }) => theme.colors.secondary};
@@ -243,8 +242,8 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
   @media screen and (min-width: 545px) {
     right: 0;
 
-    min-width: 300px;
     width: 300px;
+    min-width: 300px;
 
     #selectRoles {
       right: ${({ width }) => width};
@@ -264,8 +263,8 @@ export const Gear = styled(GearIcon)`
   margin: 36px 24px 0 0;
   transform: translateY(-50%);
 
-  stroke: ${({ theme }) => theme.colors.secondary};
   fill: ${({ theme }) => theme.colors.secondary};
+  stroke: ${({ theme }) => theme.colors.secondary};
 `
 
 export const Background = styled.svg<BackgroundProps>`
@@ -285,8 +284,8 @@ export const Background = styled.svg<BackgroundProps>`
   @media screen and (min-width: 545px) {
     right: 0;
 
-    min-width: 300px;
     width: 300px;
+    min-width: 300px;
     border-radius: 8px 0 0 8px;
   }
 `
@@ -299,8 +298,8 @@ const Style = styled.div<StyleProps>`
   display: flex;
   align-items: center;
 
-  min-width: 300px;
   width: 100vw;
+  min-width: 300px;
   height: ${({ closedHeight }) => closedHeight};
 
   * {
@@ -330,19 +329,19 @@ const Style = styled.div<StyleProps>`
     right: 16px;
     top: 73px;
 
-    width: 16px;
     height: 16px;
+    width: 16px;
   }
 
   #baseButton {
     position: fixed;
-    right: 24px;
     bottom: 16px;
+    right: 24px;
     z-index: 4;
 
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     width: 256px;
     padding: 8px;

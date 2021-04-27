@@ -70,13 +70,13 @@ const Style = styled.div<StyleProps>`
         }
 
         .Calendar__monthArrowWrapper.-right {
-          transform: rotate(180deg);
           padding: 0;
+          transform: rotate(180deg);
         }
 
         .Calendar__monthArrowWrapper.-left {
-          transform: rotate(360deg);
           padding: 0;
+          transform: rotate(360deg);
         }
       }
 

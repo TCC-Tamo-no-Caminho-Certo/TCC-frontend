@@ -4,7 +4,7 @@ import Main from 'pages/Main'
 import Profile from 'pages/Profile'
 import Moderator from 'pages/Moderator'
 
-import { getUser } from 'store/AsyncThunks/user'
+import { getUser } from 'store/Async/user'
 
 import { useDispatch } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
@@ -23,6 +23,7 @@ const PrivateRoutes = () => {
       </Route>
 
       <Route path='/session/profile' component={Profile} />
+
       <Route path='/session/main' component={Main} />
 
       <Route path='/session/moderator' component={Moderator} />

@@ -1,6 +1,6 @@
 import { getStatusColor, StatusTypes } from 'utils/status'
 
-import { Role } from 'store/AsyncThunks/roles'
+import { Role } from 'store/Async/roles'
 
 import { darken } from 'polished'
 import styled from 'styled-components'
@@ -27,8 +27,8 @@ export const RoleTd = styled.td<RoleTdProps>`
 
 const Style = styled.div`
   width: 100%;
-  height: calc(100vh - 147px);
   overflow-y: scroll;
+  height: calc(100vh - 147px);
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -38,8 +38,9 @@ const Style = styled.div`
     width: 100%;
 
     tbody {
-      border: none;
       position: relative;
+
+      border: none;
 
       tr {
         display: flex;
@@ -56,11 +57,10 @@ const Style = styled.div`
         }
 
         td {
-          z-index: 0;
-
           display: flex;
-          align-items: center;
           overflow: hidden;
+          align-items: center;
+
           min-height: 32px;
           padding: 8px 4px;
           font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
@@ -71,8 +71,8 @@ const Style = styled.div`
             align-items: center;
             justify-content: center;
 
-            min-width: 32px;
             height: 32px;
+            min-width: 32px;
           }
 
           &.status {
@@ -98,12 +98,6 @@ const Style = styled.div`
   }
 
   @media screen and (min-width: 545px) {
-    table tbody tr td.role {
-      min-width: 165px;
-    }
-  }
-
-  @media screen and (min-width: 745px) {
     table tbody tr {
       padding: 0 24px;
     }

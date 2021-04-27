@@ -1,10 +1,11 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import Style from './styles'
 
 import signupSchema from 'utils/validations/signup'
 
-import { HomeActions } from 'store/home'
-import { Response } from 'store'
+import { HomeActions } from 'store/Sync/home'
+import { Response, RootState } from 'store'
+import { PopupState } from 'store/Sync/popup'
 
 import WorldIcon from 'assets/Inputs/WorldIcon'
 import UserLockedIcon from 'assets/Inputs/UserLockedIcon'
@@ -14,13 +15,12 @@ import Logo from 'assets/FullLogo'
 import { Datepicker, Form, Submit, Text } from 'components/Form'
 import BackButton from 'components/BackButton'
 
-import { GlobalContext, GlobalContextProps } from 'App'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 const Aside = () => {
-  const { popup } = useContext<GlobalContextProps>(GlobalContext)
+  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
 
   const [disable, setDisable] = useState(false)
 
@@ -35,7 +35,7 @@ const Aside = () => {
 
   const afterSubmit = (res: Response<any>) => {
     if (res.success)
-      popup?.popupRef?.current?.configPopup({
+      popupRef?.current?.configPopup({
         setModal: true,
         type: 'success',
         message: t('signup.popup.success'),
@@ -44,7 +44,7 @@ const Aside = () => {
     else
       switch (res.error) {
         case 'User already exists':
-          popup?.popupRef?.current?.configPopup({
+          popupRef?.current?.configPopup({
             setModal: true,
             type: 'error',
             message: t('signup.popup.userExists'),
@@ -57,7 +57,7 @@ const Aside = () => {
           break
 
         default:
-          popup?.popupRef?.current?.configPopup({
+          popupRef?.current?.configPopup({
             setModal: true,
             type: 'error',
             message: t('signup.popup.defaultError')
@@ -117,10 +117,10 @@ const Aside = () => {
 
           <Datepicker
             isBirthday
-            arrow='top'
+            arrow='bottom'
             name='birthday'
-            placeholder='Data de nascimento'
             data-cy='input-signup-birthday'
+            placeholder='Data de nascimento'
             icon={UserLockedIcon}
           />
 
@@ -156,20 +156,20 @@ const Aside = () => {
             type='password'
             className='dual'
             name='confirmPassword'
-            placeholder='Confirmar Senha'
             autoComplete='new-password'
+            placeholder='Confirmar Senha'
             data-cy='input-signup-confirmPassword'
             icon={UserLockedIcon}
           />
 
-          <span className='aditionalInfo' id='terms'>
+          {/* <span className='aditionalInfo' id='terms'>
             Ao clicar em Concordar e concluir, concordo com os{' '}
             <a href='.link'>Termos de uso</a>, os{' '}
             <a href='.link'>Termos de Serviço e Pagamentos</a>, a{' '}
             <a href='.link'>Política de Privacidade</a> e a{' '}
             <a href='.link'>Política de Não Discriminação</a>
             do Steams Lab.
-          </span>
+          </span> */}
 
           <Submit data-cy='button-signup-submit'>Concordar e concluir</Submit>
         </Form>

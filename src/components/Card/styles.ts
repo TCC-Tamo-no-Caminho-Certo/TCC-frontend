@@ -1,4 +1,4 @@
-import { Role } from 'store/AsyncThunks/roles'
+import { Role } from 'store/Async/roles'
 
 import styled from 'styled-components'
 
@@ -29,15 +29,15 @@ const Style = styled.div`
 
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
+  justify-content: center;
 
-  padding: 64px 24px 32px 12px;
   width: 100%;
   border-radius: 16px;
+  padding: 64px 24px 32px 12px;
 
-  background-color: ${({ theme }) => theme.colors.secondary};
   box-shadow: 8px 8px 4px 0px rgba(0, 0, 0, 0.49);
+  background-color: ${({ theme }) => theme.colors.secondary};
 
   .Avatar {
     margin-bottom: 24px;

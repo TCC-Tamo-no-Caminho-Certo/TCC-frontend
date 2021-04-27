@@ -10,6 +10,7 @@ const Style = styled.div`
   color: ${({ theme }) => theme.colors.secondary};
   background-color: ${({ theme }) => theme.colors.tertiary};
 `
+
 export default Style
 
 Style.displayName = 'Customization-Style'

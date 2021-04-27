@@ -36,12 +36,13 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
       bottom = 'auto',
       bgHeight = '100%',
       translateY = '-60%',
-      zIndex = 10,
+      zIndex = 1000,
       ...rest
     },
     ref
   ) => {
     const { overflow } = useContext<GlobalContextProps>(GlobalContext)
+
     const modalRef = useRef(null)
 
     const [openModal, setOpenModal] = useState(false)
@@ -74,17 +75,17 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     return openModal ? (
       <>
         <ModalBackground
+          zIndex={zIndex}
           height={bgHeight}
           onClick={onBackgroundClick}
-          zIndex={zIndex}
         />
 
         <Style
           top={top}
-          bottom={bottom}
           ref={modalRef}
-          translateY={translateY}
           zIndex={zIndex}
+          bottom={bottom}
+          translateY={translateY}
           {...rest}
         >
           <CloseIcon onClick={onBackgroundClick} />

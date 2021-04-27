@@ -17,9 +17,13 @@ import makeRoleLabel from 'utils/makeRoleLabel'
 
 import api from 'services/api'
 
-import { Role, RoleType } from 'store/AsyncThunks/roles'
+import { Role, RolesState, RoleType } from 'store/Async/roles'
+import { RootState } from 'store'
 
 import Modal, { ModalMethods } from 'components/Modal'
+import Popup, { PopupMethods } from 'components/Popup'
+
+import { useSelector } from 'react-redux'
 
 interface RequestsData {
   role: Role
@@ -91,14 +95,16 @@ export const transformArray = (
 
 const Tbody = ({ headerData, items }: TbodyProps) => {
   const requestsContext = useContext(RequestsContext)
+  const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
 
-  const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>
-  const tableRef = useRef() as MutableRefObject<HTMLTableElement>
+  const popupRef = useRef<PopupMethods>(null)
   const modalRef = useRef<ModalMethods>(null)
   const removeRef = useRef<ModalMethods>(null)
+  const tableRef = useRef() as MutableRefObject<HTMLTableElement>
+  const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>
 
-  const [infos, setInfos] = useState<InfosState | undefined>()
   const [isClear, setIsClear] = useState(false)
+  const [infos, setInfos] = useState<InfosState>()
 
   const makeRequest = useCallback(
     async (page: number) => {
@@ -108,7 +114,7 @@ const Tbody = ({ headerData, items }: TbodyProps) => {
         )
 
         if (requests && requests.length !== 0) {
-          const tableData = transformArray(requests, requestsContext.roles)
+          const tableData = transformArray(requests, roles)
 
           requestsContext?.setTableState(prev => ({
             ...prev,
@@ -128,7 +134,7 @@ const Tbody = ({ headerData, items }: TbodyProps) => {
       `user/role/requests?page=1&per_page=${requestsContext.quantity}`
     )
 
-    const tableData = transformArray(requests, requestsContext.roles)
+    const tableData = transformArray(requests, roles)
 
     requestsContext?.setTableState({
       tablePage: 1,
@@ -226,6 +232,7 @@ const Tbody = ({ headerData, items }: TbodyProps) => {
 
       <Modal top='50vh' translateY='-50%' ref={modalRef}>
         <ResponseContent
+          popupRef={popupRef}
           userInfo={infos?.userInfo}
           selectedInfo={infos?.selectedInfo}
           onCloseClick={() => {
@@ -242,6 +249,14 @@ const Tbody = ({ headerData, items }: TbodyProps) => {
           <button type='button'>Cancelar</button>
         </div>
       </Modal>
+
+      <Popup
+        bottom='50vh'
+        translateY='50%'
+        bgHeight='100vh'
+        ref={popupRef}
+        zIndex={2000}
+      />
     </>
   )
 }

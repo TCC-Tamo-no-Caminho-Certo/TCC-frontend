@@ -23,23 +23,12 @@ export interface Option {
 
 const Select = forwardRef(
   ({ isMulti, styling, theming, className = 'Select', ...props }: any, ref) => {
+    const form = useContext<FormState | null>(FormContext)
     const theme = useContext(ThemeContext)
 
     const selectRef = useRef(null)
+
     const [error, setError] = useState<string>()
-    const form = useContext<FormState | null>(FormContext)
-
-    useEffect(() => {
-      const select = {
-        inputRef: selectRef,
-        setError,
-        type: isMulti ? 'multiSelect' : 'select'
-      }
-
-      form?.registerInput(select)
-
-      return () => form?.removeInput(select)
-    }, [selectRef, form, isMulti])
 
     const overridingStyles = {
       menu: (before: any) => ({
@@ -100,24 +89,36 @@ const Select = forwardRef(
       }
     })
 
+    useEffect(() => {
+      const select = {
+        inputRef: selectRef,
+        setError,
+        type: isMulti ? 'multiSelect' : 'select'
+      }
+
+      form?.registerInput(select)
+
+      return () => form?.removeInput(select)
+    }, [selectRef, form, isMulti])
+
     return (
       <Style isErrored={!!error} ref={ref as any} className={className}>
         <ErrorTooltip error={!!error} content={error} />
 
         <RealSelect
-          classNamePrefix='Select'
-          onBlur={() => setError('')}
-          styles={styling || overridingStyles}
-          theme={theming || overridingTheme}
           ref={selectRef}
           isMulti={isMulti}
-          {...props}
+          classNamePrefix='Select'
+          onBlur={() => setError('')}
+          theme={theming || overridingTheme}
+          styles={styling || overridingStyles}
           noOptionsMessage={() => (
             <div id='noOptions'>
               <DotsLoader color={theme.colors.primary} />
               Carregando opções...
             </div>
           )}
+          {...props}
         />
       </Style>
     )

@@ -22,18 +22,20 @@ interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
 }
 const Avatar = ({
   size,
-  onShadowClick,
   onClick,
-  loaderColor = '#6e4850',
+  avatarId,
+  onShadowClick,
   shadow = false,
   border = false,
-  avatarId,
+  loaderColor = '#6e4850',
   ...rest
 }: AvatarProps) => {
-  const avatar = useSelector<RootState, string>(state => state.user.avatar_uuid)
+  const avatar = useSelector<RootState, string>(({ user }) => user.avatar_uuid)
+
+  const [hovering, setHovering] = useState(false)
+
   const condition = avatarId || avatar
   const src = `https://s3.steamslab.com/profile/${condition}`
-  const [hovering, setHovering] = useState(false)
 
   return (
     <Style className='Avatar'>
@@ -49,7 +51,7 @@ const Avatar = ({
           {condition === 'default' ? (
             <AvatarIcon />
           ) : (
-            <img src={src} alt='avatar' draggable={false} {...rest} />
+            <img alt='avatar' src={src} draggable={false} {...rest} />
           )}
 
           {shadow && (

@@ -4,12 +4,12 @@ import styled from 'styled-components'
 const Style = styled.button`
   position: relative;
 
-  height: clamp(35px, 3vh + 2vw, 44px);
   border-radius: 8px;
   transition: all 0.2s;
+  height: clamp(35px, 3vh + 2vw, 44px);
 
-  background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => theme.colors.primary};
 
   &:disabled {
     background-color: ${({ theme }) => lighten(0.2, theme.colors.primary)};
@@ -23,8 +23,8 @@ const Style = styled.button`
 
   .DotsLoader {
     position: absolute;
-    right: 10%;
     top: 0;
+    right: 10%;
 
     display: flex;
     align-items: center;

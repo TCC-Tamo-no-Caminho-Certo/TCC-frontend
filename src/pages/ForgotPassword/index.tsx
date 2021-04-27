@@ -3,7 +3,7 @@ import Style from './styles'
 
 import Content from './Content'
 
-import { HomeActions } from 'store/home'
+import { HomeActions } from 'store/Sync/home'
 
 import BackButton from 'components/BackButton'
 

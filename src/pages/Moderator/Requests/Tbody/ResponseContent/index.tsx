@@ -1,15 +1,16 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { RefObject, useContext, useRef, useState } from 'react'
 import Style, { Field, Infos } from './styles'
 
-import { ItemData, RequestsContext } from '../..'
+import { ItemData } from '../..'
 
 import makeRoleLabel from 'utils/makeRoleLabel'
 
 import api from 'services/api'
 
 import { Response, RootState } from 'store'
-import { Role } from 'store/AsyncThunks/roles'
-import { UserState } from 'store/AsyncThunks/user'
+import { Role } from 'store/Async/roles'
+import { UserState } from 'store/Async/user'
+import { CoursesState } from 'store/Async/courses'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
 import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'
@@ -18,35 +19,57 @@ import TrashIcon from 'assets/global/TrashIcon'
 import Avatar from 'components/User/Avatar'
 import Form, { Submit, Textarea } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
+import { PopupMethods } from 'components/Popup'
 
-import { GlobalContext } from 'App'
 import { motion } from 'framer-motion'
 import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 import * as Yup from 'yup'
 
 interface ResponseContentProps {
+  popupRef: RefObject<PopupMethods>
   userInfo?: any
   selectedInfo?: ItemData
   onCloseClick: () => void
 }
 
 function ResponseContent({
-  onCloseClick,
+  userInfo,
+  popupRef,
   selectedInfo,
-  userInfo
+  onCloseClick
 }: ResponseContentProps) {
-  const user = useSelector<RootState, UserState>(state => state.user)
-  const requestsContext = useContext(RequestsContext)
+  const user = useSelector<RootState, UserState>(({ user }) => user)
+  const { courses } = useSelector<RootState, CoursesState>(
+    ({ courses }) => courses
+  )
   const theme = useContext(ThemeContext)
-  const { popup } = useContext(GlobalContext)
-  const popupRef = popup?.popupRef
 
   const acceptRef = useRef<CheckboxIconMethods>(null)
   const rejectRef = useRef<CheckboxIconMethods>(null)
+
   const [buttonClicked, setButtonClicked] = useState('rejected')
 
   const himselfModeratorRequest = user.user_id === userInfo?.user_id
+
+  const onTrashClick = () => {
+    selectedInfo &&
+      popupRef?.current?.configPopup({
+        type: 'warning',
+        message: 'Tem certeza que deseja remover esta solicitação?',
+        onOkClick: async () => {
+          await api.delete(`user/role/request/${selectedInfo.id}`)
+          onCloseClick()
+        },
+        onCloseClick: () => {
+          popupRef?.current?.configPopup({
+            setModal: false,
+            message: '',
+            type: 'warning'
+          })
+        }
+      })
+  }
 
   const afterResponseSubmit = (res: Response<any>) => {
     if (res.success)
@@ -82,44 +105,12 @@ function ResponseContent({
       }
   }
 
-  useEffect(() => {
-    popup?.setPopupProps &&
-      popup.setPopupProps({
-        bottom: '50vh',
-        translateY: '50%',
-        bgHeight: '100vh',
-        zIndex: 20
-      })
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   return (
     <Style>
       {userInfo && selectedInfo ? (
         <>
           {!himselfModeratorRequest && (
-            <motion.button
-              id='delete'
-              type='button'
-              onClick={() => {
-                popupRef?.current?.configPopup({
-                  type: 'warning',
-                  message: 'Tem certeza que deseja remover esta solicitação?',
-                  onOkClick: async () => {
-                    await api.delete(`user/role/request/${selectedInfo.id}`)
-                    onCloseClick()
-                  },
-                  onCloseClick: () => {
-                    popupRef?.current?.configPopup({
-                      setModal: false,
-                      message: '',
-                      type: 'warning'
-                    })
-                  }
-                })
-              }}
-            >
+            <motion.button id='delete' type='button' onClick={onTrashClick}>
               <TrashIcon />
               Excluir solicitação
             </motion.button>
@@ -178,7 +169,7 @@ function ResponseContent({
                 Curso:
                 <div>
                   {
-                    requestsContext.courses.find(
+                    courses.find(
                       course => course.course_id === selectedInfo?.course_id
                     )?.name
                   }

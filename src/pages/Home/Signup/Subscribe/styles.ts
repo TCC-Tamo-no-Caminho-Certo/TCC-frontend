@@ -2,14 +2,14 @@ import styled from 'styled-components'
 
 const Style = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
-  width: max(100vw, 320px);
   height: 100vh;
+  width: max(100vw, 320px);
 
-  color: ${({ theme }) => theme.colors.secondary};
   background-color: transparent;
+  color: ${({ theme }) => theme.colors.secondary};
 
   @media screen and (min-width: 1200px) {
     width: 62vw;

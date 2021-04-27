@@ -9,10 +9,10 @@ import { motion, Variants } from 'framer-motion'
 import { ThemeContext } from 'styled-components'
 
 interface CheckboxProps {
-  label: string
   name: string
-  defaultCheck?: boolean
+  label: string
   id?: string
+  defaultCheck?: boolean
   onClick?: () => void
 }
 
@@ -35,17 +35,17 @@ const pathAnimation: Variants = {
 }
 
 const Checkbox = ({
+  id,
   name,
   label,
   onClick,
-  id,
   defaultCheck,
   ...rest
 }: CheckboxProps) => {
+  const form = useContext<FormState | null>(FormContext)
   const theme = useContext(ThemeContext)
 
   const checkboxRef = useRef<HTMLInputElement>(null)
-  const form = useContext<FormState | null>(FormContext)
 
   const [checked, setChecked] = useState(false)
   const [error, setError] = useState<string>()
@@ -68,9 +68,9 @@ const Checkbox = ({
   return (
     <Style
       className='Checkbox'
+      onClick={onClick}
       checked={checked}
       error={!!error}
-      onClick={onClick}
       id={id}
     >
       <ErrorTooltip error={!!error} content={error} />
@@ -87,8 +87,8 @@ const Checkbox = ({
           readOnly
           type='checkbox'
           name={name}
-          checked={checked}
           ref={checkboxRef}
+          checked={checked}
           {...rest}
         />
 
@@ -123,10 +123,10 @@ const Checkbox = ({
 
           <motion.path
             d=''
+            stroke='url(#checkboxRadial)'
             initial={false}
             variants={pathAnimation}
             animate={checked ? 'check' : 'unCheck'}
-            stroke='url(#checkboxRadial)'
           />
         </svg>
       </button>

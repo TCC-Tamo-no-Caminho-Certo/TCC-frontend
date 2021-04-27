@@ -19,7 +19,7 @@ import makeRoleLabel from 'utils/makeRoleLabel'
 
 import api from 'services/api'
 
-import { Role } from 'store/AsyncThunks/roles'
+import { Role } from 'store/Async/roles'
 
 import useCombinedRefs from 'hooks/useCombinedRefs'
 
@@ -49,10 +49,13 @@ interface ContainerProps {
 }
 
 const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
-  const hereRef = useRef<HTMLDivElement>(null)
-  const conbinedRefs = useCombinedRefs(ref, hereRef)
   const { roles } = useContext(AddRoleContext)
+
+  const hereRef = useRef<HTMLDivElement>(null)
+
   const [request, setRequest] = useState<any>(undefined)
+
+  const conbinedRefs = useCombinedRefs(ref, hereRef)
 
   const forms = {
     student: <Student request={request} />,
@@ -68,7 +71,7 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
         const filterByRole = requests?.find(
           (request: any) =>
             request.role_id ===
-            roles.find(storeRole => storeRole.title === role)?.role_id
+            roles.find(({ title }) => title === role)?.role_id
         )
 
         setRequest(filterByRole)
@@ -101,6 +104,7 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
 
                   <div id='feedback'>
                     <span>Resposta do moderador:</span>
+
                     <p>{request?.feedback}</p>
                   </div>
                 </div>

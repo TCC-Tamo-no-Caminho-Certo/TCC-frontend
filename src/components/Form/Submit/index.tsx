@@ -18,9 +18,9 @@ const Submit = forwardRef(
     return (
       <Style
         className='Submit'
+        ref={ref as any}
         type={type as any}
         disabled={form?.loader}
-        ref={ref as any}
         {...(rest as any)}
       >
         <div className='label'>{children}</div>

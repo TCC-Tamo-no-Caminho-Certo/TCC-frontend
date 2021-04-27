@@ -6,9 +6,9 @@ export const ConfirmForm = styled.div`
   padding: 24px;
 
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
 
   border-radius: 16px;
   width: clamp(320px, 90vw, 500px);
@@ -22,26 +22,26 @@ export const ConfirmForm = styled.div`
   }
 
   .Text {
-    margin: 16px 0;
     width: 100%;
+    margin: 16px 0;
   }
 
   #buttons {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
+    justify-content: flex-end;
 
     width: 100%;
     height: 44px;
 
-    button#cancel {
+    #cancel {
       margin-right: 16px;
 
       color: ${({ theme }) => theme.colors.tertiary};
 
       &:hover {
-        filter: brightness(1.1);
         transform: scale(1.01);
+        filter: brightness(1.1);
 
         color: ${({ theme }) => theme.colors.primary};
       }
@@ -62,9 +62,9 @@ const Style = styled(motion.section)`
   position: relative;
 
   display: flex;
-  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
+  justify-content: flex-start;
 
   min-height: 100vh;
 
@@ -73,11 +73,11 @@ const Style = styled(motion.section)`
   form {
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
+    justify-content: center;
 
-    height: 100%;
     width: 100%;
+    height: 100%;
   }
 
   .Card + .Card {
@@ -90,8 +90,9 @@ const Style = styled(motion.section)`
 
   #submits {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+
     padding-bottom: 24px;
 
     button {
@@ -101,23 +102,22 @@ const Style = styled(motion.section)`
       line-height: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
 
       background-color: transparent;
-
       color: ${({ theme }) => theme.colors.secondary};
-    }
 
-    button + button {
-      width: clamp(120px, 20vw, 200px);
-      height: 40px;
-      border-radius: 15px;
-      margin-left: 16px;
-      transition: transform 1s ease;
+      & + button {
+        height: 40px;
+        margin-left: 16px;
+        border-radius: 15px;
+        transition: transform 1s ease;
+        width: clamp(120px, 20vw, 200px);
 
-      box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.49);
-      color: ${({ theme }) => theme.colors.secondary};
-      background-color: ${({ theme }) => theme.colors.primary};
+        box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.49);
+        color: ${({ theme }) => theme.colors.secondary};
+        background-color: ${({ theme }) => theme.colors.primary};
 
-      &:hover {
-        transform: scale(1.03);
+        &:hover {
+          transform: scale(1.03);
+        }
       }
     }
   }
@@ -127,8 +127,8 @@ const Style = styled(motion.section)`
 
     #submits {
       position: absolute;
-      bottom: 24px;
       right: 50%;
+      bottom: 24px;
 
       transform: translateX(50%);
     }

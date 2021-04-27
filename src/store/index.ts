@@ -1,11 +1,13 @@
-import Theme from './theme'
-import Sidebar from './sidebar'
-import User from './AsyncThunks/user'
-import Home from './home'
-import Universities from './AsyncThunks/universities'
-import Roles from './AsyncThunks/roles'
-import Courses from './AsyncThunks/courses'
-import Validation from './AsyncThunks/validation'
+import Home from './Sync/home'
+import User from './Async/user'
+import Popup from './Sync/popup'
+import Theme from './Sync/theme'
+import Roles from './Async/roles'
+import Sidebar from './Sync/sidebar'
+import Courses from './Async/courses'
+import Validation from './Async/validation'
+import GlobalStyle from './Sync/globalStyle'
+import Universities from './Async/universities'
 
 import { configureStore } from '@reduxjs/toolkit'
 
@@ -22,11 +24,13 @@ const store = configureStore({
   reducer: {
     home: Home.reducer,
     user: User.reducer,
-    theme: Theme.reducer,
     roles: Roles.reducer,
-    courses: Courses.reducer,
+    popup: Popup.reducer,
+    theme: Theme.reducer,
     sidebar: Sidebar.reducer,
+    courses: Courses.reducer,
     validation: Validation.reducer,
+    globalStyle: GlobalStyle.reducer,
     universities: Universities.reducer
   }
 })

@@ -1,4 +1,4 @@
-import { Role } from 'store/AsyncThunks/roles'
+import { Role } from 'store/Async/roles'
 
 type RoleLabels = {
   [_key in Role]: string

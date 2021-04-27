@@ -3,33 +3,31 @@ import React from 'react'
 import { motion, Variants } from 'framer-motion'
 
 interface ArrowIconProps {
-  transition?: Object
-  initial?: Object
-  className?: string
   id?: string
+  initial?: Object
   animate?: Object
   variants?: Variants
+  className?: string
+  transition?: Object
 }
 
 const ArrowIcon = ({
-  className = 'Icon',
+  animate,
   id = 'ArrowIcon',
-  animate
-}: ArrowIconProps) => {
-  return (
-    <svg
-      xmlns='http://www.w3.org/2000/svg'
-      viewBox='0 0 18 12'
-      overflow='visible'
-      id={id}
-      className={className}
-    >
-      <motion.path
-        animate={animate}
-        d='M2.115 0L9 7.417 15.885 0 18 2.2834 9 12 0 2.2834 2.115 0z'
-      />
-    </svg>
-  )
-}
+  className = 'Icon'
+}: ArrowIconProps) => (
+  <svg
+    viewBox='0 0 18 12'
+    overflow='visible'
+    xmlns='http://www.w3.org/2000/svg'
+    id={id}
+    className={className}
+  >
+    <motion.path
+      d='M2.115 0L9 7.417 15.885 0 18 2.2834 9 12 0 2.2834 2.115 0z'
+      animate={animate}
+    />
+  </svg>
+)
 
 export default ArrowIcon

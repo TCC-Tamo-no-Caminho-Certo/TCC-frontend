@@ -1,8 +1,6 @@
 import React from 'react'
 import Style from './styles'
 
-const GoogleMap = () => {
-  return <Style />
-}
+const GoogleMap = () => <Style />
 
 export default GoogleMap

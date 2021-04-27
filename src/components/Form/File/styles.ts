@@ -8,8 +8,8 @@ interface StyleProps {
 const Style = styled.div<StyleProps>`
   #fileInput {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     flex-direction: column;
 
@@ -21,17 +21,17 @@ const Style = styled.div<StyleProps>`
 
     label {
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
 
-      text-align: center;
-      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.8rem);
       padding: 8px 16px;
       border-radius: 8px;
+      text-align: center;
+      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.8rem);
 
-      background-color: ${({ theme }) => theme.colors.primary};
       color: ${({ theme }) => theme.colors.secondary};
       box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.39);
+      background-color: ${({ theme }) => theme.colors.primary};
 
       .Icon {
         height: 16px;
@@ -65,13 +65,13 @@ const Style = styled.div<StyleProps>`
       padding: 8px 16px;
       border-radius: 8px;
 
-      background-color: ${({ theme }) => theme.colors.primary};
       color: ${({ theme }) => theme.colors.secondary};
+      background-color: ${({ theme }) => theme.colors.primary};
     }
 
     .Icon {
-      margin-bottom: 16px;
       height: 16px;
+      margin-bottom: 16px;
 
       stroke: ${({ theme }) => theme.colors.secondary};
     }
@@ -100,8 +100,8 @@ const Style = styled.div<StyleProps>`
     .cropper-point {
       width: 5px;
       height: 5px;
-      opacity: 1;
 
+      opacity: 1;
       background-color: ${({ theme }) => theme.colors.white};
     }
 
@@ -111,10 +111,10 @@ const Style = styled.div<StyleProps>`
 
     .cropper-center::before {
       left: 0;
-      transform: translateX(-50%);
 
       width: 8px;
       height: 1px;
+      transform: translateX(-50%);
 
       background-color: ${({ theme }) => theme.colors.white};
     }

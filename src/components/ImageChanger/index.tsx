@@ -9,7 +9,9 @@ import Style, { RightMenu } from './styles'
 
 import api from 'services/api'
 
-import { UserActions } from 'store/AsyncThunks/user'
+import { UserActions } from 'store/Async/user'
+import { RootState } from 'store'
+import { PopupState } from 'store/Sync/popup'
 
 import CameraIcon from 'assets/Inputs/CameraIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
@@ -18,11 +20,10 @@ import { Submit } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
 import Modal, { ModalMethods } from 'components/Modal'
 
-import { GlobalContext, GlobalContextProps } from 'App'
 import 'cropperjs/dist/cropper.css'
 import { motion } from 'framer-motion'
 import { Cropper } from 'react-cropper'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
 export interface ImageChangerMethods {
@@ -30,8 +31,9 @@ export interface ImageChangerMethods {
 }
 
 const ImageChanger = forwardRef((_props, ref) => {
-  const { popup } = useContext<GlobalContextProps>(GlobalContext)
+  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
   const theme = useContext(ThemeContext)
+
   const modalRef = useRef<ModalMethods>(null)
 
   const [image, setImage] = useState()
@@ -73,7 +75,7 @@ const ImageChanger = forwardRef((_props, ref) => {
         setShowUploadAnother(false)
         onCloseClick()
 
-        popup?.popupRef?.current?.configPopup({
+        popupRef?.current?.configPopup({
           type: 'error',
           message: 'Esta imagem é muito grande! tente novamente com uma menor.'
         })
@@ -84,11 +86,11 @@ const ImageChanger = forwardRef((_props, ref) => {
     if (cropper.cropped) {
       setLoading(true)
 
-      const response = await api.put('/user/avatar', {
+      const { avatar_uuid } = await api.put('/user/avatar', {
         picture: cropper.getCroppedCanvas().toDataURL(type)
       })
 
-      dispatch(UserActions.update({ avatar_uuid: response.avatar_uuid }))
+      dispatch(UserActions.update({ avatar_uuid }))
       setLoading(false)
       onCloseClick()
     } else {
@@ -153,6 +155,7 @@ const ImageChanger = forwardRef((_props, ref) => {
             <span>Antevisão</span>
 
             <div id='img-preview' />
+
             <div id='before-img-preview' />
           </div>
 

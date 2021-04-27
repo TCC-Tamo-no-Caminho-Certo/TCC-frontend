@@ -5,13 +5,10 @@ import formatUpdateUser, { ContainerForm, InputData } from './formatUpdateUser'
 
 import selectedRoleLabel from 'utils/makeRoleLabel'
 
-import { Role } from 'store/AsyncThunks/roles'
-import { UserState } from 'store/AsyncThunks/user'
+import { Role } from 'store/Async/roles'
+import { UserState } from 'store/Async/user'
 import { RootState } from 'store'
-import {
-  getUniversities,
-  UniversitiesState
-} from 'store/AsyncThunks/universities'
+import { getUniversities, UniversitiesState } from 'store/Async/universities'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
@@ -28,9 +25,9 @@ type ContainersRoles = Role | 'personal'
 
 const Containers = () => {
   const storeUniversities = useSelector<RootState, UniversitiesState>(
-    state => state.universities
+    ({ universities }) => universities
   )
-  const user = useSelector<RootState, UserState>(state => state.user)
+  const user = useSelector<RootState, UserState>(({ user }) => user)
   const theme = useContext(ThemeContext)
 
   const imageRef = useRef<ImageChangerMethods>(null)
@@ -41,7 +38,6 @@ const Containers = () => {
   const dispatch = useDispatch()
 
   const rolesToShow = ['student', 'professor', 'moderator']
-  const { universities } = storeUniversities
   const rolesWithEdit = user.roles.filter(role =>
     rolesToShow.find(wished => wished === role)
   )
@@ -76,7 +72,7 @@ const Containers = () => {
 
                 {user.dataLoading === false ? (
                   formatUpdateUser(
-                    universities,
+                    storeUniversities.universities,
                     user,
                     'personal'
                   ).map((info: InputData) => (
@@ -91,12 +87,12 @@ const Containers = () => {
           return (
             <Card
               key={role}
-              headerText={`Dados de ${selectedRoleLabel(role as Role)}`}
               role={role}
+              headerText={`Dados de ${selectedRoleLabel(role as Role)}`}
             >
               {user.dataLoading === false ? (
                 formatUpdateUser(
-                  universities,
+                  storeUniversities.universities,
                   user,
                   role as keyof ContainerForm
                 ).map((info: InputData) => (

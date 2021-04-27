@@ -4,8 +4,8 @@ import { motion } from 'framer-motion'
 
 interface DotsLoaderProps {
   size?: number
-  dotSize?: number
   color?: string
+  dotSize?: number
 }
 
 const DotsLoader = ({
@@ -15,19 +15,19 @@ const DotsLoader = ({
 }: DotsLoaderProps) => {
   const loadingContainer = {
     height: '100%',
-    width: size,
     display: 'flex',
-    justifyContent: 'space-around',
     alignItems: 'center',
-    className: 'DotsLoader'
+    className: 'DotsLoader',
+    justifyContent: 'space-around',
+    width: size
   }
 
   const loadingCircle = {
     display: 'block',
+    borderRadius: '50%',
     width: dotSize,
     height: dotSize,
-    backgroundColor: color,
-    borderRadius: '50%'
+    backgroundColor: color
   }
 
   const loadingContainerVariants = {
@@ -60,11 +60,11 @@ const DotsLoader = ({
 
   return (
     <motion.div
+      animate='end'
+      initial='start'
       className='DotsLoader'
       style={loadingContainer}
       variants={loadingContainerVariants}
-      initial='start'
-      animate='end'
     >
       <motion.span
         style={loadingCircle}

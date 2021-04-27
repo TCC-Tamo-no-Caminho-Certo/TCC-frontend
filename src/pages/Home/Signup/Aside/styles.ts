@@ -12,8 +12,8 @@ const Style = styled.aside`
   min-height: 100vh;
   width: max(100vw, 320px);
 
-  background-color: ${({ theme }) => theme.colors.secondary};
   box-shadow: 8px 8px 6px 4px rgba(0, 0, 0, 0.14);
+  background-color: ${({ theme }) => theme.colors.secondary};
 
   nav {
     position: absolute;

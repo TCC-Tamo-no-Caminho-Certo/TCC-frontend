@@ -1,8 +1,6 @@
 import React from 'react'
 import Style from './styles'
 
-const Map = () => {
-  return <Style />
-}
+const Map = () => <Style />
 
 export default Map

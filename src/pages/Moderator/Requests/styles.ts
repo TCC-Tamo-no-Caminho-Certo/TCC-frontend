@@ -14,8 +14,8 @@ export const Table = styled.div`
 
   .loader {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     width: 100%;
     height: 48px;
@@ -30,16 +30,16 @@ const Style = styled.section`
   height: 100vh;
   overflow-y: hidden;
 
-  background-color: ${({ theme }) => theme.colors.tertiary};
   color: ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => theme.colors.tertiary};
 
   header {
     display: flex;
+    text-align: left;
     align-items: center;
 
     width: max(100%, 280px);
-    padding: 16px 8px 16px 16px;
-    text-align: left;
+    padding: 16px 16px 16px 8px;
 
     h1 {
       font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.3rem);
@@ -47,12 +47,6 @@ const Style = styled.section`
   }
 
   @media screen and (min-width: 545px) {
-    header {
-      padding: 16px 16px;
-    }
-  }
-
-  @media screen and (min-width: 745px) {
     header {
       padding: 16px 32px;
     }

@@ -27,21 +27,24 @@ const Profile = () => {
   const profileRoutes: RouteProps[] = useMemo(
     () => [
       // {
-      //   icon: () => <UserIcon />,
       //   label: 'Perfil',
-      //   paths: ['/session/profile/home'],
       //   exact: true,
-      //   component: () => <ProfileHome />
+      //   icon: () => <UserIcon />,
+      //   component: () => <ProfileHome />,
+      //   paths: ['/session/profile/home'],
       // },
       {
-        icon: () => <EditUserIcon />,
         label: 'Editar Perfil',
-        paths: ['/session/profile/edit-profile'],
-        component: () => <EditProfile />
+        icon: () => <EditUserIcon />,
+        component: () => <EditProfile />,
+        paths: ['/session/profile/edit-profile']
       },
       {
-        icon: () => <ChangeIcon />,
         label: 'Adicionar Papel',
+        exact: true,
+        isBigInOther: true,
+        icon: () => <ChangeIcon />,
+        component: () => <AddRole />,
         paths: [
           '/session/profile/change-role',
           '/session/profile/change-role/student',
@@ -50,40 +53,37 @@ const Profile = () => {
           '/session/profile/change-role/evaluator',
           '/session/profile/change-role/moderator',
           '/session/profile/change-role/admin'
-        ],
-        exact: true,
-        component: () => <AddRole />,
-        isBigInOther: true
+        ]
       },
       // {
-      //   icon: () => <CardIcon />,
       //   label: 'Financeiro',
-      //   paths: ['/session/profile/financial'],
+      //   icon: () => <CardIcon />,
       //   component: () => <Financial />
+      //   paths: ['/session/profile/financial'],
       // },
       // {
-      //   icon: () => <SecurityIcon />,
       //   label: 'Segurança',
-      //   paths: ['/session/profile/security'],
+      //   icon: () => <SecurityIcon />,
       //   component: () => <Security />
+      //   paths: ['/session/profile/security'],
       // },
       // {
-      //   icon: () => <HistoryIcon />,
       //   label: 'Histórico',
-      //   paths: ['/session/profile/historic'],
+      //   icon: () => <HistoryIcon />,
       //   component: () => <Historic />
+      //   paths: ['/session/profile/historic'],
       // },
       // {
-      //   icon: () => <PalleteIcon />,
       //   label: 'Customização',
-      //   paths: ['/session/profile/customization'],
+      //   icon: () => <PalleteIcon />,
       //   component: () => <Customization />
+      //   paths: ['/session/profile/customization'],
       // },
       {
-        icon: () => <MapIcon />,
         label: 'Voltar ao mapa',
-        paths: ['/session/main/map'],
-        bottom: true
+        bottom: true,
+        icon: () => <MapIcon />,
+        paths: ['/session/main/map']
       }
     ],
     []
@@ -93,9 +93,9 @@ const Profile = () => {
     <Sidebar
       title='Perfil'
       routes={profileRoutes}
+      letters={sidebar.letters}
       selected={sidebar.selected}
       background={sidebar.background}
-      letters={sidebar.letters}
     />
   )
 }

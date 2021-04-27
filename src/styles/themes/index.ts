@@ -5,7 +5,6 @@ export { light, dark }
 
 interface Themes {
   name: string
-
   colors: {
     primary: string
     secondary: string
@@ -16,7 +15,6 @@ interface Themes {
     red: string
     gray: string
   }
-
   roles: {
     guest: string
     professor: string
@@ -26,7 +24,6 @@ interface Themes {
     evaluator: string
     admin: string
   }
-
   sidebar: {
     selected: string
     letters: string

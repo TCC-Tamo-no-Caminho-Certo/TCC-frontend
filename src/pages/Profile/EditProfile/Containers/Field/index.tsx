@@ -11,6 +11,7 @@ import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import { Datepicker, Text } from 'components/Form'
 
+import { darken } from 'polished'
 import { ThemeContext } from 'styled-components'
 
 interface FieldProps {
@@ -27,28 +28,27 @@ const Field = ({ data }: FieldProps) => {
 
   const { name, label, date, dontShow, value, editable } = data
 
-  const input =
-    name === 'birthday' ? (
-      <Datepicker
-        isBirthday
-        arrow='bottom'
-        placeholder='Clique para alterar a data'
-        name={name}
-        dateColors={{
-          body: theme.colors.secondary,
-          header: theme.colors.tertiary,
-          selected: theme.colors.primary
-        }}
-      />
-    ) : (
-      <Text
-        ref={inputRef}
-        name={name}
-        placeholder=' '
-        defaultValue={dontShow ? '' : value}
-        eye={dontShow}
-      />
-    )
+  const input = date ? (
+    <Datepicker
+      isBirthday
+      arrow='top'
+      placeholder='Clique para alterar a data'
+      name={name}
+      dateColors={{
+        body: theme.colors.secondary,
+        header: darken(0.05, theme.colors.tertiary),
+        selected: theme.colors.primary
+      }}
+    />
+  ) : (
+    <Text
+      placeholder=' '
+      name={name}
+      ref={inputRef}
+      eye={dontShow}
+      defaultValue={dontShow ? '' : value}
+    />
+  )
 
   const onFieldClick = () => {
     if (editable) {
@@ -75,15 +75,15 @@ const Field = ({ data }: FieldProps) => {
   }
 
   useEffect(() => {
-    if (change) inputRef.current?.focus()
+    change && inputRef.current?.focus()
   }, [change])
 
   useEffect(() => {
-    if (!globalChange) setChange(false)
+    !globalChange && setChange(false)
   }, [globalChange])
 
   return (
-    <Style key={name} className='Field'>
+    <Style className='Field' key={name}>
       <Label className='button' onClick={onFieldClick}>
         {label}
       </Label>

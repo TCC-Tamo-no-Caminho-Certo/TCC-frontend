@@ -10,6 +10,10 @@ const Style = styled.div<StyleProps>`
   margin: 0;
   padding: 0px;
 
+  .Select__menu {
+    z-index: 1000;
+  }
+
   .Select__single-value {
     display: flex;
     align-items: center;
@@ -19,8 +23,8 @@ const Style = styled.div<StyleProps>`
 
   #noOptions {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     .DotsLoader {
       margin-right: 8px;
@@ -32,8 +36,8 @@ const Style = styled.div<StyleProps>`
     css`
       .Trigger {
         position: absolute;
-        left: 0;
         top: 0;
+        left: 0;
         z-index: 2;
 
         height: 100%;

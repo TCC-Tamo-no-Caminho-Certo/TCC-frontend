@@ -47,8 +47,8 @@ const File = ({
 }: FileProps) => {
   const form = useContext<FormState | null>(FormContext)
 
-  const modalRef = useRef<ModalMethods>(null)
   const fileRef = useRef<HTMLInputElement>(null)
+  const modalRef = useRef<ModalMethods>(null)
 
   const [fileData, setFileData] = useState<string>()
   const [cropper, setCropper] = useState<any>()
@@ -90,8 +90,8 @@ const File = ({
   return (
     <Style
       className='File'
-      haveValue={fileRef.current?.value}
       flexColumn={flexColumn}
+      haveValue={fileRef.current?.value}
     >
       <div id='fileInput'>
         <ErrorTooltip error={!!error} content={error} />
@@ -118,11 +118,11 @@ const File = ({
 
           <input
             type='file'
-            data-max-size={maxSize}
             name={name}
             ref={fileRef}
             accept={accept}
             onChange={onChange}
+            data-max-size={maxSize}
             style={{ display: 'none' }}
             onClick={() => modalRef.current?.toggleModal(true)}
           />
@@ -131,26 +131,26 @@ const File = ({
 
       {!noCropper && (
         <Modal
+          top={top}
+          ref={modalRef}
+          bottom={bottom}
           bgHeight={bgHeight}
           translateY={tranlateY}
-          top={top}
-          bottom={bottom}
-          ref={modalRef}
         >
           <div id='container'>
             <CloseIcon onClick={() => modalRef.current?.toggleModal(false)} />
 
             <Cropper
               center
-              className='Cropper'
               dragMode='move'
+              className='Cropper'
               src={file}
-              guides={false}
-              background={false}
               viewMode={3}
+              guides={false}
               aspectRatio={1}
-              minCropBoxHeight={80}
+              background={false}
               minCropBoxWidth={80}
+              minCropBoxHeight={80}
               checkOrientation={false}
               onInitialized={instance => setCropper(instance)}
               {...props}

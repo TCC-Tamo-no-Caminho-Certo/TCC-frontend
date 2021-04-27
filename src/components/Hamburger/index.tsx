@@ -34,37 +34,37 @@ const Hamburger = forwardRef<any, HamburgerProps>(
     return (
       <Style
         ref={ref}
-        onClick={onHamburgerClick}
         color={color}
         width={`${size}px`}
         height={`${size - 7}px`}
+        onClick={onHamburgerClick}
       >
         <svg width='24' height='17' xmlns='http://www.w3.org/2000/svg'>
           <MotionRect
             y='0'
-            variants={motionFirst}
-            animate={state ? 'open' : 'closed'}
-            transition={transition}
-            initial={false}
             fill={color}
+            initial={false}
+            variants={motionFirst}
+            transition={transition}
+            animate={state ? 'open' : 'closed'}
           />
 
           <MotionRect
             y='7'
-            variants={motionSecond}
-            animate={state ? 'open' : 'closed'}
-            transition={transition}
-            initial={false}
             fill={color}
+            initial={false}
+            variants={motionSecond}
+            transition={transition}
+            animate={state ? 'open' : 'closed'}
           />
 
           <MotionRect
-            fill={color}
             y='14'
-            variants={motionThird}
-            animate={state ? 'open' : 'closed'}
-            transition={transition}
+            fill={color}
             initial={false}
+            variants={motionThird}
+            transition={transition}
+            animate={state ? 'open' : 'closed'}
           />
         </svg>
       </Style>
@@ -73,5 +73,3 @@ const Hamburger = forwardRef<any, HamburgerProps>(
 )
 
 export default Hamburger
-
-Hamburger.displayName = 'Hamburger'

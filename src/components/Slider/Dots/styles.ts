@@ -22,7 +22,7 @@ const Style = styled.div.attrs({
     height: ${({ size }) => size};
     border-radius: ${({ radius }) => radius};
 
-    background-color: white;
+    background-color: ${({ theme }) => theme.colors.secondary};
 
     & + ${Dot} {
       margin-left: ${({ gap }) => gap};

@@ -6,8 +6,8 @@ interface RightMenuProps {
 
 export const RightMenu = styled.div<RightMenuProps>`
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
 
   width: 148px;
@@ -54,6 +54,7 @@ export const RightMenu = styled.div<RightMenuProps>`
 
     span {
       margin-bottom: 12px;
+
       color: ${({ theme }) => theme.colors.secondary};
     }
 
@@ -73,20 +74,15 @@ export const RightMenu = styled.div<RightMenuProps>`
   }
 
   #otherFileSelect {
+    padding: 8px;
+    cursor: pointer;
     border-radius: 4px;
-
-    padding: 0 8px;
-
+    text-align: center;
     margin-bottom: 16px;
     font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.3rem);
-    text-align: center;
-    padding: 8px;
 
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.primary};
-
-    cursor: pointer;
-
     border: solid ${({ theme }) => theme.colors.secondary} 1px;
 
     &:hover,
@@ -98,9 +94,9 @@ export const RightMenu = styled.div<RightMenuProps>`
       width: 20px;
       height: 20px;
       margin-left: 8px;
-      fill: ${({ theme }) => theme.colors.secondary};
-
       transform: translateY(-10%);
+
+      fill: ${({ theme }) => theme.colors.secondary};
     }
   }
 
@@ -119,9 +115,8 @@ const Style = styled.div`
   display: flex;
 
   width: auto;
-
-  padding: clamp(8px, 3vw, 48px);
   border-radius: 24px;
+  padding: clamp(8px, 3vw, 48px);
 
   background-color: ${({ theme }) => theme.colors.tertiary};
 
@@ -133,9 +128,9 @@ const Style = styled.div`
     position: absolute;
 
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
+    justify-content: center;
 
     width: 300px;
     height: 300px;
@@ -143,8 +138,9 @@ const Style = styled.div`
 
     .Icon {
       width: 24px;
-      fill: ${({ theme }) => theme.colors.white};
       padding: 16px 0;
+
+      fill: ${({ theme }) => theme.colors.white};
     }
 
     #error {
@@ -153,25 +149,26 @@ const Style = styled.div`
 
       display: flex;
       align-items: center;
-      justify-content: center;
       flex-direction: column;
+      justify-content: center;
 
       text-align: center;
       border-radius: 8px;
-      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
       padding-bottom: 16px;
+      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
 
       color: ${({ theme }) => theme.colors.white};
       background-color: ${({ theme }) => theme.colors.primary};
     }
 
-    color: ${({ theme }) => theme.colors.secondary};
-    border: ${({ theme }) => theme.colors.secondary} dashed 1px;
     cursor: pointer;
 
+    color: ${({ theme }) => theme.colors.secondary};
+    border: ${({ theme }) => theme.colors.secondary} dashed 1px;
+
     &:hover {
-      color: ${({ theme }) => theme.colors.primary};
       border: solid 1px;
+      color: ${({ theme }) => theme.colors.primary};
     }
   }
 
@@ -205,8 +202,8 @@ const Style = styled.div`
     .cropper-point {
       width: 5px;
       height: 5px;
-      opacity: 1;
 
+      opacity: 1;
       background-color: ${({ theme }) => theme.colors.secondary};
     }
 
@@ -216,20 +213,20 @@ const Style = styled.div`
 
     .cropper-center::before {
       left: 0;
-      transform: translateX(-50%);
 
       width: 8px;
       height: 1px;
+      transform: translateX(-50%);
 
       background-color: ${({ theme }) => theme.colors.secondary};
     }
 
     .cropper-center::after {
       top: 0;
-      transform: translateY(-50%);
 
       width: 1px;
       height: 8px;
+      transform: translateY(-50%);
 
       background-color: ${({ theme }) => theme.colors.secondary};
     }

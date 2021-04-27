@@ -12,10 +12,10 @@ import selectRoleLabel from 'utils/makeRoleLabel'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { UserActions, UserState } from 'store/AsyncThunks/user'
+import { UserActions, UserState } from 'store/Async/user'
 // import { ThemeState } from 'store/theme'
-import { HomeActions } from 'store/home'
-import { getValidation } from 'store/AsyncThunks/validation'
+import { HomeActions } from 'store/Sync/home'
+import { getValidation } from 'store/Async/validation'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
@@ -108,7 +108,7 @@ const RightMenu = () => {
   const { name, selectedRole, roles, surname, dataLoading } = useSelector<
     RootState,
     UserState
-  >(state => state.user)
+  >(({ user }) => user)
 
   const [disabledLogout, setDisabledLogout] = useState(false)
   const [changeRole, setChangeRole] = useState(false)
@@ -195,7 +195,7 @@ const RightMenu = () => {
           <Style closedHeight={`${closedHeight}px`}>
             <Avatar size={80} />
 
-            <UserInfo selectedRole={selectedRole} className='UserInfo'>
+            <UserInfo className='UserInfo' selectedRole={selectedRole}>
               {dataLoading ? (
                 <DotsLoader color={theme.colors.secondary} />
               ) : (
@@ -231,8 +231,8 @@ const RightMenu = () => {
             <AnimatePresence>
               {editOpen && (
                 <RightMenuOpen
-                  animate='open'
                   exit='close'
+                  animate='open'
                   width={`${width}px`}
                   variants={motionMenu}
                   changeRole={changeRole}
@@ -265,9 +265,9 @@ const RightMenu = () => {
 
                     <motion.button
                       id='logout'
-                      data-cy='button-main-logout'
-                      animate='open'
                       type='button'
+                      animate='open'
+                      data-cy='button-main-logout'
                       variants={motionLogout}
                       onClick={onLogoutClick}
                       disabled={disabledLogout}
@@ -275,50 +275,48 @@ const RightMenu = () => {
                       {logoutLoading && (
                         <DotsLoader color={theme.colors.secondary} />
                       )}
+
                       <span id='leave'>Sair</span>
+
                       <LogoutIcon />
                     </motion.button>
                   </ul>
 
-                  {dataLoading ? (
-                    <></>
-                  ) : (
-                    changeRole && (
-                      <motion.div
-                        id='selectRoles'
-                        onMouseLeave={() => setChangeRole(false)}
-                      >
-                        {innerWidth < 545 && (
-                          <CloseIcon onClick={() => setChangeRole(false)} />
-                        )}
+                  {dataLoading && changeRole && (
+                    <motion.div
+                      id='selectRoles'
+                      onMouseLeave={() => setChangeRole(false)}
+                    >
+                      {innerWidth < 545 && (
+                        <CloseIcon onClick={() => setChangeRole(false)} />
+                      )}
 
-                        <ul>
-                          {roles.map(role => (
-                            <RoleLi
-                              key={role}
-                              role={role}
-                              onClick={() => {
-                                setIsOpen(false)
-                                toggleEditOpen()
-                              }}
+                      <ul>
+                        {roles.map(role => (
+                          <RoleLi
+                            key={role}
+                            role={role}
+                            onClick={() => {
+                              setIsOpen(false)
+                              toggleEditOpen()
+                            }}
+                          >
+                            <button
+                              type='button'
+                              onClick={() =>
+                                dispatch(
+                                  UserActions.update({
+                                    selectedRole: role
+                                  })
+                                )
+                              }
                             >
-                              <button
-                                type='button'
-                                onClick={() =>
-                                  dispatch(
-                                    UserActions.update({
-                                      selectedRole: role
-                                    })
-                                  )
-                                }
-                              >
-                                {selectRoleLabel(role)}
-                              </button>
-                            </RoleLi>
-                          ))}
-                        </ul>
-                      </motion.div>
-                    )
+                              {selectRoleLabel(role)}
+                            </button>
+                          </RoleLi>
+                        ))}
+                      </ul>
+                    </motion.div>
                   )}
                 </RightMenuOpen>
               )}

@@ -2,20 +2,20 @@ import styled from 'styled-components'
 
 export const Content = styled.section`
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
 
-  width: min(90%, 500px);
   padding: 16px;
   border-radius: 10px;
+  width: min(90%, 500px);
 
   box-shadow: -8px 8px 10px -4px rgba(0, 0, 0, 0.49);
   background: ${({ theme }) => theme.colors.secondary};
 
   p {
-    text-align: center;
     margin: 0;
+    text-align: center;
   }
 
   form {

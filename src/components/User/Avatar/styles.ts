@@ -21,17 +21,17 @@ export const StyledAvatar = styled.div<StyledAvatarProps>`
 
   .circle {
     position: relative;
-    transform: translateY(-103%);
 
+    overflow: hidden;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translateY(-103%);
     width: ${({ size }) => `${size}px`};
     height: ${({ size }) => `${size}px`};
-    border-radius: 50%;
-    overflow: hidden;
-    opacity: 0.7;
 
+    opacity: 0.7;
     background: transparent;
-    color: white;
-    pointer-events: none;
+    color: ${({ theme }) => theme.colors.white};
 
     .Icon {
       position: absolute;
@@ -40,12 +40,12 @@ export const StyledAvatar = styled.div<StyledAvatarProps>`
       z-index: 2;
 
       width: 24px;
+      opacity: 0.3;
+      cursor: pointer;
       transform: translate(-50%, 50%);
       transition: all 300ms ease-in-out;
-      cursor: pointer;
 
       fill: ${({ theme }) => theme.colors.primary};
-      opacity: 0.3;
     }
   }
 
@@ -55,14 +55,13 @@ export const StyledAvatar = styled.div<StyledAvatarProps>`
 
     display: block;
 
+    content: '';
     width: 100%;
     height: 32%;
-
-    background: black;
-
-    content: '';
     cursor: pointer;
     pointer-events: all;
+
+    background: black;
   }
 
   &:hover {

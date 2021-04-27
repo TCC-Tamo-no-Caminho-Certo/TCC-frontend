@@ -1,12 +1,13 @@
 import React, { useContext } from 'react'
 
-import { ThemeActions } from 'store/theme'
+import { ThemeActions } from 'store/Sync/theme'
 
 import { useDispatch } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
 const ThemeSwitch = () => {
   const theme = useContext(ThemeContext)
+
   const dispatch = useDispatch()
 
   return (

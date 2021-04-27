@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import Style, { ConfirmCode } from './styles'
 
 import { emailSchema } from 'utils/validations/forgotPassword'
 
-import { Response } from 'store'
+import { Response, RootState } from 'store'
+import { PopupState } from 'store/Sync/popup'
 
 import SendEmailIcon from 'assets/global/SendEmailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
@@ -12,11 +13,11 @@ import Logo from 'assets/FullLogo'
 
 import { Form, Submit, Text } from 'components/Form'
 
-import { GlobalContext, GlobalContextProps } from 'App'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 const Content = () => {
-  const { popup } = useContext<GlobalContextProps>(GlobalContext)
+  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
 
   const [userEmail, setUserEmail] = useState<string>()
   const [codeSend, setCodeSend] = useState(false)
@@ -26,7 +27,7 @@ const Content = () => {
   const afterEmailSubmit = (res: Response<any>) => {
     res.success
       ? setTimeout(() => setCodeSend(true), 1)
-      : popup?.popupRef?.current?.configPopup({
+      : popupRef?.current?.configPopup({
           setModal: true,
           type: 'error',
           message: 'Email não cadastrado em nossa plataforma.'
@@ -36,7 +37,7 @@ const Content = () => {
   const afterCodeSubmit = (res: Response<any>) => {
     res.success
       ? setTimeout(() => history.push('/reset-password'), 1)
-      : popup?.popupRef?.current?.configPopup({
+      : popupRef?.current?.configPopup({
           setModal: true,
           type: 'error',
           message: 'Código inválido!'
@@ -45,12 +46,12 @@ const Content = () => {
 
   const afterCodeResent = (res: Response<any>) => {
     res.success
-      ? popup?.popupRef?.current?.configPopup({
+      ? popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: 'Código reenviado!'
         })
-      : popup?.popupRef?.current?.configPopup({
+      : popupRef?.current?.configPopup({
           setModal: true,
           type: 'error',
           message: 'Ops, algo deu errado :('
@@ -93,13 +94,13 @@ const Content = () => {
           <Form
             captcha
             loading
-            path='forgot-password/*%'
             method='get'
             className='resendModal'
-            addToPath={['email']}
+            path='forgot-password/*%'
             afterResData={afterCodeResent}
+            addToPath={['email']}
           >
-            <Text hidden name='email' value={userEmail} readOnly />
+            <Text hidden readOnly name='email' value={userEmail} />
 
             <Submit>
               <SendEmailIcon />

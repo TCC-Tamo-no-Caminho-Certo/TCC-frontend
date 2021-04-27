@@ -2,7 +2,6 @@ import Themes from './'
 
 const dark: Themes = {
   name: 'dark',
-
   colors: {
     primary: '#d65881',
     secondary: '#909090',
@@ -13,7 +12,6 @@ const dark: Themes = {
     red: '#d62828',
     gray: '#C4C4C4'
   },
-
   roles: {
     guest: '#fff500',
     student: '#00d053',
@@ -23,7 +21,6 @@ const dark: Themes = {
     moderator: '#64e3ff',
     admin: '#d62828'
   },
-
   sidebar: {
     selected: '#d65881',
     letters: '#fcfcfc',

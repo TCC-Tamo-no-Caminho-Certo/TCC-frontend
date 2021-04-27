@@ -5,12 +5,12 @@ interface StyleProps {
 }
 
 export const StyledTextarea = styled.textarea`
-  min-height: 128px;
   width: 100%;
   resize: none;
-
-  border-radius: 8px;
   padding: 8px;
+  min-height: 128px;
+  border-radius: 8px;
+
   color: ${({ theme }) => theme.colors.tertiary};
 
   &:focus {
