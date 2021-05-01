@@ -31,6 +31,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
     const { popupRef } = useSelector<RootState, PopupState>(
       ({ popup }) => popup
     )
+
     const modalRef = useRef<ModalMethods>(null)
 
     const [codeSend, setCodeSend] = useState(false)

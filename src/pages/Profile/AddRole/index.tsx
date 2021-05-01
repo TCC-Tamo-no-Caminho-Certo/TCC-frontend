@@ -10,11 +10,11 @@ import Style from './styles'
 import RoleInfo from './RoleInfo'
 import Container from './Forms/Container'
 
-import selectRoleLabel from 'utils/makeRoleLabel'
+import { getRoleLabel } from 'utils/roles'
 
+import { getRoles, Role, RolesState, RoleType } from 'store/Async/roles'
 import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
-import { getRoles, Role, RolesState, RoleType } from 'store/Async/roles'
 import {
   getUniversities,
   UniversitiesState,
@@ -67,7 +67,7 @@ const AddRole = () => {
   const dispatch = useDispatch()
   const { pathname } = useLocation()
 
-  const labelRoles = user.roles.map(role => selectRoleLabel(role))
+  const labelRoles = user.roles.map(role => getRoleLabel(role))
 
   useEffect(() => {
     roleSelected === undefined &&

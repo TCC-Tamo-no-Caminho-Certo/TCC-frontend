@@ -29,8 +29,8 @@ export interface LoginData {
 const Aside = () => {
   const [loginFailed, setLoginFailed] = useState('')
   const [disabled, setDisabled] = useState(false)
-  const history = useHistory()
 
+  const history = useHistory()
   const dispatch = useDispatch()
 
   const afterSubmit = (res: Response<any>) => {

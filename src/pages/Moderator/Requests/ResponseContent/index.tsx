@@ -1,14 +1,14 @@
-import React, { RefObject, useContext, useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import Style, { Field, Infos } from './styles'
 
-import { ItemData } from '../..'
-
-import makeRoleLabel from 'utils/makeRoleLabel'
+import { getRoleLabel, getRoleName } from 'utils/roles'
+import { isoToDate } from 'utils/dates'
+import { getStatusLabel } from 'utils/status'
 
 import api from 'services/api'
 
+import { RolesState } from 'store/Async/roles'
 import { Response, RootState } from 'store'
-import { Role } from 'store/Async/roles'
 import { UserState } from 'store/Async/user'
 import { CoursesState } from 'store/Async/courses'
 
@@ -19,30 +19,24 @@ import TrashIcon from 'assets/global/TrashIcon'
 import Avatar from 'components/User/Avatar'
 import Form, { Submit, Textarea } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
-import { PopupMethods } from 'components/Popup'
+import { ItemProps } from 'components/Table'
 
 import { motion } from 'framer-motion'
 import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 import * as Yup from 'yup'
 
-interface ResponseContentProps {
-  popupRef: RefObject<PopupMethods>
-  userInfo?: any
-  selectedInfo?: ItemData
-  onCloseClick: () => void
-}
-
-function ResponseContent({
-  userInfo,
+const ResponseContent = ({
+  onCloseClick,
   popupRef,
-  selectedInfo,
-  onCloseClick
-}: ResponseContentProps) {
+  userInfo,
+  selectedInfo
+}: ItemProps) => {
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const { courses } = useSelector<RootState, CoursesState>(
     ({ courses }) => courses
   )
+  const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
   const theme = useContext(ThemeContext)
 
   const acceptRef = useRef<CheckboxIconMethods>(null)
@@ -81,7 +75,7 @@ function ResponseContent({
     else
       switch (res.error) {
         case 'Request not found!':
-          if (selectedInfo?.status === 'Recusado')
+          if (selectedInfo.status === 'Recusado')
             popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
@@ -105,6 +99,8 @@ function ResponseContent({
       }
   }
 
+  console.log(selectedInfo.voucherUrl)
+
   return (
     <Style>
       {userInfo && selectedInfo ? (
@@ -118,7 +114,10 @@ function ResponseContent({
 
           <CloseIcon onClick={onCloseClick} />
 
-          <Infos role={selectedInfo?.role} status={selectedInfo?.statusCircle}>
+          <Infos
+            status={selectedInfo.status}
+            userRole={getRoleName(selectedInfo.role_id, roles)}
+          >
             <div id='title'>Informações</div>
 
             <hr />
@@ -134,28 +133,34 @@ function ResponseContent({
 
             <Field>
               Papel:
-              <div id='role'>{makeRoleLabel(selectedInfo?.role as Role)}</div>
+              <div id='role'>{getRoleLabel(selectedInfo.role_id, roles)}</div>
             </Field>
 
             <Field>
               Status:
-              <div id='status'>{selectedInfo?.status}</div>
+              <div id='status'>{getStatusLabel(selectedInfo.status)}</div>
             </Field>
 
-            <Field>
-              Linkedin:
-              <div>{selectedInfo.linkedin}</div>
-            </Field>
+            {selectedInfo.data.linkedin && (
+              <Field>
+                Linkedin:
+                <div>{selectedInfo.data.linkedin}</div>
+              </Field>
+            )}
 
-            <Field>
-              Lattes:
-              <div>{selectedInfo?.lattes}</div>
-            </Field>
+            {selectedInfo.data.lattes && (
+              <Field>
+                Lattes:
+                <div>{selectedInfo.data.lattes}</div>
+              </Field>
+            )}
 
-            <Field>
-              Orcid:
-              <div>{selectedInfo.orcid}</div>
-            </Field>
+            {selectedInfo.data.orcid && (
+              <Field>
+                Orcid:
+                <div>{selectedInfo.data.orcid}</div>
+              </Field>
+            )}
 
             <Field>
               Email:
@@ -170,7 +175,8 @@ function ResponseContent({
                 <div>
                   {
                     courses.find(
-                      course => course.course_id === selectedInfo?.course_id
+                      ({ course_id }) =>
+                        course_id === selectedInfo.data.course_id
                     )?.name
                   }
                 </div>
@@ -179,18 +185,20 @@ function ResponseContent({
 
             <Field>
               Data:
-              <div>{selectedInfo?.date}</div>
+              <div>
+                {isoToDate(selectedInfo.created_at, 'day/month/2-year')}
+              </div>
             </Field>
           </Infos>
 
-          {selectedInfo?.role === 'student' ? (
+          {selectedInfo.voucherUrl ? (
             <div id='doc'>
-              <iframe src={selectedInfo?.voucherUrl} />
+              <iframe src={selectedInfo.voucherUrl} />
             </div>
           ) : (
             <div id='pretext'>
               Justificativa:
-              <p>{selectedInfo?.pretext}</p>
+              <p>{selectedInfo.pretext}</p>
             </div>
           )}
 
@@ -199,10 +207,10 @@ function ResponseContent({
               <div id='radios'>
                 <div id='radioAccept'>
                   <input
-                    name='response'
-                    value='accept'
-                    type='radio'
                     id='accept'
+                    type='radio'
+                    value='accept'
+                    name='response'
                     onChange={(e: any) => {
                       e.target.checked && setButtonClicked('accepted')
                     }}
@@ -217,8 +225,8 @@ function ResponseContent({
                   >
                     <CheckboxIcon
                       ref={acceptRef}
-                      secondary={theme.colors.primary}
                       primary={theme.colors.secondary}
+                      secondary={theme.colors.primary}
                     />
                     Aceitar
                   </label>
@@ -228,10 +236,10 @@ function ResponseContent({
 
                 <div id='radioReject'>
                   <input
-                    name='response'
-                    value='reject'
-                    type='radio'
                     id='reject'
+                    type='radio'
+                    value='reject'
+                    name='response'
                     defaultChecked
                     onChange={(e: any) => {
                       e.target.checked && setButtonClicked('rejected')
@@ -270,8 +278,8 @@ function ResponseContent({
                 }
                 path={
                   buttonClicked === 'rejected'
-                    ? `user/role/request/reject/${selectedInfo?.id}`
-                    : `user/role/request/accept/${selectedInfo?.id}`
+                    ? `user/role/request/reject/${selectedInfo.request_id}`
+                    : `user/role/request/accept/${selectedInfo.request_id}`
                 }
               >
                 <Textarea

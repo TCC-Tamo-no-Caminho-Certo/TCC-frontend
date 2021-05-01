@@ -1,27 +1,5 @@
 import styled from 'styled-components'
 
-export const Table = styled.div`
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-
-  width: 100%;
-  height: 100%;
-
-  color: ${({ theme }) => theme.colors.secondary};
-
-  .loader {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 100%;
-    height: 48px;
-  }
-`
-
 const Style = styled.section`
   display: flex;
   align-items: center;
@@ -46,6 +24,56 @@ const Style = styled.section`
     }
   }
 
+  .Table {
+    th,
+    td {
+      &#name {
+        width: 100%;
+      }
+
+      &#role {
+        min-width: 100px;
+      }
+
+      &#created_at {
+        display: flex;
+        justify-content: flex-end;
+
+        min-width: 82px;
+      }
+    }
+
+    th {
+      &#created_at button {
+        display: flex;
+        justify-content: center;
+      }
+
+      &#statusCircle {
+        &,
+        button {
+          min-width: 32px;
+        }
+
+        button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+
+    td {
+      &#status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        min-width: 32px;
+      }
+    }
+  }
+
   @media screen and (min-width: 545px) {
     header {
       padding: 16px 32px;
@@ -55,5 +83,4 @@ const Style = styled.section`
 
 export default Style
 
-Table.displayName = 'Table-Style'
 Style.displayName = 'Requests-Style'

@@ -47,10 +47,6 @@ const App = () => {
     i18n.changeLanguage('pt-BR')
   }, [i18n])
 
-  useEffect(() => {
-    console.log(popupProps)
-  }, [popupProps])
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle {...globalStyle} />

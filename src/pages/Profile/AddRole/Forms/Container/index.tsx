@@ -15,7 +15,7 @@ import Student from '../Student'
 import { AddRoleContext } from '../..'
 
 import { StatusTypes } from 'utils/status'
-import makeRoleLabel from 'utils/makeRoleLabel'
+import { getRoleLabel } from 'utils/roles'
 
 import api from 'services/api'
 
@@ -91,7 +91,7 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
           {request ? 'Acompanhar solicitação' : 'Solicitação de perfil'}
         </Header>
 
-        <h4 id='role'>{makeRoleLabel(role)}</h4>
+        <h4 id='role'>{getRoleLabel(role)}</h4>
 
         {request && (
           <>

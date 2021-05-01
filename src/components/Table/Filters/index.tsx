@@ -1,8 +1,7 @@
 import React, { useContext, useState } from 'react'
 import Style from './styles'
 
-import { RequestsContext } from '../'
-import { transformArray } from '../Tbody'
+import { TableContext } from '../index'
 
 import api from 'services/api'
 
@@ -40,7 +39,7 @@ const reset: Variants = {
 
 const Filters = () => {
   const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
-  const { quantity, setTableState } = useContext(RequestsContext)
+  const { quantity, setTableState, path } = useContext(TableContext)
   const theme = useContext(ThemeContext)
 
   const [values, setValues] = useState<any>(true)
@@ -116,11 +115,9 @@ const Filters = () => {
     const callStartCondition = !name && !role && !status && !from && !to
 
     if (callStartCondition) {
-      const { requests } = await api.get(
-        `user/role/requests?page=1&per_page=${quantity}`
-      )
+      const { requests } = await api.get(`${path}?page=1&per_page=${quantity}`)
 
-      const tableData = transformArray(requests, roles)
+      const tableData = requests
 
       setTableState({
         tablePage: 1,
@@ -142,12 +139,12 @@ const Filters = () => {
       const allFilters = nameFilter + roleFilter + statusFilter + dateFilter
 
       const { requests } = await api.get(
-        `user/role/requests?page=1&per_page=${quantity}${allFilters}`
+        `${path}?page=1&per_page=${quantity}${allFilters}`
       )
 
       setTableState({
         tablePage: 1,
-        showData: transformArray(requests, roles)
+        showData: requests
       })
     }
   }

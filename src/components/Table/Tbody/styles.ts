@@ -27,8 +27,8 @@ export const RoleTd = styled.td<RoleTdProps>`
 
 const Style = styled.div`
   width: 100%;
+  height: 100%;
   overflow-y: scroll;
-  height: calc(100vh - 147px);
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -40,13 +40,10 @@ const Style = styled.div`
     tbody {
       position: relative;
 
-      border: none;
-
       tr {
         display: flex;
         align-items: center;
 
-        width: 100%;
         min-height: 32px;
 
         &:hover {
@@ -61,47 +58,14 @@ const Style = styled.div`
           overflow: hidden;
           align-items: center;
 
+          padding: 8px;
+          min-width: 32px;
           min-height: 32px;
-          padding: 8px 4px;
+
           font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
           line-height: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
-
-          &.statusCircle {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            height: 32px;
-            min-width: 32px;
-          }
-
-          &.status {
-            display: none;
-
-            min-width: 100px;
-          }
-
-          &.name {
-            width: 100%;
-          }
-
-          &.role {
-            min-width: 100px;
-
-            max-width: 100px;
-          }
-
-          &.date {
-            min-width: 64px;
-          }
         }
       }
-    }
-  }
-
-  @media screen and (min-width: 545px) {
-    table tbody tr {
-      padding: 0 24px;
     }
   }
 `

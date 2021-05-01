@@ -1,24 +1,18 @@
 import React, { memo, useContext, useState } from 'react'
 import Style from './styles'
 
-import { HeaderData, ItemData, RequestsContext } from '../index'
+import { TableContext } from '../index'
 import { Circle } from '../Tbody/styles'
-import { transformArray } from '../Tbody'
 
 import api from 'services/api'
-
-import { RootState } from 'store'
-import { RolesState } from 'store/Async/roles'
 
 import ArrowIcon from 'assets/global/ArrowIcon'
 import RefreshIcon from 'assets/global/RefreshIcon'
 
 import { Variants } from 'framer-motion'
-import { useSelector } from 'react-redux'
 
 interface TheadProps {
-  sort?: (_name: keyof ItemData) => void
-  headerData: HeaderData[]
+  sort?: (_name: any) => void
 }
 
 const arrow: Variants = {
@@ -33,14 +27,13 @@ const arrow: Variants = {
   }
 }
 
-const Thead = ({ headerData, sort }: TheadProps) => {
-  const requestsContext = useContext(RequestsContext)
-  const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
+const Thead = ({ sort }: TheadProps) => {
+  const { headerData, setTableState, quantity, path } = useContext(TableContext)
 
   const initialArrows = headerData.map(({ name }) => ({ [name]: 'default' }))
   const [arrows, setArrows] = useState(initialArrows)
 
-  const onThClick = (id: keyof ItemData, index: number) => {
+  const onThClick = (id: any, index: number) => {
     const before = arrows[index][id]
     const resetArrows = initialArrows
 
@@ -53,18 +46,16 @@ const Thead = ({ headerData, sort }: TheadProps) => {
   }
 
   const onRefreshClick = async () => {
-    requestsContext?.setTableState({
+    setTableState({
       tablePage: 1,
       showData: []
     })
 
-    const { requests } = await api.get(
-      `user/role/requests?page=1&per_page=${requestsContext.quantity}`
-    )
+    const { requests } = await api.get(`${path}?page=1&per_page=${quantity}`)
 
-    requestsContext?.setTableState({
+    setTableState({
       tablePage: 1,
-      showData: transformArray(requests, roles)
+      showData: requests
     })
   }
 
@@ -72,14 +63,14 @@ const Thead = ({ headerData, sort }: TheadProps) => {
     <Style draggable='false'>
       <thead>
         <tr>
-          <td id='refresh'>
+          <th id='refresh'>
             <RefreshIcon onClick={onRefreshClick} />
-          </td>
+          </th>
 
-          {headerData.map(({ label, name }, index) => {
-            if (name === 'statusCircle')
+          {headerData.map(({ label, name, circle }, index) => {
+            if (circle)
               return (
-                <th className='statusCircle' key={name}>
+                <th id={name} key={name}>
                   <button type='button'>
                     <Circle />
                   </button>
@@ -87,7 +78,7 @@ const Thead = ({ headerData, sort }: TheadProps) => {
               )
 
             return (
-              <th key={name} className={name}>
+              <th id={name} key={name}>
                 <button type='button' onClick={() => onThClick(name, index)}>
                   <ArrowIcon
                     initial={false}

@@ -7,7 +7,7 @@ import Style, {
   UserInfo
 } from './styles'
 
-import selectRoleLabel from 'utils/makeRoleLabel'
+import { getRoleLabel } from 'utils/roles'
 
 import api from 'services/api'
 
@@ -200,7 +200,7 @@ const RightMenu = () => {
                 <DotsLoader color={theme.colors.secondary} />
               ) : (
                 <>
-                  <span id='userRole'>{selectRoleLabel(selectedRole)}</span>
+                  <span id='userRole'>{getRoleLabel(selectedRole)}</span>
 
                   <span id='userName'>{formatterName(name)}</span>
 
@@ -311,7 +311,7 @@ const RightMenu = () => {
                                 )
                               }
                             >
-                              {selectRoleLabel(role)}
+                              {getRoleLabel(role)}
                             </button>
                           </RoleLi>
                         ))}

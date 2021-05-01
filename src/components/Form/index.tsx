@@ -222,8 +222,6 @@ const Form = ({
     getData && getData(data)
 
     validate()
-    console.log(haveErrors)
-
     haveErrors && loading && setShowLoader(false)
 
     !haveErrors && addToPath && parsePath()

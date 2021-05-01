@@ -3,7 +3,7 @@ import React, { memo, useContext, useEffect, useRef, useState } from 'react'
 import Field from './Field'
 import formatUpdateUser, { ContainerForm, InputData } from './formatUpdateUser'
 
-import selectedRoleLabel from 'utils/makeRoleLabel'
+import { getRoleLabel } from 'utils/roles'
 
 import { Role } from 'store/Async/roles'
 import { UserState } from 'store/Async/user'
@@ -88,7 +88,7 @@ const Containers = () => {
             <Card
               key={role}
               role={role}
-              headerText={`Dados de ${selectedRoleLabel(role as Role)}`}
+              headerText={`Dados de ${getRoleLabel(role as Role)}`}
             >
               {user.dataLoading === false ? (
                 formatUpdateUser(
