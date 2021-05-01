@@ -75,7 +75,8 @@ const Style = styled.table`
         }
 
         &.role button {
-          min-width: 100px;
+          width: 100px;
+          max-width: 100px;
         }
 
         &.date button {

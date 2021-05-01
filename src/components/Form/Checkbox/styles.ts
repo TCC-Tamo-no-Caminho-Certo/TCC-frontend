@@ -15,8 +15,8 @@ const Style = styled.div<StyleProps>`
 
     &:hover,
     &:focus {
-      color: ${({ theme }) => theme.colors.primary};
       filter: brightness(1.1);
+      color: ${({ theme }) => theme.colors.primary};
     }
 
     ${({ checked, theme }) =>

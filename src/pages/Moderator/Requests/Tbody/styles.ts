@@ -87,6 +87,8 @@ const Style = styled.div`
 
           &.role {
             min-width: 100px;
+
+            max-width: 100px;
           }
 
           &.date {
