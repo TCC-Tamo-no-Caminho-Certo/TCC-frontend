@@ -1,7 +1,6 @@
 import React, {
   createContext,
   Dispatch,
-  RefObject,
   SetStateAction,
   useContext,
   useEffect,
@@ -20,7 +19,6 @@ import { CoursesState, getCourses } from 'store/Async/courses'
 import useSortableData from 'hooks/useSortableData'
 
 import DotsLoader from 'components/DotsLoader'
-import { PopupMethods } from 'components/Popup'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
@@ -47,7 +45,6 @@ interface TableState {
 }
 
 export interface ItemProps {
-  popupRef: RefObject<PopupMethods>
   userInfo?: any
   selectedInfo?: any
   onCloseClick: () => void

@@ -222,7 +222,6 @@ const Form = ({
     getData && getData(data)
 
     validate()
-    haveErrors && loading && setShowLoader(false)
 
     !haveErrors && addToPath && parsePath()
 
@@ -230,6 +229,8 @@ const Form = ({
       data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
 
     const submitRes = !haveErrors && (await makeRequest(afterResData))
+
+    loading && setShowLoader(false)
     push && submitRes && history.push(push)
   }
 

@@ -5,8 +5,8 @@ import { PopupMethods, PopupProps } from 'components/Popup'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface PopupState {
-  popupRef?: RefObject<PopupMethods> | null
   popupProps: PopupProps
+  popupRef?: RefObject<PopupMethods> | null
 }
 
 const initialState: PopupState = {

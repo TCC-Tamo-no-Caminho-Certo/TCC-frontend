@@ -10,6 +10,7 @@ import { ThemeContext } from 'styled-components'
 interface SubmitProps extends HTMLProps<HTMLButtonElement> {
   dataCy?: string
 }
+
 const Submit = forwardRef(
   ({ children, type = 'submit', ...rest }: SubmitProps, ref) => {
     const form = useContext<FormState | null>(FormContext)

@@ -18,7 +18,6 @@ import { RolesState } from 'store/Async/roles'
 import { RootState } from 'store'
 
 import Modal, { ModalMethods } from 'components/Modal'
-import Popup, { PopupMethods } from 'components/Popup'
 
 import { useSelector } from 'react-redux'
 
@@ -41,7 +40,7 @@ const Tbody = ({ items, itemComponent: ItemComponent }: TbodyProps) => {
   const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>
   const tableRef = useRef() as MutableRefObject<HTMLTableElement>
   const removeRef = useRef<ModalMethods>(null)
-  const popupRef = useRef<PopupMethods>(null)
+
   const modalRef = useRef<ModalMethods>(null)
 
   const [infos, setInfos] = useState<InfosState>()
@@ -185,7 +184,6 @@ const Tbody = ({ items, itemComponent: ItemComponent }: TbodyProps) => {
 
       <Modal top='50vh' translateY='-50%' ref={modalRef}>
         <ItemComponent
-          popupRef={popupRef}
           userInfo={infos?.userInfo}
           selectedInfo={infos?.selectedInfo}
           onCloseClick={() => {
@@ -202,14 +200,6 @@ const Tbody = ({ items, itemComponent: ItemComponent }: TbodyProps) => {
           <button type='button'>Cancelar</button>
         </div>
       </Modal>
-
-      <Popup
-        bottom='50vh'
-        translateY='50%'
-        bgHeight='100vh'
-        zIndex={2000}
-        ref={popupRef}
-      />
     </>
   )
 }

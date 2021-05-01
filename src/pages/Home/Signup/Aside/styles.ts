@@ -70,6 +70,7 @@ const Style = styled.aside`
       }
 
       .Submit {
+        margin-top: 16px;
         height: max(5vh, 35px);
       }
     }

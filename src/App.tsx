@@ -33,10 +33,8 @@ export interface GlobalContextProps {
 export const GlobalContext = createContext<GlobalContextProps>({})
 
 const App = () => {
+  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
   const theme = useSelector<RootState, ThemeState>(({ theme }) => theme)
-  const { popupProps, popupRef } = useSelector<RootState, PopupState>(
-    ({ popup }) => popup
-  )
   const globalStyle = useSelector<RootState, GlobalStyleState>(
     ({ globalStyle }) => globalStyle
   )
@@ -55,7 +53,7 @@ const App = () => {
         <Routes />
       </BrowserRouter>
 
-      <Popup ref={popupRef} {...popupProps} />
+      <Popup ref={popupRef} />
     </ThemeProvider>
   )
 }

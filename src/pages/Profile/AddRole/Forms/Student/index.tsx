@@ -354,6 +354,7 @@ const Student = ({ request }: StudentProps) => {
         loading
         afterResData={afterSubmit}
         method={request ? 'patch' : 'post'}
+        getData={e => console.log(e)}
         path={
           request
             ? `user/role/request/student/${request.request_id}`

@@ -11,6 +11,7 @@ import { RolesState } from 'store/Async/roles'
 import { Response, RootState } from 'store'
 import { UserState } from 'store/Async/user'
 import { CoursesState } from 'store/Async/courses'
+import { PopupState } from 'store/Sync/popup'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
 import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'
@@ -28,7 +29,6 @@ import * as Yup from 'yup'
 
 const ResponseContent = ({
   onCloseClick,
-  popupRef,
   userInfo,
   selectedInfo
 }: ItemProps) => {
@@ -38,6 +38,8 @@ const ResponseContent = ({
   )
   const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
   const theme = useContext(ThemeContext)
+
+  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
 
   const acceptRef = useRef<CheckboxIconMethods>(null)
   const rejectRef = useRef<CheckboxIconMethods>(null)
@@ -52,7 +54,7 @@ const ResponseContent = ({
         type: 'warning',
         message: 'Tem certeza que deseja remover esta solicitação?',
         onOkClick: async () => {
-          await api.delete(`user/role/request/${selectedInfo.id}`)
+          await api.delete(`user/role/request/${selectedInfo.request_id}`)
           onCloseClick()
         },
         onCloseClick: () => {
@@ -98,8 +100,6 @@ const ResponseContent = ({
           })
       }
   }
-
-  console.log(selectedInfo.voucherUrl)
 
   return (
     <Style>
