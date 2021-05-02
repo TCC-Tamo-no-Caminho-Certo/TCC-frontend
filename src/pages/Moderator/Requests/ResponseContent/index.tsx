@@ -32,14 +32,13 @@ const ResponseContent = ({
   userInfo,
   selectedInfo
 }: ItemProps) => {
+  const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const { courses } = useSelector<RootState, CoursesState>(
     ({ courses }) => courses
   )
-  const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
   const theme = useContext(ThemeContext)
-
-  const {popup} = useContext(GlobalContext)
+  const { popup } = useContext(GlobalContext)
 
   const acceptRef = useRef<CheckboxIconMethods>(null)
   const rejectRef = useRef<CheckboxIconMethods>(null)
@@ -193,12 +192,12 @@ const ResponseContent = ({
 
           {selectedInfo.voucherUrl ? (
             <div id='doc'>
-              <iframe src={selectedInfo.voucherUrl} />
+              <iframe src={selectedInfo?.voucherUrl} />
             </div>
           ) : (
             <div id='pretext'>
               Justificativa:
-              <p>{selectedInfo.pretext}</p>
+              <p>{selectedInfo?.pretext}</p>
             </div>
           )}
 

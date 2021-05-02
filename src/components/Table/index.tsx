@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import Style from './styles'
 
-import Filters from './Filters'
+import Filters, { FiltersProps } from './Filters'
 import Tbody from './Tbody'
 import Thead from './Thead'
 
@@ -24,8 +24,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
 export interface HeaderData {
-  label: string
   name: any
+  label: string
   role?: boolean
   circle?: boolean
   dataManipulation?: (_data: any) => string
@@ -53,7 +53,8 @@ export interface ItemProps {
 interface TableProps {
   path: string
   headerData: HeaderData[]
-  itemComponent: (_props: ItemProps) => JSX.Element
+  filters?: FiltersProps
+  itemContent?: (_props: ItemProps) => JSX.Element
   quantity?: number
 }
 
@@ -70,9 +71,10 @@ export const TableContext = createContext<TableContextProps>({
 
 const Table = ({
   path,
+  filters,
   headerData,
   quantity = 50,
-  itemComponent
+  itemContent
 }: TableProps) => {
   const theme = useContext(ThemeContext)
   const roles = useSelector<RootState, RolesState>(({ roles }) => roles)
@@ -108,7 +110,7 @@ const Table = ({
       }}
     >
       <Style className='Table'>
-        <Filters />
+        <Filters {...filters} />
 
         <Thead sort={sort} />
 
@@ -118,7 +120,7 @@ const Table = ({
           </div>
         )}
 
-        <Tbody items={items} itemComponent={itemComponent} />
+        <Tbody items={items} itemContent={itemContent} />
       </Style>
     </TableContext.Provider>
   ) : (

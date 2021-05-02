@@ -8,9 +8,8 @@ const Style = styled(Form)`
   flex-direction: column;
   justify-content: center;
 
-  margin-bottom: 16px;
-  padding: 0 16px 0 8px;
   width: max(100%, 280px);
+  padding: 24px;
 
   .Presence {
     width: 100%;
@@ -115,10 +114,6 @@ const Style = styled(Form)`
         }
       }
     }
-  }
-
-  @media screen and (min-width: 545px) {
-    padding: 0 32px;
   }
 `
 

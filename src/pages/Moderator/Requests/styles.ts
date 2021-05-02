@@ -17,7 +17,7 @@ const Style = styled.section`
     align-items: center;
 
     width: max(100%, 280px);
-    padding: 16px 16px 16px 8px;
+    padding: 16px 16px 0px 8px;
 
     h1 {
       font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.3rem);
@@ -76,7 +76,7 @@ const Style = styled.section`
 
   @media screen and (min-width: 545px) {
     header {
-      padding: 16px 32px;
+      padding: 16px 16px 0px 24px;
     }
   }
 `

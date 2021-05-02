@@ -37,7 +37,21 @@ const reset: Variants = {
   }
 }
 
-const Filters = () => {
+export interface FiltersProps {
+  to?: boolean
+  name?: boolean
+  role?: boolean
+  from?: boolean
+  status?: boolean
+}
+
+const Filters = ({
+  to = false,
+  name = false,
+  role = false,
+  from = false,
+  status = false
+}: FiltersProps) => {
   const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
   const { quantity, setTableState, path } = useContext(TableContext)
   const theme = useContext(ThemeContext)
@@ -150,7 +164,7 @@ const Filters = () => {
   }
 
   return (
-    <Style getData={filterTable}>
+    <Style getData={filterTable} className='Filters'>
       <Presence
         exit='exit'
         animate='enter'
@@ -158,75 +172,95 @@ const Filters = () => {
         condition={values}
         presenceProps={{ exitBeforeEnter: true }}
       >
-        <Text
-          name='name'
-          type='text'
-          autoComplete='off'
-          placeholder='Nome'
-          textColors={{
-            focused: theme.colors.secondary,
-            unfocused: theme.colors.secondary
-          }}
-        />
+        {name ? (
+          <Text
+            name='name'
+            type='text'
+            autoComplete='off'
+            placeholder='Nome'
+            textColors={{
+              focused: theme.colors.secondary,
+              unfocused: theme.colors.secondary
+            }}
+          />
+        ) : (
+          <></>
+        )}
 
         <div id='row'>
-          <Select
-            name='role'
-            placeholder='Papel'
-            theming={selectTheme}
-            styling={selectStyle}
-            options={[
-              { label: 'Estudante', value: 'student' },
-              { label: 'Professor', value: 'professor' },
-              { label: 'Moderador', value: 'moderator' },
-              { label: 'Todos', value: 'all' }
-            ]}
-          />
+          {role ? (
+            <Select
+              name='role'
+              placeholder='Papel'
+              theming={selectTheme}
+              styling={selectStyle}
+              options={[
+                { label: 'Estudante', value: 'student' },
+                { label: 'Professor', value: 'professor' },
+                { label: 'Moderador', value: 'moderator' },
+                { label: 'Todos', value: 'all' }
+              ]}
+            />
+          ) : (
+            <></>
+          )}
 
-          <Select
-            name='status'
-            placeholder='Status'
-            theming={selectTheme}
-            styling={selectStyle}
-            options={[
-              { label: 'Aguardando', value: 'awaiting' },
-              { label: 'Aceito', value: 'accepted' },
-              { label: 'Recusado', value: 'rejected' },
-              { label: 'Todos', value: 'all' }
-            ]}
-          />
+          {status ? (
+            <Select
+              name='status'
+              placeholder='Status'
+              theming={selectTheme}
+              styling={selectStyle}
+              options={[
+                { label: 'Aguardando', value: 'awaiting' },
+                { label: 'Aceito', value: 'accepted' },
+                { label: 'Recusado', value: 'rejected' },
+                { label: 'Todos', value: 'all' }
+              ]}
+            />
+          ) : (
+            <></>
+          )}
         </div>
 
         <div id='row'>
-          <Datepicker
-            name='from'
-            placeholder='De'
-            dateColors={{
-              disabled: theme.colors.red,
-              body: theme.colors.secondary,
-              selected: theme.colors.tertiary,
-              header: darken(0.06, theme.colors.tertiary)
-            }}
-            textColors={{
-              focused: theme.colors.secondary,
-              unfocused: theme.colors.secondary
-            }}
-          />
+          {from ? (
+            <Datepicker
+              name='from'
+              placeholder='De'
+              dateColors={{
+                disabled: theme.colors.red,
+                body: theme.colors.secondary,
+                selected: theme.colors.tertiary,
+                header: darken(0.06, theme.colors.tertiary)
+              }}
+              textColors={{
+                focused: theme.colors.secondary,
+                unfocused: theme.colors.secondary
+              }}
+            />
+          ) : (
+            <></>
+          )}
 
-          <Datepicker
-            name='to'
-            placeholder='Até'
-            dateColors={{
-              disabled: theme.colors.red,
-              body: theme.colors.secondary,
-              selected: theme.colors.tertiary,
-              header: darken(0.06, theme.colors.tertiary)
-            }}
-            textColors={{
-              focused: theme.colors.secondary,
-              unfocused: theme.colors.secondary
-            }}
-          />
+          {to ? (
+            <Datepicker
+              name='to'
+              placeholder='Até'
+              dateColors={{
+                disabled: theme.colors.red,
+                body: theme.colors.secondary,
+                selected: theme.colors.tertiary,
+                header: darken(0.06, theme.colors.tertiary)
+              }}
+              textColors={{
+                focused: theme.colors.secondary,
+                unfocused: theme.colors.secondary
+              }}
+            />
+          ) : (
+            <></>
+          )}
         </div>
       </Presence>
 

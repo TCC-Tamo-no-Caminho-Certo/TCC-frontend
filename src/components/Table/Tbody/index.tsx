@@ -22,16 +22,16 @@ import Modal, { ModalMethods } from 'components/Modal'
 import { useSelector } from 'react-redux'
 
 interface TbodyProps {
-  itemComponent: (_props: ItemProps) => JSX.Element
   items?: any[]
+  itemContent?: (_props: ItemProps) => JSX.Element
 }
 
 interface InfosState {
-  selectedInfo: any
   userInfo: any
+  selectedInfo: any
 }
 
-const Tbody = ({ items, itemComponent: ItemComponent }: TbodyProps) => {
+const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
   const { path, quantity, headerData, setTableState, tableState } = useContext(
     TableContext
   )
@@ -183,14 +183,18 @@ const Tbody = ({ items, itemComponent: ItemComponent }: TbodyProps) => {
       </Style>
 
       <Modal top='50vh' translateY='-50%' ref={modalRef}>
-        <ItemComponent
-          userInfo={infos?.userInfo}
-          selectedInfo={infos?.selectedInfo}
-          onCloseClick={() => {
-            modalRef.current?.toggleModal(false)
-            startRequest()
-          }}
-        />
+        {ItemContent ? (
+          <ItemContent
+            userInfo={infos?.userInfo}
+            selectedInfo={infos?.selectedInfo}
+            onCloseClick={() => {
+              modalRef.current?.toggleModal(false)
+              startRequest()
+            }}
+          />
+        ) : (
+          <></>
+        )}
       </Modal>
 
       <Modal top='50vh' translateY='-50%' ref={removeRef}>

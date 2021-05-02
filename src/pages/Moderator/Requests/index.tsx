@@ -27,7 +27,8 @@ const Requests = () => (
     <Table
       path='user/role/requests'
       headerData={headerData}
-      itemComponent={ResponseContent}
+      itemContent={ResponseContent}
+      filters={{ from: true, name: true, role: true, status: true, to: true }}
     />
   </Style>
 )
