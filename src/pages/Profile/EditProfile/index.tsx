@@ -2,6 +2,7 @@ import React, {
   createContext,
   Dispatch,
   SetStateAction,
+  useContext,
   useRef,
   useState
 } from 'react'
@@ -12,13 +13,13 @@ import Containers from './Containers'
 import editProfileSchema from 'utils/validations/editProfile'
 
 import { UserActions } from 'store/Async/user'
-import { Response, RootState } from 'store'
-import { PopupState } from 'store/Sync/popup'
+import { Response } from 'store'
 
 import { Form, Submit, Text } from 'components/Form'
 import Modal, { ModalMethods } from 'components/Modal'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { GlobalContext } from 'App'
+import { useDispatch } from 'react-redux'
 
 interface EditProfileContextProps {
   globalChange?: boolean
@@ -28,7 +29,7 @@ interface EditProfileContextProps {
 export const EditProfileContext = createContext<EditProfileContextProps>({})
 
 const EditProfile = () => {
-  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
+  const { popup } = useContext(GlobalContext)
 
   const confirmModal = useRef<ModalMethods>(null)
 
@@ -41,7 +42,7 @@ const EditProfile = () => {
       dispatch(UserActions.update(res.user))
       confirmModal.current?.toggleModal()
 
-      popupRef?.current?.configPopup({
+      popup?.popupRef?.current?.configPopup({
         type: 'success',
         setModal: true,
         message: 'Dados alterados',
@@ -50,14 +51,14 @@ const EditProfile = () => {
     } else
       switch (res.error) {
         case 'Incorrect password!':
-          popupRef?.current?.configPopup({
+          popup?.popupRef?.current?.configPopup({
             type: 'error',
             message: 'Senha inválida!',
             setModal: true
           })
           break
         default:
-          popupRef?.current?.configPopup({
+          popup?.popupRef?.current?.configPopup({
             type: 'error',
             message: 'Ops, algo deu errado :(',
             setModal: true

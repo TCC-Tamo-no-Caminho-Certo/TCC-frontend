@@ -10,8 +10,6 @@ import Style, { RightMenu } from './styles'
 import api from 'services/api'
 
 import { UserActions } from 'store/Async/user'
-import { RootState } from 'store'
-import { PopupState } from 'store/Sync/popup'
 
 import CameraIcon from 'assets/Inputs/CameraIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
@@ -20,10 +18,11 @@ import { Submit } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
 import Modal, { ModalMethods } from 'components/Modal'
 
+import { GlobalContext } from 'App'
 import 'cropperjs/dist/cropper.css'
 import { motion } from 'framer-motion'
 import { Cropper } from 'react-cropper'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
 export interface ImageChangerMethods {
@@ -31,7 +30,7 @@ export interface ImageChangerMethods {
 }
 
 const ImageChanger = forwardRef((_props, ref) => {
-  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
+  const { popup } = useContext(GlobalContext)
   const theme = useContext(ThemeContext)
 
   const modalRef = useRef<ModalMethods>(null)
@@ -75,7 +74,7 @@ const ImageChanger = forwardRef((_props, ref) => {
         setShowUploadAnother(false)
         onCloseClick()
 
-        popupRef?.current?.configPopup({
+        popup?.popupRef?.current?.configPopup({
           type: 'error',
           message: 'Esta imagem é muito grande! tente novamente com uma menor.'
         })

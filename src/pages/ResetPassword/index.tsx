@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Style, { Content } from './styles'
 
 import { passwordSchema } from 'utils/validations/forgotPassword'
 
 import { HomeActions } from 'store/Sync/home'
-import { Response, RootState } from 'store'
-import { PopupState } from 'store/Sync/popup'
+import { Response } from 'store'
 
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import Logo from 'assets/FullLogo'
@@ -13,11 +12,12 @@ import Logo from 'assets/FullLogo'
 import { Form, Submit, Text } from 'components/Form'
 import BackButton from 'components/BackButton'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { GlobalContext } from 'App'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 const ConfirmPassword = () => {
-  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
+  const { popup } = useContext(GlobalContext)
 
   const dispatch = useDispatch()
   const history = useHistory()
@@ -26,7 +26,7 @@ const ConfirmPassword = () => {
   const code = path[2] || localStorage.getItem('@SLab_code')
 
   if (!code) {
-    popupRef?.current?.configPopup({
+    popup?.popupRef?.current?.configPopup({
       setModal: true,
       type: 'error',
       message: 'Código não fornecido',
@@ -39,14 +39,14 @@ const ConfirmPassword = () => {
 
   const afterResetSubmit = (res: Response<any>) => {
     res.success
-      ? popupRef?.current?.configPopup({
+      ? popup?.popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: 'Senha alterada!',
           onOkClick: () => history.push('/'),
           onCloseClick: () => history.push('/')
         })
-      : popupRef?.current?.configPopup({
+      : popup?.popupRef?.current?.configPopup({
           setModal: true,
           type: 'error',
           message: 'Código inválido!',

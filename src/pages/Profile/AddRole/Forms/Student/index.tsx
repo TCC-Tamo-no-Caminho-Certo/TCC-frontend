@@ -20,7 +20,6 @@ import api from 'services/api'
 import { Response, RootState } from 'store'
 import { University } from 'store/Async/universities'
 import { Email, getUser, UserState } from 'store/Async/user'
-import { PopupState } from 'store/Sync/popup'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
@@ -29,6 +28,7 @@ import { Option } from 'components/Form/Select'
 import Presence from 'components/Presence'
 import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
+import { GlobalContext } from 'App'
 import { Variants } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
@@ -115,7 +115,7 @@ export const universityArrayToSelect = (array: University[]): Option[] =>
   }))
 
 const Student = ({ request }: StudentProps) => {
-  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
+  const { popup } = useContext(GlobalContext)
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const { courses, universities } = useContext(AddRoleContext)
 
@@ -259,7 +259,7 @@ const Student = ({ request }: StudentProps) => {
       hasInstitutionalEmail(selectedUniversity.regex.email.student, user.emails)
 
     if (success)
-      popupRef?.current?.configPopup({
+      popup?.popupRef?.current?.configPopup({
         setModal: true,
         type: 'success',
         message: request
@@ -273,7 +273,7 @@ const Student = ({ request }: StudentProps) => {
         }
       })
     else
-      popupRef?.current?.configPopup({
+      popup?.popupRef?.current?.configPopup({
         type: 'error',
         message: 'Algo deu errado :(',
         setModal: true

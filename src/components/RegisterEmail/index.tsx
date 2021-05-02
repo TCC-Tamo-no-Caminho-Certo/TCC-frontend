@@ -1,16 +1,21 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  useContext,
+  useImperativeHandle,
+  useRef,
+  useState
+} from 'react'
 import Style from './styles'
 
 import tokenSchema from 'utils/validations/tokenSchema'
 
-import { Response, RootState } from 'store'
-import { PopupState } from 'store/Sync/popup'
+import { Response } from 'store'
 
 import Form, { Submit, Text } from 'components/Form'
 import { PopupProps } from 'components/Popup'
 import Modal, { ModalMethods } from 'components/Modal'
 
-import { useSelector } from 'react-redux'
+import { GlobalContext } from 'App'
 import * as Yup from 'yup'
 
 export interface RegisterEmailMethods {
@@ -28,9 +33,7 @@ interface RegisterEmailProps {
 
 const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
   ({ title, addData, regex, onSuccess, placeholder, modal }, ref) => {
-    const { popupRef } = useSelector<RootState, PopupState>(
-      ({ popup }) => popup
-    )
+    const { popup } = useContext(GlobalContext)
 
     const modalRef = useRef<ModalMethods>(null)
 
@@ -50,7 +53,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
       else
         switch (res.error) {
           case 'Email already in use!':
-            popupRef?.current?.configPopup({
+            popup?.popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
               message: 'E-mail já cadastrado!'
@@ -58,7 +61,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
             break
 
           default:
-            popupRef?.current?.configPopup({
+            popup?.popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
               message: 'Código não enviado!'
@@ -68,7 +71,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
 
     const afterTokenSubmit = (res: Response<any>) => {
       if (res.success) {
-        popupRef?.current?.configPopup({
+        popup?.popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: 'E-mail confirmado, termine a solicitação!'
@@ -77,7 +80,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
         onSuccess && onSuccess()
         toggleRegister()
       } else
-        popupRef?.current?.configPopup({
+        popup?.popupRef?.current?.configPopup({
           setModal: true,
           type: 'error',
           message: 'Código inválido!'

@@ -11,7 +11,6 @@ import { RolesState } from 'store/Async/roles'
 import { Response, RootState } from 'store'
 import { UserState } from 'store/Async/user'
 import { CoursesState } from 'store/Async/courses'
-import { PopupState } from 'store/Sync/popup'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
 import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'
@@ -22,6 +21,7 @@ import Form, { Submit, Textarea } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
 import { ItemProps } from 'components/Table'
 
+import { GlobalContext } from 'App'
 import { motion } from 'framer-motion'
 import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
@@ -39,7 +39,7 @@ const ResponseContent = ({
   const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
   const theme = useContext(ThemeContext)
 
-  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
+  const {popup} = useContext(GlobalContext)
 
   const acceptRef = useRef<CheckboxIconMethods>(null)
   const rejectRef = useRef<CheckboxIconMethods>(null)
@@ -50,7 +50,7 @@ const ResponseContent = ({
 
   const onTrashClick = () => {
     selectedInfo &&
-      popupRef?.current?.configPopup({
+      popup?.popupRef?.current?.configPopup({
         type: 'warning',
         message: 'Tem certeza que deseja remover esta solicitação?',
         onOkClick: async () => {
@@ -58,7 +58,7 @@ const ResponseContent = ({
           onCloseClick()
         },
         onCloseClick: () => {
-          popupRef?.current?.configPopup({
+          popup?.popupRef?.current?.configPopup({
             setModal: false,
             message: '',
             type: 'warning'
@@ -69,7 +69,7 @@ const ResponseContent = ({
 
   const afterResponseSubmit = (res: Response<any>) => {
     if (res.success)
-      popupRef?.current?.configPopup({
+      popup?.popupRef?.current?.configPopup({
         type: 'success',
         message: 'Resposta enviada.',
         onClick: onCloseClick
@@ -78,13 +78,13 @@ const ResponseContent = ({
       switch (res.error) {
         case 'Request not found!':
           if (selectedInfo.status === 'Recusado')
-            popupRef?.current?.configPopup({
+            popup?.popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
               message: 'Solicitação já foi recusada.'
             })
           else
-            popupRef?.current?.configPopup({
+            popup?.popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
               message: 'Solicitação não encontrada ou já aceita.'
@@ -93,7 +93,7 @@ const ResponseContent = ({
           break
 
         default:
-          popupRef?.current?.configPopup({
+          popup?.popupRef?.current?.configPopup({
             type: 'error',
             message: 'Ops, algo deu errado :(',
             onClick: onCloseClick

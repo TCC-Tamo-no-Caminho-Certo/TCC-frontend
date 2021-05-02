@@ -22,7 +22,6 @@ import api from 'services/api'
 import { Response, RootState } from 'store'
 import { University } from 'store/Async/universities'
 import { getUser, UserState } from 'store/Async/user'
-import { PopupState } from 'store/Sync/popup'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
@@ -31,6 +30,7 @@ import { Option } from 'components/Form/Select'
 import Presence from 'components/Presence'
 import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
+import { GlobalContext } from 'App'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
@@ -72,7 +72,7 @@ interface ProfessorProps {
 }
 
 function Professor({ request }: ProfessorProps) {
-  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
+  const { popup } = useContext(GlobalContext)
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const { courses, universities } = useContext(AddRoleContext)
 
@@ -223,7 +223,7 @@ function Professor({ request }: ProfessorProps) {
       )
 
     if (res.success)
-      popupRef?.current?.configPopup({
+      popup?.popupRef?.current?.configPopup({
         setModal: true,
         type: 'success',
         message: request
@@ -237,7 +237,7 @@ function Professor({ request }: ProfessorProps) {
         }
       })
     else
-      popupRef?.current?.configPopup({
+      popup?.popupRef?.current?.configPopup({
         setModal: true,
         type: 'error',
         message: 'Algo deu errado :('

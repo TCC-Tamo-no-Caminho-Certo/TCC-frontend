@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Style from './styles'
 
 import signupSchema from 'utils/validations/signup'
 
 import { HomeActions } from 'store/Sync/home'
-import { Response, RootState } from 'store'
-import { PopupState } from 'store/Sync/popup'
+import { Response } from 'store'
 
 import WorldIcon from 'assets/Inputs/WorldIcon'
 import UserLockedIcon from 'assets/Inputs/UserLockedIcon'
@@ -15,12 +14,13 @@ import Logo from 'assets/FullLogo'
 import { Datepicker, Form, Submit, Text } from 'components/Form'
 import BackButton from 'components/BackButton'
 
+import { GlobalContext } from 'App'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 const Aside = () => {
-  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
+  const { popup } = useContext(GlobalContext)
 
   const [disable, setDisable] = useState(false)
 
@@ -35,7 +35,7 @@ const Aside = () => {
 
   const afterSubmit = (res: Response<any>) => {
     if (res.success)
-      popupRef?.current?.configPopup({
+      popup?.popupRef?.current?.configPopup({
         setModal: true,
         type: 'success',
         message: t('signup.popup.success'),
@@ -44,7 +44,7 @@ const Aside = () => {
     else
       switch (res.error) {
         case 'User already exists':
-          popupRef?.current?.configPopup({
+          popup?.popupRef?.current?.configPopup({
             setModal: true,
             type: 'error',
             message: t('signup.popup.userExists'),
@@ -57,7 +57,7 @@ const Aside = () => {
           break
 
         default:
-          popupRef?.current?.configPopup({
+          popup?.popupRef?.current?.configPopup({
             setModal: true,
             type: 'error',
             message: t('signup.popup.defaultError')

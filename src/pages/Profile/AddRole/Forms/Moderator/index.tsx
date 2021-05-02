@@ -11,11 +11,11 @@ import {
 
 import { getUser, UserState } from 'store/Async/user'
 import { Response, RootState } from 'store'
-import { PopupState } from 'store/Sync/popup'
 
 import { Select, Submit, Textarea } from 'components/Form'
 import { Option } from 'components/Form/Select'
 
+import { GlobalContext } from 'App'
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
@@ -49,7 +49,7 @@ const verifyFullTime = (user: UserState, university_id: number) => {
 }
 
 const ModeratorForm = ({ request }: ModeratorProps) => {
-  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
+  const { popup } = useContext(GlobalContext)
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const { universities } = useContext(AddRoleContext)
 
@@ -90,7 +90,7 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
   const afterSubmit = (res: Response<any>) => {
     if (res.success)
       if (fullTime)
-        popupRef?.current?.configPopup({
+        popup?.popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: 'Papel adicionado',
@@ -100,14 +100,14 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
           }
         })
       else
-        popupRef?.current?.configPopup({
+        popup?.popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: request ? 'Solicitação reenviada!' : 'Solicitação enviada!',
           onClick: () => history.push('/session/main')
         })
     else
-      popupRef?.current?.configPopup({
+      popup?.popupRef?.current?.configPopup({
         setModal: true,
         type: 'error',
         message: 'Falha ao enviar solicitação :('

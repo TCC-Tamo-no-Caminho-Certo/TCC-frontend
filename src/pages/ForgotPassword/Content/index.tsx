@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Style, { ConfirmCode } from './styles'
 
 import { emailSchema } from 'utils/validations/forgotPassword'
 
-import { Response, RootState } from 'store'
-import { PopupState } from 'store/Sync/popup'
+import { Response } from 'store'
 
 import SendEmailIcon from 'assets/global/SendEmailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
@@ -13,11 +12,11 @@ import Logo from 'assets/FullLogo'
 
 import { Form, Submit, Text } from 'components/Form'
 
-import { useSelector } from 'react-redux'
+import { GlobalContext } from 'App'
 import { useHistory } from 'react-router-dom'
 
 const Content = () => {
-  const { popupRef } = useSelector<RootState, PopupState>(({ popup }) => popup)
+  const { popup } = useContext(GlobalContext)
 
   const [userEmail, setUserEmail] = useState<string>()
   const [codeSend, setCodeSend] = useState(false)
@@ -27,7 +26,7 @@ const Content = () => {
   const afterEmailSubmit = (res: Response<any>) => {
     res.success
       ? setTimeout(() => setCodeSend(true), 1)
-      : popupRef?.current?.configPopup({
+      : popup?.popupRef?.current?.configPopup({
           setModal: true,
           type: 'error',
           message: 'Email não cadastrado em nossa plataforma.'
@@ -37,7 +36,7 @@ const Content = () => {
   const afterCodeSubmit = (res: Response<any>) => {
     res.success
       ? setTimeout(() => history.push('/reset-password'), 1)
-      : popupRef?.current?.configPopup({
+      : popup?.popupRef?.current?.configPopup({
           setModal: true,
           type: 'error',
           message: 'Código inválido!'
@@ -46,12 +45,12 @@ const Content = () => {
 
   const afterCodeResent = (res: Response<any>) => {
     res.success
-      ? popupRef?.current?.configPopup({
+      ? popup?.popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: 'Código reenviado!'
         })
-      : popupRef?.current?.configPopup({
+      : popup?.popupRef?.current?.configPopup({
           setModal: true,
           type: 'error',
           message: 'Ops, algo deu errado :('
