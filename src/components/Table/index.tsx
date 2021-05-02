@@ -27,6 +27,7 @@ export interface HeaderData {
   name: any
   label: string
   role?: boolean
+  indexer?: string
   circle?: boolean
   dataManipulation?: (_data: any) => string
 }
@@ -47,6 +48,7 @@ interface TableState {
 export interface ItemProps {
   userInfo?: any
   selectedInfo?: any
+  makeRequest: () => void
   onCloseClick: () => void
 }
 

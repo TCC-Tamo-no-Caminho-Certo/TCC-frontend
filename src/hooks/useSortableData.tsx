@@ -27,8 +27,10 @@ const useSortableData = <T, _>(
 
         if (valueA < valueB)
           return sortConfig.direction === 'ascending' ? -1 : 1
+
         if (valueA > valueB)
           return sortConfig.direction === 'ascending' ? 1 : -1
+
         return 0
       })
 

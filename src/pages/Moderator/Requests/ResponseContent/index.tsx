@@ -30,8 +30,11 @@ import * as Yup from 'yup'
 const ResponseContent = ({
   onCloseClick,
   userInfo,
-  selectedInfo
+  selectedInfo,
+  makeRequest
 }: ItemProps) => {
+  console.log(selectedInfo)
+
   const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const { courses } = useSelector<RootState, CoursesState>(
@@ -54,6 +57,7 @@ const ResponseContent = ({
         message: 'Tem certeza que deseja remover esta solicitação?',
         onOkClick: async () => {
           await api.delete(`user/role/request/${selectedInfo.request_id}`)
+          makeRequest()
           onCloseClick()
         },
         onCloseClick: () => {
@@ -168,7 +172,7 @@ const ResponseContent = ({
               </div>
             </Field>
 
-            {selectedInfo.role !== 'moderator' && (
+            {selectedInfo.role !== 'moderator' && selectedInfo.data.course_id && (
               <Field>
                 Curso:
                 <div>
@@ -190,15 +194,21 @@ const ResponseContent = ({
             </Field>
           </Infos>
 
-          {selectedInfo.voucherUrl ? (
+          {selectedInfo.voucher_uuid ? (
             <div id='doc'>
-              <iframe src={selectedInfo?.voucherUrl} />
+              <iframe src={selectedInfo.voucherUrl} />
             </div>
           ) : (
+            <></>
+          )}
+
+          {selectedInfo.data.pretext ? (
             <div id='pretext'>
               Justificativa:
-              <p>{selectedInfo?.pretext}</p>
+              <p>{selectedInfo.data.pretext}</p>
             </div>
+          ) : (
+            <></>
           )}
 
           {!himselfModeratorRequest && (

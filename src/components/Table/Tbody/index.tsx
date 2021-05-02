@@ -102,9 +102,11 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
 
   const setSelected = async (item: any) => {
     const { users } = await api.get(`users/${item.user_id}`)
-    const voucherUrl = await api.get(
-      `user/role/request/voucher/${item.voucher_uuid}`
-    )
+    const voucherUrl = item.voucher_uuid
+      ? await api.get(`user/role/request/voucher/${item.voucher_uuid}`)
+      : undefined
+
+    console.log(voucherUrl)
 
     setInfos({
       userInfo: users,
@@ -182,15 +184,24 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
         </table>
       </Style>
 
-      <Modal top='50vh' translateY='-50%' ref={modalRef}>
+      <Modal
+        top='50vh'
+        translateY='-50%'
+        ref={modalRef}
+        onBgClick={() => {
+          modalRef.current?.toggleModal(false)
+          setInfos({ userInfo: undefined, selectedInfo: undefined })
+        }}
+      >
         {ItemContent ? (
           <ItemContent
             userInfo={infos?.userInfo}
             selectedInfo={infos?.selectedInfo}
             onCloseClick={() => {
               modalRef.current?.toggleModal(false)
-              startRequest()
+              setInfos({ userInfo: undefined, selectedInfo: undefined })
             }}
+            makeRequest={() => startRequest()}
           />
         ) : (
           <></>

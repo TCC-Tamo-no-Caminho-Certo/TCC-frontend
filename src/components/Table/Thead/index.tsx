@@ -67,7 +67,7 @@ const Thead = ({ sort }: TheadProps) => {
             <RefreshIcon onClick={onRefreshClick} />
           </th>
 
-          {headerData.map(({ label, name, circle }, index) => {
+          {headerData.map(({ label, name, indexer, circle }, index) => {
             if (circle)
               return (
                 <th id={name} key={name}>
@@ -79,7 +79,10 @@ const Thead = ({ sort }: TheadProps) => {
 
             return (
               <th id={name} key={name}>
-                <button type='button' onClick={() => onThClick(name, index)}>
+                <button
+                  type='button'
+                  onClick={() => onThClick(indexer || name, index)}
+                >
                   <ArrowIcon
                     initial={false}
                     variants={arrow}

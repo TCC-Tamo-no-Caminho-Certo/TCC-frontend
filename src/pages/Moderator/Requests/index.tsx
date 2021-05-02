@@ -10,7 +10,7 @@ import Table, { HeaderData } from 'components/Table'
 const headerData: HeaderData[] = [
   { name: 'status', label: '', circle: true },
   { name: 'name', label: 'Nome' },
-  { name: 'role', label: 'Papel', role: true },
+  { name: 'role', label: 'Papel', role: true, indexer: 'role_id' },
   {
     name: 'created_at',
     label: 'Data',
