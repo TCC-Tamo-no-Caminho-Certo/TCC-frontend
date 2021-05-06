@@ -4,6 +4,7 @@ import Style, {
   Gear,
   RightMenuOpen,
   RoleLi,
+  SelectRoles,
   UserInfo
 } from './styles'
 
@@ -26,15 +27,16 @@ import GearIcon from 'assets/RightMenuOpen/GearIcon'
 import AddRoleIcon from 'assets/RightMenuOpen/AddRoleIcon'
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
+import Presence from 'components/Presence'
 import Avatar from 'components/User/Avatar'
 import DotsLoader from 'components/DotsLoader'
 
-import { AnimatePresence, motion, useCycle, Variants } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { ThemeContext } from 'styled-components'
 
-const motionMenu: Variants = {
+const menu: Variants = {
   open: {
     transition: {
       type: 'tween',
@@ -51,7 +53,7 @@ const motionMenu: Variants = {
   }
 }
 
-const motionHr: Variants = {
+const hr: Variants = {
   open: {
     opacity: [0, 1],
     transition: {
@@ -68,7 +70,7 @@ const motionHr: Variants = {
   }
 }
 
-const motionLi: Variants = {
+const li: Variants = {
   open: {
     opacity: [0, 1],
     x: [16, 0],
@@ -86,7 +88,7 @@ const motionLi: Variants = {
   }
 }
 
-const motionLogout: Variants = {
+const logout: Variants = {
   open: {
     opacity: [0, 1],
     y: [-16, 0],
@@ -109,18 +111,15 @@ const RightMenu = () => {
     RootState,
     UserState
   >(({ user }) => user)
-
-  const [disabledLogout, setDisabledLogout] = useState(false)
+  const [logoutLoading, setLogoutLoading] = useState(false)
   const [changeRole, setChangeRole] = useState(false)
   const { innerWidth } = useWindowDimensions()
   const [width, setWidth] = useState(innerWidth)
   const [isOpen, setIsOpen] = useState(false)
-  const [logoutLoading, setLogoutLoading] = useState(false)
 
   const theme = useContext(ThemeContext)
-
-  const [editOpen, toggleEditOpen] = useCycle(false, true)
   const dispatch = useDispatch()
+
   const closedHeight = 112
   const openHeight = 300 + closedHeight
 
@@ -144,9 +143,7 @@ const RightMenu = () => {
   }
 
   const onLogoutClick = async () => {
-    setDisabledLogout(true)
     setLogoutLoading(true)
-
     await api.get('logout')
 
     localStorage.removeItem('@SLab_ac_token')
@@ -174,25 +171,28 @@ const RightMenu = () => {
   useEffect(() => {
     if (innerWidth <= 300) setWidth(320)
     else innerWidth >= 545 ? setWidth(300) : setWidth(innerWidth)
-  }, [innerWidth, toggleEditOpen])
+  }, [innerWidth])
 
   return (
     <>
       {(isOpen === true || innerWidth >= 545) && (
         <>
           <Background
-            isOpen={editOpen}
+            isOpen={isOpen}
             openHeight={`${openHeight}px`}
             closedHeight={`${closedHeight}px`}
           >
             <motion.path
               initial={false}
               variants={motionPath}
-              animate={editOpen ? 'open' : 'closed'}
+              animate={isOpen ? 'open' : 'closed'}
             />
           </Background>
 
-          <Style closedHeight={`${closedHeight}px`}>
+          <Style
+            closedHeight={`${closedHeight}px`}
+            onMouseLeave={() => setIsOpen(false)}
+          >
             <Avatar size={80} />
 
             <UserInfo className='UserInfo' selectedRole={selectedRole}>
@@ -217,110 +217,90 @@ const RightMenu = () => {
             </UserInfo>
 
             {innerWidth >= 545 && (
-              <button
-                type='button'
-                onClick={() => {
-                  setIsOpen(true)
-                  toggleEditOpen()
-                }}
-              >
-                <GearIcon />
-              </button>
+              <GearIcon onClick={() => setIsOpen(!isOpen)} />
             )}
 
-            <AnimatePresence>
-              {editOpen && (
-                <RightMenuOpen
-                  exit='close'
-                  animate='open'
-                  width={`${width}px`}
-                  variants={motionMenu}
-                  changeRole={changeRole}
-                  height={`${openHeight - closedHeight}px`}
-                >
-                  <ul id='openProfile'>
-                    <motion.hr variants={motionHr} />
+            <Presence condition={isOpen}>
+              <>
+                {changeRole && (
+                  <SelectRoles onMouseLeave={() => setChangeRole(false)}>
+                    {innerWidth < 545 && (
+                      <CloseIcon onClick={() => setChangeRole(false)} />
+                    )}
 
-                    <motion.li key='toggleRole' variants={motionLi}>
-                      <button
-                        type='button'
-                        onClick={() => setChangeRole(!changeRole)}
-                      >
-                        <ChangeIcon />
-                        Alternar entre papéis
-                      </button>
-                    </motion.li>
-
-                    <motion.li key='editProfile' variants={motionLi}>
-                      <Link to='/session/profile/edit-profile'>
-                        <EditUserIcon /> Editar perfil
-                      </Link>
-                    </motion.li>
-
-                    <motion.li key='orderNewRole' variants={motionLi}>
-                      <Link to='/session/profile/change-role'>
-                        <AddRoleIcon /> Solicitar novo papel
-                      </Link>
-                    </motion.li>
-
-                    <motion.button
-                      id='logout'
-                      type='button'
-                      animate='open'
-                      data-cy='button-main-logout'
-                      variants={motionLogout}
-                      onClick={onLogoutClick}
-                      disabled={disabledLogout}
-                    >
-                      {logoutLoading && (
-                        <DotsLoader color={theme.colors.secondary} />
-                      )}
-
-                      <span id='leave'>Sair</span>
-
-                      <LogoutIcon />
-                    </motion.button>
-                  </ul>
-
-                  {dataLoading && changeRole && (
-                    <motion.div
-                      id='selectRoles'
-                      onMouseLeave={() => setChangeRole(false)}
-                    >
-                      {innerWidth < 545 && (
-                        <CloseIcon onClick={() => setChangeRole(false)} />
-                      )}
-
-                      <ul>
-                        {roles.map(role => (
-                          <RoleLi
-                            key={role}
-                            role={role}
-                            onClick={() => {
-                              setIsOpen(false)
-                              toggleEditOpen()
-                            }}
+                    <ul>
+                      {roles.map(role => (
+                        <RoleLi key={role} role={role}>
+                          <button
+                            type='button'
+                            onClick={() =>
+                              dispatch(
+                                UserActions.update({
+                                  selectedRole: role
+                                })
+                              )
+                            }
                           >
-                            <button
-                              type='button'
-                              onClick={() =>
-                                dispatch(
-                                  UserActions.update({
-                                    selectedRole: role
-                                  })
-                                )
-                              }
-                            >
-                              {getRoleLabel(role)}
-                            </button>
-                          </RoleLi>
-                        ))}
-                      </ul>
-                    </motion.div>
+                            {getRoleLabel(role)}
+                          </button>
+                        </RoleLi>
+                      ))}
+                    </ul>
+                  </SelectRoles>
+                )}
+              </>
+
+              <RightMenuOpen
+                exit='close'
+                animate='open'
+                variants={menu}
+                width={`${width}px`}
+                changeRole={changeRole}
+                height={`${openHeight - closedHeight}px`}
+              >
+                <motion.hr variants={hr} />
+
+                <motion.li key='toggleRole' variants={li}>
+                  <button
+                    type='button'
+                    onClick={() => setChangeRole(!changeRole)}
+                  >
+                    <ChangeIcon />
+                    Alternar entre papéis
+                  </button>
+                </motion.li>
+
+                <motion.li key='editProfile' variants={li}>
+                  <Link to='/session/profile/edit-profile'>
+                    <EditUserIcon /> Editar perfil
+                  </Link>
+                </motion.li>
+
+                <motion.li key='orderNewRole' variants={li}>
+                  <Link to='/session/profile/change-role'>
+                    <AddRoleIcon /> Solicitar novo papel
+                  </Link>
+                </motion.li>
+
+                <motion.button
+                  id='logout'
+                  type='button'
+                  animate='open'
+                  data-cy='button-main-logout'
+                  variants={logout}
+                  onClick={onLogoutClick}
+                  disabled={logoutLoading}
+                >
+                  {logoutLoading && (
+                    <DotsLoader color={theme.colors.secondary} />
                   )}
-                </RightMenuOpen>
-              )}
-            </AnimatePresence>
+
+                  <span id='leave'>Sair</span>
+
+                  <LogoutIcon />
+                </motion.button>
+              </RightMenuOpen>
+            </Presence>
 
             {selectedRole === 'guest' && (
               <Link id='baseButton' to='/session/profile/change-role'>
@@ -335,7 +315,6 @@ const RightMenu = () => {
         <Gear
           onClick={() => {
             setIsOpen(!isOpen)
-            toggleEditOpen()
           }}
         />
       )}

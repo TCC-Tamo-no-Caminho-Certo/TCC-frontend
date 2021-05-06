@@ -30,6 +30,19 @@ interface StyleProps {
   closedHeight: string
 }
 
+export const Gear = styled(GearIcon)`
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 3;
+
+  width: 22px;
+  margin: 24px;
+
+  fill: ${({ theme }) => theme.colors.secondary};
+  stroke: ${({ theme }) => theme.colors.secondary};
+`
+
 export const RoleLi = styled.li<RoleLiProps>`
   button {
     width: 100%;
@@ -125,13 +138,18 @@ export const UserInfo = styled.div<UserInfoProps>`
   }
 `
 
-export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
+export const RightMenuOpen = styled(motion.ul)<RightMenuOpenProps>`
   position: absolute;
   top: 112px;
+  left: 0px;
   z-index: 3;
 
   width: max(100vw, 300px);
   height: ${({ height }) => height};
+
+  & > * {
+    opacity: 0;
+  }
 
   hr {
     position: absolute;
@@ -145,66 +163,36 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
     background-color: ${({ theme }) => theme.colors.secondary};
   }
 
-  #selectRoles {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 2;
+  li {
+    a:hover,
+    button:hover {
+      background-color: ${({ theme }) => theme.colors.primary};
+    }
 
-    width: 100%;
-
-    .Icon {
-      position: absolute;
-      top: 28px;
-      right: 0;
-      z-index: 2;
-
-      width: 16px;
-      height: 16px;
-      margin-right: 35px;
-      transform: translateY(-50%);
-
-      fill: ${({ theme }) => theme.colors.secondary};
-      stroke: ${({ theme }) => theme.colors.secondary};
+    button {
+      ${({ changeRole }) =>
+        changeRole &&
+        css`
+          background-color: ${({ theme }) => theme.colors.primary};
+        `}
     }
   }
 
-  #openProfile {
-    & > * {
-      opacity: 0;
-    }
+  li a,
+  li button {
+    padding: 16px;
+    display: flex;
+    align-items: center;
 
-    li {
-      a:hover,
-      button:hover {
-        background-color: ${({ theme }) => theme.colors.primary};
-      }
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.5rem);
 
-      button {
-        ${({ changeRole }) =>
-          changeRole &&
-          css`
-            background-color: ${({ theme }) => theme.colors.primary};
-          `}
-      }
-    }
+    color: ${({ theme }) => theme.colors.secondary};
 
-    li a,
-    li button {
-      padding: 16px;
-      display: flex;
-      align-items: center;
-
-      width: 100%;
-      height: 100%;
-      user-select: none;
-      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.5rem);
-
-      color: ${({ theme }) => theme.colors.secondary};
-
-      .Icon {
-        height: 24px;
-      }
+    .Icon {
+      height: 24px;
     }
   }
 
@@ -253,20 +241,6 @@ export const RightMenuOpen = styled(motion.div)<RightMenuOpenProps>`
   }
 `
 
-export const Gear = styled(GearIcon)`
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 3;
-
-  width: 22px;
-  margin: 36px 24px 0 0;
-  transform: translateY(-50%);
-
-  fill: ${({ theme }) => theme.colors.secondary};
-  stroke: ${({ theme }) => theme.colors.secondary};
-`
-
 export const Background = styled.svg<BackgroundProps>`
   position: fixed;
   top: 0;
@@ -290,6 +264,36 @@ export const Background = styled.svg<BackgroundProps>`
   }
 `
 
+export const SelectRoles = styled.div`
+  position: absolute;
+  right: 0px;
+  top: 112px;
+  z-index: 4;
+
+  width: 100%;
+
+  .Icon {
+    position: absolute;
+    right: 0;
+    top: 28px;
+    z-index: 2;
+
+    width: 16px;
+    height: 16px;
+    margin-right: 35px;
+    transform: translateY(-50%);
+
+    fill: ${({ theme }) => theme.colors.secondary};
+    stroke: ${({ theme }) => theme.colors.secondary};
+  }
+
+  @media screen and (min-width: 545px) {
+    right: 300px;
+    top: 112px;
+    z-index: 3;
+  }
+`
+
 const Style = styled.div<StyleProps>`
   position: fixed;
   top: 0;
@@ -301,10 +305,6 @@ const Style = styled.div<StyleProps>`
   width: 100vw;
   min-width: 300px;
   height: ${({ closedHeight }) => closedHeight};
-
-  * {
-    z-index: 2;
-  }
 
   a,
   svg,
@@ -318,19 +318,19 @@ const Style = styled.div<StyleProps>`
   }
 
   .Icon {
-    margin-right: 16px;
     width: 24px;
+    margin-right: 16px;
 
     fill: ${({ theme }) => theme.colors.secondary};
   }
 
   #Gear {
     position: absolute;
-    right: 16px;
     top: 73px;
+    right: 16px;
 
-    height: 16px;
     width: 16px;
+    height: 16px;
   }
 
   #baseButton {
@@ -352,9 +352,10 @@ const Style = styled.div<StyleProps>`
   }
 
   @media screen and (min-width: 545px) {
-    min-width: 300px;
-    width: 300px;
     right: 0;
+
+    width: 300px;
+    min-width: 300px;
   }
 `
 
