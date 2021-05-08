@@ -40,7 +40,7 @@ const Moderator = () => {
 
   return (
     <Sidebar
-      title='Moderador'
+      title='Universidade'
       routes={moderatorRoutes}
       letters={sidebar.letters}
       selected={sidebar.selected}

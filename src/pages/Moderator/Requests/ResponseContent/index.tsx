@@ -33,8 +33,6 @@ const ResponseContent = ({
   selectedInfo,
   makeRequest
 }: ItemProps) => {
-  console.log(selectedInfo)
-
   const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const { courses } = useSelector<RootState, CoursesState>(

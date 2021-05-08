@@ -1,7 +1,8 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useContext, useMemo, useRef } from 'react'
 
 import Map from './Map'
 import RightMenu from './RightMenu'
+import Season from './Season'
 
 // import Projects from './Projects/index'
 import { RootState } from 'store'
@@ -16,28 +17,33 @@ import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
 const Profile = () => {
-  const { sidebar } = useContext(ThemeContext)
   const { selectedRole } = useSelector<RootState, UserState>(({ user }) => user)
+  const { sidebar } = useContext(ThemeContext)
+
+  const seasonRef = useRef(null)
+  const mapRef = useRef(null)
 
   const mainRoutes = useMemo((): RouteProps[] => {
     const sidebarSections: RouteProps[] = [
       {
         label: 'Mapa',
+        ref: mapRef,
         icon: () => <MapIcon />,
-        component: () => <Map />,
+        component: () => <Map ref={mapRef} />,
         paths: ['/session/main', '/session/main/map']
+      },
+      {
+        label: 'Temporada',
+        ref: seasonRef,
+        icon: () => <MapIcon />,
+        component: () => <Season ref={seasonRef} />,
+        paths: ['/session/main/season']
       }
-      // {
-      //   label: 'Projetos',
-      //   icon: () => <ProjectIcon />,
-      //   component: () => <Projects />,
-      //   paths: ['/session/main/projects']
-      // }
     ]
 
     if (selectedRole === 'moderator' || selectedRole === 'admin')
       sidebarSections.push({
-        label: 'Moderador',
+        label: 'Universidade',
         bottom: true,
         icon: () => <ProjectIcon />,
         paths: ['/session/moderator']

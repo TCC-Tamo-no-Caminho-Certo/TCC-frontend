@@ -105,9 +105,6 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
     const voucherUrl = item.voucher_uuid
       ? await api.get(`user/role/request/voucher/${item.voucher_uuid}`)
       : undefined
-
-    console.log(voucherUrl)
-
     setInfos({
       userInfo: users,
       selectedInfo: {
@@ -131,11 +128,6 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startRequest])
-
-  useEffect(() => {
-    console.log(infos)
-  }, [infos])
-
   return (
     <>
       <Style ref={tableWrapperRef} onScroll={onTableScroll}>

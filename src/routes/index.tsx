@@ -45,12 +45,9 @@ const Routes = () => {
       </Route>
 
       <Route path='/home' component={Home} />
-
-      <Route path='/forgot-password' component={ForgotPassword} />
-
-      <Route path='/reset-password' component={ResetPassword} />
-
       <Route path='/session' component={PrivateRoutes} />
+      <Route path='/reset-password' component={ResetPassword} />
+      <Route path='/forgot-password' component={ForgotPassword} />
     </Switch>
   )
 }

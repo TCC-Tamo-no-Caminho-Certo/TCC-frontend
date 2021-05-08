@@ -22,10 +22,8 @@ const PrivateRoutes = () => {
         <Redirect to='/session/profile/home' />
       </Route>
 
-      <Route path='/session/profile' component={Profile} />
-
       <Route path='/session/main' component={Main} />
-
+      <Route path='/session/profile' component={Profile} />
       <Route path='/session/moderator' component={Moderator} />
     </Switch>
   )

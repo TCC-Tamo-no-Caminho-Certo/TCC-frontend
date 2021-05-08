@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { RefObject, useEffect, useRef, useState } from 'react'
 import Style, { ListItem, SidebarNav } from './styles'
 
 import { SidebarActions } from 'store/Sync/sidebar'
@@ -7,6 +7,7 @@ import { RootState } from 'store'
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
 import Hamburger from 'components/Hamburger'
+import Presence from 'components/Presence'
 
 import { AnimatePresence, motion, Variants } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,6 +16,7 @@ import { Route, useHistory, useLocation } from 'react-router-dom'
 export interface RouteProps {
   label: string
   paths: string[]
+  ref?: RefObject<HTMLDivElement>
   exact?: boolean
   bottom?: boolean
   noContentMove?: boolean
@@ -32,6 +34,29 @@ interface SidebarProps {
   samePage?: boolean
   closedWidth?: number
   scrollBarSize?: number
+}
+
+const motionTitle: Variants = {
+  initial: {
+    opacity: 0,
+    x: -24
+  },
+  open: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      type: 'tween',
+      duration: 0.4
+    }
+  },
+  closed: {
+    opacity: 0,
+    x: -24,
+    transition: {
+      type: 'tween',
+      duration: 0.1
+    }
+  }
 }
 
 const Sidebar = ({
@@ -55,55 +80,12 @@ const Sidebar = ({
   const dispatch = useDispatch()
   const { pathname } = useLocation()
 
-  const scrollMoveCorrectly = useCallback(
-    (index: number): void => {
-      const heightOfRoutes = routes.map(({ paths }) => {
-        const id = paths[0].replaceAll('/', '--')
-        return document.getElementById(id)?.offsetHeight
-      })
-
-      const move =
-        heightOfRoutes !== undefined &&
-        heightOfRoutes.reduce(
-          (prev, curr, i) =>
-            i < index && prev !== undefined && curr !== undefined
-              ? prev + curr
-              : prev,
-          0
-        )
-
-      window.scrollTo(0, move as number)
-    },
-    [routes]
-  )
-
-  const onToggle = () => dispatch(SidebarActions.toggleSidebar(!open))
-
   const contentSize = (): string => {
     if (open) return isLarge ? `calc(100vw - ${width}px)` : '100vw'
     return isLarge ? `calc(100vw - ${closedWidth}px)` : '100vw'
   }
 
-  useEffect(() => {
-    setisLarge(innerWidth >= 545)
-  }, [innerWidth])
-
-  useEffect(() => {
-    ;(async () => {
-      await dispatch(SidebarActions.toggleSidebar(!open))
-      dispatch(SidebarActions.toggleSidebar(open))
-    })()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLarge])
-
-  useEffect(() => {
-    const pathArray = routes.map(({ paths }) => (paths[0] === pathname ? 1 : 0))
-    const selectedIndex = pathArray.indexOf(1)
-    scrollMoveCorrectly(selectedIndex)
-  }, [scrollMoveCorrectly, pathname, routes])
-
-  const motionContent: Variants = {
+  const content: Variants = {
     open: {
       x: isLarge ? width : 0,
       width: contentSize(),
@@ -143,28 +125,27 @@ const Sidebar = ({
     }
   }
 
-  const motionTitle: Variants = {
-    initial: {
-      opacity: 0,
-      x: -24
-    },
-    open: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        type: 'tween',
-        duration: 0.4
-      }
-    },
-    closed: {
-      opacity: 0,
-      x: -24,
-      transition: {
-        type: 'tween',
-        duration: 0.1
-      }
-    }
-  }
+  const onToggle = () => dispatch(SidebarActions.toggleSidebar(!open))
+
+  useEffect(() => {
+    setisLarge(innerWidth >= 545)
+  }, [innerWidth])
+
+  useEffect(() => {
+    ;(async () => {
+      await dispatch(SidebarActions.toggleSidebar(!open))
+      dispatch(SidebarActions.toggleSidebar(open))
+    })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLarge])
+
+  useEffect(() => {
+    const route = routes.find(({ paths }) =>
+      paths.find(path => path === pathname)
+    )
+
+    route?.ref?.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [pathname, routes])
 
   return (
     <Style draggable='false'>
@@ -194,63 +175,53 @@ const Sidebar = ({
         </div>
 
         <ul>
-          {routes.map(({ paths, bottom, icon: Icon, label }, index) => (
+          {routes.map(({ paths, ref, bottom, icon: Icon, label }, index) => (
             <ListItem
               isOpen={open}
               key={paths[0]}
               bottom={bottom}
               selected={selected}
-              pathname={pathname.replaceAll('/', '-')}
-              paths={paths?.map(path => path.replaceAll('/', '-'))}
+              pathname={pathname}
+              itemPaths={paths}
               onClick={() => {
-                !isLarge && onToggle()
+                history.push(paths[0])
+                ref?.current?.scrollIntoView({ behavior: 'smooth' })
               }}
             >
-              <button
-                type='button'
-                id={paths[0].replaceAll('/', '-')}
-                onClick={() => {
-                  samePage && scrollMoveCorrectly(index)
-                  history.push(paths[0])
-                }}
-              >
-                {Icon !== undefined && (
-                  <div className='icon'>
-                    <Icon />
-                  </div>
-                )}
+              {Icon && (
+                <div className='icon'>
+                  <Icon />
+                </div>
+              )}
 
-                <AnimatePresence>
-                  {open && (
-                    <motion.div
-                      className='label'
-                      initial={{
-                        opacity: 0,
-                        x: -24
-                      }}
-                      animate={{
-                        opacity: 1,
-                        x: 0,
-                        transition: {
-                          type: 'tween',
-                          duration: 0.4,
-                          delay: 0.1 * index
-                        }
-                      }}
-                      exit={{
-                        opacity: 0,
-                        x: -24,
-                        transition: {
-                          type: 'tween',
-                          duration: 0.1
-                        }
-                      }}
-                    >
-                      {label}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </button>
+              <Presence condition={open}>
+                <motion.div
+                  className='label'
+                  initial={{
+                    opacity: 0,
+                    x: -24
+                  }}
+                  animate={{
+                    x: 0,
+                    opacity: 1,
+                    transition: {
+                      type: 'tween',
+                      duration: 0.4,
+                      delay: 0.1 * index
+                    }
+                  }}
+                  exit={{
+                    x: -24,
+                    opacity: 0,
+                    transition: {
+                      type: 'tween',
+                      duration: 0.1
+                    }
+                  }}
+                >
+                  {label}
+                </motion.div>
+              </Presence>
             </ListItem>
           ))}
         </ul>
@@ -259,7 +230,7 @@ const Sidebar = ({
       {routes.map(({ paths, component, noContentMove, exact }, index) => (
         <motion.div
           key={paths[0]}
-          variants={motionContent}
+          variants={content}
           id={paths[0].replaceAll('/', '--')}
           animate={open && !noContentMove ? 'open' : 'closed'}
           initial={open && !noContentMove ? 'open' : 'closed'}

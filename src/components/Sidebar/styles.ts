@@ -2,52 +2,38 @@ import { HTMLMotionProps, motion } from 'framer-motion'
 import styled, { css } from 'styled-components'
 
 interface ListItemProps {
-  paths: string[]
+  itemPaths: string[]
+  isOpen: boolean
   pathname: string
   selected: string
-  isOpen: boolean
   bottom?: boolean
 }
 
 interface StyleProps extends HTMLMotionProps<'nav'> {
   letters: string
-  background: string
   isOpen: boolean
+  background: string
 }
 
 export const ListItem = styled.li<ListItemProps>`
   cursor: pointer;
+  font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
 
   visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
-
-  button {
-    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
-  }
 
   ${({ bottom }) =>
     bottom &&
     css`
       position: absolute;
-      bottom: 72px;
       left: 0;
+      bottom: 72px;
     `}
 
-  ${({ pathname, paths, selected }) => {
-    const verifyPaths = () => {
-      for (let i = 0; i < paths.length; i += 1) {
-        const regex = new RegExp(`^${paths[i]}$`)
-        if (pathname.match(regex)) return true
-      }
-
-      return false
-    }
-
+  ${({ pathname, itemPaths, selected }) => {
     return (
-      verifyPaths() &&
+      itemPaths?.find(itemPath => itemPath === pathname) &&
       css`
-        ${`#${paths[0]}`} {
-          background-color: ${selected};
-        }
+        background-color: ${selected};
       `
     )
   }}
@@ -59,20 +45,29 @@ export const ListItem = styled.li<ListItemProps>`
 
 export const SidebarNav = styled(motion.nav)<StyleProps>`
   position: fixed;
-  left: 0;
   top: 0;
+  left: 0;
   z-index: 3;
 
   min-width: 320px;
 
-  ${({ background }) =>
-    background.search(/gradient/)
-      ? css`
-          background: ${background};
-        `
-      : css`
-          background-color: ${background};
-        `}
+  ul {
+    position: relative;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    li,
+    button {
+      display: flex;
+      align-items: center;
+
+      width: 100%;
+      height: 72px;
+    }
+  }
 
   .icon {
     width: 24px;
@@ -122,23 +117,14 @@ export const SidebarNav = styled(motion.nav)<StyleProps>`
     margin: 24px;
   }
 
-  ul {
-    position: relative;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
-
-    li,
-    button {
-      display: flex;
-      align-items: center;
-
-      width: 100%;
-      height: 72px;
-    }
-  }
+  ${({ background }) =>
+    background.search(/gradient/)
+      ? css`
+          background: ${background};
+        `
+      : css`
+          background-color: ${background};
+        `}
 
   @media screen and (min-width: 545px) {
     width: 72px;
