@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 
-const Style = styled.div`
+const Style = styled.section`
+  position: relative;
+
   display: flex;
   align-items: center;
-  flex-direction: column;
   justify-content: center;
 
   width: 100%;
@@ -13,6 +14,10 @@ const Style = styled.div`
   background-color: ${({ theme }) => theme.colors.tertiary};
 
   header {
+    position: absolute;
+    top: 0;
+    left: 0;
+
     display: flex;
     text-align: left;
     align-items: center;
@@ -25,14 +30,25 @@ const Style = styled.div`
     }
   }
 
-  .Filters {
-    .Presence {
-      & > * {
-        margin-bottom: 0px;
-      }
+  #content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
 
-      .Text {
-        margin-bottom: 16px;
+    width: 100%;
+
+    button {
+      max-width: 80%;
+      padding: 24px 128px;
+      border-radius: 24px;
+      font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.4rem);
+
+      color: ${({ theme }) => theme.colors.secondary};
+      background-color: ${({ theme }) => theme.colors.primary};
+
+      & + button {
+        margin-top: 24px;
       }
     }
   }
