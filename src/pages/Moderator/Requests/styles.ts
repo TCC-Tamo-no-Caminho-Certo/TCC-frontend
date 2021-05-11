@@ -18,10 +18,6 @@ const Style = styled.section`
 
     width: max(100%, 280px);
     padding: 16px 16px 0px 8px;
-
-    h1 {
-      font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.3rem);
-    }
   }
 
   .Table {

@@ -164,7 +164,7 @@ const Filters = ({
   }
 
   return (
-    <Style getData={filterTable} className='Filters'>
+    <Style className='Filters' getData={filterTable}>
       <Presence
         exit='exit'
         animate='enter'

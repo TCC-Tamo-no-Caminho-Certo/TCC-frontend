@@ -4,11 +4,12 @@ import styled, { css } from 'styled-components'
 
 interface StyleProps {
   colors: DatepickerColors
+  withoutStyle: boolean
   arrow?: string
 }
 
 const Style = styled.div<StyleProps>`
-  ${({ colors, arrow }) => {
+  ${({ colors, arrow, withoutStyle }) => {
     const { body, disabled, header, selected } = colors
 
     return css`
@@ -19,8 +20,6 @@ const Style = styled.div<StyleProps>`
       }
 
       .DatePicker {
-        z-index: 1;
-
         width: 100%;
         padding: 0;
 
@@ -192,6 +191,21 @@ const Style = styled.div<StyleProps>`
       .Calendar__monthText.-activeBackground {
         background-color: ${selected} !important;
       }
+
+      ${withoutStyle &&
+      css`
+        .Datepicker,
+        .Text,
+        .Text input {
+          width: 120px;
+          min-width: 120px;
+          padding-left: 0px;
+          text-align: center;
+
+          border: none;
+          height: auto;
+        }
+      `}
     `
   }}
 

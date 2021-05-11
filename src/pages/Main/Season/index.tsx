@@ -1,12 +1,14 @@
 import React, { forwardRef, useEffect } from 'react'
 import Style from './styles'
 
+import University from './University'
+
 import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
 import {
   getUniversities,
   UniversitiesState,
-  University
+  University as UniversityType
 } from 'store/Async/universities'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -45,15 +47,15 @@ const getAllUniversitiesOfUser = (
   return []
 }
 
-const Season = forwardRef((props, ref) => {
+const Season = forwardRef((_props, ref) => {
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const universities = useSelector<RootState, UniversitiesState>(
     ({ universities }) => universities
   )
 
-  const dispatch = useDispatch()
   const universitiesToSeason = getAllUniversitiesOfUser(user, universities)
-  console.log(universitiesToSeason)
+  const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(getUniversities(universities))
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,17 +67,22 @@ const Season = forwardRef((props, ref) => {
         <h1>Temporadas</h1>
       </header>
 
-      <div id='content'>
+      <ul id='content'>
         {universitiesToSeason.length !== 0 ? (
-          universitiesToSeason.map((university: University) => (
-            <button type='button' key={university?.name}>
-              {university?.name}
-            </button>
-          ))
+          universitiesToSeason.map(
+            (university: UniversityType) =>
+              university &&
+              university.name && (
+                <University key={university.name} university={university} />
+              )
+          )
         ) : (
-          <div id='notLinked'>Você não está vinculado a nenhuma faculdade</div>
+          <div id='notLinked'>
+            <h2>Você não está vinculado a nenhuma universidade.</h2>
+            <p>Cadastre um papel que vincule a alguma!</p>
+          </div>
         )}
-      </div>
+      </ul>
     </Style>
   )
 })

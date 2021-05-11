@@ -144,7 +144,10 @@ const Sidebar = ({
       paths.find(path => path === pathname)
     )
 
-    route?.ref?.current?.scrollIntoView({ behavior: 'smooth' })
+    setTimeout(
+      () => route?.ref?.current?.scrollIntoView({ behavior: 'smooth' }),
+      1
+    )
   }, [pathname, routes])
 
   return (

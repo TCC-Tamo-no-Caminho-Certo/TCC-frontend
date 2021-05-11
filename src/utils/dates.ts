@@ -58,6 +58,23 @@ export const isoToDate = (date: string, returnType: ReturnType): string => {
   }
 }
 
+export const isoToDatepicker = (date?: string): DayValue => {
+  const dates = date?.split('T')[0].split('-')
+
+  if (dates)
+    return {
+      day: Number(dates[2]),
+      year: Number(dates[0]),
+      month: Number(dates[1])
+    }
+  else
+    return {
+      day: 0,
+      year: 0,
+      month: 0
+    }
+}
+
 export const dateToValue = (date?: string) => {
   if (date) {
     const dates = date?.split('/')
@@ -69,8 +86,8 @@ export const dateToValue = (date?: string) => {
 
 export const datepickerToDate = (date: DayValue) => {
   const day = date?.day
-  const month = date?.month
   const year = date?.year
+  const month = date?.month
 
   return day && month && year
     ? `${day < 10 ? `0${day}` : day}/${

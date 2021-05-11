@@ -8,7 +8,8 @@ const Style = styled.section`
   justify-content: center;
 
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
 
   color: ${({ theme }) => theme.colors.secondary};
   background-color: ${({ theme }) => theme.colors.tertiary};
@@ -19,15 +20,11 @@ const Style = styled.section`
     left: 0;
 
     display: flex;
-    text-align: left;
     align-items: center;
+    justify-content: center;
 
+    text-align: center;
     width: max(100%, 280px);
-    padding: 16px 16px 0px 8px;
-
-    h1 {
-      font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.3rem);
-    }
   }
 
   #content {
@@ -37,25 +34,20 @@ const Style = styled.section`
     justify-content: center;
 
     width: 100%;
+    padding: 24px 0px;
 
-    button {
-      max-width: 80%;
-      padding: 24px 128px;
-      border-radius: 24px;
-      font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.4rem);
+    #notLinked {
+      padding: 24px;
+      text-align: center;
+      border-radius: 8px;
 
-      color: ${({ theme }) => theme.colors.secondary};
       background-color: ${({ theme }) => theme.colors.primary};
-
-      & + button {
-        margin-top: 24px;
-      }
     }
   }
 
   @media screen and (min-width: 545px) {
     header {
-      padding: 16px 16px 0px 24px;
+      padding: 32px;
     }
   }
 `

@@ -17,9 +17,10 @@ export interface DatepickerColors {
 }
 
 interface DatepickerProps extends TextProps {
-  arrow?: 'auto' | 'top' | 'bottom'
+  withoutStyle?: boolean
   isBirthday?: boolean
   dateColors?: DatepickerColors
+  arrow?: 'auto' | 'top' | 'bottom'
 }
 
 type YearButton = HTMLButtonElement | null
@@ -50,6 +51,7 @@ const Datepicker = ({
   value,
   icon: Icon,
   isBirthday,
+  withoutStyle = false,
   dateColors = {
     body: '#fcfcfc',
     header: '#6e4850',
@@ -67,7 +69,7 @@ const Datepicker = ({
         if (year && !selectedDate) year.click()
       }
 
-      return (
+      return !withoutStyle ? (
         <Text
           isDate
           readOnly
@@ -79,9 +81,21 @@ const Datepicker = ({
           value={datepickerToDate(selectedDate)}
           {...rest}
         />
+      ) : (
+        <Text
+          isDate
+          readOnly
+          ref={ref}
+          id={name}
+          name={name}
+          icon={Icon}
+          onClick={onClick}
+          value={selectedDate ? datepickerToDate(selectedDate) : 'Selecione...'}
+          {...rest}
+        />
       )
     },
-    [Icon, name, rest, selectedDate]
+    [Icon, name, rest, selectedDate, withoutStyle]
   )
 
   useEffect(() => {
@@ -89,7 +103,12 @@ const Datepicker = ({
   }, [value])
 
   return (
-    <Style className='Datepicker' arrow={arrow} colors={dateColors}>
+    <Style
+      className='Datepicker'
+      arrow={arrow}
+      colors={dateColors}
+      withoutStyle={withoutStyle}
+    >
       <DatePicker
         calendarClassName='CalendarSize'
         locale={ptbr}

@@ -58,6 +58,18 @@ export default createGlobalStyle<GlobalProps>`
         font-weight: normal;
       }
 
+      h1 {
+        font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.3rem);
+      }
+
+      h2 {
+        font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2.1rem);
+      }
+
+      h3 {
+        font-size: clamp(1.4rem, 0.6rem + 2.6vw, 1.9rem);
+      }
+
       a {
         text-decoration: none;
 

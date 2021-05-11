@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { forwardRef, ReactElement } from 'react'
 
 import {
   AnimatePresence,
@@ -13,19 +13,16 @@ interface PresenceProps extends HTMLMotionProps<'div'> {
   presenceProps?: AnimatePresenceProps
 }
 
-const Presence = ({
-  children,
-  condition,
-  presenceProps,
-  ...props
-}: PresenceProps) => (
-  <AnimatePresence {...presenceProps}>
-    {condition && (
-      <motion.div className='Presence' {...props}>
-        {children}
-      </motion.div>
-    )}
-  </AnimatePresence>
+const Presence = forwardRef<any, PresenceProps>(
+  ({ children, condition, presenceProps, ...props }, ref) => (
+    <AnimatePresence {...presenceProps}>
+      {condition && (
+        <motion.div className='Presence' ref={ref} {...props}>
+          {children}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
 )
 
 export default Presence

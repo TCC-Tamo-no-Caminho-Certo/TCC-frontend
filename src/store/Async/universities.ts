@@ -38,7 +38,6 @@ export const getUniversities = createAsyncThunk(
       const { universities }: Response<University[]> = await api.get(
         'info/university'
       )
-
       return { universities }
     }
   }
