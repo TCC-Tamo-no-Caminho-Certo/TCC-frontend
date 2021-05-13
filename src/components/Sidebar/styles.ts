@@ -1,6 +1,12 @@
 import { HTMLMotionProps, motion } from 'framer-motion'
 import styled, { css } from 'styled-components'
 
+interface ContentProps {
+  index: number
+  samePage: boolean
+  innerWidth: number
+}
+
 interface ListItemProps {
   itemPaths: string[]
   isOpen: boolean
@@ -14,6 +20,22 @@ interface StyleProps extends HTMLMotionProps<'nav'> {
   isOpen: boolean
   background: string
 }
+
+export const Content = styled(motion.div)<ContentProps>`
+  section {
+    overflow: hidden;
+
+    width: 100%;
+    min-width: 320px;
+    min-height: 100vh;
+    margin-top: ${({ index, innerWidth }) =>
+      index === 0 && innerWidth < 545 ? '72px' : '0px'};
+    padding-left: ${({ samePage }) => (samePage ? '16px' : '0px')};
+
+    color: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.tertiary};
+  }
+`
 
 export const ListItem = styled.li<ListItemProps>`
   cursor: pointer;
@@ -147,6 +169,7 @@ const Style = styled.div`
 
 export default Style
 
+Content.displayName = 'Content-Style'
 ListItem.displayName = 'ListItem-Style'
 SidebarNav.displayName = 'SidebarNav-Style'
 Style.displayName = 'SidebarWrapper-Style'

@@ -3,6 +3,7 @@ import React, { useContext, useMemo, useRef } from 'react'
 import Map from './Map'
 import RightMenu from './RightMenu'
 import Season from './Season'
+import Projects from './Projects'
 
 // import Projects from './Projects/index'
 import { RootState } from 'store'
@@ -20,6 +21,7 @@ const Profile = () => {
   const { selectedRole } = useSelector<RootState, UserState>(({ user }) => user)
   const { sidebar } = useContext(ThemeContext)
 
+  const projectsRef = useRef(null)
   const seasonRef = useRef(null)
   const mapRef = useRef(null)
 
@@ -38,6 +40,13 @@ const Profile = () => {
         icon: () => <MapIcon />,
         component: () => <Season ref={seasonRef} />,
         paths: ['/session/main/season']
+      },
+      {
+        label: 'Projetos',
+        ref: projectsRef,
+        icon: () => <MapIcon />,
+        component: () => <Projects ref={projectsRef} />,
+        paths: ['/session/main/projects']
       }
     ]
 

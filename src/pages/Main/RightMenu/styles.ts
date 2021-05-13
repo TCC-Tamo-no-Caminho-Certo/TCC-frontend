@@ -331,6 +331,7 @@ const Style = styled.div<StyleProps>`
 
     width: 16px;
     height: 16px;
+    cursor: pointer;
   }
 
   #baseButton {

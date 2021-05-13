@@ -1,5 +1,5 @@
 import React, { RefObject, useEffect, useRef, useState } from 'react'
-import Style, { ListItem, SidebarNav } from './styles'
+import Style, { Content, ListItem, SidebarNav } from './styles'
 
 import { SidebarActions } from 'store/Sync/sidebar'
 import { RootState } from 'store'
@@ -231,22 +231,19 @@ const Sidebar = ({
       </SidebarNav>
 
       {routes.map(({ paths, component, noContentMove, exact }, index) => (
-        <motion.div
+        <Content
+          index={index}
           key={paths[0]}
           variants={content}
+          samePage={samePage}
+          innerWidth={innerWidth}
           id={paths[0].replaceAll('/', '--')}
           animate={open && !noContentMove ? 'open' : 'closed'}
           initial={open && !noContentMove ? 'open' : 'closed'}
-          style={{
-            marginTop: index === 0 && innerWidth < 545 ? 72 : 0,
-            minWidth: 320
-          }}
         >
-          {samePage ? (
-            component && component()
-          ) : (
-            <>
-              {paths.map(path => (
+          {samePage
+            ? component && component()
+            : paths.map(path => (
                 <Route
                   key={path}
                   path={path}
@@ -254,9 +251,7 @@ const Sidebar = ({
                   component={component}
                 />
               ))}
-            </>
-          )}
-        </motion.div>
+        </Content>
       ))}
     </Style>
   )

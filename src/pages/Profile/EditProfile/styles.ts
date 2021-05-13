@@ -66,8 +66,6 @@ const Style = styled(motion.section)`
   flex-direction: column;
   justify-content: flex-start;
 
-  min-height: 100vh;
-
   background-color: ${({ theme }) => theme.colors.tertiary};
 
   form {

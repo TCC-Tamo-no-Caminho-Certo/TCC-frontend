@@ -40,7 +40,9 @@ const getAllUniversitiesOfUser = (
     )
 
     return universitiesIds?.map((id: any) =>
-      universities.find(university => university.university_id === id)
+      universities
+        ? universities.find(university => university.university_id === id)
+        : undefined
     )
   }
 

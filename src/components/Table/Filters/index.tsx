@@ -164,7 +164,11 @@ const Filters = ({
   }
 
   return (
-    <Style className='Filters' getData={filterTable}>
+    <Style
+      className='Filters'
+      getData={filterTable}
+      filters={{ to, from, name, role, status }}
+    >
       <Presence
         exit='exit'
         animate='enter'
@@ -187,41 +191,45 @@ const Filters = ({
           <></>
         )}
 
-        <div id='row'>
-          {role ? (
-            <Select
-              name='role'
-              placeholder='Papel'
-              theming={selectTheme}
-              styling={selectStyle}
-              options={[
-                { label: 'Estudante', value: 'student' },
-                { label: 'Professor', value: 'professor' },
-                { label: 'Moderador', value: 'moderator' },
-                { label: 'Todos', value: 'all' }
-              ]}
-            />
-          ) : (
-            <></>
-          )}
+        {role || status ? (
+          <div id='row'>
+            {role ? (
+              <Select
+                name='role'
+                placeholder='Papel'
+                theming={selectTheme}
+                styling={selectStyle}
+                options={[
+                  { label: 'Estudante', value: 'student' },
+                  { label: 'Professor', value: 'professor' },
+                  { label: 'Moderador', value: 'moderator' },
+                  { label: 'Todos', value: 'all' }
+                ]}
+              />
+            ) : (
+              <></>
+            )}
 
-          {status ? (
-            <Select
-              name='status'
-              placeholder='Status'
-              theming={selectTheme}
-              styling={selectStyle}
-              options={[
-                { label: 'Aguardando', value: 'awaiting' },
-                { label: 'Aceito', value: 'accepted' },
-                { label: 'Recusado', value: 'rejected' },
-                { label: 'Todos', value: 'all' }
-              ]}
-            />
-          ) : (
-            <></>
-          )}
-        </div>
+            {status ? (
+              <Select
+                name='status'
+                placeholder='Status'
+                theming={selectTheme}
+                styling={selectStyle}
+                options={[
+                  { label: 'Aguardando', value: 'awaiting' },
+                  { label: 'Aceito', value: 'accepted' },
+                  { label: 'Recusado', value: 'rejected' },
+                  { label: 'Todos', value: 'all' }
+                ]}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
+        ) : (
+          <></>
+        )}
 
         <div id='row'>
           {from ? (

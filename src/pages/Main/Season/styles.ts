@@ -1,18 +1,11 @@
 import styled from 'styled-components'
 
 const Style = styled.section`
-  position: relative;
-
   display: flex;
   align-items: center;
   justify-content: center;
 
-  width: 100%;
   min-height: 100vh;
-  overflow: hidden;
-
-  color: ${({ theme }) => theme.colors.secondary};
-  background-color: ${({ theme }) => theme.colors.tertiary};
 
   header {
     position: absolute;
@@ -53,4 +46,4 @@ const Style = styled.section`
 `
 export default Style
 
-Style.displayName = 'List-Style'
+Style.displayName = 'Season-Style'

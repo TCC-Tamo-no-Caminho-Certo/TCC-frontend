@@ -1,21 +1,26 @@
+import { FiltersProps } from './index'
+
 import Form from 'components/Form'
 
 import styled from 'styled-components'
 
-const Style = styled(Form)`
+interface StyleProps {
+  filters: FiltersProps
+}
+
+const Style = styled(Form)<StyleProps>`
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
 
-  width: max(100%, 280px);
   padding: 24px;
+  width: max(100%, 280px);
 
   .Presence {
     width: 100%;
 
-    & > * {
-      width: 100%;
+    > * {
       margin-bottom: 16px;
     }
 
