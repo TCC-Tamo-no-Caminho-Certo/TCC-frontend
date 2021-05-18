@@ -35,7 +35,7 @@ const Profile = () => {
         paths: ['/session/main', '/session/main/map']
       },
       {
-        label: 'Temporada',
+        label: 'Temporadas',
         ref: seasonRef,
         icon: () => <MapIcon />,
         component: () => <Season ref={seasonRef} />,

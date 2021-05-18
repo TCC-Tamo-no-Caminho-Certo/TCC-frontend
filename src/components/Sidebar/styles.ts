@@ -30,7 +30,6 @@ export const Content = styled(motion.div)<ContentProps>`
     min-height: 100vh;
     margin-top: ${({ index, innerWidth }) =>
       index === 0 && innerWidth < 545 ? '72px' : '0px'};
-    padding-left: ${({ samePage }) => (samePage ? '16px' : '0px')};
 
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.tertiary};

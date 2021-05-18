@@ -11,6 +11,7 @@ import Style, { ModalBackground } from './styles'
 import CloseIcon from 'assets/Inputs/CloseIcon'
 
 import { GlobalContext, GlobalContextProps } from 'App'
+import { ThemeContext } from 'styled-components'
 
 interface ModalProps {
   children: ReactElement | ReactElement[]
@@ -19,7 +20,10 @@ interface ModalProps {
   zIndex?: number
   bottom?: string
   bgHeight?: string
+  closeTop?: number
   translateY?: string
+  closeColor?: string
+  closeRight?: number
   onBgClick?: () => void
 }
 
@@ -30,8 +34,11 @@ export interface ModalMethods {
 const Modal = forwardRef<ModalMethods, ModalProps>(
   (
     {
+      closeColor,
+      closeTop,
       children,
       onBgClick,
+      closeRight,
       top = '50vh',
       bottom = 'auto',
       bgHeight = '100%',
@@ -41,6 +48,7 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     },
     ref
   ) => {
+    const theme = useContext(ThemeContext)
     const { overflow } = useContext<GlobalContextProps>(GlobalContext)
 
     const modalRef = useRef(null)
@@ -86,6 +94,9 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
           zIndex={zIndex}
           bottom={bottom}
           translateY={translateY}
+          closeTop={closeTop ? `${closeTop}px` : '8px'}
+          closeRight={closeRight ? `${closeRight}px` : '8px'}
+          closeColor={closeColor || theme.colors.secondary}
           {...rest}
         >
           <CloseIcon onClick={onBackgroundClick} />

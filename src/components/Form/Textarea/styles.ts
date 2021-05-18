@@ -13,8 +13,20 @@ export const StyledTextarea = styled.textarea`
 
   color: ${({ theme }) => theme.colors.tertiary};
 
+  &::placeholder {
+    fill: ${({ theme }) => theme.colors.tertiary};
+    stroke: ${({ theme }) => theme.colors.tertiary};
+    -webkit-text-fill-color: ${({ theme }) => theme.colors.tertiary};
+  }
+
   &:focus {
     color: ${({ theme }) => theme.colors.primary};
+
+    &::placeholder {
+      fill: ${({ theme }) => theme.colors.primary};
+      stroke: ${({ theme }) => theme.colors.primary};
+      -webkit-text-fill-color: ${({ theme }) => theme.colors.primary};
+    }
   }
 `
 

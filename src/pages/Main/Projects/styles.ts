@@ -1,4 +1,27 @@
+import Form from 'components/Form'
+
 import styled from 'styled-components'
+
+export const CreateProject = styled(Form)`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  width: 500px;
+  padding: 48px 24px 24px 24px;
+  border-radius: 16px;
+
+  background-color: ${({ theme }) => theme.colors.secondary};
+
+  > * {
+    width: 100%;
+
+    & + * {
+      margin-top: 24px;
+    }
+  }
+`
 
 const Style = styled.section`
   header {

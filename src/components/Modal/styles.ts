@@ -8,8 +8,11 @@ interface ModalBackgroundProps {
 interface StyleProps {
   top: string
   bottom: string
-  translateY: string
   zIndex: number
+  closeTop: string
+  closeColor: string
+  translateY: string
+  closeRight: string
 }
 
 export const ModalBackground = styled.div<ModalBackgroundProps>`
@@ -39,13 +42,13 @@ const Style = styled.div<StyleProps>`
 
   #CloseIcon {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: ${({ closeTop }) => closeTop};
+    right: ${({ closeRight }) => closeRight};
 
     width: 16px;
     height: 16px;
 
-    stroke: ${({ theme }) => theme.colors.secondary};
+    stroke: ${({ closeColor }) => closeColor};
   }
 `
 

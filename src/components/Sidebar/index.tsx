@@ -9,7 +9,7 @@ import useWindowDimensions from 'hooks/useWindowDimensions'
 import Hamburger from 'components/Hamburger'
 import Presence from 'components/Presence'
 
-import { AnimatePresence, motion, Variants } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, useHistory, useLocation } from 'react-router-dom'
 
@@ -150,6 +150,8 @@ const Sidebar = ({
     )
   }, [pathname, routes])
 
+  console.log(open)
+
   return (
     <Style draggable='false'>
       <SidebarNav
@@ -168,13 +170,14 @@ const Sidebar = ({
             toggle={onToggle}
           />
 
-          <AnimatePresence>
-            {open && (
-              <motion.div id='title' initial='initial' variants={motionTitle}>
-                {title}
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <Presence
+            id='title'
+            initial='initial'
+            condition={open}
+            variants={motionTitle}
+          >
+            <>{title}</>
+          </Presence>
         </div>
 
         <ul>

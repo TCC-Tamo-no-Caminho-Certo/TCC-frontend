@@ -41,6 +41,7 @@ const Style = styled.div<StyleProps>`
         z-index: 2;
 
         height: 100%;
+        transform: translateX(-10%);
       }
     `}
 `

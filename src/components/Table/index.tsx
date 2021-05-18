@@ -93,7 +93,7 @@ const Table = ({
   })
 
   const dispatch = useDispatch()
-  const condition = roles.roles.length !== 0 && courses.courses.length !== 0
+  const condition = roles.roles?.length !== 0 && courses.courses?.length !== 0
 
   useEffect(() => {
     dispatch(getRoles(roles))

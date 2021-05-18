@@ -62,6 +62,7 @@ const File = ({
 
   const onChange = (e: any) => {
     e.preventDefault()
+    setError(undefined)
 
     const file = e.target.files[0]
 
