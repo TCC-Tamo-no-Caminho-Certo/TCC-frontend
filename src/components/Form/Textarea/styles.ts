@@ -39,7 +39,7 @@ const Style = styled.div<StyleProps>`
   }
 
   ${StyledTextarea} {
-    padding-left: ${({ error }) => (error ? '48px' : '8px')};
+    padding-left: ${({ error }) => (error ? '56px' : '8px')};
   }
 `
 

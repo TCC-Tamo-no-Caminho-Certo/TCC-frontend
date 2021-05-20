@@ -37,7 +37,7 @@ const Select = forwardRef(
       }),
       control: (before: any) => ({
         ...before,
-        paddingLeft: error ? 40 : 8,
+        paddingLeft: error ? 56 : 8,
         backgroundColor: 'transparent'
       }),
       valueContainer: (before: any) => ({

@@ -8,7 +8,7 @@ export const Trigger = styled.div`
   justify-content: center;
 
   height: 100%;
-  margin: 0 2%;
+  margin: 0 9px;
   min-width: 40px;
   max-width: 40px;
 
