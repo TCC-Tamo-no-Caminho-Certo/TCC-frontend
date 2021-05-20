@@ -98,16 +98,20 @@ export default createGlobalStyle<GlobalProps>`
       }
 
       ${({ overflow }) =>
-        overflow === 'hidden' &&
-        css`
-          overflow: hidden;
-        `}
+        overflow === 'hidden'
+          ? css`
+              overflow: hidden;
+            `
+          : css`
+              overflow: auto;
+            `}
     }
   }
 
   @media screen and (min-width: 545px) {
     html body::-webkit-scrollbar {
       width: 16px;
+      z-index: 2000;
     }
   }
 `

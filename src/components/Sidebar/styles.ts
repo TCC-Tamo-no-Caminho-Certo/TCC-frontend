@@ -5,6 +5,7 @@ interface ContentProps {
   index: number
   samePage: boolean
   innerWidth: number
+  hasScrollBar: boolean
 }
 
 interface ListItemProps {
@@ -23,11 +24,9 @@ interface StyleProps extends HTMLMotionProps<'nav'> {
 
 export const Content = styled(motion.div)<ContentProps>`
   section {
-    overflow: hidden;
-
-    width: 100%;
     min-width: 320px;
     min-height: 100vh;
+    padding-left: ${({ hasScrollBar }) => (hasScrollBar ? '15px' : '0px')};
     margin-top: ${({ index, innerWidth }) =>
       index === 0 && innerWidth < 545 ? '72px' : '0px'};
 
@@ -50,14 +49,11 @@ export const ListItem = styled.li<ListItemProps>`
       bottom: 72px;
     `}
 
-  ${({ pathname, itemPaths, selected }) => {
-    return (
-      itemPaths?.find(itemPath => itemPath === pathname) &&
-      css`
-        background-color: ${selected};
-      `
-    )
-  }}
+  ${({ pathname, itemPaths, selected }) =>
+    itemPaths?.find(itemPath => itemPath === pathname) &&
+    css`
+      background-color: ${selected};
+    `}
 
   @media screen and (min-width: 545px) {
     visibility: visible;
@@ -148,7 +144,6 @@ export const SidebarNav = styled(motion.nav)<StyleProps>`
         `}
 
   @media screen and (min-width: 545px) {
-    width: 72px;
     min-width: 72px;
     height: 100vh;
 

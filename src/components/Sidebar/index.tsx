@@ -1,4 +1,10 @@
-import React, { RefObject, useEffect, useRef, useState } from 'react'
+import React, {
+  RefObject,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import Style, { Content, ListItem, SidebarNav } from './styles'
 
 import { SidebarActions } from 'store/Sync/sidebar'
@@ -9,6 +15,7 @@ import useWindowDimensions from 'hooks/useWindowDimensions'
 import Hamburger from 'components/Hamburger'
 import Presence from 'components/Presence'
 
+import { GlobalContext } from 'App'
 import { motion, Variants } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, useHistory, useLocation } from 'react-router-dom'
@@ -70,9 +77,9 @@ const Sidebar = ({
   samePage = false
 }: SidebarProps) => {
   const open = useSelector<RootState, boolean>(({ sidebar }) => sidebar.open)
+  const { overflow } = useContext(GlobalContext)
 
   const burgerRef = useRef<any>(null)
-
   const { innerWidth } = useWindowDimensions()
   const [isLarge, setisLarge] = useState(innerWidth >= 545)
 
@@ -148,9 +155,7 @@ const Sidebar = ({
       () => route?.ref?.current?.scrollIntoView({ behavior: 'smooth' }),
       1
     )
-  }, [pathname, routes])
-
-  console.log(open)
+  }, [pathname, routes, overflow])
 
   return (
     <Style draggable='false'>
@@ -243,6 +248,7 @@ const Sidebar = ({
           id={paths[0].replaceAll('/', '--')}
           animate={open && !noContentMove ? 'open' : 'closed'}
           initial={open && !noContentMove ? 'open' : 'closed'}
+          hasScrollBar={overflow?.overflow !== 'hidden'}
         >
           {samePage
             ? component && component()

@@ -76,6 +76,7 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     const onBackgroundClick = () => {
       onBgClick && onBgClick()
       setOpenModal(false)
+      overflow?.setOverflow && overflow?.setOverflow('visible')
     }
 
     useImperativeHandle(ref, () => ({ toggleModal }))
