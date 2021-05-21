@@ -85,8 +85,8 @@ const Home = () => {
                 exit='exit'
                 initial='initial'
                 animate='default'
-                variants={signupAnimation}
                 transition={transition}
+                variants={signupAnimation}
               >
                 <Signup />
               </motion.div>

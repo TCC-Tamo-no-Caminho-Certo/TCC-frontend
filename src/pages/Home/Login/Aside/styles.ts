@@ -30,7 +30,7 @@ const Style = styled.aside`
   justify-content: center;
 
   min-height: 100vh;
-  width: max(100vw + 1px, 320px);
+  width: max(100vw, 320px);
 
   background-color: ${({ theme }) => theme.colors.secondary};
   box-shadow: -8px 8px 6px 4px rgba(0, 0, 0, 0.14);
@@ -100,7 +100,7 @@ const Style = styled.aside`
   }
 
   @media screen and (min-width: 1200px) {
-    width: calc(38vw + 1px);
+    width: calc(38vw);
     border-radius: 20px 0 0 20px;
   }
 `

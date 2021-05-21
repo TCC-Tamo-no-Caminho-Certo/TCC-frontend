@@ -59,12 +59,13 @@ const Projects = forwardRef((_props, ref) => {
   }, [])
 
   useEffect(() => {
-    setUniversitiesOptions(
-      universities.universities.map(({ university_id, name }) => ({
-        value: university_id,
-        label: name
-      }))
-    )
+    universities.universities &&
+      setUniversitiesOptions(
+        universities.universities.map(({ university_id, name }) => ({
+          value: university_id,
+          label: name
+        }))
+      )
   }, [universities])
 
   return (
