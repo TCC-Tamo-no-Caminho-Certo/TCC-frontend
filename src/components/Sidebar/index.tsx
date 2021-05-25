@@ -23,10 +23,10 @@ import { Route, useHistory, useLocation } from 'react-router-dom'
 export interface RouteProps {
   label: string
   paths: string[]
-  ref?: RefObject<HTMLDivElement>
   exact?: boolean
   bottom?: boolean
   noContentMove?: boolean
+  ref?: RefObject<HTMLDivElement>
   icon?: () => JSX.Element
   component?: () => JSX.Element
 }
@@ -88,8 +88,13 @@ const Sidebar = ({
   const { pathname } = useLocation()
 
   const contentSize = (): string => {
-    if (open) return isLarge ? `calc(100vw - ${width}px)` : '100vw'
-    return isLarge ? `calc(100vw - ${closedWidth}px)` : '100vw'
+    if (!samePage) {
+      if (open) return isLarge ? `calc(100vw - ${width}px)` : '100vw'
+      return isLarge ? `calc(100vw - ${closedWidth}px)` : '100vw'
+    }
+
+    if (open) return isLarge ? `calc(100vw - ${width}px - 16px)` : '100vw'
+    return isLarge ? `calc(100vw - ${closedWidth}px - 16px)` : '100vw'
   }
 
   const content: Variants = {
@@ -139,10 +144,12 @@ const Sidebar = ({
   }, [innerWidth])
 
   useEffect(() => {
-    ;(async () => {
-      await dispatch(SidebarActions.toggleSidebar(!open))
-      dispatch(SidebarActions.toggleSidebar(open))
-    })()
+    dispatch(SidebarActions.toggleSidebar(true))
+
+    setTimeout(() => {
+      dispatch(SidebarActions.toggleSidebar(false))
+    }, 1)
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLarge])
 
@@ -196,6 +203,7 @@ const Sidebar = ({
               itemPaths={paths}
               onClick={() => {
                 history.push(paths[0])
+                !isLarge && dispatch(SidebarActions.toggleSidebar(!open))
                 ref?.current?.scrollIntoView({ behavior: 'smooth' })
               }}
             >
@@ -246,9 +254,9 @@ const Sidebar = ({
           samePage={samePage}
           innerWidth={innerWidth}
           id={paths[0].replaceAll('/', '--')}
+          hasScrollBar={overflow?.overflow !== 'hidden'}
           animate={open && !noContentMove ? 'open' : 'closed'}
           initial={open && !noContentMove ? 'open' : 'closed'}
-          hasScrollBar={overflow?.overflow !== 'hidden'}
         >
           {samePage
             ? component && component()

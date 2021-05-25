@@ -24,6 +24,8 @@ export const CreateProject = styled(Form)`
 `
 
 const Style = styled.section`
+  position: relative;
+
   header {
     display: flex;
     align-items: center;

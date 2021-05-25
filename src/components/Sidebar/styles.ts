@@ -9,10 +9,10 @@ interface ContentProps {
 }
 
 interface ListItemProps {
-  itemPaths: string[]
   isOpen: boolean
   pathname: string
   selected: string
+  itemPaths: string[]
   bottom?: boolean
 }
 
@@ -24,9 +24,11 @@ interface StyleProps extends HTMLMotionProps<'nav'> {
 
 export const Content = styled(motion.div)<ContentProps>`
   section {
+    position: relative;
+    right: 0px;
+
     min-width: 320px;
     min-height: 100vh;
-    padding-left: ${({ hasScrollBar }) => (hasScrollBar ? '15px' : '0px')};
     margin-top: ${({ index, innerWidth }) =>
       index === 0 && innerWidth < 545 ? '72px' : '0px'};
 
@@ -38,7 +40,6 @@ export const Content = styled(motion.div)<ContentProps>`
 export const ListItem = styled.li<ListItemProps>`
   cursor: pointer;
   font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
-
   visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
 
   ${({ bottom }) =>
@@ -64,7 +65,7 @@ export const SidebarNav = styled(motion.nav)<StyleProps>`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 3;
+  z-index: 3000;
 
   min-width: 320px;
 

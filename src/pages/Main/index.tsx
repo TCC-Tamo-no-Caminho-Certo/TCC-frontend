@@ -17,10 +17,9 @@ import Sidebar, { RouteProps } from 'components/Sidebar'
 import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
-const Profile = () => {
+const Main = () => {
   const { selectedRole } = useSelector<RootState, UserState>(({ user }) => user)
   const { sidebar } = useContext(ThemeContext)
-
   const projectsRef = useRef(null)
   const seasonRef = useRef(null)
   const mapRef = useRef(null)
@@ -77,4 +76,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default Main

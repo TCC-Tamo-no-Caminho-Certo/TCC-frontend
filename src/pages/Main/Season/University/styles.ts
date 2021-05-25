@@ -1,6 +1,11 @@
 import styled from 'styled-components'
 
 const Style = styled.li`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
   width: clamp(320px, 80%, 600px);
 
   & + li {
@@ -12,21 +17,25 @@ const Style = styled.li`
   }
 
   #name {
-    position: relative;
     z-index: 2;
 
     width: 100%;
-    padding: 24px 128px;
+    height: 72px;
+    padding: 16px 48px;
+
     border-radius: 24px 24px 0 0;
     font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.4rem);
 
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.2);
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.primary};
+    border: solid 1px ${({ theme }) => theme.colors.secondary};
   }
 
   #info {
+    height: 0px;
+    width: 100%;
     border-radius: 0 0 24px 24px;
-    padding: 22px;
 
     color: ${({ theme }) => theme.colors.tertiary};
     background-color: ${({ theme }) => theme.colors.secondary};
@@ -70,11 +79,11 @@ const Style = styled.li`
         }
       }
     }
-  }
 
-  .Submit {
-    margin-top: 16px;
-    width: 100%;
+    .Submit {
+      margin-top: 16px;
+      width: 100%;
+    }
   }
 `
 

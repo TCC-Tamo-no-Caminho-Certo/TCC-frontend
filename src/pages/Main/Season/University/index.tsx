@@ -29,6 +29,7 @@ const info: Variants = {
   },
   enter: {
     y: 0,
+
     opacity: 1,
     transition: {
       ...transition,
@@ -45,9 +46,11 @@ const backgroundInfo: Variants = {
   initial: {
     y: -46,
     opacity: 1,
+    padding: 0,
     height: 0
   },
   enter: {
+    padding: 22,
     y: 0,
     opacity: 1,
     height: 'auto',

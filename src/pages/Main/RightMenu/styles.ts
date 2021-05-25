@@ -34,7 +34,7 @@ export const Gear = styled(GearIcon)`
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 3;
+  z-index: 3001;
 
   width: 22px;
   margin: 24px;
@@ -244,7 +244,7 @@ export const RightMenuOpen = styled(motion.ul)<RightMenuOpenProps>`
 export const Background = styled.svg<BackgroundProps>`
   position: fixed;
   top: 0;
-  z-index: 3;
+  z-index: 3001;
 
   width: max(100vw, 300px);
 
@@ -297,7 +297,7 @@ export const SelectRoles = styled.div`
 const Style = styled.div<StyleProps>`
   position: fixed;
   top: 0;
-  z-index: 3;
+  z-index: 3001;
 
   display: flex;
   align-items: center;
@@ -326,7 +326,7 @@ const Style = styled.div<StyleProps>`
 
   #Gear {
     position: absolute;
-    top: 73px;
+    top: 78px;
     right: 16px;
 
     width: 16px;
@@ -338,7 +338,6 @@ const Style = styled.div<StyleProps>`
     position: fixed;
     bottom: 16px;
     right: 24px;
-    z-index: 4;
 
     display: flex;
     align-items: center;
