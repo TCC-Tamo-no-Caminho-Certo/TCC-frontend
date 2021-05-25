@@ -115,7 +115,7 @@ export const universityArrayToSelect = (array: University[]): Option[] =>
   }))
 
 const Student = ({ request }: StudentProps) => {
-  const { popup } = useContext(GlobalContext)
+  const { popupRef } = useContext(GlobalContext)
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const { courses, universities } = useContext(AddRoleContext)
 
@@ -259,7 +259,7 @@ const Student = ({ request }: StudentProps) => {
       hasInstitutionalEmail(selectedUniversity.regex.email.student, user.emails)
 
     if (success)
-      popup?.popupRef?.current?.configPopup({
+      popupRef?.current?.configPopup({
         setModal: true,
         type: 'success',
         message: request
@@ -273,7 +273,7 @@ const Student = ({ request }: StudentProps) => {
         }
       })
     else
-      popup?.popupRef?.current?.configPopup({
+      popupRef?.current?.configPopup({
         type: 'error',
         message: 'Algo deu errado :(',
         setModal: true

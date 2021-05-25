@@ -72,7 +72,7 @@ interface ProfessorProps {
 }
 
 function Professor({ request }: ProfessorProps) {
-  const { popup } = useContext(GlobalContext)
+  const { popupRef } = useContext(GlobalContext)
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const { courses, universities } = useContext(AddRoleContext)
 
@@ -223,7 +223,7 @@ function Professor({ request }: ProfessorProps) {
       )
 
     if (res.success)
-      popup?.popupRef?.current?.configPopup({
+      popupRef?.current?.configPopup({
         setModal: true,
         type: 'success',
         message: request
@@ -237,7 +237,7 @@ function Professor({ request }: ProfessorProps) {
         }
       })
     else
-      popup?.popupRef?.current?.configPopup({
+      popupRef?.current?.configPopup({
         setModal: true,
         type: 'error',
         message: 'Algo deu errado :('

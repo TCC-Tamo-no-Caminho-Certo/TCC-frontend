@@ -49,7 +49,7 @@ const verifyFullTime = (user: UserState, university_id: number) => {
 }
 
 const ModeratorForm = ({ request }: ModeratorProps) => {
-  const { popup } = useContext(GlobalContext)
+  const { popupRef } = useContext(GlobalContext)
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const { universities } = useContext(AddRoleContext)
 
@@ -90,7 +90,7 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
   const afterSubmit = (res: Response<any>) => {
     if (res.success)
       if (fullTime)
-        popup?.popupRef?.current?.configPopup({
+        popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: 'Papel adicionado',
@@ -100,14 +100,14 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
           }
         })
       else
-        popup?.popupRef?.current?.configPopup({
+        popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: request ? 'Solicitação reenviada!' : 'Solicitação enviada!',
           onClick: () => history.push('/session/main')
         })
     else
-      popup?.popupRef?.current?.configPopup({
+      popupRef?.current?.configPopup({
         setModal: true,
         type: 'error',
         message: 'Falha ao enviar solicitação :('

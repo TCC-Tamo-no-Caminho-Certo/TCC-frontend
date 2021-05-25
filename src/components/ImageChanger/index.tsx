@@ -30,7 +30,7 @@ export interface ImageChangerMethods {
 }
 
 const ImageChanger = forwardRef((_props, ref) => {
-  const { popup } = useContext(GlobalContext)
+  const { popupRef } = useContext(GlobalContext)
   const theme = useContext(ThemeContext)
 
   const modalRef = useRef<ModalMethods>(null)
@@ -74,7 +74,7 @@ const ImageChanger = forwardRef((_props, ref) => {
         setShowUploadAnother(false)
         onCloseClick()
 
-        popup?.popupRef?.current?.configPopup({
+        popupRef?.current?.configPopup({
           type: 'error',
           message: 'Esta imagem é muito grande! tente novamente com uma menor.'
         })
@@ -99,11 +99,11 @@ const ImageChanger = forwardRef((_props, ref) => {
   }
 
   const onCloseClick = () => {
-    modalRef.current?.toggleModal()
+    modalRef.current?.toggle()
     setImage(undefined)
   }
 
-  const toggleImageChanger = () => modalRef.current?.toggleModal()
+  const toggleImageChanger = () => modalRef.current?.toggle()
 
   useImperativeHandle(ref, () => ({ toggleImageChanger }))
 

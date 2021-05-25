@@ -137,7 +137,7 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
               <tr
                 key={`${item}-${index}`}
                 onClick={() => {
-                  modalRef.current?.toggleModal(true)
+                  modalRef.current?.toggle(true)
                   setSelected(item)
                 }}
               >
@@ -181,7 +181,7 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
         translateY='-50%'
         ref={modalRef}
         onBgClick={() => {
-          modalRef.current?.toggleModal(false)
+          modalRef.current?.toggle(false)
           setInfos({ userInfo: undefined, selectedInfo: undefined })
         }}
       >
@@ -190,7 +190,7 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
             userInfo={infos?.userInfo}
             selectedInfo={infos?.selectedInfo}
             onCloseClick={() => {
-              modalRef.current?.toggleModal(false)
+              modalRef.current?.toggle(false)
               setInfos({ userInfo: undefined, selectedInfo: undefined })
             }}
             makeRequest={() => startRequest()}

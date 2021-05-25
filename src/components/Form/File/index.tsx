@@ -125,7 +125,7 @@ const File = ({
             onChange={onChange}
             data-max-size={maxSize}
             style={{ display: 'none' }}
-            onClick={() => modalRef.current?.toggleModal(true)}
+            onClick={() => modalRef.current?.toggle(true)}
           />
         </label>
       </div>
@@ -139,7 +139,7 @@ const File = ({
           translateY={tranlateY}
         >
           <div id='container'>
-            <CloseIcon onClick={() => modalRef.current?.toggleModal(false)} />
+            <CloseIcon onClick={() => modalRef.current?.toggle(false)} />
 
             <Cropper
               center
@@ -161,7 +161,7 @@ const File = ({
               type='button'
               onClick={() => {
                 getCropData()
-                modalRef.current?.toggleModal(false)
+                modalRef.current?.toggle(false)
               }}
             >
               Selecionar

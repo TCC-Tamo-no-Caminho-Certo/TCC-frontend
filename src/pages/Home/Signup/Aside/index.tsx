@@ -20,7 +20,7 @@ import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 const Aside = () => {
-  const { popup } = useContext(GlobalContext)
+  const { popupRef } = useContext(GlobalContext)
 
   const [disable, setDisable] = useState(false)
 
@@ -35,7 +35,7 @@ const Aside = () => {
 
   const afterSubmit = (res: Response<any>) => {
     if (res.success)
-      popup?.popupRef?.current?.configPopup({
+      popupRef?.current?.configPopup({
         setModal: true,
         type: 'success',
         message: t('signup.popup.success'),
@@ -44,7 +44,7 @@ const Aside = () => {
     else
       switch (res.error) {
         case 'User already exists':
-          popup?.popupRef?.current?.configPopup({
+          popupRef?.current?.configPopup({
             setModal: true,
             type: 'error',
             message: t('signup.popup.userExists'),
@@ -57,7 +57,7 @@ const Aside = () => {
           break
 
         default:
-          popup?.popupRef?.current?.configPopup({
+          popupRef?.current?.configPopup({
             setModal: true,
             type: 'error',
             message: t('signup.popup.defaultError')

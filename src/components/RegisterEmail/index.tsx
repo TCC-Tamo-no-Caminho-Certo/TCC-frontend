@@ -33,7 +33,7 @@ interface RegisterEmailProps {
 
 const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
   ({ title, addData, regex, onSuccess, placeholder, modal }, ref) => {
-    const { popup } = useContext(GlobalContext)
+    const { popupRef } = useContext(GlobalContext)
 
     const modalRef = useRef<ModalMethods>(null)
 
@@ -53,7 +53,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
       else
         switch (res.error) {
           case 'Email already in use!':
-            popup?.popupRef?.current?.configPopup({
+            popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
               message: 'E-mail já cadastrado!'
@@ -61,7 +61,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
             break
 
           default:
-            popup?.popupRef?.current?.configPopup({
+            popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
               message: 'Código não enviado!'
@@ -71,7 +71,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
 
     const afterTokenSubmit = (res: Response<any>) => {
       if (res.success) {
-        popup?.popupRef?.current?.configPopup({
+        popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: 'E-mail confirmado, termine a solicitação!'
@@ -80,15 +80,14 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
         onSuccess && onSuccess()
         toggleRegister()
       } else
-        popup?.popupRef?.current?.configPopup({
+        popupRef?.current?.configPopup({
           setModal: true,
           type: 'error',
           message: 'Código inválido!'
         })
     }
 
-    const toggleRegister = (open?: boolean) =>
-      modalRef.current?.toggleModal(open)
+    const toggleRegister = (open?: boolean) => modalRef.current?.toggle(open)
 
     useImperativeHandle(ref, () => ({ toggleRegister }))
 

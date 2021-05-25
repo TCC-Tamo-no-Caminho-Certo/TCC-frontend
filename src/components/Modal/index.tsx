@@ -13,37 +13,47 @@ import CloseIcon from 'assets/Inputs/CloseIcon'
 import { GlobalContext, GlobalContextProps } from 'App'
 import { ThemeContext } from 'styled-components'
 
-interface ModalProps {
-  children: ReactElement | ReactElement[]
+export interface ModalProps {
   id?: string
   top?: string
   zIndex?: number
   bottom?: string
   bgHeight?: string
-  closeTop?: number
   translateY?: string
-  closeColor?: string
-  closeRight?: number
   onBgClick?: () => void
+  children?: ReactElement | ReactElement[]
+}
+
+interface ModalConfig {
+  content?: ReactElement | ReactElement[] | string
+  props?: ModalProps
+  close?: {
+    top: number
+    right: number
+    color: string
+  }
 }
 
 export interface ModalMethods {
-  toggleModal: (_setModal?: boolean) => void
+  toggle: (_open?: boolean) => void
+  config: (_content: ModalConfig) => void
+}
+
+const initialConfig = {
+  content: undefined,
+  setModal: false
 }
 
 const Modal = forwardRef<ModalMethods, ModalProps>(
   (
     {
-      closeColor,
-      closeTop,
       children,
       onBgClick,
-      closeRight,
       top = '50vh',
       bottom = 'auto',
       bgHeight = '100%',
       translateY = '-60%',
-      zIndex = 1000,
+      zIndex = 9000,
       ...rest
     },
     ref
@@ -52,14 +62,16 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     const { overflow } = useContext<GlobalContextProps>(GlobalContext)
 
     const modalRef = useRef(null)
-
+    const [{ content, close }, setModalConfig] = useState<ModalConfig>(
+      initialConfig
+    )
     const [openModal, setOpenModal] = useState(false)
 
     window.addEventListener('keydown', ({ key }) => {
       key === 'Escape' && setOpenModal(false)
     })
 
-    const toggleModal = (setModal?: boolean) => {
+    const toggle = (setModal?: boolean) => {
       if (setModal === undefined) {
         setOpenModal(!openModal)
 
@@ -73,13 +85,17 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
       }
     }
 
+    const config = (content: ModalConfig) => {
+      setModalConfig(content)
+    }
+
     const onBackgroundClick = () => {
       onBgClick && onBgClick()
       setOpenModal(false)
       overflow?.setOverflow && overflow?.setOverflow('auto')
     }
 
-    useImperativeHandle(ref, () => ({ toggleModal }))
+    useImperativeHandle(ref, () => ({ config, toggle }))
 
     return openModal ? (
       <>
@@ -95,14 +111,14 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
           zIndex={zIndex}
           bottom={bottom}
           translateY={translateY}
-          closeTop={closeTop ? `${closeTop}px` : '8px'}
-          closeRight={closeRight ? `${closeRight}px` : '8px'}
-          closeColor={closeColor || theme.colors.secondary}
+          closeTop={close?.top ? `${close.top}px` : '8px'}
+          closeColor={close?.color || theme.colors.secondary}
+          closeRight={close?.right ? `${close.right}px` : '8px'}
           {...rest}
         >
           <CloseIcon onClick={onBackgroundClick} />
 
-          {children}
+          {content || children}
         </Style>
       </>
     ) : (

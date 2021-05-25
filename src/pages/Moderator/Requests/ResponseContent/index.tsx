@@ -39,7 +39,7 @@ const ResponseContent = ({
     ({ courses }) => courses
   )
   const theme = useContext(ThemeContext)
-  const { popup } = useContext(GlobalContext)
+  const { popupRef } = useContext(GlobalContext)
 
   const acceptRef = useRef<CheckboxIconMethods>(null)
   const rejectRef = useRef<CheckboxIconMethods>(null)
@@ -50,7 +50,7 @@ const ResponseContent = ({
 
   const onTrashClick = () => {
     selectedInfo &&
-      popup?.popupRef?.current?.configPopup({
+      popupRef?.current?.configPopup({
         type: 'warning',
         message: 'Tem certeza que deseja remover esta solicitação?',
         onOkClick: async () => {
@@ -59,7 +59,7 @@ const ResponseContent = ({
           onCloseClick()
         },
         onCloseClick: () => {
-          popup?.popupRef?.current?.configPopup({
+          popupRef?.current?.configPopup({
             setModal: false,
             message: '',
             type: 'warning'
@@ -70,7 +70,7 @@ const ResponseContent = ({
 
   const afterResponseSubmit = (res: Response<any>) => {
     if (res.success)
-      popup?.popupRef?.current?.configPopup({
+      popupRef?.current?.configPopup({
         type: 'success',
         message: 'Resposta enviada.',
         onClick: onCloseClick
@@ -79,13 +79,13 @@ const ResponseContent = ({
       switch (res.error) {
         case 'Request not found!':
           if (selectedInfo.status === 'Recusado')
-            popup?.popupRef?.current?.configPopup({
+            popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
               message: 'Solicitação já foi recusada.'
             })
           else
-            popup?.popupRef?.current?.configPopup({
+            popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
               message: 'Solicitação não encontrada ou já aceita.'
@@ -94,7 +94,7 @@ const ResponseContent = ({
           break
 
         default:
-          popup?.popupRef?.current?.configPopup({
+          popupRef?.current?.configPopup({
             type: 'error',
             message: 'Ops, algo deu errado :(',
             onClick: onCloseClick

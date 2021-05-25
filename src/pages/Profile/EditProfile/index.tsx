@@ -29,7 +29,7 @@ interface EditProfileContextProps {
 export const EditProfileContext = createContext<EditProfileContextProps>({})
 
 const EditProfile = () => {
-  const { popup } = useContext(GlobalContext)
+  const { popupRef } = useContext(GlobalContext)
 
   const confirmModal = useRef<ModalMethods>(null)
 
@@ -40,9 +40,8 @@ const EditProfile = () => {
   const afterSubmit = (res: Response<any>) => {
     if (res.success) {
       dispatch(UserActions.update(res.user))
-      confirmModal.current?.toggleModal()
-
-      popup?.popupRef?.current?.configPopup({
+      confirmModal.current?.toggle()
+      popupRef?.current?.configPopup({
         type: 'success',
         setModal: true,
         message: 'Dados alterados',
@@ -51,14 +50,14 @@ const EditProfile = () => {
     } else
       switch (res.error) {
         case 'Incorrect password!':
-          popup?.popupRef?.current?.configPopup({
+          popupRef?.current?.configPopup({
             type: 'error',
             message: 'Senha inválida!',
             setModal: true
           })
           break
         default:
-          popup?.popupRef?.current?.configPopup({
+          popupRef?.current?.configPopup({
             type: 'error',
             message: 'Ops, algo deu errado :(',
             setModal: true
@@ -76,7 +75,7 @@ const EditProfile = () => {
         afterResData={afterSubmit}
         onError={(error: any) => {
           error.message !== 'Você esqueceu de informar a senha!' &&
-            confirmModal.current?.toggleModal(false)
+            confirmModal.current?.toggle(false)
         }}
       >
         <div id='submits'>
@@ -87,7 +86,7 @@ const EditProfile = () => {
           <button
             type='button'
             onClick={() => {
-              confirmModal.current?.toggleModal(true)
+              confirmModal.current?.toggle(true)
             }}
           >
             Salvar
@@ -110,7 +109,7 @@ const EditProfile = () => {
               <button
                 id='cancel'
                 type='button'
-                onClick={() => confirmModal.current?.toggleModal(false)}
+                onClick={() => confirmModal.current?.toggle(false)}
               >
                 Cancelar
               </button>

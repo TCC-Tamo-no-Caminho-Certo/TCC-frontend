@@ -73,7 +73,7 @@ const Popup = forwardRef<PopupMethods, PopupProps>(
     useImperativeHandle(ref, () => ({ configPopup }))
 
     useEffect(() => {
-      modalRef.current?.toggleModal(setModal)
+      modalRef.current?.toggle(setModal)
       setModal
         ? (document.documentElement.style.overflow = 'hidden')
         : (document.documentElement.style.overflow = 'auto')

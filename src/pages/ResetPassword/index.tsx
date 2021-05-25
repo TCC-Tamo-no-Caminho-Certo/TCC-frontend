@@ -17,7 +17,7 @@ import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 const ConfirmPassword = () => {
-  const { popup } = useContext(GlobalContext)
+  const { popupRef } = useContext(GlobalContext)
 
   const dispatch = useDispatch()
   const history = useHistory()
@@ -26,7 +26,7 @@ const ConfirmPassword = () => {
   const code = path[2] || localStorage.getItem('@SLab_code')
 
   if (!code) {
-    popup?.popupRef?.current?.configPopup({
+    popupRef?.current?.configPopup({
       setModal: true,
       type: 'error',
       message: 'Código não fornecido',
@@ -39,14 +39,14 @@ const ConfirmPassword = () => {
 
   const afterResetSubmit = (res: Response<any>) => {
     res.success
-      ? popup?.popupRef?.current?.configPopup({
+      ? popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
           message: 'Senha alterada!',
           onOkClick: () => history.push('/'),
           onCloseClick: () => history.push('/')
         })
-      : popup?.popupRef?.current?.configPopup({
+      : popupRef?.current?.configPopup({
           setModal: true,
           type: 'error',
           message: 'Código inválido!',
