@@ -23,7 +23,7 @@ export default createGlobalStyle<GlobalProps>`
       line-height: clamp(1.6rem, 0.6rem + 2.6vw, 1.9rem);
 
       color: ${({ theme }) => theme.colors.tertiary};
-      background-color: ${({ theme }) => theme.colors.tertiary};
+      background-color: ${({ theme }) => theme.colors.primary};
 
       &::-webkit-scrollbar {
         width: 8px;

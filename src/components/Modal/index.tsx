@@ -20,7 +20,7 @@ export interface ModalProps {
   bottom?: string
   bgHeight?: string
   translateY?: string
-  onBgClick?: () => void
+  onClose?: () => void
   children?: ReactElement | ReactElement[]
 }
 
@@ -48,7 +48,7 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
   (
     {
       children,
-      onBgClick,
+      onClose,
       top = '50vh',
       bottom = 'auto',
       bgHeight = '100%',
@@ -58,8 +58,8 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     },
     ref
   ) => {
-    const theme = useContext(ThemeContext)
     const { overflow } = useContext<GlobalContextProps>(GlobalContext)
+    const theme = useContext(ThemeContext)
 
     const modalRef = useRef(null)
     const [{ content, close }, setModalConfig] = useState<ModalConfig>(
@@ -90,7 +90,7 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     }
 
     const onBackgroundClick = () => {
-      onBgClick && onBgClick()
+      onClose && onClose()
       setOpenModal(false)
       overflow?.setOverflow && overflow?.setOverflow('auto')
     }

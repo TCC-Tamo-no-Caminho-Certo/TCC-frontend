@@ -29,7 +29,7 @@ const Aside = () => {
   const history = useHistory()
 
   const onSuccessClose = () => {
-    dispatch(HomeActions.update({ initial: false, page: 'login' }))
+    dispatch(HomeActions.update({ initial: true, page: 'login' }))
     history.push('/home')
   }
 

@@ -87,7 +87,7 @@ const Popup = forwardRef<PopupMethods, PopupProps>(
         bottom={bottom}
         bgHeight={bgHeight}
         translateY={translateY}
-        onBgClick={onClick || (onCloseClick && onCloseClick)}
+        onClose={onClick || (onCloseClick && onCloseClick)}
       >
         <Style type={type}>
           <span>{makeTitle(type, title)}</span>

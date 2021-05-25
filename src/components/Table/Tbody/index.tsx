@@ -180,7 +180,7 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
         top='50vh'
         translateY='-50%'
         ref={modalRef}
-        onBgClick={() => {
+        onClose={() => {
           modalRef.current?.toggle(false)
           setInfos({ userInfo: undefined, selectedInfo: undefined })
         }}
@@ -189,11 +189,11 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
           <ItemContent
             userInfo={infos?.userInfo}
             selectedInfo={infos?.selectedInfo}
+            makeRequest={() => startRequest()}
             onCloseClick={() => {
               modalRef.current?.toggle(false)
               setInfos({ userInfo: undefined, selectedInfo: undefined })
             }}
-            makeRequest={() => startRequest()}
           />
         ) : (
           <></>

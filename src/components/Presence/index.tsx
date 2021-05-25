@@ -9,7 +9,7 @@ import {
 
 interface PresenceProps extends HTMLMotionProps<'div'> {
   condition: boolean
-  children: ReactElement | ReactElement[]
+  children: ReactElement | ReactElement[] | string
   presenceProps?: AnimatePresenceProps
 }
 

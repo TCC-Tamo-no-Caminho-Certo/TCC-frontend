@@ -6,13 +6,13 @@ interface ModalBackgroundProps {
 }
 
 interface StyleProps {
-  top: string
-  bottom: string
-  zIndex: number
-  closeTop: string
-  closeColor: string
-  translateY: string
-  closeRight: string
+  top: any
+  bottom: any
+  zIndex: any
+  closeTop: any
+  closeColor: any
+  translateY: any
+  closeRight: any
 }
 
 export const ModalBackground = styled.div<ModalBackgroundProps>`

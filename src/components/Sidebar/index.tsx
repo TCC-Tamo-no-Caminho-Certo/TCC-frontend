@@ -16,7 +16,7 @@ import Hamburger from 'components/Hamburger'
 import Presence from 'components/Presence'
 
 import { GlobalContext } from 'App'
-import { motion, Variants } from 'framer-motion'
+import { Variants } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, useHistory, useLocation } from 'react-router-dom'
 
@@ -79,13 +79,14 @@ const Sidebar = ({
   const open = useSelector<RootState, boolean>(({ sidebar }) => sidebar.open)
   const { overflow } = useContext(GlobalContext)
 
-  const burgerRef = useRef<any>(null)
   const { innerWidth } = useWindowDimensions()
   const [isLarge, setisLarge] = useState(innerWidth >= 545)
 
-  const history = useHistory()
-  const dispatch = useDispatch()
+  const burgerRef = useRef<any>(null)
+
   const { pathname } = useLocation()
+  const dispatch = useDispatch()
+  const history = useHistory()
 
   const contentSize = (): string => {
     if (!samePage) {
@@ -198,9 +199,9 @@ const Sidebar = ({
               isOpen={open}
               key={paths[0]}
               bottom={bottom}
+              itemPaths={paths}
               selected={selected}
               pathname={pathname}
-              itemPaths={paths}
               onClick={() => {
                 history.push(paths[0])
                 !isLarge && dispatch(SidebarActions.toggleSidebar(!open))
@@ -213,33 +214,32 @@ const Sidebar = ({
                 </div>
               )}
 
-              <Presence condition={open}>
-                <motion.div
-                  className='label'
-                  initial={{
-                    opacity: 0,
-                    x: -24
-                  }}
-                  animate={{
-                    x: 0,
-                    opacity: 1,
-                    transition: {
-                      type: 'tween',
-                      duration: 0.4,
-                      delay: 0.1 * index
-                    }
-                  }}
-                  exit={{
-                    x: -24,
-                    opacity: 0,
-                    transition: {
-                      type: 'tween',
-                      duration: 0.1
-                    }
-                  }}
-                >
-                  {label}
-                </motion.div>
+              <Presence
+                condition={open}
+                className='label'
+                initial={{
+                  opacity: 0,
+                  x: -24
+                }}
+                animate={{
+                  x: 0,
+                  opacity: 1,
+                  transition: {
+                    type: 'tween',
+                    duration: 0.4,
+                    delay: 0.1 * index
+                  }
+                }}
+                exit={{
+                  x: -24,
+                  opacity: 0,
+                  transition: {
+                    type: 'tween',
+                    duration: 0.1
+                  }
+                }}
+              >
+                {label}
               </Presence>
             </ListItem>
           ))}

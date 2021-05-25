@@ -20,6 +20,8 @@ import { ThemeContext } from 'styled-components'
 const Main = () => {
   const { selectedRole } = useSelector<RootState, UserState>(({ user }) => user)
   const { sidebar } = useContext(ThemeContext)
+  const theme = useContext(ThemeContext)
+
   const projectsRef = useRef(null)
   const seasonRef = useRef(null)
   const mapRef = useRef(null)
@@ -61,7 +63,7 @@ const Main = () => {
   }, [selectedRole])
 
   return (
-    <>
+    <div style={{ backgroundColor: theme.colors.tertiary }}>
       <Sidebar
         samePage
         title='Principal'
@@ -72,7 +74,7 @@ const Main = () => {
       />
 
       <RightMenu />
-    </>
+    </div>
   )
 }
 
