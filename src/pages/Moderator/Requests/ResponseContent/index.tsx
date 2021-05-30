@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Style, { Field, Infos } from './styles'
 
 import { getRoleLabel, getRoleName } from 'utils/roles'
@@ -10,7 +10,7 @@ import api from 'services/api'
 import { RolesState } from 'store/Async/roles'
 import { Response, RootState } from 'store'
 import { UserState } from 'store/Async/user'
-import { CoursesState } from 'store/Async/courses'
+import { CoursesState, getCourses } from 'store/Async/courses'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
 import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'
@@ -35,9 +35,7 @@ const ResponseContent = ({
 }: ItemProps) => {
   const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
   const user = useSelector<RootState, UserState>(({ user }) => user)
-  const { courses } = useSelector<RootState, CoursesState>(
-    ({ courses }) => courses
-  )
+  const courses = useSelector<RootState, CoursesState>(({ courses }) => courses)
   const theme = useContext(ThemeContext)
   const { popupRef } = useContext(GlobalContext)
 
@@ -101,6 +99,11 @@ const ResponseContent = ({
           })
       }
   }
+
+  useEffect(() => {
+    getCourses(courses)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Style>
@@ -175,7 +178,7 @@ const ResponseContent = ({
                 Curso:
                 <div>
                   {
-                    courses.find(
+                    courses.courses.find(
                       ({ course_id }) =>
                         course_id === selectedInfo.data.course_id
                     )?.name
@@ -194,7 +197,9 @@ const ResponseContent = ({
 
           {selectedInfo.voucher_uuid ? (
             <div id='doc'>
-              <iframe src={selectedInfo.voucherUrl} />
+              <object data={selectedInfo.voucherUrl} type='application/pdf'>
+                <embed src={selectedInfo.voucherUrl} type='application/pdf' />
+              </object>
             </div>
           ) : (
             <></>

@@ -68,7 +68,7 @@ const Projects = forwardRef((_props, ref) => {
       color: theme.colors.tertiary
     },
     content: (
-      <CreateProject schema={createProjectSchema} getData={e => console.log(e)}>
+      <CreateProject schema={createProjectSchema}>
         <Select
           name='university'
           placeholder='Universidade'
@@ -116,6 +116,7 @@ const Projects = forwardRef((_props, ref) => {
         <Table
           path=''
           filters={{ name: true, from: true, to: true }}
+          isLoading={false}
           headerData={[
             { label: 'Nome', name: 'name' },
             { label: 'Data', name: 'date' }

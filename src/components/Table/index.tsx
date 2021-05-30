@@ -46,18 +46,20 @@ interface TableState {
 }
 
 export interface ItemProps {
-  userInfo?: any
-  selectedInfo?: any
   makeRequest: () => void
   onCloseClick: () => void
+  userInfo?: any
+  selectedInfo?: any
 }
 
 interface TableProps {
   path: string
   headerData: HeaderData[]
+  condition?: boolean
+  quantity?: number
+  isLoading?: boolean
   filters?: FiltersProps
   itemContent?: (_props: ItemProps) => JSX.Element
-  quantity?: number
 }
 
 export const TableContext = createContext<TableContextProps>({
@@ -75,8 +77,10 @@ const Table = ({
   path,
   filters,
   headerData,
+  itemContent,
   quantity = 50,
-  itemContent
+  condition = true,
+  isLoading = true
 }: TableProps) => {
   const theme = useContext(ThemeContext)
   const roles = useSelector<RootState, RolesState>(({ roles }) => roles)
@@ -93,7 +97,6 @@ const Table = ({
   })
 
   const dispatch = useDispatch()
-  const condition = roles.roles?.length !== 0 && courses.courses?.length !== 0
 
   useEffect(() => {
     dispatch(getRoles(roles))
@@ -116,11 +119,14 @@ const Table = ({
 
         <Thead sort={sort} />
 
-        {!tableState.showData && (
-          <div className='loader'>
-            <DotsLoader color={theme.colors.secondary} />
-          </div>
-        )}
+        {!itemContent &&
+          (isLoading ? (
+            <div className='loader'>
+              <DotsLoader color={theme.colors.secondary} />
+            </div>
+          ) : (
+            <div className='loader'>Nada encontrado</div>
+          ))}
 
         <Tbody items={items} itemContent={itemContent} />
       </Style>

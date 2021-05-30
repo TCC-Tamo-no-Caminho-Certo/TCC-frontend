@@ -71,7 +71,6 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
 
   const startRequest = useCallback(async () => {
     const { requests } = await api.get(`${path}?page=1&per_page=${quantity}`)
-
     const tableData = requests
 
     setTableState({
@@ -105,6 +104,7 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
     const voucherUrl = item.voucher_uuid
       ? await api.get(`user/role/request/voucher/${item.voucher_uuid}`)
       : undefined
+
     setInfos({
       userInfo: users,
       selectedInfo: {
@@ -128,6 +128,7 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startRequest])
+
   return (
     <>
       <Style ref={tableWrapperRef} onScroll={onTableScroll}>

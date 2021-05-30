@@ -86,7 +86,7 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     }
 
     const config = (content: ModalConfig) => {
-      setModalConfig(content)
+      setTimeout(() => setModalConfig(content), 1)
     }
 
     const onBackgroundClick = () => {

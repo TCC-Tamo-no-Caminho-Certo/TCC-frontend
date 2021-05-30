@@ -106,7 +106,7 @@ const University = ({ university }: UniversityProps) => {
 
           <div id='title'>Datas</div>
 
-          <Form getData={data => console.log(data)}>
+          <Form>
             <table>
               <thead>
                 <tr>

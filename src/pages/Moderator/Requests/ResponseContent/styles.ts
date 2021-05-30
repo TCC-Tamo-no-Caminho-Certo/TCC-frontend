@@ -168,6 +168,10 @@ const Style = styled.div`
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.red};
 
+    .Icon {
+      height: 16px;
+    }
+
     #TrashIcon {
       min-width: 18px;
       min-height: 18px;
@@ -266,6 +270,9 @@ const Style = styled.div`
   }
 
   #doc {
+    position: relative;
+    z-index: 20000;
+
     display: flex;
     flex-direction: column;
     justify-content: center;

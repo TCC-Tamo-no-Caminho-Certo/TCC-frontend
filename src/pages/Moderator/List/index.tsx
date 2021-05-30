@@ -16,7 +16,12 @@ const List = () => (
       <h1>Lista de alunos</h1>
     </header>
 
-    <Table path='#' headerData={headerData} filters={{ name: true }} />
+    <Table
+      path='#'
+      isLoading={false}
+      headerData={headerData}
+      filters={{ name: true }}
+    />
   </Style>
 )
 
