@@ -282,6 +282,7 @@ const Filters = ({
           type='button'
           onClick={() => {
             setValues(false)
+
             setTimeout(() => {
               setValues(true)
             }, 600)

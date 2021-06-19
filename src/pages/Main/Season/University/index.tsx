@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Style from './styles'
 
 import DateField from './DateField'
@@ -22,6 +22,29 @@ const transition: Transition = {
   duration: 0.6
 }
 
+const seasonInfo: Variants = {
+  initial: {
+    y: -30,
+    opacity: 0
+  },
+  enter: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: 'tween',
+      duration: 0.3
+    }
+  },
+  exit: {
+    y: -30,
+    opacity: 0,
+    transition: {
+      type: 'tween',
+      duration: 0.3
+    }
+  }
+}
+
 const info: Variants = {
   initial: {
     y: -30,
@@ -29,7 +52,6 @@ const info: Variants = {
   },
   enter: {
     y: 0,
-
     opacity: 1,
     transition: {
       ...transition,
@@ -67,14 +89,18 @@ const backgroundInfo: Variants = {
 const University = ({ university }: UniversityProps) => {
   const user = useSelector<RootState, UserState>(({ user }) => user)
 
+  const [selectedSeason, setSelectedSeason] = useState('none')
   const [showInfo, setShowInfo] = useState(false)
-
   const isAdmin = user.selectedRole === 'admin'
+
+  useEffect(() => {
+    console.log(selectedSeason)
+  }, [selectedSeason])
 
   return (
     <Style>
       <motion.button
-        id='name'
+        className='universityName'
         onClick={() => setShowInfo(!showInfo)}
         initial={{
           borderRadius: '24px 24px 24px 24px'
@@ -100,56 +126,94 @@ const University = ({ university }: UniversityProps) => {
           variants={info}
           condition={showInfo}
         >
-          <div id='title'>Season Name</div>
+          <div className='season'>
+            <Presence
+              exit='exit'
+              animate='enter'
+              initial='initial'
+              variants={seasonInfo}
+              condition={
+                selectedSeason === 'none' || selectedSeason === 'inverno'
+              }
+            >
+              <div
+                className='title'
+                onClick={() =>
+                  selectedSeason === 'inverno'
+                    ? setSelectedSeason('none')
+                    : setSelectedSeason('inverno')
+                }
+              >
+                Temporada de inverno
+              </div>
+            </Presence>
 
-          <p>Lorem ipsum dolor sit amet</p>
+            <Presence
+              exit='exit'
+              animate='enter'
+              initial='initial'
+              variants={seasonInfo}
+              condition={selectedSeason === 'inverno'}
+            >
+              <p>
+                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
+                commodo ligula eget dolor. Aenean massa. Cum sociis natoque
+                penatibus et magnis dis parturient montes, nascetur ridiculus
+                mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
+                quis, sem. Nulla consequat massa quis enim. Donec pede justo,
+                fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
+                rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum
+                felis eu pede mollis pretium. Integer tincidunt. Cras dapibu
+              </p>
 
-          <div id='title'>Datas</div>
+              <div className='title'>Datas</div>
 
-          <Form>
-            <table>
-              <thead>
-                <tr>
-                  <th>Período</th>
-                  <th>Data de início</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Envio de projetos</td>
-                  <td>
-                    <DateField name='dispatch' isAdmin={isAdmin} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Avaliação de projetos</td>
-                  <td>
-                    <DateField name='evaluate' isAdmin={isAdmin} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Confirmação de participação</td>
-                  <td>
-                    <DateField name='confirm' isAdmin={isAdmin} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Início do projeto</td>
-                  <td>
-                    <DateField name='in_progress' isAdmin={isAdmin} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Conclusão</td>
-                  <td>
-                    <DateField name='complete' isAdmin={isAdmin} />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+              <Form>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Período</th>
+                      <th>Data de início</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Envio de projetos</td>
+                      <td>
+                        <DateField name='dispatch' isAdmin={isAdmin} />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Avaliação de projetos</td>
+                      <td>
+                        <DateField name='evaluate' isAdmin={isAdmin} />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Confirmação de participação</td>
+                      <td>
+                        <DateField name='confirm' isAdmin={isAdmin} />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Início do projeto</td>
+                      <td>
+                        <DateField name='in_progress' isAdmin={isAdmin} />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Conclusão</td>
+                      <td>
+                        <DateField name='complete' isAdmin={isAdmin} />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
 
-            {isAdmin && <Submit>Salvar alterações</Submit>}
-          </Form>
+                {isAdmin && <Submit>Salvar alterações</Submit>}
+              </Form>
+            </Presence>
+          </div>
         </Presence>
       </motion.div>
     </Style>

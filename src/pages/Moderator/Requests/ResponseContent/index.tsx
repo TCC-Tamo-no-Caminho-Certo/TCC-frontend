@@ -177,12 +177,11 @@ const ResponseContent = ({
               <Field>
                 Curso:
                 <div>
-                  {
+                  {courses.courses &&
                     courses.courses.find(
                       ({ course_id }) =>
                         course_id === selectedInfo.data.course_id
-                    )?.name
-                  }
+                    )?.name}
                 </div>
               </Field>
             )}
@@ -197,9 +196,7 @@ const ResponseContent = ({
 
           {selectedInfo.voucher_uuid ? (
             <div id='doc'>
-              <object data={selectedInfo.voucherUrl} type='application/pdf'>
-                <embed src={selectedInfo.voucherUrl} type='application/pdf' />
-              </object>
+              <iframe src={selectedInfo.voucherUrl} frameBorder='0' />
             </div>
           ) : (
             <></>

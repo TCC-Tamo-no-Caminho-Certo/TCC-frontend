@@ -8,15 +8,11 @@ const Style = styled.li`
 
   width: clamp(320px, 80%, 600px);
 
-  & + li {
-    margin-top: 24px;
+  * {
+    /* border: solid red 1px; */
   }
 
-  p {
-    margin-bottom: 24px;
-  }
-
-  #name {
+  .universityName {
     z-index: 2;
 
     width: 100%;
@@ -40,49 +36,56 @@ const Style = styled.li`
     color: ${({ theme }) => theme.colors.tertiary};
     background-color: ${({ theme }) => theme.colors.secondary};
 
-    > * {
-      margin-top: 24px;
-
-      &:first-child {
-        margin-top: 0px;
+    .season {
+      & + .season {
+        margin-top: 24px;
       }
-    }
 
-    #title {
-      width: 100%;
-      font-weight: 600;
-      text-align: center;
-      margin-bottom: 24px;
-      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2.2rem);
+      p {
+        margin: 16px 0;
+      }
 
-      color: ${({ theme }) => theme.colors.primary};
-    }
+      table {
+        width: 100%;
+        margin-top: 24px;
+        border-collapse: collapse;
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
+        border: solid 2px ${({ theme }) => theme.colors.tertiary};
 
-      border: solid 2px ${({ theme }) => theme.colors.tertiary};
+        tr {
+          th,
+          td {
+            padding: 8px 0px;
+            height: 42px;
+            text-align: center;
 
-      tr {
-        th,
-        td {
-          padding: 8px 0px;
-          height: 42px;
-          text-align: center;
+            border: solid 1px ${({ theme }) => theme.colors.tertiary};
+          }
 
-          border: solid 1px ${({ theme }) => theme.colors.tertiary};
-        }
-
-        th {
-          width: 50%;
+          th {
+            width: 50%;
+          }
         }
       }
-    }
 
-    .Submit {
-      margin-top: 16px;
-      width: 100%;
+      .title {
+        width: 100%;
+        cursor: pointer;
+        font-weight: 600;
+        text-align: center;
+        font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2.2rem);
+
+        color: ${({ theme }) => theme.colors.primary};
+
+        & + .title {
+          margin-top: 24px;
+        }
+      }
+
+      .Submit {
+        margin-top: 16px;
+        width: 100%;
+      }
     }
   }
 `
