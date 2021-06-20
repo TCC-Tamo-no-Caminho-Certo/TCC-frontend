@@ -32,16 +32,15 @@ const Projects = forwardRef((_props, ref) => {
   )
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const theme = useContext(ThemeContext)
-  const [universitiesOptions, setUniversitiesOptions] = useState<any[]>([])
 
+  const [universitiesOptions, setUniversitiesOptions] = useState<any[]>([])
   const [{ showMembers }, setShow] = useState({
     showMembers: false
   })
 
   const dispatch = useDispatch()
 
-  const canCreateProject =
-    user.selectedRole !== 'student' && user.selectedRole !== 'guest'
+  const canCreateProject = user.selectedRole === 'professor'
 
   useEffect(() => {
     dispatch(getUniversities(universities))
@@ -60,6 +59,8 @@ const Projects = forwardRef((_props, ref) => {
   }, [universities])
 
   const { modalRef } = useContext(GlobalContext)
+
+  console.log(universities)
 
   modalRef?.current?.config({
     close: {
@@ -88,7 +89,7 @@ const Projects = forwardRef((_props, ref) => {
 
         <Text placeholder='Título' name='title' />
 
-        <Textarea placeholder='Descrição' name='description' />
+        <Textarea placeholder='Resumo' name='description' />
 
         <File
           guides

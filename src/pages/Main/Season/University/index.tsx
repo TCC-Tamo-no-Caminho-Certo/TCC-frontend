@@ -5,6 +5,8 @@ import DatesTable from './DatesTable'
 
 import { University as UniversityType } from 'store/Async/universities'
 
+import ArrowIcon from 'assets/global/ArrowIcon'
+
 import Presence from 'components/Presence'
 
 import {
@@ -69,11 +71,11 @@ const University = ({ university }: UniversityProps) => {
         </motion.div>
 
         <Presence
-          condition={showUniversity}
           exit='exit'
           animate='enter'
           initial='initial'
           variants={universityBg}
+          condition={showUniversity}
         >
           <motion.ul id='seasons' layout>
             {seasons.map((season, id) => (
@@ -85,7 +87,18 @@ const University = ({ university }: UniversityProps) => {
                     )
                   }
                 >
-                  {'university.seasons[current].title'}
+                  <ArrowIcon
+                    initial={{ rotate: 0 }}
+                    animate={{
+                      rotate: selectedUniversity === 'inverno' ? 0 : -90,
+                      transition: {
+                        type: 'tween',
+                        duration: 0.3
+                      }
+                    }}
+                  />
+
+                  <span>{'university.seasons[current].title'}</span>
                 </button>
 
                 <Presence

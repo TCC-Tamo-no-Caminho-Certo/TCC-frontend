@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
 const Style = styled(motion.ul)`
-  width: 600px;
+  width: clamp(320px, 60vw, 600px);
 
   #universityName {
     position: relative;
@@ -27,7 +27,27 @@ const Style = styled(motion.ul)`
 
     li {
       button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         width: 100%;
+
+        .Icon {
+          width: 18px;
+          height: 18px;
+          min-width: 18px;
+          min-height: 18px;
+          margin-right: 8px;
+          transform: rotate(0deg);
+
+          fill: ${({ theme }) => theme.colors.tertiary};
+        }
+      }
+
+      p {
+        margin-top: 16px;
+        word-break: break-all;
       }
     }
 
