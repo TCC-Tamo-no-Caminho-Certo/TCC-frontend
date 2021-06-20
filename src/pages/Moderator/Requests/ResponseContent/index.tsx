@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import Style, { Field, Infos } from './styles'
 
 import { getRoleLabel, getRoleName } from 'utils/roles'
@@ -10,7 +10,7 @@ import api from 'services/api'
 import { RolesState } from 'store/Async/roles'
 import { Response, RootState } from 'store'
 import { UserState } from 'store/Async/user'
-import { CoursesState, getCourses } from 'store/Async/courses'
+import { CoursesState } from 'store/Async/courses'
 
 import CloseIcon from 'assets/Inputs/CloseIcon'
 import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'
@@ -33,11 +33,13 @@ const ResponseContent = ({
   selectedInfo,
   makeRequest
 }: ItemProps) => {
+  const { courses } = useSelector<RootState, CoursesState>(
+    ({ courses }) => courses
+  )
   const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
   const user = useSelector<RootState, UserState>(({ user }) => user)
-  const courses = useSelector<RootState, CoursesState>(({ courses }) => courses)
-  const theme = useContext(ThemeContext)
   const { popupRef } = useContext(GlobalContext)
+  const theme = useContext(ThemeContext)
 
   const acceptRef = useRef<CheckboxIconMethods>(null)
   const rejectRef = useRef<CheckboxIconMethods>(null)
@@ -99,11 +101,6 @@ const ResponseContent = ({
           })
       }
   }
-
-  useEffect(() => {
-    getCourses(courses)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return (
     <Style>
@@ -177,8 +174,8 @@ const ResponseContent = ({
               <Field>
                 Curso:
                 <div>
-                  {courses.courses &&
-                    courses.courses.find(
+                  {courses &&
+                    courses.find(
                       ({ course_id }) =>
                         course_id === selectedInfo.data.course_id
                     )?.name}

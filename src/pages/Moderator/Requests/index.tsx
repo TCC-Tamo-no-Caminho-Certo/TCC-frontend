@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Style from './styles'
 
 import ResponseContent from './ResponseContent'
 
 import { isoToDate } from 'utils/dates'
 
+import { getRoles, RolesState } from 'store/Async/roles'
+import { RootState } from 'store'
+import { CoursesState, getCourses } from 'store/Async/courses'
+
 import Table, { HeaderData } from 'components/Table'
+
+import { useDispatch, useSelector } from 'react-redux'
 
 const headerData: HeaderData[] = [
   { name: 'status', label: '', circle: true },
@@ -18,19 +24,33 @@ const headerData: HeaderData[] = [
   }
 ]
 
-const Requests = () => (
-  <Style>
-    <header>
-      <h1>Solicitações</h1>
-    </header>
+const Requests = () => {
+  const courses = useSelector<RootState, CoursesState>(({ courses }) => courses)
+  const roles = useSelector<RootState, RolesState>(({ roles }) => roles)
 
-    <Table
-      path='user/role/requests'
-      headerData={headerData}
-      itemContent={ResponseContent}
-      filters={{ from: true, name: true, role: true, status: true, to: true }}
-    />
-  </Style>
-)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getRoles(roles))
+    dispatch(getCourses(courses))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  return (
+    <Style>
+      <header>
+        <h1>Solicitações</h1>
+      </header>
+
+      <Table
+        path='user/role/requests'
+        headerData={headerData}
+        itemContent={ResponseContent}
+        condition={!!roles && !!courses}
+        filters={{ from: true, name: true, role: true, status: true, to: true }}
+      />
+    </Style>
+  )
+}
 
 export default Requests

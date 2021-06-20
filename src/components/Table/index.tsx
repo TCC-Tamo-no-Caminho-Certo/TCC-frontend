@@ -3,7 +3,6 @@ import React, {
   Dispatch,
   SetStateAction,
   useContext,
-  useEffect,
   useState
 } from 'react'
 import Style from './styles'
@@ -12,15 +11,10 @@ import Filters, { FiltersProps } from './Filters'
 import Tbody from './Tbody'
 import Thead from './Thead'
 
-import { getRoles, RolesState } from 'store/Async/roles'
-import { RootState } from 'store'
-import { CoursesState, getCourses } from 'store/Async/courses'
-
 import useSortableData from 'hooks/useSortableData'
 
 import DotsLoader from 'components/DotsLoader'
 
-import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
 export interface HeaderData {
@@ -55,8 +49,8 @@ export interface ItemProps {
 interface TableProps {
   path: string
   headerData: HeaderData[]
-  condition?: boolean
   quantity?: number
+  condition?: boolean
   isLoading?: boolean
   filters?: FiltersProps
   itemContent?: (_props: ItemProps) => JSX.Element
@@ -83,8 +77,6 @@ const Table = ({
   isLoading = true
 }: TableProps) => {
   const theme = useContext(ThemeContext)
-  const roles = useSelector<RootState, RolesState>(({ roles }) => roles)
-  const courses = useSelector<RootState, CoursesState>(({ courses }) => courses)
 
   const [tableState, setTableState] = useState<TableState>({
     tablePage: 1,
@@ -95,14 +87,6 @@ const Table = ({
     indexer: 'name',
     direction: 'descending'
   })
-
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(getRoles(roles))
-    dispatch(getCourses(courses))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return condition ? (
     <TableContext.Provider
