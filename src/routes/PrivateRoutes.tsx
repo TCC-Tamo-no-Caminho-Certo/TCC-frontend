@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import Main from 'pages/Main'
 import Profile from 'pages/Profile'
 import Moderator from 'pages/Moderator'
+import Projects from 'pages/Projects'
 
 import { getUser } from 'store/Async/user'
 
@@ -25,6 +26,7 @@ const PrivateRoutes = () => {
       <Route path='/session/main' component={Main} />
       <Route path='/session/profile' component={Profile} />
       <Route path='/session/moderator' component={Moderator} />
+      <Route path='/session/project' component={Projects} />
     </Switch>
   )
 }

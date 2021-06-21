@@ -3,7 +3,7 @@ import React, { useContext, useMemo, useRef } from 'react'
 import Map from './Map'
 import RightMenu from './RightMenu'
 import Season from './Season'
-import Projects from './Projects'
+import MyProjects from '../Main/MyProjects'
 
 // import Projects from './Projects/index'
 import { RootState } from 'store'
@@ -43,12 +43,11 @@ const Main = () => {
         paths: ['/session/main/season']
       },
       {
-        label: 'Projetos',
+        label: 'Meus Projetos',
+        icon: () => <ProjectIcon />,
+        component: () => <MyProjects ref={projectsRef} />,
         ref: projectsRef,
-        icon: () => <MapIcon />,
-        component: () => <Projects ref={projectsRef} />,
-        paths: ['/session/main/projects'],
-        bottom: true
+        paths: ['/session/main/myprojects']
       }
     ]
 

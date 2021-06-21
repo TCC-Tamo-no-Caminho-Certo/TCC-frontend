@@ -90,9 +90,6 @@ const Sidebar = ({
 
   const normalRoutes = routes.filter(route => !route.bottom)
   const bottomRoutes = routes.filter(route => route.bottom)
-
-  console.log(normalRoutes)
-
   const contentSize = (): string => {
     if (!samePage) {
       if (open) return isLarge ? `calc(100vw - ${width}px)` : '100vw'
