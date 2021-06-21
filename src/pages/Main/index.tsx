@@ -47,7 +47,8 @@ const Main = () => {
         ref: projectsRef,
         icon: () => <MapIcon />,
         component: () => <Projects ref={projectsRef} />,
-        paths: ['/session/main/projects']
+        paths: ['/session/main/projects'],
+        bottom: true
       }
     ]
 

@@ -9,22 +9,10 @@ import { getUniversities, UniversitiesState } from 'store/Async/universities'
 
 import Table from 'components/Table'
 import { File, Select, Submit, Text, Textarea } from 'components/Form'
-import Presence from 'components/Presence'
 
 import { GlobalContext } from 'App'
 import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
-
-const fakeMembers = [
-  {
-    label: 'Miguel Andrade',
-    value: 1
-  },
-  {
-    label: 'Gabriel Augusto',
-    value: 2
-  }
-]
 
 const Projects = forwardRef((_props, ref) => {
   const universities = useSelector<RootState, UniversitiesState>(
@@ -34,17 +22,12 @@ const Projects = forwardRef((_props, ref) => {
   const theme = useContext(ThemeContext)
 
   const [universitiesOptions, setUniversitiesOptions] = useState<any[]>([])
-  const [{ showMembers }, setShow] = useState({
-    showMembers: false
-  })
-
   const dispatch = useDispatch()
 
   const canCreateProject = user.selectedRole === 'professor'
 
   useEffect(() => {
     dispatch(getUniversities(universities))
-    setShow({ showMembers: false })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -75,17 +58,7 @@ const Projects = forwardRef((_props, ref) => {
           placeholder='Universidade'
           value={undefined}
           options={universitiesOptions}
-          onChange={() => setShow({ showMembers: true })}
         />
-
-        <Presence condition={showMembers}>
-          <Select
-            isMulti
-            placeholder='Integrantes'
-            name='members'
-            options={fakeMembers}
-          />
-        </Presence>
 
         <Text placeholder='Título' name='title' />
 
@@ -116,8 +89,8 @@ const Projects = forwardRef((_props, ref) => {
 
         <Table
           path=''
-          filters={{ name: true, from: true, to: true }}
           isLoading={false}
+          filters={{ name: true, from: true, to: true }}
           headerData={[
             { label: 'Nome', name: 'name' },
             { label: 'Data', name: 'date' }

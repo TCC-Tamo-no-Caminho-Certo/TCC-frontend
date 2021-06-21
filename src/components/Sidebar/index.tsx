@@ -88,6 +88,11 @@ const Sidebar = ({
   const dispatch = useDispatch()
   const history = useHistory()
 
+  const normalRoutes = routes.filter(route => !route.bottom)
+  const bottomRoutes = routes.filter(route => route.bottom)
+
+  console.log(normalRoutes)
+
   const contentSize = (): string => {
     if (!samePage) {
       if (open) return isLarge ? `calc(100vw - ${width}px)` : '100vw'
@@ -194,11 +199,61 @@ const Sidebar = ({
         </div>
 
         <ul>
-          {routes.map(({ paths, ref, bottom, icon: Icon, label }, index) => (
+          {normalRoutes.map(({ paths, ref, icon: Icon, label }, index) => (
             <ListItem
               isOpen={open}
               key={paths[0]}
-              bottom={bottom}
+              itemPaths={paths}
+              selected={selected}
+              pathname={pathname}
+              onClick={() => {
+                history.push(paths[0])
+                !isLarge && dispatch(SidebarActions.toggleSidebar(!open))
+                ref?.current?.scrollIntoView({ behavior: 'smooth' })
+              }}
+            >
+              {Icon && (
+                <div className='icon'>
+                  <Icon />
+                </div>
+              )}
+
+              <Presence
+                condition={open}
+                className='label'
+                initial={{
+                  opacity: 0,
+                  x: -24
+                }}
+                animate={{
+                  x: 0,
+                  opacity: 1,
+                  transition: {
+                    type: 'tween',
+                    duration: 0.4,
+                    delay: 0.1 * index
+                  }
+                }}
+                exit={{
+                  x: -24,
+                  opacity: 0,
+                  transition: {
+                    type: 'tween',
+                    duration: 0.1
+                  }
+                }}
+              >
+                {label}
+              </Presence>
+            </ListItem>
+          ))}
+        </ul>
+
+        <ul id='bottomRoutes'>
+          {bottomRoutes.map(({ paths, ref, icon: Icon, label }, index) => (
+            <ListItem
+              isOpen={open}
+              key={paths[0]}
               itemPaths={paths}
               selected={selected}
               pathname={pathname}

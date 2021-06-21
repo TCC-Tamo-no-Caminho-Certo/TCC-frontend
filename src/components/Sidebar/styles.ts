@@ -13,7 +13,6 @@ interface ListItemProps {
   pathname: string
   selected: string
   itemPaths: string[]
-  bottom?: boolean
 }
 
 interface StyleProps extends HTMLMotionProps<'nav'> {
@@ -42,14 +41,6 @@ export const ListItem = styled.li<ListItemProps>`
   font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
   visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
 
-  ${({ bottom }) =>
-    bottom &&
-    css`
-      position: absolute;
-      left: 0;
-      bottom: 72px;
-    `}
-
   ${({ pathname, itemPaths, selected }) =>
     itemPaths?.find(itemPath => itemPath === pathname) &&
     css`
@@ -70,12 +61,18 @@ export const SidebarNav = styled(motion.nav)<StyleProps>`
   min-width: 320px;
 
   ul {
-    position: relative;
-    top: 0;
-    left: 0;
-
     width: 100%;
-    height: 100%;
+
+    &#bottomRoutes {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      flex-direction: column;
+    }
 
     li,
     button {
