@@ -280,7 +280,6 @@ const Style = styled.div`
     min-height: 100vh;
 
     iframe {
-      border: solid red 1px;
       width: 100%;
       height: 100%;
     }

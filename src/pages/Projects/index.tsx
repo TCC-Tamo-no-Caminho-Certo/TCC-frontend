@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useRef } from 'react'
 
 import AboutProject from './AboutProject'
-import Participants from './Participants'
+import Members from './Members'
 
 import MapIcon from 'assets/MainSidebar/MapIcon'
 import ProjectIcon from 'assets/MainSidebar/ProjectIcon'
@@ -14,7 +14,7 @@ const Profile = () => {
   const { sidebar } = useContext(ThemeContext)
 
   const aboutProject = useRef(null)
-  const participants = useRef(null)
+  const members = useRef(null)
 
   const profileRoutes: RouteProps[] = useMemo(
     () => [
@@ -28,9 +28,9 @@ const Profile = () => {
       {
         label: 'Participantes',
         icon: () => <ProjectIcon />,
-        component: () => <Participants ref={participants} />,
-        ref: participants,
-        paths: ['/session/project/participants']
+        component: () => <Members ref={members} />,
+        ref: members,
+        paths: ['/session/project/members']
       },
       {
         label: 'Voltar ao mapa',

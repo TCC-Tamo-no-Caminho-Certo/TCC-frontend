@@ -14,10 +14,28 @@ interface PresenceProps extends HTMLMotionProps<'div'> {
 }
 
 const Presence = forwardRef<any, PresenceProps>(
-  ({ children, condition, presenceProps, ...props }, ref) => (
+  (
+    {
+      children,
+      condition,
+      presenceProps,
+      initial = 'initial',
+      animate = 'enter',
+      exit = 'exit',
+      ...props
+    },
+    ref
+  ) => (
     <AnimatePresence {...presenceProps}>
       {condition && (
-        <motion.div className='Presence' ref={ref} {...props}>
+        <motion.div
+          className='Presence'
+          ref={ref}
+          exit={exit}
+          animate={animate}
+          initial={initial}
+          {...props}
+        >
           {children}
         </motion.div>
       )}
