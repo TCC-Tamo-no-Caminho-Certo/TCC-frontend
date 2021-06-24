@@ -1,23 +1,23 @@
-import React, { forwardRef, useEffect, useRef, useState } from 'react'
-import Style, { MemberStyle, MonthStyle } from './styles'
+import React, { forwardRef } from 'react'
+import Style from './styles'
+
+import List from './List'
 
 import { Role } from 'store/Async/roles'
 
-import ArrowIcon from 'assets/global/ArrowIcon'
 import AddButtonIcon from 'assets/global/AddButtonIcon'
-import AvatarIcon from 'assets/Inputs/AvatarIcon'
 
-import Presence from 'components/Presence'
+import { AnimateSharedLayout, motion } from 'framer-motion'
 
-import {
-  AnimateSharedLayout,
-  motion,
-  Transition,
-  Variants
-} from 'framer-motion'
+interface MemberType {
+  id: number
+  role: Role
+  name: string
+  works: string[]
+}
 
 const fakeWork = [
-  'Plano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mes',
+  'Plano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de tPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mesPlano de trabalho 1 mes',
   'Plano de trabalho 2 mes',
   'Plano de trabalho 3 mes',
   'Plano de trabalho 4 mes',
@@ -64,193 +64,44 @@ const getMembers = (): MemberType[] => {
   ]
 }
 
-interface MemberType {
-  id: number
-  role: Role
-  name: string
-  works: string[]
-}
-
-interface MemberProps {
-  member: MemberType
-  index: number
-  size: number
-}
-
-interface MonthProps {
-  work: string
-  index: number
-  size: number
-}
-
-const ulAnimation: Variants = {
-  initial: {
-    transition: {
-      staggerChildren: 0.3
-    }
-  },
-  enter: {
-    transition: {
-      staggerChildren: 0.01
-    }
-  },
-  exit: {
-    transition: {
-      staggerChildren: 0.01,
-      staggerDirection: -1
-    }
-  }
-}
-
-const liAnimation = (index: number, size: number): Variants => {
-  const transition: Transition = {
-    type: 'tween',
-    duration: 0.3
-  }
-
-  return {
-    initial: {
-      y: -size * index + 1,
-      opacity: 0
+const getInvitedMembers = (): MemberType[] => {
+  return [
+    {
+      works: fakeWork,
+      name: 'Miguel',
+      role: 'student',
+      id: 20771
     },
-    enter: {
-      y: 0,
-      opacity: 1,
-      transition
+    {
+      works: fakeWork,
+      name: 'Gabriel',
+      role: 'student',
+      id: 20781
     },
-    exit: {
-      y: -size * index + 1,
-      opacity: 0,
-      transition
+    {
+      works: fakeWork,
+      name: 'Jean',
+      role: 'student',
+      id: 20791
+    },
+    {
+      works: fakeWork,
+      name: 'João',
+      role: 'student',
+      id: 20801
+    },
+    {
+      works: fakeWork,
+      name: 'André',
+      role: 'student',
+      id: 20811
     }
-  }
+  ]
 }
 
-const showMonthContent: Variants = {
-  initial: {
-    y: -30,
-    opacity: 0,
-    transition: {
-      type: 'tween',
-      duration: 0.3
-    }
-  },
-  enter: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      type: 'tween',
-      duration: 0.3
-    }
-  },
-  exit: {
-    y: -30,
-    opacity: 0,
-    transition: {
-      type: 'tween',
-      duration: 0.3
-    }
-  }
-}
-
-const Month = forwardRef<any, MonthProps>(({ work, index, size }, ref) => {
-  const [selectedMonth, setSelectedMonth] = useState(-1)
-
-  return (
-    <MonthStyle
-      layout
-      id='month'
-      ref={ref as any}
-      variants={liAnimation(index, size)}
-      onClick={() => {
-        setSelectedMonth(prev => (prev === index ? -1 : index))
-      }}
-    >
-      <motion.div layout='position'>{`${index + 1}° Mês`}</motion.div>
-
-      <Presence variants={showMonthContent} condition={selectedMonth === index}>
-        <p>{work}</p>
-      </Presence>
-    </MonthStyle>
-  )
-})
-
-const Member = forwardRef<any, MemberProps>(({ member, index, size }, ref) => {
-  const [selectedMember, setSelectedMember] = useState(-1)
-  const [monthSize, setMonthSize] = useState(0)
-
-  const monthRef = useRef<any>(null)
-
-  const { id, name, role, works } = member
-
-  useEffect(() => {
-    if (selectedMember === id) setMonthSize(monthRef?.current.clientHeight)
-  }, [selectedMember, id])
-
-  return (
-    <MemberStyle layout variants={liAnimation(index, size)} ref={ref as any}>
-      <motion.div
-        layout='position'
-        className='header'
-        onClick={() => {
-          setSelectedMember(prev => (prev === id ? -1 : id))
-        }}
-      >
-        <AvatarIcon />
-
-        <div className='info'>
-          <span className='name'>{name}</span>
-          <span className='role'>{role}</span>
-        </div>
-
-        <ArrowIcon
-          initial={{ rotate: 0 }}
-          animate={{
-            rotate: selectedMember === id ? 0 : -90,
-            transition: {
-              type: 'tween',
-              duration: 0.3
-            }
-          }}
-        />
-      </motion.div>
-
-      <Presence
-        className='content'
-        variants={ulAnimation}
-        condition={selectedMember === id}
-      >
-        <ul>
-          {works.map((work, index) => (
-            <Month
-              work={work}
-              index={index}
-              key={index}
-              ref={monthRef}
-              size={monthSize}
-            />
-          ))}
-        </ul>
-      </Presence>
-    </MemberStyle>
-  )
-})
-
-const Members = forwardRef((props, ref) => {
-  const [showOfficial, setShowOfficial] = useState(false)
-  const [showInvited, setShowInvited] = useState(false)
-  const [memberSize, setMemberSize] = useState(0)
-
-  const memberRef = useRef<any>(null)
-
-  const members = getMembers()
-
-  useEffect(() => {
-    if (showOfficial) setMemberSize(memberRef?.current.clientHeight)
-  }, [showOfficial])
-
-  return (
-    <Style ref={ref as any}>
+const Members = forwardRef((props, ref) => (
+  <Style ref={ref as any}>
+    <motion.div>
       <h1>Lista de participantes</h1>
 
       <div id='newMember'>
@@ -258,81 +109,14 @@ const Members = forwardRef((props, ref) => {
 
         <span>Convidar participante</span>
       </div>
+    </motion.div>
 
-      <AnimateSharedLayout>
-        <ul id='lists'>
-          <li>
-            <motion.button
-              layout='position'
-              type='button'
-              onClick={() => setShowInvited(!showInvited)}
-            >
-              <ArrowIcon
-                initial={{ rotate: 0 }}
-                animate={{
-                  rotate: showInvited ? 0 : -90,
-                  transition: {
-                    type: 'tween',
-                    duration: 0.3
-                  }
-                }}
-              />
-              <span>Participantes pendentes</span>
-            </motion.button>
+    <ul id='lists'>
+      <List members={getMembers()} title='Participantes convidados' />
 
-            <Presence condition={showInvited} variants={ulAnimation}>
-              <ul>
-                {members.map((member, index) => (
-                  <Member
-                    ref={memberRef}
-                    key={member.id}
-                    member={member}
-                    index={index}
-                    size={memberSize}
-                  />
-                ))}
-              </ul>
-            </Presence>
-          </li>
-
-          <li>
-            <motion.button
-              layout='position'
-              type='button'
-              onClick={() => setShowOfficial(!showOfficial)}
-            >
-              <ArrowIcon
-                initial={{ rotate: 0 }}
-                animate={{
-                  rotate: showOfficial ? 0 : -90,
-                  transition: {
-                    type: 'tween',
-                    duration: 0.3
-                  }
-                }}
-              />
-
-              <span>Participantes</span>
-            </motion.button>
-
-            <Presence condition={showOfficial} variants={ulAnimation}>
-              <ul>
-                {members.map((member, index) => (
-                  <Member
-                    ref={memberRef}
-                    key={member.id}
-                    member={member}
-                    index={index}
-                    size={memberSize}
-                  />
-                ))}
-              </ul>
-            </Presence>
-          </li>
-        </ul>
-      </AnimateSharedLayout>
-    </Style>
-  )
-})
+      <List members={getInvitedMembers()} title='Participantes' />
+    </ul>
+  </Style>
+))
 
 export default Members
