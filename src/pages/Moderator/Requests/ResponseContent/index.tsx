@@ -47,7 +47,6 @@ const ResponseContent = ({
   const [buttonClicked, setButtonClicked] = useState('rejected')
 
   const himselfModeratorRequest = user.user_id === userInfo?.user_id
-  console.log(selectedInfo && selectedInfo.voucherUrl)
 
   const onTrashClick = () => {
     selectedInfo &&

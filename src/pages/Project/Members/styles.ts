@@ -1,10 +1,9 @@
+import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
-const Style = styled.section`
+const Style = styled(motion.section)`
   padding: 24px;
-  * {
-    /* border: solid red 1px; */
-  }
+
   #newMember {
     display: flex;
     align-items: center;

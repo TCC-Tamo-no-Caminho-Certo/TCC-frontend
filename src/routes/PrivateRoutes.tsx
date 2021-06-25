@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import Main from 'pages/Main'
 import Profile from 'pages/Profile'
 import Moderator from 'pages/Moderator'
-import Projects from 'pages/Projects'
+import Projects from 'pages/Project'
 
 import { getUser } from 'store/Async/user'
 

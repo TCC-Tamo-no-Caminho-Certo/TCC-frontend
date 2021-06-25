@@ -1,6 +1,7 @@
+import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
-const Style = styled.li`
+const Style = styled(motion.div)`
   button {
     display: flex;
     align-items: center;

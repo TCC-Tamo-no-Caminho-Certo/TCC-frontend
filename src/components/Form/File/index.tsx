@@ -76,8 +76,6 @@ const File = ({
   }
 
   useEffect(() => {
-    console.log(fileData)
-
     const fileForInput = {
       type: 'file',
       inputRef: fileRef,
