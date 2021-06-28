@@ -84,6 +84,7 @@ const Month = forwardRef<any, MonthProps>(({ work, index, size, id }, ref) => {
       exit='exit'
       animate='enter'
       initial='initial'
+      className='Month'
       variants={monthAppear}
     >
       <Style layout ref={ref as any} initial={{ borderRadius: 8 }}>

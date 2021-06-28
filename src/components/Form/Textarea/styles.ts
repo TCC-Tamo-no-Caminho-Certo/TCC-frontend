@@ -1,31 +1,40 @@
 import styled from 'styled-components'
 
+interface StyledTextareaProps {
+  textColors: {
+    unfocused: string
+    focused: string
+  }
+}
+
 interface StyleProps {
   error: boolean
 }
 
-export const StyledTextarea = styled.textarea`
+export const StyledTextarea = styled.textarea<StyledTextareaProps>`
   width: 100%;
   resize: none;
   padding: 8px;
   min-height: 128px;
   border-radius: 8px;
 
-  color: ${({ theme }) => theme.colors.tertiary};
+  color: ${({ textColors }) => textColors.unfocused};
+  border: solid 1px ${({ textColors }) => textColors.unfocused};
 
   &::placeholder {
-    fill: ${({ theme }) => theme.colors.tertiary};
-    stroke: ${({ theme }) => theme.colors.tertiary};
-    -webkit-text-fill-color: ${({ theme }) => theme.colors.tertiary};
+    fill: ${({ textColors }) => textColors.unfocused};
+    stroke: ${({ textColors }) => textColors.unfocused};
+    -webkit-text-fill-color: ${({ textColors }) => textColors.unfocused};
   }
 
   &:focus {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ textColors }) => textColors.focused};
+    border: solid 1px ${({ textColors }) => textColors.focused};
 
     &::placeholder {
-      fill: ${({ theme }) => theme.colors.primary};
-      stroke: ${({ theme }) => theme.colors.primary};
-      -webkit-text-fill-color: ${({ theme }) => theme.colors.primary};
+      fill: ${({ textColors }) => textColors.focused};
+      stroke: ${({ textColors }) => textColors.focused};
+      -webkit-text-fill-color: ${({ textColors }) => textColors.focused};
     }
   }
 `

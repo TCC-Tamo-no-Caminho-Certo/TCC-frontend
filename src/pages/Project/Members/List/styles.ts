@@ -2,18 +2,12 @@ import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
 const Style = styled(motion.div)`
-  button {
+  > button {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    margin-bottom: 24px;
-
     color: ${({ theme }) => theme.colors.secondary};
-
-    & + button {
-      margin-top: 24px;
-    }
 
     span {
       cursor: pointer;
@@ -25,6 +19,14 @@ const Style = styled(motion.div)`
 
       fill: ${({ theme }) => theme.colors.secondary};
     }
+  }
+
+  button {
+    color: ${({ theme }) => theme.colors.secondary};
+  }
+
+  .Member {
+    margin-top: 24px;
   }
 `
 

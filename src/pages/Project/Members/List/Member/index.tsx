@@ -9,6 +9,7 @@ import Style from './styles'
 
 import Month from './Month'
 import { ListContext } from '../../List'
+import { transition } from '../index'
 
 import { getRoleLabel } from 'utils/roles'
 
@@ -19,7 +20,7 @@ import ArrowIcon from 'assets/global/ArrowIcon'
 
 import Presence from 'components/Presence'
 
-import { motion, Transition, Variants } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 
 interface MemberType {
   id: number
@@ -34,11 +35,6 @@ interface MemberProps {
   currentMember: MemberType
 }
 
-const transition: Transition = {
-  type: 'tween',
-  duration: 0.3
-}
-
 const Member = forwardRef<any, MemberProps>(
   ({ currentMember, index, size }, ref) => {
     const { member, month } = useContext(ListContext)
@@ -50,7 +46,8 @@ const Member = forwardRef<any, MemberProps>(
 
     const { selectedMembers, setSelectedMembers } = member
     const { selectedMonths, setSelectedMonths } = month
-    const { id, name, role, works } = currentMember
+    const { id, name, works, role } = currentMember
+
     const showMember =
       selectedMembers?.find(selectedMember => selectedMember === id) !==
       undefined
@@ -123,6 +120,7 @@ const Member = forwardRef<any, MemberProps>(
         animate='enter'
         initial='initial'
         layout='position'
+        className='Member'
         variants={memberAppear}
       >
         <motion.div
@@ -158,7 +156,7 @@ const Member = forwardRef<any, MemberProps>(
 
                 <div className='info'>
                   <span className='name'>{name}</span>
-                  <span className='role'>{getRoleLabel(role)}</span>
+                  <span className='role'>{role && getRoleLabel(role)}</span>
                 </div>
               </div>
 

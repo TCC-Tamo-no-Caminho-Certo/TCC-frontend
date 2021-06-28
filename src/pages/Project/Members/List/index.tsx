@@ -14,7 +14,7 @@ import ArrowIcon from 'assets/global/ArrowIcon'
 
 import Presence from 'components/Presence'
 
-import { motion, Variants } from 'framer-motion'
+import { motion, Transition, Variants } from 'framer-motion'
 
 interface ListProps {
   title: string
@@ -37,27 +37,26 @@ export const ListContext = createContext<ListContextProps>({
   member: {}
 })
 
+export const transition: Transition = {
+  type: 'tween',
+  duration: 0.3
+}
+
 const memberAppear: Variants = {
   initial: {
+    y: -24,
     opacity: 0,
-    borderRadius: 8,
-    y: -24
+    borderRadius: 8
   },
   enter: {
     y: 0,
     opacity: 1,
-    transition: {
-      type: 'tween',
-      duration: 0.3
-    }
+    transition
   },
   exit: {
-    opacity: 0,
     y: -24,
-    transition: {
-      type: 'tween',
-      duration: 0.3
-    }
+    opacity: 0,
+    transition
   }
 }
 
@@ -86,9 +85,9 @@ const List = ({ members, title }: ListProps) => {
 
   return (
     <motion.li
-      id='teste'
       exit='exit'
       animate='enter'
+      className='List'
       initial='initial'
       layout='position'
       variants={memberAppear}
@@ -111,20 +110,15 @@ const List = ({ members, title }: ListProps) => {
             onClick={onListClick}
             disabled={disabledButton}
           >
-            <motion.div>
-              <ArrowIcon
-                initial={{ rotate: 0 }}
-                animate={{
-                  rotate: showList ? 0 : -90,
-                  transition: {
-                    type: 'tween',
-                    duration: 0.3
-                  }
-                }}
-              />
+            <ArrowIcon
+              initial={{ rotate: 0 }}
+              animate={{
+                rotate: showList ? 0 : -90,
+                transition
+              }}
+            />
 
-              <span>{title}</span>
-            </motion.div>
+            <span>{title}</span>
           </motion.button>
 
           <Presence

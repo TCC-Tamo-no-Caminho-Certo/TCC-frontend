@@ -5,13 +5,17 @@ import { darken } from 'polished'
 import styled from 'styled-components'
 
 interface StyleProps {
-  role: Role
+  role?: Role
 }
 
 const Style = styled(motion.div)<StyleProps>`
   border-radius: 8px;
   box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.39);
   background-color: ${({ theme }) => darken(0.1, theme.colors.tertiary)};
+
+  .Month + .Month {
+    margin-top: 16px;
+  }
 
   .header {
     display: flex;
@@ -30,15 +34,6 @@ const Style = styled(motion.div)<StyleProps>`
       align-items: center;
       justify-content: center;
 
-      #DefaultAvatar {
-        width: 72px;
-        height: 72px;
-        min-width: 72px;
-        min-height: 72px;
-
-        margin-right: 16px;
-      }
-
       .info {
         display: flex;
         flex-direction: column;
@@ -50,8 +45,18 @@ const Style = styled(motion.div)<StyleProps>`
         .role {
           font-size: clamp(1.3rem, 0.6rem + 2.6vw, 1.6rem);
 
-          color: ${({ theme, role }) => theme.roles[role]};
+          color: ${({ theme, role }) =>
+            role ? theme.roles[role] : theme.colors.secondary};
         }
+      }
+
+      #DefaultAvatar {
+        width: 72px;
+        height: 72px;
+        min-width: 72px;
+        min-height: 72px;
+
+        margin-right: 16px;
       }
     }
 

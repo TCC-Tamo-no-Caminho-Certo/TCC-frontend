@@ -2,10 +2,9 @@ import React, { forwardRef } from 'react'
 import Style from './styles'
 
 import List from './List'
+import AddNewMember from './AddNewMember'
 
 import { Role } from 'store/Async/roles'
-
-import AddButtonIcon from 'assets/global/AddButtonIcon'
 
 import { AnimateSharedLayout, motion } from 'framer-motion'
 
@@ -105,17 +104,13 @@ const Members = forwardRef((props, ref) => (
       <motion.div layout='position'>
         <h1>Lista de participantes</h1>
 
-        <div id='newMember'>
-          <AddButtonIcon />
-
-          <span>Convidar participante</span>
-        </div>
+        <AddNewMember />
       </motion.div>
 
-      <motion.ul id='lists' layout>
-        <List members={getMembers()} title='Participantes convidados' />
+      <motion.ul layout>
+        <List title='Participantes convidados' members={getMembers()} />
 
-        <List members={getInvitedMembers()} title='Participantes' />
+        <List title='Participantes' members={getInvitedMembers()} />
       </motion.ul>
     </Style>
   </AnimateSharedLayout>
