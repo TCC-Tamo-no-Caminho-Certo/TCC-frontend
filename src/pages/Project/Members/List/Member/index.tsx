@@ -9,7 +9,6 @@ import Style from './styles'
 
 import Month from './Month'
 import { ListContext } from '../../List'
-import { transition } from '../index'
 
 import { getRoleLabel } from 'utils/roles'
 
@@ -37,7 +36,7 @@ interface MemberProps {
 
 const Member = forwardRef<any, MemberProps>(
   ({ currentMember, index, size }, ref) => {
-    const { member, month } = useContext(ListContext)
+    const { member, month, transition } = useContext(ListContext)
 
     const [disabledButton, setDisabledButton] = useState(false)
     const [monthSize, setMonthSize] = useState(0)
@@ -45,7 +44,7 @@ const Member = forwardRef<any, MemberProps>(
     const monthRef = useRef<any>(null)
 
     const { selectedMembers, setSelectedMembers } = member
-    const { selectedMonths, setSelectedMonths } = month
+    const { setSelectedMonths } = month
     const { id, name, works, role } = currentMember
 
     const showMember =
@@ -55,7 +54,6 @@ const Member = forwardRef<any, MemberProps>(
     const memberAppear: Variants = {
       initial: {
         opacity: 0,
-        borderRadius: 8,
         y: (size + 24) * -index
       },
       enter: {
@@ -73,40 +71,19 @@ const Member = forwardRef<any, MemberProps>(
     const onMemberClick = () => {
       setDisabledButton(true)
 
-      if (setSelectedMembers && setSelectedMonths)
+      if (setSelectedMembers && setSelectedMonths) {
+        setSelectedMonths(undefined)
+
+        setTimeout(() => {
+          setDisabledButton(false)
+        }, 300)
+
         if (showMember)
-          if (selectedMonths) {
-            setSelectedMonths(undefined)
-
-            setTimeout(() => {
-              setSelectedMembers(prev =>
-                prev?.filter(selectedMember => selectedMember !== id)
-              )
-            }, 725)
-
-            setTimeout(() => {
-              setDisabledButton(false)
-            }, 1725)
-          } else {
-            setSelectedMonths(undefined)
-
-            setTimeout(() => {
-              setSelectedMembers(prev =>
-                prev?.filter(selectedMember => selectedMember !== id)
-              )
-            }, 300)
-
-            setTimeout(() => {
-              setDisabledButton(false)
-            }, 1200)
-          }
-        else {
-          setSelectedMembers(prev => (prev ? [...prev, id] : [id]))
-
-          setTimeout(() => {
-            setDisabledButton(false)
-          }, 300)
-        }
+          setSelectedMembers(prev =>
+            prev?.filter(selectedMember => selectedMember !== id)
+          )
+        else setSelectedMembers(prev => (prev ? [...prev, id] : [id]))
+      }
     }
 
     useEffect(() => {
@@ -119,35 +96,20 @@ const Member = forwardRef<any, MemberProps>(
         exit='exit'
         animate='enter'
         initial='initial'
-        layout='position'
         className='Member'
         variants={memberAppear}
       >
         <motion.div
           initial={{ width: 250 }}
           animate={{ width: showMember ? '100%' : 250 }}
-          transition={{
-            type: 'tween',
-            duration: 0.3,
-            delay: (() => {
-              if (!showMember)
-                return selectedMonths?.length !== 0 &&
-                  selectedMonths !== undefined
-                  ? 0.6
-                  : 0.3
-              return 0
-            })()
-          }}
+          transition={{ ...transition, delay: showMember ? 0 : 0.3 }}
         >
-          <Style
-            role={role}
-            ref={ref as any}
-            transition={{ duration: 0.3, type: 'tween' }}
-          >
+          <Style layout role={role} ref={ref as any} transition={transition}>
             <motion.button
               type='button'
               layout='position'
               className='header'
+              transition={transition}
               onClick={onMemberClick}
               disabled={disabledButton}
             >
@@ -169,7 +131,12 @@ const Member = forwardRef<any, MemberProps>(
               />
             </motion.button>
 
-            <Presence className='content' condition={showMember}>
+            <Presence
+              layout='position'
+              className='content'
+              condition={showMember}
+              transition={transition}
+            >
               <motion.ul>
                 {works.map((work, index) => (
                   <Month

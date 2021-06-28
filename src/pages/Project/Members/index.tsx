@@ -99,21 +99,21 @@ const getInvitedMembers = (): MemberType[] => {
 }
 
 const Members = forwardRef((props, ref) => (
-  <AnimateSharedLayout>
-    <Style ref={ref as any} layout>
+  <Style ref={ref as any}>
+    <AnimateSharedLayout>
       <motion.div layout='position'>
         <h1>Lista de participantes</h1>
 
         <AddNewMember />
       </motion.div>
 
-      <motion.ul layout>
+      <ul>
         <List title='Participantes convidados' members={getMembers()} />
 
         <List title='Participantes' members={getInvitedMembers()} />
-      </motion.ul>
-    </Style>
-  </AnimateSharedLayout>
+      </ul>
+    </AnimateSharedLayout>
+  </Style>
 ))
 
 export default Members

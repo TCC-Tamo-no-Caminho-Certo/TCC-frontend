@@ -2,9 +2,8 @@ import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
 const Style = styled(motion.div)`
-  border-radius: 8px;
+  border-radius: 0px;
 
-  box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.39);
   background-color: ${({ theme }) => theme.colors.tertiary};
 
   #month {

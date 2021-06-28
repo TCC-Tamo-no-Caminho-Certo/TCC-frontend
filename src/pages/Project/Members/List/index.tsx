@@ -22,6 +22,7 @@ interface ListProps {
 }
 
 interface ListContextProps {
+  transition: Transition
   month: {
     selectedMonths?: string[]
     setSelectedMonths?: Dispatch<SetStateAction<string[] | undefined>>
@@ -34,10 +35,14 @@ interface ListContextProps {
 
 export const ListContext = createContext<ListContextProps>({
   month: {},
-  member: {}
+  member: {},
+  transition: {
+    type: 'tween',
+    duration: 0.3
+  }
 })
 
-export const transition: Transition = {
+const transition: Transition = {
   type: 'tween',
   duration: 0.3
 }
@@ -89,11 +94,11 @@ const List = ({ members, title }: ListProps) => {
       animate='enter'
       className='List'
       initial='initial'
-      layout='position'
       variants={memberAppear}
     >
       <ListContext.Provider
         value={{
+          transition,
           month: {
             selectedMonths,
             setSelectedMonths
@@ -107,7 +112,9 @@ const List = ({ members, title }: ListProps) => {
         <Style>
           <motion.button
             type='button'
+            layout='position'
             onClick={onListClick}
+            transition={transition}
             disabled={disabledButton}
           >
             <ArrowIcon
@@ -127,7 +134,7 @@ const List = ({ members, title }: ListProps) => {
             animate={{ opacity: 1 }}
             initial={{ opacity: 0 }}
           >
-            <motion.ul layout>
+            <ul>
               {members.map((member, index) => (
                 <Member
                   index={index}
@@ -137,7 +144,7 @@ const List = ({ members, title }: ListProps) => {
                   currentMember={member}
                 />
               ))}
-            </motion.ul>
+            </ul>
           </Presence>
         </Style>
       </ListContext.Provider>

@@ -5,7 +5,7 @@ import { ListContext } from '../../../List'
 
 import Presence from 'components/Presence'
 
-import { motion, Transition, Variants } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 
 interface MonthProps {
   id: number
@@ -14,28 +14,8 @@ interface MonthProps {
   index: number
 }
 
-const transition: Transition = { type: 'tween', duration: 0.3 }
-
-const workAppear: Variants = {
-  initial: {
-    y: -24,
-    opacity: 0
-  },
-  enter: {
-    y: 0,
-    opacity: 1,
-    transition
-  },
-  exit: {
-    y: -24,
-    opacity: 0,
-    transition
-  }
-}
-
 const Month = forwardRef<any, MonthProps>(({ work, index, size, id }, ref) => {
-  const { month } = useContext(ListContext)
-
+  const { month, transition } = useContext(ListContext)
   const [disabledButton, setDisabledButton] = useState(false)
 
   const { setSelectedMonths, selectedMonths } = month
@@ -54,14 +34,30 @@ const Month = forwardRef<any, MonthProps>(({ work, index, size, id }, ref) => {
     },
     exit: {
       opacity: 0,
-      y: (size + 24) * -index,
+      transition
+    }
+  }
+
+  const workAppear: Variants = {
+    initial: {
+      y: -24,
+      opacity: 0
+    },
+    enter: {
+      y: 0,
+      opacity: 1,
+      transition
+    },
+    exit: {
+      y: -24,
+      opacity: 0,
       transition
     }
   }
 
   const onMonthClick = () => {
     setDisabledButton(true)
-    setTimeout(() => setDisabledButton(false), 600)
+    setTimeout(() => setDisabledButton(false), 300)
 
     if (setSelectedMonths)
       setSelectedMonths(prev => {
@@ -87,12 +83,13 @@ const Month = forwardRef<any, MonthProps>(({ work, index, size, id }, ref) => {
       className='Month'
       variants={monthAppear}
     >
-      <Style layout ref={ref as any} initial={{ borderRadius: 8 }}>
+      <Style layout ref={ref as any} transition={transition}>
         <motion.button
           id='month'
           layout='position'
           onClick={onMonthClick}
           disabled={disabledButton}
+          transition={transition}
         >
           {`${index + 1}° Mês`}
         </motion.button>
@@ -104,7 +101,9 @@ const Month = forwardRef<any, MonthProps>(({ work, index, size, id }, ref) => {
             undefined
           }
         >
-          <motion.p layout='position'>{work}</motion.p>
+          <motion.p layout='position' transition={transition}>
+            {work}
+          </motion.p>
         </Presence>
       </Style>
     </motion.li>

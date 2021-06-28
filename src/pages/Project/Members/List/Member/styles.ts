@@ -9,7 +9,8 @@ interface StyleProps {
 }
 
 const Style = styled(motion.div)<StyleProps>`
-  border-radius: 8px;
+  border-radius: 0px;
+
   box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.39);
   background-color: ${({ theme }) => darken(0.1, theme.colors.tertiary)};
 
@@ -72,7 +73,6 @@ const Style = styled(motion.div)<StyleProps>`
 
   .content {
     padding: 0 24px 24px 24px;
-    overflow: hidden;
   }
 `
 
