@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { darken } from 'polished'
 import styled, { css } from 'styled-components'
 
 interface StyleProps {
@@ -8,7 +9,8 @@ interface StyleProps {
 
 const Style = styled(motion.div)<StyleProps>`
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 16px;
+  font-size: clamp(1rem, 0.6rem + 2.6vw, 1.6rem);
 
   box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.39);
   background-color: ${({ theme }) => theme.colors.tertiary};
@@ -25,9 +27,15 @@ const Style = styled(motion.div)<StyleProps>`
     align-items: center;
     justify-content: flex-start;
 
+    font-size: clamp(1.2rem, 0.6rem + 2.6vw, 1.8rem);
+    border-radius: ${({ showTask }) => (showTask ? '16px 16px 0 0' : '16px')};
+
+    background-color: ${({ theme }) => darken(0.17, theme.colors.tertiary)};
+
     button {
       width: 50%;
       padding: 16px;
+      font-size: clamp(1.2rem, 0.6rem + 2.6vw, 1.8rem);
     }
 
     #ArrowIcon {
@@ -39,8 +47,8 @@ const Style = styled(motion.div)<StyleProps>`
 
     #InterrogationIcon {
       position: absolute;
-      top: 16px;
       right: 24px;
+      top: 16px;
 
       width: 24px;
       height: 24px;

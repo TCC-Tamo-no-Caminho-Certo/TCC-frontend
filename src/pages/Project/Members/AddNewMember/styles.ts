@@ -10,6 +10,8 @@ const Style = styled(motion.div)`
   justify-content: center;
   flex-direction: column;
 
+  border-radius: 24px;
+
   margin-top: 24px;
   width: 320px;
 
@@ -38,9 +40,9 @@ const Style = styled(motion.div)`
     }
 
     #invite {
-      margin-left: 24px;
+      margin-left: 12px;
       text-align: center;
-      font-size: clamp(1.4rem, 0.6rem + 2.6vw, 2rem);
+      font-size: clamp(1rem, 0.6rem + 2.6vw, 1.8rem);
     }
   }
 

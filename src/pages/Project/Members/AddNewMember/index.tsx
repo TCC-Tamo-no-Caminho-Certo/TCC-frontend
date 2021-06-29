@@ -7,6 +7,7 @@ import CloseIcon from 'assets/global/CloseIcon'
 
 import Form, { Select, Submit } from 'components/Form'
 import Presence from 'components/Presence'
+import AvatarAndInfo from 'components/User/AvatarAndInfo'
 
 import { motion } from 'framer-motion'
 import { lighten } from 'polished'
@@ -17,6 +18,7 @@ const AddNewMember = () => {
   const theme = useContext(ThemeContext)
 
   const [inviteNewMember, setInviteNewMember] = useState(false)
+  const [showAvatar, setShowAvatar] = useState(false)
 
   const monthsQuantity = 10
   const months = []
@@ -91,6 +93,23 @@ const AddNewMember = () => {
     }
   })
 
+  const avatarAppear = {
+    initial: {
+      x: -320,
+      opacity: 0
+    },
+    enter: {
+      x: 0,
+      opacity: 1,
+      transition: { type: 'tween', duration: 0.3 }
+    },
+    exit: {
+      x: 320,
+      opacity: 0,
+      transition: { type: 'tween', duration: 0.3 }
+    }
+  }
+
   return (
     <Style
       id='newMember'
@@ -99,17 +118,20 @@ const AddNewMember = () => {
         transition: { type: 'tween', duration: 0.3 }
       }}
     >
-      <button onClick={() => setInviteNewMember(!inviteNewMember)}>
+      <button
+        type='button'
+        onClick={() => setInviteNewMember(!inviteNewMember)}
+      >
         <motion.div
           id='closeIcon'
           initial={{ rotate: 45 }}
-          animate={{ rotate: inviteNewMember ? 0 : 45 }}
           transition={{ type: 'tween', duration: 0.3 }}
+          animate={{ rotate: inviteNewMember ? 0 : 45 }}
         >
           <CloseIcon />
         </motion.div>
 
-        <div id='invite'>
+        <div id='invite' onClick={() => setShowAvatar(false)}>
           {inviteNewMember ? 'Cancelar convite' : 'Convidar participante'}
         </div>
       </button>
@@ -121,6 +143,10 @@ const AddNewMember = () => {
             placeholder='Participante'
             theming={selectTheme}
             styling={selectStyle}
+            onChange={() => {
+              setShowAvatar(false)
+              setTimeout(() => setShowAvatar(true), 300)
+            }}
             options={[
               { label: 'Miguel', value: 'student' },
               { label: 'Gabriel', value: 'professor' },
@@ -128,6 +154,10 @@ const AddNewMember = () => {
               { label: 'André', value: 'all' }
             ]}
           />
+
+          <Presence condition={showAvatar} variants={avatarAppear}>
+            <AvatarAndInfo name='Miguel Andrade' role='student' />
+          </Presence>
 
           {months.map(month => month)}
 

@@ -19,9 +19,12 @@ const Style = styled(motion.div)<StyleProps>`
   .header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 
-    padding: 24px;
+    width: 100%;
+    padding: 12px;
+
+    margin-bottom: 24px;
 
     &,
     * {

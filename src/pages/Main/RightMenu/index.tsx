@@ -9,6 +9,7 @@ import Style, {
 } from './styles'
 
 import { getRoleLabel } from 'utils/roles'
+import formatterName from 'utils/formatterName'
 
 import api from 'services/api'
 
@@ -153,21 +154,6 @@ const RightMenu = () => {
     dispatch(HomeActions.update({ initial: false, page: 'login' }))
   }
 
-  const formatterName = (name: string): string => {
-    const fullName = name.split(' ')
-    const firstName = fullName[0]
-    const secondName = fullName[1]
-
-    if (secondName)
-      return firstName.length <= 20
-        ? `${firstName} ${secondName.substr(0, 1)}.`
-        : `${firstName}...`
-
-    return firstName.length <= 20
-      ? `${firstName} ${surname.substr(0, 1)}.`
-      : `${firstName}...`
-  }
-
   useEffect(() => {
     if (innerWidth <= 300) setWidth(320)
     else innerWidth >= 545 ? setWidth(300) : setWidth(innerWidth)
@@ -202,7 +188,7 @@ const RightMenu = () => {
                 <>
                   <span id='userRole'>{getRoleLabel(selectedRole)}</span>
 
-                  <span id='userName'>{formatterName(name)}</span>
+                  <span id='userName'>{formatterName(name, surname)}</span>
 
                   {/* ~
                     <span id='userActivity'>

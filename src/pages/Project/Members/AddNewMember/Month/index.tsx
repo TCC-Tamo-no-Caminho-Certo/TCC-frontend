@@ -5,7 +5,6 @@ import InterrogationIcon from 'assets/global/InterrogationIcon'
 import ArrowIcon from 'assets/global/ArrowIcon'
 
 import { Text, Textarea } from 'components/Form'
-import Presence from 'components/Presence'
 
 import { motion, Transition, Variants } from 'framer-motion'
 import { ThemeContext } from 'styled-components'
@@ -19,17 +18,11 @@ const transition: Transition = {
   duration: 0.3
 }
 
-const opacityAnimation = {
-  initial: { opacity: 0, transition },
-  enter: { opacity: 1, transition },
-  exit: { opacity: 0, transition }
-}
-
 const Month = ({ index }: MonthProps) => {
   const theme = useContext(ThemeContext)
 
   const [showBorder, setShowBorder] = useState(false)
-  const [showTask, setShowTask] = useState(true)
+  const [showTask, setShowTask] = useState(false)
 
   const monthAppear: Variants = {
     initial: {
@@ -54,9 +47,9 @@ const Month = ({ index }: MonthProps) => {
       animate='enter'
       initial='initial'
       className='month'
-      showBorder={showBorder}
       showTask={showTask}
       variants={monthAppear}
+      showBorder={showBorder}
     >
       <div className='title'>
         <button
@@ -84,18 +77,17 @@ const Month = ({ index }: MonthProps) => {
           />
         </div>
 
-        <Presence
-          condition={showTask}
-          variants={opacityAnimation}
+        <div
           onMouseEnter={() => {
             setShowBorder(true)
+            !showTask && setShowTask(true)
           }}
           onMouseLeave={() => {
             setShowBorder(false)
           }}
         >
           <InterrogationIcon />
-        </Presence>
+        </div>
       </div>
 
       <motion.div

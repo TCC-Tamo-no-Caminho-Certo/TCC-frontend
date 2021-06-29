@@ -9,12 +9,15 @@ import { motion, Variants } from 'framer-motion'
 
 interface MonthProps {
   id: number
-  work: string
   size: number
   index: number
+  task: {
+    title: string
+    content: string
+  }
 }
 
-const Month = forwardRef<any, MonthProps>(({ work, index, size, id }, ref) => {
+const Month = forwardRef<any, MonthProps>(({ task, index, size, id }, ref) => {
   const { month, transition } = useContext(ListContext)
   const [disabledButton, setDisabledButton] = useState(false)
 
@@ -40,16 +43,16 @@ const Month = forwardRef<any, MonthProps>(({ work, index, size, id }, ref) => {
 
   const workAppear: Variants = {
     initial: {
-      y: -24,
+      y: -12,
       opacity: 0
     },
     enter: {
       y: 0,
       opacity: 1,
-      transition
+      transition: { ...transition, delay: 0.1 }
     },
     exit: {
-      y: -24,
+      y: -12,
       opacity: 0,
       transition
     }
@@ -91,7 +94,8 @@ const Month = forwardRef<any, MonthProps>(({ work, index, size, id }, ref) => {
           disabled={disabledButton}
           transition={transition}
         >
-          {`${index + 1}° Mês`}
+          <div>{`${index + 1}° Mês`}</div>
+          <div>{task.title}</div>
         </motion.button>
 
         <Presence
@@ -102,7 +106,7 @@ const Month = forwardRef<any, MonthProps>(({ work, index, size, id }, ref) => {
           }
         >
           <motion.p layout='position' transition={transition}>
-            {work}
+            {task.content}
           </motion.p>
         </Presence>
       </Style>

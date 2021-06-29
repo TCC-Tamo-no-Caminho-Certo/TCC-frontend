@@ -25,7 +25,7 @@ interface MemberType {
   id: number
   role: Role
   name: string
-  works: string[]
+  tasks: { title: string; content: string }[]
 }
 
 interface MemberProps {
@@ -45,7 +45,7 @@ const Member = forwardRef<any, MemberProps>(
 
     const { selectedMembers, setSelectedMembers } = member
     const { setSelectedMonths } = month
-    const { id, name, works, role } = currentMember
+    const { id, name, tasks, role } = currentMember
 
     const showMember =
       selectedMembers?.find(selectedMember => selectedMember === id) !==
@@ -138,10 +138,10 @@ const Member = forwardRef<any, MemberProps>(
               transition={transition}
             >
               <motion.ul>
-                {works.map((work, index) => (
+                {tasks.map((task, index) => (
                   <Month
                     id={id}
-                    work={work}
+                    task={task}
                     key={index}
                     index={index}
                     ref={monthRef}
