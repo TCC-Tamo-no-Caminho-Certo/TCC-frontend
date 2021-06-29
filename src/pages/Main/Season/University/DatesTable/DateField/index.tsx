@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Style from './styles'
 
-import CloseIcon from 'assets/Inputs/CloseIcon'
+import CloseIcon from 'assets/global/CloseIcon'
 import CalendarIcon from 'assets/global/CalendarIcon'
 import PencilIcon from 'assets/Inputs/PencilIcon'
 

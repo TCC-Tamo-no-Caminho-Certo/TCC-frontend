@@ -3,7 +3,7 @@ import Style from './styles'
 
 import { FormContext, FormState } from '../'
 
-import CloseIcon from 'assets/Inputs/CloseIcon'
+import CloseIcon from 'assets/global/CloseIcon'
 import CameraIcon from 'assets/Inputs/CameraIcon'
 import DownloadIcon from 'assets/global/Download'
 

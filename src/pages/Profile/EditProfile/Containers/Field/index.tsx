@@ -7,7 +7,7 @@ import { EditProfileContext } from '../../index'
 import { isoToDate } from 'utils/dates'
 
 import PencilIcon from 'assets/Inputs/PencilIcon'
-import CloseIcon from 'assets/Inputs/CloseIcon'
+import CloseIcon from 'assets/global/CloseIcon'
 
 import { Datepicker, Text } from 'components/Form'
 

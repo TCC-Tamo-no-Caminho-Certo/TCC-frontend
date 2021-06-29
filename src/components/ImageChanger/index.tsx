@@ -12,7 +12,7 @@ import api from 'services/api'
 import { UserActions } from 'store/Async/user'
 
 import CameraIcon from 'assets/Inputs/CameraIcon'
-import CloseIcon from 'assets/Inputs/CloseIcon'
+import CloseIcon from 'assets/global/CloseIcon'
 
 import { Submit } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'

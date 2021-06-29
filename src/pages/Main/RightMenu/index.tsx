@@ -25,7 +25,7 @@ import LogoutIcon from 'assets/RightMenuOpen/LogoutIcon'
 import ChangeIcon from 'assets/RightMenuOpen/ChangeIcon'
 import GearIcon from 'assets/RightMenuOpen/GearIcon'
 import AddRoleIcon from 'assets/RightMenuOpen/AddRoleIcon'
-import CloseIcon from 'assets/Inputs/CloseIcon'
+import CloseIcon from 'assets/global/CloseIcon'
 
 import Presence from 'components/Presence'
 import Avatar from 'components/User/Avatar'

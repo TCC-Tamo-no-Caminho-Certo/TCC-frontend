@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import Style, { ModalBackground } from './styles'
 
-import CloseIcon from 'assets/Inputs/CloseIcon'
+import CloseIcon from 'assets/global/CloseIcon'
 
 import { GlobalContext, GlobalContextProps } from 'App'
 import { ThemeContext } from 'styled-components'

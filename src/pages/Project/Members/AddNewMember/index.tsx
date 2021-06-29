@@ -1,50 +1,28 @@
 import React, { useContext, useState } from 'react'
 import Style from './styles'
 
-import AddButtonIcon from 'assets/global/AddButtonIcon'
+import Month from './Month'
 
-import Form, { Select, Text, Textarea } from 'components/Form'
+import CloseIcon from 'assets/global/CloseIcon'
+
+import Form, { Select, Submit } from 'components/Form'
 import Presence from 'components/Presence'
 
-import { AnimateSharedLayout, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { lighten } from 'polished'
 import { Theme } from 'react-select'
 import { ThemeContext } from 'styled-components'
 
 const AddNewMember = () => {
-  const [inviteNewMember, setInviteNewMember] = useState(false)
   const theme = useContext(ThemeContext)
+
+  const [inviteNewMember, setInviteNewMember] = useState(false)
 
   const monthsQuantity = 10
   const months = []
 
   for (let i = 1; i <= monthsQuantity; i++)
-    months.push(
-      <AnimateSharedLayout>
-        <motion.div layout className='month' key={i}>
-          <div className='title'>
-            {`${i}° Mês`}
-            <Text
-              name={`title_${i}`}
-              placeholder='Título'
-              textColors={{
-                focused: theme.colors.primary,
-                unfocused: theme.colors.secondary
-              }}
-            />
-          </div>
-
-          <Textarea
-            name={`task_${i}`}
-            placeholder='Tarefas'
-            textColors={{
-              focused: theme.colors.primary,
-              unfocused: theme.colors.secondary
-            }}
-          />
-        </motion.div>
-      </AnimateSharedLayout>
-    )
+    months.push(<Month index={i - 1} key={i} />)
 
   const selectStyle = {
     container: (before: any) => ({
@@ -120,15 +98,21 @@ const AddNewMember = () => {
         width: inviteNewMember ? '100%' : 250,
         transition: { type: 'tween', duration: 0.3 }
       }}
-      showBorder={true}
     >
-      <Presence condition={!inviteNewMember}>
-        <button onClick={() => setInviteNewMember(!inviteNewMember)}>
-          <AddButtonIcon />
+      <button onClick={() => setInviteNewMember(!inviteNewMember)}>
+        <motion.div
+          id='closeIcon'
+          initial={{ rotate: 45 }}
+          animate={{ rotate: inviteNewMember ? 0 : 45 }}
+          transition={{ type: 'tween', duration: 0.3 }}
+        >
+          <CloseIcon />
+        </motion.div>
 
-          <span>Convidar participante</span>
-        </button>
-      </Presence>
+        <div id='invite'>
+          {inviteNewMember ? 'Cancelar convite' : 'Convidar participante'}
+        </div>
+      </button>
 
       <Presence id='body' condition={inviteNewMember}>
         <Form>
@@ -146,6 +130,8 @@ const AddNewMember = () => {
           />
 
           {months.map(month => month)}
+
+          <Submit>Enviar convite</Submit>
         </Form>
       </Presence>
     </Style>

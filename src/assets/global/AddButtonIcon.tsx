@@ -1,13 +1,13 @@
 import React from 'react'
 
+import { motion } from 'framer-motion'
+
 interface AddButtonProps {
   props?: any
 }
 
-const AddButton = ({ props }: AddButtonProps) => (
-  <svg
-    width='76'
-    height='76'
+const AddButton = ({ ...props }: AddButtonProps) => (
+  <motion.svg
     fill='none'
     className='Icon'
     xmlns='http://www.w3.org/2000/svg'
@@ -16,8 +16,8 @@ const AddButton = ({ props }: AddButtonProps) => (
     <rect
       x='1.5'
       y='1.5'
-      width='73'
-      height='73'
+      width='24'
+      height='24'
       rx='36.5'
       strokeWidth='3'
       stroke='#fcfcfc'
@@ -29,6 +29,6 @@ const AddButton = ({ props }: AddButtonProps) => (
       strokeLinecap='round'
       stroke='#fcfcfc'
     />
-  </svg>
+  </motion.svg>
 )
 export default AddButton

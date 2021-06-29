@@ -95,6 +95,7 @@ const Style = styled.div<StyleProps>`
       !hasIcon &&
       css`
         padding-left: 16px;
+        width: 100%;
       `}
 
     ${({ isErrored }) =>

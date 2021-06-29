@@ -12,7 +12,7 @@ import { Response, RootState } from 'store'
 import { UserState } from 'store/Async/user'
 import { CoursesState } from 'store/Async/courses'
 
-import CloseIcon from 'assets/Inputs/CloseIcon'
+import CloseIcon from 'assets/global/CloseIcon'
 import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'
 import TrashIcon from 'assets/global/TrashIcon'
 
