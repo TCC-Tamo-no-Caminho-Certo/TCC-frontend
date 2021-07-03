@@ -50,6 +50,7 @@ export interface FormProps extends HTMLProps<HTMLFormElement> {
   addData?: { [key: string]: any }
   method?: 'post' | 'get' | 'delete' | 'patch' | 'put'
   getData?: (_data: any) => void
+  manipulateData?: (_data: any) => any
   onError?: (_error: any) => void
   afterResData?: (_resData: any) => void
 }
@@ -67,6 +68,7 @@ const Form = ({
   onError,
   children,
   addToPath,
+  manipulateData,
   afterResData,
   method = 'post',
   className = 'Form',
@@ -120,7 +122,10 @@ const Form = ({
             break
 
           case 'textarea':
-            data[current.name] = current.value
+            data[current.name] =
+              current.value === ''
+                ? (data[current.name] = undefined)
+                : (data[current.name] = current.value)
             break
 
           case 'select':
@@ -176,13 +181,16 @@ const Form = ({
   const makeRequest = async (
     cbAfterResData?: (_data: Response<any>) => void
   ) => {
+    const manipulatedData = manipulateData ? manipulateData(data) : data
+    getData && getData(manipulatedData)
+
     if (path) {
       const params: { [key: string]: { path: string; data?: any } } = {
         get: { path },
         delete: { path },
-        put: { path, data },
-        post: { path, data },
-        patch: { path, data }
+        put: { path, data: manipulatedData },
+        post: { path, data: manipulatedData },
+        patch: { path, data: manipulatedData }
       }
 
       const firstParam = params[method].path
@@ -219,7 +227,6 @@ const Form = ({
     event.preventDefault()
     loading && setShowLoader(true)
     setData()
-    getData && getData(data)
 
     validate()
 

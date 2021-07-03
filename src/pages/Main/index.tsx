@@ -2,10 +2,9 @@ import React, { useContext, useMemo, useRef } from 'react'
 
 import Map from './Map'
 import RightMenu from './RightMenu'
-import Season from './Season'
+import Season from './Seasons'
 import MyProjects from '../Main/MyProjects'
 
-// import Projects from './Projects/index'
 import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
 

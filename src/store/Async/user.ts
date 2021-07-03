@@ -29,6 +29,9 @@ export interface UserState {
   updated_at: string
   avatar_uuid: string
   emails: Email[]
+  administrator?: {
+    university_id: number
+  }
   professor?: {
     postgraduate: number
     linkedin: null
@@ -106,7 +109,6 @@ const getInitialSelectedRole = (roles: Role[]): Role => {
     const haveHole = roles.filter(role => role === localRole)
     if (haveHole.length !== 0) return haveHole[0]
   }
-
   localStorage.setItem('@SLab_selected_role', roles[roles.length - 1])
   return roles[roles.length - 1]
 }
@@ -115,6 +117,8 @@ export const getUser = createAsyncThunk(
   'user/getUser',
   async (callback?: () => void) => {
     const { user } = await api.get('user')
+
+    console.log(user)
 
     callback && callback()
 

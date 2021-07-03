@@ -33,6 +33,12 @@ const Style = styled.div<StyleProps>`
       box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.39);
       background-color: ${({ theme }) => theme.colors.primary};
 
+      &:hover {
+        transform: scale(1.01);
+
+        filter: brightness(1.1);
+      }
+
       .Icon {
         height: 16px;
         margin-right: 8px;

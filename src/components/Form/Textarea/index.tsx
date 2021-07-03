@@ -50,13 +50,12 @@ const Textarea = forwardRef<TextareaMethods, TextareaProps>(
     }, [textareaRef, form])
 
     return (
-      <Style error={!!error}>
+      <Style className='Textarea' error={!!error}>
         <div className='Error'>
           <ErrorTooltip error={!!error} content={error} />
         </div>
 
         <StyledTextarea
-          className='Textarea'
           textColors={textColors}
           ref={textareaRef as any}
           onClick={() => setError('')}

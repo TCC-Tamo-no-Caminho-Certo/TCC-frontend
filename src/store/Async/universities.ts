@@ -39,6 +39,8 @@ export const getUniversities = createAsyncThunk(
         'info/university'
       )
 
+      console.log(universities)
+
       return { universities }
     }
   }

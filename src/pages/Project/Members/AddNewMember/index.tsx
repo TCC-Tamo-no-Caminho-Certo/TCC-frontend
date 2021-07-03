@@ -74,8 +74,8 @@ const AddNewMember = () => {
     colors: {
       ...beforeTheme.colors,
       danger: theme.colors.red,
-      dangerLight: lighten(0.5, theme.colors.red),
       primary: theme.colors.tertiary,
+      dangerLight: lighten(0.5, theme.colors.red),
       primary25: lighten(0.1, theme.colors.tertiary),
       primary50: lighten(0.2, theme.colors.tertiary),
       primary75: lighten(0.3, theme.colors.tertiary),
@@ -137,9 +137,25 @@ const AddNewMember = () => {
       </button>
 
       <Presence id='body' condition={inviteNewMember}>
-        <Form>
+        <Form
+          path='test'
+          manipulateData={data => {
+            const tasks = []
+
+            for (let i = 1; i <= 10; i++)
+              tasks.push({
+                title: data[`title_${i}`],
+                task: data[`task_${i}`]
+              })
+
+            return {
+              member: data.new_member,
+              tasks
+            }
+          }}
+        >
           <Select
-            name='new_member'
+            name='id'
             placeholder='Participante'
             theming={selectTheme}
             styling={selectStyle}
