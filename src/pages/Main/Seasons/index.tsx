@@ -5,16 +5,25 @@ import University from './University'
 
 import api from 'services/api'
 
-import { Role } from 'store/Async/roles'
 import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
 
 import { useSelector } from 'react-redux'
+import { SeasonResType } from 'types/Responses/university/seasons'
+import { UniversitiesResType } from 'types/Responses/university/universities'
 
-const getAllUniversitiesOfUser = (): UniversityType[] => [
+export interface SeasonUniversityType {
+  id: number
+  name: string
+  isAdmin: boolean
+  seasons?: SeasonResType[]
+}
+
+const getAllUniversitiesOfUser = (): SeasonUniversityType[] => [
   {
     name: 'Universidade Anhembi Morumbi',
     id: 1,
+    isAdmin: true,
     seasons: [
       {
         title: 'Primeira temporada',
@@ -51,6 +60,7 @@ const getAllUniversitiesOfUser = (): UniversityType[] => [
   {
     name: 'Universidade Anhembi Morumbi 2',
     id: 2,
+    isAdmin: false,
     seasons: [
       {
         title: 'Segunda temporada',
@@ -71,45 +81,10 @@ const getAllUniversitiesOfUser = (): UniversityType[] => [
   },
   {
     name: 'Universidade Anhembi Morumbi 3',
-    id: 3
+    id: 3,
+    isAdmin: false
   }
 ]
-
-export interface PeriodsType {
-  confirm: number
-  dispatch: number
-  evaluate: number
-  in_progress: number
-}
-
-export interface SeasonType {
-  title: string
-  edict: string
-  begin: string
-  periods: PeriodsType
-  description: string
-  status: 'pre-release' | 'released' | 'canceled' | 'archived'
-  current_period: 'confirm' | 'dispatch' | 'evaluate' | 'in_progress'
-}
-
-export interface IntegrantType {
-  id: string
-  role: Role
-  name: string
-  avatar_uuid: string
-}
-
-export interface UniversityType {
-  id: number
-  name: string
-  seasons?: SeasonType[]
-  intregants?: IntegrantType[]
-}
-
-type UniversitiesType = {
-  id: number
-  name: string
-}[]
 
 const Seasons = forwardRef((_props, ref) => {
   const user = useSelector<RootState, UserState>(({ user }) => user)
@@ -118,14 +93,25 @@ const Seasons = forwardRef((_props, ref) => {
   const universities = getAllUniversitiesOfUser()
 
   const getUniversitiesOfUser = async () => {
-    const universities: UniversitiesType = await api.get('user/universities')
+    const universitiesOfUser = []
+    const universities: UniversitiesResType = await api.get('user/universities')
 
-    return universities.map(async ({ name, id }) => ({
-      id,
-      name,
-      seasons: await api.get(`university/${id}/seasons`),
-      isAdmin: user.administrator?.university_id === id
-    }))
+    for (let i = 0; i < universities.length; i++) {
+      const { id, name } = universities[i]
+
+      const seasons: SeasonResType[] = await api.get(`university/${id}/seasons`)
+
+      universitiesOfUser.push({
+        id: universities[i],
+        name: name,
+        seasons,
+        isAdmin:
+          user.administrator?.university_id === id &&
+          user.selectedRole === 'admin'
+      })
+    }
+
+    return universitiesOfUser
   }
 
   return (
@@ -136,7 +122,7 @@ const Seasons = forwardRef((_props, ref) => {
 
       <Content>
         {universities ? (
-          universities.map((university: UniversityType) => (
+          universities.map((university: SeasonUniversityType) => (
             <University
               key={university.id}
               university={university}

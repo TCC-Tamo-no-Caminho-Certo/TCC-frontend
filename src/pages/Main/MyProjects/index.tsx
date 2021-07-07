@@ -1,47 +1,47 @@
-import React, { forwardRef, useContext, useEffect, useState } from 'react'
+import React, { forwardRef, useContext } from 'react'
 import Style, { CreateProject } from './styles'
 
 import createProjectSchema from 'utils/validations/createProjectSchema'
 
+import api from 'services/api'
+
 import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
-import { getUniversities, UniversitiesState } from 'store/Async/universities'
 
 import Table from 'components/Table'
 import { File, Select, Submit, Text, Textarea } from 'components/Form'
 
 import { GlobalContext } from 'App'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
+import { UniversityResType } from 'types/Responses/university'
+import { ProfessorResType } from 'types/Responses/user/roles'
 
 const Projects = forwardRef((_props, ref) => {
-  const universities = useSelector<RootState, UniversitiesState>(
-    ({ universities }) => universities
-  )
   const user = useSelector<RootState, UserState>(({ user }) => user)
+  const { modalRef } = useContext(GlobalContext)
   const theme = useContext(ThemeContext)
 
-  const [universitiesOptions, setUniversitiesOptions] = useState<any[]>([])
-  const dispatch = useDispatch()
+  const getUniversitiesOptions = async () => {
+    const universitiesOfProfessor = []
+    const { universities }: ProfessorResType = await api.get(
+      '/user/roles/professor'
+    )
 
-  const canCreateProject = user.selectedRole === 'professor'
-
-  useEffect(() => {
-    dispatch(getUniversities(universities))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    universities.universities &&
-      setUniversitiesOptions(
-        universities.universities.map(({ university_id, name }) => ({
-          value: university_id,
-          label: name
-        }))
+    for (let i = 0; i < universities.length; i++) {
+      const university = universities[i]
+      const { name, id }: UniversityResType = await api.get(
+        `/university/${university.id}`
       )
-  }, [universities])
 
-  const { modalRef } = useContext(GlobalContext)
+      universitiesOfProfessor.push({
+        value: id,
+        label: name
+      })
+    }
+
+    return universitiesOfProfessor
+  }
 
   modalRef?.current?.config({
     close: {
@@ -55,7 +55,12 @@ const Projects = forwardRef((_props, ref) => {
           name='university'
           placeholder='Universidade'
           value={undefined}
-          options={universitiesOptions}
+          options={[
+            {
+              label: ':(',
+              value: ';('
+            }
+          ]}
         />
 
         <Text placeholder='Título' name='title' />
@@ -86,16 +91,16 @@ const Projects = forwardRef((_props, ref) => {
         </header>
 
         <Table
-          path=''
+          path='user/projects'
           isLoading={false}
           filters={{ name: true, from: true, to: true }}
           headerData={[
-            { label: 'Nome', name: 'name' },
-            { label: 'Data', name: 'date' }
+            { label: 'Nome', name: 'title' },
+            { label: 'Status', name: 'status' }
           ]}
         />
 
-        {canCreateProject && (
+        {user.selectedRole === 'professor' && (
           <button id='newProject' onClick={() => modalRef?.current?.toggle()}>
             Criar novo projeto
           </button>

@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import Style, { DefaultField, Field } from './styles'
 
-import { PeriodsType } from 'pages/Main/Seasons'
-
 import CalendarIcon from 'assets/global/CalendarIcon'
 import CloseIcon from 'assets/global/CloseIcon'
 import PencilIcon from 'assets/Inputs/PencilIcon'
 
 import { Text } from 'components/Form'
+
+import { PeriodsType } from 'types/Responses/university/seasons'
 
 interface DatesTableProps {
   periods: PeriodsType

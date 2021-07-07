@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import Style, { Content } from './styles'
 
-import { SeasonType } from '../..'
 import DatesTable from './DatesTable'
 
 import ArrowIcon from 'assets/global/ArrowIcon'
@@ -11,10 +10,12 @@ import CalendarIcon from 'assets/global/CalendarIcon'
 import { Datepicker, File, Submit, Textarea } from 'components/Form'
 
 import { motion, Transition, Variants } from 'framer-motion'
+import { SeasonResType } from 'types/Responses/university/seasons'
 
 interface SeasonProps {
   id: string
-  season: SeasonType
+  isAdmin: boolean
+  season: SeasonResType
   selecteds?: string[]
   setSelecteds?: Dispatch<SetStateAction<string[] | undefined>>
 }
@@ -50,12 +51,11 @@ const contentAnimation: Variants = {
 const Season = ({
   id,
   selecteds,
+  isAdmin,
   setSelecteds,
   season: { title, description, begin, edict, periods }
 }: SeasonProps) => {
   const [disabled, setDisabled] = useState(false)
-
-  const isAdmin = true
 
   const isSelected =
     selecteds?.find(season_id => season_id === id) !== undefined

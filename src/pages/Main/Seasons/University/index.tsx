@@ -8,14 +8,14 @@ import React, {
 import Style from './styles'
 
 import Season from './Season'
-import { UniversityType } from '../index'
+import { SeasonUniversityType } from '../index'
 
 import Presence from 'components/Presence'
 
 import { motion, Transition, Variants } from 'framer-motion'
 
 interface UniversityProps {
-  university: UniversityType
+  university: SeasonUniversityType
   selecteds?: number[]
   setSelecteds?: Dispatch<SetStateAction<number[] | undefined>>
 }
@@ -45,7 +45,7 @@ const bgAnimation: Variants = {
 }
 
 const University = ({
-  university: { name, seasons, id },
+  university: { name, seasons, id, isAdmin },
   selecteds,
   setSelecteds
 }: UniversityProps) => {
@@ -104,6 +104,7 @@ const University = ({
             seasons.map((season, index) => (
               <Season
                 season={season}
+                isAdmin={isAdmin}
                 id={`${id}-${index}`}
                 key={`${id}-${index}`}
                 selecteds={selectedSeasons}
