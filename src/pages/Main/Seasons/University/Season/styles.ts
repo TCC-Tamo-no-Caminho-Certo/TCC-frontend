@@ -55,10 +55,15 @@ export const Content = styled(Presence)`
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 
     width: 100%;
     margin-top: 16px;
     font-size: clamp(1.4rem, 0.6rem + 2.6vw, 2.1rem);
+
+    #label {
+      margin-bottom: 8px;
+    }
   }
 
   #beginDatepicker {
@@ -75,10 +80,21 @@ export const Content = styled(Presence)`
         min-width: 200px;
         max-width: 200px;
 
+        border: none;
+
         input {
-          min-width: 200px;
-          max-width: 200px;
+          text-align: center;
         }
+      }
+    }
+  }
+
+  @media screen and (min-width: 900px) {
+    #beginDatepicker {
+      flex-direction: row;
+
+      #label {
+        margin-bottom: 0px;
       }
     }
   }
@@ -86,12 +102,14 @@ export const Content = styled(Presence)`
 
 const Style = styled(motion.li)`
   position: relative;
-  z-index: 2;
+  z-index: 1;
 
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
+
+  overflow: hidden;
 
   #seasonTitle {
     width: 100%;

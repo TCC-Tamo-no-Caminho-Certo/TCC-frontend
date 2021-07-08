@@ -10,6 +10,8 @@ import Style from './styles'
 
 import Member from './Member'
 
+import transition from 'utils/transition'
+
 import ArrowIcon from 'assets/global/ArrowIcon'
 
 import Presence from 'components/Presence'
@@ -41,11 +43,6 @@ export const ListContext = createContext<ListContextProps>({
     duration: 0.3
   }
 })
-
-const transition: Transition = {
-  type: 'tween',
-  duration: 0.3
-}
 
 const memberAppear: Variants = {
   initial: {

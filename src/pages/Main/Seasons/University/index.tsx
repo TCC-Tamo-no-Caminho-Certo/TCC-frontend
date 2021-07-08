@@ -8,21 +8,18 @@ import React, {
 import Style from './styles'
 
 import Season from './Season'
-import { SeasonUniversityType } from '../index'
+import { UniversityType } from '../index'
+
+import transition from 'utils/transition'
 
 import Presence from 'components/Presence'
 
-import { motion, Transition, Variants } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 
 interface UniversityProps {
-  university: SeasonUniversityType
+  university: UniversityType
   selecteds?: number[]
   setSelecteds?: Dispatch<SetStateAction<number[] | undefined>>
-}
-
-const transition: Transition = {
-  type: 'tween',
-  duration: 0.3
 }
 
 const buttonAnimation: Variants = {
@@ -30,14 +27,15 @@ const buttonAnimation: Variants = {
   rounded: { borderRadius: '24px 24px 24px 24px', transition },
   unrounded: {
     borderRadius: '24px 24px 0px 0px',
-    transition: { ...transition }
+    transition
   }
 }
 
 const bgAnimation: Variants = {
-  initial: { height: 0, opacity: 0 },
+  initial: { y: -64, height: 0, opacity: 0 },
   enter: { y: 0, opacity: 1, height: 'auto', transition },
   exit: {
+    y: -64,
     height: 0,
     opacity: 0,
     transition
@@ -45,9 +43,9 @@ const bgAnimation: Variants = {
 }
 
 const University = ({
-  university: { name, seasons, id, isAdmin },
   selecteds,
-  setSelecteds
+  setSelecteds,
+  university: { name, seasons, id, isAdmin }
 }: UniversityProps) => {
   const [selectedSeasons, setSelectedSeasons] = useState<string[]>()
   const [disabled, setDisabled] = useState(false)
@@ -58,31 +56,29 @@ const University = ({
     selecteds?.find(university_id => university_id === id) !== undefined
 
   const onNameClick = () => {
-    setDisabled(true)
-
     setSelecteds &&
       setSelecteds(prev => {
         if (isSelected)
           return prev?.filter(selectedMonth => selectedMonth !== id)
         return prev ? [...prev, id] : [id]
       })
-
-    setTimeout(() => {
-      setDisabled(false)
-    }, 400)
   }
 
   useEffect(() => {
     setDisabled(true)
     setSelectedSeasons && setSelectedSeasons(undefined)
 
-    !isSelected
-      ? setTimeout(() => (showUniversity.current = false), 300)
-      : (showUniversity.current = true)
-
-    setTimeout(() => {
-      setDisabled(false)
-    }, 400)
+    if (isSelected) {
+      showUniversity.current = true
+      setTimeout(() => {
+        setDisabled(false)
+      }, 400)
+    } else {
+      setTimeout(() => (showUniversity.current = false), 300)
+      setTimeout(() => {
+        setDisabled(false)
+      }, 700)
+    }
   }, [isSelected])
 
   return (

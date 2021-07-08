@@ -40,6 +40,8 @@ const Style = styled.section`
     align-items: center;
     justify-content: center;
 
+    padding: 24px;
+
     width: max(100%, 280px);
   }
 

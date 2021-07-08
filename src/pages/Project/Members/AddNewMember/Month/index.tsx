@@ -1,21 +1,18 @@
 import React, { useContext, useState } from 'react'
 import Style from './styles'
 
+import transition from 'utils/transition'
+
 import InterrogationIcon from 'assets/global/InterrogationIcon'
 import ArrowIcon from 'assets/global/ArrowIcon'
 
 import { Text, Textarea } from 'components/Form'
 
-import { motion, Transition, Variants } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { ThemeContext } from 'styled-components'
 
 interface MonthProps {
   index: number
-}
-
-const transition: Transition = {
-  type: 'tween',
-  duration: 0.3
 }
 
 const Month = ({ index }: MonthProps) => {

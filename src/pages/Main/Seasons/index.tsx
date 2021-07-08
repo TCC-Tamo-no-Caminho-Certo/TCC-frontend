@@ -12,14 +12,14 @@ import { useSelector } from 'react-redux'
 import { SeasonResType } from 'types/Responses/university/seasons'
 import { UniversitiesResType } from 'types/Responses/university/universities'
 
-export interface SeasonUniversityType {
+export interface UniversityType {
   id: number
   name: string
   isAdmin: boolean
   seasons?: SeasonResType[]
 }
 
-const getAllUniversitiesOfUser = (): SeasonUniversityType[] => [
+const getAllUniversitiesOfUser = (): UniversityType[] => [
   {
     name: 'Universidade Anhembi Morumbi',
     id: 1,
@@ -88,12 +88,13 @@ const getAllUniversitiesOfUser = (): SeasonUniversityType[] => [
 
 const Seasons = forwardRef((_props, ref) => {
   const user = useSelector<RootState, UserState>(({ user }) => user)
+
   const [selectedUniversities, setSelectedUniversities] = useState<number[]>()
 
   const universities = getAllUniversitiesOfUser()
 
-  const getUniversitiesOfUser = async () => {
-    const universitiesOfUser = []
+  const getUniversitiesOfUser = async (): Promise<UniversityType[]> => {
+    const universitiesOfUser: UniversityType[] = []
     const universities: UniversitiesResType = await api.get('user/universities')
 
     for (let i = 0; i < universities.length; i++) {
@@ -102,9 +103,9 @@ const Seasons = forwardRef((_props, ref) => {
       const seasons: SeasonResType[] = await api.get(`university/${id}/seasons`)
 
       universitiesOfUser.push({
-        id: universities[i],
-        name: name,
         seasons,
+        name: name,
+        id: universities[i].id,
         isAdmin:
           user.administrator?.university_id === id &&
           user.selectedRole === 'admin'
@@ -122,7 +123,7 @@ const Seasons = forwardRef((_props, ref) => {
 
       <Content>
         {universities ? (
-          universities.map((university: SeasonUniversityType) => (
+          universities.map((university: UniversityType) => (
             <University
               key={university.id}
               university={university}

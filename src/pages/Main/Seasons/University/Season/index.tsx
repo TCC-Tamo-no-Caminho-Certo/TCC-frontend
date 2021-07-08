@@ -3,13 +3,15 @@ import Style, { Content } from './styles'
 
 import DatesTable from './DatesTable'
 
+import transition from 'utils/transition'
+
 import ArrowIcon from 'assets/global/ArrowIcon'
 import DownloadIcon from 'assets/global/Download'
 import CalendarIcon from 'assets/global/CalendarIcon'
 
 import { Datepicker, File, Submit, Textarea } from 'components/Form'
 
-import { motion, Transition, Variants } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { SeasonResType } from 'types/Responses/university/seasons'
 
 interface SeasonProps {
@@ -19,8 +21,6 @@ interface SeasonProps {
   selecteds?: string[]
   setSelecteds?: Dispatch<SetStateAction<string[] | undefined>>
 }
-
-const transition: Transition = { type: 'tween', duration: 0.3 }
 
 const arrowAnimation: Variants = {
   down: { rotate: 0 },

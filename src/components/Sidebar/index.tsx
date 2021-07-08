@@ -7,6 +7,8 @@ import React, {
 } from 'react'
 import Style, { Content, ListItem, SidebarNav } from './styles'
 
+import transition from 'utils/transition'
+
 import { SidebarActions } from 'store/Sync/sidebar'
 import { RootState } from 'store'
 
@@ -16,7 +18,7 @@ import Hamburger from 'components/Hamburger'
 import Presence from 'components/Presence'
 
 import { GlobalContext } from 'App'
-import { Variants } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, useHistory, useLocation } from 'react-router-dom'
 
@@ -98,6 +100,12 @@ const Sidebar = ({
 
     if (open) return isLarge ? `calc(100vw - ${width}px - 16px)` : '100vw'
     return isLarge ? `calc(100vw - ${closedWidth}px - 16px)` : '100vw'
+  }
+
+  const ul: Variants = {
+    exit: { height: 0, transition },
+    initial: { height: 0, transition },
+    enter: { height: 'auto', transition }
   }
 
   const content: Variants = {
@@ -195,7 +203,11 @@ const Sidebar = ({
           </Presence>
         </div>
 
-        <ul>
+        <motion.ul
+          initial='initial'
+          variants={ul}
+          animate={open ? 'enter' : 'exit'}
+        >
           {normalRoutes.map(({ paths, ref, icon: Icon, label }, index) => (
             <ListItem
               isOpen={open}
@@ -244,9 +256,13 @@ const Sidebar = ({
               </Presence>
             </ListItem>
           ))}
-        </ul>
+        </motion.ul>
 
-        <ul id='bottomRoutes'>
+        <motion.ul
+          initial='inital'
+          animate={open ? 'enter' : 'exit'}
+          id='bottomRoutes'
+        >
           {bottomRoutes.map(({ paths, ref, icon: Icon, label }, index) => (
             <ListItem
               isOpen={open}
@@ -295,7 +311,7 @@ const Sidebar = ({
               </Presence>
             </ListItem>
           ))}
-        </ul>
+        </motion.ul>
       </SidebarNav>
 
       {routes.map(({ paths, component, noContentMove, exact }, index) => (
