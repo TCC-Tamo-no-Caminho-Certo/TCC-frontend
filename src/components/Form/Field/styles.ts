@@ -21,7 +21,6 @@ export const EditField = styled.div`
   align-items: center;
   justify-content: center;
 
-  padding: 0 8px;
   cursor: pointer;
 
   .Text {
@@ -31,8 +30,22 @@ export const EditField = styled.div`
 
     input {
       margin: 0;
-      padding: 0px;
+      padding: 0;
+
       text-align: center;
+    }
+  }
+
+  #datepickerWrapper {
+    .Datepicker {
+      &,
+      .Text,
+      .Text input {
+        height: 100%;
+        min-width: 100%;
+        margin: 0px !important;
+        border-radius: 0px !important;
+      }
     }
   }
 
@@ -53,10 +66,5 @@ export const EditField = styled.div`
   }
 `
 
-const Style = styled.div``
-
-export default Style
-
-Style.displayName = 'Component-Style'
 EditField.displayName = 'EditField-Style'
 DefaultField.displayName = 'DefaultField-Style'

@@ -5,8 +5,8 @@ import '../../../../node_modules/react-modern-calendar-datepicker/lib/DatePicker
 import Text, { TextProps } from '../Text'
 
 import { datepickerToDate } from 'utils/dates'
-import ptbr from 'utils/dates/ptbr'
 
+import ptbr from 'i18n/dates/ptbr'
 import DatePicker, { DayValue } from 'react-modern-calendar-datepicker'
 
 export interface DatepickerColors {

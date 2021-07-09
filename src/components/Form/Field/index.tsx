@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Style, { DefaultField, EditField } from './styles'
+import { DefaultField, EditField } from './styles'
 
 import CloseIcon from 'assets/global/CloseIcon'
 import PencilIcon from 'assets/Inputs/PencilIcon'
@@ -44,43 +44,39 @@ const Field = ({
     )
   }, [conditionToEdit, inputType])
 
-  return (
-    <Style className='Field'>
-      {conditionToEdit || condition ? (
-        <EditField id='editField'>
-          {Icon && <Icon id='icon' />}
+  return conditionToEdit || condition ? (
+    <EditField id='editField' className='Field'>
+      {Icon && <Icon id='icon' />}
 
-          {inputType === 'text' && (
-            <Text ref={textRef} {...(textProps as any)} />
-          )}
+      {inputType === 'text' && <Text ref={textRef} {...(textProps as any)} />}
 
-          {inputType === 'datepicker' && (
-            <Datepicker ref={datepickerRef} {...(datepickerProps as any)} />
-          )}
+      <div id='datepickerWrapper'>
+        {inputType === 'datepicker' && (
+          <Datepicker ref={datepickerRef} {...(datepickerProps as any)} />
+        )}
+      </div>
+      <CloseIcon
+        id='closeIcon'
+        onClick={() => {
+          onCloseClick && onCloseClick()
+          conditionToEdit === undefined && setCondition(false)
+        }}
+      />
+    </EditField>
+  ) : (
+    <DefaultField
+      className='Field'
+      id='defaultField'
+      style={{ cursor: enableEdit ? 'pointer' : 'default' }}
+      onClick={() => {
+        onFieldClick && onFieldClick()
+        conditionToEdit === undefined && setCondition(true)
+      }}
+    >
+      {conditionToEdit && <PencilIcon />}
 
-          <CloseIcon
-            id='closeIcon'
-            onClick={() => {
-              onCloseClick && onCloseClick()
-              conditionToEdit === undefined && setCondition(false)
-            }}
-          />
-        </EditField>
-      ) : (
-        <DefaultField
-          id='defaultField'
-          style={{ cursor: enableEdit ? 'pointer' : 'default' }}
-          onClick={() => {
-            onFieldClick && onFieldClick()
-            conditionToEdit === undefined && setCondition(true)
-          }}
-        >
-          {conditionToEdit && <PencilIcon />}
-
-          {defaultValue}
-        </DefaultField>
-      )}
-    </Style>
+      {defaultValue}
+    </DefaultField>
   )
 }
 

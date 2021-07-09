@@ -3,7 +3,7 @@ import Style from './styles'
 
 import CalendarIcon from 'assets/global/CalendarIcon'
 
-import Field from 'components/Field'
+import { Field } from 'components/Form'
 
 import { PeriodsType } from 'types/Responses/university/seasons'
 
@@ -58,7 +58,7 @@ const DatesTable = ({
         <tr>
           <th>Período</th>
 
-          <th>Duração</th>
+          <th>Duração (Dias)</th>
         </tr>
       </thead>
 
@@ -80,7 +80,7 @@ const DatesTable = ({
                 textProps={{
                   name,
                   type: 'number',
-                  placeholder: 'Duração em dias'
+                  placeholder: 'Duração'
                 }}
               />
             </td>

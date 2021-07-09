@@ -63,7 +63,6 @@ const Style = styled.table`
   th,
   td {
     height: 42px;
-    padding: 8px 0px;
     text-align: center;
 
     border: solid 1px ${({ theme }) => theme.colors.tertiary};
@@ -77,7 +76,7 @@ const Style = styled.table`
     height: 46px;
 
     #specialTd {
-      padding: 0px;
+      padding: 0 8px;
     }
   }
 `

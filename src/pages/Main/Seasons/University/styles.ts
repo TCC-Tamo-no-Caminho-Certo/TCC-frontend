@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
 const Style = styled(motion.li)`
-  width: clamp(300px, 60vw, 600px);
+  width: 100%;
 
   #universityName {
     position: relative;
@@ -19,7 +19,7 @@ const Style = styled(motion.li)`
   }
 
   #seasons {
-    padding: 24px;
+    padding: 24px 8px;
     border-radius: 0px 0px 16px 16px;
 
     color: ${({ theme }) => theme.colors.tertiary};
@@ -30,6 +30,22 @@ const Style = styled(motion.li)`
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  @media screen and (min-width: 375px) {
+    width: 90%;
+
+    #seasons {
+      padding: 24px 12px;
+    }
+  }
+
+  @media screen and (min-width: 545px) {
+    width: clamp(300px, 80vw, 600px);
+
+    #seasons {
+      padding: 24px;
+    }
   }
 `
 

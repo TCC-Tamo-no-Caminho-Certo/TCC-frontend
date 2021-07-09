@@ -9,6 +9,16 @@ interface StyleProps {
 }
 
 const Style = styled.div<StyleProps>`
+  width: 100%;
+  padding: 0;
+
+  border-radius: 8px;
+
+  .Text input {
+    width: 100%;
+    cursor: pointer;
+  }
+
   ${({ colors, arrow, withoutStyle }) => {
     const { body, disabled, header, selected } = colors
 
@@ -17,18 +27,6 @@ const Style = styled.div<StyleProps>`
         font-size: 8px !important;
 
         background-color: ${body};
-      }
-
-      .DatePicker {
-        width: 100%;
-        padding: 0;
-
-        border-radius: 8px;
-
-        .Text input {
-          width: 100%;
-          cursor: pointer;
-        }
       }
 
       .Calendar {

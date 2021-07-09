@@ -9,8 +9,7 @@ import ArrowIcon from 'assets/global/ArrowIcon'
 import DownloadIcon from 'assets/global/Download'
 import CalendarIcon from 'assets/global/CalendarIcon'
 
-import Field from 'components/Field'
-import { File, Submit, Textarea } from 'components/Form'
+import { Field, File, Submit, Textarea } from 'components/Form'
 
 import { motion, Variants } from 'framer-motion'
 import { SeasonResType } from 'types/Responses/university/seasons'
@@ -110,10 +109,10 @@ const Season = ({
             <div id='label'> Início da temporada:</div>
 
             <Field
+              inputType='datepicker'
               icon={CalendarIcon}
               enableEdit={isAdmin}
               defaultValue={begin}
-              inputType='datepicker'
               datepickerProps={{
                 name: 'begin',
                 placeholder: 'Duração em dias'

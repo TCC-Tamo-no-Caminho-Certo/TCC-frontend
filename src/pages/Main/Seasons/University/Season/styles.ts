@@ -124,13 +124,6 @@ const Style = styled(motion.li)`
     margin-top: 16px;
   }
 
-  .Field {
-    #defaultField,
-    #editField {
-      height: 42px;
-    }
-  }
-
   #seasonTitle {
     width: 100%;
     padding: 16px;
@@ -152,6 +145,22 @@ const Style = styled(motion.li)`
       transform: rotate(0deg);
 
       fill: ${({ theme }) => theme.colors.secondary};
+    }
+  }
+
+  #beginDatepicker {
+    .Field {
+      height: 42px;
+
+      input {
+        height: 42px;
+      }
+    }
+  }
+
+  @media screen and (min-width: 545px) {
+    #beginDatepicker .Field > div {
+      width: 180px;
     }
   }
 `

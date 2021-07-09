@@ -16,6 +16,7 @@ import Select from './Select'
 import File from './File'
 import Checkbox from './Checkbox'
 import Textarea from './Textarea'
+import Field from './Field'
 
 import api from 'services/api'
 
@@ -260,5 +261,16 @@ const Form = ({
   )
 }
 
-export { Form, Text, Datepicker, Submit, Select, File, Checkbox, Textarea }
+export {
+  Form,
+  Text,
+  Datepicker,
+  Submit,
+  Select,
+  File,
+  Checkbox,
+  Textarea,
+  Field
+}
+
 export default Form
