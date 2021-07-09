@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useState } from 'react'
 import Style from './styles'
 
 import '../../../../node_modules/react-modern-calendar-datepicker/lib/DatePicker.css'
@@ -16,7 +16,7 @@ export interface DatepickerColors {
   selected?: string
 }
 
-interface DatepickerProps extends TextProps {
+export interface DatepickerProps extends TextProps {
   withoutStyle?: boolean
   isBirthday?: boolean
   dateColors?: DatepickerColors
@@ -45,84 +45,93 @@ const maximumDate = {
   day: present.day
 }
 
-const Datepicker = ({
-  name,
-  arrow,
-  value,
-  icon: Icon,
-  isBirthday,
-  withoutStyle = false,
-  dateColors = {
-    body: '#fcfcfc',
-    header: '#6e4850',
-    selected: '#d65881',
-    disabled: '#d62828'
-  },
-  ...rest
-}: DatepickerProps) => {
-  const [selectedDate, setSelectedDate] = useState<DayValue>(null)
-
-  const renderCustomInput = useCallback(
-    ({ ref }: any) => {
-      const onClick = () => {
-        const year: YearButton = document.querySelector('.Calendar__yearText')
-        if (year && !selectedDate) year.click()
-      }
-
-      return !withoutStyle ? (
-        <Text
-          isDate
-          readOnly
-          ref={ref}
-          id={name}
-          name={name}
-          icon={Icon}
-          onClick={onClick}
-          value={datepickerToDate(selectedDate)}
-          {...rest}
-        />
-      ) : (
-        <Text
-          isDate
-          readOnly
-          ref={ref}
-          id={name}
-          name={name}
-          icon={Icon}
-          onClick={onClick}
-          value={selectedDate ? datepickerToDate(selectedDate) : 'Selecione...'}
-          {...rest}
-        />
-      )
+const Datepicker = forwardRef<any, DatepickerProps>(
+  (
+    {
+      name,
+      arrow,
+      value,
+      icon: Icon,
+      isBirthday,
+      withoutStyle = false,
+      dateColors = {
+        body: '#fcfcfc',
+        header: '#6e4850',
+        selected: '#d65881',
+        disabled: '#d62828'
+      },
+      ...rest
     },
-    [Icon, name, rest, selectedDate, withoutStyle]
-  )
+    ref
+  ) => {
+    const [selectedDate, setSelectedDate] = useState<DayValue>(null)
 
-  useEffect(() => {
-    setSelectedDate(value as DayValue)
-  }, [value])
+    const renderCustomInput = useCallback(
+      ({ ref }: any) => {
+        const onClick = () => {
+          const year: YearButton = document.querySelector('.Calendar__yearText')
+          if (year && !selectedDate) year.click()
+        }
 
-  return (
-    <Style
-      className='Datepicker'
-      arrow={arrow}
-      colors={dateColors}
-      withoutStyle={withoutStyle}
-    >
-      <DatePicker
-        calendarClassName='CalendarSize'
-        locale={ptbr}
-        value={selectedDate}
-        onChange={setSelectedDate}
-        calendarPopperPosition={arrow}
-        renderInput={renderCustomInput}
-        selectorEndingYear={present.year}
-        selectorStartingYear={minimumDate.year}
-        maximumDate={isBirthday ? maximumDate : undefined}
-        minimumDate={isBirthday ? minimumDate : undefined}
-      />
-    </Style>
-  )
-}
+        return !withoutStyle ? (
+          <Text
+            isDate
+            readOnly
+            ref={ref}
+            id={name}
+            name={name}
+            icon={Icon}
+            onClick={onClick}
+            value={datepickerToDate(selectedDate)}
+            {...rest}
+          />
+        ) : (
+          <Text
+            isDate
+            readOnly
+            ref={ref}
+            id={name}
+            name={name}
+            icon={Icon}
+            onClick={onClick}
+            value={
+              selectedDate ? datepickerToDate(selectedDate) : 'Selecione...'
+            }
+            {...rest}
+          />
+        )
+      },
+      [Icon, name, rest, selectedDate, withoutStyle]
+    )
+
+    useEffect(() => {
+      setSelectedDate(value as DayValue)
+    }, [value])
+
+    return (
+      <Style
+        ref={ref as any}
+        className='Datepicker'
+        arrow={arrow}
+        colors={dateColors}
+        withoutStyle={withoutStyle}
+        onClick={() => console.log('clicked')}
+      >
+        <DatePicker
+          calendarClassName='CalendarSize'
+          locale={ptbr}
+          value={selectedDate}
+          onChange={setSelectedDate}
+          calendarPopperPosition={arrow}
+          renderInput={renderCustomInput}
+          selectorEndingYear={present.year}
+          selectorStartingYear={minimumDate.year}
+          maximumDate={isBirthday ? maximumDate : undefined}
+          minimumDate={isBirthday ? minimumDate : undefined}
+        />
+      </Style>
+    )
+  }
+)
 
 export default Datepicker

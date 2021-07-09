@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
 const Style = styled(motion.li)`
-  width: clamp(320px, 60vw, 600px);
+  width: clamp(300px, 60vw, 600px);
 
   #universityName {
     position: relative;

@@ -22,8 +22,8 @@ import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 import { Ref } from 'components/Form'
 
 export interface TextColors {
-  unfocused?: string
   focused?: string
+  unfocused?: string
 }
 
 export interface TextProps extends HTMLProps<HTMLInputElement> {
@@ -125,7 +125,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
           spellCheck='false'
           value={value}
           id={rest.name}
-          ref={ref || textRef}
+          ref={ref || auxRef}
           type={hiddenInput()}
           onBlur={onInputBlur}
           onDrop={event => pasteAndDrop || event?.preventDefault()}

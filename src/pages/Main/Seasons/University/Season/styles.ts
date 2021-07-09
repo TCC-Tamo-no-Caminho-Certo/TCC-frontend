@@ -111,6 +111,26 @@ const Style = styled(motion.li)`
 
   overflow: hidden;
 
+  p {
+    width: 100%;
+    word-break: break-all;
+    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.8rem);
+
+    color: ${({ theme }) => theme.colors.tertiary};
+  }
+
+  .Submit {
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  .Field {
+    #defaultField,
+    #editField {
+      height: 42px;
+    }
+  }
+
   #seasonTitle {
     width: 100%;
     padding: 16px;
@@ -133,19 +153,6 @@ const Style = styled(motion.li)`
 
       fill: ${({ theme }) => theme.colors.secondary};
     }
-  }
-
-  p {
-    width: 100%;
-    word-break: break-all;
-    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.8rem);
-
-    color: ${({ theme }) => theme.colors.tertiary};
-  }
-
-  .Submit {
-    width: 100%;
-    margin-top: 16px;
   }
 `
 
