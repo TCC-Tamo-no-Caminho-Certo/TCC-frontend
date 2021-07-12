@@ -9,14 +9,8 @@ interface StyleProps {
 }
 
 const Style = styled.div<StyleProps>`
-  width: 100%;
-  padding: 0;
-
-  border-radius: 8px;
-
-  .Text input {
+  .DatePicker {
     width: 100%;
-    cursor: pointer;
   }
 
   ${({ colors, arrow, withoutStyle }) => {
@@ -206,7 +200,6 @@ const Style = styled.div<StyleProps>`
       `}
     `
   }}
-
   @media screen and (min-height: 900px) {
     .Calendar__monthSelector.-open,
     .Calendar__yearSelector.-open {

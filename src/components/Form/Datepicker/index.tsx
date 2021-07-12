@@ -110,8 +110,8 @@ const Datepicker = forwardRef<any, DatepickerProps>(
 
     return (
       <Style
-        ref={ref as any}
         className='Datepicker'
+        ref={ref as any}
         arrow={arrow}
         colors={dateColors}
         withoutStyle={withoutStyle}

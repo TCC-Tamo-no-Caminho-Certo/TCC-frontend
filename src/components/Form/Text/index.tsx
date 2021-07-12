@@ -150,5 +150,3 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
 )
 
 export default Text
-
-Text.displayName = 'Text'

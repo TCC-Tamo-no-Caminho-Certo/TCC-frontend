@@ -37,7 +37,6 @@ const Style = styled.div<StyleProps>`
   display: ${({ hidden }) => (hidden ? 'none' : 'flex')};
   align-items: center;
 
-  min-width: 284px;
   border-radius: 10px;
   height: clamp(35px, 3vh + 2vw, 44px);
 

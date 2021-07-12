@@ -38,7 +38,6 @@ export const GlobalContext = createContext<GlobalContextProps>({})
 
 const App = () => {
   const theme = useSelector<RootState, ThemeState>(({ theme }) => theme)
-
   const popupRef = useRef<PopupMethods>(null)
   const modalRef = useRef<ModalMethods>(null)
 
