@@ -19,8 +19,9 @@ export const getRoleLabel = (
   storeRoles?: RoleType[]
 ): string => {
   if (typeof roleKey === 'number') {
-    const roleTitle = storeRoles?.find(({ role_id }) => role_id === roleKey)
-      ?.title
+    const roleTitle = storeRoles?.find(
+      ({ role_id }) => role_id === roleKey
+    )?.title
 
     return roleTitle ? roles[roleTitle] : 'undefined'
   }
@@ -30,8 +31,9 @@ export const getRoleLabel = (
 
 export const getRoleName = (roleKey: number, storeRoles: RoleType[]): Role => {
   if (storeRoles) {
-    const roleTitle = storeRoles.find(({ role_id }) => role_id === roleKey)
-      ?.title
+    const roleTitle = storeRoles.find(
+      ({ role_id }) => role_id === roleKey
+    )?.title
 
     return roleTitle || 'guest'
   }

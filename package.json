@@ -48,7 +48,7 @@
     "react-modern-calendar-datepicker": "^3.1.6",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
+    "react-scripts": "^4.0.3",
     "react-select": "^4.3.1",
     "react-switch": "^5.0.1",
     "react-viewer": "^3.2.2",
@@ -58,7 +58,7 @@
     "yup": "^0.29.3"
   },
   "devDependencies": {
-    "@cypress/react": "^4.16.4",
+    "@cypress/react": "^5.9.1",
     "@types/jest": "^26.0.24",
     "@types/node": "^14.17.5",
     "@types/react": "^17.0.14",

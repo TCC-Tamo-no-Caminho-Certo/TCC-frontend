@@ -20,7 +20,7 @@ export const Header = styled.div<HeaderProps>`
   border-radius: 16px 16px 0 0;
 
   color: ${({ theme }) => theme.colors.secondary};
-  background-color: ${({ theme, role }) =>
+  background-color: ${({ theme, role }: any) =>
     role ? theme.roles[role] : theme.colors.primary}; ;
 `
 

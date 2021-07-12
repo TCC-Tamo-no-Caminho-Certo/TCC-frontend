@@ -54,14 +54,14 @@ export const RoleLi = styled.li<RoleLiProps>`
     background-color: ${({ theme }) => theme.colors.primary};
 
     &:hover {
-      background-color: ${({ theme, role }) => theme.roles[role]};
+      background-color: ${({ theme, role }: any) => theme.roles[role]};
     }
   }
 
   &:first-child {
     button {
       &:hover {
-        background-color: ${({ theme, role }) => theme.roles[role]};
+        background-color: ${({ theme, role }: any) => theme.roles[role]};
       }
     }
   }
@@ -69,7 +69,7 @@ export const RoleLi = styled.li<RoleLiProps>`
   &:last-child {
     button {
       &:hover {
-        background-color: ${({ theme, role }) => theme.roles[role]};
+        background-color: ${({ theme, role }: any) => theme.roles[role]};
       }
     }
   }
@@ -77,7 +77,7 @@ export const RoleLi = styled.li<RoleLiProps>`
   &:only-child {
     button {
       &:hover {
-        background-color: ${({ theme, role }) => theme.roles[role]};
+        background-color: ${({ theme, role }: any) => theme.roles[role]};
       }
     }
   }

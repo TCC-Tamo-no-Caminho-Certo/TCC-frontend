@@ -59,34 +59,16 @@ export const Content = styled(Presence)`
 
     width: 100%;
     margin-top: 16px;
-    font-size: clamp(1.4rem, 0.6rem + 2.6vw, 2.1rem);
+    font-size: clamp(1.3rem, 0.6rem + 2.6vw, 2rem);
 
     #label {
       margin-bottom: 8px;
     }
   }
 
-  #beginDatepicker {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .Datepicker {
-      max-width: 200px;
-      min-width: 200px;
-      margin-left: 16px;
-
-      .Text {
-        min-width: 200px;
-        max-width: 200px;
-
-        border: none;
-
-        input {
-          text-align: center;
-        }
-      }
-    }
+  #beginDatepicker .Field {
+    margin-left: 4px;
+    height: 42px;
   }
 
   @media screen and (min-width: 900px) {
@@ -148,23 +130,20 @@ const Style = styled(motion.li)`
     }
   }
 
-  #beginDatepicker {
-    .Field {
-      height: 42px;
-
-      input {
-        height: 42px;
-      }
-    }
-  }
-
   @media screen and (min-width: 545px) {
-    #beginDatepicker .Field > div {
-      width: 180px;
+    #beginDatepicker .Field {
+      .CalendarSize {
+        font-size: 9px !important;
+      }
+
+      > div {
+        width: 180px;
+      }
     }
   }
 `
 
 export default Style
 
-Style.displayName = 'AvatarAndInfo-Style'
+Style.displayName = 'Content-Style'
+Style.displayName = 'Season-Style'

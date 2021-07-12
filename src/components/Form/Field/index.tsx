@@ -50,11 +50,10 @@ const Field = ({
 
       {inputType === 'text' && <Text ref={textRef} {...(textProps as any)} />}
 
-      <div id='datepickerWrapper'>
-        {inputType === 'datepicker' && (
-          <Datepicker ref={datepickerRef} {...(datepickerProps as any)} />
-        )}
-      </div>
+      {inputType === 'datepicker' && (
+        <Datepicker ref={datepickerRef} {...(datepickerProps as any)} />
+      )}
+
       <CloseIcon
         id='closeIcon'
         onClick={() => {

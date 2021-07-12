@@ -32,9 +32,8 @@ interface InfosState {
 }
 
 const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
-  const { path, quantity, headerData, setTableState, tableState } = useContext(
-    TableContext
-  )
+  const { path, quantity, headerData, setTableState, tableState } =
+    useContext(TableContext)
   const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
 
   const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>

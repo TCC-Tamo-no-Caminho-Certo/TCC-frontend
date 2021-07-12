@@ -25,32 +25,18 @@ export const EditField = styled.div`
 
   .Text {
     border: none;
-    min-width: 32px;
     border-radius: 0px;
 
     input {
       margin: 0;
       padding: 0;
-
       text-align: center;
-    }
-  }
-
-  #datepickerWrapper {
-    .Datepicker {
-      &,
-      .Text,
-      .Text input {
-        height: 100%;
-        min-width: 100%;
-        margin: 0px !important;
-        border-radius: 0px !important;
-      }
     }
   }
 
   #closeIcon {
     width: 18px;
+    height: 100%;
     min-width: 18px;
     margin-left: 4px;
 
@@ -59,6 +45,7 @@ export const EditField = styled.div`
 
   #icon {
     width: 20px;
+    height: 100%;
     min-width: 20px;
     margin-right: 4px;
 

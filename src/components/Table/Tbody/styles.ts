@@ -22,7 +22,7 @@ export const Circle = styled.div<CircleProps>`
 `
 
 export const RoleTd = styled.td<RoleTdProps>`
-  color: ${({ theme, role }) => theme.roles[role]};
+  color: ${({ theme, role }: any) => theme.roles[role]};
 `
 
 const Style = styled.div`

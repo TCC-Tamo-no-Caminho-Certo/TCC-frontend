@@ -47,7 +47,7 @@ const Style = styled(motion.div)<StyleProps>`
         .role {
           font-size: clamp(1.3rem, 0.6rem + 2.6vw, 1.6rem);
 
-          color: ${({ theme, role }) =>
+          color: ${({ theme, role }: any) =>
             role ? theme.roles[role] : theme.colors.secondary};
         }
       }

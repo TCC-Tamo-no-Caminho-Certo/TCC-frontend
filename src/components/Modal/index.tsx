@@ -62,9 +62,8 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     const theme = useContext(ThemeContext)
 
     const modalRef = useRef(null)
-    const [{ content, close }, setModalConfig] = useState<ModalConfig>(
-      initialConfig
-    )
+    const [{ content, close }, setModalConfig] =
+      useState<ModalConfig>(initialConfig)
     const [openModal, setOpenModal] = useState(false)
 
     window.addEventListener('keydown', ({ key }) => {

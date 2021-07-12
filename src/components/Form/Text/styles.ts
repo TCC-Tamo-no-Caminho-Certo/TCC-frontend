@@ -61,6 +61,7 @@ const Style = styled.div<StyleProps>`
 
   input {
     height: 100%;
+    border-radius: 10px;
 
     border: none;
     background-color: transparent;
