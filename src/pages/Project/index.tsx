@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useRef } from 'react'
 
-import AboutProject from './AboutProject'
-import Members from './Members'
+import About from './About'
+import Participants from './Participants'
 
 import api from 'services/api'
 
@@ -42,20 +42,18 @@ const Profile = () => {
       {
         label: 'Projeto',
         icon: () => <ProjectIcon />,
-        component: () => (
-          <AboutProject ref={aboutProject} project={project.current} />
-        ),
+        component: () => <About ref={aboutProject} project={project.current} />,
         ref: aboutProject,
-        paths: ['/session/project']
+        paths: [`/session/project/${id}`]
       },
       {
         label: 'Participantes',
         icon: () => <ProjectIcon />,
         component: () => (
-          <Members ref={members} participants={participants.current} />
+          <Participants ref={members} participants={participants.current} />
         ),
         ref: members,
-        paths: ['/session/project/members']
+        paths: [`/session/project/${id}/participants`]
       },
       {
         label: 'Voltar ao mapa',
@@ -64,7 +62,7 @@ const Profile = () => {
         paths: ['/session/main/map']
       }
     ],
-    []
+    [id]
   )
 
   return (

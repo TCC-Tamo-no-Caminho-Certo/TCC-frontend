@@ -103,3 +103,6 @@ const Style = styled(motion.div)<StyleProps>`
 `
 
 export default Style
+
+Header.displayName = 'Header-Style'
+Style.displayName = 'Month-Style'

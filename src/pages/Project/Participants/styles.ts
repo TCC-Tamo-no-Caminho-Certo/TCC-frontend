@@ -11,4 +11,4 @@ const Style = styled(motion.section)`
 
 export default Style
 
-Style.displayName = 'Members-Style'
+Style.displayName = 'Participants-Style'

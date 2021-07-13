@@ -48,3 +48,5 @@ const Style = styled.section<StyleProps>`
 `
 
 export default Style
+
+Style.displayName = 'About-Style'

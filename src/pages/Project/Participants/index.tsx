@@ -2,12 +2,12 @@ import React, { forwardRef } from 'react'
 import Style from './styles'
 
 import List from './List'
-import AddNewMember from './AddNewMember'
+import AddNewMember from './AddParticipant'
 
 import { AnimateSharedLayout, motion } from 'framer-motion'
 import { ParticipantsResType } from 'types/Responses/project/participants'
 
-interface MembersProps {
+interface ParticipantsProps {
   participants?: ParticipantsResType
 }
 
@@ -54,7 +54,7 @@ const fakeWork = [
   }
 ]
 
-const getMembers = (): ParticipantsResType => {
+const getParticipants = (): ParticipantsResType => {
   return [
     {
       tasks: fakeWork,
@@ -94,7 +94,7 @@ const getMembers = (): ParticipantsResType => {
   ]
 }
 
-const getInvitedMembers = (): ParticipantsResType => {
+const getInvitedParticipants = (): ParticipantsResType => {
   return [
     {
       tasks: fakeWork,
@@ -134,31 +134,36 @@ const getInvitedMembers = (): ParticipantsResType => {
   ]
 }
 
-const Members = forwardRef<any, MembersProps>(({ participants }, ref) => {
-  const invitedParticipants = participants?.filter(
-    ({ status }) => status !== 'accepted'
-  )
-  const alreadyParticipants = participants?.filter(
-    ({ status }) => status === 'accepted'
-  )
+const Participants = forwardRef<any, ParticipantsProps>(
+  ({ participants }, ref) => {
+    // const invitedParticipants = participants?.filter(
+    //   ({ status }) => status !== 'accepted'
+    // )
+    // const alreadyParticipants = participants?.filter(
+    //   ({ status }) => status === 'accepted'
+    // )
 
-  return (
-    <Style ref={ref as any}>
-      <AnimateSharedLayout>
-        <motion.div layout='position'>
-          <h1>Lista de participantes</h1>
+    return (
+      <Style ref={ref as any}>
+        <AnimateSharedLayout>
+          <motion.div layout='position'>
+            <h1>Lista de participantes</h1>
 
-          <AddNewMember />
-        </motion.div>
+            <AddNewMember />
+          </motion.div>
 
-        <ul>
-          <List title='Participantes convidados' members={getMembers()} />
+          <ul>
+            <List
+              title='Participantes convidados'
+              members={getParticipants()}
+            />
 
-          <List title='Participantes' members={getInvitedMembers()} />
-        </ul>
-      </AnimateSharedLayout>
-    </Style>
-  )
-})
+            <List title='Participantes' members={getInvitedParticipants()} />
+          </ul>
+        </AnimateSharedLayout>
+      </Style>
+    )
+  }
+)
 
-export default Members
+export default Participants

@@ -56,3 +56,7 @@ const Style = styled(motion.div)`
 `
 
 export default Style
+
+Header.displayName = 'Header-Style'
+Body.displayName = 'Body-Style'
+Style.displayName = 'AddParcipant-Style'

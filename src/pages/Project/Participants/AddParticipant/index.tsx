@@ -40,7 +40,7 @@ const getFakeUser = [
   { label: 'André', value: 'all' }
 ]
 
-const AddNewMember = () => {
+const AddParticipant = () => {
   const theme = useContext(ThemeContext)
 
   const [inviteNewMember, setInviteNewMember] = useState(false)
@@ -140,7 +140,7 @@ const AddNewMember = () => {
 
   return (
     <Style
-      className='AddNewMember'
+      className='AddParticipant'
       animate={{
         transition,
         width: inviteNewMember ? '100%' : 250
@@ -185,4 +185,4 @@ const AddNewMember = () => {
   )
 }
 
-export default AddNewMember
+export default AddParticipant

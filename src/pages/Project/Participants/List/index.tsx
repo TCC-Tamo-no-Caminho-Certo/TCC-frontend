@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import Style from './styles'
 
-import Member from './Member'
+import Participant from './Participant'
 
 import transition from 'utils/transition'
 
@@ -134,7 +134,7 @@ const List = ({ members, title }: ListProps) => {
           >
             <ul>
               {members.map((member, index) => (
-                <Member
+                <Participant
                   index={index}
                   ref={memberRef}
                   key={member.id}

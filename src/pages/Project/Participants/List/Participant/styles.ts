@@ -79,4 +79,4 @@ const Style = styled(motion.div)<StyleProps>`
 
 export default Style
 
-Style.displayName = 'Member-Style'
+Style.displayName = 'Participant-Style'
