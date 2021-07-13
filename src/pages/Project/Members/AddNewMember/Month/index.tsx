@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import Style from './styles'
+import Style, { Header } from './styles'
 
 import transition from 'utils/transition'
 
@@ -15,8 +15,20 @@ interface MonthProps {
   index: number
 }
 
+const headerAnimation: Variants = {
+  initial: { borderRadius: '16px 16px 16px 16px' },
+  rounded: { borderRadius: '16px 16px 16px 16px' },
+  unrounded: { borderRadius: '16px 16px 0px 0px' }
+}
+
+const buttonAnimation: Variants = {
+  initial: { borderRadius: '16px 0px 0px 16px' },
+  rounded: { borderRadius: '16px 0px 0px 16px' },
+  unrounded: { borderRadius: '16px 0px 0px 0px' }
+}
+
 const Month = ({ index }: MonthProps) => {
-  const theme = useContext(ThemeContext)
+  const { colors } = useContext(ThemeContext)
 
   const [showBorder, setShowBorder] = useState(false)
   const [showTask, setShowTask] = useState(false)
@@ -33,8 +45,8 @@ const Month = ({ index }: MonthProps) => {
     },
     exit: {
       opacity: 0,
-      y: ((showTask ? 160 : 52) + 24) * -index,
-      transition
+      transition,
+      y: ((showTask ? 160 : 52) + 24) * -index
     }
   }
 
@@ -43,74 +55,70 @@ const Month = ({ index }: MonthProps) => {
       exit='exit'
       animate='enter'
       initial='initial'
-      className='month'
+      className='Month'
       showTask={showTask}
       variants={monthAppear}
       showBorder={showBorder}
     >
-      <div className='title'>
-        <button
+      <Header
+        initial='initial'
+        variants={headerAnimation}
+        animate={showTask ? 'unrounded' : 'rounded'}
+      >
+        <motion.button
           type='button'
-          onClick={() => {
-            setShowTask(!showTask)
-          }}
+          initial='initial'
+          variants={buttonAnimation}
+          onClick={() => setShowTask(!showTask)}
+          animate={showTask ? 'unrounded' : 'rounded'}
         >
-          <ArrowIcon
-            animate={{
-              rotate: showTask ? 0 : -90
-            }}
-          />
+          <ArrowIcon animate={{ rotate: showTask ? 0 : -90 }} />
           {`${index + 1}° Mês`}
-        </button>
+        </motion.button>
 
-        <div id='text'>
-          <Text
-            name={`title_${index + 1}`}
-            placeholder='Título'
-            textColors={{
-              focused: theme.colors.secondary,
-              unfocused: theme.colors.secondary
-            }}
-          />
-        </div>
+        <Text
+          maxLength={32}
+          placeholder='Título'
+          name={`title_${index + 1}`}
+          textColors={{
+            focused: colors.secondary,
+            unfocused: colors.secondary
+          }}
+        />
 
-        <div
+        <InterrogationIcon
+          onMouseLeave={() => {
+            setShowBorder(false)
+          }}
           onMouseEnter={() => {
             setShowBorder(true)
             !showTask && setShowTask(true)
           }}
-          onMouseLeave={() => {
-            setShowBorder(false)
-          }}
-        >
-          <InterrogationIcon />
-        </div>
-      </div>
+        />
+      </Header>
 
       <motion.div
         id='textareaField'
         initial={{
-          opacity: 0,
-          height: 0
+          height: 0,
+          opacity: 0
         }}
         animate={{
-          opacity: showTask ? 1 : 1,
+          transition,
           y: showTask ? 0 : -45,
           x: showTask ? 0 : -200,
-          height: showTask ? 'auto' : 0,
           scale: showTask ? 1 : 0,
-          transition: {
-            type: 'tween',
-            duration: 0.3
-          }
+          opacity: showTask ? 1 : 1,
+          height: showTask ? 'auto' : 0
         }}
       >
         <Textarea
-          name={`task_${index + 1}`}
+          maxLength={500}
           placeholder='Tarefas'
+          name={`task_${index + 1}`}
           textColors={{
-            focused: theme.colors.secondary,
-            unfocused: theme.colors.secondary
+            focused: colors.secondary,
+            unfocused: colors.secondary
           }}
         />
       </motion.div>

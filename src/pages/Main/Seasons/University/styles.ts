@@ -12,7 +12,7 @@ const Style = styled(motion.li)`
     height: 72px;
     font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.4rem);
 
-    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.4);
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.primary};
     border: solid 1px ${({ theme }) => theme.colors.secondary};
@@ -22,6 +22,7 @@ const Style = styled(motion.li)`
     padding: 24px 8px;
     border-radius: 0px 0px 16px 16px;
 
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.4);
     color: ${({ theme }) => theme.colors.tertiary};
     background-color: ${({ theme }) => theme.colors.secondary};
   }

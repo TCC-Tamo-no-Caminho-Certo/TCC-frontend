@@ -1,7 +1,9 @@
 import React, { useContext, useState } from 'react'
-import Style from './styles'
+import Style, { Body, Header } from './styles'
 
 import Month from './Month'
+
+import transition from 'utils/transition'
 
 import CloseIcon from 'assets/global/CloseIcon'
 
@@ -9,10 +11,34 @@ import Form, { Select, Submit } from 'components/Form'
 import Presence from 'components/Presence'
 import AvatarAndInfo from 'components/User/AvatarAndInfo'
 
-import { motion } from 'framer-motion'
+import { Variants } from 'framer-motion'
 import { lighten } from 'polished'
 import { Theme } from 'react-select'
 import { ThemeContext } from 'styled-components'
+
+const avatarAppear: Variants = {
+  initial: {
+    x: -320,
+    opacity: 0
+  },
+  enter: {
+    x: 0,
+    opacity: 1,
+    transition
+  },
+  exit: {
+    x: 320,
+    opacity: 0,
+    transition
+  }
+}
+
+const getFakeUser = [
+  { label: 'Miguel', value: 'student' },
+  { label: 'Gabriel', value: 'professor' },
+  { label: 'João', value: 'moderator' },
+  { label: 'André', value: 'all' }
+]
 
 const AddNewMember = () => {
   const theme = useContext(ThemeContext)
@@ -25,6 +51,10 @@ const AddNewMember = () => {
 
   for (let i = 1; i <= monthsQuantity; i++)
     months.push(<Month index={i - 1} key={i} />)
+
+  // const getUsers = async () => {
+  //   const users = api.get(`project/${id}`)
+  // }
 
   const selectStyle = {
     container: (before: any) => ({
@@ -93,67 +123,43 @@ const AddNewMember = () => {
     }
   })
 
-  const avatarAppear = {
-    initial: {
-      x: -320,
-      opacity: 0
-    },
-    enter: {
-      x: 0,
-      opacity: 1,
-      transition: { type: 'tween', duration: 0.3 }
-    },
-    exit: {
-      x: 320,
-      opacity: 0,
-      transition: { type: 'tween', duration: 0.3 }
+  const manipulateForm = (data: any) => {
+    const tasks = []
+
+    for (let i = 1; i <= 10; i++)
+      tasks.push({
+        task: data[`task_${i}`],
+        title: data[`title_${i}`]
+      })
+
+    return {
+      tasks,
+      member: data.new_member
     }
   }
 
   return (
     <Style
-      id='newMember'
+      className='AddNewMember'
       animate={{
-        width: inviteNewMember ? '100%' : 250,
-        transition: { type: 'tween', duration: 0.3 }
+        transition,
+        width: inviteNewMember ? '100%' : 250
       }}
     >
-      <button
+      <Header
         type='button'
         onClick={() => setInviteNewMember(!inviteNewMember)}
       >
-        <motion.div
-          id='closeIcon'
+        <CloseIcon
           initial={{ rotate: 45 }}
-          transition={{ type: 'tween', duration: 0.3 }}
-          animate={{ rotate: inviteNewMember ? 0 : 45 }}
-        >
-          <CloseIcon />
-        </motion.div>
+          animate={{ rotate: inviteNewMember ? 0 : 45, transition }}
+        />
 
-        <div id='invite' onClick={() => setShowAvatar(false)}>
-          {inviteNewMember ? 'Cancelar convite' : 'Convidar participante'}
-        </div>
-      </button>
+        {inviteNewMember ? 'Cancelar convite' : 'Convidar participante'}
+      </Header>
 
-      <Presence id='body' condition={inviteNewMember}>
-        <Form
-          path='test'
-          manipulateData={data => {
-            const tasks = []
-
-            for (let i = 1; i <= 10; i++)
-              tasks.push({
-                title: data[`title_${i}`],
-                task: data[`task_${i}`]
-              })
-
-            return {
-              member: data.new_member,
-              tasks
-            }
-          }}
-        >
+      <Body condition={inviteNewMember}>
+        <Form path='test' manipulateData={manipulateForm}>
           <Select
             name='id'
             placeholder='Participante'
@@ -163,23 +169,18 @@ const AddNewMember = () => {
               setShowAvatar(false)
               setTimeout(() => setShowAvatar(true), 300)
             }}
-            options={[
-              { label: 'Miguel', value: 'student' },
-              { label: 'Gabriel', value: 'professor' },
-              { label: 'João', value: 'moderator' },
-              { label: 'André', value: 'all' }
-            ]}
+            options={getFakeUser}
           />
 
           <Presence condition={showAvatar} variants={avatarAppear}>
-            <AvatarAndInfo name='Miguel Andrade' role='student' />
+            <AvatarAndInfo role='student' name='Miguel Andrade' />
           </Presence>
 
           {months.map(month => month)}
 
           <Submit>Enviar convite</Submit>
         </Form>
-      </Presence>
+      </Body>
     </Style>
   )
 }

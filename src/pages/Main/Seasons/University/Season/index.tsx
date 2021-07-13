@@ -127,7 +127,12 @@ const Season = ({
 
         {isAdmin ? (
           <>
-            <File name='edict' label='Enviar Edital' />
+            <File
+              noCropper
+              name='edict'
+              label='Enviar Edital'
+              accept='application/pdf'
+            />
 
             <Submit>Salvar alterações</Submit>
           </>

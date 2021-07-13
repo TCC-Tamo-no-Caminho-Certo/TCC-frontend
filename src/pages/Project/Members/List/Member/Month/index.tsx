@@ -12,8 +12,8 @@ interface MonthProps {
   size: number
   index: number
   task: {
+    task: string
     title: string
-    content: string
   }
 }
 
@@ -106,7 +106,7 @@ const Month = forwardRef<any, MonthProps>(({ task, index, size, id }, ref) => {
           }
         >
           <motion.p layout='position' transition={transition}>
-            {task.content}
+            {task.task}
           </motion.p>
         </Presence>
       </Style>

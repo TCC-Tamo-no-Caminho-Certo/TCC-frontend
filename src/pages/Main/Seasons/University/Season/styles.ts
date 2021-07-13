@@ -92,6 +92,9 @@ const Style = styled(motion.li)`
   justify-content: center;
 
   overflow: hidden;
+  border-radius: 18px;
+
+  box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.49);
 
   p {
     width: 100%;

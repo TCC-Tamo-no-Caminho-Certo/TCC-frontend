@@ -42,7 +42,6 @@ const File = ({
   noCropper = false,
   flexColumn = false,
   onChange: receivedOnChange,
-
   ...props
 }: FileProps) => {
   const form = useContext<FormState | null>(FormContext)

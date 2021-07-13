@@ -12,26 +12,18 @@ import { ListContext } from '../../List'
 
 import { getRoleLabel } from 'utils/roles'
 
-import { Role } from 'store/Async/roles'
-
 import AvatarIcon from 'assets/Inputs/AvatarIcon'
 import ArrowIcon from 'assets/global/ArrowIcon'
 
 import Presence from 'components/Presence'
 
 import { motion, Variants } from 'framer-motion'
-
-interface MemberType {
-  id: number
-  role: Role
-  name: string
-  tasks: { title: string; content: string }[]
-}
+import { ParticipantType } from 'types/Responses/project/participants'
 
 interface MemberProps {
   size: number
   index: number
-  currentMember: MemberType
+  currentMember: ParticipantType
 }
 
 const Member = forwardRef<any, MemberProps>(

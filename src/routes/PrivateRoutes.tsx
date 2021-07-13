@@ -26,7 +26,7 @@ const PrivateRoutes = () => {
       <Route path='/session/main' component={Main} />
       <Route path='/session/profile' component={Profile} />
       <Route path='/session/moderator' component={Moderator} />
-      <Route path='/session/project' component={Projects} />
+      <Route path='/session/project/:id' component={Projects} />
     </Switch>
   )
 }

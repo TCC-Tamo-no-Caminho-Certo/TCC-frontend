@@ -1,6 +1,11 @@
 import styled from 'styled-components'
+import { StatusType } from 'types/Responses/project'
 
-const Style = styled.section`
+interface StyleProps {
+  status?: StatusType
+}
+
+const Style = styled.section<StyleProps>`
   padding: 24px;
 
   header {
@@ -18,9 +23,20 @@ const Style = styled.section`
           width: 8px;
           height: 8px;
           border-radius: 100%;
-
-          background-color: gray;
           margin-right: 4px;
+
+          background-color: ${({ theme }) => {
+            switch (status) {
+              case 'accepted' || 'completed':
+                return theme.colors.green
+              case 'refused':
+                return theme.colors.red
+              case 'in_progress':
+                return theme.colors.yellow
+              default:
+                return theme.colors.gray
+            }
+          }};
         }
       }
     }

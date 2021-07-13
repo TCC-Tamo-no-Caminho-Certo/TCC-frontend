@@ -17,10 +17,11 @@ import ArrowIcon from 'assets/global/ArrowIcon'
 import Presence from 'components/Presence'
 
 import { motion, Transition, Variants } from 'framer-motion'
+import { ParticipantsResType } from 'types/Responses/project/participants'
 
 interface ListProps {
   title: string
-  members: any[]
+  members: ParticipantsResType
 }
 
 interface ListContextProps {

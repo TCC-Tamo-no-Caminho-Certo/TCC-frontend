@@ -1,15 +1,16 @@
 import React from 'react'
 
-const InterrogationIcon: React.FC = () => {
+const InterrogationIcon = (props: any) => {
   return (
     <svg
       width='303'
-      height='303'
-      viewBox='0 0 303 303'
       fill='none'
+      height='303'
       className='Icon'
+      viewBox='0 0 303 303'
       id='InterrogationIcon'
       xmlns='http://www.w3.org/2000/svg'
+      {...props}
     >
       <g id='Group'>
         <g id='Group_2'>

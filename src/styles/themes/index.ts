@@ -6,27 +6,27 @@ export { light, dark }
 interface Themes {
   name: string
   colors: {
-    primary: string
-    secondary: string
-    tertiary: string
-    white: string
-    green: string
-    yellow: string
     red: string
     gray: string
+    green: string
+    white: string
+    yellow: string
+    primary: string
+    tertiary: string
+    secondary: string
   }
   roles: {
+    admin: string
     guest: string
-    professor: string
-    customer: string
     student: string
+    customer: string
+    professor: string
     moderator: string
     evaluator: string
-    admin: string
   }
   sidebar: {
-    selected: string
     letters: string
+    selected: string
     background: string
   }
 }
