@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import Style from './styles'
 
 import Season from './Season'
@@ -59,10 +59,13 @@ const University = ({
               ),
             400
           )
-        : setSelecteds(prev => (prev ? [...prev, id] : [id]))
+        : setSelecteds(prev => {
+            if (isSelected)
+              return prev?.filter(selectedMonth => selectedMonth !== id)
+            return prev ? [...prev, id] : [id]
+          })
 
     setSelectedSeasons(undefined)
-
     setTimeout(() => setDisabled(false), 400)
   }
 
