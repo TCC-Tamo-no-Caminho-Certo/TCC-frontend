@@ -1,14 +1,8 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState
-} from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import Style from './styles'
 
 import Season from './Season'
-import { UniversityType } from '../index'
+import { UniversityDataType } from '../index'
 
 import transition from 'utils/transition'
 
@@ -17,7 +11,7 @@ import Presence from 'components/Presence'
 import { motion, Variants } from 'framer-motion'
 
 interface UniversityProps {
-  university: UniversityType
+  university: UniversityDataType
   selecteds?: number[]
   setSelecteds?: Dispatch<SetStateAction<number[] | undefined>>
 }
@@ -50,36 +44,27 @@ const University = ({
   const [selectedSeasons, setSelectedSeasons] = useState<string[]>()
   const [disabled, setDisabled] = useState(false)
 
-  const showUniversity = useRef(false)
-
   const isSelected =
     selecteds?.find(university_id => university_id === id) !== undefined
 
   const onNameClick = () => {
-    setSelecteds &&
-      setSelecteds(prev => {
-        if (isSelected)
-          return prev?.filter(selectedMonth => selectedMonth !== id)
-        return prev ? [...prev, id] : [id]
-      })
-  }
-
-  useEffect(() => {
     setDisabled(true)
-    setSelectedSeasons && setSelectedSeasons(undefined)
 
-    if (isSelected) {
-      showUniversity.current = true
-      setTimeout(() => {
-        setDisabled(false)
-      }, 400)
-    } else {
-      setTimeout(() => (showUniversity.current = false), 300)
-      setTimeout(() => {
-        setDisabled(false)
-      }, 700)
-    }
-  }, [isSelected])
+    if (setSelecteds)
+      selectedSeasons
+        ? setTimeout(
+            () =>
+              setSelecteds(prev =>
+                prev?.filter(selectedMonth => selectedMonth !== id)
+              ),
+            400
+          )
+        : setSelecteds(prev => (prev ? [...prev, id] : [id]))
+
+    setSelectedSeasons(undefined)
+
+    setTimeout(() => setDisabled(false), 400)
+  }
 
   return (
     <Style>
@@ -89,12 +74,12 @@ const University = ({
         disabled={disabled}
         onClick={onNameClick}
         variants={buttonAnimation}
-        animate={showUniversity.current ? 'unrounded' : 'rounded'}
+        animate={isSelected ? 'unrounded' : 'rounded'}
       >
         {name}
       </motion.button>
 
-      <Presence variants={bgAnimation} condition={showUniversity.current}>
+      <Presence variants={bgAnimation} condition={isSelected}>
         <ul id='seasons'>
           {seasons ? (
             seasons.map((season, index) => (

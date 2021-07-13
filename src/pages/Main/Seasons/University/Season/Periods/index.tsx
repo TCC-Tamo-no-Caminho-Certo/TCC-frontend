@@ -67,7 +67,7 @@ const DatesTable = ({
           <tr key={index}>
             <td>{label}</td>
 
-            <td id='specialTd'>
+            <td>
               <Field
                 icon={CalendarIcon}
                 enableEdit={isAdmin}

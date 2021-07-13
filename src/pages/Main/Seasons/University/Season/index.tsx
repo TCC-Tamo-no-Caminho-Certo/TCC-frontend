@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import Style, { Content } from './styles'
 
-import DatesTable from './DatesTable'
+import DatesTable from './Periods'
 
 import transition from 'utils/transition'
 
@@ -50,8 +50,8 @@ const contentAnimation: Variants = {
 
 const Season = ({
   id,
-  selecteds,
   isAdmin,
+  selecteds,
   setSelecteds,
   season: { title, description, begin, edict, periods }
 }: SeasonProps) => {

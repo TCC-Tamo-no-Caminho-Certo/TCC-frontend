@@ -12,14 +12,14 @@ import { useSelector } from 'react-redux'
 import { SeasonResType } from 'types/Responses/university/seasons'
 import { UniversitiesResType } from 'types/Responses/university/universities'
 
-export interface UniversityType {
+export interface UniversityDataType {
   id: number
   name: string
   isAdmin: boolean
   seasons?: SeasonResType[]
 }
 
-const getAllUniversitiesOfUser = (): UniversityType[] => [
+const getAllUniversitiesOfUser = (): UniversityDataType[] => [
   {
     name: 'Universidade Anhembi Morumbi',
     id: 1,
@@ -93,8 +93,8 @@ const Seasons = forwardRef((_props, ref) => {
 
   const universities = getAllUniversitiesOfUser()
 
-  const getUniversitiesOfUser = async (): Promise<UniversityType[]> => {
-    const universitiesOfUser: UniversityType[] = []
+  const getUniversitiesOfUser = async (): Promise<UniversityDataType[]> => {
+    const universitiesOfUser: UniversityDataType[] = []
     const universities: UniversitiesResType = await api.get('user/universities')
 
     for (let i = 0; i < universities.length; i++) {
@@ -123,7 +123,7 @@ const Seasons = forwardRef((_props, ref) => {
 
       <Content>
         {universities ? (
-          universities.map((university: UniversityType) => (
+          universities.map((university: UniversityDataType) => (
             <University
               key={university.id}
               university={university}

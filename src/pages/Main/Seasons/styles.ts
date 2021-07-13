@@ -51,6 +51,7 @@ const Style = styled.section`
     }
   }
 `
+
 export default Style
 
 NotLinked.displayName = 'NotLinked-Style'

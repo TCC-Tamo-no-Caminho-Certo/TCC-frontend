@@ -54,8 +54,8 @@ export const Content = styled(Presence)`
   #beginDatepicker {
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
+    justify-content: center;
 
     width: 100%;
     margin-top: 16px;
@@ -67,8 +67,8 @@ export const Content = styled(Presence)`
   }
 
   #beginDatepicker .Field {
-    margin-left: 4px;
     height: 42px;
+    margin-left: 4px;
   }
 
   @media screen and (min-width: 900px) {
@@ -107,6 +107,9 @@ const Style = styled(motion.li)`
   }
 
   #seasonTitle {
+    position: relative;
+    z-index: 2;
+
     width: 100%;
     padding: 16px;
     cursor: pointer;
