@@ -1,49 +1,47 @@
 import React, {
+  Dispatch,
   forwardRef,
-  useContext,
+  SetStateAction,
   useEffect,
   useRef,
   useState
 } from 'react'
-import Style from './styles'
+import Style, { Header } from './styles'
 
 import Month from './Month'
-import { ListContext } from '../../List'
+import { ulAnimation } from '../'
 
-import { getRoleLabel } from 'utils/roles'
+import transition from 'utils/transition'
 
-import AvatarIcon from 'assets/Inputs/AvatarIcon'
 import ArrowIcon from 'assets/global/ArrowIcon'
 
 import Presence from 'components/Presence'
+import AvatarAndInfo from 'components/User/AvatarAndInfo'
 
-import { motion, Variants } from 'framer-motion'
+import { Variants } from 'framer-motion'
 import { ParticipantType } from 'types/Responses/project/participants'
 
-interface MemberProps {
+interface ParticipantProps {
   size: number
   index: number
-  currentMember: ParticipantType
+  participant: ParticipantType
+  selecteds?: number[]
+  setSelecteds?: Dispatch<SetStateAction<number[] | undefined>>
 }
 
-const Member = forwardRef<any, MemberProps>(
-  ({ currentMember, index, size }, ref) => {
-    const { member, month, transition } = useContext(ListContext)
-
+const Participant = forwardRef<any, ParticipantProps>(
+  ({ participant, index, size, selecteds, setSelecteds }, ref) => {
+    const [selectedMonths, setSelectedMonths] = useState<string[]>()
     const [disabledButton, setDisabledButton] = useState(false)
     const [monthSize, setMonthSize] = useState(0)
 
     const monthRef = useRef<any>(null)
 
-    const { selectedMembers, setSelectedMembers } = member
-    const { setSelectedMonths } = month
-    const { id, name, tasks, role } = currentMember
+    const { id, name, tasks, role } = participant
+    const isSelected =
+      selecteds?.find(selected => selected === id) !== undefined
 
-    const showMember =
-      selectedMembers?.find(selectedMember => selectedMember === id) !==
-      undefined
-
-    const memberAppear: Variants = {
+    const participantAnimation: Variants = {
       initial: {
         opacity: 0,
         y: (size + 24) * -index
@@ -60,93 +58,77 @@ const Member = forwardRef<any, MemberProps>(
       }
     }
 
-    const onMemberClick = () => {
+    const onParticipantClick = () => {
       setDisabledButton(true)
 
-      if (setSelectedMembers && setSelectedMonths) {
+      if (setSelecteds && setSelectedMonths) {
         setSelectedMonths(undefined)
 
-        setTimeout(() => {
-          setDisabledButton(false)
-        }, 300)
-
-        if (showMember)
-          setSelectedMembers(prev =>
-            prev?.filter(selectedMember => selectedMember !== id)
-          )
-        else setSelectedMembers(prev => (prev ? [...prev, id] : [id]))
+        setSelecteds(prev => {
+          if (isSelected) return prev?.filter(selected => selected !== id)
+          return prev ? [...prev, id] : [id]
+        })
       }
+
+      setTimeout(() => {
+        setDisabledButton(false)
+      }, 400)
     }
 
     useEffect(() => {
-      showMember && setMonthSize(monthRef?.current.clientHeight)
-    }, [showMember])
+      isSelected && setMonthSize(monthRef?.current.clientHeight)
+    }, [isSelected])
 
     return (
-      <motion.li
-        id='teste'
+      <Style
         exit='exit'
         animate='enter'
         initial='initial'
-        className='Member'
-        variants={memberAppear}
+        className='Participant'
+        role={role}
+        ref={ref as any}
+        variants={participantAnimation}
       >
-        <motion.div
-          initial={{ width: 250 }}
-          animate={{ width: showMember ? '100%' : 250 }}
-          transition={{ ...transition, delay: showMember ? 0 : 0.3 }}
+        <Header
+          type='button'
+          onClick={onParticipantClick}
+          disabled={disabledButton}
         >
-          <Style layout role={role} ref={ref as any} transition={transition}>
-            <motion.button
-              type='button'
-              layout='position'
-              className='header'
-              transition={transition}
-              onClick={onMemberClick}
-              disabled={disabledButton}
-            >
-              <div className='avatar'>
-                <AvatarIcon />
+          <AvatarAndInfo name={name} role={role} />
 
-                <div className='info'>
-                  <span className='name'>{name}</span>
-                  <span className='role'>{role && getRoleLabel(role)}</span>
-                </div>
-              </div>
+          <ArrowIcon
+            initial={{ rotate: 0 }}
+            animate={{
+              rotate: isSelected ? 0 : -90,
+              transition
+            }}
+          />
+        </Header>
 
-              <ArrowIcon
-                initial={{ rotate: 0 }}
-                animate={{
-                  rotate: showMember ? 0 : -90,
-                  transition
-                }}
+        <Presence
+          className='content'
+          variants={ulAnimation}
+          condition={isSelected}
+          transition={transition}
+        >
+          <ul>
+            {tasks.map((task, index) => (
+              <Month
+                id={id}
+                task={task}
+                key={index}
+                index={index}
+                ref={monthRef}
+                size={monthSize}
+                selecteds={selectedMonths}
+                setSelecteds={setSelectedMonths}
               />
-            </motion.button>
-
-            <Presence
-              layout='position'
-              className='content'
-              condition={showMember}
-              transition={transition}
-            >
-              <motion.ul>
-                {tasks.map((task, index) => (
-                  <Month
-                    id={id}
-                    task={task}
-                    key={index}
-                    index={index}
-                    ref={monthRef}
-                    size={monthSize}
-                  />
-                ))}
-              </motion.ul>
-            </Presence>
-          </Style>
-        </motion.div>
-      </motion.li>
+            ))}
+          </ul>
+        </Presence>
+      </Style>
     )
   }
 )
 
-export default Member
+export default Participant

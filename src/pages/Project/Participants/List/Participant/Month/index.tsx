@@ -1,7 +1,7 @@
-import React, { forwardRef, useContext, useEffect, useState } from 'react'
+import React, { Dispatch, forwardRef, SetStateAction, useState } from 'react'
 import Style from './styles'
 
-import { ListContext } from '../../../List'
+import transition from 'utils/transition'
 
 import Presence from 'components/Presence'
 
@@ -11,107 +11,81 @@ interface MonthProps {
   id: number
   size: number
   index: number
-  task: {
-    task: string
-    title: string
+  task: { task: string; title: string }
+  selecteds?: string[]
+  setSelecteds?: Dispatch<SetStateAction<string[] | undefined>>
+}
+
+const taskAnimation: Variants = {
+  initial: { y: -12, opacity: 0, height: 0 },
+  exit: { y: -12, opacity: 0, height: 0, transition },
+  enter: { y: 0, opacity: 1, height: 'auto', transition }
+}
+
+const buttonAnimation: Variants = {
+  initial: { borderRadius: '24px 24px 24px 24px' },
+  unrounded: {
+    transition,
+    borderRadius: '24px 24px 0px 0px'
+  },
+  rounded: {
+    borderRadius: '24px 24px 24px 24px',
+    transition: { ...transition, delay: 0.2 }
   }
 }
 
-const Month = forwardRef<any, MonthProps>(({ task, index, size, id }, ref) => {
-  const { month, transition } = useContext(ListContext)
-  const [disabledButton, setDisabledButton] = useState(false)
+const Month = forwardRef<any, MonthProps>(
+  ({ task, index, size, id, selecteds, setSelecteds }, ref) => {
+    const [disabledButton, setDisabledButton] = useState(false)
 
-  const { setSelectedMonths, selectedMonths } = month
+    const monthId = `${id}-${index}`
+    const isSelected =
+      selecteds?.find(selected => selected === monthId) !== undefined
 
-  const monthId = `${id}-${index}`
-
-  const monthAppear: Variants = {
-    initial: {
-      opacity: 0,
-      y: (size + 24) * -index
-    },
-    enter: {
-      y: 0,
-      opacity: 1,
-      transition
-    },
-    exit: {
-      opacity: 0,
-      transition
+    const monthAnimation: Variants = {
+      enter: { opacity: 1, y: 0, transition },
+      initial: { opacity: 0, y: -index * (size + 16) },
+      exit: { opacity: 0, y: -index * (size + 16), transition }
     }
-  }
 
-  const workAppear: Variants = {
-    initial: {
-      y: -12,
-      opacity: 0
-    },
-    enter: {
-      y: 0,
-      opacity: 1,
-      transition: { ...transition, delay: 0.1 }
-    },
-    exit: {
-      y: -12,
-      opacity: 0,
-      transition
+    const onMonthClick = () => {
+      setDisabledButton(true)
+
+      if (setSelecteds)
+        setSelecteds(prev => {
+          if (isSelected) return prev?.filter(selected => selected !== monthId)
+          return prev ? [...prev, monthId] : [monthId]
+        })
+
+      setTimeout(() => setDisabledButton(false), 400)
     }
-  }
 
-  const onMonthClick = () => {
-    setDisabledButton(true)
-    setTimeout(() => setDisabledButton(false), 300)
-
-    if (setSelectedMonths)
-      setSelectedMonths(prev => {
-        if (
-          prev?.find(selectedMonth => selectedMonth === monthId) !== undefined
-        )
-          return prev?.filter(selectedMonth => selectedMonth !== monthId)
-        return prev ? [...prev, monthId] : [monthId]
-      })
-  }
-
-  useEffect(() => {
-    return () => {
-      setDisabledButton(false)
-    }
-  }, [])
-
-  return (
-    <motion.li
-      exit='exit'
-      animate='enter'
-      initial='initial'
-      className='Month'
-      variants={monthAppear}
-    >
-      <Style layout ref={ref as any} transition={transition}>
+    return (
+      <Style
+        exit='exit'
+        animate='enter'
+        initial='initial'
+        className='Month'
+        ref={ref as any}
+        variants={monthAnimation}
+      >
         <motion.button
-          id='month'
-          layout='position'
+          initial='initial'
           onClick={onMonthClick}
           disabled={disabledButton}
-          transition={transition}
+          variants={buttonAnimation}
+          animate={isSelected ? 'unrounded' : 'rounded'}
         >
           <div>{`${index + 1}° Mês`}</div>
           <div>{task.title}</div>
         </motion.button>
 
-        <Presence
-          variants={workAppear}
-          condition={
-            selectedMonths?.find(selectedMonth => selectedMonth === monthId) !==
-            undefined
-          }
-        >
-          <motion.p layout='position' transition={transition}>
-            {task.task}
-          </motion.p>
+        <Presence variants={taskAnimation} condition={isSelected}>
+          <p>{task.task}</p>
         </Presence>
       </Style>
-    </motion.li>
-  )
-})
+    )
+  }
+)
 
 export default Month

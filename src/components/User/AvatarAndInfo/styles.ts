@@ -5,8 +5,6 @@ const Style = styled.div`
   align-items: center;
   justify-content: center;
 
-  margin-bottom: 24px;
-
   div {
     display: flex;
     flex-direction: column;

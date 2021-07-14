@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import Style, { Body, Header } from './styles'
 
 import Month from './Month'
+import { ulAnimation } from '../List'
 
 import transition from 'utils/transition'
 
@@ -11,25 +12,25 @@ import Form, { Select, Submit } from 'components/Form'
 import Presence from 'components/Presence'
 import AvatarAndInfo from 'components/User/AvatarAndInfo'
 
-import { Variants } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { lighten } from 'polished'
 import { Theme } from 'react-select'
 import { ThemeContext } from 'styled-components'
 
 const avatarAppear: Variants = {
   initial: {
-    x: -320,
+    height: 0,
     opacity: 0
   },
   enter: {
-    x: 0,
+    transition,
     opacity: 1,
-    transition
+    height: 'auto'
   },
   exit: {
-    x: 320,
-    opacity: 0,
-    transition
+    height: 0,
+    transition,
+    opacity: 0
   }
 }
 
@@ -43,8 +44,10 @@ const getFakeUser = [
 const AddParticipant = () => {
   const theme = useContext(ThemeContext)
 
-  const [inviteNewMember, setInviteNewMember] = useState(false)
+  const [inviteNewParticipant, setInviteNewParticipant] = useState(false)
   const [showAvatar, setShowAvatar] = useState(false)
+
+  const ulRef = useRef<any>()
 
   const monthsQuantity = 10
   const months = []
@@ -143,42 +146,67 @@ const AddParticipant = () => {
       className='AddParticipant'
       animate={{
         transition,
-        width: inviteNewMember ? '100%' : 250
+        width: inviteNewParticipant ? '100%' : '100%'
       }}
     >
       <Header
         type='button'
-        onClick={() => setInviteNewMember(!inviteNewMember)}
+        onClick={() => {
+          setShowAvatar(false)
+          setInviteNewParticipant(!inviteNewParticipant)
+        }}
       >
-        <CloseIcon
+        <motion.div
+          id='closeIcon'
           initial={{ rotate: 45 }}
-          animate={{ rotate: inviteNewMember ? 0 : 45, transition }}
-        />
+          animate={{ rotate: inviteNewParticipant ? 0 : -45, transition }}
+        >
+          <CloseIcon />
+        </motion.div>
 
-        {inviteNewMember ? 'Cancelar convite' : 'Convidar participante'}
+        {inviteNewParticipant ? 'Cancelar convite' : 'Convidar participante'}
       </Header>
 
-      <Body condition={inviteNewMember}>
+      <Body
+        exit={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        condition={inviteNewParticipant}
+      >
         <Form path='test' manipulateData={manipulateForm}>
-          <Select
-            name='id'
-            placeholder='Participante'
-            theming={selectTheme}
-            styling={selectStyle}
-            onChange={() => {
-              setShowAvatar(false)
-              setTimeout(() => setShowAvatar(true), 300)
-            }}
-            options={getFakeUser}
-          />
+          <motion.ul
+            exit='exit'
+            animate='enter'
+            initial='initial'
+            ref={ulRef}
+            variants={ulAnimation}
+          >
+            <li>
+              <Select
+                name='id'
+                placeholder='Participante'
+                theming={selectTheme}
+                styling={selectStyle}
+                options={getFakeUser}
+                onChange={() => {
+                  setShowAvatar(false)
+                  setTimeout(() => setShowAvatar(true), 300)
+                }}
+              />
+            </li>
 
-          <Presence condition={showAvatar} variants={avatarAppear}>
-            <AvatarAndInfo role='student' name='Miguel Andrade' />
-          </Presence>
+            <Presence
+              variants={avatarAppear}
+              condition={showAvatar && inviteNewParticipant}
+            >
+              <AvatarAndInfo role='student' name='Miguel Andrade' />
+            </Presence>
 
-          {months.map(month => month)}
+            {months.map(month => month)}
 
-          <Submit>Enviar convite</Submit>
+            <li>
+              <Submit>Enviar convite</Submit>
+            </li>
+          </motion.ul>
         </Form>
       </Body>
     </Style>

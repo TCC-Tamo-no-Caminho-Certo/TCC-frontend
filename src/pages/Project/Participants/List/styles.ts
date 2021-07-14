@@ -2,6 +2,10 @@ import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
 const Style = styled(motion.div)`
+  .Participant {
+    margin-top: 24px;
+  }
+
   > button {
     display: flex;
     align-items: center;
@@ -23,10 +27,6 @@ const Style = styled(motion.div)`
 
   button {
     color: ${({ theme }) => theme.colors.secondary};
-  }
-
-  .Member {
-    margin-top: 24px;
   }
 `
 

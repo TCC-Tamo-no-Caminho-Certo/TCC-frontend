@@ -2,10 +2,12 @@ import { motion } from 'framer-motion'
 import { darken } from 'polished'
 import styled from 'styled-components'
 
-const Style = styled(motion.div)`
+const Style = styled(motion.li)`
+  border-radius: 24px;
+
   background-color: ${({ theme }) => theme.colors.tertiary};
 
-  #month {
+  button {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -15,21 +17,14 @@ const Style = styled(motion.div)`
     cursor: pointer;
 
     background-color: ${({ theme }) => darken(0.17, theme.colors.tertiary)};
-    margin-bottom: 12px;
-  }
-
-  p {
-    padding: 0 24px 24px 24px;
-  }
-
-  button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
     div {
       width: 50%;
     }
+  }
+
+  p {
+    padding: 24px;
   }
 `
 

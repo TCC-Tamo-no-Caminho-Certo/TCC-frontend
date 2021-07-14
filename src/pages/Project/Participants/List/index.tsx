@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState
-} from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Style from './styles'
 
 import Participant from './Participant'
@@ -16,36 +9,15 @@ import ArrowIcon from 'assets/global/ArrowIcon'
 
 import Presence from 'components/Presence'
 
-import { motion, Transition, Variants } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { ParticipantsResType } from 'types/Responses/project/participants'
 
 interface ListProps {
   title: string
-  members: ParticipantsResType
+  participants: ParticipantsResType
 }
 
-interface ListContextProps {
-  transition: Transition
-  month: {
-    selectedMonths?: string[]
-    setSelectedMonths?: Dispatch<SetStateAction<string[] | undefined>>
-  }
-  member: {
-    selectedMembers?: number[]
-    setSelectedMembers?: Dispatch<SetStateAction<number[] | undefined>>
-  }
-}
-
-export const ListContext = createContext<ListContextProps>({
-  month: {},
-  member: {},
-  transition: {
-    type: 'tween',
-    duration: 0.3
-  }
-})
-
-const memberAppear: Variants = {
+const participantAnimation: Variants = {
   initial: {
     y: -24,
     opacity: 0,
@@ -63,27 +35,31 @@ const memberAppear: Variants = {
   }
 }
 
-const List = ({ members, title }: ListProps) => {
-  const [selectedMembers, setSelectedMembers] = useState<number[] | undefined>()
-  const [selectedMonths, setSelectedMonths] = useState<string[] | undefined>()
+export const ulAnimation: Variants = {
+  initial: { height: 0 },
+  exit: { height: 0, transition },
+  enter: { height: 'auto', transition }
+}
+
+const List = ({ participants, title }: ListProps) => {
+  const [selectedParticipants, setSelectedParticipants] = useState<number[]>()
   const [disabledButton, setDisabledButton] = useState(false)
+  const [participantSize, setParticipantSize] = useState(0)
   const [showList, setShowList] = useState(false)
-  const [memberSize, setMemberSize] = useState(0)
 
   const memberRef = useRef<any>(null)
 
   const onListClick = () => {
     setShowList(!showList)
     setDisabledButton(true)
-    setSelectedMonths(undefined)
-    setSelectedMembers(undefined)
+
     setTimeout(() => {
       setDisabledButton(false)
     }, 400)
   }
 
   useEffect(() => {
-    if (showList) setMemberSize(memberRef?.current.clientHeight)
+    if (showList) setParticipantSize(memberRef?.current.clientHeight)
   }, [showList])
 
   return (
@@ -92,60 +68,37 @@ const List = ({ members, title }: ListProps) => {
       animate='enter'
       className='List'
       initial='initial'
-      variants={memberAppear}
+      variants={participantAnimation}
     >
-      <ListContext.Provider
-        value={{
-          transition,
-          month: {
-            selectedMonths,
-            setSelectedMonths
-          },
-          member: {
-            selectedMembers,
-            setSelectedMembers
-          }
-        }}
-      >
-        <Style>
-          <motion.button
-            type='button'
-            layout='position'
-            onClick={onListClick}
-            transition={transition}
-            disabled={disabledButton}
-          >
-            <ArrowIcon
-              initial={{ rotate: 0 }}
-              animate={{
-                rotate: showList ? 0 : -90,
-                transition
-              }}
-            />
+      <Style>
+        <button type='button' onClick={onListClick} disabled={disabledButton}>
+          <ArrowIcon
+            initial={{ rotate: 0 }}
+            animate={{
+              rotate: showList ? 0 : -90,
+              transition
+            }}
+          />
 
-            <span>{title}</span>
-          </motion.button>
+          <span>{title}</span>
+        </button>
 
-          <Presence
-            condition={showList}
-            exit={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            initial={{ opacity: 0 }}
-          >
-            <ul>
-              {members.map((member, index) => (
-                <Participant
-                  index={index}
-                  ref={memberRef}
-                  key={member.id}
-                  size={memberSize}
-                  currentMember={member}
-                />
-              ))}
-            </ul>
-          </Presence>
-        </Style>
-      </ListContext.Provider>
+        <Presence condition={showList} variants={ulAnimation}>
+          <ul>
+            {participants.map((participant, index) => (
+              <Participant
+                index={index}
+                ref={memberRef}
+                key={participant.id}
+                size={participantSize}
+                participant={participant}
+                selecteds={selectedParticipants}
+                setSelecteds={setSelectedParticipants}
+              />
+            ))}
+          </ul>
+        </Presence>
+      </Style>
     </motion.li>
   )
 }

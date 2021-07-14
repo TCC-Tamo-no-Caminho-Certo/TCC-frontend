@@ -2,9 +2,8 @@ import React, { forwardRef } from 'react'
 import Style from './styles'
 
 import List from './List'
-import AddNewMember from './AddParticipant'
+import AddParticipant from './AddParticipant'
 
-import { AnimateSharedLayout, motion } from 'framer-motion'
 import { ParticipantsResType } from 'types/Responses/project/participants'
 
 interface ParticipantsProps {
@@ -145,22 +144,20 @@ const Participants = forwardRef<any, ParticipantsProps>(
 
     return (
       <Style ref={ref as any}>
-        <AnimateSharedLayout>
-          <motion.div layout='position'>
-            <h1>Lista de participantes</h1>
+        <div>
+          <h1>Lista de participantes</h1>
 
-            <AddNewMember />
-          </motion.div>
+          <AddParticipant />
+        </div>
 
-          <ul>
-            <List
-              title='Participantes convidados'
-              members={getParticipants()}
-            />
+        <ul>
+          <List
+            title='Participantes convidados'
+            participants={getParticipants()}
+          />
 
-            <List title='Participantes' members={getInvitedParticipants()} />
-          </ul>
-        </AnimateSharedLayout>
+          <List title='Participantes' participants={getInvitedParticipants()} />
+        </ul>
       </Style>
     )
   }

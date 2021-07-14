@@ -33,7 +33,7 @@ const Month = ({ index }: MonthProps) => {
   const [showBorder, setShowBorder] = useState(false)
   const [showTask, setShowTask] = useState(false)
 
-  const monthAppear: Variants = {
+  const monthAnimation: Variants = {
     initial: {
       opacity: 0,
       y: ((showTask ? 100 : 52) + 24) * -index
@@ -57,8 +57,8 @@ const Month = ({ index }: MonthProps) => {
       initial='initial'
       className='Month'
       showTask={showTask}
-      variants={monthAppear}
       showBorder={showBorder}
+      variants={monthAnimation}
     >
       <Header
         initial='initial'

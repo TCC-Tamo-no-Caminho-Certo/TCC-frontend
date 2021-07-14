@@ -8,7 +8,24 @@ interface StyleProps {
   role?: Role
 }
 
-const Style = styled(motion.div)<StyleProps>`
+export const Header = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  padding: 16px;
+
+  #ArrowIcon {
+    width: 32px;
+
+    fill: ${({ theme }) => theme.colors.secondary};
+  }
+`
+
+const Style = styled(motion.li)<StyleProps>`
+  border-radius: 16px;
+
   box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.39);
   background-color: ${({ theme }) => darken(0.1, theme.colors.tertiary)};
 
@@ -16,64 +33,8 @@ const Style = styled(motion.div)<StyleProps>`
     margin-top: 16px;
   }
 
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 100%;
-    padding: 12px;
-
-    margin-bottom: 24px;
-
-    &,
-    * {
-      cursor: pointer;
-    }
-
-    .avatar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      .info {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-
-        margin-right: 16px;
-
-        .role {
-          font-size: clamp(1.3rem, 0.6rem + 2.6vw, 1.6rem);
-
-          color: ${({ theme, role }: any) =>
-            role ? theme.roles[role] : theme.colors.secondary};
-        }
-      }
-
-      #DefaultAvatar {
-        width: 72px;
-        height: 72px;
-        min-width: 72px;
-        min-height: 72px;
-
-        margin-right: 16px;
-      }
-    }
-
-    #ArrowIcon {
-      width: 24px;
-      height: 24px;
-      min-width: 24px;
-      min-height: 24px;
-
-      fill: ${({ theme }) => theme.colors.secondary};
-    }
-  }
-
   .content {
-    padding: 0 24px 24px 24px;
+    padding: 0 16px 16px 16px;
   }
 `
 

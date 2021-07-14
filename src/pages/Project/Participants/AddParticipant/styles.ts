@@ -12,29 +12,35 @@ export const Header = styled(motion.button)`
   padding: 16px;
   text-align: center;
   font-size: clamp(1rem, 0.6rem + 2.6vw, 1.8rem);
+  width: 100%;
 
   color: ${({ theme }) => theme.colors.secondary};
 
-  .Icon {
-    width: 22px;
-    height: 22px;
+  #closeIcon {
     margin-right: 16px;
 
-    stroke: ${({ theme }) => theme.colors.secondary};
+    .Icon {
+      width: 22px;
+      height: 22px;
+
+      stroke: ${({ theme }) => theme.colors.secondary};
+    }
   }
 `
 
 export const Body = styled(Presence)`
   width: 100%;
+  overflow: hidden;
   padding: 0 24px 24px 24px;
-
-  .Select {
-    margin-bottom: 24px;
-  }
 
   .Submit {
     width: 100%;
     margin-top: 24px;
+  }
+
+  .Select,
+  .AvatarAndInfo {
+    margin-bottom: 24px;
   }
 `
 
@@ -46,7 +52,6 @@ const Style = styled(motion.div)`
   flex-direction: column;
   justify-content: center;
 
-  width: 320px;
   margin-top: 24px;
   border-radius: 24px;
 

@@ -57,7 +57,7 @@ export const Header = styled(motion.div)`
   }
 `
 
-const Style = styled(motion.div)<StyleProps>`
+const Style = styled(motion.li)<StyleProps>`
   cursor: pointer;
   border-radius: 16px;
   font-size: clamp(1rem, 0.6rem + 2.6vw, 1.6rem);
