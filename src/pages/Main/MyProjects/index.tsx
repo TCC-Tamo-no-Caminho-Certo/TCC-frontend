@@ -14,7 +14,9 @@ import { File, Select, Submit, Text, Textarea } from 'components/Form'
 import { GlobalContext } from 'App'
 import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
+import { ProjectResType } from 'types/Responses/project'
 import { UniversityResType } from 'types/Responses/university'
+import { ProjectsResType } from 'types/Responses/user/projects'
 import { ProfessorResType } from 'types/Responses/user/roles'
 
 const Projects = forwardRef((_props, ref) => {
@@ -43,6 +45,27 @@ const Projects = forwardRef((_props, ref) => {
     return universitiesOfProfessor
   }
 
+  const getMyProjects = async () => {
+    const myProjects = []
+    const myProjectsIds: ProjectsResType = await api.get('/user/projects')
+
+    for (let i = 0; i < myProjectsIds.length; i++) {
+      const project: ProjectResType = await api.get(
+        `/projects/${myProjectsIds[i]}`
+      )
+      const university: UniversityResType = await api.get(
+        `/university/${project.university_id}`
+      )
+
+      myProjects.push({
+        ...project,
+        university
+      })
+    }
+
+    return myProjects
+  }
+
   modalRef?.current?.config({
     close: {
       top: 16,
@@ -63,9 +86,9 @@ const Projects = forwardRef((_props, ref) => {
           ]}
         />
 
-        <Text placeholder='Título' name='title' />
+        <Text placeholder='Título' name='title' maxLength={36} />
 
-        <Textarea placeholder='Resumo' name='description' />
+        <Textarea placeholder='Resumo' name='description' maxLength={500} />
 
         <File
           guides

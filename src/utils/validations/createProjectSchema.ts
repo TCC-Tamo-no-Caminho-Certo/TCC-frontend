@@ -2,7 +2,7 @@ import * as Yup from 'yup'
 
 const createProjectSchema = Yup.object({
   title: Yup.string()
-    .max(30, 'Título deve conter até 30 caracteres.')
+    .max(30, 'Título deve conter até 32 caracteres.')
     .required('Você esqueceu de informar o título.'),
 
   university: Yup.string().required('Selecione a universidade!'),

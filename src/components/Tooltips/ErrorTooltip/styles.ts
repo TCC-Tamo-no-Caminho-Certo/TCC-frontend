@@ -25,6 +25,8 @@ export const Trigger = styled.div`
 `
 
 const Style = styled(Popup)`
+  z-index: 10000 !important;
+
   border: none !important;
   max-width: 514px !important;
   border-radius: 10px !important;

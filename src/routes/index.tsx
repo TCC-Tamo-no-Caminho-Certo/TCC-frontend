@@ -19,7 +19,7 @@ import {
 } from 'react-router-dom'
 
 const Routes = () => {
-  const validation = useSelector<RootState, ValidationState>(
+  const { logged } = useSelector<RootState, ValidationState>(
     ({ validation }) => validation
   )
 
@@ -34,9 +34,9 @@ const Routes = () => {
   useEffect(() => {
     const path = location.pathname.split('/')[1]
 
-    if (!validation.logged) path !== 'session' && history.push('/session/main')
+    if (logged) path !== 'session' && history.push('/session/main')
     else path === 'session' && history.push('/home')
-  }, [location, history, validation.logged])
+  }, [location, history, logged])
 
   return (
     <Switch>

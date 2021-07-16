@@ -8,9 +8,9 @@ interface StyleProps {
 
 const Style = styled.div<StyleProps>`
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
 
   width: 320px;
   padding: 16px;

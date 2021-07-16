@@ -9,8 +9,8 @@ export const CreateProject = styled(Form)`
   justify-content: center;
 
   width: 500px;
-  padding: 48px 24px 24px 24px;
   border-radius: 16px;
+  padding: 48px 24px 24px 24px;
 
   background-color: ${({ theme }) => theme.colors.secondary};
 

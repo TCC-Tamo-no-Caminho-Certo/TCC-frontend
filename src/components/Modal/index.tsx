@@ -2,6 +2,7 @@ import React, {
   forwardRef,
   ReactElement,
   useContext,
+  useEffect,
   useImperativeHandle,
   useRef,
   useState
@@ -53,7 +54,7 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
       bottom = 'auto',
       bgHeight = '100%',
       translateY = '-60%',
-      zIndex = 9000,
+      zIndex,
       ...rest
     },
     ref
@@ -61,10 +62,16 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     const { overflow } = useContext<GlobalContextProps>(GlobalContext)
     const theme = useContext(ThemeContext)
 
+    useEffect(() => {
+      console.log('zindex', zIndex)
+    }, [zIndex])
+
     const modalRef = useRef(null)
-    const [{ content, close }, setModalConfig] =
+    const [{ content, close, props }, setModalConfig] =
       useState<ModalConfig>(initialConfig)
     const [openModal, setOpenModal] = useState(false)
+
+    const zindex = props?.zIndex ? props.zIndex : 9000
 
     window.addEventListener('keydown', ({ key }) => {
       key === 'Escape' && setOpenModal(false)
@@ -99,7 +106,7 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     return openModal ? (
       <>
         <ModalBackground
-          zIndex={zIndex}
+          zIndex={zindex}
           height={bgHeight}
           onClick={onBackgroundClick}
         />
@@ -107,7 +114,7 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
         <Style
           top={top}
           ref={modalRef}
-          zIndex={zIndex}
+          zIndex={zindex}
           bottom={bottom}
           translateY={translateY}
           closeTop={close?.top ? `${close.top}px` : '8px'}

@@ -109,6 +109,7 @@ const getInitialSelectedRole = (roles: Role[]): Role => {
     const haveHole = roles.filter(role => role === localRole)
     if (haveHole.length !== 0) return haveHole[0]
   }
+
   localStorage.setItem('@SLab_selected_role', roles[roles.length - 1])
   return roles[roles.length - 1]
 }
@@ -124,7 +125,8 @@ export const getUser = createAsyncThunk(
 
     return {
       ...user,
-      selectedRole: getInitialSelectedRole(user.roles),
+      // selectedRole: getInitialSelectedRole(user.roles),
+      selectedRole: 'professor',
       dataLoading: false
     }
   }
