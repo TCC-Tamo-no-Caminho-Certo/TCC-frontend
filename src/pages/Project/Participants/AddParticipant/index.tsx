@@ -1,10 +1,11 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Style, { Body, Header } from './styles'
 
 import Month from './Month'
-import { ulAnimation } from '../List'
 
 import transition from 'utils/transition'
+
+import useWindowDimensions from 'hooks/useWindowDimensions'
 
 import CloseIcon from 'assets/global/CloseIcon'
 
@@ -17,23 +18,6 @@ import { lighten } from 'polished'
 import { Theme } from 'react-select'
 import { ThemeContext } from 'styled-components'
 
-const avatarAppear: Variants = {
-  initial: {
-    height: 0,
-    opacity: 0
-  },
-  enter: {
-    transition,
-    opacity: 1,
-    height: 'auto'
-  },
-  exit: {
-    height: 0,
-    transition,
-    opacity: 0
-  }
-}
-
 const getFakeUser = [
   { label: 'Miguel', value: 'student' },
   { label: 'Gabriel', value: 'professor' },
@@ -41,23 +25,42 @@ const getFakeUser = [
   { label: 'André', value: 'all' }
 ]
 
+const avatarAppear: Variants = {
+  initial: { height: 0, opacity: 0 },
+  exit: { height: 0, transition, opacity: 0 },
+  enter: { transition, opacity: 1, height: 'auto' }
+}
+
+export const bodyAnimation: Variants = {
+  initial: { height: 0 },
+  exit: { height: 0, transition },
+  enter: { height: 'auto', transition }
+}
+
+export const headerAnimation: Variants = {
+  initial: { paddingBottom: 0 },
+  noPadding: { transition, paddingBottom: 0 },
+  padding: { transition, paddingBottom: 160 }
+}
+
 const AddParticipant = () => {
   const theme = useContext(ThemeContext)
 
-  const [inviteNewParticipant, setInviteNewParticipant] = useState(false)
-  const [showAvatar, setShowAvatar] = useState(false)
+  const { innerWidth } = useWindowDimensions()
 
-  const ulRef = useRef<any>()
+  const [isLarge, setisLarge] = useState(innerWidth >= 750)
+  const [showInvite, setShowInvite] = useState(false)
+  const [showAvatar, setShowAvatar] = useState(false)
 
   const monthsQuantity = 10
   const months = []
 
-  for (let i = 1; i <= monthsQuantity; i++)
-    months.push(<Month index={i - 1} key={i} />)
-
   // const getUsers = async () => {
   //   const users = api.get(`project/${id}`)
   // }
+
+  for (let i = 1; i <= monthsQuantity; i++)
+    months.push(<Month index={i - 1} key={i} />)
 
   const selectStyle = {
     container: (before: any) => ({
@@ -141,72 +144,75 @@ const AddParticipant = () => {
     }
   }
 
+  const onHeaderClick = () => {
+    if (showInvite) {
+      setShowAvatar(false)
+      setTimeout(() => setShowInvite(false), 300)
+    } else setShowInvite(true)
+  }
+
+  useEffect(() => {
+    setisLarge(innerWidth >= 750)
+  }, [innerWidth])
+
+  const AddParticipantAnimation: Variants = {
+    initial: { width: 250 },
+    fullInitial: { width: '100%' },
+    open: { width: 250, transition },
+    fullOpen: { width: '100%', transition }
+  }
+
   return (
     <Style
       className='AddParticipant'
-      animate={{
-        transition,
-        width: inviteNewParticipant ? '100%' : '100%'
-      }}
+      variants={AddParticipantAnimation}
+      initial={isLarge ? 'initial' : 'fullInitial'}
+      animate={isLarge && !showInvite ? 'open' : 'fullOpen'}
+      style={{ padding: showInvite ? '16px' : '16px 16px 0px 16px' }}
     >
-      <Header
-        type='button'
-        onClick={() => {
-          setShowAvatar(false)
-          setInviteNewParticipant(!inviteNewParticipant)
-        }}
-      >
+      <Header onClick={onHeaderClick}>
         <motion.div
-          id='closeIcon'
           initial={{ rotate: 45 }}
-          animate={{ rotate: inviteNewParticipant ? 0 : -45, transition }}
+          animate={{ rotate: showInvite ? 0 : -45, transition }}
         >
           <CloseIcon />
         </motion.div>
 
-        {inviteNewParticipant ? 'Cancelar convite' : 'Convidar participante'}
+        <div id='label'>
+          {showInvite ? 'Cancelar convite' : 'Convidar participante'}
+        </div>
       </Header>
 
       <Body
-        exit={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        condition={inviteNewParticipant}
+        exit='exit'
+        animate='enter'
+        initial='initial'
+        condition={showInvite}
+        variants={bodyAnimation}
       >
         <Form path='test' manipulateData={manipulateForm}>
-          <motion.ul
-            exit='exit'
-            animate='enter'
-            initial='initial'
-            ref={ulRef}
-            variants={ulAnimation}
+          <Select
+            name='id'
+            placeholder='Participante'
+            theming={selectTheme}
+            styling={selectStyle}
+            options={getFakeUser}
+            onChange={() => {
+              setShowAvatar(false)
+              setTimeout(() => setShowAvatar(true), 300)
+            }}
+          />
+
+          <Presence
+            variants={avatarAppear}
+            condition={showAvatar && showInvite}
           >
-            <li>
-              <Select
-                name='id'
-                placeholder='Participante'
-                theming={selectTheme}
-                styling={selectStyle}
-                options={getFakeUser}
-                onChange={() => {
-                  setShowAvatar(false)
-                  setTimeout(() => setShowAvatar(true), 300)
-                }}
-              />
-            </li>
+            <AvatarAndInfo role='student' name='Miguel Andrade' />
+          </Presence>
 
-            <Presence
-              variants={avatarAppear}
-              condition={showAvatar && inviteNewParticipant}
-            >
-              <AvatarAndInfo role='student' name='Miguel Andrade' />
-            </Presence>
+          <ul>{months.map(month => month)}</ul>
 
-            {months.map(month => month)}
-
-            <li>
-              <Submit>Enviar convite</Submit>
-            </li>
-          </motion.ul>
+          <Submit>Enviar convite</Submit>
         </Form>
       </Body>
     </Style>

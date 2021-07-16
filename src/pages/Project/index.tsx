@@ -17,7 +17,9 @@ import { ParticipantsResType } from 'types/Responses/project/participants'
 import { UniversityResType } from 'types/Responses/university'
 
 const Profile = () => {
-  const { sidebar } = useContext(ThemeContext)
+  const {
+    sidebar: { letters, selected, background }
+  } = useContext(ThemeContext)
 
   const participants = useRef<ParticipantsResType>()
   const university = useRef<UniversityResType>()
@@ -30,10 +32,10 @@ const Profile = () => {
   useEffect(() => {
     ;(async () => {
       project.current = await api.get(`project/${id}`)
+      participants.current = await api.get(`university/${id}/participants`)
       university.current = await api.get(
         `university/${project.current?.university_id}`
       )
-      participants.current = await api.get(`university/${id}/participants`)
     })()
   }, [id])
 
@@ -41,18 +43,18 @@ const Profile = () => {
     () => [
       {
         label: 'Projeto',
+        ref: aboutProject,
         icon: () => <ProjectIcon />,
         component: () => <About ref={aboutProject} project={project.current} />,
-        ref: aboutProject,
         paths: [`/session/project/${id}`]
       },
       {
         label: 'Participantes',
+        ref: members,
         icon: () => <ProjectIcon />,
         component: () => (
           <Participants ref={members} participants={participants.current} />
         ),
-        ref: members,
         paths: [`/session/project/${id}/participants`]
       },
       {
@@ -69,10 +71,10 @@ const Profile = () => {
     <Sidebar
       title='Perfil'
       samePage={true}
+      letters={letters}
+      selected={selected}
       routes={profileRoutes}
-      letters={sidebar.letters}
-      selected={sidebar.selected}
-      background={sidebar.background}
+      background={background}
     />
   )
 }

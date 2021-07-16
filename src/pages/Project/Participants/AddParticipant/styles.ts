@@ -4,21 +4,19 @@ import { motion } from 'framer-motion'
 import { darken } from 'polished'
 import styled from 'styled-components'
 
-export const Header = styled(motion.button)`
+export const Header = styled(motion.button).attrs({ type: 'button' })`
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: 16px;
-  text-align: center;
-  font-size: clamp(1rem, 0.6rem + 2.6vw, 1.8rem);
   width: 100%;
+  text-align: center;
+  padding-bottom: 16px;
+  font-size: clamp(1rem, 0.6rem + 2.6vw, 1.8rem);
 
   color: ${({ theme }) => theme.colors.secondary};
 
-  #closeIcon {
-    margin-right: 16px;
-
+  > div {
     .Icon {
       width: 22px;
       height: 22px;
@@ -26,12 +24,15 @@ export const Header = styled(motion.button)`
       stroke: ${({ theme }) => theme.colors.secondary};
     }
   }
+
+  #label {
+    margin-left: 16px;
+  }
 `
 
 export const Body = styled(Presence)`
   width: 100%;
   overflow: hidden;
-  padding: 0 24px 24px 24px;
 
   .Submit {
     width: 100%;
@@ -44,7 +45,7 @@ export const Body = styled(Presence)`
   }
 `
 
-const Style = styled(motion.div)`
+const Style = styled(motion.article)`
   position: relative;
 
   display: flex;

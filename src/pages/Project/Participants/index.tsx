@@ -143,21 +143,26 @@ const Participants = forwardRef<any, ParticipantsProps>(
     // )
 
     return (
-      <Style ref={ref as any}>
-        <div>
+      <Style ref={ref as any} className='Participants'>
+        <header>
           <h1>Lista de participantes</h1>
 
           <AddParticipant />
-        </div>
+        </header>
 
-        <ul>
-          <List
-            title='Participantes convidados'
-            participants={getParticipants()}
-          />
+        <article>
+          <ul>
+            <List
+              title='Participantes convidados'
+              participants={getParticipants()}
+            />
 
-          <List title='Participantes' participants={getInvitedParticipants()} />
-        </ul>
+            <List
+              title='Participantes'
+              participants={getInvitedParticipants()}
+            />
+          </ul>
+        </article>
       </Style>
     )
   }

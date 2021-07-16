@@ -9,7 +9,7 @@ interface StyleProps {
 
 export const Header = styled(motion.div)`
   position: relative;
-  z-index: 2;
+  z-index: 3;
 
   display: flex;
   align-items: center;
@@ -58,6 +58,9 @@ export const Header = styled(motion.div)`
 `
 
 const Style = styled(motion.li)<StyleProps>`
+  position: relative;
+  z-index: 2;
+
   cursor: pointer;
   border-radius: 16px;
   font-size: clamp(1rem, 0.6rem + 2.6vw, 1.6rem);
@@ -73,17 +76,16 @@ const Style = styled(motion.li)<StyleProps>`
     color: ${({ theme }) => theme.colors.secondary};
   }
 
-  #textareaField {
-    padding: ${({ showTask }) => (showTask ? '16px' : '0px')};
+  .Textarea {
+    position: relative;
+    z-index: ${({ showTask }) => (showTask ? 2 : -1)};
+    height: auto;
 
-    .Textarea {
-      position: relative;
-      z-index: ${({ showTask }) => (showTask ? 3 : -1)};
-
-      textarea {
-        border: none;
-        background-color: transparent;
-      }
+    textarea {
+      height: auto;
+      border: none;
+      padding: 16px;
+      background-color: transparent;
     }
   }
 

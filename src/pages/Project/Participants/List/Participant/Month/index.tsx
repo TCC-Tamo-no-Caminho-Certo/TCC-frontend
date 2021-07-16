@@ -1,11 +1,11 @@
 import React, { Dispatch, forwardRef, SetStateAction, useState } from 'react'
-import Style from './styles'
+import Style, { Body, Header } from './styles'
 
 import transition from 'utils/transition'
 
-import Presence from 'components/Presence'
+import ArrowIcon, { arrowAnimation } from 'assets/global/ArrowIcon'
 
-import { motion, Variants } from 'framer-motion'
+import { Variants } from 'framer-motion'
 
 interface MonthProps {
   id: number
@@ -24,10 +24,7 @@ const taskAnimation: Variants = {
 
 const buttonAnimation: Variants = {
   initial: { borderRadius: '24px 24px 24px 24px' },
-  unrounded: {
-    transition,
-    borderRadius: '24px 24px 0px 0px'
-  },
+  unrounded: { transition, borderRadius: '24px 24px 0px 0px' },
   rounded: {
     borderRadius: '24px 24px 24px 24px',
     transition: { ...transition, delay: 0.2 }
@@ -69,20 +66,29 @@ const Month = forwardRef<any, MonthProps>(
         ref={ref as any}
         variants={monthAnimation}
       >
-        <motion.button
+        <Header
           initial='initial'
           onClick={onMonthClick}
           disabled={disabledButton}
           variants={buttonAnimation}
           animate={isSelected ? 'unrounded' : 'rounded'}
         >
-          <div>{`${index + 1}° Mês`}</div>
-          <div>{task.title}</div>
-        </motion.button>
+          <div>
+            <ArrowIcon
+              initial='initialRight'
+              variants={arrowAnimation}
+              animate={isSelected ? 'bottom' : 'right'}
+            />
 
-        <Presence variants={taskAnimation} condition={isSelected}>
+            {`${index + 1}° Mês`}
+          </div>
+
+          <div>{task.title}</div>
+        </Header>
+
+        <Body variants={taskAnimation} condition={isSelected}>
           <p>{task.task}</p>
-        </Presence>
+        </Body>
       </Style>
     )
   }

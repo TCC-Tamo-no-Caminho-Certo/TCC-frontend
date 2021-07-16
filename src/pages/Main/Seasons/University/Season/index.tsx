@@ -5,7 +5,7 @@ import DatesTable from './Periods'
 
 import transition from 'utils/transition'
 
-import ArrowIcon from 'assets/global/ArrowIcon'
+import ArrowIcon, { arrowAnimation } from 'assets/global/ArrowIcon'
 import DownloadIcon from 'assets/global/Download'
 import CalendarIcon from 'assets/global/CalendarIcon'
 
@@ -20,12 +20,6 @@ interface SeasonProps {
   season: SeasonResType
   selecteds?: string[]
   setSelecteds?: Dispatch<SetStateAction<string[] | undefined>>
-}
-
-const arrowAnimation: Variants = {
-  down: { rotate: 0 },
-  initial: { rotate: 0 },
-  right: { rotate: -90 }
 }
 
 const titleAnimation: Variants = {
@@ -85,7 +79,7 @@ const Season = ({
         animate={isSelected ? 'unrounded' : 'rounded'}
       >
         <ArrowIcon
-          initial='initial'
+          initial='initialRight'
           variants={arrowAnimation}
           animate={isSelected ? 'down' : 'right'}
         />

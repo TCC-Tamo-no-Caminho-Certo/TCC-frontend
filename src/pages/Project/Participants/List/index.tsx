@@ -1,15 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Style from './styles'
+import Style, { Body, Header } from './styles'
 
 import Participant from './Participant'
 
 import transition from 'utils/transition'
 
-import ArrowIcon from 'assets/global/ArrowIcon'
+import ArrowIcon, { arrowAnimation } from 'assets/global/ArrowIcon'
 
-import Presence from 'components/Presence'
-
-import { motion, Variants } from 'framer-motion'
+import { Variants } from 'framer-motion'
 import { ParticipantsResType } from 'types/Responses/project/participants'
 
 interface ListProps {
@@ -18,21 +16,9 @@ interface ListProps {
 }
 
 const participantAnimation: Variants = {
-  initial: {
-    y: -24,
-    opacity: 0,
-    borderRadius: 8
-  },
-  enter: {
-    y: 0,
-    opacity: 1,
-    transition
-  },
-  exit: {
-    y: -24,
-    opacity: 0,
-    transition
-  }
+  enter: { y: 0, opacity: 1, transition },
+  exit: { y: -24, opacity: 0, transition },
+  initial: { y: -24, opacity: 0, borderRadius: 8 }
 }
 
 export const ulAnimation: Variants = {
@@ -43,63 +29,73 @@ export const ulAnimation: Variants = {
 
 const List = ({ participants, title }: ListProps) => {
   const [selectedParticipants, setSelectedParticipants] = useState<number[]>()
+  const [selectedMonths, setSelectedMonths] = useState<string[]>()
   const [disabledButton, setDisabledButton] = useState(false)
   const [participantSize, setParticipantSize] = useState(0)
   const [showList, setShowList] = useState(false)
 
-  const memberRef = useRef<any>(null)
+  const participantRef = useRef<any>(null)
 
   const onListClick = () => {
-    setShowList(!showList)
     setDisabledButton(true)
 
-    setTimeout(() => {
-      setDisabledButton(false)
-    }, 400)
+    if (showList)
+      if (selectedMonths !== undefined) {
+        setSelectedMonths(undefined)
+        setTimeout(() => setShowList(false), 600)
+        setTimeout(() => setDisabledButton(false), 900)
+        setTimeout(() => setSelectedParticipants(undefined), 300)
+      } else {
+        setSelectedParticipants(undefined)
+        setTimeout(() => setShowList(false), 300)
+        setTimeout(() => setDisabledButton(false), 600)
+      }
+    else {
+      setShowList(true)
+      setTimeout(() => setDisabledButton(false), 300)
+    }
   }
 
   useEffect(() => {
-    if (showList) setParticipantSize(memberRef?.current.clientHeight)
+    if (showList) setParticipantSize(participantRef?.current.clientHeight)
   }, [showList])
 
   return (
-    <motion.li
+    <Style
       exit='exit'
       animate='enter'
       className='List'
       initial='initial'
       variants={participantAnimation}
     >
-      <Style>
-        <button type='button' onClick={onListClick} disabled={disabledButton}>
-          <ArrowIcon
-            initial={{ rotate: 0 }}
-            animate={{
-              rotate: showList ? 0 : -90,
-              transition
-            }}
-          />
+      <Header onClick={onListClick} disabled={disabledButton}>
+        <ArrowIcon
+          initial='initialRight'
+          variants={arrowAnimation}
+          animate={showList ? 'bottom' : 'right'}
+        />
 
-          <span>{title}</span>
-        </button>
+        <span>{title}</span>
+      </Header>
 
-        <Presence condition={showList} variants={ulAnimation}>
-          <ul>
-            {participants.map((participant, index) => (
-              <Participant
-                index={index}
-                ref={memberRef}
-                key={participant.id}
-                size={participantSize}
-                participant={participant}
-                selecteds={selectedParticipants}
-                setSelecteds={setSelectedParticipants}
-              />
-            ))}
-          </ul>
-        </Presence>
-      </Style>
-    </motion.li>
+      <Body condition={showList} variants={ulAnimation}>
+        <ul>
+          {participants.map((participant, index) => (
+            <Participant
+              index={index}
+              ref={participantRef}
+              key={participant.id}
+              size={participantSize}
+              participant={participant}
+              selectedMonths={selectedMonths}
+              selecteds={selectedParticipants}
+              setSelectedMonths={setSelectedMonths}
+              setSelecteds={setSelectedParticipants}
+            />
+          ))}
+        </ul>
+      </Body>
+    </Style>
   )
 }
 

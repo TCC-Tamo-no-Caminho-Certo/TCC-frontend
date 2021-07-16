@@ -31,18 +31,12 @@ const Select = forwardRef(
     const [error, setError] = useState<string>()
 
     const overridingStyles = {
-      menu: (before: any) => ({
-        ...before,
-        zIndex: 3
-      }),
+      menu: (before: any) => ({ ...before, zIndex: 3 }),
+      valueContainer: (before: any) => ({ ...before, paddingLeft: 0 }),
       control: (before: any) => ({
         ...before,
         paddingLeft: error ? 56 : 8,
         backgroundColor: 'transparent'
-      }),
-      valueContainer: (before: any) => ({
-        ...before,
-        paddingLeft: 0
       }),
       singleValue: (before: any) => ({
         ...before,

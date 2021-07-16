@@ -6,16 +6,17 @@ import React, {
   useRef,
   useState
 } from 'react'
-import Style, { Header } from './styles'
+import Style, { Body, Header } from './styles'
 
 import Month from './Month'
 import { ulAnimation } from '../'
 
 import transition from 'utils/transition'
 
-import ArrowIcon from 'assets/global/ArrowIcon'
+import useWindowDimensions from 'hooks/useWindowDimensions'
 
-import Presence from 'components/Presence'
+import ArrowIcon, { arrowAnimation } from 'assets/global/ArrowIcon'
+
 import AvatarAndInfo from 'components/User/AvatarAndInfo'
 
 import { Variants } from 'framer-motion'
@@ -27,13 +28,27 @@ interface ParticipantProps {
   participant: ParticipantType
   selecteds?: number[]
   setSelecteds?: Dispatch<SetStateAction<number[] | undefined>>
+  selectedMonths?: string[]
+  setSelectedMonths?: Dispatch<SetStateAction<string[] | undefined>>
 }
 
 const Participant = forwardRef<any, ParticipantProps>(
-  ({ participant, index, size, selecteds, setSelecteds }, ref) => {
-    const [selectedMonths, setSelectedMonths] = useState<string[]>()
+  (
+    {
+      size,
+      index,
+      selecteds,
+      participant,
+      setSelecteds,
+      selectedMonths,
+      setSelectedMonths
+    },
+    ref
+  ) => {
     const [disabledButton, setDisabledButton] = useState(false)
     const [monthSize, setMonthSize] = useState(0)
+    const { innerWidth } = useWindowDimensions()
+    const [isLarge, setisLarge] = useState(innerWidth >= 750)
 
     const monthRef = useRef<any>(null)
 
@@ -42,19 +57,16 @@ const Participant = forwardRef<any, ParticipantProps>(
       selecteds?.find(selected => selected === id) !== undefined
 
     const participantAnimation: Variants = {
-      initial: {
+      enter: { width: 250, y: 0, opacity: 1, transition },
+      enterFull: { width: '100%', y: 0, opacity: 1, transition },
+      initial: { opacity: 0, width: 250, y: (size + 24) * -index },
+      initialFull: { opacity: 0, width: '100%', y: (size + 24) * -index },
+      exit: { transition, opacity: 0, width: 250, y: (size + 24) * -index },
+      exitFull: {
+        transition,
+        width: '100%',
         opacity: 0,
         y: (size + 24) * -index
-      },
-      enter: {
-        y: 0,
-        opacity: 1,
-        transition
-      },
-      exit: {
-        opacity: 0,
-        y: (size + 24) * -index,
-        transition
       }
     }
 
@@ -62,18 +74,29 @@ const Participant = forwardRef<any, ParticipantProps>(
       setDisabledButton(true)
 
       if (setSelecteds && setSelectedMonths) {
+        if (isSelected)
+          if (selectedMonths !== undefined) {
+            setSelectedMonths(undefined)
+            setTimeout(() => setDisabledButton(false), 600)
+            setTimeout(() => {
+              setSelecteds(prev => prev?.filter(selected => selected !== id))
+            }, 300)
+          } else {
+            setSelecteds(prev => prev?.filter(selected => selected !== id))
+            setTimeout(() => setDisabledButton(false), 300)
+          }
+        else {
+          setSelecteds(prev => (prev ? [...prev, id] : [id]))
+          setTimeout(() => setDisabledButton(false), 300)
+        }
+
         setSelectedMonths(undefined)
-
-        setSelecteds(prev => {
-          if (isSelected) return prev?.filter(selected => selected !== id)
-          return prev ? [...prev, id] : [id]
-        })
       }
-
-      setTimeout(() => {
-        setDisabledButton(false)
-      }, 400)
     }
+
+    useEffect(() => {
+      setisLarge(innerWidth >= 750)
+    }, [innerWidth])
 
     useEffect(() => {
       isSelected && setMonthSize(monthRef?.current.clientHeight)
@@ -81,32 +104,25 @@ const Participant = forwardRef<any, ParticipantProps>(
 
     return (
       <Style
-        exit='exit'
-        animate='enter'
-        initial='initial'
         className='Participant'
         role={role}
         ref={ref as any}
         variants={participantAnimation}
+        exit={isLarge ? 'exit' : 'exitFull'}
+        initial={isLarge ? 'initial' : 'initialFull'}
+        animate={isLarge && !isSelected ? 'enter' : 'enterFull'}
       >
-        <Header
-          type='button'
-          onClick={onParticipantClick}
-          disabled={disabledButton}
-        >
+        <Header disabled={disabledButton} onClick={onParticipantClick}>
           <AvatarAndInfo name={name} role={role} />
 
           <ArrowIcon
-            initial={{ rotate: 0 }}
-            animate={{
-              rotate: isSelected ? 0 : -90,
-              transition
-            }}
+            initial='initialRight'
+            variants={arrowAnimation}
+            animate={isSelected ? 'bottom' : 'right'}
           />
         </Header>
 
-        <Presence
-          className='content'
+        <Body
           variants={ulAnimation}
           condition={isSelected}
           transition={transition}
@@ -125,7 +141,7 @@ const Participant = forwardRef<any, ParticipantProps>(
               />
             ))}
           </ul>
-        </Presence>
+        </Body>
       </Style>
     )
   }

@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
 interface StyledTextareaProps {
@@ -39,7 +40,7 @@ export const StyledTextarea = styled.textarea<StyledTextareaProps>`
   }
 `
 
-const Style = styled.div<StyleProps>`
+const Style = styled(motion.div)<StyleProps>`
   position: relative;
 
   .Error {

@@ -83,11 +83,7 @@ const Thead = ({ sort }: TheadProps) => {
                   type='button'
                   onClick={() => onThClick(indexer || name, index)}
                 >
-                  <ArrowIcon
-                    initial={false}
-                    variants={arrow}
-                    animate={arrows[index][name]}
-                  />
+                  <ArrowIcon variants={arrow} animate={arrows[index][name]} />
                   {label}
                 </button>
               </th>

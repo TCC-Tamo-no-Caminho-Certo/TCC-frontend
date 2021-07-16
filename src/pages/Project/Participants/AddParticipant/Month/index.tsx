@@ -4,7 +4,7 @@ import Style, { Header } from './styles'
 import transition from 'utils/transition'
 
 import InterrogationIcon from 'assets/global/InterrogationIcon'
-import ArrowIcon from 'assets/global/ArrowIcon'
+import ArrowIcon, { arrowAnimation } from 'assets/global/ArrowIcon'
 
 import { Text, Textarea } from 'components/Form'
 
@@ -27,39 +27,22 @@ const buttonAnimation: Variants = {
   unrounded: { borderRadius: '16px 0px 0px 0px' }
 }
 
+const textareaAnimation: Variants = {
+  initial: { height: 0, scale: 0, opacity: 0 },
+  hide: { y: -45, height: 0, scale: 0, opacity: 1, transition },
+  show: { transition, y: 0, scale: 1, opacity: 1, height: 'auto' }
+}
+
 const Month = ({ index }: MonthProps) => {
   const { colors } = useContext(ThemeContext)
 
   const [showBorder, setShowBorder] = useState(false)
   const [showTask, setShowTask] = useState(false)
 
-  const monthAnimation: Variants = {
-    initial: {
-      opacity: 0,
-      y: ((showTask ? 100 : 52) + 24) * -index
-    },
-    enter: {
-      y: 0,
-      opacity: 1,
-      transition
-    },
-    exit: {
-      opacity: 0,
-      transition,
-      y: ((showTask ? 160 : 52) + 24) * -index
-    }
-  }
+  const month = index + 1
 
   return (
-    <Style
-      exit='exit'
-      animate='enter'
-      initial='initial'
-      className='Month'
-      showTask={showTask}
-      showBorder={showBorder}
-      variants={monthAnimation}
-    >
+    <Style className='Month' showTask={showTask} showBorder={showBorder}>
       <Header
         initial='initial'
         variants={headerAnimation}
@@ -72,14 +55,19 @@ const Month = ({ index }: MonthProps) => {
           onClick={() => setShowTask(!showTask)}
           animate={showTask ? 'unrounded' : 'rounded'}
         >
-          <ArrowIcon animate={{ rotate: showTask ? 0 : -90 }} />
-          {`${index + 1}° Mês`}
+          <ArrowIcon
+            initial='initialRight'
+            variants={arrowAnimation}
+            animate={showTask ? 'bottom' : 'right'}
+          />
+
+          {`${month}° Mês`}
         </motion.button>
 
         <Text
           maxLength={32}
           placeholder='Título'
-          name={`title_${index + 1}`}
+          name={`title_${month}`}
           textColors={{
             focused: colors.secondary,
             unfocused: colors.secondary
@@ -87,9 +75,7 @@ const Month = ({ index }: MonthProps) => {
         />
 
         <InterrogationIcon
-          onMouseLeave={() => {
-            setShowBorder(false)
-          }}
+          onMouseLeave={() => setShowBorder(false)}
           onMouseEnter={() => {
             setShowBorder(true)
             !showTask && setShowTask(true)
@@ -97,31 +83,20 @@ const Month = ({ index }: MonthProps) => {
         />
       </Header>
 
-      <motion.div
-        id='textareaField'
-        initial={{
-          height: 0,
-          opacity: 0
+      <Textarea
+        maxLength={500}
+        placeholder='Tarefas'
+        name={`task_${month}`}
+        textColors={{
+          focused: colors.secondary,
+          unfocused: colors.secondary
         }}
-        animate={{
-          transition,
-          y: showTask ? 0 : -45,
-          x: showTask ? 0 : -200,
-          scale: showTask ? 1 : 0,
-          opacity: showTask ? 1 : 1,
-          height: showTask ? 'auto' : 0
+        containerProps={{
+          initial: 'initial',
+          variants: textareaAnimation,
+          animate: showTask ? 'show' : 'hide'
         }}
-      >
-        <Textarea
-          maxLength={500}
-          placeholder='Tarefas'
-          name={`task_${index + 1}`}
-          textColors={{
-            focused: colors.secondary,
-            unfocused: colors.secondary
-          }}
-        />
-      </motion.div>
+      />
     </Style>
   )
 }
