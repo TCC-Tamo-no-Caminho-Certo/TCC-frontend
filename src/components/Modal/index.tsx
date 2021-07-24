@@ -2,7 +2,6 @@ import React, {
   forwardRef,
   ReactElement,
   useContext,
-  useEffect,
   useImperativeHandle,
   useRef,
   useState
@@ -54,17 +53,12 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
       bottom = 'auto',
       bgHeight = '100%',
       translateY = '-60%',
-      zIndex,
       ...rest
     },
     ref
   ) => {
     const { overflow } = useContext<GlobalContextProps>(GlobalContext)
     const theme = useContext(ThemeContext)
-
-    useEffect(() => {
-      console.log('zindex', zIndex)
-    }, [zIndex])
 
     const modalRef = useRef(null)
     const [{ content, close, props }, setModalConfig] =

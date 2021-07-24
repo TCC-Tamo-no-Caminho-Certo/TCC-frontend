@@ -9,13 +9,6 @@ import Universities from './Async/universities'
 
 import { configureStore } from '@reduxjs/toolkit'
 
-export interface Response<T> {
-  message: string
-  success: boolean
-  [key: string]: T | any
-  error?: string
-}
-
 export type RootState = ReturnType<typeof store.getState>
 
 const store = configureStore({

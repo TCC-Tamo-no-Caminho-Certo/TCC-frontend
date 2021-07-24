@@ -4,7 +4,6 @@ import Style, { Content } from './styles'
 import { passwordSchema } from 'utils/validations/forgotPassword'
 
 import { HomeActions } from 'store/Sync/home'
-import { Response } from 'store'
 
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import Logo from 'assets/FullLogo'
@@ -37,7 +36,7 @@ const ConfirmPassword = () => {
     throw new Error('No code provided')
   }
 
-  const afterResetSubmit = (res: Response<any>) => {
+  const afterResetSubmit = (res: any) => {
     res.success
       ? popupRef?.current?.configPopup({
           setModal: true,

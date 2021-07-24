@@ -12,19 +12,17 @@ import Container from './Forms/Container'
 
 import { getRoleLabel } from 'utils/roles'
 
-import { getRoles, Role, RolesState, RoleType } from 'store/Async/roles'
+import { getRoles, RolesState, RoleType } from 'store/Async/roles'
 import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
-import {
-  getUniversities,
-  UniversitiesState,
-  University
-} from 'store/Async/universities'
+import { getUniversities, UniversitiesState } from 'store/Async/universities'
 import { Course, CoursesState, getCourses } from 'store/Async/courses'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { ThemeContext } from 'styled-components'
+import { UniversityResType } from 'types/Responses/university'
+import { Role } from 'types/Responses/user/roles'
 
 const allRoles: Role[] = [
   'admin',
@@ -39,7 +37,7 @@ const allRoles: Role[] = [
 interface AddRoleState {
   courses: Course[]
   roles: RoleType[]
-  universities: University[]
+  universities: UniversityResType[]
 }
 
 export const AddRoleContext = createContext<AddRoleState>({

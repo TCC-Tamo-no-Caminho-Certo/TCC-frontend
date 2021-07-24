@@ -8,7 +8,7 @@ import { getStatusLabel } from 'utils/status'
 import api from 'services/api'
 
 import { RolesState } from 'store/Async/roles'
-import { Response, RootState } from 'store'
+import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
 import { CoursesState } from 'store/Async/courses'
 
@@ -46,7 +46,7 @@ const ResponseContent = ({
 
   const [buttonClicked, setButtonClicked] = useState('rejected')
 
-  const himselfModeratorRequest = user.user_id === userInfo?.user_id
+  const himselfModeratorRequest = user.id === userInfo?.user_id
 
   const onTrashClick = () => {
     selectedInfo &&
@@ -68,7 +68,7 @@ const ResponseContent = ({
       })
   }
 
-  const afterResponseSubmit = (res: Response<any>) => {
+  const afterResponseSubmit = (res: any) => {
     if (res.success)
       popupRef?.current?.configPopup({
         type: 'success',

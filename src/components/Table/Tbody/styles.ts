@@ -1,9 +1,8 @@
 import { getStatusColor, StatusTypes } from 'utils/status'
 
-import { Role } from 'store/Async/roles'
-
 import { darken } from 'polished'
 import styled from 'styled-components'
+import { Role } from 'types/Responses/user/roles'
 
 interface CircleProps {
   status?: StatusTypes

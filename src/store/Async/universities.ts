@@ -1,28 +1,13 @@
 import api from 'services/api'
 
-import { Response } from 'store'
-
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-
-export interface University {
-  name: string
-  university_id: number
-  regex: {
-    email: {
-      student: string
-      professor: string
-    }
-    register: {
-      student: string
-      professor: string
-    }
-  }
-}
+import { UniversityResType } from 'types/Responses/university'
+import { UniversitiesResType } from 'types/Responses/university/universities'
 
 export interface UniversitiesState {
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'
   entities: []
-  universities: University[]
+  universities: UniversityResType[]
 }
 
 const initialState: UniversitiesState = {
@@ -35,11 +20,9 @@ export const getUniversities = createAsyncThunk(
   'universities/getUniversities',
   async (prevState: UniversitiesState) => {
     if (prevState.universities.length === 0) {
-      const { universities }: Response<University[]> = await api.get(
+      const { universities }: UniversitiesResType = await api.get(
         'info/university'
       )
-
-      console.log(universities)
 
       return { universities }
     }

@@ -1,1 +1,1 @@
-export type ProjectsResType = string[]
+export type ProjectsType = string[]

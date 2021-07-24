@@ -1,4 +1,4 @@
-import { Role } from 'store/Async/roles'
+import { Role } from 'types/Responses/user/roles'
 
 export interface IntegrantResType {
   id: string

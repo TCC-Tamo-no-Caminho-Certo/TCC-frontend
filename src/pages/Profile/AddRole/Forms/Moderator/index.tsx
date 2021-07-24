@@ -9,16 +9,15 @@ import {
   withoutFullTime
 } from 'utils/validations/addRoleForms/moderator'
 
-import { getUser, UserState } from 'store/Async/user'
-import { Response, RootState } from 'store'
+import api from 'services/api'
 
 import { Select, Submit, Textarea } from 'components/Form'
 import { Option } from 'components/Form/Select'
 
 import { GlobalContext } from 'App'
 import { motion } from 'framer-motion'
-import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
+import { ProfessorType } from 'types/Responses/user/roles'
 
 interface Data {
   university_id: number
@@ -37,26 +36,22 @@ interface ModeratorProps {
   request?: Request<Data>
 }
 
-const verifyFullTime = (user: UserState, university_id: number) => {
-  if (user.professor)
-    return (
-      user.professor.universities.filter(
-        userUniversity => userUniversity.university_id === university_id
-      )[0].full_time !== 0
-    )
+const verifyFullTime = (professor: ProfessorType, university_id: number) => {
+  const { universities } = professor
+  const selectedUniversity = universities.find(({ id }) => id === university_id)
 
-  return false
+  return selectedUniversity ? selectedUniversity.full_time : false
 }
 
 const ModeratorForm = ({ request }: ModeratorProps) => {
   const { popupRef } = useContext(GlobalContext)
-  const user = useSelector<RootState, UserState>(({ user }) => user)
+
   const { universities } = useContext(AddRoleContext)
 
   const [options, setOptions] = useState<Options>({
-    university: universities.map(({ name, university_id }) => ({
+    university: universities.map(({ name, id }) => ({
       label: name,
-      value: university_id
+      value: id
     }))
   })
   const [values, setValues] = useState<Values>({
@@ -64,11 +59,12 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
   })
   const [fullTime, setFullTime] = useState(false)
 
-  const dispatch = useDispatch()
   const history = useHistory()
 
-  const onUniversityChange = (selected: Option) => {
-    setFullTime(verifyFullTime(user, Number(selected.value)))
+  const onUniversityChange = async (selected: Option) => {
+    const professor = await api.get('roles/professor')
+
+    setFullTime(verifyFullTime(professor, Number(selected.value)))
 
     setValues(prev => ({
       ...prev,
@@ -87,7 +83,7 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request])
 
-  const afterSubmit = (res: Response<any>) => {
+  const afterSubmit = (res: any) => {
     if (res.success)
       if (fullTime)
         popupRef?.current?.configPopup({
@@ -95,7 +91,6 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
           type: 'success',
           message: 'Papel adicionado',
           onClick: () => {
-            dispatch(getUser())
             history.push('/session/main')
           }
         })
@@ -117,9 +112,9 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
   useEffect(() => {
     setOptions(prev => ({
       ...prev,
-      university: universities.map(({ university_id, name }) => ({
+      university: universities.map(({ id, name }) => ({
         label: name,
-        value: university_id
+        value: id
       }))
     }))
   }, [universities])

@@ -3,14 +3,13 @@ import Style from './styles'
 
 import api from 'services/api'
 
-import { Role } from 'store/Async/roles'
-
 import CheckIcon from 'assets/global/CheckIcon'
 import ArrowIcon from 'assets/global/ArrowIcon'
 
 import Presence from 'components/Presence'
 
 import { motion, useCycle, Variants } from 'framer-motion'
+import { Role } from 'types/Responses/user/roles'
 
 interface RoleInfoProps {
   id: string

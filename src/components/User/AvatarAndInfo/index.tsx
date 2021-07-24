@@ -5,7 +5,7 @@ import Avatar from '../Avatar'
 
 import { getRoleLabel } from 'utils/roles'
 
-import { Role } from 'store/Async/roles'
+import { Role } from 'types/Responses/user/roles'
 
 interface AvatarAndInfoProps {
   name: string

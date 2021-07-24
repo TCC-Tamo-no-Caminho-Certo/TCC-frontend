@@ -4,7 +4,6 @@ import Style from './styles'
 import signupSchema from 'utils/validations/signup'
 
 import { HomeActions } from 'store/Sync/home'
-import { Response } from 'store'
 
 import WorldIcon from 'assets/Inputs/WorldIcon'
 import UserLockedIcon from 'assets/Inputs/UserLockedIcon'
@@ -33,7 +32,7 @@ const Aside = () => {
     history.push('/home')
   }
 
-  const afterSubmit = (res: Response<any>) => {
+  const afterSubmit = (res: any) => {
     if (res.success)
       popupRef?.current?.configPopup({
         setModal: true,

@@ -4,7 +4,6 @@ import Style, { LoginFailure } from './styles'
 import loginSchema from 'utils/validations/login'
 
 import { HomeActions } from 'store/Sync/home'
-import { Response } from 'store'
 import { getValidation } from 'store/Async/validation'
 
 import MailIcon from 'assets/Inputs/MailIcon'
@@ -33,7 +32,7 @@ const Aside = () => {
   const history = useHistory()
   const dispatch = useDispatch()
 
-  const afterSubmit = (res: Response<any>) => {
+  const afterSubmit = (res: any) => {
     if (res.success) {
       localStorage.setItem('@SLab_ac_token', res.access_token)
       dispatch(getValidation())

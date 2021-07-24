@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import Style, { Header } from './styles'
 
-import { Role } from 'store/Async/roles'
+import { Role } from 'types/Responses/user/roles'
 
 interface CardProps {
   headerText: string

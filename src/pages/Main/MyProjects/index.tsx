@@ -16,8 +16,8 @@ import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 import { ProjectResType } from 'types/Responses/project'
 import { UniversityResType } from 'types/Responses/university'
-import { ProjectsResType } from 'types/Responses/user/projects'
-import { ProfessorResType } from 'types/Responses/user/roles'
+import { ProjectsType } from 'types/Responses/user/projects'
+import { ProfessorType } from 'types/Responses/user/roles'
 
 const Projects = forwardRef((_props, ref) => {
   const user = useSelector<RootState, UserState>(({ user }) => user)
@@ -26,7 +26,7 @@ const Projects = forwardRef((_props, ref) => {
 
   const getUniversitiesOptions = async () => {
     const universitiesOfProfessor = []
-    const { universities }: ProfessorResType = await api.get(
+    const { universities }: ProfessorType = await api.get(
       '/user/roles/professor'
     )
 
@@ -47,7 +47,7 @@ const Projects = forwardRef((_props, ref) => {
 
   const getMyProjects = async () => {
     const myProjects = []
-    const myProjectsIds: ProjectsResType = await api.get('/user/projects')
+    const myProjectsIds: ProjectsType = await api.get('/user/projects')
 
     for (let i = 0; i < myProjectsIds.length; i++) {
       const project: ProjectResType = await api.get(

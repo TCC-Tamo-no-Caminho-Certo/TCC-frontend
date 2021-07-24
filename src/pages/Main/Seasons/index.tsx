@@ -9,14 +9,15 @@ import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
 
 import { useSelector } from 'react-redux'
-import { SeasonResType } from 'types/Responses/university/seasons'
-import { UniversitiesResType } from 'types/Responses/university/universities'
+import { SeasonsResType } from 'types/Responses/university/seasons'
+import { AdministratorType } from 'types/Responses/user/roles'
+import { UniversitiesType } from 'types/Responses/user/universities'
 
 export interface UniversityDataType {
   id: number
   name: string
   isAdmin: boolean
-  seasons?: SeasonResType[]
+  seasons?: SeasonsResType
 }
 
 const getAllUniversitiesOfUser = (): UniversityDataType[] => [
@@ -87,7 +88,7 @@ const getAllUniversitiesOfUser = (): UniversityDataType[] => [
 ]
 
 const Seasons = forwardRef((_props, ref) => {
-  const user = useSelector<RootState, UserState>(({ user }) => user)
+  const { selectedRole } = useSelector<RootState, UserState>(({ user }) => user)
 
   const [selectedUniversities, setSelectedUniversities] = useState<number[]>()
 
@@ -95,20 +96,22 @@ const Seasons = forwardRef((_props, ref) => {
 
   const getUniversitiesOfUser = async (): Promise<UniversityDataType[]> => {
     const universitiesOfUser: UniversityDataType[] = []
-    const universities: UniversitiesResType = await api.get('user/universities')
+    const universities: UniversitiesType = await api.get('user/universities')
 
     for (let i = 0; i < universities.length; i++) {
       const { id, name } = universities[i]
 
-      const seasons: SeasonResType[] = await api.get(`university/${id}/seasons`)
+      const seasons: SeasonsResType = await api.get(`university/${id}/seasons`)
+
+      const { university_id }: AdministratorType = await api.get(
+        'roles/administrator'
+      )
 
       universitiesOfUser.push({
         seasons,
         name: name,
         id: universities[i].id,
-        isAdmin:
-          user.administrator?.university_id === id &&
-          user.selectedRole === 'admin'
+        isAdmin: university_id === id && selectedRole === 'admin'
       })
     }
 

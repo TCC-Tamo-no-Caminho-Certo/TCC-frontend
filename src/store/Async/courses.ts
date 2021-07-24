@@ -1,5 +1,3 @@
-import { Response } from '../'
-
 import api from 'services/api'
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
@@ -25,7 +23,7 @@ export const getCourses = createAsyncThunk(
   'course/getCourses',
   async (prevState: CoursesState) => {
     if (prevState.courses.length === 0) {
-      const { courses }: Response<Course[]> = await api.get('info/course')
+      const { courses }: any = await api.get('info/course')
       return { courses }
     }
   }

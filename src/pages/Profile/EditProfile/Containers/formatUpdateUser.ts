@@ -1,5 +1,8 @@
-import { University } from 'store/Async/universities'
 import { UserState } from 'store/Async/user'
+
+import { UniversityResType } from 'types/Responses/university'
+import { EmailsType } from 'types/Responses/user/emails'
+import { RolesType } from 'types/Responses/user/roles'
 
 export interface InputData {
   name: string
@@ -18,18 +21,29 @@ export interface ContainerForm {
   moderator: InputData[]
 }
 
-const removeRepeatly = (array: any[]) =>
-  array.filter((current, index) => array.indexOf(current) === index)
-
-const formatUpdateUser = (
-  universities: University[],
-  userData: UserState,
+interface FormatUpdateUserProps {
+  user: UserState
+  roles?: RolesType
+  emails?: EmailsType
   role: keyof ContainerForm
-): InputData[] => {
+  universities: UniversityResType[]
+}
+
+const removeRepeatly = (array: any[] | undefined) => {
+  if (array)
+    return array.filter((current, index) => array.indexOf(current) === index)
+  return []
+}
+
+const formatUpdateUser = ({
+  user,
+  role,
+  roles,
+  emails,
+  universities
+}: FormatUpdateUserProps): InputData[] => {
   const getUniversityName = (id: number) => {
-    const university = universities.find(
-      university => university.university_id === id
-    )
+    const university = universities.find(university => university.id === id)
 
     return university ? university.name : ''
   }
@@ -38,20 +52,16 @@ const formatUpdateUser = (
     const fields = []
 
     const getUniversityRegex = (id: number) => {
-      const university = universities.find(
-        university => university.university_id === id
-      )
+      const university = universities.find(university => university.id === id)
 
       return university ? university.regex.email[role] : ''
     }
 
     const institucionalUniversities = removeRepeatly(
-      userData.emails
-        .filter(current => current.institutional === true)
-        .map(({ address, university_id }) => ({
-          address,
-          university_id
-        }))
+      emails &&
+        emails
+          .filter(current => current.institutional === true)
+          .map(({ address, university_id }) => ({ address, university_id }))
     )
 
     const userUniversities = institucionalUniversities.map(
@@ -88,13 +98,13 @@ const formatUpdateUser = (
     {
       name: 'name',
       label: 'Nome:',
-      value: userData.name,
+      value: user.name,
       editable: true
     },
     {
       name: 'surname',
       label: 'Sobrenome:',
-      value: userData.surname,
+      value: user.surname,
       editable: true
     }
   ]
@@ -103,19 +113,19 @@ const formatUpdateUser = (
     {
       name: 'name',
       label: 'Nome:',
-      value: userData.name,
+      value: user.name,
       editable: true
     },
     {
       name: 'surname',
       label: 'Sobrenome:',
-      value: userData.surname,
+      value: user.surname,
       editable: true
     },
     {
       name: 'birthday',
       label: 'Nascimento:',
-      value: userData.birthday,
+      value: user.birthday,
       editable: true,
       date: true
     },
@@ -136,13 +146,13 @@ const formatUpdateUser = (
     {
       name: 'email',
       label: 'E-mail:',
-      value: userData.emails[0].address,
+      value: emails ? emails[0].address : '',
       editable: false
     }
     // {
     //   name: 'phone',
     //   label: 'Celular:',
-    //   value: userData.phone ? '' : userData.phone,
+    //   value: user.phone ? '' : user.phone,
     //   date: true,
     //   editable: true
     // }
@@ -153,20 +163,20 @@ const formatUpdateUser = (
     {
       name: 'linkedin',
       label: 'Linkedin:',
-      value: userData.student?.linkedin || '',
+      value: roles?.student?.linkedin || '',
       editable: false
     },
     {
       name: 'lattes',
       label: 'Lattes:',
-      value: userData.student?.lattes || '',
+      value: roles?.student?.lattes || '',
       editable: false
     },
     {
       name: 'semester',
       label: 'Semestre:',
-      value: userData.student?.universities
-        ? `${userData.student.universities[0].semester}° Semestre`
+      value: roles?.student?.universities
+        ? `${roles?.student.universities[0].semester}° Semestre`
         : '',
       editable: false
     }
@@ -177,32 +187,32 @@ const formatUpdateUser = (
     {
       name: 'linkedin',
       label: 'Linkedin:',
-      value: userData.professor?.linkedin || '',
+      value: roles?.professor?.linkedin || '',
       editable: false
     },
     {
       name: 'lattes',
       label: 'Lattes:',
-      value: userData.professor?.lattes || '',
+      value: roles?.professor?.lattes || '',
       editable: false
     },
     {
       name: 'orcid',
       label: 'Orcid:',
-      value: userData.professor?.orcid || '',
+      value: roles?.professor?.orcid || '',
       editable: false
     },
     {
       name: 'postgraduate',
       label: 'Pós-graduação:',
-      value: userData.professor?.postgraduate ? 'Sim' : 'Não',
+      value: roles?.professor?.postgraduate ? 'Sim' : 'Não',
       editable: false
     },
     {
       name: 'full_time',
       label: 'Tempo integral:',
-      value: userData.professor?.universities
-        ? userData.professor?.universities[0].full_time
+      value: roles?.professor?.universities
+        ? roles?.professor?.universities[0].full_time
           ? 'Sim'
           : 'Não'
         : '',
@@ -215,10 +225,8 @@ const formatUpdateUser = (
       name: 'university_id',
       label: 'Universidade',
       value:
-        (userData.moderator?.universities &&
-          getUniversityName(
-            userData.moderator.universities[0].university_id
-          )) ||
+        (roles?.moderator?.universities &&
+          getUniversityName(roles?.moderator.universities[0].id)) ||
         '',
       editable: false
     }

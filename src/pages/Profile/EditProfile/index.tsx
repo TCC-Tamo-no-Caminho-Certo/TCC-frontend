@@ -13,7 +13,6 @@ import Containers from './Containers'
 import editProfileSchema from 'utils/validations/editProfile'
 
 import { UserActions } from 'store/Async/user'
-import { Response } from 'store'
 
 import { Form, Submit, Text } from 'components/Form'
 import Modal, { ModalMethods } from 'components/Modal'
@@ -37,7 +36,7 @@ const EditProfile = () => {
 
   const dispatch = useDispatch()
 
-  const afterSubmit = (res: Response<any>) => {
+  const afterSubmit = (res: any) => {
     if (res.success) {
       dispatch(UserActions.update(res.user))
       confirmModal.current?.toggle()

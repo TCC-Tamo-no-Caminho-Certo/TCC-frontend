@@ -20,8 +20,6 @@ import Field from './Field'
 
 import api from 'services/api'
 
-import { Response } from 'store'
-
 import axios from 'axios'
 import Captcha from 'react-google-recaptcha'
 import { useHistory } from 'react-router-dom'
@@ -180,7 +178,7 @@ const Form = ({
   }
 
   const makeRequest = async (
-    cbAfterResData?: (_data: Response<any>) => void
+    cbAfterResData?: (_data: any) => void
   ) => {
     const manipulatedData = manipulateData ? manipulateData(data) : data
     getData && getData(manipulatedData)

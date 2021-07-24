@@ -1,8 +1,7 @@
-import { Response } from '../'
-
 import api from 'services/api'
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { Role } from 'types/Responses/user/roles'
 
 export interface RoleType {
   title: Role
@@ -15,15 +14,6 @@ export interface RolesState {
   roles: RoleType[]
 }
 
-export type Role =
-  | 'guest'
-  | 'admin'
-  | 'student'
-  | 'professor'
-  | 'customer'
-  | 'evaluator'
-  | 'moderator'
-
 const initialState: RolesState = {
   loading: 'idle',
   entities: [],
@@ -34,7 +24,7 @@ export const getRoles = createAsyncThunk(
   'roles/getRoles',
   async (prevState: RolesState) => {
     if (prevState.roles.length === 0) {
-      const response: Response<RoleType[]> = await api.get('info/role')
+      const response: any = await api.get('info/role')
       return { roles: response.roles }
     }
   }

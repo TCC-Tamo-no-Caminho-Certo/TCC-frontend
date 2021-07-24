@@ -9,8 +9,6 @@ import Style from './styles'
 
 import tokenSchema from 'utils/validations/tokenSchema'
 
-import { Response } from 'store'
-
 import Form, { Submit, Text } from 'components/Form'
 import { PopupProps } from 'components/Popup'
 import Modal, { ModalMethods } from 'components/Modal'
@@ -48,7 +46,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
         .required('Você esqueceu de informar o email!')
     })
 
-    const afterEmailSubmit = (res: Response<any>) => {
+    const afterEmailSubmit = (res: any) => {
       if (res.success) setCodeSend(true)
       else
         switch (res.error) {
@@ -69,7 +67,7 @@ const RegisterEmail = forwardRef<RegisterEmailMethods, RegisterEmailProps>(
         }
     }
 
-    const afterTokenSubmit = (res: Response<any>) => {
+    const afterTokenSubmit = (res: any) => {
       if (res.success) {
         popupRef?.current?.configPopup({
           setModal: true,

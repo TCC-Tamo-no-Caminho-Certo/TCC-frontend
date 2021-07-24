@@ -14,7 +14,7 @@ import formatterName from 'utils/formatterName'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { UserActions, UserState } from 'store/Async/user'
+import { getUser, UserActions, UserState } from 'store/Async/user'
 // import { ThemeState } from 'store/theme'
 import { HomeActions } from 'store/Sync/home'
 import { getValidation } from 'store/Async/validation'
@@ -45,73 +45,44 @@ const menu: Variants = {
       staggerChildren: 0.1
     }
   },
-  closed: {
-    transition: {
-      type: 'tween',
-      duration: 0.2,
-      staggerChildren: 0
-    }
-  }
+  closed: { transition: { type: 'tween', duration: 0.2, staggerChildren: 0 } }
 }
 
 const hr: Variants = {
   open: {
     opacity: [0, 1],
-    transition: {
-      type: 'tween',
-      duration: 0.4
-    }
+    transition: { type: 'tween', duration: 0.4 }
   },
   closed: {
     opacity: [1, 0],
-    transition: {
-      type: 'tween',
-      duration: 0.1
-    }
+    transition: { type: 'tween', duration: 0.1 }
   }
 }
 
 const li: Variants = {
   open: {
-    opacity: [0, 1],
     x: [16, 0],
-    transition: {
-      type: 'tween',
-      duration: 0.4
-    }
+    opacity: [0, 1],
+    transition: { type: 'tween', duration: 0.4 }
   },
-  closed: {
-    opacity: [1, 0],
-    transition: {
-      type: 'tween',
-      duration: 0.1
-    }
-  }
+  closed: { opacity: [1, 0], transition: { type: 'tween', duration: 0.1 } }
 }
 
 const logout: Variants = {
   open: {
-    opacity: [0, 1],
     y: [-16, 0],
-    transition: {
-      type: 'tween',
-      duration: 0.4
-    }
+    opacity: [0, 1],
+    transition: { type: 'tween', duration: 0.4 }
   },
-  closed: {
-    opacity: [1, 0],
-    transition: {
-      type: 'tween',
-      duration: 0.1
-    }
-  }
+  closed: { opacity: [1, 0], transition: { type: 'tween', duration: 0.1 } }
 }
 
 const RightMenu = () => {
-  const { name, selectedRole, roles, surname, dataLoading } = useSelector<
+  const { name, selectedRole, roles, surname, loading } = useSelector<
     RootState,
     UserState
   >(({ user }) => user)
+
   const [logoutLoading, setLogoutLoading] = useState(false)
   const [changeRole, setChangeRole] = useState(false)
   const { innerWidth } = useWindowDimensions()
@@ -128,18 +99,12 @@ const RightMenu = () => {
     closed: {
       d: `M0,0 H${width} V${closedHeight} H0 V0 Z`,
       opacity: innerWidth >= 545 ? 1 : 0.95,
-      transition: {
-        type: 'tween',
-        duration: 0.2
-      }
+      transition: { type: 'tween', duration: 0.2 }
     },
     open: {
       d: `M0,0 H${width} V${openHeight} H0 V0 Z`,
       opacity: 1,
-      transition: {
-        type: 'tween',
-        duration: 0.2
-      }
+      transition: { type: 'tween', duration: 0.2 }
     }
   }
 
@@ -158,6 +123,14 @@ const RightMenu = () => {
     if (innerWidth <= 300) setWidth(320)
     else innerWidth >= 545 ? setWidth(300) : setWidth(innerWidth)
   }, [innerWidth])
+
+  useEffect(() => {
+    console.log({ name, selectedRole, roles, surname, loading })
+  }, [loading, name, roles, selectedRole, surname])
+
+  useEffect(() => {
+    dispatch(getUser(localStorage.getItem('@SLab_ac_token')?.split('-')[0]))
+  }, [dispatch])
 
   return (
     <>
@@ -182,7 +155,7 @@ const RightMenu = () => {
             <Avatar size={80} />
 
             <UserInfo className='UserInfo' selectedRole={selectedRole}>
-              {dataLoading ? (
+              {loading ? (
                 <DotsLoader color={theme.colors.secondary} />
               ) : (
                 <>
@@ -221,9 +194,7 @@ const RightMenu = () => {
                             type='button'
                             onClick={() =>
                               dispatch(
-                                UserActions.update({
-                                  selectedRole: role
-                                })
+                                UserActions.update({ selectedRole: role })
                               )
                             }
                           >

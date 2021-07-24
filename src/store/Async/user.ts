@@ -1,133 +1,58 @@
-import { Role } from './roles'
-
 import api from 'services/api'
 
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { UserResType, UserType } from 'types/Responses/user/index'
+import { Role } from 'types/Responses/user/roles'
 
-export interface Email {
-  main: boolean
-  address: string
-  email_id: number
-  institutional: boolean
-  university_id: number
-  options?: { [key: string]: any }
-}
-
-export interface UserState {
-  entities: []
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  dataLoading: boolean
+export interface UserState extends UserType {
+  loading: boolean
   selectedRole: Role
-  name: string
-  roles: Role[]
-  phone: string
-  surname: string
-  user_id: number
-  birthday: string
-  full_name: string
-  created_at: string
-  updated_at: string
-  avatar_uuid: string
-  emails: Email[]
-  administrator?: {
-    university_id: number
-  }
-  professor?: {
-    postgraduate: number
-    linkedin: null
-    lattes: null
-    orcid: null
-    universities: [
-      {
-        university_id: number
-        campus_id: number
-        course_id: number
-        register: number
-        full_time: number
-      }
-    ]
-  }
-  student?: {
-    lattes?: string
-    linkedin?: string
-    universities: [
-      {
-        course_id: number
-        campus_id: number
-        register: number
-        semester: number
-        university_id: number
-      }
-    ]
-  }
-  moderator?: {
-    universities: [
-      {
-        course_id: number
-        campus_id: number
-        register: number
-        semester: number
-        university_id: number
-      }
-    ]
-  }
 }
 
 type Payload = PayloadAction<Partial<UserState>>
 
-export const initialState: UserState = {
-  entities: [],
-  loading: 'idle',
-  selectedRole: 'student',
-  dataLoading: true,
-  name: '',
-  phone: '',
-  surname: '',
-  birthday: '',
-  full_name: '',
-  created_at: '',
-  updated_at: '',
-  avatar_uuid: 'default',
-  roles: [],
-  user_id: 0,
-  emails: [
-    {
-      address: '',
-      email_id: 0,
-      university_id: 0,
-      main: false,
-      institutional: false,
-      options: {}
-    }
-  ]
-}
-
-const getInitialSelectedRole = (roles: Role[]): Role => {
-  const localRole = localStorage.getItem('@SLab_selected_role') as Role
+const getInitialSelectedRole = (roles: Role[]) => {
+  const localRole = localStorage.getItem('@SLab_selected_role')
 
   if (localRole) {
-    const haveHole = roles.filter(role => role === localRole)
-    if (haveHole.length !== 0) return haveHole[0]
+    const haveLocalHole = roles.filter(role => role === localRole)
+    if (haveLocalHole.length !== 0) return haveLocalHole[0]
   }
 
   localStorage.setItem('@SLab_selected_role', roles[roles.length - 1])
   return roles[roles.length - 1]
 }
 
+export const initialState: UserState = {
+  id: 0,
+  name: '',
+  roles: [],
+  phone: '',
+  surname: '',
+  birthday: '',
+  full_name: '',
+  created_at: '',
+  loading: false,
+  updated_at: '',
+  avatar_uuid: 'default',
+  selectedRole: 'student'
+}
+
 export const getUser = createAsyncThunk(
   'user/getUser',
-  async (callback?: () => void) => {
-    const { user } = await api.get('user')
+  async (id?: string | null) => {
+    if (id) {
+      const { user }: UserResType = await api.get(`users/${id.split('-')[0]}`)
 
-    console.log(user)
+      const roles: Role[] = await api.get('users/roles', {
+        data: { ids: [id] }
+      })
 
-    callback && callback()
-
-    return {
-      ...user,
-      // selectedRole: getInitialSelectedRole(user.roles),
-      selectedRole: 'professor',
-      dataLoading: false
+      return {
+        ...user,
+        loading: false,
+        selectedRole: getInitialSelectedRole(roles)
+      }
     }
   }
 )
@@ -136,23 +61,23 @@ const User = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    reset: () => {
-      return initialState
-    },
-    update: (state, action: Payload) => {
-      if (action.payload.selectedRole !== undefined)
-        localStorage.setItem('@SLab_selected_role', action.payload.selectedRole)
+    reset: () => initialState,
+    update: (state, { payload }: Payload) => {
+      if (payload.selectedRole !== undefined)
+        localStorage.setItem('@SLab_selected_role', payload.selectedRole)
 
-      return {
-        ...state,
-        ...action.payload
-      }
+      return { ...state, ...payload }
     }
   },
-  extraReducers: builder => {
-    builder.addCase(getUser.fulfilled, (state, action) => ({
+  extraReducers: ({ addCase }) => {
+    addCase(getUser.pending, state => {
+      state.loading = true
+    })
+
+    addCase(getUser.fulfilled, (state, { payload }) => ({
       ...state,
-      ...action.payload
+      ...payload,
+      loading: false
     }))
   }
 })

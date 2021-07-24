@@ -3,8 +3,6 @@ import Style, { ConfirmCode } from './styles'
 
 import { emailSchema } from 'utils/validations/forgotPassword'
 
-import { Response } from 'store'
-
 import SendEmailIcon from 'assets/global/SendEmailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import MailIcon from 'assets/Inputs/MailIcon'
@@ -23,7 +21,7 @@ const Content = () => {
 
   const history = useHistory()
 
-  const afterEmailSubmit = (res: Response<any>) => {
+  const afterEmailSubmit = (res: any) => {
     res.success
       ? setTimeout(() => setCodeSend(true), 1)
       : popupRef?.current?.configPopup({
@@ -33,7 +31,7 @@ const Content = () => {
         })
   }
 
-  const afterCodeSubmit = (res: Response<any>) => {
+  const afterCodeSubmit = (res: any) => {
     res.success
       ? setTimeout(() => history.push('/reset-password'), 1)
       : popupRef?.current?.configPopup({
@@ -43,7 +41,7 @@ const Content = () => {
         })
   }
 
-  const afterCodeResent = (res: Response<any>) => {
+  const afterCodeResent = (res: any) => {
     res.success
       ? popupRef?.current?.configPopup({
           setModal: true,

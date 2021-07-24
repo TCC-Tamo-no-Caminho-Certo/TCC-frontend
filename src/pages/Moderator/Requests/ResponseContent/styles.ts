@@ -1,9 +1,8 @@
 import { getStatusColor, StatusTypes } from 'utils/status'
 
-import { Role } from 'store/Async/roles'
-
 import { darken } from 'polished'
 import styled, { css } from 'styled-components'
+import { Role } from 'types/Responses/user/roles'
 
 interface InfosProps {
   userRole?: Role

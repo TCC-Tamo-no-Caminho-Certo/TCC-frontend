@@ -1,4 +1,13 @@
-export interface ProfessorResType {
+export type Role =
+  | 'guest'
+  | 'admin'
+  | 'student'
+  | 'professor'
+  | 'customer'
+  | 'evaluator'
+  | 'moderator'
+
+export interface ProfessorType {
   postgraduate: boolean
   orcid?: string
   lattes?: string
@@ -12,7 +21,7 @@ export interface ProfessorResType {
   }[]
 }
 
-export interface StudentResType {
+export interface StudentType {
   lattes?: string
   linkedin?: string
   universities: {
@@ -22,4 +31,19 @@ export interface StudentResType {
     campus_id: number
     semester: boolean
   }[]
+}
+
+export interface AdministratorType {
+  university_id: number
+}
+
+export interface ModeratorType {
+  universities: { id: number }[]
+}
+
+export interface RolesType {
+  student?: StudentType
+  professor?: ProfessorType
+  moderator?: ModeratorType
+  administrator?: AdministratorType
 }

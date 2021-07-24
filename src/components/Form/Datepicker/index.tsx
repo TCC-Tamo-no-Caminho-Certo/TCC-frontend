@@ -115,7 +115,6 @@ const Datepicker = forwardRef<any, DatepickerProps>(
         arrow={arrow}
         colors={dateColors}
         withoutStyle={withoutStyle}
-        onClick={() => console.log('clicked')}
       >
         <DatePicker
           calendarClassName='CalendarSize'

@@ -1,10 +1,9 @@
-import { Role } from 'store/Async/roles'
-
 import GearIcon from 'assets/RightMenuOpen/GearIcon'
 
 import { motion } from 'framer-motion'
 import { darken } from 'polished'
 import styled, { css } from 'styled-components'
+import { Role } from 'types/Responses/user/roles'
 
 interface RoleLiProps {
   role: Role

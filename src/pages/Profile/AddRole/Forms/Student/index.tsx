@@ -17,10 +17,6 @@ import {
 
 import api from 'services/api'
 
-import { Response, RootState } from 'store'
-import { University } from 'store/Async/universities'
-import { Email, getUser, UserState } from 'store/Async/user'
-
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
 import { File, Select, Submit, Text } from 'components/Form'
@@ -30,8 +26,9 @@ import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
 import { GlobalContext } from 'App'
 import { Variants } from 'framer-motion'
-import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
+import { UniversityResType } from 'types/Responses/university'
+import { EmailsType } from 'types/Responses/user/emails'
 
 interface Data {
   lattes: string
@@ -40,7 +37,7 @@ interface Data {
   semester: number
   campus_id: number
   course_id: number
-  university_id: number
+  id: number
 }
 
 interface Options {
@@ -102,24 +99,32 @@ export const show: Variants = {
   }
 }
 
-export const hasInstitutionalEmail = (regex: string, emails: Email[]) => {
+export const hasInstitutionalEmail = (regex: string, emails?: EmailsType) => {
   const rgx = new RegExp(regex)
 
-  return !!emails.find(({ address }) => rgx.test(address))
+  if (emails) return !!emails.find(({ address }) => rgx.test(address))
+  return false
 }
 
-export const universityArrayToSelect = (array: University[]): Option[] =>
-  array.map(({ university_id, name }: University) => ({
-    value: university_id,
+export const universityArrayToSelect = (array: UniversityResType[]): Option[] =>
+  array.map(({ id, name }: UniversityResType) => ({
+    value: id,
     label: name
   }))
 
 const Student = ({ request }: StudentProps) => {
   const { popupRef } = useContext(GlobalContext)
-  const user = useSelector<RootState, UserState>(({ user }) => user)
   const { courses, universities } = useContext(AddRoleContext)
 
   const registerEmailRef = useRef<RegisterEmailMethods>(null)
+  const [userEmails, setUserEmails] = useState<EmailsType>()
+
+  useEffect(() => {
+    ;(async () => {
+      const emails: EmailsType = await api.get('user/emails')
+      setUserEmails(emails)
+    })()
+  }, [])
 
   const [registerByEmail, setRegisterByEmail] = useState(false)
   const [animations, setAnimations] = useState<Animations>({
@@ -142,27 +147,25 @@ const Student = ({ request }: StudentProps) => {
     campus: undefined,
     course: undefined
   })
-  const [selectedUniversity, setSelectedUniversity] = useState<University>({
-    name: '',
-    regex: {
-      email: { professor: '', student: '' },
-      register: { professor: '', student: '' }
-    },
-    university_id: 0
-  })
+  const [selectedUniversity, setSelectedUniversity] =
+    useState<UniversityResType>({
+      name: '',
+      regex: {
+        email: { professor: '', student: '' },
+        register: { professor: '', student: '' }
+      },
+      id: 0
+    })
 
   const history = useHistory()
-  const dispatch = useDispatch()
 
   const registerRegex = universities.find(
-    ({ university_id }) => university_id === values.university?.value
+    ({ id }) => id === values.university?.value
   )?.regex.register.student
 
   const setInitialCampusOptions = useCallback(async () => {
     if (request) {
-      const response = await api.get(
-        `university/${request?.data.university_id}/campus`
-      )
+      const response = await api.get(`university/${request?.data.id}/campus`)
 
       if (response.campus) {
         const campus = response.campus.map((campus: any) => ({
@@ -202,9 +205,7 @@ const Student = ({ request }: StudentProps) => {
       }))
 
       if (!request) {
-        const newSelected = universities.find(
-          ({ university_id }) => university_id === selected.value
-        )
+        const newSelected = universities.find(({ id }) => id === selected.value)
 
         newSelected && setSelectedUniversity(newSelected)
       }
@@ -248,15 +249,15 @@ const Student = ({ request }: StudentProps) => {
 
   const onSemesterChange = () => {
     if (!request)
-      hasInstitutionalEmail(selectedUniversity.regex.email.student, user.emails)
+      hasInstitutionalEmail(selectedUniversity.regex.email.student, userEmails)
         ? setAnimations(prev => ({ ...prev, submit: true }))
         : setAnimations(prev => ({ ...prev, ways: true }))
   }
 
-  const afterSubmit = ({ success }: Response<any>) => {
+  const afterSubmit = ({ success }: any) => {
     const byEmail =
       registerByEmail ||
-      hasInstitutionalEmail(selectedUniversity.regex.email.student, user.emails)
+      hasInstitutionalEmail(selectedUniversity.regex.email.student, userEmails)
 
     if (success)
       popupRef?.current?.configPopup({
@@ -268,7 +269,6 @@ const Student = ({ request }: StudentProps) => {
           ? 'Papel Adicionado'
           : 'Solicitação enviada!',
         onClick: () => {
-          byEmail && dispatch(getUser())
           history.push('/session/main')
         }
       })
@@ -287,7 +287,7 @@ const Student = ({ request }: StudentProps) => {
 
         setValues({
           university: options.university.find(
-            ({ value }) => value === request.data.university_id
+            ({ value }) => value === request.data.id
           ),
           campus: campusOptions.find(
             ({ value }) => value === request.data.campus_id
@@ -331,9 +331,9 @@ const Student = ({ request }: StudentProps) => {
   useEffect(() => {
     setOptions(prev => ({
       ...prev,
-      university: universities.map(({ name, university_id }) => ({
+      university: universities.map(({ name, id }) => ({
         label: name,
-        value: university_id
+        value: id
       }))
     }))
   }, [universities])
@@ -368,8 +368,8 @@ const Student = ({ request }: StudentProps) => {
         <button
           type='button'
           onClick={() => {
-            user.emails.forEach(({ institutional, email_id }) => {
-              institutional === true && api.delete(`user/email/${email_id}`)
+            userEmails?.forEach(({ institutional, id }) => {
+              institutional === true && api.delete(`user/email/${id}`)
             })
           }}
         >
@@ -392,7 +392,7 @@ const Student = ({ request }: StudentProps) => {
 
         <Select
           id='cy-university'
-          name='university_id'
+          name='id'
           placeholder='Universidade'
           value={values.university}
           options={options.university}
@@ -548,7 +548,7 @@ const Student = ({ request }: StudentProps) => {
           ref={registerEmailRef}
           title={selectedUniversity.name}
           regex={selectedUniversity.regex.email.student}
-          addData={{ university_id: selectedUniversity.university_id }}
+          addData={{ id: selectedUniversity.id }}
           modal={{
             translateY: '50%',
             bottom: '50vh'

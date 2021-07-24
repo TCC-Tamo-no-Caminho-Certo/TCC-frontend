@@ -1,4 +1,6 @@
-import { Role, RoleType } from 'store/Async/roles'
+import { RoleType } from 'store/Async/roles'
+
+import { Role } from 'types/Responses/user/roles'
 
 type RolesLabel = {
   [_key in Role]: string

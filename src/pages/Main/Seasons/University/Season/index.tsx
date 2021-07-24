@@ -12,12 +12,12 @@ import CalendarIcon from 'assets/global/CalendarIcon'
 import { Field, File, Submit, Textarea } from 'components/Form'
 
 import { motion, Variants } from 'framer-motion'
-import { SeasonResType } from 'types/Responses/university/seasons'
+import { SeasonType } from 'types/Responses/university/seasons'
 
 interface SeasonProps {
   id: string
   isAdmin: boolean
-  season: SeasonResType
+  season: SeasonType
   selecteds?: string[]
   setSelecteds?: Dispatch<SetStateAction<string[] | undefined>>
 }

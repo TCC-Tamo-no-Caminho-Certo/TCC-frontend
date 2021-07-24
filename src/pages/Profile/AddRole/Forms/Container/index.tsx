@@ -19,9 +19,9 @@ import { getRoleLabel } from 'utils/roles'
 
 import api from 'services/api'
 
-import { Role } from 'store/Async/roles'
-
 import useCombinedRefs from 'hooks/useCombinedRefs'
+
+import { Role } from 'types/Responses/user/roles'
 
 interface Forms {
   student: JSX.Element

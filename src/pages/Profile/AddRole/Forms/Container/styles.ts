@@ -1,8 +1,7 @@
-import { Role } from 'store/Async/roles'
-
 import Card, { Header as HeaderComponent } from 'components/Card/styles'
 
 import styled from 'styled-components'
+import { Role } from 'types/Responses/user/roles'
 
 interface ContentProps {
   role: Role

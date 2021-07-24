@@ -1,6 +1,5 @@
-import { Role } from 'store/Async/roles'
-
 import styled from 'styled-components'
+import { Role } from 'types/Responses/user/roles'
 
 interface HeaderProps {
   role?: Role

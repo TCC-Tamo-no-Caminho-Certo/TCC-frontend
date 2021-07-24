@@ -5,7 +5,8 @@ import formatUpdateUser, { ContainerForm, InputData } from './formatUpdateUser'
 
 import { getRoleLabel } from 'utils/roles'
 
-import { Role } from 'store/Async/roles'
+import api from 'services/api'
+
 import { UserState } from 'store/Async/user'
 import { RootState } from 'store'
 import { getUniversities, UniversitiesState } from 'store/Async/universities'
@@ -20,6 +21,8 @@ import Card from 'components/Card'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
+import { EmailsType } from 'types/Responses/user/emails'
+import { Role, RolesType } from 'types/Responses/user/roles'
 
 type ContainersRoles = Role | 'personal'
 
@@ -42,6 +45,19 @@ const Containers = () => {
     rolesToShow.find(wished => wished === role)
   )
   const containers: ContainersRoles[] = ['personal', ...rolesWithEdit]
+
+  const [userEmails, setUserEmails] = useState<EmailsType>()
+  const [userRoles, setUserRoles] = useState<RolesType>()
+
+  useEffect(() => {
+    ;(async () => {
+      const emails: EmailsType = await api.get('user/emails')
+      const roles: RolesType = await api.get('user/roles')
+
+      setUserRoles(roles)
+      setUserEmails(emails)
+    })()
+  }, [])
 
   useEffect(() => {
     if (innerWidth <= 430) setSliderWidth(320)
@@ -70,12 +86,14 @@ const Containers = () => {
                   onClick={() => imageRef.current?.toggleImageChanger()}
                 />
 
-                {user.dataLoading === false ? (
-                  formatUpdateUser(
-                    storeUniversities.universities,
+                {user.loading === false ? (
+                  formatUpdateUser({
                     user,
-                    'personal'
-                  ).map((info: InputData) => (
+                    role: 'personal',
+                    roles: userRoles,
+                    emails: userEmails,
+                    universities: storeUniversities.universities
+                  }).map((info: InputData) => (
                     <Field data={info} key={info.name} />
                   ))
                 ) : (
@@ -90,12 +108,14 @@ const Containers = () => {
               role={role}
               headerText={`Dados de ${getRoleLabel(role as Role)}`}
             >
-              {user.dataLoading === false ? (
-                formatUpdateUser(
-                  storeUniversities.universities,
+              {!user.loading ? (
+                formatUpdateUser({
                   user,
-                  role as keyof ContainerForm
-                ).map((info: InputData) => (
+                  roles: userRoles,
+                  emails: userEmails,
+                  role: role as keyof ContainerForm,
+                  universities: storeUniversities.universities
+                }).map((info: InputData) => (
                   <Field key={info.name} data={info} />
                 ))
               ) : (

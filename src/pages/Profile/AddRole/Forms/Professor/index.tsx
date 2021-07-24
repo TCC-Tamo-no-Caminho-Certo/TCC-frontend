@@ -19,10 +19,6 @@ import {
 
 import api from 'services/api'
 
-import { Response, RootState } from 'store'
-import { University } from 'store/Async/universities'
-import { getUser, UserState } from 'store/Async/user'
-
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
 import { Checkbox, File, Select, Submit, Text } from 'components/Form'
@@ -31,8 +27,9 @@ import Presence from 'components/Presence'
 import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
 import { GlobalContext } from 'App'
-import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
+import { UniversityResType } from 'types/Responses/university'
+import { EmailsType } from 'types/Responses/user/emails'
 
 interface Data {
   orcid: string
@@ -73,27 +70,35 @@ interface ProfessorProps {
 
 function Professor({ request }: ProfessorProps) {
   const { popupRef } = useContext(GlobalContext)
-  const user = useSelector<RootState, UserState>(({ user }) => user)
   const { courses, universities } = useContext(AddRoleContext)
 
   const [registerByEmail, setRegisterByEmail] = useState(false)
 
   const registerEmailRef = useRef<RegisterEmailMethods>(null)
+  const [userEmails, setUserEmails] = useState<EmailsType>()
 
-  const [selectedUniversity, setSelectedUniversity] = useState<University>({
-    name: '',
-    regex: {
-      email: { professor: '', student: '' },
-      register: { professor: '', student: '' }
-    },
-    university_id: 0
-  })
+  useEffect(() => {
+    ;(async () => {
+      const emails: EmailsType = await api.get('user/emails')
+      setUserEmails(emails)
+    })()
+  }, [])
+
+  const [selectedUniversity, setSelectedUniversity] =
+    useState<UniversityResType>({
+      name: '',
+      regex: {
+        email: { professor: '', student: '' },
+        register: { professor: '', student: '' }
+      },
+      id: 0
+    })
   const [animations, setAnimations] = useState<Animations>({
     campus: false,
+    ar: false,
     course: false,
     ways: false,
     submit: false,
-    ar: false,
     voucher: false
   })
   const [options, setOptions] = useState<Options>({
@@ -107,11 +112,10 @@ function Professor({ request }: ProfessorProps) {
     course: undefined
   })
 
-  const dispatch = useDispatch()
   const history = useHistory()
 
   const registerRegex = universities.find(
-    ({ university_id }) => university_id === values.university?.value
+    ({ id }) => id === values.university?.value
   )?.regex.register.professor
 
   const setInitialCampusOptions = useCallback(async () => {
@@ -158,9 +162,7 @@ function Professor({ request }: ProfessorProps) {
       }))
 
       if (!request) {
-        const newSelected = universities.find(
-          ({ university_id }) => university_id === selected.value
-        )
+        const newSelected = universities.find(({ id }) => id === selected.value)
 
         newSelected && setSelectedUniversity(newSelected)
       }
@@ -208,18 +210,18 @@ function Professor({ request }: ProfessorProps) {
     if (!request)
       hasInstitutionalEmail(
         selectedUniversity.regex.email.professor,
-        user.emails
+        userEmails
       )
         ? setAnimations(prev => ({ ...prev, submit: true }))
         : setAnimations(prev => ({ ...prev, ways: true }))
   }
 
-  const afterSubmit = (res: Response<any>) => {
+  const afterSubmit = (res: any) => {
     const byEmail =
       registerByEmail ||
       hasInstitutionalEmail(
         selectedUniversity.regex.email.professor,
-        user.emails
+        userEmails
       )
 
     if (res.success)
@@ -232,7 +234,6 @@ function Professor({ request }: ProfessorProps) {
           ? 'Papel Adicionado'
           : 'Solicitação enviada!',
         onClick: () => {
-          byEmail && dispatch(getUser())
           history.push('/session/main')
         }
       })
@@ -277,9 +278,9 @@ function Professor({ request }: ProfessorProps) {
   useEffect(() => {
     setOptions(prev => ({
       ...prev,
-      university: universities.map(({ university_id, name }) => ({
+      university: universities.map(({ id, name }) => ({
         label: name,
-        value: university_id
+        value: id
       }))
     }))
   }, [universities])
@@ -484,7 +485,7 @@ function Professor({ request }: ProfessorProps) {
           ref={registerEmailRef}
           title={selectedUniversity.name}
           regex={selectedUniversity.regex.email.professor}
-          addData={{ university_id: selectedUniversity.university_id }}
+          addData={{ university_id: selectedUniversity.id }}
           modal={{
             translateY: '50%',
             bottom: '50vh'

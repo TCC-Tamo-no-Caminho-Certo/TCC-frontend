@@ -5,7 +5,7 @@ export interface PeriodsType {
   in_progress: number
 }
 
-export interface SeasonResType {
+export interface SeasonType {
   title: string
   edict: string
   begin: string
@@ -14,3 +14,5 @@ export interface SeasonResType {
   status: 'pre-release' | 'released' | 'canceled' | 'archived'
   current_period: 'confirm' | 'dispatch' | 'evaluate' | 'in_progress'
 }
+
+export type SeasonsResType = SeasonType[]

@@ -1,10 +1,9 @@
-import { Role } from 'store/Async/roles'
-
 import Presence from 'components/Presence'
 
 import { motion } from 'framer-motion'
 import { darken } from 'polished'
 import styled from 'styled-components'
+import { Role } from 'types/Responses/user/roles'
 
 interface StyleProps {
   role?: Role
