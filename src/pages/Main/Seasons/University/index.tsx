@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react'
-import Style from './styles'
+import Style, { Seasons } from './styles'
 
+import CreateSeason from './CreateSeason'
 import Season from './Season'
 import { UniversityDataType } from '../index'
 
@@ -83,7 +84,7 @@ const University = ({
       </motion.button>
 
       <Presence variants={bgAnimation} condition={isSelected}>
-        <ul id='seasons'>
+        <Seasons>
           {seasons ? (
             seasons.map((season, index) => (
               <Season
@@ -98,7 +99,15 @@ const University = ({
           ) : (
             <div id='noSeasons'>Esta universidade não pussui temporadas</div>
           )}
-        </ul>
+
+          {isAdmin && (
+            <CreateSeason
+              id={`${id}-create`}
+              selecteds={selectedSeasons}
+              setSelecteds={setSelectedSeasons}
+            />
+          )}
+        </Seasons>
       </Presence>
     </Style>
   )

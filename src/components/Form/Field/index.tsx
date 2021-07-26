@@ -9,13 +9,13 @@ import { TextProps } from 'components/Form/Text'
 import { DatepickerProps } from 'components/Form/Datepicker'
 
 interface FieldProps {
-  defaultValue: any
   icon?: any
-  textProps?: TextProps
+  defaultValue?: any
   enableEdit?: boolean
+  textProps?: TextProps
   conditionToEdit?: boolean
-  datepickerProps?: DatepickerProps
   inputType?: 'text' | 'datepicker'
+  datepickerProps?: DatepickerProps
   onFieldClick?: () => void
   onCloseClick?: () => void
 }
@@ -31,13 +31,14 @@ const Field = ({
   enableEdit = true,
   conditionToEdit
 }: FieldProps) => {
-  const [condition, setCondition] = useState(false)
+  const [condition, setCondition] = useState(!defaultValue)
 
   const datepickerRef = useRef<HTMLInputElement>(null)
   const textRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     inputType === 'text' && textRef.current?.focus()
+
     setTimeout(
       () => inputType === 'datepicker' && datepickerRef.current?.click(),
       300
@@ -54,13 +55,15 @@ const Field = ({
         <Datepicker ref={datepickerRef} {...(datepickerProps as any)} />
       )}
 
-      <CloseIcon
-        id='closeIcon'
-        onClick={() => {
-          onCloseClick && onCloseClick()
-          conditionToEdit === undefined && setCondition(false)
-        }}
-      />
+      {defaultValue && (
+        <CloseIcon
+          id='closeIcon'
+          onClick={() => {
+            onCloseClick && onCloseClick()
+            conditionToEdit === undefined && setCondition(false)
+          }}
+        />
+      )}
     </EditField>
   ) : (
     <DefaultField

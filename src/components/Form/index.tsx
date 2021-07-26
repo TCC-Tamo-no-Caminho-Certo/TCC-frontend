@@ -17,6 +17,7 @@ import File from './File'
 import Checkbox from './Checkbox'
 import Textarea from './Textarea'
 import Field from './Field'
+import FieldTable from './FieldTable'
 
 import api from 'services/api'
 
@@ -107,17 +108,29 @@ const Form = ({
               : (data[current.name] = current.value)
             break
 
+          case 'number':
+            current.value === ''
+              ? (data[current.name] = undefined)
+              : (data[current.name] = current.value)
+            break
+
           case 'date':
-            data[current.name] = value
+            value === ''
+              ? (data[current.name] = undefined)
+              : (data[current.name] = value)
 
             break
 
           case 'password':
-            data[current.name] = current.value
+            current.value === ''
+              ? (data[current.name] = undefined)
+              : (data[current.name] = current.value)
+
             break
 
           case 'checkbox':
             data[current.name] = current.checked
+
             break
 
           case 'textarea':
@@ -129,13 +142,13 @@ const Form = ({
 
           case 'select':
             current.select.props.value === null
-              ? (data[current.props.name] = '')
+              ? (data[current.props.name] = undefined)
               : (data[current.props.name] = current.select.props.value.value)
             break
 
           case 'multiSelect':
             if (current.select.props.value === null)
-              data[current.props.name] = ''
+              data[current.props.name] = undefined
             else
               data[current.props.name] = current.select.props.value.map(
                 (oneValue: { value: string; label: string }) => oneValue.value
@@ -143,7 +156,9 @@ const Form = ({
             break
 
           case 'file':
-            value ? (data[current.name] = value) : (data[current.name] = '')
+            value
+              ? (data[current.name] = value)
+              : (data[current.name] = undefined)
             break
 
           default:
@@ -177,9 +192,7 @@ const Form = ({
     }
   }
 
-  const makeRequest = async (
-    cbAfterResData?: (_data: any) => void
-  ) => {
+  const makeRequest = async (cbAfterResData?: (_data: any) => void) => {
     const manipulatedData = manipulateData ? manipulateData(data) : data
     getData && getData(manipulatedData)
 
@@ -262,13 +275,14 @@ const Form = ({
 export {
   Form,
   Text,
-  Datepicker,
-  Submit,
-  Select,
   File,
+  Field,
+  Select,
+  Submit,
   Checkbox,
   Textarea,
-  Field
+  Datepicker,
+  FieldTable
 }
 
 export default Form

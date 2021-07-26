@@ -51,7 +51,7 @@ export const getUser = createAsyncThunk(
       return {
         ...user,
         loading: false,
-        selectedRole: getInitialSelectedRole(roles)
+        selectedRole: 'admin'
       }
     }
   }
@@ -77,6 +77,7 @@ const User = createSlice({
     addCase(getUser.fulfilled, (state, { payload }) => ({
       ...state,
       ...payload,
+      selectedRole: 'admin',
       loading: false
     }))
   }

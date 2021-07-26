@@ -125,10 +125,6 @@ const RightMenu = () => {
   }, [innerWidth])
 
   useEffect(() => {
-    console.log({ name, selectedRole, roles, surname, loading })
-  }, [loading, name, roles, selectedRole, surname])
-
-  useEffect(() => {
     dispatch(getUser(localStorage.getItem('@SLab_ac_token')?.split('-')[0]))
   }, [dispatch])
 

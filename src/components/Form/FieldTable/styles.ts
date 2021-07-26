@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 const Style = styled.table`
   width: 100%;
-  margin-top: 24px;
   border-collapse: collapse;
 
   background-color: ${({ theme }) => theme.colors.secondary};

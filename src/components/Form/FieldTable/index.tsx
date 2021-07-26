@@ -5,41 +5,24 @@ import CalendarIcon from 'assets/global/CalendarIcon'
 
 import { Field } from 'components/Form'
 
-import { PeriodsType } from 'types/Responses/university/seasons'
+type FieldTableDataType = { name: string; label: string; value?: any }[]
 
 interface DatesTableProps {
-  periods: PeriodsType
-  isAdmin: boolean
+  edit: boolean
+  header: string[]
+  data: FieldTableDataType
+  valueComplement?: string
+  withoutDefaultValue?: boolean
 }
 
 const DatesTable = ({
-  isAdmin,
-  periods: { evaluate, in_progress, confirm, dispatch }
+  edit,
+  data,
+  header,
+  valueComplement,
+  withoutDefaultValue = false
 }: DatesTableProps) => {
   const [selecteds, setSelecteds] = useState<number[]>()
-
-  const periodsArray = [
-    {
-      name: 'dispatch',
-      value: dispatch,
-      label: 'Envio de projetos'
-    },
-    {
-      name: 'evaluate',
-      value: evaluate,
-      label: 'Avaliação de projetos'
-    },
-    {
-      name: 'confirm',
-      value: confirm,
-      label: 'Confirmar participação'
-    },
-    {
-      name: 'in_progress',
-      value: in_progress,
-      label: 'Início do projeto'
-    }
-  ]
 
   const onCloseClick = (id: number) => {
     setSelecteds(prev => prev?.filter(currPrev => currPrev !== id))
@@ -56,22 +39,21 @@ const DatesTable = ({
     <Style>
       <thead>
         <tr>
-          <th>Período</th>
+          <th>{header[0]}</th>
 
-          <th>Duração (Dias)</th>
+          <th>{header[1]}</th>
         </tr>
       </thead>
 
       <tbody>
-        {periodsArray.map(({ name, label, value }, index) => (
+        {data.map(({ name, label, value }, index) => (
           <tr key={index}>
             <td>{label}</td>
 
             <td>
               <Field
                 icon={CalendarIcon}
-                enableEdit={isAdmin}
-                defaultValue={`${value} dias`}
+                enableEdit={edit}
                 onCloseClick={() => onCloseClick(index)}
                 onFieldClick={() => onFieldClick(index)}
                 conditionToEdit={
@@ -82,6 +64,11 @@ const DatesTable = ({
                   type: 'number',
                   placeholder: 'Duração'
                 }}
+                defaultValue={
+                  withoutDefaultValue
+                    ? undefined
+                    : `${value} ${valueComplement || ''}`
+                }
               />
             </td>
           </tr>

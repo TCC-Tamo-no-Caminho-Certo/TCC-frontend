@@ -5,13 +5,13 @@ import transition from 'utils/transition'
 import { motion, Variants } from 'framer-motion'
 
 interface ArrowIconProps {
-  variants?: Variants
-  animate?: Object | string
-  initial?: Object | string
   id?: string
   className?: string
   clockWise?: boolean
   transition?: Object
+  variants?: Variants
+  animate?: Object | string
+  initial?: Object | string
 }
 
 export const arrowAnimation: Variants = {
@@ -27,11 +27,11 @@ export const arrowAnimation: Variants = {
 }
 
 const ArrowIcon = ({
-  id = 'ArrowIcon',
-  className = 'Icon',
   animate,
   initial,
   variants,
+  id = 'ArrowIcon',
+  className = 'Icon',
   ...props
 }: ArrowIconProps) => (
   <motion.svg

@@ -18,7 +18,7 @@ export const Content = styled.div`
   width: 100%;
   margin-top: 93px;
 
-  li + li {
+  > * + * {
     margin-top: 24px;
   }
 `
