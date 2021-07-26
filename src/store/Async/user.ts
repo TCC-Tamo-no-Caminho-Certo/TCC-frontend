@@ -15,8 +15,9 @@ const getInitialSelectedRole = (roles: Role[]) => {
   const localRole = localStorage.getItem('@SLab_selected_role')
 
   if (localRole) {
-    const haveLocalHole = roles.filter(role => role === localRole)
-    if (haveLocalHole.length !== 0) return haveLocalHole[0]
+    const haveLocalHole = roles.find(role => role === localRole)
+
+    if (haveLocalHole) return haveLocalHole
   }
 
   localStorage.setItem('@SLab_selected_role', roles[roles.length - 1])
@@ -44,14 +45,12 @@ export const getUser = createAsyncThunk(
     if (id) {
       const { user }: UserResType = await api.get(`users/${id.split('-')[0]}`)
 
-      const roles: Role[] = await api.get('users/roles', {
-        data: { ids: [id] }
-      })
+      const roles: Role[] = await api.get(`users/${id}/roles`)
 
       return {
         ...user,
         loading: false,
-        selectedRole: 'admin'
+        selectedRole: getInitialSelectedRole(roles)
       }
     }
   }
@@ -76,9 +75,7 @@ const User = createSlice({
 
     addCase(getUser.fulfilled, (state, { payload }) => ({
       ...state,
-      ...payload,
-      selectedRole: 'admin',
-      loading: false
+      ...payload
     }))
   }
 })
