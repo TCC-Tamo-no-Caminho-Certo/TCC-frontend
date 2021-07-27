@@ -20,8 +20,8 @@ export interface PopupProps {
 }
 
 interface ConfigPopupProps {
-  type: PopupType
   title?: string
+  type?: PopupType
   message?: string
   setModal?: boolean
   onClick?: () => void
@@ -58,14 +58,24 @@ const makeTitle = (type: PopupType, title?: string) => {
 const Popup = forwardRef<PopupMethods, PopupProps>(
   ({ bgHeight = '100vh', top, translateY, bottom }, ref) => {
     const modalRef = useRef<ModalMethods>(null)
+
     const [
       { type, setModal, message, title, onClick, onOkClick, onCloseClick },
       setConfigState
     ] = useState<ConfigPopupProps>(initialState)
 
+    const onPopupCloseClick = () => {
+      setConfigState(prev => ({ ...prev, setModal: false }))
+
+      if (onClick) onClick()
+      else onCloseClick && onCloseClick()
+    }
+
     const onConfirmClick = () => {
       setConfigState(prev => ({ ...prev, setModal: false }))
-      onClick ? onClick() : onOkClick && onOkClick()
+
+      if (onClick) onClick()
+      else onOkClick && onOkClick()
     }
 
     const configPopup = (content: ConfigPopupProps) => setConfigState(content)
@@ -74,6 +84,7 @@ const Popup = forwardRef<PopupMethods, PopupProps>(
 
     useEffect(() => {
       modalRef.current?.toggle(setModal)
+
       setModal
         ? (document.documentElement.style.overflow = 'hidden')
         : (document.documentElement.style.overflow = 'auto')
@@ -86,10 +97,10 @@ const Popup = forwardRef<PopupMethods, PopupProps>(
         bottom={bottom}
         bgHeight={bgHeight}
         translateY={translateY}
-        onClose={onClick || (onCloseClick && onCloseClick)}
+        onClose={onPopupCloseClick}
       >
-        <Style type={type}>
-          <span>{makeTitle(type, title)}</span>
+        <Style type={type || 'other'}>
+          <span>{makeTitle(type || 'other', title)}</span>
 
           <hr />
 

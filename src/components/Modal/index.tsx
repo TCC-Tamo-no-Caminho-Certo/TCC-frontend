@@ -52,13 +52,15 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
   ) => {
     const { overflow } = useContext<GlobalContextProps>(GlobalContext)
     const theme = useContext(ThemeContext)
+
     const [{ content, close, props }, setModalConfig] =
       useState<ModalConfig>(initialConfig)
 
     const [openModal, setOpenModal] = useState(false)
 
-    const zindex = props?.zIndex ? props.zIndex : 9000
     const modalRef = useRef(null)
+
+    const zindex = props?.zIndex ? props.zIndex : 9000
 
     window.addEventListener('keydown', ({ key }) => {
       key === 'Escape' && setOpenModal(false)

@@ -50,6 +50,8 @@ const App = () => {
     i18n.changeLanguage('pt-BR')
   }, [i18n])
 
+  console.log(popupRef.current)
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalContext.Provider
