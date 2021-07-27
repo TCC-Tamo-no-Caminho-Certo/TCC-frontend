@@ -57,33 +57,21 @@ const Projects = forwardRef((_props, ref) => {
         `/university/${project.university_id}`
       )
 
-      myProjects.push({
-        ...project,
-        university
-      })
+      myProjects.push({ ...project, university })
     }
 
     return myProjects
   }
 
   modalRef?.current?.config({
-    close: {
-      top: 16,
-      right: 16,
-      color: theme.colors.tertiary
-    },
+    close: { top: 16, right: 16, color: theme.colors.tertiary },
     content: (
       <CreateProject schema={createProjectSchema}>
         <Select
           name='university'
           placeholder='Universidade'
           value={undefined}
-          options={[
-            {
-              label: ':(',
-              value: ';('
-            }
-          ]}
+          options={[{ label: ':(', value: ';(' }]}
         />
 
         <Text placeholder='Título' name='title' maxLength={36} />

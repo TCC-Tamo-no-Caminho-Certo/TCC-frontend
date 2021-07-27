@@ -14,7 +14,7 @@ import formatterName from 'utils/formatterName'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { getUser, UserActions, UserState } from 'store/Async/user'
+import { UserActions, UserState } from 'store/Async/user'
 // import { ThemeState } from 'store/theme'
 import { HomeActions } from 'store/Sync/home'
 import { getValidation } from 'store/Async/validation'
@@ -78,10 +78,8 @@ const logout: Variants = {
 }
 
 const RightMenu = () => {
-  const { name, selectedRole, roles, surname, loading } = useSelector<
-    RootState,
-    UserState
-  >(({ user }) => user)
+  const user = useSelector<RootState, UserState>(({ user }) => user)
+  const { name, selectedRole, roles, surname, loading } = user
 
   const [logoutLoading, setLogoutLoading] = useState(false)
   const [changeRole, setChangeRole] = useState(false)
@@ -123,10 +121,6 @@ const RightMenu = () => {
     if (innerWidth <= 300) setWidth(320)
     else innerWidth >= 545 ? setWidth(300) : setWidth(innerWidth)
   }, [innerWidth])
-
-  useEffect(() => {
-    dispatch(getUser(localStorage.getItem('@SLab_ac_token')?.split('-')[0]))
-  }, [dispatch])
 
   return (
     <>

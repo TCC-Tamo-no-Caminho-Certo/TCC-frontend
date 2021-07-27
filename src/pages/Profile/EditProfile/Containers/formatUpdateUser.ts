@@ -2,7 +2,7 @@ import { UserState } from 'store/Async/user'
 
 import { UniversityResType } from 'types/Responses/university'
 import { EmailsType } from 'types/Responses/user/emails'
-import { RolesType } from 'types/Responses/user/roles'
+import { RolesDataType } from 'types/Responses/user/roles'
 
 export interface InputData {
   name: string
@@ -23,7 +23,7 @@ export interface ContainerForm {
 
 interface FormatUpdateUserProps {
   user: UserState
-  roles?: RolesType
+  roles?: RolesDataType
   emails?: EmailsType
   role: keyof ContainerForm
   universities: UniversityResType[]

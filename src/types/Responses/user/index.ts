@@ -1,10 +1,8 @@
 import { Response } from '../'
-import { Role } from './roles'
 
 export interface UserType {
   id: number
   name: string
-  roles: Role[]
   phone: string
   surname: string
   birthday: string

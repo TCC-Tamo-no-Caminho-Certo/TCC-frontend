@@ -7,7 +7,7 @@ import { getRoleLabel } from 'utils/roles'
 
 import api from 'services/api'
 
-import { UserState } from 'store/Async/user'
+import { getUserRolesData, UserState } from 'store/Async/user'
 import { RootState } from 'store'
 import { getUniversities, UniversitiesState } from 'store/Async/universities'
 
@@ -21,8 +21,8 @@ import Card from 'components/Card'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
-import { EmailsType } from 'types/Responses/user/emails'
-import { Role, RolesType } from 'types/Responses/user/roles'
+import { EmailsResType, EmailsType } from 'types/Responses/user/emails'
+import { Role } from 'types/Responses/user/roles'
 
 type ContainersRoles = Role | 'personal'
 
@@ -32,6 +32,8 @@ const Containers = () => {
   )
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const theme = useContext(ThemeContext)
+
+  const [userEmails, setUserEmails] = useState<EmailsType>()
 
   const imageRef = useRef<ImageChangerMethods>(null)
 
@@ -46,18 +48,16 @@ const Containers = () => {
   )
   const containers: ContainersRoles[] = ['personal', ...rolesWithEdit]
 
-  const [userEmails, setUserEmails] = useState<EmailsType>()
-  const [userRoles, setUserRoles] = useState<RolesType>()
-
   useEffect(() => {
     ;(async () => {
-      const emails: EmailsType = await api.get('user/emails')
-      const roles: RolesType = await api.get('user/roles')
-
-      setUserRoles(roles)
+      const { emails }: EmailsResType = await api.get('user/emails')
       setUserEmails(emails)
     })()
-  }, [])
+  }, [user.id, user.roles])
+
+  useEffect(() => {
+    dispatch(getUserRolesData())
+  }, [dispatch, user.id])
 
   useEffect(() => {
     if (innerWidth <= 430) setSliderWidth(320)
@@ -90,7 +90,7 @@ const Containers = () => {
                   formatUpdateUser({
                     user,
                     role: 'personal',
-                    roles: userRoles,
+                    roles: user.rolesData,
                     emails: userEmails,
                     universities: storeUniversities.universities
                   }).map((info: InputData) => (
@@ -111,7 +111,7 @@ const Containers = () => {
               {!user.loading ? (
                 formatUpdateUser({
                   user,
-                  roles: userRoles,
+                  roles: user.rolesData,
                   emails: userEmails,
                   role: role as keyof ContainerForm,
                   universities: storeUniversities.universities

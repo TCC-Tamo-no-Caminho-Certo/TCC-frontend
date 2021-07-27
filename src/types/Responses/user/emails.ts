@@ -1,3 +1,5 @@
+import { Response } from '../'
+
 export interface EmailType {
   id: number
   main: boolean
@@ -8,3 +10,7 @@ export interface EmailType {
 }
 
 export type EmailsType = EmailType[]
+
+export interface EmailsResType extends Response {
+  emails: EmailsType
+}

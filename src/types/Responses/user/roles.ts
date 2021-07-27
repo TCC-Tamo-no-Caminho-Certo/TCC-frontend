@@ -1,3 +1,5 @@
+import { Response } from '../'
+
 export type Role =
   | 'guest'
   | 'admin'
@@ -7,11 +9,12 @@ export type Role =
   | 'evaluator'
   | 'moderator'
 
+export interface RolesResType extends Response {
+  roles: Role[]
+}
+
 export interface ProfessorType {
   postgraduate: boolean
-  orcid?: string
-  lattes?: string
-  linkedin?: string
   universities: {
     id: number
     register: string
@@ -19,11 +22,12 @@ export interface ProfessorType {
     campus_id: number
     full_time: boolean
   }[]
+  orcid?: string
+  lattes?: string
+  linkedin?: string
 }
 
 export interface StudentType {
-  lattes?: string
-  linkedin?: string
   universities: {
     id: number
     register: string
@@ -31,6 +35,8 @@ export interface StudentType {
     campus_id: number
     semester: boolean
   }[]
+  lattes?: string
+  linkedin?: string
 }
 
 export interface AdministratorType {
@@ -41,7 +47,7 @@ export interface ModeratorType {
   universities: { id: number }[]
 }
 
-export interface RolesType {
+export interface RolesDataType {
   student?: StudentType
   professor?: ProfessorType
   moderator?: ModeratorType

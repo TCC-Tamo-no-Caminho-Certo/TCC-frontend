@@ -19,33 +19,18 @@ const Home = () => {
   const dispatch = useDispatch()
   const location = useLocation()
 
-  const transition = {
-    type: 'tween',
-    duration: 1
-  }
+  const transition = { type: 'tween', duration: 1 }
 
   const loginAnimation = {
-    initial: {
-      x: initial ? '-100vw' : '0vw'
-    },
-    default: {
-      x: '0vw'
-    },
-    exit: {
-      x: '-100vw'
-    }
+    exit: { x: '-100vw' },
+    default: { x: '0vw' },
+    initial: { x: initial ? '-100vw' : '0vw' }
   }
 
   const signupAnimation = {
-    initial: {
-      x: initial ? '100vw' : '0vw'
-    },
-    default: {
-      x: '0vw'
-    },
-    exit: {
-      x: '100vw'
-    }
+    exit: { x: '100vw' },
+    default: { x: '0vw' },
+    initial: { x: initial ? '100vw' : '0vw' }
   }
 
   useEffect(() => {
