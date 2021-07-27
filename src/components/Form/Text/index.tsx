@@ -84,11 +84,12 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
       const input: Ref = {
         setError,
         inputRef: auxRef,
-        type: isDate ? 'date' : type,
-        value: textValue
+        value: textValue,
+        type: isDate ? 'date' : type
       }
 
       form?.registerInput(input)
+
       return () => form?.removeInput(input)
     }, [auxRef, form, type, isDate, textValue])
 

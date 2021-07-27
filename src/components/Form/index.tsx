@@ -21,7 +21,6 @@ import FieldTable from './FieldTable'
 
 import api from 'services/api'
 
-import axios from 'axios'
 import Captcha from 'react-google-recaptcha'
 import { useHistory } from 'react-router-dom'
 import { ObjectSchema, ValidationError } from 'yup'
@@ -86,7 +85,6 @@ const Form = ({
 
   let refs: Ref[] = []
   let haveErrors = false
-  const signal = axios.CancelToken.source()
 
   const registerInput = (input: Ref) => refs.push(input)
 
@@ -170,9 +168,11 @@ const Form = ({
   const validate = () => {
     try {
       haveErrors = false
+
       schema && schema.validateSync(data, { abortEarly: false })
     } catch (error) {
       haveErrors = true
+
       if (error instanceof ValidationError) {
         error.inner.forEach(errorElement => {
           const index = refs.findIndex(({ inputRef: { current } }) =>
@@ -207,10 +207,7 @@ const Form = ({
 
       const firstParam = params[method].path
       const secondParam = params[method].data
-      const resData = await api[method](firstParam, {
-        ...secondParam,
-        cancelToken: signal.token
-      })
+      const resData = await api[method](firstParam, { ...secondParam })
 
       if (resData.response?.data) {
         loading && setShowLoader(false)

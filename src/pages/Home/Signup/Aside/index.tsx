@@ -90,6 +90,10 @@ const Aside = () => {
           path='sign-up'
           schema={signupSchema}
           afterResData={afterSubmit}
+          manipulateData={data => {
+            delete data.confirmPassword
+            return data
+          }}
         >
           <Text
             name='name'
