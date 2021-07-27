@@ -46,15 +46,21 @@ interface GetUserProps {
   id?: string
 }
 
+interface GetUserRolesDataProps {
+  updated?: boolean
+}
+
 export const getUserRolesData = createAsyncThunk(
   'user/getUserRolesData',
-  async (_data, { getState }) => {
+  async ({ updated = false }: GetUserRolesDataProps, { getState }) => {
     const user: any = getState()
 
-    if (!user.rolesData) {
+    if (!user.rolesData || updated) {
       const { roles } = await api.get(`users/${user.id}/roles`, {
         data: { roles: [...user.roles] }
       })
+
+      console.log('USERROLESDATA', { roles })
 
       return { ...user, rolesData: roles }
     }
@@ -72,6 +78,7 @@ export const getUser = createAsyncThunk(
       return {
         ...prevState,
         ...user,
+        roles,
         loading: false,
         selectedRole: getInitialSelectedRole(roles)
       }
@@ -93,7 +100,8 @@ const User = createSlice({
   },
   extraReducers: ({ addCase }) => {
     addCase(getUser.pending, state => ({
-      ...state
+      ...state,
+      loading: true
     }))
 
     addCase(getUser.fulfilled, (state, { payload }) => ({

@@ -43,9 +43,11 @@ const Containers = () => {
   const dispatch = useDispatch()
 
   const rolesToShow = ['student', 'professor', 'moderator']
+
   const rolesWithEdit = user.roles.filter(role =>
     rolesToShow.find(wished => wished === role)
   )
+
   const containers: ContainersRoles[] = ['personal', ...rolesWithEdit]
 
   useEffect(() => {
@@ -56,7 +58,7 @@ const Containers = () => {
   }, [user.id, user.roles])
 
   useEffect(() => {
-    dispatch(getUserRolesData())
+    dispatch(getUserRolesData({}))
   }, [dispatch, user.id])
 
   useEffect(() => {

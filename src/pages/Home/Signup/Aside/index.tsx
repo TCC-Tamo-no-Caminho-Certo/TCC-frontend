@@ -87,7 +87,7 @@ const Aside = () => {
         <Form
           captcha
           loading
-          path='register'
+          path='sign-up'
           schema={signupSchema}
           afterResData={afterSubmit}
         >
