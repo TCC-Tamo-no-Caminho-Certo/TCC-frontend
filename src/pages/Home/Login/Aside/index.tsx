@@ -41,6 +41,11 @@ const Aside = () => {
         case 'User not found!':
           setLoginFailed('E-mail não encontrado')
           break
+
+        case 'Incorrect password!':
+          setLoginFailed('Senha incorreta')
+          break
+
         default:
           setLoginFailed('Ops, algo deu errado :(')
       }

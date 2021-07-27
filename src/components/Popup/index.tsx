@@ -56,7 +56,7 @@ const makeTitle = (type: PopupType, title?: string) => {
 }
 
 const Popup = forwardRef<PopupMethods, PopupProps>(
-  ({ bgHeight = '100vh', top, translateY, bottom, zIndex }, ref) => {
+  ({ bgHeight = '100vh', top, translateY, bottom }, ref) => {
     const modalRef = useRef<ModalMethods>(null)
     const [
       { type, setModal, message, title, onClick, onOkClick, onCloseClick },
@@ -83,7 +83,6 @@ const Popup = forwardRef<PopupMethods, PopupProps>(
       <Modal
         top={top}
         ref={modalRef}
-        zIndex={zIndex}
         bottom={bottom}
         bgHeight={bgHeight}
         translateY={translateY}

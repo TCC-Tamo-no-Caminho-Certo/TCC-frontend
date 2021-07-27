@@ -20,18 +20,14 @@ export interface ModalProps {
   bottom?: string
   bgHeight?: string
   translateY?: string
-  onClose?: () => void
   children?: ReactElement | ReactElement[]
+  onClose?: () => void
 }
 
 interface ModalConfig {
-  content?: ReactElement | ReactElement[] | string
   props?: ModalProps
-  close?: {
-    top: number
-    right: number
-    color: string
-  }
+  content?: ReactElement | ReactElement[] | string
+  close?: { top: number; right: number; color: string }
 }
 
 export interface ModalMethods {
@@ -39,10 +35,7 @@ export interface ModalMethods {
   config: (_content: ModalConfig) => void
 }
 
-const initialConfig = {
-  content: undefined,
-  setModal: false
-}
+const initialConfig = { content: undefined, setModal: false }
 
 const Modal = forwardRef<ModalMethods, ModalProps>(
   (
@@ -59,13 +52,13 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
   ) => {
     const { overflow } = useContext<GlobalContextProps>(GlobalContext)
     const theme = useContext(ThemeContext)
-
-    const modalRef = useRef(null)
     const [{ content, close, props }, setModalConfig] =
       useState<ModalConfig>(initialConfig)
+
     const [openModal, setOpenModal] = useState(false)
 
     const zindex = props?.zIndex ? props.zIndex : 9000
+    const modalRef = useRef(null)
 
     window.addEventListener('keydown', ({ key }) => {
       key === 'Escape' && setOpenModal(false)

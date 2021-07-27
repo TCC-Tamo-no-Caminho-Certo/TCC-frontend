@@ -38,10 +38,12 @@ export const GlobalContext = createContext<GlobalContextProps>({})
 
 const App = () => {
   const theme = useSelector<RootState, ThemeState>(({ theme }) => theme)
+
   const popupRef = useRef<PopupMethods>(null)
   const modalRef = useRef<ModalMethods>(null)
 
   const [overflow, setOverflow] = useState('visible')
+
   const { i18n } = useTranslation()
 
   useEffect(() => {
@@ -51,14 +53,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalContext.Provider
-        value={{
-          modalRef,
-          popupRef,
-          overflow: {
-            overflow,
-            setOverflow
-          }
-        }}
+        value={{ modalRef, popupRef, overflow: { overflow, setOverflow } }}
       >
         <GlobalStyle overflow={overflow} />
 

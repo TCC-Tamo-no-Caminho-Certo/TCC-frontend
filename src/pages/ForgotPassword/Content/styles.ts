@@ -45,6 +45,12 @@ const Style = styled.div`
   .Submit {
     width: 100%;
     height: 44px;
+
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 `
 

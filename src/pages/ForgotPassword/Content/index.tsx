@@ -101,7 +101,7 @@ const Content = () => {
 
             <Submit>
               <SendEmailIcon />
-              Reenviar código
+              <div>Reenviar código</div>
             </Submit>
           </Form>
 
