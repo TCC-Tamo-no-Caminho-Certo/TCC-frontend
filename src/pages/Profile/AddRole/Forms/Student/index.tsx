@@ -2,7 +2,6 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Form } from './styles'
 
 import Ways from './Ways'
-import { Request } from '../Container'
 import { AddRoleContext } from '../../index'
 
 import {
@@ -28,20 +27,15 @@ import {
   UserUniversitiesType,
   UserUniversityType
 } from 'types/Responses/user/universities'
+import { RequestType, StudentDataType } from 'types/Responses/user/requests'
 
 import { GlobalContext } from 'App'
 import { Variants } from 'framer-motion'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
-interface Data {
-  id: number
-  lattes: string
-  linkedin: string
-  register: string
-  semester: number
-  campus_id: number
-  course_id: number
+interface StudentProps {
+  request?: RequestType<StudentDataType>
 }
 
 interface Options {
@@ -49,12 +43,6 @@ interface Options {
   course: Option[]
   semester: Option[]
   university: Option[]
-}
-
-interface Values {
-  course?: Option
-  campus?: Option
-  university?: Option
 }
 
 export interface Animations {
@@ -67,8 +55,15 @@ export interface Animations {
   semester: boolean
 }
 
-interface StudentProps {
-  request?: Request<Data>
+interface Values {
+  course?: Option
+  campus?: Option
+  university?: Option
+}
+
+export const show: Variants = {
+  exit: { x: [0, 320], opacity: [1, 0], transition },
+  enter: { x: [320, 0], opacity: [0, 1], transition }
 }
 
 const semesterOptions: Option[] = [
@@ -84,10 +79,42 @@ const semesterOptions: Option[] = [
   { value: 10, label: '10° Semestre' }
 ]
 
-export const show: Variants = {
-  exit: { x: [0, 320], opacity: [1, 0], transition },
-  enter: { x: [320, 0], opacity: [0, 1], transition }
+const initialAnimations = {
+  ar: false,
+  ways: false,
+  course: false,
+  submit: false,
+  campus: false,
+  voucher: false,
+  semester: false
 }
+
+const initialOptions = {
+  campus: [],
+  course: [],
+  university: [],
+  semester: semesterOptions
+}
+
+const initialValues = {
+  campus: undefined,
+  course: undefined,
+  university: undefined
+}
+
+const initialUniversity = {
+  id: 0,
+  name: '',
+  regex: {
+    email: { professor: '', student: '' },
+    register: { professor: '', student: '' }
+  }
+}
+
+export const universityArrayToSelect = (
+  array: UserUniversitiesType
+): Option[] =>
+  array.map(({ id, name }: UserUniversityType) => ({ value: id, label: name }))
 
 export const hasInstitutionalEmail = (regex: string, emails?: EmailsType) => {
   const rgx = new RegExp(regex)
@@ -96,56 +123,32 @@ export const hasInstitutionalEmail = (regex: string, emails?: EmailsType) => {
   return false
 }
 
-export const universityArrayToSelect = (
-  array: UserUniversitiesType
-): Option[] =>
-  array.map(({ id, name }: UserUniversityType) => ({ value: id, label: name }))
-
 const Student = ({ request }: StudentProps) => {
-  const { popupRef } = useContext(GlobalContext)
+  const user = useSelector<RootState, UserState>(({ user }) => user)
   const { courses, universities } = useContext(AddRoleContext)
-  const { id } = useSelector<RootState, UserState>(({ user }) => user)
-  const [userEmails, setUserEmails] = useState<EmailsType>()
+  const { popupRef } = useContext(GlobalContext)
 
+  const [animations, setAnimations] = useState<Animations>(initialAnimations)
+  const [options, setOptions] = useState<Options>(initialOptions)
   const [registerByEmail, setRegisterByEmail] = useState(false)
-
-  const [animations, setAnimations] = useState<Animations>({
-    ar: false,
-    ways: false,
-    campus: false,
-    course: false,
-    submit: false,
-    voucher: false,
-    semester: false
-  })
-
-  const [options, setOptions] = useState<Options>({
-    campus: [],
-    course: [],
-    university: [],
-    semester: semesterOptions
-  })
-
-  const [values, setValues] = useState<Values>({
-    university: undefined,
-    campus: undefined,
-    course: undefined
-  })
-
-  const [selectedUniversity, setSelectedUniversity] = useState<UniversityType>({
-    id: 0,
-    name: '',
-    regex: {
-      email: { professor: '', student: '' },
-      register: { professor: '', student: '' }
-    }
-  })
+  const [values, setValues] = useState<Values>(initialValues)
+  const [userEmails, setUserEmails] = useState<EmailsType>()
+  const [selectedUniversity, setSelectedUniversity] =
+    useState<UniversityType>(initialUniversity)
 
   const history = useHistory()
 
   const registerRegex = universities.find(
     ({ id }) => id === values.university?.value
   )?.regex.register.student
+
+  const formPath = request
+    ? `users/roles/requests/${request.id}/student`
+    : 'users/roles/requests/student'
+
+  const formSchema = animations.voucher
+    ? voucherSchema(registerRegex || '')
+    : emailSchema(registerRegex || '')
 
   const setInitialCampusOptions = useCallback(async () => {
     if (request) {
@@ -215,6 +218,11 @@ const Student = ({ request }: StudentProps) => {
         course: true
       }))
     }
+  }
+
+  const onCourseChange = (selected: Option) => {
+    setValues(prev => ({ ...prev, course: selected }))
+    setAnimations(prev => ({ ...prev, semester: true }))
   }
 
   const onSemesterChange = () => {
@@ -320,28 +328,20 @@ const Student = ({ request }: StudentProps) => {
 
   useEffect(() => {
     ;(async () => {
-      const { emails }: EmailsResType = await api.get(`users/${id}/emails`)
+      const { emails }: EmailsResType = await api.get(`users/${user.id}/emails`)
 
       setUserEmails(emails)
     })()
-  }, [id])
+  }, [user.id])
 
   return (
     <>
       <Form
         loading
+        path={formPath}
+        schema={formSchema}
         afterResData={afterSubmit}
         method={request ? 'patch' : 'post'}
-        path={
-          request
-            ? `user/role/request/student/${request.request_id}`
-            : 'user/role/request/student'
-        }
-        schema={
-          animations.voucher
-            ? voucherSchema(registerRegex || '')
-            : emailSchema(registerRegex || '')
-        }
       >
         <Text
           optional
@@ -397,10 +397,7 @@ const Student = ({ request }: StudentProps) => {
             placeholder='Curso'
             value={values.course}
             options={options.course}
-            onChange={(selected: Option) => {
-              setValues(prev => ({ ...prev, course: selected }))
-              setAnimations(prev => ({ ...prev, semester: true }))
-            }}
+            onChange={onCourseChange}
           />
         </Presence>
 
