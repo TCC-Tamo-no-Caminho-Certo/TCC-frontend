@@ -158,4 +158,4 @@ export const Form = styled(OriginalForm)`
 
 Voucher.displayName = 'Student-Voucher-Style'
 Ways.displayName = 'Student-Ways-Style'
-Form.displayName = 'Student-Form-Style'
+Form.displayName = 'StudentProfessor-Form-Style'

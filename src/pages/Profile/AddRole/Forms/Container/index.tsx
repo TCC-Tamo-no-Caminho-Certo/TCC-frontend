@@ -9,9 +9,8 @@ import React, {
 import Style, { Content, Header, Rejected, ScrollButton } from './styles'
 
 import RequestSvg from './RequestSvg'
-import Professor from '../Professor'
 import ModeratorForm from '../Moderator'
-import Student from '../Student'
+import Student from '../StudentProfessor'
 import { AddRoleContext } from '../..'
 
 import { StatusTypes } from 'utils/status'
@@ -58,8 +57,8 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
   const conbinedRefs = useCombinedRefs(ref, hereRef)
 
   const forms = {
-    student: <Student request={request} />,
-    professor: <Professor request={request} />,
+    student: <Student request={request} role='student' />,
+    professor: <Student request={request} role='professor' />,
     moderator: <ModeratorForm request={request} />
   }
 

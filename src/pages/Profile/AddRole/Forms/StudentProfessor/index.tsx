@@ -1,13 +1,17 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Form } from './styles'
 
-import Ways from './Ways'
+import Ways from '../Container/Ways'
 import { AddRoleContext } from '../../index'
 
 import {
-  emailSchema,
-  voucherSchema
+  emailSchema as studentEmailSchema,
+  voucherSchema as studentVoucherSchema
 } from 'utils/validations/addRoleForms/student'
+import {
+  emailSchema as professorEmailSchema,
+  voucherSchema as professorVoucherSchema
+} from 'utils/validations/addRoleForms/professor'
 import transition from 'utils/transition'
 
 import api from 'services/api'
@@ -27,15 +31,20 @@ import {
   UserUniversitiesType,
   UserUniversityType
 } from 'types/Responses/user/universities'
-import { RequestType, StudentDataType } from 'types/Responses/user/requests'
+import {
+  ProfessorDataType,
+  RequestType,
+  StudentDataType
+} from 'types/Responses/user/requests'
 
 import { GlobalContext } from 'App'
 import { Variants } from 'framer-motion'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
-interface StudentProps {
-  request?: RequestType<StudentDataType>
+interface StudentProfessorProps {
+  role: 'student' | 'professor'
+  request?: RequestType<StudentDataType> & RequestType<ProfessorDataType>
 }
 
 interface Options {
@@ -123,7 +132,7 @@ export const hasInstitutionalEmail = (regex: string, emails?: EmailsType) => {
   return false
 }
 
-const Student = ({ request }: StudentProps) => {
+const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const { universities } = useContext(AddRoleContext)
   const { popupRef } = useContext(GlobalContext)
@@ -138,17 +147,9 @@ const Student = ({ request }: StudentProps) => {
 
   const history = useHistory()
 
-  const registerRegex = universities.find(
-    ({ id }) => id === values.university?.value
-  )?.regex.register.student
-
   const formPath = request
-    ? `users/roles/requests/${request.id}/student`
-    : 'users/roles/requests/student'
-
-  const formSchema = animations.voucher
-    ? voucherSchema(registerRegex || '')
-    : emailSchema(registerRegex || '')
+    ? `users/roles/requests/${request.id}/${role}`
+    : `users/roles/requests/${role}`
 
   const setInitialCampusOptions = useCallback(async () => {
     if (request) {
@@ -168,6 +169,21 @@ const Student = ({ request }: StudentProps) => {
       }
     }
   }, [request])
+
+  const getFormSchema = () => {
+    const registerRegex = universities.find(
+      ({ id }) => id === values.university?.value
+    )?.regex.register?.[role]
+
+    if (animations.voucher)
+      return role === 'student'
+        ? studentVoucherSchema(registerRegex || '')
+        : professorVoucherSchema(registerRegex || '')
+    else
+      return role === 'student'
+        ? studentEmailSchema(registerRegex || '')
+        : professorEmailSchema(registerRegex || '')
+  }
 
   const onUniversityChange = async (selected: Option) => {
     if (values.university !== selected) {
@@ -222,7 +238,10 @@ const Student = ({ request }: StudentProps) => {
 
   const onCourseChange = (selected: Option) => {
     setValues(prev => ({ ...prev, course: selected }))
-    setAnimations(prev => ({ ...prev, semester: true }))
+
+    role === 'student'
+      ? setAnimations(prev => ({ ...prev, semester: true }))
+      : setAnimations(prev => ({ ...prev, ways: true }))
   }
 
   const onSemesterChange = () => {
@@ -235,7 +254,7 @@ const Student = ({ request }: StudentProps) => {
   const afterSubmit = ({ success }: any) => {
     const byEmail =
       registerByEmail ||
-      hasInstitutionalEmail(selectedUniversity.regex.email.student, userEmails)
+      hasInstitutionalEmail(selectedUniversity.regex.email[role], userEmails)
 
     if (success)
       popupRef?.current?.configPopup({
@@ -325,72 +344,81 @@ const Student = ({ request }: StudentProps) => {
   }, [user.id])
 
   return (
-    <>
-      <Form
-        loading
-        path={formPath}
-        schema={formSchema}
-        afterResData={afterSubmit}
-        method={request ? 'patch' : 'post'}
+    <Form
+      loading
+      path={formPath}
+      schema={getFormSchema()}
+      afterResData={afterSubmit}
+      method={request ? 'patch' : 'post'}
+    >
+      <Text
+        optional
+        name='lattes'
+        placeholder='Link para: Currículo Lattes'
+        defaultValue={request?.data.lattes}
+      />
+
+      <Text
+        optional
+        name='linkedin'
+        placeholder='Link para: Linkedin'
+        defaultValue={request?.data.linkedin}
+      />
+
+      {role === 'professor' && (
+        <Text
+          optional
+          name='orcid'
+          placeholder='Link para: ORCID'
+          defaultValue={request?.data.orcid}
+        />
+      )}
+
+      <Select
+        name='id'
+        id='cy-university'
+        placeholder='Universidade'
+        value={values.university}
+        options={options.university}
+        onChange={onUniversityChange}
+      />
+
+      <Presence
+        id='ar'
+        animate='enter'
+        variants={show}
+        condition={animations.ar}
       >
         <Text
-          optional
-          name='lattes'
-          placeholder='Link para: Currículo Lattes'
-          defaultValue={request?.data.lattes}
+          name='register'
+          placeholder='Registro Acadêmico'
+          defaultValue={request?.data.register}
         />
+      </Presence>
 
-        <Text
-          optional
-          name='linkedin'
-          placeholder='Link para: Linkedin'
-          defaultValue={request?.data.linkedin}
-        />
-
+      <Presence animate='enter' variants={show} condition={animations.campus}>
         <Select
-          name='id'
-          id='cy-university'
-          placeholder='Universidade'
-          value={values.university}
-          options={options.university}
-          onChange={onUniversityChange}
+          id='cy-campus'
+          name='campus_id'
+          placeholder='Câmpus'
+          value={values.campus}
+          options={options.campus}
+          onChange={onCampusChange}
         />
+      </Presence>
 
-        <Presence
-          id='ar'
-          animate='enter'
-          variants={show}
-          condition={animations.ar}
-        >
-          <Text
-            name='register'
-            placeholder='Registro Acadêmico'
-            defaultValue={request?.data.register}
-          />
-        </Presence>
+      <Presence animate='enter' variants={show} condition={animations.course}>
+        <Select
+          id='cy-course'
+          name='course_id'
+          placeholder='Curso'
+          value={values.course}
+          options={options.course}
+          onChange={onCourseChange}
+        />
+      </Presence>
 
-        <Presence animate='enter' variants={show} condition={animations.campus}>
-          <Select
-            id='cy-campus'
-            name='campus_id'
-            placeholder='Câmpus'
-            value={values.campus}
-            options={options.campus}
-            onChange={onCampusChange}
-          />
-        </Presence>
-
-        <Presence animate='enter' variants={show} condition={animations.course}>
-          <Select
-            id='cy-course'
-            name='course_id'
-            placeholder='Curso'
-            value={values.course}
-            options={options.course}
-            onChange={onCourseChange}
-          />
-        </Presence>
-
+      {role === 'student' && (
         <Presence
           animate='enter'
           variants={show}
@@ -407,27 +435,27 @@ const Student = ({ request }: StudentProps) => {
             )}
           />
         </Presence>
+      )}
 
-        <Ways
-          request={request}
-          animations={animations}
-          setAnimations={setAnimations}
-          setRegisterByEmail={setRegisterByEmail}
-          selectedUniversity={selectedUniversity}
-        />
+      <Ways
+        request={request}
+        animations={animations}
+        setAnimations={setAnimations}
+        setRegisterByEmail={setRegisterByEmail}
+        selectedUniversity={selectedUniversity}
+      />
 
-        <Presence
-          exit='exit'
-          initial='exit'
-          animate='enter'
-          variants={show}
-          condition={animations.submit}
-        >
-          <Submit id='cy-submit'>Enviar solicitação</Submit>
-        </Presence>
-      </Form>
-    </>
+      <Presence
+        exit='exit'
+        initial='exit'
+        animate='enter'
+        variants={show}
+        condition={animations.submit}
+      >
+        <Submit id='cy-submit'>Enviar solicitação</Submit>
+      </Presence>
+    </Form>
   )
 }
 
-export default Student
+export default StudentProfessor

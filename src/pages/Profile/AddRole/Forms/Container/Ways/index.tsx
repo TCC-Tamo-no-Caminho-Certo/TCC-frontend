@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useRef } from 'react'
 import Style, { Choose, Voucher } from './styles'
 
-import { Animations, show } from '../index'
+import { Animations, show } from '../../StudentProfessor/index'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
