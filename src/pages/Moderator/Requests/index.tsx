@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Style from './styles'
 
 import ResponseContent from './ResponseContent'
@@ -6,12 +6,11 @@ import ResponseContent from './ResponseContent'
 import { isoToDate } from 'utils/dates'
 
 import { RootState } from 'store'
-import { CoursesState, getCourses } from 'store/Async/courses'
 import { UserState } from 'store/Async/user'
 
 import Table, { HeaderData } from 'components/Table'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 const headerData: HeaderData[] = [
   { name: 'status', label: '', circle: true },
@@ -25,15 +24,7 @@ const headerData: HeaderData[] = [
 ]
 
 const Requests = () => {
-  const courses = useSelector<RootState, CoursesState>(({ courses }) => courses)
   const { roles } = useSelector<RootState, UserState>(({ user }) => user)
-
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(getCourses(courses))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return (
     <Style>
@@ -45,7 +36,7 @@ const Requests = () => {
         path='user/role/requests'
         headerData={headerData}
         itemContent={ResponseContent}
-        condition={!!roles && !!courses}
+        condition={!!roles}
         filters={{ from: true, name: true, role: true, status: true, to: true }}
       />
     </Style>

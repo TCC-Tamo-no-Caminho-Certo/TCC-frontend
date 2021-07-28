@@ -21,7 +21,6 @@ const Style = styled.div`
 
   form {
     width: 100%;
-    border: solid red 1px;
 
     > * {
       width: 100%;

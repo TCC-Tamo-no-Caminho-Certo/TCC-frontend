@@ -125,7 +125,7 @@ export const hasInstitutionalEmail = (regex: string, emails?: EmailsType) => {
 
 const Student = ({ request }: StudentProps) => {
   const user = useSelector<RootState, UserState>(({ user }) => user)
-  const { courses, universities } = useContext(AddRoleContext)
+  const { universities } = useContext(AddRoleContext)
   const { popupRef } = useContext(GlobalContext)
 
   const [animations, setAnimations] = useState<Animations>(initialAnimations)
@@ -315,16 +315,6 @@ const Student = ({ request }: StudentProps) => {
       }))
     }))
   }, [universities])
-
-  useEffect(() => {
-    setOptions(prev => ({
-      ...prev,
-      course: courses.map(({ name, course_id }) => ({
-        label: name,
-        value: course_id
-      }))
-    }))
-  }, [courses])
 
   useEffect(() => {
     ;(async () => {

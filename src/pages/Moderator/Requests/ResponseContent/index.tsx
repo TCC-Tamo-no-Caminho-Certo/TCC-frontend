@@ -8,7 +8,6 @@ import api from 'services/api'
 
 import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
-import { CoursesState } from 'store/Async/courses'
 
 import CloseIcon from 'assets/global/CloseIcon'
 import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'
@@ -31,10 +30,6 @@ const ResponseContent = ({
   onCloseClick,
   selectedInfo
 }: ItemProps) => {
-  const { courses } = useSelector<RootState, CoursesState>(
-    ({ courses }) => courses
-  )
-
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const { popupRef } = useContext(GlobalContext)
   const theme = useContext(ThemeContext)
@@ -168,13 +163,7 @@ const ResponseContent = ({
             {selectedInfo.role !== 'moderator' && selectedInfo.data.course_id && (
               <Field>
                 Curso:
-                <div>
-                  {courses &&
-                    courses.find(
-                      ({ course_id }) =>
-                        course_id === selectedInfo.data.course_id
-                    )?.name}
-                </div>
+                <div>CURSO</div>
               </Field>
             )}
 

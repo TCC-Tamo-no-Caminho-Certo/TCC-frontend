@@ -71,7 +71,7 @@ interface ProfessorProps {
 
 function Professor({ request }: ProfessorProps) {
   const { popupRef } = useContext(GlobalContext)
-  const { courses, universities } = useContext(AddRoleContext)
+  const { universities } = useContext(AddRoleContext)
 
   const [registerByEmail, setRegisterByEmail] = useState(false)
 
@@ -284,16 +284,6 @@ function Professor({ request }: ProfessorProps) {
       }))
     }))
   }, [universities])
-
-  useEffect(() => {
-    setOptions(prev => ({
-      ...prev,
-      course: courses.map(({ name, course_id }) => ({
-        label: name,
-        value: course_id
-      }))
-    }))
-  }, [courses])
 
   return (
     <>

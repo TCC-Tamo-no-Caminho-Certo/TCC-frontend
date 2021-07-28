@@ -15,16 +15,15 @@ import { getRoleLabel } from 'utils/roles'
 import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
 import { getUniversities, UniversitiesState } from 'store/Async/universities'
-import { Course, CoursesState, getCourses } from 'store/Async/courses'
+
+import { UniversitiesType } from 'types/Responses/university/universities'
+import { RolesType, RoleType } from 'types/Responses/user/roles'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { ThemeContext } from 'styled-components'
-import { UniversitiesType } from 'types/Responses/university/universities'
-import { RolesType, RoleType } from 'types/Responses/user/roles'
 
 interface AddRoleState {
-  courses: Course[]
   roles: RolesType
   universities: UniversitiesType
 }
@@ -41,7 +40,6 @@ const allRoles: RolesType = [
 
 export const AddRoleContext = createContext<AddRoleState>({
   roles: [],
-  courses: [],
   universities: []
 })
 
@@ -50,9 +48,7 @@ const AddRole = () => {
     ({ universities }) => universities
   )
   const { roles } = useSelector<RootState, UserState>(({ user }) => user)
-  const storeCourses = useSelector<RootState, CoursesState>(
-    ({ courses }) => courses
-  )
+
   const theme = useContext(ThemeContext)
 
   const containerRef = useRef<HTMLDivElement>(null)
@@ -72,7 +68,6 @@ const AddRole = () => {
 
   useEffect(() => {
     dispatch(getUniversities(storeUniversities))
-    dispatch(getCourses(storeCourses))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -154,7 +149,6 @@ const AddRole = () => {
       <AddRoleContext.Provider
         value={{
           roles: roles,
-          courses: storeCourses.courses,
           universities: storeUniversities.universities
         }}
       >

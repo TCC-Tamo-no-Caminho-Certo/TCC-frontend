@@ -2,7 +2,6 @@ import Home from './Sync/home'
 import User from './Async/user'
 import Theme from './Sync/theme'
 import Sidebar from './Sync/sidebar'
-import Courses from './Async/courses'
 import Validation from './Async/validation'
 import Universities from './Async/universities'
 
@@ -16,7 +15,6 @@ const store = configureStore({
     user: User.reducer,
     theme: Theme.reducer,
     sidebar: Sidebar.reducer,
-    courses: Courses.reducer,
     validation: Validation.reducer,
     universities: Universities.reducer
   }
