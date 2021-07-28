@@ -28,7 +28,7 @@ import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
 import { GlobalContext } from 'App'
 import { useHistory } from 'react-router'
-import { UniversityResType } from 'types/Responses/university'
+import { UniversityType } from 'types/Responses/university'
 import { EmailsType } from 'types/Responses/user/emails'
 
 interface Data {
@@ -84,15 +84,14 @@ function Professor({ request }: ProfessorProps) {
     })()
   }, [])
 
-  const [selectedUniversity, setSelectedUniversity] =
-    useState<UniversityResType>({
-      name: '',
-      regex: {
-        email: { professor: '', student: '' },
-        register: { professor: '', student: '' }
-      },
-      id: 0
-    })
+  const [selectedUniversity, setSelectedUniversity] = useState<UniversityType>({
+    name: '',
+    regex: {
+      email: { professor: '', student: '' },
+      register: { professor: '', student: '' }
+    },
+    id: 0
+  })
   const [animations, setAnimations] = useState<Animations>({
     campus: false,
     ar: false,

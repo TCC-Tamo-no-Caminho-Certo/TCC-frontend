@@ -2,11 +2,11 @@ import React, { forwardRef } from 'react'
 import Style from './styles'
 
 import { ProjectResType, StatusType } from 'types/Responses/project'
-import { UniversityResType } from 'types/Responses/university'
+import { UniversityType } from 'types/Responses/university'
 
 interface AboutProps {
   project?: ProjectResType
-  university?: UniversityResType
+  university?: UniversityType
 }
 
 const About = forwardRef<any, AboutProps>(({ project, university }, ref) => {

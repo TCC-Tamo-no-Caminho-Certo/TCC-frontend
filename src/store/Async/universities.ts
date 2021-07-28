@@ -1,12 +1,14 @@
 import api from 'services/api'
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { UniversityResType } from 'types/Responses/university'
-import { UniversitiesResType } from 'types/Responses/university/universities'
+import {
+  UniversitiesResType,
+  UniversitiesType
+} from 'types/Responses/university/universities'
 
 export interface UniversitiesState {
   loading: boolean
-  universities: UniversityResType[]
+  universities: UniversitiesType
 }
 
 const initialState: UniversitiesState = {

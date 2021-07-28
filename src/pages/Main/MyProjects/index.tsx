@@ -26,19 +26,21 @@ const Projects = forwardRef((_props, ref) => {
 
   const getUniversitiesOptions = async () => {
     const universitiesOfProfessor = []
+
     const { universities }: ProfessorType = await api.get(
       '/user/roles/professor'
     )
 
     for (let i = 0; i < universities.length; i++) {
-      const university = universities[i]
-      const { name, id }: UniversityResType = await api.get(
-        `/university/${university.id}`
+      const professorUniversity = universities[i]
+
+      const { university }: UniversityResType = await api.get(
+        `/university/${professorUniversity.id}`
       )
 
       universitiesOfProfessor.push({
-        value: id,
-        label: name
+        value: university.id,
+        label: university.name
       })
     }
 

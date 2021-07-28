@@ -1,6 +1,7 @@
 import { UserState } from 'store/Async/user'
 
 import { UniversityResType } from 'types/Responses/university'
+import { UniversitiesType } from 'types/Responses/university/universities'
 import { EmailsType } from 'types/Responses/user/emails'
 import { RolesDataType } from 'types/Responses/user/rolesData'
 
@@ -26,7 +27,7 @@ interface FormatUpdateUserProps {
   roles?: RolesDataType
   emails?: EmailsType
   role: keyof ContainerForm
-  universities: UniversityResType[]
+  universities: UniversitiesType
 }
 
 const removeRepeatly = (array: any[] | undefined) => {

@@ -20,13 +20,13 @@ import { Course, CoursesState, getCourses } from 'store/Async/courses'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { ThemeContext } from 'styled-components'
-import { UniversityResType } from 'types/Responses/university'
+import { UniversitiesType } from 'types/Responses/university/universities'
 import { RolesType, RoleType } from 'types/Responses/user/roles'
 
 interface AddRoleState {
   courses: Course[]
   roles: RolesType
-  universities: UniversityResType[]
+  universities: UniversitiesType
 }
 
 const allRoles: RolesType = [
@@ -49,7 +49,7 @@ const AddRole = () => {
   const storeUniversities = useSelector<RootState, UniversitiesState>(
     ({ universities }) => universities
   )
-  const user = useSelector<RootState, UserState>(({ user }) => user)
+  const { roles } = useSelector<RootState, UserState>(({ user }) => user)
   const storeCourses = useSelector<RootState, CoursesState>(
     ({ courses }) => courses
   )
@@ -60,10 +60,10 @@ const AddRole = () => {
 
   const [roleSelected, setRoleSelected] = useState<RoleType>()
 
-  const dispatch = useDispatch()
   const { pathname } = useLocation()
+  const dispatch = useDispatch()
 
-  const labelRoles = user.roles.map(role => getRoleLabel(role))
+  const labelRoles = roles.map(role => getRoleLabel(role))
 
   useEffect(() => {
     roleSelected === undefined &&
@@ -129,8 +129,7 @@ const AddRole = () => {
             ]}
           />
 
-          {(user.roles.includes('professor') ||
-            user.roles.includes('moderator')) && (
+          {(roles.includes('professor') || roles.includes('moderator')) && (
             <RoleInfo
               role='moderator'
               id='cy-moderator'
@@ -154,7 +153,7 @@ const AddRole = () => {
 
       <AddRoleContext.Provider
         value={{
-          roles: user.roles,
+          roles: roles,
           courses: storeCourses.courses,
           universities: storeUniversities.universities
         }}

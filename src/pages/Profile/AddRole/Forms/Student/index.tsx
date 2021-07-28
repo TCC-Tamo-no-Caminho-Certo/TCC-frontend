@@ -34,18 +34,24 @@ import { Variants } from 'framer-motion'
 import { animation } from 'polished'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
-import { UniversityResType } from 'types/Responses/university'
+import { UniversityType } from 'types/Responses/university'
 import { CampusResType } from 'types/Responses/university/campus'
+import { CoursesResType } from 'types/Responses/university/courses'
+import { UniversitiesType } from 'types/Responses/university/universities'
 import { EmailsResType, EmailsType } from 'types/Responses/user/emails'
+import {
+  UserUniversitiesType,
+  UserUniversityType
+} from 'types/Responses/user/universities'
 
 interface Data {
+  id: number
   lattes: string
   linkedin: string
   register: string
   semester: number
   campus_id: number
   course_id: number
-  id: number
 }
 
 interface Options {
@@ -100,8 +106,10 @@ export const hasInstitutionalEmail = (regex: string, emails?: EmailsType) => {
   return false
 }
 
-export const universityArrayToSelect = (array: UniversityResType[]): Option[] =>
-  array.map(({ id, name }: UniversityResType) => ({ value: id, label: name }))
+export const universityArrayToSelect = (
+  array: UserUniversitiesType
+): Option[] =>
+  array.map(({ id, name }: UserUniversityType) => ({ value: id, label: name }))
 
 const Student = ({ request }: StudentProps) => {
   const { popupRef } = useContext(GlobalContext)
@@ -137,15 +145,14 @@ const Student = ({ request }: StudentProps) => {
     course: undefined
   })
 
-  const [selectedUniversity, setSelectedUniversity] =
-    useState<UniversityResType>({
-      id: 0,
-      name: '',
-      regex: {
-        email: { professor: '', student: '' },
-        register: { professor: '', student: '' }
-      }
-    })
+  const [selectedUniversity, setSelectedUniversity] = useState<UniversityType>({
+    id: 0,
+    name: '',
+    regex: {
+      email: { professor: '', student: '' },
+      register: { professor: '', student: '' }
+    }
+  })
 
   const history = useHistory()
 
@@ -156,7 +163,7 @@ const Student = ({ request }: StudentProps) => {
   const setInitialCampusOptions = useCallback(async () => {
     if (request) {
       const { campus }: CampusResType = await api.get(
-        `universities/${request?.data.id}/campus`
+        `universities/${request.data.id}/campus`
       )
 
       if (campus) {
@@ -180,9 +187,7 @@ const Student = ({ request }: StudentProps) => {
 
       setOptions(prev => ({
         ...prev,
-        campus: campus.map(
-          ({ name, id }): Option => ({ label: name, value: id })
-        )
+        campus: campus.map(({ name, id }) => ({ label: name, value: id }))
       }))
 
       setValues(prev => ({
@@ -194,32 +199,24 @@ const Student = ({ request }: StudentProps) => {
 
       if (!request) {
         const newSelected = universities.find(({ id }) => id === selected.value)
-
         newSelected && setSelectedUniversity(newSelected)
       }
 
-      setAnimations(prev => ({
-        ...prev,
-        ar: true,
-        campus: true
-      }))
+      setAnimations(prev => ({ ...prev, ar: true, campus: true }))
     }
   }
 
   const onCampusChange = async (selected: Option) => {
-    const { courses } = await api.get(
-      `/university/campus/${selected.value}/course`
+    const { courses }: CoursesResType = await api.get(
+      `/universities/campus/${selected.value}/courses`
     )
+
+    console.log(courses)
 
     if (values.campus !== selected) {
       setOptions(prev => ({
         ...prev,
-        course: courses.map(
-          ({ course_id, name }: any): Option => ({
-            value: course_id,
-            label: name
-          })
-        )
+        course: courses.map(({ id, name }: any) => ({ value: id, label: name }))
       }))
 
       setValues(prev => ({

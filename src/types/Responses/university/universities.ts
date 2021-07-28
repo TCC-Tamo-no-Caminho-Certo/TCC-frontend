@@ -1,6 +1,8 @@
 import { Response } from '../'
-import { UniversityResType } from './'
+import { UniversityType } from './'
+
+export type UniversitiesType = UniversityType[]
 
 export interface UniversitiesResType extends Response {
-  universities: UniversityResType[]
+  universities: UniversitiesType
 }
