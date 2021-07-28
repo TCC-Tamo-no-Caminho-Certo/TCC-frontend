@@ -46,9 +46,7 @@ const Content = () => {
       ? popupRef?.current?.configPopup({
           setModal: true,
           type: 'success',
-          message: 'Código reenviado!',
-          onOkClick: () => console.log('ON-OK-CLICK'),
-          onCloseClick: () => console.log('ON-CLOSE-CLICK')
+          message: 'Código reenviado!'
         })
       : popupRef?.current?.configPopup({
           setModal: true,

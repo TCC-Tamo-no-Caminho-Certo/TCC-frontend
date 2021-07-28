@@ -7,6 +7,43 @@ interface ContentProps {
   role: Role
 }
 
+export const ScrollButton = styled.button.attrs({ type: 'button' })`
+  padding: 8px;
+  margin-bottom: 24px;
+
+  color: ${({ theme }) => theme.colors.tertiary};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`
+
+export const Rejected = styled.div`
+  width: 100%;
+  padding: 16px;
+  border-radius: 8px;
+
+  border: solid 1px ${({ theme }) => theme.colors.primary};
+
+  div + div {
+    margin-top: 8px;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
+
+    color: ${({ theme }) => theme.colors.tertiary};
+
+    &#rejected {
+      color: ${({ theme }) => theme.colors.red};
+    }
+  }
+`
+
 export const Header = styled(HeaderComponent)`
   justify-content: start;
 
@@ -29,16 +66,6 @@ export const Content = styled(Card)<ContentProps>`
     margin-bottom: 24px;
   }
 
-  #feedback {
-    width: 100%;
-
-    p {
-      width: 100%;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-    }
-  }
-
   #role {
     width: 100%;
     text-align: center;
@@ -46,59 +73,6 @@ export const Content = styled(Card)<ContentProps>`
     font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2.2rem);
 
     color: ${({ theme, role }: any) => theme.roles[role]};
-  }
-
-  #rejected {
-    width: 100%;
-    padding: 16px;
-    border-radius: 8px;
-
-    border: solid 1px ${({ theme }) => theme.colors.primary};
-
-    > p {
-      text-align: center;
-      margin-bottom: 16px;
-      word-wrap: break-word;
-      font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.1rem);
-
-      color: ${({ theme }) => theme.colors.red};
-    }
-
-    div {
-      width: 100%;
-      border-radius: 8px;
-
-      span {
-        color: ${({ theme }) => theme.colors.tertiary};
-      }
-
-      p {
-        margin-top: 8px;
-        font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
-
-        color: ${({ theme }) => theme.colors.primary};
-      }
-    }
-  }
-
-  #tryAgain {
-    width: 100%;
-    text-align: left;
-    margin: 24px 16px;
-    font-size: clamp(1.8rem, 0.6rem + 2.6vw, 1.8rem);
-
-    color: ${({ theme }) => theme.colors.tertiary};
-  }
-
-  #scrollButton {
-    padding: 8px;
-    margin-bottom: 24px;
-
-    color: ${({ theme }) => theme.colors.tertiary};
-
-    &:hover {
-      color: ${({ theme }) => theme.colors.primary};
-    }
   }
 
   @media screen and (min-width: 620px) {
@@ -121,6 +95,8 @@ const Style = styled.section`
 
 export default Style
 
+ScrollButton.displayName = 'ScrollButton-Style'
+Rejected.displayName = 'Rejected-Style'
 Header.displayName = 'Header-Style'
 Content.displayName = 'Content-Style'
 Style.displayName = 'Container-Style'

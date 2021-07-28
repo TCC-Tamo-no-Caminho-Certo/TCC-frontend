@@ -5,14 +5,12 @@ import { UniversityResType } from 'types/Responses/university'
 import { UniversitiesResType } from 'types/Responses/university/universities'
 
 export interface UniversitiesState {
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  entities: []
+  loading: boolean
   universities: UniversityResType[]
 }
 
 const initialState: UniversitiesState = {
-  loading: 'idle',
-  entities: [],
+  loading: false,
   universities: []
 }
 
@@ -21,7 +19,7 @@ export const getUniversities = createAsyncThunk(
   async (prevState: UniversitiesState) => {
     if (prevState.universities.length === 0) {
       const { universities }: UniversitiesResType = await api.get(
-        'info/university'
+        'universities'
       )
 
       return { universities }
@@ -34,6 +32,11 @@ const Universities = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
+    builder.addCase(getUniversities.pending, state => ({
+      ...state,
+      loading: true
+    }))
+
     builder.addCase(getUniversities.fulfilled, (state, action) => ({
       ...state,
       ...action.payload

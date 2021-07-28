@@ -10,13 +10,11 @@ export interface RoleType {
 
 export interface RolesState {
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  entities: []
   roles: RoleType[]
 }
 
 const initialState: RolesState = {
   loading: 'idle',
-  entities: [],
   roles: []
 }
 

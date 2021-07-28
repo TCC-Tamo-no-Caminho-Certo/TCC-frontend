@@ -60,8 +60,6 @@ export const getUserRolesData = createAsyncThunk(
         data: { roles: [...user.roles] }
       })
 
-      console.log('USERROLESDATA', { roles })
-
       return { ...user, rolesData: roles }
     }
   }

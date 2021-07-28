@@ -5,8 +5,9 @@ import React, {
   useRef,
   useState
 } from 'react'
-import { Form, Voucher, Ways } from './styles'
+import { Form, Voucher } from './styles'
 
+import Ways from './Ways'
 import { Request } from '../Container'
 import { AddRoleContext } from '../../index'
 
@@ -14,8 +15,12 @@ import {
   emailSchema,
   voucherSchema
 } from 'utils/validations/addRoleForms/student'
+import transition from 'utils/transition'
 
 import api from 'services/api'
+
+import { RootState } from 'store'
+import { UserState } from 'store/Async/user'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
@@ -26,9 +31,12 @@ import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
 import { GlobalContext } from 'App'
 import { Variants } from 'framer-motion'
+import { animation } from 'polished'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { UniversityResType } from 'types/Responses/university'
-import { EmailsType } from 'types/Responses/user/emails'
+import { CampusResType } from 'types/Responses/university/campus'
+import { EmailsResType, EmailsType } from 'types/Responses/user/emails'
 
 interface Data {
   lattes: string
@@ -81,22 +89,8 @@ const semesterOptions: Option[] = [
 ]
 
 export const show: Variants = {
-  enter: {
-    x: [320, 0],
-    opacity: [0, 1],
-    transition: {
-      duration: 0.3,
-      type: 'tween'
-    }
-  },
-  exit: {
-    x: [0, 320],
-    opacity: [1, 0],
-    transition: {
-      duration: 0.3,
-      type: 'tween'
-    }
-  }
+  exit: { x: [0, 320], opacity: [1, 0], transition },
+  enter: { x: [320, 0], opacity: [0, 1], transition }
 }
 
 export const hasInstitutionalEmail = (regex: string, emails?: EmailsType) => {
@@ -107,26 +101,19 @@ export const hasInstitutionalEmail = (regex: string, emails?: EmailsType) => {
 }
 
 export const universityArrayToSelect = (array: UniversityResType[]): Option[] =>
-  array.map(({ id, name }: UniversityResType) => ({
-    value: id,
-    label: name
-  }))
+  array.map(({ id, name }: UniversityResType) => ({ value: id, label: name }))
 
 const Student = ({ request }: StudentProps) => {
   const { popupRef } = useContext(GlobalContext)
   const { courses, universities } = useContext(AddRoleContext)
+  const { id } = useSelector<RootState, UserState>(({ user }) => user)
 
   const registerEmailRef = useRef<RegisterEmailMethods>(null)
+
   const [userEmails, setUserEmails] = useState<EmailsType>()
 
-  useEffect(() => {
-    ;(async () => {
-      const emails: EmailsType = await api.get('user/emails')
-      setUserEmails(emails)
-    })()
-  }, [])
-
   const [registerByEmail, setRegisterByEmail] = useState(false)
+
   const [animations, setAnimations] = useState<Animations>({
     ar: false,
     ways: false,
@@ -136,25 +123,28 @@ const Student = ({ request }: StudentProps) => {
     voucher: false,
     semester: false
   })
+
   const [options, setOptions] = useState<Options>({
     campus: [],
     course: [],
     university: [],
     semester: semesterOptions
   })
+
   const [values, setValues] = useState<Values>({
     university: undefined,
     campus: undefined,
     course: undefined
   })
+
   const [selectedUniversity, setSelectedUniversity] =
     useState<UniversityResType>({
+      id: 0,
       name: '',
       regex: {
         email: { professor: '', student: '' },
         register: { professor: '', student: '' }
-      },
-      id: 0
+      }
     })
 
   const history = useHistory()
@@ -165,35 +155,33 @@ const Student = ({ request }: StudentProps) => {
 
   const setInitialCampusOptions = useCallback(async () => {
     if (request) {
-      const response = await api.get(`university/${request?.data.id}/campus`)
+      const { campus }: CampusResType = await api.get(
+        `universities/${request?.data.id}/campus`
+      )
 
-      if (response.campus) {
-        const campus = response.campus.map((campus: any) => ({
-          label: campus.name,
-          value: campus.campus_id
+      if (campus) {
+        const campusOption = campus.map(({ name, id }) => ({
+          label: name,
+          value: id
         }))
 
-        setOptions(prev => ({
-          ...prev,
-          campus
-        }))
+        setOptions(prev => ({ ...prev, campusOption }))
 
-        return campus
+        return campusOption
       }
     }
   }, [request])
 
   const onUniversityChange = async (selected: Option) => {
     if (values.university !== selected) {
-      const { campus } = await api.get(`university/${selected.value}/campus`)
+      const { campus }: CampusResType = await api.get(
+        `universities/${selected.value}/campus`
+      )
 
       setOptions(prev => ({
         ...prev,
         campus: campus.map(
-          ({ name, campus_id }: any): Option => ({
-            label: name,
-            value: campus_id
-          })
+          ({ name, id }): Option => ({ label: name, value: id })
         )
       }))
 
@@ -283,13 +271,13 @@ const Student = ({ request }: StudentProps) => {
   useEffect(() => {
     if (request)
       (async () => {
-        const campusOptions: Option[] = await setInitialCampusOptions()
+        const campusOptions = await setInitialCampusOptions()
 
         setValues({
           university: options.university.find(
             ({ value }) => value === request.data.id
           ),
-          campus: campusOptions.find(
+          campus: campusOptions?.find(
             ({ value }) => value === request.data.campus_id
           ),
           course: options.course.find(
@@ -348,6 +336,14 @@ const Student = ({ request }: StudentProps) => {
     }))
   }, [courses])
 
+  useEffect(() => {
+    ;(async () => {
+      const { emails }: EmailsResType = await api.get(`users/${id}/emails`)
+
+      setUserEmails(emails)
+    })()
+  }, [id])
+
   return (
     <>
       <Form
@@ -365,17 +361,6 @@ const Student = ({ request }: StudentProps) => {
             : emailSchema(registerRegex || '')
         }
       >
-        <button
-          type='button'
-          onClick={() => {
-            userEmails?.forEach(({ institutional, id }) => {
-              institutional === true && api.delete(`user/email/${id}`)
-            })
-          }}
-        >
-          Remover E-mail
-        </button>
-
         <Text
           optional
           name='lattes'
@@ -391,8 +376,8 @@ const Student = ({ request }: StudentProps) => {
         />
 
         <Select
-          id='cy-university'
           name='id'
+          id='cy-university'
           placeholder='Universidade'
           value={values.university}
           options={options.university}
@@ -454,46 +439,11 @@ const Student = ({ request }: StudentProps) => {
           />
         </Presence>
 
-        {!request && (
-          <Presence
-            exit='exit'
-            animate='enter'
-            variants={show}
-            condition={animations.ways}
-          >
-            <Ways>
-              <span id='title'>Forma de registro</span>
-
-              <div>
-                <button
-                  id='cy-email'
-                  type='button'
-                  onClick={() => {
-                    setAnimations(prev => ({
-                      ...prev,
-                      submit: false,
-                      voucher: false
-                    }))
-
-                    registerEmailRef.current?.toggleRegister()
-                  }}
-                >
-                  E-mail institucional
-                </button>
-
-                <button
-                  type='button'
-                  id='cy-voucher'
-                  onClick={() =>
-                    setAnimations(prev => ({ ...prev, voucher: true }))
-                  }
-                >
-                  Enviar comprovante
-                </button>
-              </div>
-            </Ways>
-          </Presence>
-        )}
+        <Ways
+          animations={animation}
+          setAnimations={setAnimations}
+          registerEmailRef={registerByEmail}
+        />
 
         <Presence
           exit='exit'

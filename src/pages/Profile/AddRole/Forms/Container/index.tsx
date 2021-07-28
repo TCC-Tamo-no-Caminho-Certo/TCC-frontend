@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState
 } from 'react'
-import Style, { Content, Header } from './styles'
+import Style, { Content, Header, Rejected, ScrollButton } from './styles'
 
 import RequestSvg from './RequestSvg'
 import Professor from '../Professor'
@@ -98,36 +98,27 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
             <RequestSvg status={request?.status} />
 
             {request?.status === 'rejected' && (
-              <div>
-                <div id='rejected'>
-                  <p>Solicitação rejeitada</p>
-
-                  <div id='feedback'>
-                    <span>Resposta do moderador:</span>
-
-                    <p>{request?.feedback}</p>
-                  </div>
-                </div>
-
-                <p id='tryAgain'>
+              <Rejected>
+                <div id='rejected'>Solicitação rejeitada</div>
+                <div id='response'>Resposta do moderador:</div>
+                <div id='feedback'>{request?.feedback}</div>
+                <div id='tryAgain'>
                   Se quiser tente novamente alterando seus dados abaixo:
-                </p>
-              </div>
+                </div>
+              </Rejected>
             )}
           </>
         )}
 
         {request?.status !== 'awaiting' && forms[role as keyof Forms]}
 
-        <button
-          id='scrollButton'
-          type='button'
+        <ScrollButton
           onClick={() =>
             rolesRef.current?.scrollIntoView({ behavior: 'smooth' })
           }
         >
           Escolher outro papel
-        </button>
+        </ScrollButton>
       </Content>
     </Style>
   )
