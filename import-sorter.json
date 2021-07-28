@@ -75,6 +75,11 @@
           "regex": "^components",
           "orderLevel": 12,
           "disableSort": true
+        },
+        {
+          "regex": "^types",
+          "orderLevel": 13,
+          "disableSort": true
         }
       ]
     }

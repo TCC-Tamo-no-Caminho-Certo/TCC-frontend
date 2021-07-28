@@ -1,11 +1,5 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState
-} from 'react'
-import { Form, Voucher } from './styles'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { Form } from './styles'
 
 import Ways from './Ways'
 import { Request } from '../Container'
@@ -22,27 +16,23 @@ import api from 'services/api'
 import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
 
-import AlertIcon from 'assets/Inputs/AlertIcon'
-
-import { File, Select, Submit, Text } from 'components/Form'
+import { Select, Submit, Text } from 'components/Form'
 import { Option } from 'components/Form/Select'
 import Presence from 'components/Presence'
-import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
-import { GlobalContext } from 'App'
-import { Variants } from 'framer-motion'
-import { animation } from 'polished'
-import { useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
 import { UniversityType } from 'types/Responses/university'
 import { CampusResType } from 'types/Responses/university/campus'
 import { CoursesResType } from 'types/Responses/university/courses'
-import { UniversitiesType } from 'types/Responses/university/universities'
 import { EmailsResType, EmailsType } from 'types/Responses/user/emails'
 import {
   UserUniversitiesType,
   UserUniversityType
 } from 'types/Responses/user/universities'
+
+import { GlobalContext } from 'App'
+import { Variants } from 'framer-motion'
+import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
 
 interface Data {
   id: number
@@ -67,7 +57,7 @@ interface Values {
   university?: Option
 }
 
-interface Animations {
+export interface Animations {
   ar: boolean
   ways: boolean
   course: boolean
@@ -115,9 +105,6 @@ const Student = ({ request }: StudentProps) => {
   const { popupRef } = useContext(GlobalContext)
   const { courses, universities } = useContext(AddRoleContext)
   const { id } = useSelector<RootState, UserState>(({ user }) => user)
-
-  const registerEmailRef = useRef<RegisterEmailMethods>(null)
-
   const [userEmails, setUserEmails] = useState<EmailsType>()
 
   const [registerByEmail, setRegisterByEmail] = useState(false)
@@ -210,8 +197,6 @@ const Student = ({ request }: StudentProps) => {
     const { courses }: CoursesResType = await api.get(
       `/universities/campus/${selected.value}/courses`
     )
-
-    console.log(courses)
 
     if (values.campus !== selected) {
       setOptions(prev => ({
@@ -437,46 +422,12 @@ const Student = ({ request }: StudentProps) => {
         </Presence>
 
         <Ways
-          animations={animation}
+          request={request}
+          animations={animations}
           setAnimations={setAnimations}
-          registerEmailRef={registerByEmail}
+          setRegisterByEmail={setRegisterByEmail}
+          selectedUniversity={selectedUniversity}
         />
-
-        <Presence
-          exit='exit'
-          animate='enter'
-          variants={show}
-          condition={animations.voucher}
-        >
-          <Voucher>
-            <div id='warning'>
-              <p>
-                <AlertIcon />
-                {`
-                  Este processo ${
-                    request ? '' : 'é mais lento pois'
-                  } requer confirmação de um
-                `}
-                <b id='moderator'>Moderador</b> de sua universidade. O formato
-                do arquivo deve ser <b>PDF</b>.
-              </p>
-            </div>
-
-            <File
-              guides
-              bottom='50vh'
-              name='voucher'
-              tranlateY='50%'
-              bgHeight='200vh'
-              accept='application/pdf'
-              label='Enviar comprovante'
-              noCropper={true}
-              onChange={() => {
-                setAnimations(prev => ({ ...prev, submit: true }))
-              }}
-            />
-          </Voucher>
-        </Presence>
 
         <Presence
           exit='exit'
@@ -488,29 +439,6 @@ const Student = ({ request }: StudentProps) => {
           <Submit id='cy-submit'>Enviar solicitação</Submit>
         </Presence>
       </Form>
-
-      {!request && (
-        <RegisterEmail
-          placeholder='E-mail institucional'
-          ref={registerEmailRef}
-          title={selectedUniversity.name}
-          regex={selectedUniversity.regex.email.student}
-          addData={{ id: selectedUniversity.id }}
-          modal={{
-            translateY: '50%',
-            bottom: '50vh'
-          }}
-          onSuccess={() => {
-            setAnimations(prev => ({
-              ...prev,
-              ways: false,
-              submit: true
-            }))
-
-            setRegisterByEmail(true)
-          }}
-        />
-      )}
     </>
   )
 }

@@ -1,7 +1,8 @@
 import Card, { Header as HeaderComponent } from 'components/Card/styles'
 
-import styled from 'styled-components'
 import { RoleType } from 'types/Responses/user/roles'
+
+import styled from 'styled-components'
 
 interface ContentProps {
   role: RoleType
@@ -9,7 +10,6 @@ interface ContentProps {
 
 export const ScrollButton = styled.button.attrs({ type: 'button' })`
   padding: 8px;
-  margin-bottom: 24px;
 
   color: ${({ theme }) => theme.colors.tertiary};
 

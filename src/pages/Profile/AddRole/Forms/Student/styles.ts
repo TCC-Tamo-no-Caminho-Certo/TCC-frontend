@@ -129,6 +129,10 @@ export const Form = styled(OriginalForm)`
 
   color: ${({ theme }) => theme.colors.tertiary};
 
+  > * + * {
+    margin-top: 16px;
+  }
+
   span {
     width: 100%;
     text-align: left;
@@ -138,7 +142,6 @@ export const Form = styled(OriginalForm)`
   .Select,
   .Text {
     height: 35px;
-    margin-bottom: 16px;
   }
 
   .Select {

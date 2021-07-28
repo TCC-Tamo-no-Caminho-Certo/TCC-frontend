@@ -63,6 +63,10 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
     moderator: <ModeratorForm request={request} />
   }
 
+  const onScrollButtonClick = () => {
+    rolesRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   useEffect(() => {
     if (roles.length !== 0)
       (async () => {
@@ -70,7 +74,7 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
 
         const filterByRole = requests?.find(
           (request: any) =>
-            request.role_id === roles.find(userRole => userRole === role)
+            request.role === roles.find(userRole => userRole === role)
         )
 
         setRequest(filterByRole)
@@ -84,9 +88,9 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
   }, [])
 
   return (
-    <Style id='container' ref={conbinedRefs}>
+    <Style ref={conbinedRefs}>
       <Content role={role}>
-        <Header id='cy-follow'>
+        <Header>
           {request ? 'Acompanhar solicitação' : 'Solicitação de perfil'}
         </Header>
 
@@ -111,11 +115,7 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
 
         {request?.status !== 'awaiting' && forms[role as keyof Forms]}
 
-        <ScrollButton
-          onClick={() =>
-            rolesRef.current?.scrollIntoView({ behavior: 'smooth' })
-          }
-        >
+        <ScrollButton onClick={onScrollButtonClick}>
           Escolher outro papel
         </ScrollButton>
       </Content>

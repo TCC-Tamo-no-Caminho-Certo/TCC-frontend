@@ -26,10 +26,11 @@ import { Option } from 'components/Form/Select'
 import Presence from 'components/Presence'
 import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
-import { GlobalContext } from 'App'
-import { useHistory } from 'react-router'
 import { UniversityType } from 'types/Responses/university'
 import { EmailsType } from 'types/Responses/user/emails'
+
+import { GlobalContext } from 'App'
+import { useHistory } from 'react-router'
 
 interface Data {
   orcid: string
