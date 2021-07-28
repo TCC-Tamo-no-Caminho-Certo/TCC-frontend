@@ -22,9 +22,9 @@ import Card from 'components/Card'
 import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 import { EmailsResType, EmailsType } from 'types/Responses/user/emails'
-import { Role } from 'types/Responses/user/roles'
+import { RoleType } from 'types/Responses/user/roles'
 
-type ContainersRoles = Role | 'personal'
+type ContainersRoles = RoleType | 'personal'
 
 const Containers = () => {
   const storeUniversities = useSelector<RootState, UniversitiesState>(
@@ -108,7 +108,7 @@ const Containers = () => {
             <Card
               key={role}
               role={role}
-              headerText={`Dados de ${getRoleLabel(role as Role)}`}
+              headerText={`Dados de ${getRoleLabel(role as RoleType)}`}
             >
               {!user.loading ? (
                 formatUpdateUser({

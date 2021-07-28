@@ -3,10 +3,10 @@ import Presence from 'components/Presence'
 import { motion } from 'framer-motion'
 import { darken } from 'polished'
 import styled from 'styled-components'
-import { Role } from 'types/Responses/user/roles'
+import { RoleType } from 'types/Responses/user/roles'
 
 interface StyleProps {
-  role?: Role
+  role?: RoleType
 }
 
 export const Header = styled.button.attrs({ type: 'button' })`

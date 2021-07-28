@@ -17,7 +17,7 @@ import { Option } from 'components/Form/Select'
 import { GlobalContext } from 'App'
 import { motion } from 'framer-motion'
 import { useHistory } from 'react-router'
-import { ProfessorType } from 'types/Responses/user/roles'
+import { ProfessorType } from 'types/Responses/user/rolesData'
 
 interface Data {
   university_id: number

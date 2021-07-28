@@ -3,14 +3,14 @@ import GearIcon from 'assets/RightMenuOpen/GearIcon'
 import { motion } from 'framer-motion'
 import { darken } from 'polished'
 import styled, { css } from 'styled-components'
-import { Role } from 'types/Responses/user/roles'
+import { RoleType } from 'types/Responses/user/roles'
 
 interface RoleLiProps {
-  role: Role
+  role: RoleType
 }
 
 interface UserInfoProps {
-  selectedRole: Role
+  selectedRole: RoleType
 }
 
 interface RightMenuOpenProps {

@@ -1,13 +1,11 @@
 import React, { useContext, useRef, useState } from 'react'
 import Style, { Field, Infos } from './styles'
 
-import { getRoleLabel, getRoleName } from 'utils/roles'
 import { isoToDate } from 'utils/dates'
 import { getStatusLabel } from 'utils/status'
 
 import api from 'services/api'
 
-import { RolesState } from 'store/Async/roles'
 import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
 import { CoursesState } from 'store/Async/courses'
@@ -28,15 +26,15 @@ import { ThemeContext } from 'styled-components'
 import * as Yup from 'yup'
 
 const ResponseContent = ({
-  onCloseClick,
   userInfo,
-  selectedInfo,
-  makeRequest
+  makeRequest,
+  onCloseClick,
+  selectedInfo
 }: ItemProps) => {
   const { courses } = useSelector<RootState, CoursesState>(
     ({ courses }) => courses
   )
-  const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
+
   const user = useSelector<RootState, UserState>(({ user }) => user)
   const { popupRef } = useContext(GlobalContext)
   const theme = useContext(ThemeContext)
@@ -115,10 +113,7 @@ const ResponseContent = ({
 
           <CloseIcon onClick={onCloseClick} />
 
-          <Infos
-            status={selectedInfo.status}
-            userRole={getRoleName(selectedInfo.role_id, roles)}
-          >
+          <Infos status={selectedInfo.status} userRole={selectedInfo.role}>
             <div id='title'>Informações</div>
 
             <hr />
@@ -134,7 +129,7 @@ const ResponseContent = ({
 
             <Field>
               Papel:
-              <div id='role'>{getRoleLabel(selectedInfo.role_id, roles)}</div>
+              <div id='role'>{selectedInfo.role}</div>
             </Field>
 
             <Field>

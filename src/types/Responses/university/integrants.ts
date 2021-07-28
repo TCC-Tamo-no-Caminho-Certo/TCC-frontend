@@ -1,8 +1,8 @@
-import { Role } from 'types/Responses/user/roles'
+import { RoleType } from 'types/Responses/user/roles'
 
 export interface IntegrantResType {
   id: string
-  role: Role
   name: string
+  role: RoleType
   avatar_uuid: string
 }

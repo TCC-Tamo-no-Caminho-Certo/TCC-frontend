@@ -17,7 +17,7 @@ import { ThemeContext } from 'styled-components'
 import { ProjectResType } from 'types/Responses/project'
 import { UniversityResType } from 'types/Responses/university'
 import { ProjectsType } from 'types/Responses/user/projects'
-import { ProfessorType } from 'types/Responses/user/roles'
+import { ProfessorType } from 'types/Responses/user/rolesData'
 
 const Projects = forwardRef((_props, ref) => {
   const user = useSelector<RootState, UserState>(({ user }) => user)

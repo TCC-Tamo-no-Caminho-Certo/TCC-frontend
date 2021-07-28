@@ -2,14 +2,14 @@ import { getStatusColor, StatusTypes } from 'utils/status'
 
 import { darken } from 'polished'
 import styled from 'styled-components'
-import { Role } from 'types/Responses/user/roles'
+import { RoleType } from 'types/Responses/user/roles'
 
 interface CircleProps {
   status?: StatusTypes
 }
 
 interface RoleTdProps {
-  role: Role
+  role: RoleType
 }
 
 export const Circle = styled.div<CircleProps>`

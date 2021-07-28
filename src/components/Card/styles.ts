@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import { Role } from 'types/Responses/user/roles'
+import { RoleType } from 'types/Responses/user/roles'
 
 interface HeaderProps {
-  role?: Role
+  role?: RoleType
 }
 
 export const Header = styled.div<HeaderProps>`

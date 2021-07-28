@@ -1,6 +1,6 @@
-import { Role } from './roles'
+import { RoleType } from './roles'
 
 export interface Request {
   status: 'rejected' | 'awaiting' | 'accepted'
-  role: Role // está retornando role_id
+  role: RoleType // está retornando role_id
 }

@@ -12,7 +12,6 @@ import Container from './Forms/Container'
 
 import { getRoleLabel } from 'utils/roles'
 
-import { getRoles, RolesState, RoleType } from 'store/Async/roles'
 import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
 import { getUniversities, UniversitiesState } from 'store/Async/universities'
@@ -22,9 +21,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { ThemeContext } from 'styled-components'
 import { UniversityResType } from 'types/Responses/university'
-import { Role } from 'types/Responses/user/roles'
+import { RolesType, RoleType } from 'types/Responses/user/roles'
 
-const allRoles: Role[] = [
+interface AddRoleState {
+  courses: Course[]
+  roles: RolesType
+  universities: UniversityResType[]
+}
+
+const allRoles: RolesType = [
   'admin',
   'guest',
   'student',
@@ -34,12 +39,6 @@ const allRoles: Role[] = [
   'moderator'
 ]
 
-interface AddRoleState {
-  courses: Course[]
-  roles: RoleType[]
-  universities: UniversityResType[]
-}
-
 export const AddRoleContext = createContext<AddRoleState>({
   roles: [],
   courses: [],
@@ -47,7 +46,6 @@ export const AddRoleContext = createContext<AddRoleState>({
 })
 
 const AddRole = () => {
-  const storeRoles = useSelector<RootState, RolesState>(({ roles }) => roles)
   const storeUniversities = useSelector<RootState, UniversitiesState>(
     ({ universities }) => universities
   )
@@ -60,7 +58,7 @@ const AddRole = () => {
   const containerRef = useRef<HTMLDivElement>(null)
   const rolesRef = useRef<HTMLDivElement>(null)
 
-  const [roleSelected, setRoleSelected] = useState<Role>()
+  const [roleSelected, setRoleSelected] = useState<RoleType>()
 
   const dispatch = useDispatch()
   const { pathname } = useLocation()
@@ -73,7 +71,6 @@ const AddRole = () => {
   }, [roleSelected, pathname])
 
   useEffect(() => {
-    dispatch(getRoles(storeRoles))
     dispatch(getUniversities(storeUniversities))
     dispatch(getCourses(storeCourses))
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -157,7 +154,7 @@ const AddRole = () => {
 
       <AddRoleContext.Provider
         value={{
-          roles: storeRoles.roles,
+          roles: user.roles,
           courses: storeCourses.courses,
           universities: storeUniversities.universities
         }}

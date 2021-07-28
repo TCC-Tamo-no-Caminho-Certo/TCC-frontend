@@ -5,11 +5,11 @@ import Avatar from '../Avatar'
 
 import { getRoleLabel } from 'utils/roles'
 
-import { Role } from 'types/Responses/user/roles'
+import { RoleType } from 'types/Responses/user/roles'
 
 interface AvatarAndInfoProps {
   name: string
-  role: Role
+  role: RoleType
   avatarId?: string
 }
 

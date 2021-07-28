@@ -10,16 +10,11 @@ import Style, { Circle, RoleTd } from './styles'
 
 import { ItemProps, TableContext } from '../index'
 
-import { getRoleLabel, getRoleName } from 'utils/roles'
+import { getRoleLabel } from 'utils/roles'
 
 import api from 'services/api'
 
-import { RolesState } from 'store/Async/roles'
-import { RootState } from 'store'
-
 import Modal, { ModalMethods } from 'components/Modal'
-
-import { useSelector } from 'react-redux'
 
 interface TbodyProps {
   items?: any[]
@@ -34,7 +29,6 @@ interface InfosState {
 const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
   const { path, quantity, headerData, setTableState, tableState } =
     useContext(TableContext)
-  const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
 
   const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>
   const tableRef = useRef() as MutableRefObject<HTMLTableElement>
@@ -145,12 +139,8 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
                   ({ label, name, circle, role, dataManipulation }) => {
                     if (role)
                       return (
-                        <RoleTd
-                          id={name}
-                          key={index}
-                          role={getRoleName(item.role_id, roles)}
-                        >
-                          {getRoleLabel(item.role_id, roles)}
+                        <RoleTd id={name} key={index} role={item.role}>
+                          {getRoleLabel(item.role)}
                         </RoleTd>
                       )
 

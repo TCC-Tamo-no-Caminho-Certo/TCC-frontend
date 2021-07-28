@@ -21,7 +21,7 @@ import api from 'services/api'
 
 import useCombinedRefs from 'hooks/useCombinedRefs'
 
-import { Role } from 'types/Responses/user/roles'
+import { RoleType } from 'types/Responses/user/roles'
 
 interface Forms {
   student: JSX.Element
@@ -31,7 +31,7 @@ interface Forms {
 
 export interface Request<DataType> {
   data: DataType
-  role: Role
+  role: RoleType
   name: string
   role_id: number
   user_id: number
@@ -44,7 +44,7 @@ export interface Request<DataType> {
 }
 
 interface ContainerProps {
-  role: Role
+  role: RoleType
   rolesRef: RefObject<HTMLDivElement>
 }
 
@@ -70,8 +70,7 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
 
         const filterByRole = requests?.find(
           (request: any) =>
-            request.role_id ===
-            roles.find(({ title }) => title === role)?.role_id
+            request.role_id === roles.find(userRole => userRole === role)
         )
 
         setRequest(filterByRole)

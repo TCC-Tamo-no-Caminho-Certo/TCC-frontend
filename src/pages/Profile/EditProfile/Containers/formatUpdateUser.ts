@@ -2,7 +2,7 @@ import { UserState } from 'store/Async/user'
 
 import { UniversityResType } from 'types/Responses/university'
 import { EmailsType } from 'types/Responses/user/emails'
-import { RolesDataType } from 'types/Responses/user/roles'
+import { RolesDataType } from 'types/Responses/user/rolesData'
 
 export interface InputData {
   name: string

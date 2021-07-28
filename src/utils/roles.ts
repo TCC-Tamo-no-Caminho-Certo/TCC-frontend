@@ -1,10 +1,6 @@
-import { RoleType } from 'store/Async/roles'
+import { RoleType } from 'types/Responses/user/roles'
 
-import { Role } from 'types/Responses/user/roles'
-
-type RolesLabel = {
-  [_key in Role]: string
-}
+type RolesLabel = { [_key in RoleType]: string }
 
 const roles: RolesLabel = {
   guest: 'Convidado',
@@ -16,29 +12,4 @@ const roles: RolesLabel = {
   moderator: 'Moderador'
 }
 
-export const getRoleLabel = (
-  roleKey: Role | number,
-  storeRoles?: RoleType[]
-): string => {
-  if (typeof roleKey === 'number') {
-    const roleTitle = storeRoles?.find(
-      ({ role_id }) => role_id === roleKey
-    )?.title
-
-    return roleTitle ? roles[roleTitle] : 'undefined'
-  }
-
-  return roles[roleKey] || 'undefined'
-}
-
-export const getRoleName = (roleKey: number, storeRoles: RoleType[]): Role => {
-  if (storeRoles) {
-    const roleTitle = storeRoles.find(
-      ({ role_id }) => role_id === roleKey
-    )?.title
-
-    return roleTitle || 'guest'
-  }
-
-  return 'guest'
-}
+export const getRoleLabel = (roleKey: RoleType) => roles[roleKey] || 'undefined'

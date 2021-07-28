@@ -10,7 +10,7 @@ import { UserState } from 'store/Async/user'
 
 import { useSelector } from 'react-redux'
 import { SeasonsResType } from 'types/Responses/university/seasons'
-import { AdministratorType } from 'types/Responses/user/roles'
+import { AdministratorType } from 'types/Responses/user/rolesData'
 import { UniversitiesType } from 'types/Responses/user/universities'
 
 export interface UniversityDataType {

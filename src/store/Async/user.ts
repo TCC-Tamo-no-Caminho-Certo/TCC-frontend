@@ -2,28 +2,35 @@ import api from 'services/api'
 
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { UserResType, UserType } from 'types/Responses/user/index'
-import { Role, RolesDataType, RolesResType } from 'types/Responses/user/roles'
+import { RolesResType, RolesType, RoleType } from 'types/Responses/user/roles'
+import { RolesDataResType, RolesDataType } from 'types/Responses/user/rolesData'
 
 export interface UserState extends UserType {
-  roles: Role[]
+  roles: RolesType
   loading: boolean
-  selectedRole: Role
+  selectedRole: RoleType
   rolesData?: RolesDataType
+}
+
+interface GetUserRolesDataProps {
+  updated?: boolean
+}
+
+interface GetUserProps {
+  id?: string
 }
 
 type Payload = PayloadAction<Partial<UserState>>
 
-const getInitialSelectedRole = (roles: Role[]) => {
+const getInitialSelectedRole = (roles: RolesType) => {
   const localRole = localStorage.getItem('@SLab_selected_role')
 
   if (localRole) {
     const haveLocalHole = roles.find(role => role === localRole)
-
     if (haveLocalHole) return haveLocalHole
   }
 
   localStorage.setItem('@SLab_selected_role', roles[roles.length - 1])
-
   return roles[roles.length - 1]
 }
 
@@ -42,25 +49,20 @@ export const initialState: UserState = {
   selectedRole: 'student'
 }
 
-interface GetUserProps {
-  id?: string
-}
-
-interface GetUserRolesDataProps {
-  updated?: boolean
-}
-
 export const getUserRolesData = createAsyncThunk(
   'user/getUserRolesData',
   async ({ updated = false }: GetUserRolesDataProps, { getState }) => {
-    const user: any = getState()
+    const user = getState() as UserState
 
-    if (!user.rolesData || updated) {
-      const { roles } = await api.get(`users/${user.id}/roles`, {
-        data: { roles: [...user.roles] }
-      })
+    const { rolesData } = user
 
-      return { ...user, rolesData: roles }
+    if (!rolesData || updated) {
+      const { roles }: RolesDataResType = await api.get(
+        `users/${user.id}/roles`,
+        { data: { roles: [...user.roles] } }
+      )
+
+      return { ...user, rolesData: roles, loading: false }
     }
   }
 )
@@ -69,9 +71,9 @@ export const getUser = createAsyncThunk(
   'user/getUser',
   async ({ id }: GetUserProps, { getState }) => {
     if (id) {
+      const prevState = getState() as UserState
       const { user }: UserResType = await api.get(`users/${id}`)
       const { roles }: RolesResType = await api.get(`users/${id}/roles`)
-      const prevState: any = getState()
 
       return {
         ...prevState,
@@ -84,23 +86,26 @@ export const getUser = createAsyncThunk(
   }
 )
 
+const userUpdate = (state: UserState, { payload }: Payload) => {
+  const { selectedRole } = payload
+
+  if (selectedRole !== undefined)
+    localStorage.setItem('@SLab_selected_role', selectedRole)
+
+  return { ...state, ...payload }
+}
+
 const User = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    reset: () => initialState,
-    update: (state, { payload }: Payload) => {
-      if (payload.selectedRole !== undefined)
-        localStorage.setItem('@SLab_selected_role', payload.selectedRole)
-
-      return { ...state, ...payload }
-    }
+    update: userUpdate,
+    reset: () => initialState
   },
   extraReducers: ({ addCase }) => {
-    addCase(getUser.pending, state => ({
-      ...state,
-      loading: true
-    }))
+    addCase(getUser.pending, state => ({ ...state, loading: true }))
+
+    addCase(getUserRolesData.pending, state => ({ ...state, loading: true }))
 
     addCase(getUser.fulfilled, (state, { payload }) => ({
       ...state,

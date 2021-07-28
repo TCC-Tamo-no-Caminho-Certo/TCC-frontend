@@ -3,39 +3,23 @@ import Style from './styles'
 
 import { TableContext } from '../index'
 
+import transition from 'utils/transition'
+
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { RolesState } from 'store/Async/roles'
+import { UserState } from 'store/Async/user'
 
 import LoupeIcon from 'assets/Inputs/LoupeIcon'
 
 import { Datepicker, Select, Submit, Text } from 'components/Form'
 import Presence from 'components/Presence'
 
-import { motion, Transition, Variants } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { darken, lighten } from 'polished'
 import { useSelector } from 'react-redux'
 import { Theme } from 'react-select'
 import { ThemeContext } from 'styled-components'
-
-const transition: Transition = {
-  duration: 0.3,
-  type: 'tween'
-}
-
-const reset: Variants = {
-  enter: {
-    opacity: [0, 1],
-    marginTop: [-168, 0],
-    transition
-  },
-  exit: {
-    opacity: [1, 0],
-    marginTop: [0, -168],
-    transition
-  }
-}
 
 export interface FiltersProps {
   to?: boolean
@@ -45,6 +29,11 @@ export interface FiltersProps {
   status?: boolean
 }
 
+const reset: Variants = {
+  enter: { opacity: [0, 1], marginTop: [-168, 0], transition },
+  exit: { opacity: [1, 0], marginTop: [0, -168], transition }
+}
+
 const Filters = ({
   to = false,
   name = false,
@@ -52,7 +41,7 @@ const Filters = ({
   from = false,
   status = false
 }: FiltersProps) => {
-  const { roles } = useSelector<RootState, RolesState>(({ roles }) => roles)
+  const { roles } = useSelector<RootState, UserState>(({ user }) => user)
   const { quantity, setTableState, path } = useContext(TableContext)
   const theme = useContext(ThemeContext)
 
@@ -131,20 +120,18 @@ const Filters = ({
     if (callStartCondition) {
       const { requests } = await api.get(`${path}?page=1&per_page=${quantity}`)
 
-      const tableData = requests
-
-      setTableState({
-        tablePage: 1,
-        showData: tableData
-      })
+      setTableState({ tablePage: 1, showData: requests })
     } else {
-      const roleId = roles.filter(({ title }) => title === role)[0]
+      const roleToFilter = roles.find(userRole => userRole === role)
 
       const nameFilter = name ? `&filter[full_name]=${name}` : ''
+
       const statusFilter =
         status && status !== 'all' ? `&filter[status]=${status}` : ''
+
       const roleFilter =
-        roleId && role !== 'all' ? `&filter[role_id]=${roleId.role_id}` : ''
+        roleToFilter && role !== 'all' ? `&filter[role_id]=${roleToFilter}` : ''
+
       const dateFilter =
         from && to
           ? `&filter[created_at][]=${from}&filter[created_at][]=${to}`
@@ -156,10 +143,7 @@ const Filters = ({
         `${path}?page=1&per_page=${quantity}${allFilters}`
       )
 
-      setTableState({
-        tablePage: 1,
-        showData: requests
-      })
+      setTableState({ tablePage: 1, showData: requests })
     }
   }
 

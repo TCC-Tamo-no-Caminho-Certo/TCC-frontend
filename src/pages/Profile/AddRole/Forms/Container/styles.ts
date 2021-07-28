@@ -1,10 +1,10 @@
 import Card, { Header as HeaderComponent } from 'components/Card/styles'
 
 import styled from 'styled-components'
-import { Role } from 'types/Responses/user/roles'
+import { RoleType } from 'types/Responses/user/roles'
 
 interface ContentProps {
-  role: Role
+  role: RoleType
 }
 
 export const ScrollButton = styled.button.attrs({ type: 'button' })`

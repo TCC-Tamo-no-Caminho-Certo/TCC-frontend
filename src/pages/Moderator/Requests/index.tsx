@@ -5,9 +5,9 @@ import ResponseContent from './ResponseContent'
 
 import { isoToDate } from 'utils/dates'
 
-import { getRoles, RolesState } from 'store/Async/roles'
 import { RootState } from 'store'
 import { CoursesState, getCourses } from 'store/Async/courses'
+import { UserState } from 'store/Async/user'
 
 import Table, { HeaderData } from 'components/Table'
 
@@ -26,12 +26,11 @@ const headerData: HeaderData[] = [
 
 const Requests = () => {
   const courses = useSelector<RootState, CoursesState>(({ courses }) => courses)
-  const roles = useSelector<RootState, RolesState>(({ roles }) => roles)
+  const { roles } = useSelector<RootState, UserState>(({ user }) => user)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getRoles(roles))
     dispatch(getCourses(courses))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

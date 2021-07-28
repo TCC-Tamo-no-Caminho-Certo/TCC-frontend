@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import Style from './styles'
 
+import transition from 'utils/transition'
+
 import api from 'services/api'
 
 import CheckIcon from 'assets/global/CheckIcon'
@@ -9,11 +11,11 @@ import ArrowIcon from 'assets/global/ArrowIcon'
 import Presence from 'components/Presence'
 
 import { motion, useCycle, Variants } from 'framer-motion'
-import { Role } from 'types/Responses/user/roles'
+import { RoleType } from 'types/Responses/user/roles'
 
 interface RoleInfoProps {
   id: string
-  role: Role
+  role: RoleType
   title: string
   color: string
   benefits: string[]
@@ -25,50 +27,27 @@ interface RoleInfoProps {
 
 const container: Variants = {
   show: {
+    opacity: 1,
     height: 'auto',
     cursor: 'pointer',
-    opacity: 1,
-    transition: {
-      type: 'tween',
-      duration: 0.2,
-      staggerChildren: 0.05
-    }
+    transition: { ...transition, staggerChildren: 0.05 }
   },
   hidden: {
-    cursor: 'pointer',
     height: 0,
     opacity: 0,
-    transition: {
-      type: 'tween',
-      duration: 0.2,
-      staggerDirection: -1,
-      staggerChildren: 0.1
-    }
+    cursor: 'pointer',
+    transition: { ...transition, staggerDirection: -1, staggerChildren: 0.1 }
   }
 }
 
 const item: Variants = {
-  show: {
-    y: ['-100%', '0%'],
-    opacity: [0, 1],
-    transition: { type: 'tween', duration: 0.2 }
-  },
-  hidden: {
-    y: ['0%', '-100%'],
-    opacity: [1, 0],
-    transition: { type: 'tween', duration: 0.2 }
-  }
+  show: { y: ['-100%', '0%'], opacity: [0, 1], transition },
+  hidden: { y: ['0%', '-100%'], opacity: [1, 0], transition }
 }
 
 const button: Variants = {
-  show: {
-    opacity: [0, 1],
-    transition: { type: 'tween', duration: 0.2 }
-  },
-  hidden: {
-    opacity: [1, 0],
-    transition: { type: 'tween', duration: 0.2 }
-  }
+  show: { opacity: [0, 1], transition },
+  hidden: { opacity: [1, 0], transition }
 }
 
 const RoleInfo = ({
