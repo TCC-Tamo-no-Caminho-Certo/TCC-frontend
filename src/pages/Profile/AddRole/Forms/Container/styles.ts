@@ -49,17 +49,14 @@ export const Header = styled(HeaderComponent)`
 
   border-radius: 0;
   padding-left: 24px;
+  border-radius: 24px 24px 0 0;
   font-size: clamp(1.4rem, 0.6rem + 2.6vw, 2.1rem);
-
-  @media screen and (min-width: 620px) {
-    border-radius: 24px 24px 0 0;
-  }
 `
 
 export const Content = styled(Card)<ContentProps>`
-  border-radius: 0;
-  padding-bottom: 16px;
-  width: clamp(320px, 100vw, 550px);
+  border-radius: 24px;
+  padding: 64px 8px 16px 8px;
+  width: clamp(320px, 90vw, 550px);
 
   .RequestSvg {
     margin-top: 16px;
@@ -75,8 +72,8 @@ export const Content = styled(Card)<ContentProps>`
     color: ${({ theme, role }: any) => theme.roles[role]};
   }
 
-  @media screen and (min-width: 620px) {
-    border-radius: 24px;
+  @media screen and (min-width: 545px) {
+    width: clamp(320px, 95%, 550px);
   }
 `
 

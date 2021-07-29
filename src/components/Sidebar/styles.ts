@@ -26,6 +26,7 @@ export const Content = styled(motion.div)<ContentProps>`
     position: relative;
     right: 0px;
 
+    padding-left: 8px;
     min-width: 320px;
     min-height: 100vh;
     margin-top: ${({ index, innerWidth }) =>
@@ -129,6 +130,9 @@ export const SidebarNav = styled(motion.nav)<StyleProps>`
   }
 
   .Hamburger {
+    position: relative;
+    z-index: 8000;
+
     margin: 24px;
   }
 

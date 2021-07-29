@@ -9,21 +9,28 @@ import { File } from 'components/Form'
 import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
 
 import { UniversityType } from 'types/Responses/university'
+import {
+  ProfessorDataType,
+  RequestType,
+  StudentDataType
+} from 'types/Responses/user/requests'
+
+import { createPortal } from 'react-dom'
 
 interface WaysProps {
-  request: any
   animations: Animations
   selectedUniversity: UniversityType
   setAnimations: Dispatch<SetStateAction<Animations>>
   setRegisterByEmail: Dispatch<SetStateAction<boolean>>
+  request?: RequestType<StudentDataType> & RequestType<ProfessorDataType>
 }
 
 const Ways = ({
   request,
   animations,
   setAnimations,
-  selectedUniversity,
-  setRegisterByEmail
+  setRegisterByEmail,
+  selectedUniversity
 }: WaysProps) => {
   const registerEmailRef = useRef<RegisterEmailMethods>(null)
 
@@ -57,57 +64,59 @@ const Ways = ({
   }
 
   return (
-    <Style>
-      <Choose
-        exit='exit'
-        animate='enter'
-        variants={show}
-        condition={animations.ways}
-      >
-        <span>Forma de registro</span>
+    <>
+      <Style>
+        <Choose
+          exit='exit'
+          animate='enter'
+          variants={show}
+          condition={animations.ways}
+        >
+          <span>Forma de registro</span>
 
-        <div>
-          <button type='button' onClick={onEmailButtonClick}>
-            E-mail institucional
-          </button>
+          <div>
+            <button type='button' onClick={onEmailButtonClick}>
+              E-mail institucional
+            </button>
 
-          <button type='button' onClick={onVoucherButtonClick}>
-            Enviar comprovante
-          </button>
-        </div>
-      </Choose>
+            <button type='button' onClick={onVoucherButtonClick}>
+              Enviar comprovante
+            </button>
+          </div>
+        </Choose>
 
-      <Voucher
-        exit='exit'
-        animate='enter'
-        variants={show}
-        condition={animations.voucher}
-      >
-        <p>
-          <AlertIcon />
-          {`
+        <Voucher
+          exit='exit'
+          animate='enter'
+          variants={show}
+          condition={animations.voucher}
+        >
+          <p>
+            <AlertIcon />
+            {`
                   Este processo ${
                     request ? '' : 'é mais lento pois'
                   } requer confirmação de um
                 `}
-          <b id='moderator'>Moderador</b> de sua universidade. O formato do
-          arquivo deve ser <b>PDF</b>.
-        </p>
+            <b id='moderator'>Moderador</b> de sua universidade. O formato do
+            arquivo deve ser <b>PDF</b>.
+          </p>
 
-        <File
-          guides
-          bottom='50vh'
-          name='voucher'
-          tranlateY='50%'
-          bgHeight='200vh'
-          accept='application/pdf'
-          label='Enviar comprovante'
-          noCropper={true}
-          onChange={onFileChange}
-        />
-      </Voucher>
+          <File
+            guides
+            bottom='50vh'
+            name='voucher'
+            tranlateY='50%'
+            bgHeight='200vh'
+            accept='application/pdf'
+            label='Enviar comprovante'
+            noCropper={true}
+            onChange={onFileChange}
+          />
+        </Voucher>
+      </Style>
 
-      {!request && (
+      {createPortal(
         <RegisterEmail
           placeholder='E-mail institucional'
           title={name}
@@ -116,9 +125,10 @@ const Ways = ({
           onSuccess={onEmailSuccess}
           regex={regex.email.student}
           modal={{ translateY: '50%', bottom: '50vh' }}
-        />
+        />,
+        document.getElementById('registerEmailPortal') as Element
       )}
-    </Style>
+    </>
   )
 }
 

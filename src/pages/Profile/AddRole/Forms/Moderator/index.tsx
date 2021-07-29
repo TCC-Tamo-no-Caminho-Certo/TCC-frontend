@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Form } from './styles'
 
-import { Request } from '../Container'
 import { AddRoleContext } from '../../index'
 
 import {
@@ -14,15 +13,12 @@ import api from 'services/api'
 import { Select, Submit, Textarea } from 'components/Form'
 import { Option } from 'components/Form/Select'
 
+import { ProfessorType } from 'types/Responses/user/rolesData'
+import { ModeratorDataType, RequestType } from 'types/Responses/user/requests'
+
 import { GlobalContext } from 'App'
 import { motion } from 'framer-motion'
 import { useHistory } from 'react-router'
-import { ProfessorType } from 'types/Responses/user/rolesData'
-
-interface Data {
-  university_id: number
-  pretext: string
-}
 
 interface Options {
   university: Option[]
@@ -33,7 +29,7 @@ interface Values {
 }
 
 interface ModeratorProps {
-  request?: Request<Data>
+  request?: RequestType<ModeratorDataType>
 }
 
 const verifyFullTime = (professor: ProfessorType, university_id: number) => {
@@ -66,10 +62,7 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
 
     setFullTime(verifyFullTime(professor, Number(selected.value)))
 
-    setValues(prev => ({
-      ...prev,
-      university: selected
-    }))
+    setValues(prev => ({ ...prev, university: selected }))
   }
 
   useEffect(() => {
@@ -122,14 +115,14 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
   return (
     <Form
       loading
-      path={
-        request
-          ? `user/role/request/moderator/${request.request_id}`
-          : 'user/role/request/moderator'
-      }
       method={request ? 'patch' : 'post'}
       afterResData={afterSubmit}
       schema={!fullTime ? withFullTime : withoutFullTime}
+      path={
+        request
+          ? `users/roles/requests/moderator/${request.id}`
+          : 'users/roles/requests/moderator'
+      }
     >
       <Select
         id='cy-university'

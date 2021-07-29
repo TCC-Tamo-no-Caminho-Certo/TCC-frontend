@@ -172,7 +172,6 @@ const Form = ({
       schema && schema.validateSync(data, { abortEarly: false })
     } catch (error) {
       haveErrors = true
-
       if (error instanceof ValidationError) {
         error.inner.forEach(errorElement => {
           const index = refs.findIndex(({ inputRef: { current } }) =>

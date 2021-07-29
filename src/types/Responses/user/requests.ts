@@ -2,7 +2,6 @@ import { RoleType } from './roles'
 import { Response } from '../index'
 
 export interface StudentDataType {
-  id: number
   lattes: string
   linkedin: string
   register: string
@@ -14,7 +13,6 @@ export interface StudentDataType {
 }
 
 export interface ProfessorDataType {
-  id: number
   orcid: string
   lattes: string
   linkedin: string
@@ -42,6 +40,10 @@ export interface RequestType<Data> {
   status: 'rejected' | 'awaiting' | 'accepted'
 }
 
+export type RequestAnyType = RequestType<
+  StudentDataType | ProfessorDataType | ModeratorDataType
+>
+
 export interface RequestResType<Data> extends Response {
   request: RequestType<Data>
 }
@@ -49,5 +51,7 @@ export interface RequestResType<Data> extends Response {
 export type RequestsType<Data> = RequestType<Data>[]
 
 export interface RequestsResType extends Response {
-  requests: RequestsType<any>[]
+  requests: RequestsType<
+    StudentDataType | ProfessorDataType | ModeratorDataType
+  >
 }

@@ -10,36 +10,27 @@ import Style, { Content, Header, Rejected, ScrollButton } from './styles'
 
 import RequestSvg from './RequestSvg'
 import ModeratorForm from '../Moderator'
-import Student from '../StudentProfessor'
+import StudentProfessor from '../StudentProfessor'
 import { AddRoleContext } from '../..'
 
-import { StatusTypes } from 'utils/status'
 import { getRoleLabel } from 'utils/roles'
 
 import api from 'services/api'
 
+import { UserState } from 'store/Async/user'
+import { RootState } from 'store'
+
 import useCombinedRefs from 'hooks/useCombinedRefs'
 
 import { RoleType } from 'types/Responses/user/roles'
+import { RequestsResType } from 'types/Responses/user/requests'
+
+import { useSelector } from 'react-redux'
 
 interface Forms {
   student: JSX.Element
   professor: JSX.Element
   moderator: JSX.Element
-}
-
-export interface Request<DataType> {
-  data: DataType
-  role: RoleType
-  name: string
-  role_id: number
-  user_id: number
-  feedback: string
-  request_id: number
-  updated_at: string
-  created_at: string
-  status: StatusTypes
-  voucher_uuid: string
 }
 
 interface ContainerProps {
@@ -49,6 +40,7 @@ interface ContainerProps {
 
 const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
   const { roles } = useContext(AddRoleContext)
+  const user = useSelector<RootState, UserState>(({ user }) => user)
 
   const hereRef = useRef<HTMLDivElement>(null)
 
@@ -57,8 +49,8 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
   const conbinedRefs = useCombinedRefs(ref, hereRef)
 
   const forms = {
-    student: <Student request={request} role='student' />,
-    professor: <Student request={request} role='professor' />,
+    student: <StudentProfessor role='student' request={request} />,
+    professor: <StudentProfessor role='professor' request={request} />,
     moderator: <ModeratorForm request={request} />
   }
 
@@ -69,18 +61,15 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
   useEffect(() => {
     if (roles.length !== 0)
       (async () => {
-        const { requests } = await api.get('user/role/request')
-
-        const filterByRole = requests?.find(
-          (request: any) =>
-            request.role === roles.find(userRole => userRole === role)
+        const { requests }: RequestsResType = await api.get(
+          `users/${user.id}/roles/requests`
         )
 
-        setRequest(filterByRole)
+        setRequest(requests.find(request => request.role === role))
       })()
 
     return setRequest(undefined)
-  }, [role, roles])
+  }, [role, roles, user.id, user.roles])
 
   useEffect(() => {
     hereRef.current?.scrollIntoView({ behavior: 'smooth' })
