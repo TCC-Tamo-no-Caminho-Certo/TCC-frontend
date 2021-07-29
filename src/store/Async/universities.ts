@@ -1,10 +1,11 @@
 import api from 'services/api'
 
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
   UniversitiesResType,
   UniversitiesType
 } from 'types/Responses/university/universities'
+
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 export interface UniversitiesState {
   loading: boolean

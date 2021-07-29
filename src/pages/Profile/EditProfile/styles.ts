@@ -13,6 +13,7 @@ export const ConfirmForm = styled.div`
   border-radius: 16px;
   width: clamp(320px, 90vw, 500px);
 
+  color: ${({ theme }) => theme.colors.tertiary};
   background-color: ${({ theme }) => theme.colors.secondary};
 
   span {
@@ -71,7 +72,7 @@ const Style = styled(motion.section)`
   form {
     display: flex;
     align-items: center;
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: center;
 
     width: 100%;

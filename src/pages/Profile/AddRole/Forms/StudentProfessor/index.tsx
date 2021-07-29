@@ -355,7 +355,6 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
   return (
     <>
       <Form
-        getData={e => console.log(e)}
         loading
         path={formPath}
         schema={getFormSchema()}

@@ -5,11 +5,10 @@ import formatUpdateUser, { ContainerForm, InputData } from './formatUpdateUser'
 
 import { getRoleLabel } from 'utils/roles'
 
-import api from 'services/api'
-
-import { getUserRolesData, UserState } from 'store/Async/user'
+import { UserState } from 'store/Async/user'
 import { RootState } from 'store'
 import { getUniversities, UniversitiesState } from 'store/Async/universities'
+import { AsyncEmailsState, getEmails } from 'store/Async/emails'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
@@ -19,10 +18,10 @@ import DotsLoader from 'components/DotsLoader'
 import Slider from 'components/Slider'
 import Card from 'components/Card'
 
+import { RoleType } from 'types/Responses/user/roles'
+
 import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
-import { EmailsResType, EmailsType } from 'types/Responses/user/emails'
-import { RoleType } from 'types/Responses/user/roles'
 
 type ContainersRoles = RoleType | 'personal'
 
@@ -31,9 +30,10 @@ const Containers = () => {
     ({ universities }) => universities
   )
   const user = useSelector<RootState, UserState>(({ user }) => user)
+  const { emails } = useSelector<RootState, AsyncEmailsState>(
+    ({ asyncEmails }) => asyncEmails
+  )
   const theme = useContext(ThemeContext)
-
-  const [userEmails, setUserEmails] = useState<EmailsType>()
 
   const imageRef = useRef<ImageChangerMethods>(null)
 
@@ -51,17 +51,6 @@ const Containers = () => {
   const containers: ContainersRoles[] = ['personal', ...rolesWithEdit]
 
   useEffect(() => {
-    ;(async () => {
-      const { emails }: EmailsResType = await api.get('user/emails')
-      setUserEmails(emails)
-    })()
-  }, [user.id, user.roles])
-
-  useEffect(() => {
-    dispatch(getUserRolesData({}))
-  }, [dispatch, user.id])
-
-  useEffect(() => {
     if (innerWidth <= 430) setSliderWidth(320)
     else if (innerWidth <= 600) setSliderWidth(440)
     else if (innerWidth <= 700) setSliderWidth(450)
@@ -70,6 +59,7 @@ const Containers = () => {
 
   useEffect(() => {
     dispatch(getUniversities(storeUniversities))
+    dispatch(getEmails())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -88,18 +78,18 @@ const Containers = () => {
                   onClick={() => imageRef.current?.toggleImageChanger()}
                 />
 
-                {user.loading === false ? (
+                {user.loading ? (
+                  <DotsLoader color={theme.colors.primary} />
+                ) : (
                   formatUpdateUser({
                     user,
+                    emails,
                     role: 'personal',
                     roles: user.rolesData,
-                    emails: userEmails,
                     universities: storeUniversities.universities
                   }).map((info: InputData) => (
                     <Field data={info} key={info.name} />
                   ))
-                ) : (
-                  <DotsLoader color={theme.colors.primary} />
                 )}
               </Card>
             )
@@ -113,8 +103,8 @@ const Containers = () => {
               {!user.loading ? (
                 formatUpdateUser({
                   user,
+                  emails,
                   roles: user.rolesData,
-                  emails: userEmails,
                   role: role as keyof ContainerForm,
                   universities: storeUniversities.universities
                 }).map((info: InputData) => (

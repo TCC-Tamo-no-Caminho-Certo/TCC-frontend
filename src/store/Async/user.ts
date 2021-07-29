@@ -1,19 +1,18 @@
 import api from 'services/api'
 
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from 'store'
+
 import { UserResType, UserType } from 'types/Responses/user/index'
 import { RolesResType, RolesType, RoleType } from 'types/Responses/user/roles'
-import { RolesDataResType, RolesDataType } from 'types/Responses/user/rolesData'
+import { RolesDataType } from 'types/Responses/user/rolesData'
+
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface UserState extends UserType {
   roles: RolesType
   loading: boolean
   selectedRole: RoleType
   rolesData?: RolesDataType
-}
-
-interface GetUserRolesDataProps {
-  updated?: boolean
 }
 
 interface GetUserProps {
@@ -43,43 +42,24 @@ export const initialState: UserState = {
   birthday: '',
   full_name: '',
   created_at: '',
-  loading: false,
+  loading: true,
   updated_at: '',
   avatar_uuid: 'default',
   selectedRole: 'student'
 }
 
-export const getUserRolesData = createAsyncThunk(
-  'user/getUserRolesData',
-  async ({ updated = false }: GetUserRolesDataProps, { getState }) => {
-    const user = getState() as UserState
-
-    const { rolesData } = user
-
-    if (!rolesData || updated) {
-      const { roles }: RolesDataResType = await api.get(
-        `users/${user.id}/roles`,
-        { data: { roles: [...user.roles] } }
-      )
-
-      return { ...user, rolesData: roles, loading: false }
-    }
-  }
-)
-
 export const getUser = createAsyncThunk(
   'user/getUser',
   async ({ id }: GetUserProps, { getState }) => {
     if (id) {
-      const prevState = getState() as UserState
+      const prevState = getState() as RootState
       const { user }: UserResType = await api.get(`users/${id}`)
       const { roles }: RolesResType = await api.get(`users/${id}/roles`)
 
       return {
-        ...prevState,
+        ...prevState.user,
         ...user,
         roles,
-        loading: false,
         selectedRole: getInitialSelectedRole(roles)
       }
     }
@@ -105,16 +85,10 @@ const User = createSlice({
   extraReducers: ({ addCase }) => {
     addCase(getUser.pending, state => ({ ...state, loading: true }))
 
-    addCase(getUserRolesData.pending, state => ({ ...state, loading: true }))
-
     addCase(getUser.fulfilled, (state, { payload }) => ({
       ...state,
-      ...payload
-    }))
-
-    addCase(getUserRolesData.fulfilled, (state, { payload }) => ({
-      ...state,
-      ...payload
+      ...payload,
+      loading: false
     }))
   }
 })

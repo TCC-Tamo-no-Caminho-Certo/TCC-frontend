@@ -48,6 +48,8 @@ const formatUpdateUser = ({
     return university ? university.name : ''
   }
 
+  console.log(emails)
+
   const getEmail = (role: 'student' | 'professor'): InputData[] => {
     const fields = []
 

@@ -39,7 +39,9 @@ const EditProfile = () => {
   const afterSubmit = (res: any) => {
     if (res.success) {
       dispatch(UserActions.update(res.user))
+
       confirmModal.current?.toggle()
+
       popupRef?.current?.configPopup({
         type: 'success',
         setModal: true,
