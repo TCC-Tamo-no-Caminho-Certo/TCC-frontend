@@ -73,6 +73,7 @@ export const Content = styled(Card)<ContentProps>`
   }
 
   @media screen and (min-width: 545px) {
+    padding: 64px 16px 16px 16px;
     width: clamp(320px, 95%, 550px);
   }
 `

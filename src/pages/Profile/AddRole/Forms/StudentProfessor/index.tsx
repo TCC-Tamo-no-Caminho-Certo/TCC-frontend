@@ -19,7 +19,7 @@ import api from 'services/api'
 import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
 
-import { Select, Submit, Text } from 'components/Form'
+import { Checkbox, Select, Submit, Text } from 'components/Form'
 import { Option } from 'components/Form/Select'
 import Presence from 'components/Presence'
 
@@ -34,7 +34,7 @@ import {
 } from 'types/Responses/user/requests'
 
 import { GlobalContext } from 'App'
-import { motion, Variants } from 'framer-motion'
+import { Variants } from 'framer-motion'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
@@ -355,6 +355,7 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
   return (
     <>
       <Form
+        getData={e => console.log(e)}
         loading
         path={formPath}
         schema={getFormSchema()}
@@ -432,6 +433,13 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
           setAnimations={setAnimations}
           setRegisterByEmail={setRegisterByEmail}
           selectedUniversity={selectedUniversity}
+        />
+
+        <Checkbox
+          id='cy-full_time'
+          name='full_time'
+          label='Sou professor em tempo integral'
+          defaultCheck={request?.data.full_time}
         />
 
         <Presence

@@ -13,10 +13,17 @@ const Style = styled.div<StyleProps>`
 
     flex-direction: column;
 
-    #fileName {
-      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.6rem);
+    #fileNameContainer {
+      display: flex;
+      flex-direction: row-reverse;
 
-      color: ${({ theme }) => theme.colors.primary};
+      margin-bottom: 8px;
+
+      #fileName {
+        font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.6rem);
+
+        color: ${({ theme }) => theme.colors.primary};
+      }
     }
 
     label {
@@ -147,17 +154,21 @@ const Style = styled.div<StyleProps>`
   @media screen and (min-width: 545px) {
     #fileInput {
       flex-direction: ${({ flexColumn }) => (flexColumn ? 'column' : 'row')};
-    }
 
-    #fileName {
-      ${({ flexColumn, haveValue }) =>
-        flexColumn
-          ? css`
-              margin-bottom: ${haveValue ? '8px' : '0px'};
-            `
-          : css`
-              margin-right: ${haveValue ? '8px' : '0px'};
-            `};
+      #fileNameContainer {
+        margin-bottom: 0px;
+
+        #fileName {
+          ${({ flexColumn, haveValue }) =>
+            flexColumn
+              ? css`
+                  margin-bottom: ${haveValue ? '8px' : '0px'};
+                `
+              : css`
+                  margin-right: ${haveValue ? '8px' : '0px'};
+                `};
+        }
+      }
     }
   }
 `

@@ -96,20 +96,22 @@ const File = ({
       <div id='fileInput'>
         <ErrorTooltip error={!!error} content={error} />
 
-        {noCropper && (
-          <div id='fileName'>
-            {!error && fileRef.current?.value.split('C:\\fakepath\\')}
-          </div>
-        )}
+        <div id='fileNameContainer'>
+          {noCropper && (
+            <div id='fileName'>
+              {!error && fileRef.current?.value.split('C:\\fakepath\\')}
+            </div>
+          )}
 
-        {noCropper && fileRef.current?.value && download && (
-          <a
-            href={file}
-            download={fileRef.current?.value.split('C:\\fakepath\\')[1]}
-          >
-            <DownloadIcon />
-          </a>
-        )}
+          {noCropper && fileRef.current?.value && download && (
+            <a
+              href={file}
+              download={fileRef.current?.value.split('C:\\fakepath\\')[1]}
+            >
+              <DownloadIcon />
+            </a>
+          )}
+        </div>
 
         <label onClick={() => onClick && onClick()}>
           <CameraIcon />

@@ -154,6 +154,22 @@ export const Form = styled(OriginalForm)`
 
     box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.39);
   }
+
+  .Checkbox {
+    margin-bottom: 16px;
+
+    .CheckboxLabel {
+      max-width: 250px;
+
+      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.7rem);
+    }
+  }
+
+  @media screen and (min-width: 440px) {
+    .Checkbox .CheckboxLabel {
+      max-width: none;
+    }
+  }
 `
 
 Voucher.displayName = 'Student-Voucher-Style'
