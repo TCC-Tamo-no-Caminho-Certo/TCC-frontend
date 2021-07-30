@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 
 import Map from './Map'
 import RightMenu from './RightMenu'
@@ -14,14 +14,11 @@ import ProjectIcon from 'assets/MainSidebar/ProjectIcon'
 import Sidebar, { RouteProps } from 'components/Sidebar'
 
 import { useSelector } from 'react-redux'
-import { ThemeContext } from 'styled-components'
 
 const Main = () => {
   const { user } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
-  const theme = useContext(ThemeContext)
-
   const projectsRef = useRef(null)
   const seasonRef = useRef(null)
   const mapRef = useRef(null)
@@ -63,11 +60,11 @@ const Main = () => {
   }, [user?.selectedRole])
 
   return (
-    <div style={{ backgroundColor: theme.colors.tertiary }}>
+    <>
       <Sidebar samePage title='Principal' routes={mainRoutes} />
 
       <RightMenu />
-    </div>
+    </>
   )
 }
 

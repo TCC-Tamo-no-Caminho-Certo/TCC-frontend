@@ -1,95 +1,36 @@
 import React, { useContext, useEffect, useState } from 'react'
-import Style, {
-  Background,
-  Gear,
-  RightMenuOpen,
-  RoleLi,
-  SelectRoles,
-  UserInfo
-} from './styles'
+import Style, { AddRole, Background, Gear, UserInfo } from './styles'
+
+import Menu from './Menu'
 
 import { getRoleLabel } from 'utils/roles'
 import formatterName from 'utils/formatterName'
 
-import api from 'services/api'
-
 import { RootState } from 'store'
-import { AsyncUserActions, AsyncUserState } from 'store/Async/user'
-// import { ThemeState } from 'store/theme'
-import { HomeActions } from 'store/Sync/home'
-import { getValidation } from 'store/Async/validation'
+import { AsyncUserState } from 'store/Async/user'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
-import EditUserIcon from 'assets/ProfileSidebar/EditUserIcon'
-import LogoutIcon from 'assets/RightMenuOpen/LogoutIcon'
-import ChangeIcon from 'assets/RightMenuOpen/ChangeIcon'
 import GearIcon from 'assets/RightMenuOpen/GearIcon'
 import AddRoleIcon from 'assets/RightMenuOpen/AddRoleIcon'
-import CloseIcon from 'assets/global/CloseIcon'
 
-import Presence from 'components/Presence'
 import Avatar from 'components/User/Avatar'
 import DotsLoader from 'components/DotsLoader'
 
 import { motion, Variants } from 'framer-motion'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { ThemeContext } from 'styled-components'
 
-const menu: Variants = {
-  open: {
-    transition: {
-      type: 'tween',
-      duration: 0.2,
-      staggerChildren: 0.1
-    }
-  },
-  closed: { transition: { type: 'tween', duration: 0.2, staggerChildren: 0 } }
-}
-
-const hr: Variants = {
-  open: {
-    opacity: [0, 1],
-    transition: { type: 'tween', duration: 0.4 }
-  },
-  closed: {
-    opacity: [1, 0],
-    transition: { type: 'tween', duration: 0.1 }
-  }
-}
-
-const li: Variants = {
-  open: {
-    x: [16, 0],
-    opacity: [0, 1],
-    transition: { type: 'tween', duration: 0.4 }
-  },
-  closed: { opacity: [1, 0], transition: { type: 'tween', duration: 0.1 } }
-}
-
-const logout: Variants = {
-  open: {
-    y: [-16, 0],
-    opacity: [0, 1],
-    transition: { type: 'tween', duration: 0.4 }
-  },
-  closed: { opacity: [1, 0], transition: { type: 'tween', duration: 0.1 } }
-}
-
 const RightMenu = () => {
+  const theme = useContext(ThemeContext)
   const { user, loading } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
 
-  const [logoutLoading, setLogoutLoading] = useState(false)
-  const [changeRole, setChangeRole] = useState(false)
   const { innerWidth } = useWindowDimensions()
   const [width, setWidth] = useState(innerWidth)
   const [isOpen, setIsOpen] = useState(false)
-
-  const theme = useContext(ThemeContext)
-  const dispatch = useDispatch()
 
   const closedHeight = 112
   const openHeight = 300 + closedHeight
@@ -101,21 +42,10 @@ const RightMenu = () => {
       transition: { type: 'tween', duration: 0.2 }
     },
     open: {
-      d: `M0,0 H${width} V${openHeight} H0 V0 Z`,
       opacity: 1,
+      d: `M0,0 H${width} V${openHeight} H0 V0 Z`,
       transition: { type: 'tween', duration: 0.2 }
     }
-  }
-
-  const onLogoutClick = async () => {
-    setLogoutLoading(true)
-    await api.get('logout')
-
-    localStorage.removeItem('@SLab_ac_token')
-
-    dispatch(AsyncUserActions.reset())
-    dispatch(getValidation())
-    dispatch(HomeActions.update({ initial: false, page: 'login' }))
   }
 
   useEffect(() => {
@@ -126,7 +56,7 @@ const RightMenu = () => {
   return (
     <>
       {(isOpen === true || innerWidth >= 545) && (
-        <>
+        <div onMouseLeave={() => setIsOpen(false)}>
           <Background
             isOpen={isOpen}
             openHeight={`${openHeight}px`}
@@ -139,10 +69,7 @@ const RightMenu = () => {
             />
           </Background>
 
-          <Style
-            closedHeight={`${closedHeight}px`}
-            onMouseLeave={() => setIsOpen(false)}
-          >
+          <Style closedHeight={`${closedHeight}px`}>
             {loading ? (
               <div id='dots'>
                 <DotsLoader color={theme.colors.secondary} />
@@ -151,24 +78,12 @@ const RightMenu = () => {
               <>
                 <Avatar size={80} />
 
-                <UserInfo
-                  className='UserInfo'
-                  selectedRole={user?.selectedRole}
-                >
+                <UserInfo selectedRole={user?.selectedRole}>
                   <span id='userRole'>{getRoleLabel(user?.selectedRole)}</span>
 
                   <span id='userName'>
                     {formatterName(user?.name, user?.surname)}
                   </span>
-
-                  {/* ~
-                    <span id='userActivity'>
-                      <svg width='5' height='5' xmlns='http://www.w3.org/2000/svg'>
-                        <circle cx='2.5' cy='2.5' r='2.5' fill={theme.colors.green} />
-                      </svg>
-                      Online
-                    </span>
-                  */}
                 </UserInfo>
               </>
             )}
@@ -177,96 +92,20 @@ const RightMenu = () => {
               <GearIcon onClick={() => setIsOpen(!isOpen)} />
             )}
 
-            <Presence condition={isOpen}>
-              <>
-                {changeRole && (
-                  <SelectRoles onMouseLeave={() => setChangeRole(false)}>
-                    {innerWidth < 545 && (
-                      <CloseIcon onClick={() => setChangeRole(false)} />
-                    )}
-
-                    <ul>
-                      {user?.roles.map(role => (
-                        <RoleLi key={role} role={role}>
-                          <button
-                            type='button'
-                            onClick={() =>
-                              dispatch(
-                                AsyncUserActions.update({
-                                  user: { ...user, selectedRole: role }
-                                })
-                              )
-                            }
-                          >
-                            {getRoleLabel(role)}
-                          </button>
-                        </RoleLi>
-                      ))}
-                    </ul>
-                  </SelectRoles>
-                )}
-              </>
-
-              <RightMenuOpen
-                exit='close'
-                animate='open'
-                variants={menu}
-                width={`${width}px`}
-                changeRole={changeRole}
-                height={`${openHeight - closedHeight}px`}
-              >
-                <motion.hr variants={hr} />
-
-                <motion.li key='toggleRole' variants={li}>
-                  <button
-                    type='button'
-                    onClick={() => setChangeRole(!changeRole)}
-                  >
-                    <ChangeIcon />
-                    Alternar entre papéis
-                  </button>
-                </motion.li>
-
-                <motion.li key='editProfile' variants={li}>
-                  <Link to='/session/profile/edit-profile'>
-                    <EditUserIcon /> Editar perfil
-                  </Link>
-                </motion.li>
-
-                <motion.li key='orderNewRole' variants={li}>
-                  <Link to='/session/profile/change-role'>
-                    <AddRoleIcon /> Solicitar novo papel
-                  </Link>
-                </motion.li>
-
-                <motion.button
-                  id='logout'
-                  type='button'
-                  animate='open'
-                  data-cy='button-main-logout'
-                  variants={logout}
-                  onClick={onLogoutClick}
-                  disabled={logoutLoading}
-                >
-                  {logoutLoading && (
-                    <DotsLoader color={theme.colors.secondary} />
-                  )}
-
-                  <span id='leave'>Sair</span>
-
-                  <LogoutIcon />
-                </motion.button>
-              </RightMenuOpen>
-            </Presence>
-
-            {user?.selectedRole === 'guest' && (
-              <Link id='baseButton' to='/session/profile/change-role'>
-                <AddRoleIcon /> Adicionar papel
-              </Link>
-            )}
+            <Menu
+              width={width}
+              condition={isOpen}
+              height={openHeight - closedHeight}
+            />
           </Style>
-        </>
+        </div>
       )}
+
+      <AddRole condition={user?.selectedRole === 'guest'}>
+        <Link to='/session/profile/change-role'>
+          <AddRoleIcon /> Adicionar papel
+        </Link>
+      </AddRole>
 
       {innerWidth <= 545 && (
         <Gear

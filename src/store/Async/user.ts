@@ -8,8 +8,8 @@ import { RolesResType, RolesType, RoleType } from 'types/Responses/user/roles'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 export interface UserOnStateType extends UserType {
-  roles: RolesType
-  selectedRole: RoleType
+  roles?: RolesType
+  selectedRole?: RoleType
 }
 
 export interface AsyncUserState {

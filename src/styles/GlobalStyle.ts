@@ -138,7 +138,7 @@ export default createGlobalStyle<GlobalProps>`
     html body {
       &::-webkit-scrollbar {
         width: 16px;
-        z-index: 100;
+        z-index: 300;
       }
     }
   }

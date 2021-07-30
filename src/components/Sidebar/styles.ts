@@ -28,7 +28,7 @@ export const Header = styled.div<HeaderProps>`
 
   .Hamburger {
     position: relative;
-    z-index: 8000;
+    z-index: 101;
 
     margin: 24px;
   }
@@ -55,7 +55,7 @@ export const SidebarNav = styled(motion.nav)`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 3000;
+  z-index: 100;
 
   min-width: 320px;
 

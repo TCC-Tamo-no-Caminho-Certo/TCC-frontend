@@ -124,7 +124,7 @@ const Filters = ({
 
       setTableState({ tablePage: 1, showData: requests })
     } else {
-      const roleToFilter = user?.roles.find(userRole => userRole === role)
+      const roleToFilter = user?.roles?.find(userRole => userRole === role)
 
       const nameFilter = name ? `&filter[full_name]=${name}` : ''
 
