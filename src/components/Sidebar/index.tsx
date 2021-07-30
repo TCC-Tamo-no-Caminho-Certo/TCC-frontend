@@ -124,11 +124,14 @@ const Sidebar = ({
   }, [pathname, routes, overflow])
 
   useEffect(() => {
-    dispatch(SidebarActions.toggleSidebar(true))
+    if (open !== undefined) {
+      dispatch(SidebarActions.toggleSidebar(!open))
 
-    setTimeout(() => {
-      dispatch(SidebarActions.toggleSidebar(false))
-    }, 1)
+      setTimeout(() => {
+        dispatch(SidebarActions.toggleSidebar(!!open))
+      }, 0.1)
+    } else dispatch(SidebarActions.toggleSidebar(false))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, isLarge])
 
   useEffect(() => {
@@ -142,9 +145,9 @@ const Sidebar = ({
         animate={open ? 'open' : 'closed'}
         initial={!isLarge ? 'open' : 'closed'}
       >
-        <Header isOpen={open}>
+        <Header isOpen={!!open}>
           <Hamburger
-            state={open}
+            state={!!open}
             ref={burgerRef}
             toggle={onToggle}
             color={theme.sidebar.letters}
@@ -153,7 +156,7 @@ const Sidebar = ({
           <Presence
             id='title'
             initial='initial'
-            condition={open}
+            condition={!!open}
             variants={motionTitle}
           >
             {title}

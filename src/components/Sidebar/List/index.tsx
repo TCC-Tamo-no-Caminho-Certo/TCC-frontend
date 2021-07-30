@@ -50,7 +50,7 @@ const List = ({ routes, isLarge, bottom = false, ...props }: ListProps) => {
     >
       {routes.map(({ paths, ref, icon: Icon, label }, index) => (
         <ListItem
-          isOpen={open}
+          isOpen={!!open}
           key={paths[0]}
           itemPaths={paths}
           pathname={pathname}
@@ -68,7 +68,7 @@ const List = ({ routes, isLarge, bottom = false, ...props }: ListProps) => {
 
           <Presence
             id='label'
-            condition={open}
+            condition={open!!}
             variants={labelAnimation}
             animate={{
               x: 0,

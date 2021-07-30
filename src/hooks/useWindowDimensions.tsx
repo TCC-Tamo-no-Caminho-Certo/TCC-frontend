@@ -5,18 +5,6 @@ interface WindowDimension {
   innerHeight: number
 }
 
-const debounce = (action: any, timeout: any) => {
-  let timer: any = null
-
-  return () => {
-    clearTimeout(timer)
-
-    timer = setTimeout(() => {
-      action()
-    }, timeout)
-  }
-}
-
 const getDimensions = () => ({
   innerHeight: window.innerHeight,
   innerWidth: window.innerWidth
@@ -26,14 +14,15 @@ const useWindowDimensions = (): WindowDimension => {
   const [dimensions, setDimensions] = useState(getDimensions())
 
   useEffect(() => {
-    const debounceResize = debounce(() => {
+    const resize = () => {
       setDimensions(getDimensions())
-    }, 1000)
+    }
 
-    window.addEventListener('resize', debounceResize)
+    console.log('ressss')
 
-    return () => window.removeEventListener('resize', debounceResize)
-  })
+    window.addEventListener('resize', resize)
+    return () => window.removeEventListener('resize', resize)
+  }, [])
 
   return dimensions
 }

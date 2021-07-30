@@ -37,9 +37,9 @@ export const Gear = styled(GearIcon)`
 export const AddRole = styled(Presence)`
   a {
     position: fixed;
-    right: 24px;
-    z-index: 110;
+    right: 50%;
     bottom: 16px;
+    z-index: 110;
 
     display: flex;
     align-items: center;
@@ -48,6 +48,7 @@ export const AddRole = styled(Presence)`
     width: 256px;
     padding: 8px;
     border-radius: 8px;
+    transform: translateX(50%);
 
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.primary};
@@ -57,6 +58,14 @@ export const AddRole = styled(Presence)`
       margin-right: 16px;
 
       fill: ${({ theme }) => theme.colors.secondary};
+    }
+  }
+
+  @media screen and (min-width: 545px) {
+    a {
+      right: 24px;
+
+      transform: translateX(0%);
     }
   }
 `
