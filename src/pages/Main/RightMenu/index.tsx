@@ -81,7 +81,6 @@ const RightMenu = () => {
   const { user, loading } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
-  const { name, selectedRole, roles, surname } = user
 
   const [logoutLoading, setLogoutLoading] = useState(false)
   const [changeRole, setChangeRole] = useState(false)
@@ -144,16 +143,23 @@ const RightMenu = () => {
             closedHeight={`${closedHeight}px`}
             onMouseLeave={() => setIsOpen(false)}
           >
-            <Avatar size={80} />
-
-            <UserInfo className='UserInfo' selectedRole={selectedRole}>
-              {loading ? (
+            {loading ? (
+              <div id='dots'>
                 <DotsLoader color={theme.colors.secondary} />
-              ) : (
-                <>
-                  <span id='userRole'>{getRoleLabel(selectedRole)}</span>
+              </div>
+            ) : (
+              <>
+                <Avatar size={80} />
 
-                  <span id='userName'>{formatterName(name, surname)}</span>
+                <UserInfo
+                  className='UserInfo'
+                  selectedRole={user?.selectedRole}
+                >
+                  <span id='userRole'>{getRoleLabel(user?.selectedRole)}</span>
+
+                  <span id='userName'>
+                    {formatterName(user?.name, user?.surname)}
+                  </span>
 
                   {/* ~
                     <span id='userActivity'>
@@ -163,9 +169,9 @@ const RightMenu = () => {
                       Online
                     </span>
                   */}
-                </>
-              )}
-            </UserInfo>
+                </UserInfo>
+              </>
+            )}
 
             {innerWidth >= 545 && (
               <GearIcon onClick={() => setIsOpen(!isOpen)} />
@@ -180,7 +186,7 @@ const RightMenu = () => {
                     )}
 
                     <ul>
-                      {roles.map(role => (
+                      {user?.roles.map(role => (
                         <RoleLi key={role} role={role}>
                           <button
                             type='button'
@@ -253,7 +259,7 @@ const RightMenu = () => {
               </RightMenuOpen>
             </Presence>
 
-            {selectedRole === 'guest' && (
+            {user?.selectedRole === 'guest' && (
               <Link id='baseButton' to='/session/profile/change-role'>
                 <AddRoleIcon /> Adicionar papel
               </Link>

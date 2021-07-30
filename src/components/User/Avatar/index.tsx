@@ -2,6 +2,7 @@ import React, { ImgHTMLAttributes, memo, useState } from 'react'
 import Style, { StyledAvatar } from './styles'
 
 import { RootState } from 'store'
+import { AsyncUserState } from 'store/Async/user'
 
 import AvatarIcon from 'assets/Inputs/AvatarIcon'
 import CameraIcon from 'assets/Inputs/CameraIcon'
@@ -30,13 +31,13 @@ const Avatar = ({
   loaderColor = '#6e4850',
   ...rest
 }: AvatarProps) => {
-  const avatar = useSelector<RootState, string>(
-    ({ asyncUser }) => asyncUser.user.avatar_uuid
+  const { user } = useSelector<RootState, AsyncUserState>(
+    ({ asyncUser }) => asyncUser
   )
 
   const [hovering, setHovering] = useState(false)
 
-  const condition = avatarId || avatar
+  const condition = avatarId || user?.avatar_uuid
   const src = `https://s3.steamslab.com/profile/${condition}`
 
   return (

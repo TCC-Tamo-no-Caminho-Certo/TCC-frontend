@@ -1,11 +1,15 @@
 import React, { useContext } from 'react'
 
-import { ThemeActions } from 'store/Sync/theme'
+import { ThemeActions, ThemeState } from 'store/Sync/theme'
+import { RootState } from 'store'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
 const ThemeSwitch = () => {
+  const { theme: selectedTheme } = useSelector<RootState, ThemeState>(
+    ({ theme }) => theme
+  )
   const theme = useContext(ThemeContext)
 
   const dispatch = useDispatch()
@@ -15,7 +19,13 @@ const ThemeSwitch = () => {
       viewBox='0 0 42 42'
       xmlns='http://www.w3.org/2000/svg'
       className='ThemeSwitch'
-      onClick={() => dispatch(ThemeActions.changeTheme())}
+      onClick={() =>
+        dispatch(
+          ThemeActions.changeTheme({
+            theme: selectedTheme === 'light' ? 'dark' : 'light'
+          })
+        )
+      }
       style={{ cursor: 'pointer' }}
     >
       <g

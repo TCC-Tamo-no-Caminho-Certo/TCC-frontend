@@ -1,16 +1,17 @@
 import GearIcon from 'assets/RightMenuOpen/GearIcon'
 
+import { RoleType } from 'types/Responses/user/roles'
+
 import { motion } from 'framer-motion'
 import { darken } from 'polished'
 import styled, { css } from 'styled-components'
-import { RoleType } from 'types/Responses/user/roles'
 
 interface RoleLiProps {
   role: RoleType
 }
 
 interface UserInfoProps {
-  selectedRole: RoleType
+  selectedRole?: RoleType
 }
 
 interface RightMenuOpenProps {
@@ -106,6 +107,7 @@ export const UserInfo = styled.div<UserInfoProps>`
   display: flex;
   flex-direction: column;
 
+  width: 100%;
   cursor: default;
   margin-left: 16px;
 
@@ -117,7 +119,8 @@ export const UserInfo = styled.div<UserInfoProps>`
   #userRole {
     font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.4rem);
 
-    color: ${({ theme, selectedRole }) => theme.roles[selectedRole]};
+    color: ${({ theme, selectedRole }) =>
+      selectedRole ? theme.roles[selectedRole] : theme.roles.guest};
   }
 
   #userName {
@@ -144,6 +147,7 @@ export const RightMenuOpen = styled(motion.ul)<RightMenuOpenProps>`
   z-index: 3;
 
   width: max(100vw, 300px);
+  padding: 16px 32px 16px 16px;
   height: ${({ height }) => height};
 
   & > * {
@@ -197,7 +201,7 @@ export const RightMenuOpen = styled(motion.ul)<RightMenuOpenProps>`
 
   #logout {
     position: absolute;
-    right: 16px;
+    right: 32px;
     bottom: 16px;
 
     display: flex;
@@ -303,6 +307,7 @@ const Style = styled.div<StyleProps>`
 
   width: 100vw;
   min-width: 300px;
+  padding: 16px 32px 16px 16px;
   height: ${({ closedHeight }) => closedHeight};
 
   a,
@@ -311,7 +316,6 @@ const Style = styled.div<StyleProps>`
     color: ${({ theme }) => theme.colors.secondary};
   }
 
-  .Avatar,
   .DotsLoader {
     margin-left: 16px;
   }
@@ -348,6 +352,13 @@ const Style = styled.div<StyleProps>`
 
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.primary};
+  }
+
+  #dots {
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
   }
 
   @media screen and (min-width: 545px) {

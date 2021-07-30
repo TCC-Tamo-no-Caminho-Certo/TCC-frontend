@@ -18,7 +18,7 @@ const initialState: AsyncUniversitiesState = {
 }
 
 export const getUpdatedUniversities = createAsyncThunk(
-  'asyncUniversities/getUpdatedUniversities',
+  'universities/getUpdatedUniversities',
   async () => {
     const { universities }: UniversitiesResType = await api.get('universities')
     return { universities }
@@ -26,7 +26,7 @@ export const getUpdatedUniversities = createAsyncThunk(
 )
 
 export const getUniversities = createAsyncThunk(
-  'asyncUniversities/getUniversities',
+  'universities/getUniversitie',
   async (_data, { getState }) => {
     const { universities } = getState() as AsyncUniversitiesState
 
@@ -41,7 +41,7 @@ export const getUniversities = createAsyncThunk(
 )
 
 const AsyncUniversities = createSlice({
-  name: 'asyncUniversities',
+  name: 'universities',
   initialState,
   reducers: {},
   extraReducers: builder => {

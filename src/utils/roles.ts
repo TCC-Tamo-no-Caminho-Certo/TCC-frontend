@@ -12,4 +12,5 @@ const roles: RolesLabel = {
   moderator: 'Moderador'
 }
 
-export const getRoleLabel = (roleKey: RoleType) => roles[roleKey] || 'undefined'
+export const getRoleLabel = (roleKey?: RoleType) =>
+  roleKey ? roles[roleKey] : ''

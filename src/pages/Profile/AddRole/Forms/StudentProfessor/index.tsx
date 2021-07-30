@@ -349,11 +349,13 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
 
   useEffect(() => {
     ;(async () => {
-      const { emails }: EmailsResType = await api.get(`users/${user.id}/emails`)
+      const { emails }: EmailsResType = await api.get(
+        `users/${user?.id}/emails`
+      )
 
       setUserEmails(emails)
     })()
-  }, [user.id])
+  }, [user?.id])
   return (
     <>
       <Form

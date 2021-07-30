@@ -14,7 +14,7 @@ export interface UserOnStateType extends UserType {
 
 export interface AsyncUserState {
   loading: boolean
-  user: UserOnStateType
+  user?: UserOnStateType
 }
 
 interface GetUserProps {
@@ -23,19 +23,7 @@ interface GetUserProps {
 
 export const initialState: AsyncUserState = {
   loading: true,
-  user: {
-    id: 0,
-    name: '',
-    roles: [],
-    phone: '',
-    surname: '',
-    birthday: '',
-    full_name: '',
-    created_at: '',
-    updated_at: '',
-    avatar_uuid: 'default',
-    selectedRole: 'student'
-  }
+  user: undefined
 }
 
 const getInitialSelectedRole = (roles: RolesType) => {
@@ -52,7 +40,7 @@ const getInitialSelectedRole = (roles: RolesType) => {
 }
 
 export const getUser = createAsyncThunk(
-  'asyncUser/getUser',
+  'user/getUser',
   async ({ id }: GetUserProps, { getState }) => {
     const { asyncUser } = getState() as RootState
 
@@ -80,7 +68,7 @@ const update = (state: AsyncUserState, { payload }: any) => {
 }
 
 const AsyncUser = createSlice({
-  name: 'asyncUser',
+  name: 'user',
   initialState,
   reducers: { update, reset: () => initialState },
   extraReducers: ({ addCase }) => {

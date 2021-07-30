@@ -15,16 +15,13 @@ import { FormContext, FormState } from '../'
 
 import { dateToValue } from 'utils/dates'
 
-import { RootState } from 'store'
-import { ThemeState } from 'store/Sync/theme'
-
 import EyeClosedIcon from 'assets/Inputs/EyeClosedIcon'
 import EyeIcon from 'assets/Inputs/EyeIcon'
 
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 import { Ref } from 'components/Form'
 
-import { useSelector } from 'react-redux'
+import { ThemeContext } from 'styled-components'
 
 export interface TextColors {
   focused?: string
@@ -62,7 +59,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
   ) => {
     const form = useContext<FormState | null>(FormContext)
     const textRef = useRef<HTMLInputElement>(null)
-    const { colors } = useSelector<RootState, ThemeState>(({ theme }) => theme)
+    const { colors } = useContext(ThemeContext)
 
     const [error, setError] = useState<string>()
     const [isFilled, setIsFilled] = useState(false)

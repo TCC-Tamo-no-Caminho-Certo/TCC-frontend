@@ -41,7 +41,7 @@ const ResponseContent = ({
 
   const [buttonClicked, setButtonClicked] = useState('rejected')
 
-  const himselfModeratorRequest = user.id === userInfo?.user_id
+  const himselfModeratorRequest = user?.id === userInfo?.user_id
 
   const onTrashClick = () => {
     selectedInfo &&

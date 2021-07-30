@@ -26,8 +26,6 @@ const Main = () => {
   const seasonRef = useRef(null)
   const mapRef = useRef(null)
 
-  const { selectedRole } = user
-
   const mainRoutes = useMemo((): RouteProps[] => {
     const sidebarSections: RouteProps[] = [
       {
@@ -53,7 +51,7 @@ const Main = () => {
       }
     ]
 
-    if (selectedRole === 'moderator' || selectedRole === 'admin')
+    if (user?.selectedRole === 'moderator' || user?.selectedRole === 'admin')
       sidebarSections.push({
         label: 'Universidade',
         bottom: true,
@@ -62,7 +60,7 @@ const Main = () => {
       })
 
     return sidebarSections
-  }, [selectedRole])
+  }, [user?.selectedRole])
 
   return (
     <div style={{ backgroundColor: theme.colors.tertiary }}>

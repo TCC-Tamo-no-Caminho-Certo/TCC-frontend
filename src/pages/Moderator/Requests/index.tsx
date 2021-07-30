@@ -37,7 +37,7 @@ const Requests = () => {
       <Table
         path='user/role/requests'
         headerData={headerData}
-        condition={!!user.roles}
+        condition={!!user?.roles}
         itemContent={ResponseContent}
         filters={{ from: true, name: true, role: true, status: true, to: true }}
       />

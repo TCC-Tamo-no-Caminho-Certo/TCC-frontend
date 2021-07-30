@@ -14,7 +14,7 @@ export interface AsyncEmailsState {
 const initialState: AsyncEmailsState = { emails: [], loading: true }
 
 export const getUpdatedEmails = createAsyncThunk(
-  'asyncEmails/getUpdatedEmails',
+  'emails(getUpdatedEmails)',
   async () => {
     const { emails }: EmailsResType = await api.get('user/emails')
     return { emails }
@@ -22,7 +22,7 @@ export const getUpdatedEmails = createAsyncThunk(
 )
 
 export const getEmails = createAsyncThunk(
-  'asyncEmails/getEmails',
+  'emails(getEmails)',
   async (_param, { getState }) => {
     const { asyncEmails } = getState() as RootState
 
@@ -34,7 +34,7 @@ export const getEmails = createAsyncThunk(
 )
 
 const AsyncEmails = createSlice({
-  name: 'asyncEmails',
+  name: 'emails',
   initialState,
   reducers: {},
   extraReducers: builder => {

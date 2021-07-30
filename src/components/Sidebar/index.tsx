@@ -13,7 +13,6 @@ import transition from 'utils/transition'
 
 import { SidebarActions, SidebarState } from 'store/Sync/sidebar'
 import { RootState } from 'store'
-import { ThemeState } from 'store/Sync/theme'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 

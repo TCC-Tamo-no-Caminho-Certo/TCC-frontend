@@ -116,7 +116,7 @@ const Projects = forwardRef((_props, ref) => {
           ]}
         />
 
-        {user.selectedRole === 'professor' && (
+        {user?.selectedRole === 'professor' && (
           <button id='newProject' onClick={() => modalRef?.current?.toggle()}>
             Criar novo projeto
           </button>

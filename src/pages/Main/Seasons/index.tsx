@@ -97,8 +97,6 @@ const Seasons = forwardRef((_props, ref) => {
 
   const universities = getAllUniversitiesOfUser()
 
-  const { selectedRole } = user
-
   const getUniversitiesOfUser = async (): Promise<UniversityDataType[]> => {
     const universitiesOfUser: UniversityDataType[] = []
 
@@ -115,11 +113,11 @@ const Seasons = forwardRef((_props, ref) => {
         'roles/administrator'
       )
 
-      universitiesOfUser.push({
+      universitiesOfUser?.push({
         seasons,
         name: name,
         id: universities[i].id,
-        isAdmin: university_id === id && selectedRole === 'admin'
+        isAdmin: university_id === id && user?.selectedRole === 'admin'
       })
     }
 

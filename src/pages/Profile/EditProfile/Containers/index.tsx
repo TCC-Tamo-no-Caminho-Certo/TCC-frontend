@@ -49,8 +49,8 @@ const Containers = () => {
 
   const rolesToShow = ['student', 'professor', 'moderator']
 
-  const rolesWithEdit = user.roles
-    ? user.roles?.filter(role => rolesToShow.find(wished => wished === role))
+  const rolesWithEdit = user?.roles
+    ? user?.roles?.filter(role => rolesToShow.find(wished => wished === role))
     : []
 
   const containers: ContainersRoles[] = ['personal', ...rolesWithEdit]

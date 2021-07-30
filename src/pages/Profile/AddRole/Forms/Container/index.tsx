@@ -61,17 +61,17 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
   }
 
   useEffect(() => {
-    if (roles.length !== 0)
+    if (roles?.length !== 0 && roles !== undefined)
       (async () => {
         const { requests }: RequestsResType = await api.get(
-          `users/${user.id}/roles/requests`
+          `users/${user?.id}/roles/requests`
         )
 
         setRequest(requests.find(request => request.role === role))
       })()
 
     return setRequest(undefined)
-  }, [role, roles, user.id, user.roles])
+  }, [role, roles, user?.id, user?.roles])
 
   useEffect(() => {
     hereRef.current?.scrollIntoView({ behavior: 'smooth' })

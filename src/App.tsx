@@ -3,6 +3,7 @@ import React, {
   Dispatch,
   RefObject,
   SetStateAction,
+  useContext,
   useEffect,
   useRef,
   useState
@@ -11,11 +12,12 @@ import React, {
 import './i18n'
 
 import GlobalStyle from 'styles/GlobalStyle'
+import { dark, light } from 'styles/themes'
 
 import Routes from 'routes'
 
-import { ThemeState } from 'store/Sync/theme'
 import { RootState } from 'store'
+import { ThemeState } from 'store/Sync/theme'
 
 import Popup, { PopupMethods } from 'components/Popup'
 import Modal, { ModalMethods } from 'components/Modal'
@@ -23,7 +25,7 @@ import Modal, { ModalMethods } from 'components/Modal'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import { ThemeProvider } from 'styled-components'
+import { ThemeContext, ThemeProvider } from 'styled-components'
 
 export interface Overflow {
   x?: string
@@ -40,10 +42,15 @@ export interface GlobalContextProps {
   }
 }
 
+const allThemes = { dark, light }
+
 export const GlobalContext = createContext<GlobalContextProps>({})
 
 const App = () => {
-  const theme = useSelector<RootState, ThemeState>(({ theme }) => theme)
+  const theme = useContext(ThemeContext)
+  const { theme: selectedTheme } = useSelector<RootState, ThemeState>(
+    ({ theme }) => theme
+  )
 
   const popupRef = useRef<PopupMethods>(null)
   const modalRef = useRef<ModalMethods>(null)
@@ -57,7 +64,7 @@ const App = () => {
   }, [i18n])
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={allThemes[selectedTheme]}>
       <GlobalContext.Provider
         value={{ modalRef, popupRef, overflow: { overflow, setOverflow } }}
       >

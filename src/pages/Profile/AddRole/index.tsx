@@ -27,7 +27,7 @@ import { useLocation } from 'react-router-dom'
 import { ThemeContext } from 'styled-components'
 
 interface AddRoleState {
-  roles: RolesType
+  roles?: RolesType
   universities: UniversitiesType
 }
 
@@ -64,7 +64,7 @@ const AddRole = () => {
   const { pathname } = useLocation()
   const dispatch = useDispatch()
 
-  const labelRoles = user.roles.map(role => getRoleLabel(role))
+  const labelRoles = user?.roles.map(role => getRoleLabel(role))
 
   useEffect(() => {
     roleSelected === undefined &&
@@ -128,8 +128,8 @@ const AddRole = () => {
             ]}
           />
 
-          {(user.roles.includes('professor') ||
-            user.roles.includes('moderator')) && (
+          {(user?.roles.includes('professor') ||
+            user?.roles.includes('moderator')) && (
             <RoleInfo
               role='moderator'
               id='cy-moderator'
@@ -152,7 +152,7 @@ const AddRole = () => {
       </Style>
 
       <AddRoleContext.Provider
-        value={{ roles: user.roles, universities: universities }}
+        value={{ roles: user?.roles, universities: universities }}
       >
         {roleSelected && (
           <Container

@@ -22,11 +22,11 @@ export interface ContainerForm {
 }
 
 interface FormatUpdateUserProps {
-  user: UserOnStateType
   role: keyof ContainerForm
   universities: UniversitiesType
-  roles?: RolesDataType
   emails?: EmailsType
+  roles?: RolesDataType
+  user?: UserOnStateType
 }
 
 const removeRepeatly = (array: any[] | undefined) => {
@@ -98,13 +98,13 @@ const formatUpdateUser = ({
     {
       name: 'name',
       label: 'Nome:',
-      value: user.name,
+      value: user?.name,
       editable: true
     },
     {
       name: 'surname',
       label: 'Sobrenome:',
-      value: user.surname,
+      value: user?.surname,
       editable: true
     }
   ]
@@ -113,19 +113,19 @@ const formatUpdateUser = ({
     {
       name: 'name',
       label: 'Nome:',
-      value: user.name,
+      value: user?.name,
       editable: true
     },
     {
       name: 'surname',
       label: 'Sobrenome:',
-      value: user.surname,
+      value: user?.surname,
       editable: true
     },
     {
       name: 'birthday',
       label: 'Nascimento:',
-      value: user.birthday,
+      value: user?.birthday,
       editable: true,
       date: true
     },
@@ -152,7 +152,7 @@ const formatUpdateUser = ({
     // {
     //   name: 'phone',
     //   label: 'Celular:',
-    //   value: user.phone ? '' : user.phone,
+    //   value: user?.phone ? '' : user?.phone,
     //   date: true,
     //   editable: true
     // }

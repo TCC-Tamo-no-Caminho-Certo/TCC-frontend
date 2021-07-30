@@ -13,7 +13,7 @@ const initialState: AsyncValidationState = {
 }
 
 export const getValidation = createAsyncThunk(
-  'asyncValidation/getValidation',
+  'validation/getValidation',
   async () => {
     const token = localStorage.getItem('@SLab_ac_token')
 
@@ -32,7 +32,7 @@ export const getValidation = createAsyncThunk(
 )
 
 const AsyncValidation = createSlice({
-  name: 'asyncValidation',
+  name: 'validation',
   initialState,
   reducers: {},
   extraReducers: builder => {
