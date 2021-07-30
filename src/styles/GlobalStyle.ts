@@ -1,8 +1,9 @@
+import { Overflow } from 'App'
 import { darken } from 'polished'
 import { createGlobalStyle, css } from 'styled-components'
 
 interface GlobalProps {
-  overflow: string
+  overflow: Overflow
 }
 
 export default createGlobalStyle<GlobalProps>`
@@ -21,6 +22,8 @@ export default createGlobalStyle<GlobalProps>`
     body {
       font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.9rem);
       line-height: clamp(1.6rem, 0.6rem + 2.6vw, 1.9rem);
+
+  
 
       color: ${({ theme }) => theme.colors.tertiary};
       background-color: ${({ theme }) => theme.colors.primary};
@@ -97,21 +100,48 @@ export default createGlobalStyle<GlobalProps>`
         }
       }
 
-      ${({ overflow }) =>
-        overflow === 'hidden'
-          ? css`
-              overflow: hidden;
-            `
-          : css`
-              overflow: auto;
-            `}
+      ${({ overflow }) => {
+        if (overflow.y)
+          return overflow.y === 'hidden'
+            ? css`
+                overflow-y: hidden;
+              `
+            : css`
+                overflow-y: auto;
+              `
+      }}
+
+      ${({ overflow }) => {
+        if (overflow.x)
+          return overflow.x === 'hidden'
+            ? css`
+                overflow-x: hidden;
+              `
+            : css`
+                overflow-x: auto;
+              `
+      }}
+
+      ${({ overflow }) => {
+        if (overflow.overflow)
+          return overflow.overflow === 'hidden'
+            ? css`
+                overflow: hidden;
+              `
+            : css`
+                overflow: auto;
+              `
+      }}
     }
   }
 
   @media screen and (min-width: 545px) {
-    html body::-webkit-scrollbar {
-      width: 16px;
-      z-index: 2000;
+
+    html body {
+      &::-webkit-scrollbar {
+        width: 16px;
+        z-index: 100;
+      }
     }
   }
 `

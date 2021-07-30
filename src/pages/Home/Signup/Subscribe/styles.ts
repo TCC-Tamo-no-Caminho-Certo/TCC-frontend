@@ -6,7 +6,7 @@ const Style = styled.div`
   justify-content: center;
 
   height: 100vh;
-  width: max(100vw, 320px);
+  width: 100%;
 
   background-color: transparent;
   color: ${({ theme }) => theme.colors.secondary};

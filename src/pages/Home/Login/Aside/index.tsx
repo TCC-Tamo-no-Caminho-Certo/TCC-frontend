@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Style, { LoginFailure } from './styles'
 
 import loginSchema from 'utils/validations/login'
 
-import { HomeActions } from 'store/Sync/home'
+import { HomeActions, HomeState } from 'store/Sync/home'
 import { getValidation } from 'store/Async/validation'
+import { RootState } from 'store'
 
 import MailIcon from 'assets/Inputs/MailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
@@ -14,8 +15,9 @@ import Logo from 'assets/FullLogo'
 import Form, { Checkbox, Submit, Text } from 'components/Form'
 import Presence from 'components/Presence'
 
+import { GlobalContext } from 'App'
 // import ThemeSwitch from 'components/ThemeSwitch'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 
 export interface LoginData {
@@ -26,6 +28,10 @@ export interface LoginData {
 }
 
 const Aside = () => {
+  const { overflow } = useContext(GlobalContext)
+
+  const home = useSelector<RootState, HomeState>(({ home }) => home)
+
   const [loginFailed, setLoginFailed] = useState('')
   const [disabled, setDisabled] = useState(false)
 
@@ -56,8 +62,22 @@ const Aside = () => {
 
   const onRegisterClick = () => {
     setDisabled(true)
-    dispatch(HomeActions.update({ initial: true, page: 'signup' }))
+
+    overflow?.setOverflow &&
+      overflow?.setOverflow({ x: 'hidden', overflow: undefined })
+
+    dispatch(
+      HomeActions.update({ initial: true, page: 'signup', disable: true })
+    )
+
     history.push('/home/signup')
+
+    setTimeout(() => {
+      dispatch(HomeActions.update({ disable: false }))
+
+      overflow?.setOverflow &&
+        overflow?.setOverflow({ x: undefined, overflow: 'auto' })
+    }, 1300)
   }
 
   return (
@@ -122,8 +142,8 @@ const Aside = () => {
           <button
             type='button'
             data-cy='button-login-register'
-            disabled={disabled}
             onClick={onRegisterClick}
+            disabled={disabled || home.disable}
           >
             Registre-se aqui!
           </button>

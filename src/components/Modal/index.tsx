@@ -71,12 +71,12 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
         setOpenModal(!openModal)
 
         overflow?.setOverflow &&
-          overflow?.setOverflow(!setModal ? 'hidden' : 'auto')
+          overflow?.setOverflow({ overflow: !setModal ? 'hidden' : 'auto' })
       } else {
         setOpenModal(setModal)
 
         overflow?.setOverflow &&
-          overflow?.setOverflow(setModal ? 'hidden' : 'auto')
+          overflow?.setOverflow({ overflow: setModal ? 'hidden' : 'auto' })
       }
     }
 
@@ -87,7 +87,7 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
     const onBackgroundClick = () => {
       onClose && onClose()
       setOpenModal(false)
-      overflow?.setOverflow && overflow?.setOverflow('auto')
+      overflow?.setOverflow && overflow?.setOverflow({ overflow: 'auto' })
     }
 
     useImperativeHandle(ref, () => ({ config, toggle }))

@@ -3,7 +3,8 @@ import Style from './styles'
 
 import signupSchema from 'utils/validations/signup'
 
-import { HomeActions } from 'store/Sync/home'
+import { HomeActions, HomeState } from 'store/Sync/home'
+import { RootState } from 'store'
 
 import WorldIcon from 'assets/Inputs/WorldIcon'
 import UserLockedIcon from 'assets/Inputs/UserLockedIcon'
@@ -15,17 +16,41 @@ import BackButton from 'components/BackButton'
 
 import { GlobalContext } from 'App'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 const Aside = () => {
+  const home = useSelector<RootState, HomeState>(({ home }) => home)
   const { popupRef } = useContext(GlobalContext)
+  const { overflow } = useContext(GlobalContext)
 
   const [disable, setDisable] = useState(false)
 
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const history = useHistory()
+
+  const onBackButtonClick = () => {
+    setDisable(true)
+
+    overflow?.setOverflow &&
+      overflow?.setOverflow({ x: 'hidden', overflow: undefined })
+
+    dispatch(
+      HomeActions.update({
+        initial: true,
+        page: 'login',
+        disable: true
+      })
+    )
+
+    setTimeout(() => {
+      dispatch(HomeActions.update({ disable: false }))
+
+      overflow?.setOverflow &&
+        overflow?.setOverflow({ x: undefined, overflow: 'auto' })
+    }, 1300)
+  }
 
   const onSuccessClose = () => {
     dispatch(HomeActions.update({ initial: true, page: 'login' }))
@@ -69,11 +94,8 @@ const Aside = () => {
       <nav>
         <BackButton
           to='/home'
-          disabled={disable}
-          onTap={() => {
-            setDisable(true)
-            dispatch(HomeActions.update({ initial: true, page: 'login' }))
-          }}
+          onTap={onBackButtonClick}
+          disabled={disable || home.disable}
         />
 
         {/* <ThemeSwitch /> */}

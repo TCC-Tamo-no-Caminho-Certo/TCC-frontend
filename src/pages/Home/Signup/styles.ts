@@ -8,8 +8,16 @@ const Style = styled(motion.section)`
   display: flex;
   flex-direction: column;
 
+  width: max(100vw - 8px, 312px);
+
+  @media screen and (min-width: 545px) {
+    width: max(100vw - 16px, 200px);
+  }
+
   @media screen and (min-width: 1200px) {
-    flex-direction: row;
+    flex-direction: row-reverse;
+
+    width: max(100vw, 320px);
   }
 `
 

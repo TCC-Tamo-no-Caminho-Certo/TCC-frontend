@@ -1,13 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface HomeState {
-  initial: boolean
-  page: 'login' | 'signup'
+  initial?: boolean
+  disable?: boolean
+  page?: 'login' | 'signup'
 }
 
 type Payload = PayloadAction<HomeState>
 
 const initialState: HomeState = {
+  disable: false,
   initial: false,
   page: 'login'
 }
@@ -16,7 +18,8 @@ const Home = createSlice({
   name: 'home',
   initialState,
   reducers: {
-    update: (_state, action: Payload) => ({
+    update: (state, action: Payload) => ({
+      ...state,
       ...action.payload
     })
   }

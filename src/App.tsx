@@ -25,12 +25,18 @@ import { useSelector } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 
+export interface Overflow {
+  x?: string
+  y?: string
+  overflow?: string
+}
+
 export interface GlobalContextProps {
   modalRef?: RefObject<ModalMethods>
   popupRef?: RefObject<PopupMethods>
   overflow?: {
-    overflow?: string
-    setOverflow?: Dispatch<SetStateAction<string>>
+    overflow?: Overflow
+    setOverflow?: Dispatch<SetStateAction<Overflow>>
   }
 }
 
@@ -42,7 +48,7 @@ const App = () => {
   const popupRef = useRef<PopupMethods>(null)
   const modalRef = useRef<ModalMethods>(null)
 
-  const [overflow, setOverflow] = useState('visible')
+  const [overflow, setOverflow] = useState<Overflow>({ overflow: 'auto' })
 
   const { i18n } = useTranslation()
 

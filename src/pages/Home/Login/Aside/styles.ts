@@ -29,8 +29,8 @@ const Style = styled.aside`
   flex-direction: column;
   justify-content: center;
 
-  min-height: 100vh;
-  width: max(100vw, 320px);
+  width: 100%;
+  min-height: 80vh;
 
   background-color: ${({ theme }) => theme.colors.secondary};
   box-shadow: -8px 8px 6px 4px rgba(0, 0, 0, 0.14);
@@ -100,7 +100,7 @@ const Style = styled.aside`
   }
 
   @media screen and (min-width: 1200px) {
-    width: calc(38vw);
+    width: 38vw;
     border-radius: 20px 0 0 20px;
   }
 `
