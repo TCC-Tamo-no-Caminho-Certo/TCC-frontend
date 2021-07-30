@@ -1,9 +1,10 @@
 import { Overflow } from 'App'
-import { darken } from 'polished'
-import { createGlobalStyle, css } from 'styled-components'
+import { darken, lighten } from 'polished'
+import { createGlobalStyle, css, DefaultTheme } from 'styled-components'
 
 interface GlobalProps {
   overflow: Overflow
+  theme: DefaultTheme
 }
 
 export default createGlobalStyle<GlobalProps>`
@@ -42,11 +43,34 @@ export default createGlobalStyle<GlobalProps>`
         border-radius: 4px;
 
         border: solid 2px transparent;
-        box-shadow: inset 0 0 10px 1px rgba(255,255,255,0.8);
+
+        ${({ theme }) =>
+          theme.name === 'light'
+            ? css`
+                box-shadow: inset 0 0 10px 1px
+                  ${({ theme }) => darken(0.2, theme.colors.secondary)};
+              `
+            : css`
+                box-shadow: inset 0 0 10px 1px
+                  ${({ theme }) => darken(0.2, theme.colors.secondary)};
+              `}
 
         &:hover {
-          box-shadow: inset 0 0 10px 1px rgba(255,255,255,1);
+          ${({ theme }) =>
+            theme.name === 'light'
+              ? css`
+                  box-shadow: inset 0 0 10px 1px
+                    ${({ theme }) => lighten(3, theme.colors.secondary)};
+                `
+              : css`
+                  box-shadow: inset 0 0 10px 1px
+                    ${({ theme }) => lighten(3, theme.colors.secondary)};
+                `}
         }
+      }
+
+      &::-webkit-scrollbar-corner {
+        background-color: ${({ theme }) => darken(0.1, theme.colors.tertiary)}
       }
       
       input:-webkit-autofill,
@@ -99,40 +123,14 @@ export default createGlobalStyle<GlobalProps>`
           box-shadow: initial;
         }
       }
-
-      ${({ overflow }) => {
-        if (overflow.y)
-          return overflow.y === 'hidden'
-            ? css`
-                overflow-y: hidden;
-              `
-            : css`
-                overflow-y: auto;
-              `
-      }}
-
-      ${({ overflow }) => {
-        if (overflow.x)
-          return overflow.x === 'hidden'
-            ? css`
-                overflow-x: hidden;
-              `
-            : css`
-                overflow-x: auto;
-              `
-      }}
-
-      ${({ overflow }) => {
-        if (overflow.overflow)
-          return overflow.overflow === 'hidden'
-            ? css`
-                overflow: hidden;
-              `
-            : css`
-                overflow: auto;
-              `
-      }}
     }
+
+    
+    ${({ overflow }) => css`
+      overflow-y: ${overflow.y} !important;
+      overflow-x: ${overflow.x} !important;
+      overflow-y: ${overflow.overflow} !important;
+    `}
   }
 
   @media screen and (min-width: 545px) {

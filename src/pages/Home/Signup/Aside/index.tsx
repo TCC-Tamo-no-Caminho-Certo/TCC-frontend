@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import Style from './styles'
+import Style, { Content } from './styles'
 
 import signupSchema from 'utils/validations/signup'
 
@@ -101,7 +101,7 @@ const Aside = () => {
         {/* <ThemeSwitch /> */}
       </nav>
 
-      <div id='content'>
+      <Content>
         <header>
           <Logo />
         </header>
@@ -198,7 +198,7 @@ const Aside = () => {
 
           <Submit data-cy='button-signup-submit'>Concordar e concluir</Submit>
         </Form>
-      </div>
+      </Content>
     </Style>
   )
 }

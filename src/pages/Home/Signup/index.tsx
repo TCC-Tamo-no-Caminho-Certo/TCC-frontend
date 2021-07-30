@@ -4,8 +4,10 @@ import Style from './styles'
 import Aside from './Aside'
 import Subscribe from './Subscribe'
 
-const Signup = () => (
-  <Style>
+import { MotionProps } from 'framer-motion'
+
+const Signup = (props: MotionProps) => (
+  <Style {...props}>
     <Aside />
     <Subscribe />
   </Style>

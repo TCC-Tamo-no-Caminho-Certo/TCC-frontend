@@ -1,5 +1,51 @@
 import styled from 'styled-components'
 
+export const Content = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  width: clamp(284px, 80%, 530px);
+
+  > * {
+    width: 100%;
+  }
+
+  .Form {
+    margin-top: 16px;
+
+    > * {
+      width: 100%;
+    }
+
+    span.aditionalInfo {
+      display: block;
+
+      padding: 8px 0;
+    }
+
+    .dual {
+      border-radius: 10px 10px 0 0;
+
+      &:focus {
+        border-bottom-color: ${({ theme }) => theme.colors.tertiary};
+      }
+
+      & + .dual {
+        border-radius: 0 0 10px 10px;
+
+        border-top: 1px solid transparent;
+      }
+    }
+
+    .Submit {
+      margin-top: 16px;
+      height: max(5vh, 35px);
+    }
+  }
+`
+
 const Style = styled.aside`
   position: relative;
 
@@ -31,51 +77,6 @@ const Style = styled.aside`
     }
   }
 
-  #content {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-
-    width: clamp(284px, 80%, 530px);
-
-    > * {
-      width: 100%;
-    }
-
-    .Form {
-      margin-top: 16px;
-
-      > * {
-        width: 100%;
-      }
-
-      span.aditionalInfo {
-        display: block;
-        padding: 8px 0;
-      }
-
-      .dual {
-        border-radius: 10px 10px 0 0;
-
-        &:focus {
-          border-bottom-color: ${({ theme }) => theme.colors.tertiary};
-        }
-
-        & + .dual {
-          border-radius: 0 0 10px 10px;
-
-          border-top: 1px solid transparent;
-        }
-      }
-
-      .Submit {
-        margin-top: 16px;
-        height: max(5vh, 35px);
-      }
-    }
-  }
-
   @media screen and (min-width: 1200px) {
     width: 38vw;
     border-radius: 0 20px 20px 0;
@@ -88,4 +89,5 @@ const Style = styled.aside`
 
 export default Style
 
+Content.displayName = 'Content-Style'
 Style.displayName = 'Aside-Style'

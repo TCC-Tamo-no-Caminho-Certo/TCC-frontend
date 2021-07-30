@@ -21,6 +21,69 @@ export const LoginFailure = styled.div`
   }
 `
 
+export const Register = styled.footer`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  padding-top: 8px;
+
+  border-top: solid 2px ${({ theme }) => theme.colors.tertiary};
+
+  span,
+  button {
+    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.9rem);
+  }
+
+  button {
+    color: ${({ theme }) => theme.colors.primary};
+
+    &:hover,
+    &:focus {
+      transform: scale(1.01);
+      filter: brightness(1.1);
+    }
+  }
+`
+
+export const Content = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  width: clamp(284px, 70%, 530px);
+
+  > * {
+    width: 100%;
+  }
+
+  .Form {
+    margin: 16px 0 8px 0;
+
+    > *:not(:last-child) {
+      margin-bottom: 16px;
+    }
+
+    #submit {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+
+      a {
+        align-self: flex-end;
+      }
+
+      .Submit {
+        width: 100%;
+
+        height: max(5vh, 35px);
+      }
+    }
+  }
+`
 const Style = styled.aside`
   position: relative;
 
@@ -35,68 +98,12 @@ const Style = styled.aside`
   background-color: ${({ theme }) => theme.colors.secondary};
   box-shadow: -8px 8px 6px 4px rgba(0, 0, 0, 0.14);
 
-  #content {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
+  .ThemeSwitch {
+    position: absolute;
+    top: 24px;
+    right: 24px;
 
-    width: clamp(284px, 70%, 530px);
-
-    > * {
-      width: 100%;
-    }
-
-    footer {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      justify-content: center;
-
-      padding-top: 8px;
-
-      border-top: solid 2px ${({ theme }) => theme.colors.tertiary};
-
-      span,
-      button {
-        font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.9rem);
-      }
-
-      button {
-        color: ${({ theme }) => theme.colors.primary};
-
-        &:hover,
-        &:focus {
-          transform: scale(1.01);
-          filter: brightness(1.1);
-        }
-      }
-    }
-
-    .Form {
-      margin: 16px 0 8px 0;
-
-      > *:not(:last-child) {
-        margin-bottom: 16px;
-      }
-
-      #submit {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        justify-content: center;
-
-        a {
-          align-self: flex-end;
-        }
-
-        .Submit {
-          width: 100%;
-
-          height: max(5vh, 35px);
-        }
-      }
-    }
+    height: 32px;
   }
 
   @media screen and (min-width: 1200px) {
@@ -108,4 +115,6 @@ const Style = styled.aside`
 export default Style
 
 LoginFailure.displayName = 'LoginFailure-Style'
+Register.displayName = 'Register-Style'
+Content.displayName = 'Content-Style'
 Style.displayName = 'Aside-Style'

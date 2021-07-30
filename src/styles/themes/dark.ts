@@ -9,8 +9,8 @@ const dark: Themes = {
     white: '#fcfcfc',
     yellow: '#fff500',
     primary: '#d65881',
-    tertiary: '#121212',
-    secondary: '#909090'
+    tertiary: '#a6a6a6',
+    secondary: '#121212'
   },
   roles: {
     admin: '#d62828',

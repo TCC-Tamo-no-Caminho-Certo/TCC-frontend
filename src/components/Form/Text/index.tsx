@@ -15,11 +15,16 @@ import { FormContext, FormState } from '../'
 
 import { dateToValue } from 'utils/dates'
 
+import { RootState } from 'store'
+import { ThemeState } from 'store/Sync/theme'
+
 import EyeClosedIcon from 'assets/Inputs/EyeClosedIcon'
 import EyeIcon from 'assets/Inputs/EyeIcon'
 
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 import { Ref } from 'components/Form'
+
+import { useSelector } from 'react-redux'
 
 export interface TextColors {
   focused?: string
@@ -50,17 +55,14 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
       optional = false,
       className = 'Text',
       pasteAndDrop = true,
-      textColors = {
-        unfocused: '#6e4850',
-        focused: '#d65881'
-      },
+      textColors,
       ...rest
     },
     ref
   ) => {
     const form = useContext<FormState | null>(FormContext)
-
     const textRef = useRef<HTMLInputElement>(null)
+    const { colors } = useSelector<RootState, ThemeState>(({ theme }) => theme)
 
     const [error, setError] = useState<string>()
     const [isFilled, setIsFilled] = useState(false)
@@ -108,9 +110,11 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
         isFilled={isFilled}
         optional={optional}
         isErrored={!!error}
-        colors={textColors}
         className={className}
         onFocus={() => textRef.current?.focus()}
+        colors={
+          textColors || { unfocused: colors.tertiary, focused: colors.primary }
+        }
       >
         <ErrorTooltip error={!!error} content={error} />
 

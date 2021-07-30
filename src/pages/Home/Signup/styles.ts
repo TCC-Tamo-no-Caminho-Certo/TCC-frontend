@@ -11,13 +11,13 @@ const Style = styled(motion.section)`
   width: max(100vw - 8px, 312px);
 
   @media screen and (min-width: 545px) {
-    width: max(100vw - 16px, 200px);
+    width: max(100vw - 16px, 312px);
   }
 
   @media screen and (min-width: 1200px) {
-    flex-direction: row-reverse;
+    flex-direction: row;
 
-    width: max(100vw, 320px);
+    width: max(100vw, 312px);
   }
 `
 

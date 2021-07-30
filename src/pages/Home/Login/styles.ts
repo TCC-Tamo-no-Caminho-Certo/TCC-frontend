@@ -23,24 +23,27 @@ const Style = styled(motion.section)<StyleProps>`
         `}
 
   @media screen and (min-width: 545px) {
-    width: max(100vw - 16px, 200px);
-
     ${({ overflow }) =>
-      overflow?.x === 'hidden' &&
-      css`
-        width: max(100vw + 1px, 320px);
-      `}
+      overflow?.x === 'hidden'
+        ? css`
+            width: max(100vw + 1px, 320px);
+          `
+        : css`
+            width: max(100vw - 16px, 200px);
+          `}
   }
 
   @media screen and (min-width: 1200px) {
     flex-direction: row-reverse;
-    width: max(100vw, 320px);
 
     ${({ overflow }) =>
-      overflow?.x === 'hidden' &&
-      css`
-        width: max(100vw + 1px, 320px);
-      `}
+      overflow?.x === 'hidden'
+        ? css`
+            width: max(100vw + 1px, 320px);
+          `
+        : css`
+            width: max(100vw, 320px);
+          `}
   }
 `
 

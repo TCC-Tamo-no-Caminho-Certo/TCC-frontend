@@ -5,12 +5,13 @@ import Aside from './Aside'
 import About from './About'
 
 import { GlobalContext } from 'App'
+import { MotionProps } from 'framer-motion'
 
-const Login = () => {
+const Login = (props: MotionProps) => {
   const { overflow } = useContext(GlobalContext)
 
   return (
-    <Style overflow={overflow?.overflow}>
+    <Style overflow={overflow?.overflow} {...props}>
       <Aside />
       <About />
     </Style>

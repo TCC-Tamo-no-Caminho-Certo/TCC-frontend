@@ -61,7 +61,7 @@ const App = () => {
       <GlobalContext.Provider
         value={{ modalRef, popupRef, overflow: { overflow, setOverflow } }}
       >
-        <GlobalStyle overflow={overflow} />
+        <GlobalStyle overflow={overflow} theme={theme} />
 
         <BrowserRouter>
           <Routes />

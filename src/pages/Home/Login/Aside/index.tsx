@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import Style, { LoginFailure } from './styles'
+import Style, { Content, LoginFailure, Register } from './styles'
 
 import loginSchema from 'utils/validations/login'
 
@@ -12,11 +12,12 @@ import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import AlertIcon from 'assets/Inputs/AlertIcon'
 import Logo from 'assets/FullLogo'
 
+// import Logo from 'components/Logo'
 import Form, { Checkbox, Submit, Text } from 'components/Form'
 import Presence from 'components/Presence'
 
-import { GlobalContext } from 'App'
 // import ThemeSwitch from 'components/ThemeSwitch'
+import { GlobalContext } from 'App'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 
@@ -75,8 +76,7 @@ const Aside = () => {
     setTimeout(() => {
       dispatch(HomeActions.update({ disable: false }))
 
-      overflow?.setOverflow &&
-        overflow?.setOverflow({ x: undefined, overflow: 'auto' })
+      overflow?.setOverflow && overflow?.setOverflow({ overflow: 'auto' })
     }, 1300)
   }
 
@@ -84,7 +84,7 @@ const Aside = () => {
     <Style>
       {/* <ThemeSwitch /> */}
 
-      <div id='content'>
+      <Content>
         <header>
           <Logo />
         </header>
@@ -136,19 +136,18 @@ const Aside = () => {
           <Checkbox name='remember' label='Permanecer conectado' />
         </Form>
 
-        <footer>
+        <Register>
           <span>Ainda não possui uma conta ?</span>
 
           <button
             type='button'
-            data-cy='button-login-register'
             onClick={onRegisterClick}
             disabled={disabled || home.disable}
           >
             Registre-se aqui!
           </button>
-        </footer>
-      </div>
+        </Register>
+      </Content>
     </Style>
   )
 }
