@@ -6,7 +6,7 @@ import Season from './Seasons'
 import MyProjects from '../Main/MyProjects'
 
 import { RootState } from 'store'
-import { UserState } from 'store/Async/user'
+import { AsyncUserState } from 'store/Async/user'
 
 import MapIcon from 'assets/MainSidebar/MapIcon'
 import ProjectIcon from 'assets/MainSidebar/ProjectIcon'
@@ -17,13 +17,17 @@ import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
 const Main = () => {
-  const { selectedRole } = useSelector<RootState, UserState>(({ user }) => user)
+  const { user } = useSelector<RootState, AsyncUserState>(
+    ({ asyncUser }) => asyncUser
+  )
   const { sidebar } = useContext(ThemeContext)
   const theme = useContext(ThemeContext)
 
   const projectsRef = useRef(null)
   const seasonRef = useRef(null)
   const mapRef = useRef(null)
+
+  const { selectedRole } = user
 
   const mainRoutes = useMemo((): RouteProps[] => {
     const sidebarSections: RouteProps[] = [

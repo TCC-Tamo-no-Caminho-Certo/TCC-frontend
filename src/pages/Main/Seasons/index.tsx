@@ -6,12 +6,13 @@ import University from './University'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { UserState } from 'store/Async/user'
+import { AsyncUserState } from 'store/Async/user'
 
-import { useSelector } from 'react-redux'
 import { SeasonsResType } from 'types/Responses/university/seasons'
 import { UniversitiesResType } from 'types/Responses/university/universities'
 import { AdministratorType } from 'types/Responses/user/rolesData'
+
+import { useSelector } from 'react-redux'
 
 export interface UniversityDataType {
   id: number
@@ -88,11 +89,15 @@ const getAllUniversitiesOfUser = (): UniversityDataType[] => [
 ]
 
 const Seasons = forwardRef((_props, ref) => {
-  const { selectedRole } = useSelector<RootState, UserState>(({ user }) => user)
+  const { user } = useSelector<RootState, AsyncUserState>(
+    ({ asyncUser }) => asyncUser
+  )
 
   const [selectedUniversities, setSelectedUniversities] = useState<number[]>()
 
   const universities = getAllUniversitiesOfUser()
+
+  const { selectedRole } = user
 
   const getUniversitiesOfUser = async (): Promise<UniversityDataType[]> => {
     const universitiesOfUser: UniversityDataType[] = []

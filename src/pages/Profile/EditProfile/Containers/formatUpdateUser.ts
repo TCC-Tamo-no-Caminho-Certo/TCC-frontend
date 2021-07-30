@@ -1,4 +1,4 @@
-import { UserState } from 'store/Async/user'
+import { UserOnStateType } from 'store/Async/user'
 
 import { UniversitiesType } from 'types/Responses/university/universities'
 import { EmailsType } from 'types/Responses/user/emails'
@@ -8,7 +8,7 @@ export interface InputData {
   name: string
   label: string
   editable: boolean
-  value: string | number
+  value?: string | number
   date?: boolean
   dontShow?: boolean
 }
@@ -22,11 +22,11 @@ export interface ContainerForm {
 }
 
 interface FormatUpdateUserProps {
-  user: UserState
-  roles?: RolesDataType
-  emails?: EmailsType
+  user: UserOnStateType
   role: keyof ContainerForm
   universities: UniversitiesType
+  roles?: RolesDataType
+  emails?: EmailsType
 }
 
 const removeRepeatly = (array: any[] | undefined) => {
@@ -47,8 +47,6 @@ const formatUpdateUser = ({
 
     return university ? university.name : ''
   }
-
-  console.log(emails)
 
   const getEmail = (role: 'student' | 'professor'): InputData[] => {
     const fields = []
@@ -148,7 +146,7 @@ const formatUpdateUser = ({
     {
       name: 'email',
       label: 'E-mail:',
-      value: emails ? emails[0].address : '',
+      value: emails ? emails[0]?.address : undefined,
       editable: false
     }
     // {

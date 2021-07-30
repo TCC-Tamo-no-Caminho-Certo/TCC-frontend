@@ -6,7 +6,7 @@ import ForgotPassword from 'pages/ForgotPassword'
 import ResetPassword from 'pages/ResetPassword'
 import Home from 'pages/Home'
 
-import { getValidation, ValidationState } from 'store/Async/validation'
+import { AsyncValidationState, getValidation } from 'store/Async/validation'
 import { RootState } from 'store'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,8 +19,8 @@ import {
 } from 'react-router-dom'
 
 const Routes = () => {
-  const { logged } = useSelector<RootState, ValidationState>(
-    ({ validation }) => validation
+  const { logged } = useSelector<RootState, AsyncValidationState>(
+    ({ asyncValidation }) => asyncValidation
   )
 
   const location = useLocation()

@@ -6,21 +6,24 @@ import createProjectSchema from 'utils/validations/createProjectSchema'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { UserState } from 'store/Async/user'
+import { AsyncUserState } from 'store/Async/user'
 
 import Table from 'components/Table'
 import { File, Select, Submit, Text, Textarea } from 'components/Form'
 
-import { GlobalContext } from 'App'
-import { useSelector } from 'react-redux'
-import { ThemeContext } from 'styled-components'
 import { ProjectResType } from 'types/Responses/project'
 import { UniversityResType } from 'types/Responses/university'
 import { ProjectsType } from 'types/Responses/user/projects'
 import { ProfessorType } from 'types/Responses/user/rolesData'
 
+import { GlobalContext } from 'App'
+import { useSelector } from 'react-redux'
+import { ThemeContext } from 'styled-components'
+
 const Projects = forwardRef((_props, ref) => {
-  const user = useSelector<RootState, UserState>(({ user }) => user)
+  const { user } = useSelector<RootState, AsyncUserState>(
+    ({ asyncUser }) => asyncUser
+  )
   const { modalRef } = useContext(GlobalContext)
   const theme = useContext(ThemeContext)
 

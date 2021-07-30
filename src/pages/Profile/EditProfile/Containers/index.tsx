@@ -5,9 +5,12 @@ import formatUpdateUser, { ContainerForm, InputData } from './formatUpdateUser'
 
 import { getRoleLabel } from 'utils/roles'
 
-import { UserState } from 'store/Async/user'
+import { AsyncUserState } from 'store/Async/user'
 import { RootState } from 'store'
-import { getUniversities, UniversitiesState } from 'store/Async/universities'
+import {
+  AsyncUniversitiesState,
+  getUniversities
+} from 'store/Async/universities'
 import { AsyncEmailsState, getEmails } from 'store/Async/emails'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
@@ -26,10 +29,12 @@ import { ThemeContext } from 'styled-components'
 type ContainersRoles = RoleType | 'personal'
 
 const Containers = () => {
-  const storeUniversities = useSelector<RootState, UniversitiesState>(
-    ({ universities }) => universities
+  const { universities } = useSelector<RootState, AsyncUniversitiesState>(
+    ({ asyncUniversities }) => asyncUniversities
   )
-  const user = useSelector<RootState, UserState>(({ user }) => user)
+  const { user, loading } = useSelector<RootState, AsyncUserState>(
+    ({ asyncUser }) => asyncUser
+  )
   const { emails } = useSelector<RootState, AsyncEmailsState>(
     ({ asyncEmails }) => asyncEmails
   )
@@ -44,9 +49,9 @@ const Containers = () => {
 
   const rolesToShow = ['student', 'professor', 'moderator']
 
-  const rolesWithEdit = user.roles.filter(role =>
-    rolesToShow.find(wished => wished === role)
-  )
+  const rolesWithEdit = user.roles
+    ? user.roles?.filter(role => rolesToShow.find(wished => wished === role))
+    : []
 
   const containers: ContainersRoles[] = ['personal', ...rolesWithEdit]
 
@@ -58,10 +63,9 @@ const Containers = () => {
   }, [innerWidth])
 
   useEffect(() => {
-    dispatch(getUniversities(storeUniversities))
+    dispatch(getUniversities())
     dispatch(getEmails())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [dispatch])
 
   return (
     <>
@@ -78,15 +82,15 @@ const Containers = () => {
                   onClick={() => imageRef.current?.toggleImageChanger()}
                 />
 
-                {user.loading ? (
+                {loading ? (
                   <DotsLoader color={theme.colors.primary} />
                 ) : (
                   formatUpdateUser({
                     user,
                     emails,
                     role: 'personal',
-                    roles: user.rolesData,
-                    universities: storeUniversities.universities
+                    roles: { administrator: { university_id: 0 } },
+                    universities
                   }).map((info: InputData) => (
                     <Field data={info} key={info.name} />
                   ))
@@ -100,13 +104,13 @@ const Containers = () => {
               role={role}
               headerText={`Dados de ${getRoleLabel(role as RoleType)}`}
             >
-              {!user.loading ? (
+              {!loading ? (
                 formatUpdateUser({
                   user,
                   emails,
-                  roles: user.rolesData,
+                  roles: { administrator: { university_id: 0 } },
                   role: role as keyof ContainerForm,
-                  universities: storeUniversities.universities
+                  universities
                 }).map((info: InputData) => (
                   <Field key={info.name} data={info} />
                 ))

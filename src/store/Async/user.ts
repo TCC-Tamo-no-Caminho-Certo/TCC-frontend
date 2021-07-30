@@ -4,22 +4,39 @@ import { RootState } from 'store'
 
 import { UserResType, UserType } from 'types/Responses/user/index'
 import { RolesResType, RolesType, RoleType } from 'types/Responses/user/roles'
-import { RolesDataType } from 'types/Responses/user/rolesData'
 
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-export interface UserState extends UserType {
+export interface UserOnStateType extends UserType {
   roles: RolesType
-  loading: boolean
   selectedRole: RoleType
-  rolesData?: RolesDataType
+}
+
+export interface AsyncUserState {
+  loading: boolean
+  user: UserOnStateType
 }
 
 interface GetUserProps {
-  id?: string
+  id: string
 }
 
-type Payload = PayloadAction<Partial<UserState>>
+export const initialState: AsyncUserState = {
+  loading: true,
+  user: {
+    id: 0,
+    name: '',
+    roles: [],
+    phone: '',
+    surname: '',
+    birthday: '',
+    full_name: '',
+    created_at: '',
+    updated_at: '',
+    avatar_uuid: 'default',
+    selectedRole: 'student'
+  }
+}
 
 const getInitialSelectedRole = (roles: RolesType) => {
   const localRole = localStorage.getItem('@SLab_selected_role')
@@ -30,34 +47,21 @@ const getInitialSelectedRole = (roles: RolesType) => {
   }
 
   localStorage.setItem('@SLab_selected_role', roles[roles.length - 1])
+
   return roles[roles.length - 1]
 }
 
-export const initialState: UserState = {
-  id: 0,
-  name: '',
-  roles: [],
-  phone: '',
-  surname: '',
-  birthday: '',
-  full_name: '',
-  created_at: '',
-  loading: true,
-  updated_at: '',
-  avatar_uuid: 'default',
-  selectedRole: 'student'
-}
-
 export const getUser = createAsyncThunk(
-  'user/getUser',
+  'asyncUser/getUser',
   async ({ id }: GetUserProps, { getState }) => {
-    if (id) {
-      const prevState = getState() as RootState
-      const { user }: UserResType = await api.get(`users/${id}`)
-      const { roles }: RolesResType = await api.get(`users/${id}/roles`)
+    const { asyncUser } = getState() as RootState
 
-      return {
-        ...prevState.user,
+    const { user }: UserResType = await api.get(`users/${id}`)
+    const { roles }: RolesResType = await api.get(`users/${id}/roles`)
+
+    return {
+      user: {
+        ...asyncUser.user,
         ...user,
         roles,
         selectedRole: getInitialSelectedRole(roles)
@@ -66,8 +70,8 @@ export const getUser = createAsyncThunk(
   }
 )
 
-const userUpdate = (state: UserState, { payload }: Payload) => {
-  const { selectedRole } = payload
+const update = (state: AsyncUserState, { payload }: any) => {
+  const selectedRole = payload.user?.selectedRole
 
   if (selectedRole !== undefined)
     localStorage.setItem('@SLab_selected_role', selectedRole)
@@ -75,15 +79,12 @@ const userUpdate = (state: UserState, { payload }: Payload) => {
   return { ...state, ...payload }
 }
 
-const User = createSlice({
-  name: 'user',
+const AsyncUser = createSlice({
+  name: 'asyncUser',
   initialState,
-  reducers: {
-    update: userUpdate,
-    reset: () => initialState
-  },
+  reducers: { update, reset: () => initialState },
   extraReducers: ({ addCase }) => {
-    addCase(getUser.pending, state => ({ ...state, loading: true }))
+    addCase(getUser.pending, state => ({ ...state }))
 
     addCase(getUser.fulfilled, (state, { payload }) => ({
       ...state,
@@ -93,6 +94,6 @@ const User = createSlice({
   }
 })
 
-export const UserActions = User.actions
+export const AsyncUserActions = AsyncUser.actions
 
-export default User
+export default AsyncUser

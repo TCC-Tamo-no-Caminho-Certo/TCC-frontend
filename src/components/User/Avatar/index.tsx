@@ -30,7 +30,9 @@ const Avatar = ({
   loaderColor = '#6e4850',
   ...rest
 }: AvatarProps) => {
-  const avatar = useSelector<RootState, string>(({ user }) => user.avatar_uuid)
+  const avatar = useSelector<RootState, string>(
+    ({ asyncUser }) => asyncUser.user.avatar_uuid
+  )
 
   const [hovering, setHovering] = useState(false)
 

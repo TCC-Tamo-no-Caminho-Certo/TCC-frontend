@@ -12,13 +12,14 @@ import Containers from './Containers'
 
 import editProfileSchema from 'utils/validations/editProfile'
 
-import { UserActions } from 'store/Async/user'
+import { AsyncUserActions, AsyncUserState } from 'store/Async/user'
+import { RootState } from 'store'
 
 import { Form, Submit, Text } from 'components/Form'
 import Modal, { ModalMethods } from 'components/Modal'
 
 import { GlobalContext } from 'App'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 interface EditProfileContextProps {
   globalChange?: boolean
@@ -28,6 +29,9 @@ interface EditProfileContextProps {
 export const EditProfileContext = createContext<EditProfileContextProps>({})
 
 const EditProfile = () => {
+  const { user } = useSelector<RootState, AsyncUserState>(
+    ({ asyncUser }) => asyncUser
+  )
   const { popupRef } = useContext(GlobalContext)
 
   const confirmModal = useRef<ModalMethods>(null)
@@ -38,7 +42,7 @@ const EditProfile = () => {
 
   const afterSubmit = (res: any) => {
     if (res.success) {
-      dispatch(UserActions.update(res.user))
+      dispatch(AsyncUserActions.update({ user: { ...user, ...res.user } }))
 
       confirmModal.current?.toggle()
 

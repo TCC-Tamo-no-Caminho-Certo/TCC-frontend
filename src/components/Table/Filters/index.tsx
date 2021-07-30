@@ -8,7 +8,7 @@ import transition from 'utils/transition'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { UserState } from 'store/Async/user'
+import { AsyncUserState } from 'store/Async/user'
 
 import LoupeIcon from 'assets/Inputs/LoupeIcon'
 
@@ -41,7 +41,9 @@ const Filters = ({
   from = false,
   status = false
 }: FiltersProps) => {
-  const { roles } = useSelector<RootState, UserState>(({ user }) => user)
+  const { user } = useSelector<RootState, AsyncUserState>(
+    ({ asyncUser }) => asyncUser
+  )
   const { quantity, setTableState, path } = useContext(TableContext)
   const theme = useContext(ThemeContext)
 
@@ -122,7 +124,7 @@ const Filters = ({
 
       setTableState({ tablePage: 1, showData: requests })
     } else {
-      const roleToFilter = roles.find(userRole => userRole === role)
+      const roleToFilter = user.roles.find(userRole => userRole === role)
 
       const nameFilter = name ? `&filter[full_name]=${name}` : ''
 

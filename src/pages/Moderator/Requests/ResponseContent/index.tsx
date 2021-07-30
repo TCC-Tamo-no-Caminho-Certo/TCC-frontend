@@ -7,7 +7,7 @@ import { getStatusLabel } from 'utils/status'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { UserState } from 'store/Async/user'
+import { AsyncUserState } from 'store/Async/user'
 
 import CloseIcon from 'assets/global/CloseIcon'
 import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'
@@ -30,7 +30,9 @@ const ResponseContent = ({
   onCloseClick,
   selectedInfo
 }: ItemProps) => {
-  const user = useSelector<RootState, UserState>(({ user }) => user)
+  const { user } = useSelector<RootState, AsyncUserState>(
+    ({ asyncUser }) => asyncUser
+  )
   const { popupRef } = useContext(GlobalContext)
   const theme = useContext(ThemeContext)
 

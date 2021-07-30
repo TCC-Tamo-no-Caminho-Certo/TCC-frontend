@@ -10,6 +10,7 @@ import PencilIcon from 'assets/Inputs/PencilIcon'
 import CloseIcon from 'assets/global/CloseIcon'
 
 import { Datepicker, Text } from 'components/Form'
+import DotsLoader from 'components/DotsLoader'
 
 import { darken } from 'polished'
 import { ThemeContext } from 'styled-components'
@@ -67,7 +68,9 @@ const Field = ({ data }: FieldProps) => {
   const setInput = () => {
     if (change) return input
 
-    return (
+    return value === undefined ? (
+      <DotsLoader />
+    ) : (
       <div className='value'>
         {date ? isoToDate(value as string, 'all') : value}
       </div>

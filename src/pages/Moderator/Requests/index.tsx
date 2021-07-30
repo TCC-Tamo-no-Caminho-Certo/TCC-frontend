@@ -6,7 +6,7 @@ import ResponseContent from './ResponseContent'
 import { isoToDate } from 'utils/dates'
 
 import { RootState } from 'store'
-import { UserState } from 'store/Async/user'
+import { AsyncUserState } from 'store/Async/user'
 
 import Table, { HeaderData } from 'components/Table'
 
@@ -24,7 +24,9 @@ const headerData: HeaderData[] = [
 ]
 
 const Requests = () => {
-  const { roles } = useSelector<RootState, UserState>(({ user }) => user)
+  const { user } = useSelector<RootState, AsyncUserState>(
+    ({ asyncUser }) => asyncUser
+  )
 
   return (
     <Style>
@@ -35,8 +37,8 @@ const Requests = () => {
       <Table
         path='user/role/requests'
         headerData={headerData}
+        condition={!!user.roles}
         itemContent={ResponseContent}
-        condition={!!roles}
         filters={{ from: true, name: true, role: true, status: true, to: true }}
       />
     </Style>

@@ -14,7 +14,7 @@ import formatterName from 'utils/formatterName'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { UserActions, UserState } from 'store/Async/user'
+import { AsyncUserActions, AsyncUserState } from 'store/Async/user'
 // import { ThemeState } from 'store/theme'
 import { HomeActions } from 'store/Sync/home'
 import { getValidation } from 'store/Async/validation'
@@ -78,8 +78,10 @@ const logout: Variants = {
 }
 
 const RightMenu = () => {
-  const user = useSelector<RootState, UserState>(({ user }) => user)
-  const { name, selectedRole, roles, surname, loading } = user
+  const { user, loading } = useSelector<RootState, AsyncUserState>(
+    ({ asyncUser }) => asyncUser
+  )
+  const { name, selectedRole, roles, surname } = user
 
   const [logoutLoading, setLogoutLoading] = useState(false)
   const [changeRole, setChangeRole] = useState(false)
@@ -112,7 +114,7 @@ const RightMenu = () => {
 
     localStorage.removeItem('@SLab_ac_token')
 
-    dispatch(UserActions.reset())
+    dispatch(AsyncUserActions.reset())
     dispatch(getValidation())
     dispatch(HomeActions.update({ initial: false, page: 'login' }))
   }
@@ -184,7 +186,9 @@ const RightMenu = () => {
                             type='button'
                             onClick={() =>
                               dispatch(
-                                UserActions.update({ selectedRole: role })
+                                AsyncUserActions.update({
+                                  user: { ...user, selectedRole: role }
+                                })
                               )
                             }
                           >

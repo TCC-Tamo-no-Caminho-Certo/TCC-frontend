@@ -1,39 +1,54 @@
-import validateSession from 'utils/validateSession'
+import api from 'services/api'
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-export interface ValidationState {
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  entities: []
+export interface AsyncValidationState {
+  loading: boolean
   logged: boolean
 }
 
-const initialState: ValidationState = {
-  loading: 'idle',
-  entities: [],
+const initialState: AsyncValidationState = {
+  loading: true,
   logged: !!localStorage.getItem('@SLab_ac_token')
 }
 
 export const getValidation = createAsyncThunk(
-  'validation/getValidation',
+  'asyncValidation/getValidation',
   async () => {
-    const response = await validateSession()
-    return { logged: response }
+    const token = localStorage.getItem('@SLab_ac_token')
+
+    if (!token) return { logged: false }
+
+    const response = await api.get('validate-session', {
+      headers: {
+        authorization: `Bearer ${token}`
+      }
+    })
+
+    console.log(response)
+
+    return { logged: true }
   }
 )
 
-const Validation = createSlice({
-  name: 'validation',
+const AsyncValidation = createSlice({
+  name: 'asyncValidation',
   initialState,
   reducers: {},
   extraReducers: builder => {
+    builder.addCase(getValidation.pending, state => ({
+      ...state,
+      loading: true
+    }))
+
     builder.addCase(getValidation.fulfilled, (state, action) => ({
       ...state,
-      ...action.payload
+      ...action.payload,
+      loading: false
     }))
   }
 })
 
-export const ValidationActions = Validation.actions
+export const AsyncValidationActions = AsyncValidation.actions
 
-export default Validation
+export default AsyncValidation

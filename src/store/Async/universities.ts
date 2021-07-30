@@ -7,20 +7,30 @@ import {
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-export interface UniversitiesState {
+export interface AsyncUniversitiesState {
   loading: boolean
   universities: UniversitiesType
 }
 
-const initialState: UniversitiesState = {
-  loading: false,
+const initialState: AsyncUniversitiesState = {
+  loading: true,
   universities: []
 }
 
+export const getUpdatedUniversities = createAsyncThunk(
+  'asyncUniversities/getUpdatedUniversities',
+  async () => {
+    const { universities }: UniversitiesResType = await api.get('universities')
+    return { universities }
+  }
+)
+
 export const getUniversities = createAsyncThunk(
-  'universities/getUniversities',
-  async (prevState: UniversitiesState) => {
-    if (prevState.universities.length === 0) {
+  'asyncUniversities/getUniversities',
+  async (_data, { getState }) => {
+    const { universities } = getState() as AsyncUniversitiesState
+
+    if (universities.length === 0) {
       const { universities }: UniversitiesResType = await api.get(
         'universities'
       )
@@ -30,8 +40,8 @@ export const getUniversities = createAsyncThunk(
   }
 )
 
-const Universities = createSlice({
-  name: 'universities',
+const AsyncUniversities = createSlice({
+  name: 'asyncUniversities',
   initialState,
   reducers: {},
   extraReducers: builder => {
@@ -42,11 +52,23 @@ const Universities = createSlice({
 
     builder.addCase(getUniversities.fulfilled, (state, action) => ({
       ...state,
-      ...action.payload
+      ...action.payload,
+      loading: false
+    }))
+
+    builder.addCase(getUpdatedUniversities.pending, state => ({
+      ...state,
+      loading: true
+    }))
+
+    builder.addCase(getUpdatedUniversities.fulfilled, (state, action) => ({
+      ...state,
+      ...action.payload,
+      loading: false
     }))
   }
 })
 
-export const UniversitiesActions = Universities.actions
+export const AsyncUniversitiesActions = AsyncUniversities.actions
 
-export default Universities
+export default AsyncUniversities

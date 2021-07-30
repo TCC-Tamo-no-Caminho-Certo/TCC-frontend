@@ -13,8 +13,11 @@ import Container from './Forms/Container'
 import { getRoleLabel } from 'utils/roles'
 
 import { RootState } from 'store'
-import { UserState } from 'store/Async/user'
-import { getUniversities, UniversitiesState } from 'store/Async/universities'
+import { AsyncUserState } from 'store/Async/user'
+import {
+  AsyncUniversitiesState,
+  getUniversities
+} from 'store/Async/universities'
 
 import { UniversitiesType } from 'types/Responses/university/universities'
 import { RolesType, RoleType } from 'types/Responses/user/roles'
@@ -44,10 +47,12 @@ export const AddRoleContext = createContext<AddRoleState>({
 })
 
 const AddRole = () => {
-  const storeUniversities = useSelector<RootState, UniversitiesState>(
-    ({ universities }) => universities
+  const { universities } = useSelector<RootState, AsyncUniversitiesState>(
+    ({ asyncUniversities }) => asyncUniversities
   )
-  const { roles } = useSelector<RootState, UserState>(({ user }) => user)
+  const { user } = useSelector<RootState, AsyncUserState>(
+    ({ asyncUser }) => asyncUser
+  )
 
   const theme = useContext(ThemeContext)
 
@@ -59,7 +64,7 @@ const AddRole = () => {
   const { pathname } = useLocation()
   const dispatch = useDispatch()
 
-  const labelRoles = roles.map(role => getRoleLabel(role))
+  const labelRoles = user.roles.map(role => getRoleLabel(role))
 
   useEffect(() => {
     roleSelected === undefined &&
@@ -67,9 +72,8 @@ const AddRole = () => {
   }, [roleSelected, pathname])
 
   useEffect(() => {
-    dispatch(getUniversities(storeUniversities))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    dispatch(getUniversities())
+  }, [dispatch])
 
   return (
     <>
@@ -124,7 +128,8 @@ const AddRole = () => {
             ]}
           />
 
-          {(roles.includes('professor') || roles.includes('moderator')) && (
+          {(user.roles.includes('professor') ||
+            user.roles.includes('moderator')) && (
             <RoleInfo
               role='moderator'
               id='cy-moderator'
@@ -147,10 +152,7 @@ const AddRole = () => {
       </Style>
 
       <AddRoleContext.Provider
-        value={{
-          roles: roles,
-          universities: storeUniversities.universities
-        }}
+        value={{ roles: user.roles, universities: universities }}
       >
         {roleSelected && (
           <Container

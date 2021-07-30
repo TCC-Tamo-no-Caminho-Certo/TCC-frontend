@@ -9,7 +9,7 @@ import Style, { RightMenu } from './styles'
 
 import api from 'services/api'
 
-import { UserActions } from 'store/Async/user'
+import { AsyncUserActions } from 'store/Async/user'
 
 import CameraIcon from 'assets/Inputs/CameraIcon'
 import CloseIcon from 'assets/global/CloseIcon'
@@ -89,7 +89,7 @@ const ImageChanger = forwardRef((_props, ref) => {
         picture: cropper.getCroppedCanvas().toDataURL(type)
       })
 
-      dispatch(UserActions.update({ avatar_uuid }))
+      dispatch(AsyncUserActions.update({ avatar_uuid }))
       setLoading(false)
       onCloseClick()
     } else {

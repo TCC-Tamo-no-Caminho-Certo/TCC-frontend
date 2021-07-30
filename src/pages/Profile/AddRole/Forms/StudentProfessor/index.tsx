@@ -17,7 +17,7 @@ import transition from 'utils/transition'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { UserState } from 'store/Async/user'
+import { AsyncUserState } from 'store/Async/user'
 
 import { Checkbox, Select, Submit, Text } from 'components/Form'
 import { Option } from 'components/Form/Select'
@@ -124,7 +124,9 @@ export const hasInstitutionalEmail = (regex: string, emails?: EmailsType) => {
 }
 
 const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
-  const user = useSelector<RootState, UserState>(({ user }) => user)
+  const { user, loading } = useSelector<RootState, AsyncUserState>(
+    ({ asyncUser }) => asyncUser
+  )
   const { universities } = useContext(AddRoleContext)
   const { popupRef } = useContext(GlobalContext)
 
