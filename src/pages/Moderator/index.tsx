@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useMemo } from 'react'
 
 import Requests from './Requests'
 import List from './List'
@@ -8,11 +8,7 @@ import ProjectIcon from 'assets/MainSidebar/ProjectIcon'
 
 import Sidebar, { RouteProps } from 'components/Sidebar'
 
-import { ThemeContext } from 'styled-components'
-
 const Moderator = () => {
-  const { sidebar } = useContext(ThemeContext)
-
   const moderatorRoutes = useMemo(
     (): RouteProps[] => [
       {
@@ -38,15 +34,7 @@ const Moderator = () => {
     []
   )
 
-  return (
-    <Sidebar
-      title='Universidade'
-      routes={moderatorRoutes}
-      letters={sidebar.letters}
-      selected={sidebar.selected}
-      background={sidebar.background}
-    />
-  )
+  return <Sidebar title='Universidade' routes={moderatorRoutes} />
 }
 
 export default Moderator

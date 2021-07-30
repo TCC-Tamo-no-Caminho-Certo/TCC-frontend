@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useMemo } from 'react'
 
 import EditProfile from './EditProfile'
 import AddRole from './AddRole'
@@ -9,11 +9,7 @@ import ChangeIcon from 'assets/RightMenuOpen/ChangeIcon'
 
 import Sidebar, { RouteProps } from 'components/Sidebar'
 
-import { ThemeContext } from 'styled-components'
-
 const Profile = () => {
-  const { sidebar } = useContext(ThemeContext)
-
   const profileRoutes: RouteProps[] = useMemo(
     () => [
       {
@@ -48,15 +44,7 @@ const Profile = () => {
     []
   )
 
-  return (
-    <Sidebar
-      title='Perfil'
-      routes={profileRoutes}
-      letters={sidebar.letters}
-      selected={sidebar.selected}
-      background={sidebar.background}
-    />
-  )
+  return <Sidebar title='Perfil' routes={profileRoutes} />
 }
 
 export default Profile

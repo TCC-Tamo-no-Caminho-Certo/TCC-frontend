@@ -20,7 +20,6 @@ const Main = () => {
   const { user } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
-  const { sidebar } = useContext(ThemeContext)
   const theme = useContext(ThemeContext)
 
   const projectsRef = useRef(null)
@@ -67,14 +66,7 @@ const Main = () => {
 
   return (
     <div style={{ backgroundColor: theme.colors.tertiary }}>
-      <Sidebar
-        samePage
-        title='Principal'
-        routes={mainRoutes}
-        letters={sidebar.letters}
-        selected={sidebar.selected}
-        background={sidebar.background}
-      />
+      <Sidebar samePage title='Principal' routes={mainRoutes} />
 
       <RightMenu />
     </div>

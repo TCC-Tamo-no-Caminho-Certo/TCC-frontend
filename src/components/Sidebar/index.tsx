@@ -5,12 +5,15 @@ import React, {
   useRef,
   useState
 } from 'react'
-import Style, { Content, ListItem, SidebarNav } from './styles'
+import Style, { Content, Header, SidebarNav } from './styles'
+
+import List from './List'
 
 import transition from 'utils/transition'
 
-import { SidebarActions } from 'store/Sync/sidebar'
+import { SidebarActions, SidebarState } from 'store/Sync/sidebar'
 import { RootState } from 'store'
+import { ThemeState } from 'store/Sync/theme'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
@@ -18,9 +21,10 @@ import Hamburger from 'components/Hamburger'
 import Presence from 'components/Presence'
 
 import { GlobalContext } from 'App'
-import { motion, Variants } from 'framer-motion'
+import { Variants } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
-import { Route, useHistory, useLocation } from 'react-router-dom'
+import { Route, useLocation } from 'react-router-dom'
+import { ThemeContext } from 'styled-components'
 
 export interface RouteProps {
   label: string
@@ -28,15 +32,12 @@ export interface RouteProps {
   exact?: boolean
   bottom?: boolean
   noContentMove?: boolean
-  ref?: RefObject<HTMLDivElement>
   icon?: () => JSX.Element
   component?: () => JSX.Element
+  ref?: RefObject<HTMLDivElement>
 }
 
 interface SidebarProps {
-  letters: string
-  selected: string
-  background: string
   routes: RouteProps[]
   title?: string
   width?: number
@@ -46,40 +47,28 @@ interface SidebarProps {
 }
 
 const motionTitle: Variants = {
-  initial: {
-    opacity: 0,
-    x: -24
-  },
-  open: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      type: 'tween',
-      duration: 0.4
-    }
-  },
-  closed: {
-    opacity: 0,
-    x: -24,
-    transition: {
-      type: 'tween',
-      duration: 0.1
-    }
-  }
+  initial: { opacity: 0, x: -24 },
+  open: { opacity: 1, x: 0, transition },
+  closed: { opacity: 0, x: -24, transition: { type: 'tween', duration: 0.1 } }
+}
+
+const hasScrollBar = () => {
+  const root = document.getElementById('root')
+  if (root) return root?.scrollHeight > window?.innerHeight
 }
 
 const Sidebar = ({
   routes,
-  letters,
-  selected,
-  background,
   title = '',
   width = 210,
   closedWidth = 72,
   samePage = false
 }: SidebarProps) => {
-  const open = useSelector<RootState, boolean>(({ sidebar }) => sidebar.open)
   const { overflow } = useContext(GlobalContext)
+  const theme = useContext(ThemeContext)
+  const { open } = useSelector<RootState, SidebarState>(
+    ({ sidebar }) => sidebar
+  )
 
   const { innerWidth } = useWindowDimensions()
   const [isLarge, setisLarge] = useState(innerWidth >= 545)
@@ -88,81 +77,41 @@ const Sidebar = ({
 
   const { pathname } = useLocation()
   const dispatch = useDispatch()
-  const history = useHistory()
 
-  const normalRoutes = routes.filter(route => !route.bottom)
-  const bottomRoutes = routes.filter(route => route.bottom)
-  const contentSize = (): string => {
-    if (!samePage) {
-      if (open) return isLarge ? `calc(100vw - ${width}px)` : '100vw'
-      return isLarge ? `calc(100vw - ${closedWidth}px)` : '100vw'
+  const motionBackground: Variants = {
+    open: {
+      transition,
+      opacity: 1,
+      height: '100vh',
+      width: isLarge ? width : '100%'
+    },
+    closed: {
+      transition,
+      opacity: isLarge ? 1 : 0.95,
+      width: isLarge ? closedWidth : '100%',
+      height: isLarge ? '100vh' : closedWidth
     }
-
-    if (open) return isLarge ? `calc(100vw - ${width}px - 16px)` : '100vw'
-    return isLarge ? `calc(100vw - ${closedWidth}px - 16px)` : '100vw'
   }
 
-  const ul: Variants = {
-    exit: { height: 0, transition },
-    initial: { height: 0, transition },
-    enter: { height: 'auto', transition }
+  const contentSize = (): string => {
+    if (open) return isLarge ? `calc(100% - ${width}px ` : '100%'
+    return isLarge ? `calc(100% - ${closedWidth}px ` : '100%'
   }
 
   const content: Variants = {
     open: {
+      width: contentSize(),
       x: isLarge ? width : 0,
-      width: contentSize(),
-      transition: {
-        type: 'tween',
-        duration: 0.31
-      }
+      transition: { type: 'tween', duration: 0.31 }
     },
     closed: {
+      width: contentSize(),
       x: isLarge ? closedWidth : 0,
-      width: contentSize(),
-      transition: {
-        type: 'tween',
-        duration: 0.19
-      }
-    }
-  }
-
-  const motionBackground: Variants = {
-    open: {
-      height: '100vh',
-      width: isLarge ? width : '100vw',
-      opacity: 1,
-      transition: {
-        type: 'tween',
-        duration: 0.3
-      }
-    },
-    closed: {
-      height: isLarge ? '100vh' : closedWidth,
-      width: isLarge ? closedWidth : '100vw',
-      opacity: isLarge ? 1 : 0.95,
-      transition: {
-        type: 'tween',
-        duration: 0.2
-      }
+      transition: { type: 'tween', duration: 0.19 }
     }
   }
 
   const onToggle = () => dispatch(SidebarActions.toggleSidebar(!open))
-
-  useEffect(() => {
-    setisLarge(innerWidth >= 545)
-  }, [innerWidth])
-
-  useEffect(() => {
-    dispatch(SidebarActions.toggleSidebar(true))
-
-    setTimeout(() => {
-      dispatch(SidebarActions.toggleSidebar(false))
-    }, 1)
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLarge])
 
   useEffect(() => {
     const route = routes.find(({ paths }) =>
@@ -175,22 +124,31 @@ const Sidebar = ({
     )
   }, [pathname, routes, overflow])
 
+  useEffect(() => {
+    dispatch(SidebarActions.toggleSidebar(true))
+
+    setTimeout(() => {
+      dispatch(SidebarActions.toggleSidebar(false))
+    }, 1)
+  }, [dispatch, isLarge])
+
+  useEffect(() => {
+    setisLarge(innerWidth >= 545)
+  }, [innerWidth])
+
   return (
-    <Style draggable='false'>
+    <Style draggable='false' hasScroll={hasScrollBar()}>
       <SidebarNav
-        isOpen={open}
-        letters={letters}
-        background={background}
         variants={motionBackground}
         animate={open ? 'open' : 'closed'}
         initial={!isLarge ? 'open' : 'closed'}
       >
-        <div id='header'>
+        <Header isOpen={open}>
           <Hamburger
             state={open}
             ref={burgerRef}
-            color={letters}
             toggle={onToggle}
+            color={theme.sidebar.letters}
           />
 
           <Presence
@@ -199,119 +157,20 @@ const Sidebar = ({
             condition={open}
             variants={motionTitle}
           >
-            <>{title}</>
+            {title}
           </Presence>
-        </div>
+        </Header>
 
-        <motion.ul
-          initial='initial'
-          variants={ul}
-          animate={open ? 'enter' : 'exit'}
-        >
-          {normalRoutes.map(({ paths, ref, icon: Icon, label }, index) => (
-            <ListItem
-              isOpen={open}
-              key={paths[0]}
-              itemPaths={paths}
-              selected={selected}
-              pathname={pathname}
-              onClick={() => {
-                history.push(paths[0])
-                !isLarge && dispatch(SidebarActions.toggleSidebar(!open))
-                ref?.current?.scrollIntoView({ behavior: 'smooth' })
-              }}
-            >
-              {Icon && (
-                <div className='icon'>
-                  <Icon />
-                </div>
-              )}
+        <List
+          isLarge={isLarge}
+          routes={routes.filter(route => !route.bottom)}
+        />
 
-              <Presence
-                condition={open}
-                className='label'
-                initial={{
-                  opacity: 0,
-                  x: -24
-                }}
-                animate={{
-                  x: 0,
-                  opacity: 1,
-                  transition: {
-                    type: 'tween',
-                    duration: 0.4,
-                    delay: 0.1 * index
-                  }
-                }}
-                exit={{
-                  x: -24,
-                  opacity: 0,
-                  transition: {
-                    type: 'tween',
-                    duration: 0.1
-                  }
-                }}
-              >
-                {label}
-              </Presence>
-            </ListItem>
-          ))}
-        </motion.ul>
-
-        <motion.ul
-          initial='inital'
-          animate={open ? 'enter' : 'exit'}
-          id='bottomRoutes'
-        >
-          {bottomRoutes.map(({ paths, ref, icon: Icon, label }, index) => (
-            <ListItem
-              isOpen={open}
-              key={paths[0]}
-              itemPaths={paths}
-              selected={selected}
-              pathname={pathname}
-              onClick={() => {
-                history.push(paths[0])
-                !isLarge && dispatch(SidebarActions.toggleSidebar(!open))
-                ref?.current?.scrollIntoView({ behavior: 'smooth' })
-              }}
-            >
-              {Icon && (
-                <div className='icon'>
-                  <Icon />
-                </div>
-              )}
-
-              <Presence
-                condition={open}
-                className='label'
-                initial={{
-                  opacity: 0,
-                  x: -24
-                }}
-                animate={{
-                  x: 0,
-                  opacity: 1,
-                  transition: {
-                    type: 'tween',
-                    duration: 0.4,
-                    delay: 0.1 * index
-                  }
-                }}
-                exit={{
-                  x: -24,
-                  opacity: 0,
-                  transition: {
-                    type: 'tween',
-                    duration: 0.1
-                  }
-                }}
-              >
-                {label}
-              </Presence>
-            </ListItem>
-          ))}
-        </motion.ul>
+        <List
+          bottom
+          isLarge={isLarge}
+          routes={routes.filter(route => route.bottom)}
+        />
       </SidebarNav>
 
       {routes.map(({ paths, component, noContentMove, exact }, index) => (

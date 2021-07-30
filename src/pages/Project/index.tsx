@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 
 import About from './About'
 import Participants from './Participants'
@@ -10,17 +10,13 @@ import ProjectIcon from 'assets/MainSidebar/ProjectIcon'
 
 import Sidebar, { RouteProps } from 'components/Sidebar'
 
-import { useParams } from 'react-router-dom'
-import { ThemeContext } from 'styled-components'
 import { ProjectResType } from 'types/Responses/project'
 import { ParticipantsResType } from 'types/Responses/project/participants'
 import { UniversityResType } from 'types/Responses/university'
 
-const Profile = () => {
-  const {
-    sidebar: { letters, selected, background }
-  } = useContext(ThemeContext)
+import { useParams } from 'react-router-dom'
 
+const Profile = () => {
   const participants = useRef<ParticipantsResType>()
   const university = useRef<UniversityResType>()
   const project = useRef<ProjectResType>()
@@ -67,16 +63,7 @@ const Profile = () => {
     [id]
   )
 
-  return (
-    <Sidebar
-      title='Perfil'
-      samePage={true}
-      letters={letters}
-      selected={selected}
-      routes={profileRoutes}
-      background={background}
-    />
-  )
+  return <Sidebar title='Perfil' samePage={true} routes={profileRoutes} />
 }
 
 export default Profile
