@@ -43,7 +43,6 @@ export const getUser = createAsyncThunk(
   'user/getUser',
   async ({ id }: GetUserProps, { getState }) => {
     const { asyncUser } = getState() as RootState
-
     const { user }: UserResType = await api.get(`users/${id}`)
     const { roles }: RolesResType = await api.get(`users/${id}/roles`)
 

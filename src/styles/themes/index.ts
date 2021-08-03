@@ -1,6 +1,8 @@
 import light from './light'
 import dark from './dark'
 
+import { RoleType } from 'types/Responses/user/roles'
+
 export { light, dark }
 
 interface Themes {
@@ -15,19 +17,13 @@ interface Themes {
     tertiary: string
     secondary: string
   }
-  roles: {
-    admin: string
-    guest: string
-    student: string
-    customer: string
-    professor: string
-    moderator: string
-    evaluator: string
-  }
   sidebar: {
     letters: string
     selected: string
     background: string
+  }
+  roles: {
+    [_key in RoleType]: string
   }
 }
 

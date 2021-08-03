@@ -36,7 +36,7 @@ const getMonthLabel = (month: Month) => {
 }
 
 export const isoToDate = (date: string, returnType: ReturnType): string => {
-  const dates = date.split('T')[0].split('-')
+  const dates = date?.split('T')[0]?.split('-')
 
   switch (returnType) {
     case 'all':

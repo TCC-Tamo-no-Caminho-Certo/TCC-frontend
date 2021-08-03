@@ -1,8 +1,11 @@
 import React, {
   createContext,
   Dispatch,
+  ReactElement,
   SetStateAction,
+  useCallback,
   useContext,
+  useEffect,
   useState
 } from 'react'
 import Style from './styles'
@@ -17,108 +20,98 @@ import DotsLoader from 'components/DotsLoader'
 
 import { ThemeContext } from 'styled-components'
 
-export interface HeaderData {
-  name: any
-  label: string
-  role?: boolean
-  indexer?: string
-  circle?: boolean
-  dataManipulation?: (_data: any) => string
+interface Data<DataType, Selected> {
+  data: DataType
+  selectedData: Selected
 }
 
-interface TableContextProps {
-  path: string
-  quantity: number
-  tableState: TableState
-  headerData: HeaderData[]
-  setTableState: Dispatch<SetStateAction<TableState>>
+export type GetData<DataType, Selected> = (
+  _page: number,
+  _filters?: string
+) => Promise<Data<DataType, Selected>[]>
+
+export interface HeaderData {
+  name: string
+  label: string
+  component?: (_data: any) => ReactElement | ReactElement[]
 }
 
 interface TableState {
-  tablePage: number
-  showData?: any[]
+  page: number
+  tableData?: any[]
 }
 
-export interface ItemProps {
-  makeRequest: () => void
+export interface ItemProps<DataType, Selected> {
+  resetTable: () => void
   onCloseClick: () => void
-  userInfo?: any
-  selectedInfo?: any
+  data?: Data<DataType, Selected>
 }
 
-interface TableProps {
-  path: string
+interface TableContextProps {
+  tableState: TableState
   headerData: HeaderData[]
-  quantity?: number
-  condition?: boolean
-  isLoading?: boolean
-  filters?: FiltersProps
-  itemContent?: (_props: ItemProps) => JSX.Element
+  setTableState: Dispatch<SetStateAction<TableState>>
+  makeRequest: (_page: number, _filters?: string) => void
 }
 
-export const TableContext = createContext<TableContextProps>({
-  path: '',
-  quantity: 0,
-  headerData: [],
-  setTableState: () => {},
-  tableState: {
-    tablePage: 1,
-    showData: undefined
-  }
-})
+interface TableProps<DataType, Selected> {
+  headerData: HeaderData[]
+  getData: GetData<DataType, Selected>
+  filters?: FiltersProps
+  itemContent?: (_props: ItemProps<DataType, Selected>) => JSX.Element
+}
 
-const Table = ({
-  path,
+export const TableContext = createContext<TableContextProps | undefined>(
+  undefined
+)
+
+function Table<DataType, Selected>({
+  getData,
   filters,
   headerData,
-  itemContent,
-  quantity = 50,
-  condition = true,
-  isLoading = true
-}: TableProps) => {
+  itemContent
+}: TableProps<DataType, Selected>) {
   const theme = useContext(ThemeContext)
 
-  const [tableState, setTableState] = useState<TableState>({
-    tablePage: 1,
-    showData: undefined
-  })
+  const [tableState, setTableState] = useState<TableState>({ page: 1 })
 
-  const { items, sort } = useSortableData(tableState.showData, {
+  const { tableData } = tableState
+  const { items, sort } = useSortableData(tableData, {
     indexer: 'name',
-    direction: 'descending'
+    direction: 'ascending'
   })
 
-  return condition ? (
+  const makeRequest = useCallback(
+    async (page: number, filters?: string) => {
+      if (getData) {
+        const gotData = await getData(page, filters)
+        const tableData = gotData.map(({ data }) => data)
+        setTableState({ tableData, page })
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [getData]
+  )
+
+  useEffect(() => {
+    makeRequest(1)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  return (
     <TableContext.Provider
-      value={{
-        path,
-        quantity,
-        tableState,
-        headerData,
-        setTableState
-      }}
+      value={{ makeRequest, tableState, headerData, setTableState }}
     >
       <Style className='Table'>
         <Filters {...filters} />
 
-        <Thead sort={sort} />
+        <Thead<DataType> sort={sort} />
 
-        {!itemContent &&
-          (isLoading ? (
-            <div className='loader'>
-              <DotsLoader color={theme.colors.secondary} />
-            </div>
-          ) : (
-            <div className='loader'>Nada encontrado</div>
-          ))}
+        {!tableData && <DotsLoader color={theme.colors.secondary} />}
 
         <Tbody items={items} itemContent={itemContent} />
       </Style>
     </TableContext.Provider>
-  ) : (
-    <div className='loader'>
-      <DotsLoader color={theme.colors.secondary} />
-    </div>
   )
 }
 

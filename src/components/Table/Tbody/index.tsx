@@ -1,77 +1,32 @@
-import React, {
-  MutableRefObject,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState
-} from 'react'
-import Style, { Circle, RoleTd } from './styles'
+import React, { MutableRefObject, useContext, useRef, useState } from 'react'
+import Style from './styles'
 
 import { ItemProps, TableContext } from '../index'
 
-import { getRoleLabel } from 'utils/roles'
-
-import api from 'services/api'
-
 import Modal, { ModalMethods } from 'components/Modal'
 
-interface TbodyProps {
+interface TbodyProps<DataType, SelectedData> {
   items?: any[]
-  itemContent?: (_props: ItemProps) => JSX.Element
+  itemContent?: (_props: ItemProps<DataType, SelectedData>) => JSX.Element
 }
 
-interface InfosState {
-  userInfo: any
-  selectedInfo: any
-}
-
-const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
-  const { path, quantity, headerData, setTableState, tableState } =
-    useContext(TableContext)
+function Tbody<DataType, SelectedType>({
+  items,
+  itemContent: ItemContent
+}: TbodyProps<DataType, SelectedType>) {
+  const tableContext = useContext(TableContext)
 
   const tableWrapperRef = useRef() as MutableRefObject<HTMLDivElement>
   const tableRef = useRef() as MutableRefObject<HTMLTableElement>
   const removeRef = useRef<ModalMethods>(null)
-
   const modalRef = useRef<ModalMethods>(null)
 
-  const [infos, setInfos] = useState<InfosState>()
-  const [isClear, setIsClear] = useState(false)
+  const [selectedData, setSelectedData] = useState()
 
-  const makeRequest = useCallback(
-    async (page: number) => {
-      if (!isClear) {
-        const { requests } = await api.get(
-          `${path}?page=${page}&per_page=${quantity}`
-        )
-
-        if (requests && requests.length !== 0) {
-          const tableData = requests
-
-          setTableState(prev => ({
-            ...prev,
-            showData: prev.showData
-              ? [...prev.showData, ...tableData]
-              : [...tableData]
-          }))
-        } else setIsClear(true)
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isClear, quantity]
-  )
-
-  const startRequest = useCallback(async () => {
-    const { requests } = await api.get(`${path}?page=1&per_page=${quantity}`)
-    const tableData = requests
-
-    setTableState({
-      tablePage: 1,
-      showData: tableData
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const onTrClick = (item: any) => {
+    setSelectedData(item)
+    modalRef.current?.toggle(true)
+  }
 
   const onTableScroll = () => {
     const table = tableWrapperRef.current
@@ -81,46 +36,12 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
       const maxHeight = table.clientHeight
       const position = Math.ceil(table.scrollHeight - table.scrollTop)
 
-      if (position <= maxHeight) {
-        tableState.tablePage && makeRequest(tableState.tablePage + 1)
-
-        setTableState(prev => ({
-          ...prev,
-          tablePage: prev.tablePage + 1
-        }))
-      }
+      if (position <= maxHeight)
+        tableContext?.makeRequest &&
+          tableContext?.tableState.page &&
+          tableContext?.makeRequest(tableContext?.tableState.page + 1)
     }
   }
-
-  const setSelected = async (item: any) => {
-    const { users } = await api.get(`users/${item.user_id}`)
-    const voucherUrl = item.voucher_uuid
-      ? await api.get(`user/role/request/voucher/${item.voucher_uuid}`)
-      : undefined
-
-    setInfos({
-      userInfo: users,
-      selectedInfo: {
-        ...item,
-        voucherUrl: voucherUrl ? voucherUrl.url : undefined
-      }
-    })
-  }
-
-  useEffect(() => {
-    setTableState({
-      showData: undefined,
-      tablePage: 1
-    })
-
-    startRequest()
-
-    return setTableState({
-      showData: undefined,
-      tablePage: 1
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startRequest])
 
   return (
     <>
@@ -128,38 +49,12 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
         <table draggable='false' ref={tableRef}>
           <tbody>
             {items?.map((item, index) => (
-              <tr
-                key={`${item}-${index}`}
-                onClick={() => {
-                  modalRef.current?.toggle(true)
-                  setSelected(item)
-                }}
-              >
-                {headerData.map(
-                  ({ label, name, circle, role, dataManipulation }) => {
-                    if (role)
-                      return (
-                        <RoleTd id={name} key={index} role={item.role}>
-                          {getRoleLabel(item.role)}
-                        </RoleTd>
-                      )
-
-                    if (circle)
-                      return (
-                        <td id={name} key={name}>
-                          <Circle status={item[name]} />
-                        </td>
-                      )
-
-                    return (
-                      <td id={name} key={label}>
-                        {dataManipulation
-                          ? dataManipulation(item[name])
-                          : item[name]}
-                      </td>
-                    )
-                  }
-                )}
+              <tr key={index} onClick={() => onTrClick(item)}>
+                {tableContext?.headerData.map(({ label, name, component }) => (
+                  <td id={name} key={label}>
+                    {component ? component(item[name]) : item[name]}
+                  </td>
+                ))}
               </tr>
             ))}
           </tbody>
@@ -172,17 +67,14 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
         ref={modalRef}
         onClose={() => {
           modalRef.current?.toggle(false)
-          setInfos({ userInfo: undefined, selectedInfo: undefined })
         }}
       >
         {ItemContent ? (
           <ItemContent
-            userInfo={infos?.userInfo}
-            selectedInfo={infos?.selectedInfo}
-            makeRequest={() => startRequest()}
+            data={selectedData}
+            resetTable={() => tableContext?.makeRequest(1)}
             onCloseClick={() => {
               modalRef.current?.toggle(false)
-              setInfos({ userInfo: undefined, selectedInfo: undefined })
             }}
           />
         ) : (
@@ -191,7 +83,7 @@ const Tbody = ({ items, itemContent: ItemContent }: TbodyProps) => {
       </Modal>
 
       <Modal top='50vh' translateY='-50%' ref={removeRef}>
-        <div id='removeModal'>
+        <div>
           Você tem certeza que deseja excluir permanente esta solicitação?
           <button type='button'>Não</button>
           <button type='button'>Cancelar</button>

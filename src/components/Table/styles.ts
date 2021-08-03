@@ -12,13 +12,8 @@ export const Style = styled.div`
 
   color: ${({ theme }) => theme.colors.secondary};
 
-  .loader {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 100%;
-    height: 48px;
+  .DotsLoader {
+    margin-top: 16px;
   }
 `
 

@@ -5,8 +5,6 @@ import { TableContext } from '../index'
 
 import transition from 'utils/transition'
 
-import api from 'services/api'
-
 import { RootState } from 'store'
 import { AsyncUserState } from 'store/Async/user'
 
@@ -44,7 +42,7 @@ const Filters = ({
   const { user } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
-  const { quantity, setTableState, path } = useContext(TableContext)
+  const tableContext = useContext(TableContext)
   const theme = useContext(ThemeContext)
 
   const [values, setValues] = useState<any>(true)
@@ -117,36 +115,30 @@ const Filters = ({
   })
 
   const filterTable = async ({ name, role, status, from, to }: any) => {
-    const callStartCondition = !name && !role && !status && !from && !to
+    const resetCondition = !name && !role && !status && !from && !to
 
-    if (callStartCondition) {
-      const { requests } = await api.get(`${path}?page=1&per_page=${quantity}`)
+    if (tableContext?.makeRequest)
+      if (!resetCondition) {
+        const roleToFilter = user?.roles?.find(userRole => userRole === role)
 
-      setTableState({ tablePage: 1, showData: requests })
-    } else {
-      const roleToFilter = user?.roles?.find(userRole => userRole === role)
+        const nameFilter = name ? `&filter[full_name]=${name}` : ''
 
-      const nameFilter = name ? `&filter[full_name]=${name}` : ''
+        const statusFilter =
+          status && status !== 'all' ? `&filter[status]=${status}` : ''
 
-      const statusFilter =
-        status && status !== 'all' ? `&filter[status]=${status}` : ''
+        const roleFilter =
+          roleToFilter && role !== 'all'
+            ? `&filter[role_id]=${roleToFilter}`
+            : ''
 
-      const roleFilter =
-        roleToFilter && role !== 'all' ? `&filter[role_id]=${roleToFilter}` : ''
-
-      const dateFilter =
-        from && to
+        const dateFilter = from
           ? `&filter[created_at][]=${from}&filter[created_at][]=${to}`
           : ''
 
-      const allFilters = nameFilter + roleFilter + statusFilter + dateFilter
+        const filters = nameFilter + roleFilter + statusFilter + dateFilter
 
-      const { requests } = await api.get(
-        `${path}?page=1&per_page=${quantity}${allFilters}`
-      )
-
-      setTableState({ tablePage: 1, showData: requests })
-    }
+        tableContext?.makeRequest(1, filters)
+      } else tableContext?.makeRequest(1)
   }
 
   return (

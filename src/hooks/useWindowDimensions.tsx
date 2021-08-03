@@ -18,8 +18,6 @@ const useWindowDimensions = (): WindowDimension => {
       setDimensions(getDimensions())
     }
 
-    console.log('ressss')
-
     window.addEventListener('resize', resize)
     return () => window.removeEventListener('resize', resize)
   }, [])

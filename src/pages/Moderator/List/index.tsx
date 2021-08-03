@@ -3,12 +3,12 @@ import Style from './styles'
 
 import Table, { HeaderData } from 'components/Table'
 
-const headerData: HeaderData[] = [
-  {
-    label: 'Nome',
-    name: 'name'
-  }
-]
+// const headerData: HeaderData[] = [
+//   {
+//     label: 'Nome',
+//     name: 'name'
+//   }
+// ]
 
 const List = () => (
   <Style>
@@ -16,12 +16,12 @@ const List = () => (
       <h1>Lista de alunos</h1>
     </header>
 
-    <Table
+    {/* <Table
       path='#'
       isLoading={false}
       headerData={headerData}
       filters={{ name: true }}
-    />
+    /> */}
   </Style>
 )
 

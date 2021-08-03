@@ -16,7 +16,6 @@ import TrashIcon from 'assets/global/TrashIcon'
 import Avatar from 'components/User/Avatar'
 import Form, { Submit, Textarea } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
-import { ItemProps } from 'components/Table'
 
 import { GlobalContext } from 'App'
 import { motion } from 'framer-motion'
@@ -24,12 +23,13 @@ import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 import * as Yup from 'yup'
 
-const ResponseContent = ({
-  userInfo,
-  makeRequest,
-  onCloseClick,
-  selectedInfo
-}: ItemProps) => {
+export interface ItemProps {
+  resetTable: () => void
+  onCloseClick: () => void
+  data?: any
+}
+
+const ResponseContent = ({ data, resetTable, onCloseClick }: ItemProps) => {
   const { user } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
@@ -41,16 +41,16 @@ const ResponseContent = ({
 
   const [buttonClicked, setButtonClicked] = useState('rejected')
 
-  const himselfModeratorRequest = user?.id === userInfo?.user_id
+  const himselfModeratorRequest = user?.id === data?.user_id
 
   const onTrashClick = () => {
-    selectedInfo &&
+    data &&
       popupRef?.current?.configPopup({
         type: 'warning',
         message: 'Tem certeza que deseja remover esta solicitação?',
         onOkClick: async () => {
-          await api.delete(`user/role/request/${selectedInfo.request_id}`)
-          makeRequest()
+          await api.delete(`user/role/request/${data?.request_id}`)
+          resetTable()
           onCloseClick()
         },
         onCloseClick: () => {
@@ -73,7 +73,7 @@ const ResponseContent = ({
     else
       switch (res.error) {
         case 'Request not found!':
-          if (selectedInfo.status === 'Recusado')
+          if (data?.status === 'Recusado')
             popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
@@ -99,7 +99,7 @@ const ResponseContent = ({
 
   return (
     <Style>
-      {userInfo && selectedInfo && selectedInfo.role_id ? (
+      {data ? (
         <>
           {!himselfModeratorRequest && (
             <motion.button id='delete' type='button' onClick={onTrashClick}>
@@ -110,59 +110,59 @@ const ResponseContent = ({
 
           <CloseIcon onClick={onCloseClick} />
 
-          <Infos status={selectedInfo.status} userRole={selectedInfo.role}>
+          <Infos status={data?.status} userRole={data?.role}>
             <div id='title'>Informações</div>
 
             <hr />
 
             <Field id='avatar'>
-              <Avatar size={120} avatarId={userInfo?.avatar_uuid} />
+              <Avatar size={120} avatarId={data?.avatar_uuid} />
             </Field>
 
             <Field>
               Nome:
-              <div>{userInfo?.name}</div>
+              <div>{data?.name}</div>
             </Field>
 
             <Field>
               Papel:
-              <div id='role'>{selectedInfo.role}</div>
+              <div id='role'>{data?.role}</div>
             </Field>
 
             <Field>
               Status:
-              <div id='status'>{getStatusLabel(selectedInfo.status)}</div>
+              <div id='status'>{getStatusLabel(data?.status)}</div>
             </Field>
 
-            {selectedInfo.data.linkedin && (
+            {data?.data?.linkedin && (
               <Field>
                 Linkedin:
-                <div>{selectedInfo.data.linkedin}</div>
+                <div>{data?.data?.linkedin}</div>
               </Field>
             )}
 
-            {selectedInfo.data.lattes && (
+            {data?.data?.lattes && (
               <Field>
                 Lattes:
-                <div>{selectedInfo.data.lattes}</div>
+                <div>{data?.data?.lattes}</div>
               </Field>
             )}
 
-            {selectedInfo.data.orcid && (
+            {data?.data?.orcid && (
               <Field>
                 Orcid:
-                <div>{selectedInfo.data.orcid}</div>
+                <div>{data?.data?.orcid}</div>
               </Field>
             )}
 
             <Field>
               Email:
               <div>
-                {userInfo?.emails.filter(({ main }: any) => main)[0].address}
+                {data?.emails?.filter(({ main }: any) => main)[0].address}
               </div>
             </Field>
 
-            {selectedInfo.role !== 'moderator' && selectedInfo.data.course_id && (
+            {data?.role !== 'moderator' && data?.data?.course_id && (
               <Field>
                 Curso:
                 <div>CURSO</div>
@@ -171,24 +171,22 @@ const ResponseContent = ({
 
             <Field>
               Data:
-              <div>
-                {isoToDate(selectedInfo.created_at, 'day/month/2-year')}
-              </div>
+              <div>{isoToDate(data?.created_at, 'day/month/2-year')}</div>
             </Field>
           </Infos>
 
-          {selectedInfo.voucher_uuid ? (
+          {data?.voucher_uuid ? (
             <div id='doc'>
-              <iframe src={selectedInfo.voucherUrl} frameBorder='0' />
+              <iframe src={data?.voucherUrl} frameBorder='0' />
             </div>
           ) : (
             <></>
           )}
 
-          {selectedInfo.data.pretext ? (
+          {data?.data?.pretext ? (
             <div id='pretext'>
               Justificativa:
-              <p>{selectedInfo.data.pretext}</p>
+              <p>{data?.data?.pretext}</p>
             </div>
           ) : (
             <></>
@@ -270,8 +268,8 @@ const ResponseContent = ({
                 }
                 path={
                   buttonClicked === 'rejected'
-                    ? `user/role/request/reject/${selectedInfo.request_id}`
-                    : `user/role/request/accept/${selectedInfo.request_id}`
+                    ? `user/role/request/reject/${data?.request_id}`
+                    : `user/role/request/accept/${data?.request_id}`
                 }
               >
                 <Textarea

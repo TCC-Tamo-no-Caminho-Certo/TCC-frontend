@@ -1,11 +1,27 @@
 import React from 'react'
 
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 
 interface DotsLoaderProps {
   size?: number
   color?: string
   dotSize?: number
+}
+
+const loading: Variants = {
+  start: { transition: { staggerChildren: 0.2 } },
+  end: { transition: { staggerChildren: 0.2 } }
+}
+
+const circle: Variants = {
+  start: {
+    y: '-50%',
+    transition: { duration: 0.5, yoyo: Infinity, ease: 'easeInOut' }
+  },
+  end: {
+    y: '50%',
+    transition: { duration: 0.5, yoyo: Infinity, ease: 'easeInOut' }
+  }
 }
 
 const DotsLoader = ({
@@ -14,7 +30,7 @@ const DotsLoader = ({
   color = '#6e4850'
 }: DotsLoaderProps) => {
   const loadingContainer = {
-    height: '100%',
+    height: size,
     display: 'flex',
     alignItems: 'center',
     className: 'DotsLoader',
@@ -29,60 +45,17 @@ const DotsLoader = ({
     height: dotSize,
     backgroundColor: color
   }
-
-  const loadingContainerVariants = {
-    start: {
-      transition: {
-        staggerChildren: 0.2
-      }
-    },
-    end: {
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  }
-
-  const loadingCircleVariants = {
-    start: {
-      y: '-50%'
-    },
-    end: {
-      y: '50%'
-    }
-  }
-
-  const loadingCircleTransition = {
-    duration: 0.5,
-    yoyo: Infinity,
-    ease: 'easeInOut'
-  }
-
   return (
     <motion.div
       animate='end'
       initial='start'
       className='DotsLoader'
+      variants={loading}
       style={loadingContainer}
-      variants={loadingContainerVariants}
     >
-      <motion.span
-        style={loadingCircle}
-        variants={loadingCircleVariants}
-        transition={loadingCircleTransition}
-      />
-
-      <motion.span
-        style={loadingCircle}
-        variants={loadingCircleVariants}
-        transition={loadingCircleTransition}
-      />
-
-      <motion.span
-        style={loadingCircle}
-        variants={loadingCircleVariants}
-        transition={loadingCircleTransition}
-      />
+      <motion.span style={loadingCircle} variants={circle} />
+      <motion.span style={loadingCircle} variants={circle} />
+      <motion.span style={loadingCircle} variants={circle} />
     </motion.div>
   )
 }

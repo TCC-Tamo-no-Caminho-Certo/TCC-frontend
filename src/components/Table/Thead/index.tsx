@@ -1,62 +1,51 @@
-import React, { memo, useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Style from './styles'
 
 import { TableContext } from '../index'
-import { Circle } from '../Tbody/styles'
 
-import api from 'services/api'
+import transition from 'utils/transition'
+
+import { SortType } from 'hooks/useSortableData'
 
 import ArrowIcon from 'assets/global/ArrowIcon'
 import RefreshIcon from 'assets/global/RefreshIcon'
 
 import { Variants } from 'framer-motion'
 
-interface TheadProps {
-  sort?: (_name: any) => void
+interface TheadProps<HeaderDataType> {
+  sort?: SortType<HeaderDataType>
 }
 
 const arrow: Variants = {
-  default: {
-    rotate: -90
-  },
-  up: {
-    rotate: -180
-  },
-  down: {
-    rotate: -0
-  }
+  default: { rotate: -90, transition },
+  up: { rotate: -180, transition },
+  down: { rotate: -0, transition }
 }
 
-const Thead = ({ sort }: TheadProps) => {
-  const { headerData, setTableState, quantity, path } = useContext(TableContext)
+function Thead<T>({ sort }: TheadProps<T>) {
+  const tableContext = useContext(TableContext)
 
-  const initialArrows = headerData.map(({ name }) => ({ [name]: 'default' }))
+  const initialArrows = tableContext?.headerData.map(({ name }) => ({
+    [name]: 'default'
+  }))
   const [arrows, setArrows] = useState(initialArrows)
 
   const onThClick = (id: any, index: number) => {
-    const before = arrows[index][id]
-    const resetArrows = initialArrows
+    if (arrows && initialArrows) {
+      const before = arrows[index][id]
+      const resetArrows = initialArrows
 
-    before === 'default' || before === 'down'
-      ? (resetArrows[index][id] = 'up')
-      : (resetArrows[index][id] = 'down')
+      before === 'default' || before === 'down'
+        ? (resetArrows[index][id] = 'up')
+        : (resetArrows[index][id] = 'down')
 
-    setArrows(resetArrows)
-    sort && sort(id)
+      setArrows(resetArrows)
+      sort && sort(id)
+    }
   }
 
   const onRefreshClick = async () => {
-    setTableState({
-      tablePage: 1,
-      showData: []
-    })
-
-    const { requests } = await api.get(`${path}?page=1&per_page=${quantity}`)
-
-    setTableState({
-      tablePage: 1,
-      showData: requests
-    })
+    tableContext?.makeRequest(1)
   }
 
   return (
@@ -67,23 +56,13 @@ const Thead = ({ sort }: TheadProps) => {
             <RefreshIcon onClick={onRefreshClick} />
           </th>
 
-          {headerData.map(({ label, name, indexer, circle }, index) => {
-            if (circle)
-              return (
-                <th id={name} key={name}>
-                  <button type='button'>
-                    <Circle />
-                  </button>
-                </th>
-              )
-
+          {tableContext?.headerData.map(({ label, name }, index) => {
             return (
               <th id={name} key={name}>
-                <button
-                  type='button'
-                  onClick={() => onThClick(indexer || name, index)}
-                >
-                  <ArrowIcon variants={arrow} animate={arrows[index][name]} />
+                <button type='button' onClick={() => onThClick(name, index)}>
+                  {arrows && (
+                    <ArrowIcon variants={arrow} animate={arrows[index][name]} />
+                  )}
                   {label}
                 </button>
               </th>
@@ -95,4 +74,4 @@ const Thead = ({ sort }: TheadProps) => {
   )
 }
 
-export default memo(Thead)
+export default Thead

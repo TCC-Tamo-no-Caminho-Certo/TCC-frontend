@@ -15,7 +15,6 @@ const PrivateRoutes = () => {
 
   useEffect(() => {
     const id = localStorage.getItem('@SLab_ac_token')?.split('-')[0]
-
     id && dispatch(getUser({ id }))
   }, [dispatch])
 

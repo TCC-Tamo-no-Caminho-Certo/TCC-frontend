@@ -29,12 +29,13 @@ export const Seasons = styled.ul`
 `
 
 const Style = styled(motion.li)`
-  width: 100%;
+  width: 85%;
 
   #universityName {
     position: relative;
     z-index: 3;
 
+    padding: 0 16px;
     width: 100%;
     height: 72px;
     font-size: clamp(1.8rem, 0.6rem + 2.6vw, 2.4rem);

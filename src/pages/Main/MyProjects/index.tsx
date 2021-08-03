@@ -106,7 +106,7 @@ const Projects = forwardRef((_props, ref) => {
           <h1>Meus projetos</h1>
         </header>
 
-        <Table
+        {/* <Table
           path='user/projects'
           isLoading={false}
           filters={{ name: true, from: true, to: true }}
@@ -114,7 +114,7 @@ const Projects = forwardRef((_props, ref) => {
             { label: 'Nome', name: 'title' },
             { label: 'Status', name: 'status' }
           ]}
-        />
+        /> */}
 
         {user?.selectedRole === 'professor' && (
           <button id='newProject' onClick={() => modalRef?.current?.toggle()}>

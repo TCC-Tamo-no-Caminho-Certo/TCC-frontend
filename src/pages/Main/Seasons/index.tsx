@@ -101,10 +101,10 @@ const Seasons = forwardRef((_props, ref) => {
     const universitiesOfUser: UniversityDataType[] = []
 
     const { universities }: UniversitiesResType = await api.get(
-      'user/universities'
+      `users/${user?.id}/universities`
     )
 
-    for (let i = 0; i < universities.length; i++) {
+    for (let i = 0; i < universities?.length; i++) {
       const { id, name } = universities[i]
 
       const seasons: SeasonsResType = await api.get(`university/${id}/seasons`)
@@ -123,6 +123,8 @@ const Seasons = forwardRef((_props, ref) => {
 
     return universitiesOfUser
   }
+
+  getUniversitiesOfUser()
 
   return (
     <Style ref={ref as any}>
