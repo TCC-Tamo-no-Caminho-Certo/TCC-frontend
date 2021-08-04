@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 import Style, { Content, NotLinked } from './styles'
 
 import University from './University'
@@ -101,7 +101,7 @@ const Seasons = forwardRef((_props, ref) => {
     const universitiesOfUser: UniversityDataType[] = []
 
     const { universities }: UniversitiesResType = await api.get(
-      `users/${user?.id}/universities`
+      `users/${user?.id}/roles/universities`
     )
 
     for (let i = 0; i < universities?.length; i++) {
@@ -124,7 +124,9 @@ const Seasons = forwardRef((_props, ref) => {
     return universitiesOfUser
   }
 
-  getUniversitiesOfUser()
+  useEffect(() => {
+    getUniversitiesOfUser()
+  }, [user])
 
   return (
     <Style ref={ref as any}>

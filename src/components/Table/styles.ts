@@ -1,19 +1,22 @@
 import styled from 'styled-components'
 
-export const Style = styled.div`
-  position: relative;
+const Style = styled.div`
+  table {
+    border-collapse: collapse;
+    background-color: red;
 
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+    th,
+    td {
+      padding: 8px;
+    }
 
-  width: 100%;
-  height: 100%;
+    thead tr th {
+      border: solid 1px white;
+    }
 
-  color: ${({ theme }) => theme.colors.secondary};
-
-  .DotsLoader {
-    margin-top: 16px;
+    tbody tr td {
+      border: solid 1px white;
+    }
   }
 `
 

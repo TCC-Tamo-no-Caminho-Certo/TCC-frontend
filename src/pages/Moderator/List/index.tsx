@@ -1,7 +1,7 @@
 import React from 'react'
 import Style from './styles'
 
-import Table, { HeaderData } from 'components/Table'
+// import Table, { HeaderData } from 'components/Table'
 
 // const headerData: HeaderData[] = [
 //   {

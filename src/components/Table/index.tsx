@@ -1,117 +1,123 @@
-import React, {
-  createContext,
-  Dispatch,
-  ReactElement,
-  SetStateAction,
-  useCallback,
-  useContext,
-  useEffect,
-  useState
-} from 'react'
+import React, { ReactElement, useCallback, useEffect, useState } from 'react'
 import Style from './styles'
-
-import Filters, { FiltersProps } from './Filters'
-import Tbody from './Tbody'
-import Thead from './Thead'
-
-import useSortableData from 'hooks/useSortableData'
 
 import DotsLoader from 'components/DotsLoader'
 
-import { ThemeContext } from 'styled-components'
-
-interface Data<DataType, Selected> {
-  data: DataType
-  selectedData: Selected
-}
-
-export type GetData<DataType, Selected> = (
-  _page: number,
-  _filters?: string
-) => Promise<Data<DataType, Selected>[]>
-
-export interface HeaderData {
-  name: string
+export type HeaderType = {
   label: string
-  component?: (_data: any) => ReactElement | ReactElement[]
+  name: string
+  tdWrapper?: (_label: string) => ReactElement | ReactElement[]
+  thWrapper?: (_label: string) => ReactElement | ReactElement[]
 }
 
-interface TableState {
-  page: number
-  tableData?: any[]
+export type BodyRowType = {
+  rowValue: Object
+  rowLabel: {
+    [key: string]: { label: string; value: string }
+  }
 }
 
-export interface ItemProps<DataType, Selected> {
-  resetTable: () => void
-  onCloseClick: () => void
-  data?: Data<DataType, Selected>
+interface TableStateType {
+  direction: 'up' | 'down'
+  items: BodyRowType[]
 }
 
-interface TableContextProps {
-  tableState: TableState
-  headerData: HeaderData[]
-  setTableState: Dispatch<SetStateAction<TableState>>
-  makeRequest: (_page: number, _filters?: string) => void
+interface TableProps {
+  getData: GetDataType
+  headerRow: HeaderType[]
 }
 
-interface TableProps<DataType, Selected> {
-  headerData: HeaderData[]
-  getData: GetData<DataType, Selected>
-  filters?: FiltersProps
-  itemContent?: (_props: ItemProps<DataType, Selected>) => JSX.Element
+export type GetDataType = () => Promise<BodyRowType[]>
+
+const initialTableSort: TableStateType = {
+  items: [
+    {
+      rowLabel: {
+        initialTableRow: { label: '', value: '' }
+      },
+      rowValue: []
+    }
+  ],
+  direction: 'up'
 }
 
-export const TableContext = createContext<TableContextProps | undefined>(
-  undefined
-)
+const Table = ({ getData, headerRow }: TableProps) => {
+  const [tableSort, setTableSort] = useState<TableStateType>(initialTableSort)
 
-function Table<DataType, Selected>({
-  getData,
-  filters,
-  headerData,
-  itemContent
-}: TableProps<DataType, Selected>) {
-  const theme = useContext(ThemeContext)
+  const onTrClick = (data: BodyRowType) => {
+    console.log(data)
+  }
 
-  const [tableState, setTableState] = useState<TableState>({ page: 1 })
+  const onThClick = (indexer: string) => {
+    setTableSort(({ items, direction }) => {
+      const sortabledItems = [...items]
+      sortabledItems.sort((a, b) => {
+        const valueA = a.rowLabel[indexer].value
+        const valueB = b.rowLabel[indexer].value
 
-  const { tableData } = tableState
-  const { items, sort } = useSortableData(tableData, {
-    indexer: 'name',
-    direction: 'ascending'
-  })
+        if (valueA < valueB) return direction === 'up' ? -1 : 1
+        if (valueA > valueB) return direction === 'up' ? 1 : -1
+        return 0
+      })
 
-  const makeRequest = useCallback(
-    async (page: number, filters?: string) => {
-      if (getData) {
-        const gotData = await getData(page, filters)
-        const tableData = gotData.map(({ data }) => data)
-        setTableState({ tableData, page })
+      return {
+        items: sortabledItems,
+        direction: direction === 'up' ? 'down' : 'up'
       }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [getData]
-  )
+    })
+  }
+
+  const makeRequest = useCallback(async () => {
+    const items = await getData()
+
+    setTableSort(({ direction }) => ({ direction, items }))
+  }, [getData])
 
   useEffect(() => {
-    makeRequest(1)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    makeRequest()
+  }, [makeRequest])
 
   return (
-    <TableContext.Provider
-      value={{ makeRequest, tableState, headerData, setTableState }}
-    >
-      <Style className='Table'>
-        <Filters {...filters} />
+    <Style>
+      <table>
+        <thead>
+          <tr>
+            {headerRow.map(({ label, name, thWrapper }) =>
+              thWrapper ? (
+                <th onClick={() => onThClick(name)} key={name}>
+                  {thWrapper(label)}
+                </th>
+              ) : (
+                <th onClick={() => onThClick(name)} key={name}>
+                  {label}
+                </th>
+              )
+            )}
+          </tr>
+        </thead>
 
-        <Thead<DataType> sort={sort} />
+        <tbody>
+          {tableSort.items?.map(({ rowLabel, rowValue }, trIndex) => (
+            <tr key={trIndex} onClick={() => onTrClick({ rowLabel, rowValue })}>
+              {headerRow.map(({ name, tdWrapper }, tdIndex) => {
+                if (rowLabel[name])
+                  return tdWrapper ? (
+                    <td key={tdIndex}>{tdWrapper(rowLabel[name].label)}</td>
+                  ) : (
+                    <td key={tdIndex}>{rowLabel[name].label}</td>
+                  )
 
-        {!tableData && <DotsLoader color={theme.colors.secondary} />}
-
-        <Tbody items={items} itemContent={itemContent} />
-      </Style>
-    </TableContext.Provider>
+                return (
+                  <td key={tdIndex}>
+                    <DotsLoader size={32} color='white' />
+                  </td>
+                )
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </Style>
   )
 }
 

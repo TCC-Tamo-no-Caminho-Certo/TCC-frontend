@@ -1,8 +1,5 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Style, { Field, Infos } from './styles'
-
-import { isoToDate } from 'utils/dates'
-import { getStatusLabel } from 'utils/status'
 
 import api from 'services/api'
 
@@ -17,19 +14,15 @@ import Avatar from 'components/User/Avatar'
 import Form, { Submit, Textarea } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
 
+import { EmailsResType, EmailsType } from 'types/Responses/user/emails'
+
 import { GlobalContext } from 'App'
 import { motion } from 'framer-motion'
 import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 import * as Yup from 'yup'
 
-export interface ItemProps {
-  resetTable: () => void
-  onCloseClick: () => void
-  data?: any
-}
-
-const ResponseContent = ({ data, resetTable, onCloseClick }: ItemProps) => {
+const ResponseContent = ({ data, resetTable, onCloseClick }: any) => {
   const { user } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
@@ -39,9 +32,14 @@ const ResponseContent = ({ data, resetTable, onCloseClick }: ItemProps) => {
   const acceptRef = useRef<CheckboxIconMethods>(null)
   const rejectRef = useRef<CheckboxIconMethods>(null)
 
+  const selectedData = data?.selectedData
+  const normalData = data?.data
+
   const [buttonClicked, setButtonClicked] = useState('rejected')
 
-  const himselfModeratorRequest = user?.id === data?.user_id
+  const himselfModeratorRequest = user?.id === selectedData?.user.id
+
+  const [emails, setEmails] = useState<EmailsType>()
 
   const onTrashClick = () => {
     data &&
@@ -49,7 +47,7 @@ const ResponseContent = ({ data, resetTable, onCloseClick }: ItemProps) => {
         type: 'warning',
         message: 'Tem certeza que deseja remover esta solicitação?',
         onOkClick: async () => {
-          await api.delete(`user/role/request/${data?.request_id}`)
+          await api.delete(`user/role/request/${selectedData?.request.id}`)
           resetTable()
           onCloseClick()
         },
@@ -73,7 +71,7 @@ const ResponseContent = ({ data, resetTable, onCloseClick }: ItemProps) => {
     else
       switch (res.error) {
         case 'Request not found!':
-          if (data?.status === 'Recusado')
+          if (data?.data.status === 'rejected')
             popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
@@ -97,6 +95,16 @@ const ResponseContent = ({ data, resetTable, onCloseClick }: ItemProps) => {
       }
   }
 
+  useEffect(() => {
+    ;(async () => {
+      const { emails }: EmailsResType = await api.get(
+        `users/${selectedData?.user.id}/emails`
+      )
+
+      setEmails(emails)
+    })()
+  }, [selectedData?.user.id])
+
   return (
     <Style>
       {data ? (
@@ -110,83 +118,85 @@ const ResponseContent = ({ data, resetTable, onCloseClick }: ItemProps) => {
 
           <CloseIcon onClick={onCloseClick} />
 
-          <Infos status={data?.status} userRole={data?.role}>
+          <Infos status={normalData?.status} userRole={normalData?.role}>
             <div id='title'>Informações</div>
 
             <hr />
 
             <Field id='avatar'>
-              <Avatar size={120} avatarId={data?.avatar_uuid} />
+              <Avatar size={120} avatarId={selectedData?.user.avatar_uuid} />
             </Field>
 
             <Field>
               Nome:
-              <div>{data?.name}</div>
+              <div>{selectedData?.user.full_name}</div>
             </Field>
 
             <Field>
               Papel:
-              <div id='role'>{data?.role}</div>
+              <div id='role'>{normalData?.role}</div>
             </Field>
 
             <Field>
               Status:
-              <div id='status'>{getStatusLabel(data?.status)}</div>
+              <div id='status'>{normalData?.status}</div>
             </Field>
 
-            {data?.data?.linkedin && (
+            {selectedData?.request.data.linkedin && (
               <Field>
                 Linkedin:
-                <div>{data?.data?.linkedin}</div>
+                <div>{selectedData?.request.data.linkedin}</div>
               </Field>
             )}
 
-            {data?.data?.lattes && (
+            {selectedData?.request.data.lattes && (
               <Field>
                 Lattes:
-                <div>{data?.data?.lattes}</div>
+                <div>{selectedData?.request.data.lattes}</div>
               </Field>
             )}
 
-            {data?.data?.orcid && (
+            {selectedData?.request.data.orcid && (
               <Field>
                 Orcid:
-                <div>{data?.data?.orcid}</div>
+                <div>{selectedData?.request.data.orcid}</div>
               </Field>
             )}
 
             <Field>
               Email:
-              <div>
-                {data?.emails?.filter(({ main }: any) => main)[0].address}
-              </div>
+              <div>{emails?.filter(({ main }: any) => main)[0]?.address}</div>
             </Field>
 
-            {data?.role !== 'moderator' && data?.data?.course_id && (
-              <Field>
-                Curso:
-                <div>CURSO</div>
-              </Field>
-            )}
+            {normalData?.role !== 'moderator' &&
+              selectedData?.request.data.course_id && (
+                <Field>
+                  Curso:
+                  <div>CURSO</div>
+                </Field>
+              )}
 
             <Field>
               Data:
-              <div>{isoToDate(data?.created_at, 'day/month/2-year')}</div>
+              <div>{selectedData?.request.created_at}</div>
             </Field>
           </Infos>
 
-          {data?.voucher_uuid ? (
+          {selectedData?.request.data.voucher_uuid ? (
             <div id='doc'>
-              <iframe src={data?.voucherUrl} frameBorder='0' />
+              <iframe
+                src={selectedData?.request.data.voucher_uuid}
+                frameBorder='0'
+              />
             </div>
           ) : (
             <></>
           )}
 
-          {data?.data?.pretext ? (
+          {selectedData?.request.data.pretext ? (
             <div id='pretext'>
               Justificativa:
-              <p>{data?.data?.pretext}</p>
+              <p>{selectedData?.request.data.pretext}</p>
             </div>
           ) : (
             <></>
@@ -268,8 +278,8 @@ const ResponseContent = ({ data, resetTable, onCloseClick }: ItemProps) => {
                 }
                 path={
                   buttonClicked === 'rejected'
-                    ? `user/role/request/reject/${data?.request_id}`
-                    : `user/role/request/accept/${data?.request_id}`
+                    ? `user/role/request/reject/${selectedData?.request.id}`
+                    : `user/role/request/accept/${selectedData?.request.id}`
                 }
               >
                 <Textarea

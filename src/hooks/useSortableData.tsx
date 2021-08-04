@@ -1,31 +1,30 @@
 import { useState } from 'react'
 
-export type SortType<T> = (_prop: SortableConfig<T>) => void
-
-interface Return<T> {
-  items?: T[]
-  sort?: SortType<T>
-  sortConfig?: SortableConfig<T>
+interface Return {
+  items?: any[]
+  sort: any
+  sortConfig?: SortableConfig
 }
 
-interface SortableConfig<T> {
-  indexer: keyof T
+export interface SortableConfig {
+  indexer: string
   direction: 'ascending' | 'descending'
 }
 
-const useSortableData = <T, _>(
-  items: T[] | undefined,
-  config?: SortableConfig<T>
-): Return<T> => {
+const useSortableData = (items: any, config?: SortableConfig) => {
   const [sortConfig, setSortConfig] = useState(config)
 
   if (items) {
     const sortedItems = () => {
       const sortabledItems = [...items]
+
       if (sortConfig?.indexer)
         sortabledItems.sort((a, b) => {
-          const valueA = a[sortConfig.indexer]
-          const valueB = b[sortConfig.indexer]
+          const valueA = a.label[sortConfig.indexer]
+          const valueB = b.label[sortConfig.indexer]
+
+          console.log('valuea', valueA)
+          console.log('valueb', valueB)
 
           if (valueA < valueB)
             return sortConfig.direction === 'ascending' ? -1 : 1
@@ -39,21 +38,14 @@ const useSortableData = <T, _>(
       return sortabledItems
     }
 
-    const sort = ({ indexer, direction }: SortableConfig<T>) => {
-      setSortConfig({
-        indexer,
-        direction: direction || 'ascending'
-      })
+    const sort = ({ indexer, direction }: any) => {
+      setSortConfig({ indexer, direction: direction })
     }
 
     return { items: sortedItems(), sort, sortConfig }
   }
 
-  return {
-    items: undefined,
-    sort: undefined,
-    sortConfig: undefined
-  }
+  return { items: undefined, sort: undefined, sortConfig: undefined }
 }
 
 export default useSortableData
