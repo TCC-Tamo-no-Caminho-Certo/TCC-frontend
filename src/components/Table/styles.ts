@@ -16,15 +16,23 @@ const Style = styled.div`
     }
 
     thead tr {
+      box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.39);
+
       th {
+        cursor: pointer;
         text-align: left;
+
+        .ArrowIcon {
+          width: 18px;
+          margin-right: 8px;
+
+          fill: ${({ theme }) => theme.colors.secondary};
+        }
 
         &:first-child {
           padding-left: 40px;
         }
       }
-
-      box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.39);
     }
 
     tbody tr {
@@ -53,6 +61,14 @@ const Style = styled.div`
 
     transform: translateY(25%);
     fill: ${({ theme }) => theme.colors.secondary};
+  }
+
+  #loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
   }
 `
 

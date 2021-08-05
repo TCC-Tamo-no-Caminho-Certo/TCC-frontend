@@ -2,6 +2,7 @@ import React, {
   forwardRef,
   ReactElement,
   useCallback,
+  useContext,
   useEffect,
   useImperativeHandle,
   useState
@@ -9,8 +10,11 @@ import React, {
 import Style from './styles'
 
 import RefreshIcon from 'assets/global/RefreshIcon'
+import ArrowIcon, { arrowAnimation } from 'assets/global/ArrowIcon'
 
 import DotsLoader from 'components/DotsLoader'
+
+import { ThemeContext } from 'styled-components'
 
 export interface TableMethods {
   onRefreshIconClick: () => void
@@ -60,9 +64,17 @@ const initialTableSort: TableStateType = {
 
 const Table = forwardRef<TableMethods, TableProps>(
   ({ getData, headerRow, onRefreshClick, onDataClick }, ref) => {
+    const theme = useContext(ThemeContext)
+
     const [tableSort, setTableSort] = useState<TableStateType>(initialTableSort)
+    const initialArrows = headerRow.map(() => 'right')
+
+    const [arrows, setArrows] = useState(initialArrows)
+    const [loading, setLoading] = useState(true)
 
     const onRefreshIconClick = () => {
+      setLoading(true)
+      makeRequest()
       onRefreshClick && onRefreshClick()
     }
 
@@ -70,7 +82,16 @@ const Table = forwardRef<TableMethods, TableProps>(
       onDataClick && onDataClick(data)
     }
 
-    const onThClick = (indexer: string) => {
+    const onThClick = (indexer: string, index: number) => {
+      const resetArrows = initialArrows
+      const before = arrows[index]
+
+      before === 'right' || before === 'bottom'
+        ? (resetArrows[index] = 'top')
+        : (resetArrows[index] = 'bottom')
+
+      setArrows(resetArrows)
+
       setTableSort(({ items, direction }) => {
         const sortabledItems = [...items]
         sortabledItems.sort((a, b) => {
@@ -90,7 +111,9 @@ const Table = forwardRef<TableMethods, TableProps>(
     }
 
     const makeRequest = useCallback(async () => {
+      setLoading(true)
       const items = await getData()
+      setLoading(false)
 
       setTableSort(({ direction }) => ({ direction, items }))
     }, [getData])
@@ -103,18 +126,39 @@ const Table = forwardRef<TableMethods, TableProps>(
 
     return (
       <Style className='Table' ref={ref as any}>
-        <RefreshIcon onClick={onRefreshIconClick} id='TableRefreshIcon' />
+        <RefreshIcon
+          animate={loading}
+          onClick={onRefreshIconClick}
+          id='TableRefreshIcon'
+        />
 
         <table>
           <thead>
             <tr>
-              {headerRow.map(({ label, name, thWrapper }) =>
+              {headerRow.map(({ label, name, thWrapper }, index) =>
                 thWrapper ? (
-                  <th onClick={() => onThClick(name)} key={name} id={name}>
+                  <th
+                    onClick={() => onThClick(name, index)}
+                    key={name}
+                    id={name}
+                  >
                     {thWrapper({ label, name })}
                   </th>
                 ) : (
-                  <th onClick={() => onThClick(name)} key={name} id={name}>
+                  <th
+                    onClick={() => onThClick(name, index)}
+                    key={name}
+                    id={name}
+                  >
+                    {!loading && (
+                      <ArrowIcon
+                        className='ArrowIcon'
+                        initial='initialRight'
+                        animate={arrows[index]}
+                        variants={arrowAnimation}
+                      />
+                    )}
+
                     {label}
                   </th>
                 )
@@ -122,37 +166,41 @@ const Table = forwardRef<TableMethods, TableProps>(
             </tr>
           </thead>
 
-          <tbody>
-            {tableSort.items?.map(({ rowLabel, rowValue }, trIndex) => (
-              <tr
-                key={trIndex}
-                onClick={() => onTrClick({ rowLabel, rowValue })}
-              >
-                {headerRow.map(({ name, tdWrapper }, tdIndex) => {
-                  if (rowLabel[name])
-                    return tdWrapper ? (
-                      <td id={rowLabel[name].name} key={tdIndex}>
-                        {tdWrapper({
-                          label: rowLabel[name].label,
-                          name: rowLabel[name].name
-                        })}
-                      </td>
-                    ) : (
-                      <td id={rowLabel[name].name} key={tdIndex}>
-                        {rowLabel[name].label}
-                      </td>
-                    )
+          {!loading && (
+            <tbody>
+              {tableSort.items?.map(({ rowLabel, rowValue }, trIndex) => (
+                <tr
+                  key={trIndex}
+                  onClick={() => onTrClick({ rowLabel, rowValue })}
+                >
+                  {headerRow.map(({ name, tdWrapper }, tdIndex) => {
+                    if (rowLabel[name])
+                      return tdWrapper ? (
+                        <td id={rowLabel[name].name} key={tdIndex}>
+                          {tdWrapper({
+                            label: rowLabel[name].label,
+                            name: rowLabel[name].name
+                          })}
+                        </td>
+                      ) : (
+                        <td id={rowLabel[name].name} key={tdIndex}>
+                          {rowLabel[name].label}
+                        </td>
+                      )
 
-                  return (
-                    <td className='loading' key={tdIndex}>
-                      <DotsLoader size={32} color='white' />
-                    </td>
-                  )
-                })}
-              </tr>
-            ))}
-          </tbody>
+                    return <td key={tdIndex}></td>
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          )}
         </table>
+
+        {loading && (
+          <div id='loader'>
+            <DotsLoader color={theme.colors.secondary} />
+          </div>
+        )}
       </Style>
     )
   }
