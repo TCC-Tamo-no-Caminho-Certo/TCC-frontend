@@ -9,14 +9,14 @@ export const Seasons = styled.ul`
   color: ${({ theme }) => theme.colors.tertiary};
   background-color: ${({ theme }) => theme.colors.secondary};
 
+  > * + * {
+    margin-top: 24px;
+  }
+
   #noSeasons {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  > * + * {
-    margin-top: 24px;
   }
 
   @media screen and (min-width: 375px) {
@@ -29,8 +29,6 @@ export const Seasons = styled.ul`
 `
 
 const Style = styled(motion.li)`
-  width: 85%;
-
   #universityName {
     position: relative;
     z-index: 3;
@@ -51,7 +49,7 @@ const Style = styled(motion.li)`
   }
 
   @media screen and (min-width: 545px) {
-    width: clamp(300px, 80vw, 600px);
+    width: clamp(300px, 80%, 600px);
   }
 `
 

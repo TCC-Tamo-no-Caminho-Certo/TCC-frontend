@@ -1,168 +1,76 @@
-import { getStatusColor, StatusTypes } from 'utils/status'
-
-import { RoleType } from 'types/Responses/user/roles'
-
 import { darken } from 'polished'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
-interface InfosProps {
-  userRole?: RoleType
-  status?: StatusTypes
-}
-
-export const Field = styled.div`
+export const Radios = styled.div`
   display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
 
-  padding: 8px;
-  font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
-  color: ${({ theme }) => theme.colors.secondary};
+  .Radio {
+    width: 50%;
 
-  div {
-    margin-top: 8px;
-  }
+    &#Radio-accept {
+      border-radius: 8px 0 0 8px;
 
-  & + & {
-    margin-top: 16px;
-  }
-`
+      &:hover {
+        width: 100%;
 
-export const Infos = styled.div<InfosProps>`
-  display: flex;
-  flex-direction: column;
-
-  width: 100%;
-  padding-bottom: 16px;
-  margin: 32px 0 24px 0;
-
-  border: solid ${({ theme }) => theme.colors.secondary} 1px;
-
-  hr {
-    margin-bottom: 16px;
-
-    border: solid 1px ${({ theme }) => theme.colors.secondary};
-  }
-
-  #avatar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 16px 0;
-    font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2rem);
-
-    color: ${({ theme }) => theme.colors.secondary};
-    background-color: ${({ theme }) => theme.colors.primary};
-  }
-
-  ${Field} {
-    #status {
-      color: ${({ theme, status }) => getStatusColor(theme, status)};
+        background-color: ${({ theme }) => darken(0.1, theme.colors.green)};
+      }
     }
 
-    ${({ theme, userRole }) =>
-      userRole &&
-      css`
-        #role {
-          color: ${theme.roles[userRole]};
-        }
-      `}
-  }
+    &#Radio-reject {
+      border-radius: 0px 8px 8px 0px;
 
-  @media screen and (min-width: 545px) {
-    ${Field} {
-      flex-direction: row;
+      &:hover {
+        width: 100%;
 
-      div {
-        margin: 0 0 0 8px;
+        background-color: ${({ theme }) => darken(0.1, theme.colors.red)};
       }
     }
   }
 `
 
-const Style = styled.div`
-  position: relative;
+export const Pretext = styled.div`
+  padding: 16px;
+  border-radius: 8px;
 
+  background-color: ${({ theme }) => theme.colors.primary};
+  word-break: break-all;
+
+  p {
+    padding: 8px 16px;
+  }
+`
+
+export const Voucher = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
 
-  height: 80vh;
-  border-radius: 8px;
-  overflow-y: scroll;
-  width: max(100vw, 320px);
-  padding: 24px 16px 24px 24px;
+  min-height: 80vh;
 
-  background-color: ${({ theme }) => theme.colors.tertiary};
-
-  > *,
-  form > * {
+  iframe {
     width: 100%;
+    height: 100%;
   }
+`
 
-  a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+export const Header = styled.header`
+  display: flex;
+  position: relative;
 
-    width: 100%;
-    padding: 8px 16px;
-    border-radius: 0 0 16px 16px;
-    transition: all 0.3s ease-in-out;
-    font-size: clamp(1.2rem, 0.6rem + 2.6vw, 1.6rem);
+  min-height: 32px;
 
-    color: ${({ theme }) => theme.colors.secondary};
-    background-color: ${({ theme }) => theme.colors.primary};
-
-    &:hover {
-      background-color: ${({ theme }) => darken(0.1, theme.colors.primary)};
-    }
-
-    .Icon {
-      height: 16px;
-      margin-right: 8px;
-
-      fill: ${({ theme }) => theme.colors.secondary};
-    }
-  }
-
-  .Submit {
-    margin-top: 16px;
-  }
-
-  #CloseIcon {
-    position: absolute;
-    top: 22px;
-    right: 16px;
-
-    width: 18px;
-    height: 18px;
-
-    stroke: ${({ theme }) => theme.colors.secondary};
-  }
-
-  #delete {
-    position: absolute;
-    top: 16px;
-    left: 24px;
-
+  button {
     display: flex;
     align-items: center;
     flex-direction: row;
     justify-content: center;
 
-    width: auto;
     padding: 8px;
-    height: 32px;
+    height: 100%;
     font-size: 1.6rem;
-    border-radius: 8px;
+    border-radius: 4px;
+    margin-right: 24px;
 
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.red};
@@ -186,131 +94,56 @@ const Style = styled.div`
     }
   }
 
-  #radios {
-    display: flex;
-    justify-content: space-evenly;
+  #CloseIcon {
+    position: absolute;
+    top: 50%;
+    right: 0;
 
-    margin: 16px 0;
+    width: 18px;
+    height: 18px;
+    transform: translateY(-50%);
 
-    color: ${({ theme }) => theme.colors.secondary};
-
-    div {
-      position: relative;
-
-      width: 50%;
-      height: 100%;
-      padding: 8px;
-      transition: all 300ms ease;
-      border-radius: 8px 0 0 8px;
-
-      &,
-      label {
-        z-index: 1;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        width: 100%;
-      }
-
-      &#radioAccept {
-        &:hover .wrapper {
-          width: 100%;
-
-          background-color: ${({ theme }) => darken(0.1, theme.colors.green)};
-        }
-
-        .wrapper {
-          right: 0px;
-        }
-      }
-
-      &#radioReject {
-        border-radius: 0px 8px 8px 0px;
-
-        &:hover .wrapper {
-          width: 100%;
-
-          background-color: ${({ theme }) => theme.colors.red};
-        }
-
-        .wrapper {
-          left: 0px;
-
-          border-radius: 0px 8px 8px 0px;
-        }
-      }
-
-      input {
-        display: none;
-      }
-
-      .wrapper {
-        position: absolute;
-        top: 0px;
-        z-index: 0;
-
-        width: 0px;
-        height: 100%;
-
-        background-color: transparent;
-      }
-
-      .CheckboxIcon {
-        width: 24px;
-        margin-right: 8px;
-      }
-    }
+    stroke: ${({ theme }) => theme.colors.secondary};
   }
+`
 
-  #doc {
-    position: relative;
-    z-index: 20000;
+export const GeneralInfo = styled.div`
+  > * + * {
+    margin-top: 16px;
+  }
+`
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+const Style = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 
-    min-height: 100vh;
+  width: 90%;
+  height: 90vh;
+  padding: 16px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  border-radius: 16px;
 
-    iframe {
+  color: ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => theme.colors.tertiary};
+
+  &,
+  .Form {
+    > * {
       width: 100%;
-      height: 100%;
+
+      & + * {
+        margin-top: 16px;
+      }
     }
-  }
-
-  #feedback p {
-    margin-top: 8px;
-    word-wrap: break-word;
-    font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
-  }
-
-  #dots {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 100%;
-    height: 50%;
-  }
-
-  #pretext {
-    padding: 16px;
-    border-radius: 8px;
-
-    background-color: ${({ theme }) => theme.colors.primary};
-
-    p {
-      padding: 8px 16px;
-    }
-  }
-
-  @media screen and (min-width: 545px) {
-    width: max(80vw, 320px);
   }
 `
 
 export default Style
-
+Radios.displayName = 'Radios-Style'
+Pretext.displayName = 'Pretext-Style'
+Voucher.displayName = 'Voucher-Style'
+Header.displayName = 'Header-Style'
+GeneralInfo.displayName = 'GeneralInfo-Style'
 Style.displayName = 'ResponseContent-Style'

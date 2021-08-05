@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import Style, { Field, Infos } from './styles'
+import Style, { GeneralInfo, Header, Pretext, Radios, Voucher } from './styles'
 
-import { StatusTypes } from 'utils/status'
+import Field from './Field'
+import Radio from './Radio'
 
 import api from 'services/api'
 
@@ -9,20 +10,20 @@ import { RootState } from 'store'
 import { AsyncUserState } from 'store/Async/user'
 
 import CloseIcon from 'assets/global/CloseIcon'
-import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'
 import TrashIcon from 'assets/global/TrashIcon'
+import { CheckboxIconMethods } from 'assets/CheckboxIcon'
 
 import Avatar from 'components/User/Avatar'
 import Form, { Submit, Textarea } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
 import { BodyRowType } from 'components/Table'
+import Role from 'components/Role'
 
-import { EmailsResType, EmailsType } from 'types/Responses/user/emails'
+import { EmailsResType } from 'types/Responses/user/emails'
 import { RoleType } from 'types/Responses/user/roles'
 import { CourseResType } from 'types/Responses/university/courses'
 
 import { GlobalContext } from 'App'
-import { motion } from 'framer-motion'
 import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 import * as Yup from 'yup'
@@ -32,6 +33,23 @@ interface ResponseContentProps {
   resetTable: () => void
   onCloseClick: () => void
 }
+
+interface AditionalDataState {
+  email: string
+  course: string
+  voucherUrl?: string
+}
+
+const formSchema = (response?: 'rejected' | 'accepted') =>
+  response === 'rejected'
+    ? Yup.object({
+        feedback: Yup.string().required(
+          'Ao recusar deve-se enviar uma justificativa'
+        )
+      })
+    : Yup.object({
+        feedback: Yup.string()
+      })
 
 const ResponseContent = ({
   data,
@@ -44,14 +62,22 @@ const ResponseContent = ({
     ({ asyncUser }) => asyncUser
   )
 
+  const [aditionalData, setAditionalData] = useState<AditionalDataState>()
+  const [response, setResponse] = useState<'accepted' | 'rejected'>()
+
   const acceptRef = useRef<CheckboxIconMethods>(null)
   const rejectRef = useRef<CheckboxIconMethods>(null)
 
-  const [buttonClicked, setButtonClicked] = useState('rejected')
-  const [aditionalData, setAditionalData] =
-    useState<{ emails: EmailsType; course: string; voucherUrl?: string }>()
+  const userData = data.rowValue.user
+  const requestData = data.rowValue.request?.data
+  const himselfModeratorRequest = user?.id === userData?.id
 
-  const himselfModeratorRequest = user?.id === data.rowValue.user?.id
+  const formPath = () => {
+    if (requestData?.id)
+      return response === 'rejected'
+        ? `user/role/request/reject/${requestData?.id}`
+        : `user/role/request/accept/${requestData?.id}`
+  }
 
   const onTrashClick = () => {
     data &&
@@ -59,7 +85,7 @@ const ResponseContent = ({
         type: 'warning',
         message: 'Tem certeza que deseja remover esta solicitação?',
         onOkClick: async () => {
-          await api.delete(`user/role/request/${data.rowValue.request?.id}`)
+          await api.delete(`user/role/request/${requestData?.id}`)
           resetTable()
           onCloseClick()
         },
@@ -110,231 +136,147 @@ const ResponseContent = ({
   useEffect(() => {
     ;(async () => {
       let voucherUrl
-      const universityId = data.rowValue.request.data.university_id
-      const campusId = data.rowValue.request.data.campus_id
-      const courseId = data.rowValue.request.data.course_id
-      const voucherId = data.rowValue.request.data.voucher_uuid
+      let userCourse = ''
+      let userEmails = ''
 
-      const { emails }: EmailsResType = await api.get(
-        `users/${data.rowValue.user?.id}/emails`
-      )
+      const { id } = userData
+      const { university_id, campus_id, course_id, voucher_uuid } = requestData
 
-      // const { course }: CourseResType = await api.get(
-      //   `/universities/${universityId}/campus/${campusId}/courses/${courseId}`
-      // )
+      if (id) {
+        const { emails }: EmailsResType = await api.get(`users/${id}/emails`)
 
-      const course = { name: 'Engenharia da Computação' }
-      if (voucherId) {
+        userEmails = emails.filter(({ main }: any) => main)[0]?.address
+      }
+
+      if (university_id && campus_id && course_id) {
+        const { course }: CourseResType = await api.get(
+          `/universities/${university_id}/campus/${campus_id}/courses/${course_id}`
+        )
+
+        userCourse = course.name
+      }
+
+      if (voucher_uuid) {
         const { url } = await api.get(
-          `users/roles/requests/voucher/${voucherId}`
+          `users/roles/requests/voucher/${voucher_uuid}`
         )
 
         voucherUrl = url
       }
 
-      console.log(data)
-      setAditionalData({ emails, course: course.name, voucherUrl })
+      setAditionalData({ email: userEmails, course: userCourse, voucherUrl })
     })()
-  }, [data])
+  }, [requestData, userData])
 
   return (
     <Style>
-      <CloseIcon onClick={onCloseClick} />
+      <Header>
+        {!himselfModeratorRequest && (
+          <button type='button' onClick={onTrashClick}>
+            <TrashIcon />
+            Excluir
+          </button>
+        )}
+
+        <CloseIcon onClick={onCloseClick} />
+      </Header>
 
       {data ? (
         <>
-          {!himselfModeratorRequest && (
-            <motion.button id='delete' type='button' onClick={onTrashClick}>
-              <TrashIcon />
-              Excluir solicitação
-            </motion.button>
-          )}
+          <GeneralInfo>
+            <Avatar size={120} avatarId={userData?.avatar_uuid} />
 
-          <Infos
-            status={data.rowLabel.status.name as StatusTypes}
-            userRole={data.rowLabel.role.name as RoleType}
-          >
-            <div id='title'>Informações</div>
+            <Field label='Nome:' value={userData?.full_name} />
 
-            <hr />
-
-            <Field id='avatar'>
-              <Avatar size={120} avatarId={data.rowValue.user?.avatar_uuid} />
-            </Field>
-
-            <Field>
-              Nome:
-              <div>{data.rowValue.user?.full_name}</div>
-            </Field>
-
-            <Field>
-              Papel:
-              <div id='role'>{data.rowLabel.role.label}</div>
-            </Field>
-
-            <Field>
-              Status:
-              <div id='status'>{data.rowLabel.status.label}</div>
-            </Field>
-
-            {data.rowValue.request?.data.linkedin && (
-              <Field>
-                Linkedin:
-                <div>{data.rowValue.request?.data.linkedin}</div>
-              </Field>
-            )}
-
-            {data.rowValue.request?.data.lattes && (
-              <Field>
-                Lattes:
-                <div>{data.rowValue.request?.data.lattes}</div>
-              </Field>
-            )}
-
-            {data.rowValue.request?.data.orcid && (
-              <Field>
-                Orcid:
-                <div>{data.rowValue.request?.data.orcid}</div>
-              </Field>
-            )}
-
-            <Field>
-              Email:
-              <div>
-                {
-                  aditionalData?.emails?.filter(({ main }: any) => main)[0]
-                    ?.address
-                }
-              </div>
-            </Field>
-
-            {data.rowLabel.role.name !== 'moderator' &&
-              data.rowValue.request?.data.course_id && (
-                <Field>
-                  Curso:
-                  <div>{aditionalData?.course}</div>
-                </Field>
+            <Field
+              label='Papel:'
+              component={() => (
+                <Role role={data.rowLabel.role.name as RoleType} />
               )}
+            />
 
-            <Field>
-              Data:
-              <div>{data.rowLabel.date.label}</div>
-            </Field>
-          </Infos>
+            <Field label='Status:' value={data.rowLabel.status.label} />
 
-          {aditionalData?.voucherUrl ? (
-            <div id='doc'>
+            {requestData?.linkedin && (
+              <Field label='Linkedin:' value={requestData?.linkedin} />
+            )}
+
+            {requestData?.lattes && (
+              <Field label='Lattes:' value={requestData?.lattes} />
+            )}
+
+            {requestData?.orcid && (
+              <Field label='Orcid:' value={requestData?.orcid} />
+            )}
+
+            <Field label='Email:' value={aditionalData?.email} />
+
+            {!!(
+              data.rowLabel.role.name !== 'moderator' && requestData?.course_id
+            ) && <Field value={aditionalData?.course} label='Curso' />}
+
+            <Field label='Data:' value={data.rowLabel.date.label} />
+
+            {requestData?.pretext && (
+              <Pretext>
+                Justificativa: <p>{requestData?.pretext}</p>
+              </Pretext>
+            )}
+          </GeneralInfo>
+
+          {aditionalData?.voucherUrl && (
+            <Voucher>
               <iframe src={aditionalData?.voucherUrl} frameBorder='0' />
-            </div>
-          ) : (
-            <></>
+            </Voucher>
           )}
 
-          {data.rowValue.request?.data.pretext ? (
-            <div id='pretext'>
-              Justificativa:
-              <p>{data.rowValue.request?.data.pretext}</p>
-            </div>
-          ) : (
-            <></>
-          )}
+          <Radios>
+            <Radio
+              id='accept'
+              name='response'
+              label='Aceitar'
+              ref={acceptRef}
+              onChange={(e: any) => {
+                acceptRef.current?.changeCheck(true)
+                e.target.checked && setResponse('accepted')
+                rejectRef.current?.changeCheck(false)
+              }}
+            />
+
+            <Radio
+              name='response'
+              id='reject'
+              label='Recusar'
+              ref={rejectRef}
+              onChange={(e: any) => {
+                rejectRef.current?.changeCheck(true)
+                e.target.checked && setResponse('rejected')
+                acceptRef.current?.changeCheck(false)
+              }}
+            />
+          </Radios>
 
           {!himselfModeratorRequest && (
-            <>
-              <div id='radios'>
-                <div id='radioAccept'>
-                  <input
-                    id='accept'
-                    type='radio'
-                    value='accept'
-                    name='response'
-                    onChange={(e: any) => {
-                      e.target.checked && setButtonClicked('accepted')
-                    }}
-                  />
+            <Form
+              loading
+              method='patch'
+              path={formPath()}
+              schema={formSchema(response)}
+              afterResData={afterResponseSubmit}
+            >
+              <Textarea
+                id='feedback'
+                name='feedback'
+                placeholder='Deixe uma resposta...'
+                maxLength={500}
+              />
 
-                  <label
-                    htmlFor='accept'
-                    onClick={() => {
-                      acceptRef.current?.changeCheck(true)
-                      rejectRef.current?.changeCheck(false)
-                    }}
-                  >
-                    <CheckboxIcon
-                      ref={acceptRef}
-                      primary={theme.colors.secondary}
-                      secondary={theme.colors.primary}
-                    />
-                    Aceitar
-                  </label>
-
-                  <div className='wrapper' />
-                </div>
-
-                <div id='radioReject'>
-                  <input
-                    id='reject'
-                    type='radio'
-                    value='reject'
-                    name='response'
-                    defaultChecked
-                    onChange={(e: any) => {
-                      e.target.checked && setButtonClicked('rejected')
-                    }}
-                  />
-
-                  <label
-                    htmlFor='reject'
-                    onClick={() => {
-                      acceptRef.current?.changeCheck(false)
-                      rejectRef.current?.changeCheck(true)
-                    }}
-                  >
-                    <CheckboxIcon ref={rejectRef} />
-                    Recusar
-                  </label>
-
-                  <div className='wrapper' />
-                </div>
-              </div>
-
-              <Form
-                loading
-                method='patch'
-                afterResData={afterResponseSubmit}
-                schema={
-                  buttonClicked === 'rejected'
-                    ? Yup.object({
-                        feedback: Yup.string().required(
-                          'Ao recusar deve-se enviar uma justificativa'
-                        )
-                      })
-                    : Yup.object({
-                        feedback: Yup.string()
-                      })
-                }
-                path={
-                  buttonClicked === 'rejected'
-                    ? `user/role/request/reject/${data.rowValue.request?.id}`
-                    : `user/role/request/accept/${data.rowValue.request?.id}`
-                }
-              >
-                <Textarea
-                  id='feedback'
-                  name='feedback'
-                  placeholder='Deixe uma resposta...'
-                  maxLength={500}
-                />
-
-                <Submit id='cy-submit'>Enviar resposta</Submit>
-              </Form>
-            </>
+              <Submit>Enviar resposta</Submit>
+            </Form>
           )}
         </>
       ) : (
-        <div id='dots'>
-          <DotsLoader color={theme.colors.secondary} />
-        </div>
+        <DotsLoader color={theme.colors.secondary} />
       )}
     </Style>
   )

@@ -1,3 +1,5 @@
+import { Response } from '../'
+
 export interface PeriodsType {
   confirm: number
   dispatch: number
@@ -15,4 +17,8 @@ export interface SeasonType {
   current_period: 'confirm' | 'dispatch' | 'evaluate' | 'in_progress'
 }
 
-export type SeasonsResType = SeasonType[]
+export type SeasonsType = SeasonType[]
+
+export interface SeasonsResType extends Response {
+  seasons: SeasonsType
+}
