@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Style, { Field, Infos } from './styles'
 
+import { StatusTypes } from 'utils/status'
+
 import api from 'services/api'
 
 import { RootState } from 'store'
@@ -13,8 +15,11 @@ import TrashIcon from 'assets/global/TrashIcon'
 import Avatar from 'components/User/Avatar'
 import Form, { Submit, Textarea } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
+import { BodyRowType } from 'components/Table'
 
 import { EmailsResType, EmailsType } from 'types/Responses/user/emails'
+import { RoleType } from 'types/Responses/user/roles'
+import { CourseResType } from 'types/Responses/university/courses'
 
 import { GlobalContext } from 'App'
 import { motion } from 'framer-motion'
@@ -22,24 +27,31 @@ import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 import * as Yup from 'yup'
 
-const ResponseContent = ({ data, resetTable, onCloseClick }: any) => {
+interface ResponseContentProps {
+  data: BodyRowType
+  resetTable: () => void
+  onCloseClick: () => void
+}
+
+const ResponseContent = ({
+  data,
+  resetTable,
+  onCloseClick
+}: ResponseContentProps) => {
+  const { popupRef } = useContext(GlobalContext)
+  const theme = useContext(ThemeContext)
   const { user } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
-  const { popupRef } = useContext(GlobalContext)
-  const theme = useContext(ThemeContext)
 
   const acceptRef = useRef<CheckboxIconMethods>(null)
   const rejectRef = useRef<CheckboxIconMethods>(null)
 
-  const selectedData = data?.selectedData
-  const normalData = data?.data
-
   const [buttonClicked, setButtonClicked] = useState('rejected')
+  const [aditionalData, setAditionalData] =
+    useState<{ emails: EmailsType; course: string; voucherUrl?: string }>()
 
-  const himselfModeratorRequest = user?.id === selectedData?.user.id
-
-  const [emails, setEmails] = useState<EmailsType>()
+  const himselfModeratorRequest = user?.id === data.rowValue.user?.id
 
   const onTrashClick = () => {
     data &&
@@ -47,7 +59,7 @@ const ResponseContent = ({ data, resetTable, onCloseClick }: any) => {
         type: 'warning',
         message: 'Tem certeza que deseja remover esta solicitação?',
         onOkClick: async () => {
-          await api.delete(`user/role/request/${selectedData?.request.id}`)
+          await api.delete(`user/role/request/${data.rowValue.request?.id}`)
           resetTable()
           onCloseClick()
         },
@@ -71,7 +83,7 @@ const ResponseContent = ({ data, resetTable, onCloseClick }: any) => {
     else
       switch (res.error) {
         case 'Request not found!':
-          if (data?.data.status === 'rejected')
+          if (data.rowLabel.status.name === 'rejected')
             popupRef?.current?.configPopup({
               setModal: true,
               type: 'error',
@@ -97,16 +109,38 @@ const ResponseContent = ({ data, resetTable, onCloseClick }: any) => {
 
   useEffect(() => {
     ;(async () => {
+      let voucherUrl
+      const universityId = data.rowValue.request.data.university_id
+      const campusId = data.rowValue.request.data.campus_id
+      const courseId = data.rowValue.request.data.course_id
+      const voucherId = data.rowValue.request.data.voucher_uuid
+
       const { emails }: EmailsResType = await api.get(
-        `users/${selectedData?.user.id}/emails`
+        `users/${data.rowValue.user?.id}/emails`
       )
 
-      setEmails(emails)
+      // const { course }: CourseResType = await api.get(
+      //   `/universities/${universityId}/campus/${campusId}/courses/${courseId}`
+      // )
+
+      const course = { name: 'Engenharia da Computação' }
+      if (voucherId) {
+        const { url } = await api.get(
+          `users/roles/requests/voucher/${voucherId}`
+        )
+
+        voucherUrl = url
+      }
+
+      console.log(data)
+      setAditionalData({ emails, course: course.name, voucherUrl })
     })()
-  }, [selectedData?.user.id])
+  }, [data])
 
   return (
     <Style>
+      <CloseIcon onClick={onCloseClick} />
+
       {data ? (
         <>
           {!himselfModeratorRequest && (
@@ -116,87 +150,90 @@ const ResponseContent = ({ data, resetTable, onCloseClick }: any) => {
             </motion.button>
           )}
 
-          <CloseIcon onClick={onCloseClick} />
-
-          <Infos status={normalData?.status} userRole={normalData?.role}>
+          <Infos
+            status={data.rowLabel.status.name as StatusTypes}
+            userRole={data.rowLabel.role.name as RoleType}
+          >
             <div id='title'>Informações</div>
 
             <hr />
 
             <Field id='avatar'>
-              <Avatar size={120} avatarId={selectedData?.user.avatar_uuid} />
+              <Avatar size={120} avatarId={data.rowValue.user?.avatar_uuid} />
             </Field>
 
             <Field>
               Nome:
-              <div>{selectedData?.user.full_name}</div>
+              <div>{data.rowValue.user?.full_name}</div>
             </Field>
 
             <Field>
               Papel:
-              <div id='role'>{normalData?.role}</div>
+              <div id='role'>{data.rowLabel.role.label}</div>
             </Field>
 
             <Field>
               Status:
-              <div id='status'>{normalData?.status}</div>
+              <div id='status'>{data.rowLabel.status.label}</div>
             </Field>
 
-            {selectedData?.request.data.linkedin && (
+            {data.rowValue.request?.data.linkedin && (
               <Field>
                 Linkedin:
-                <div>{selectedData?.request.data.linkedin}</div>
+                <div>{data.rowValue.request?.data.linkedin}</div>
               </Field>
             )}
 
-            {selectedData?.request.data.lattes && (
+            {data.rowValue.request?.data.lattes && (
               <Field>
                 Lattes:
-                <div>{selectedData?.request.data.lattes}</div>
+                <div>{data.rowValue.request?.data.lattes}</div>
               </Field>
             )}
 
-            {selectedData?.request.data.orcid && (
+            {data.rowValue.request?.data.orcid && (
               <Field>
                 Orcid:
-                <div>{selectedData?.request.data.orcid}</div>
+                <div>{data.rowValue.request?.data.orcid}</div>
               </Field>
             )}
 
             <Field>
               Email:
-              <div>{emails?.filter(({ main }: any) => main)[0]?.address}</div>
+              <div>
+                {
+                  aditionalData?.emails?.filter(({ main }: any) => main)[0]
+                    ?.address
+                }
+              </div>
             </Field>
 
-            {normalData?.role !== 'moderator' &&
-              selectedData?.request.data.course_id && (
+            {data.rowLabel.role.name !== 'moderator' &&
+              data.rowValue.request?.data.course_id && (
                 <Field>
                   Curso:
-                  <div>CURSO</div>
+                  <div>{aditionalData?.course}</div>
                 </Field>
               )}
 
             <Field>
               Data:
-              <div>{selectedData?.request.created_at}</div>
+              <div>{data.rowLabel.date.label}</div>
             </Field>
           </Infos>
 
-          {selectedData?.request.data.voucher_uuid ? (
+          {aditionalData?.voucherUrl ? (
             <div id='doc'>
-              <iframe
-                src={selectedData?.request.data.voucher_uuid}
-                frameBorder='0'
-              />
+              <iframe src={aditionalData?.voucherUrl} frameBorder='0' />
             </div>
           ) : (
             <></>
           )}
 
-          {selectedData?.request.data.pretext ? (
+          {data.rowValue.request?.data.pretext ? (
             <div id='pretext'>
               Justificativa:
-              <p>{selectedData?.request.data.pretext}</p>
+              <p>{data.rowValue.request?.data.pretext}</p>
             </div>
           ) : (
             <></>
@@ -278,8 +315,8 @@ const ResponseContent = ({ data, resetTable, onCloseClick }: any) => {
                 }
                 path={
                   buttonClicked === 'rejected'
-                    ? `user/role/request/reject/${selectedData?.request.id}`
-                    : `user/role/request/accept/${selectedData?.request.id}`
+                    ? `user/role/request/reject/${data.rowValue.request?.id}`
+                    : `user/role/request/accept/${data.rowValue.request?.id}`
                 }
               >
                 <Textarea

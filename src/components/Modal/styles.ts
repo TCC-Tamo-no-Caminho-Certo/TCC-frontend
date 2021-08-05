@@ -40,10 +40,11 @@ const Style = styled.div<StyleProps>`
 
   transform: ${({ translateY }) => `translate(-50%, ${translateY})`};
 
-  #CloseIcon {
+  #ModalCloseIcon {
     position: absolute;
     top: ${({ closeTop }) => closeTop};
     right: ${({ closeRight }) => closeRight};
+    z-index: ${({ zIndex }) => zIndex + 10};
 
     width: 16px;
     height: 16px;

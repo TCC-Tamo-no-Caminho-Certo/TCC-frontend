@@ -23,9 +23,6 @@ const useSortableData = (items: any, config?: SortableConfig) => {
           const valueA = a.label[sortConfig.indexer]
           const valueB = b.label[sortConfig.indexer]
 
-          console.log('valuea', valueA)
-          console.log('valueb', valueB)
-
           if (valueA < valueB)
             return sortConfig.direction === 'ascending' ? -1 : 1
 

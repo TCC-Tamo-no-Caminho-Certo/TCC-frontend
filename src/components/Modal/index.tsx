@@ -22,12 +22,13 @@ export interface ModalProps {
   translateY?: string
   children?: ReactElement | ReactElement[]
   onClose?: () => void
+  closeIcon?: boolean
 }
 
 interface ModalConfig {
   props?: ModalProps
   content?: ReactElement | ReactElement[] | string
-  close?: { top: number; right: number; color: string }
+  close?: { top?: number; right?: number; color?: string }
 }
 
 export interface ModalMethods {
@@ -41,6 +42,7 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
   (
     {
       children,
+      closeIcon = true,
       onClose,
       top = '50vh',
       bottom = 'auto',
@@ -101,17 +103,19 @@ const Modal = forwardRef<ModalMethods, ModalProps>(
         />
 
         <Style
-          top={top}
+          top={props?.top || top}
           ref={modalRef}
-          zIndex={zindex}
-          bottom={bottom}
-          translateY={translateY}
+          zIndex={props?.zIndex || zindex}
+          bottom={props?.bottom || bottom}
+          translateY={props?.translateY || translateY}
           closeTop={close?.top ? `${close.top}px` : '8px'}
           closeColor={close?.color || theme.colors.secondary}
           closeRight={close?.right ? `${close.right}px` : '8px'}
           {...rest}
         >
-          <CloseIcon onClick={onBackgroundClick} />
+          {closeIcon && (
+            <CloseIcon id='ModalCloseIcon' onClick={onBackgroundClick} />
+          )}
 
           {content || children}
         </Style>

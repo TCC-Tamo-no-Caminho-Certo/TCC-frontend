@@ -1,19 +1,34 @@
-import React, { ReactElement, useCallback, useEffect, useState } from 'react'
+import React, {
+  forwardRef,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useState
+} from 'react'
 import Style from './styles'
 
+import RefreshIcon from 'assets/global/RefreshIcon'
+
 import DotsLoader from 'components/DotsLoader'
+
+export interface TableMethods {
+  onRefreshIconClick: () => void
+}
+
+type LabelName = { label: string; name: string }
 
 export type HeaderType = {
   label: string
   name: string
-  tdWrapper?: (_label: string) => ReactElement | ReactElement[]
-  thWrapper?: (_label: string) => ReactElement | ReactElement[]
+  tdWrapper?: (_data: LabelName) => ReactElement | ReactElement[]
+  thWrapper?: (_data: LabelName) => ReactElement | ReactElement[]
 }
 
 export type BodyRowType = {
-  rowValue: Object
+  rowValue: any
   rowLabel: {
-    [key: string]: { label: string; value: string }
+    [key: string]: { label: string; name: string }
   }
 }
 
@@ -25,6 +40,8 @@ interface TableStateType {
 interface TableProps {
   getData: GetDataType
   headerRow: HeaderType[]
+  onDataClick?: (_data: BodyRowType) => void
+  onRefreshClick?: () => void
 }
 
 export type GetDataType = () => Promise<BodyRowType[]>
@@ -33,7 +50,7 @@ const initialTableSort: TableStateType = {
   items: [
     {
       rowLabel: {
-        initialTableRow: { label: '', value: '' }
+        initialTableRow: { label: '', name: '' }
       },
       rowValue: []
     }
@@ -41,84 +58,104 @@ const initialTableSort: TableStateType = {
   direction: 'up'
 }
 
-const Table = ({ getData, headerRow }: TableProps) => {
-  const [tableSort, setTableSort] = useState<TableStateType>(initialTableSort)
+const Table = forwardRef<TableMethods, TableProps>(
+  ({ getData, headerRow, onRefreshClick, onDataClick }, ref) => {
+    const [tableSort, setTableSort] = useState<TableStateType>(initialTableSort)
 
-  const onTrClick = (data: BodyRowType) => {
-    console.log(data)
-  }
+    const onRefreshIconClick = () => {
+      onRefreshClick && onRefreshClick()
+    }
 
-  const onThClick = (indexer: string) => {
-    setTableSort(({ items, direction }) => {
-      const sortabledItems = [...items]
-      sortabledItems.sort((a, b) => {
-        const valueA = a.rowLabel[indexer].value
-        const valueB = b.rowLabel[indexer].value
+    const onTrClick = (data: BodyRowType) => {
+      onDataClick && onDataClick(data)
+    }
 
-        if (valueA < valueB) return direction === 'up' ? -1 : 1
-        if (valueA > valueB) return direction === 'up' ? 1 : -1
-        return 0
+    const onThClick = (indexer: string) => {
+      setTableSort(({ items, direction }) => {
+        const sortabledItems = [...items]
+        sortabledItems.sort((a, b) => {
+          const valueA = a.rowLabel[indexer].name
+          const valueB = b.rowLabel[indexer].name
+
+          if (valueA < valueB) return direction === 'up' ? -1 : 1
+          if (valueA > valueB) return direction === 'up' ? 1 : -1
+          return 0
+        })
+
+        return {
+          items: sortabledItems,
+          direction: direction === 'up' ? 'down' : 'up'
+        }
       })
+    }
 
-      return {
-        items: sortabledItems,
-        direction: direction === 'up' ? 'down' : 'up'
-      }
-    })
-  }
+    const makeRequest = useCallback(async () => {
+      const items = await getData()
 
-  const makeRequest = useCallback(async () => {
-    const items = await getData()
+      setTableSort(({ direction }) => ({ direction, items }))
+    }, [getData])
 
-    setTableSort(({ direction }) => ({ direction, items }))
-  }, [getData])
+    useEffect(() => {
+      makeRequest()
+    }, [makeRequest])
 
-  useEffect(() => {
-    makeRequest()
-  }, [makeRequest])
+    useImperativeHandle(ref, () => ({ onRefreshIconClick }))
 
-  return (
-    <Style>
-      <table>
-        <thead>
-          <tr>
-            {headerRow.map(({ label, name, thWrapper }) =>
-              thWrapper ? (
-                <th onClick={() => onThClick(name)} key={name}>
-                  {thWrapper(label)}
-                </th>
-              ) : (
-                <th onClick={() => onThClick(name)} key={name}>
-                  {label}
-                </th>
-              )
-            )}
-          </tr>
-        </thead>
+    return (
+      <Style className='Table' ref={ref as any}>
+        <RefreshIcon onClick={onRefreshIconClick} id='TableRefreshIcon' />
 
-        <tbody>
-          {tableSort.items?.map(({ rowLabel, rowValue }, trIndex) => (
-            <tr key={trIndex} onClick={() => onTrClick({ rowLabel, rowValue })}>
-              {headerRow.map(({ name, tdWrapper }, tdIndex) => {
-                if (rowLabel[name])
-                  return tdWrapper ? (
-                    <td key={tdIndex}>{tdWrapper(rowLabel[name].label)}</td>
-                  ) : (
-                    <td key={tdIndex}>{rowLabel[name].label}</td>
-                  )
-
-                return (
-                  <td key={tdIndex}>
-                    <DotsLoader size={32} color='white' />
-                  </td>
+        <table>
+          <thead>
+            <tr>
+              {headerRow.map(({ label, name, thWrapper }) =>
+                thWrapper ? (
+                  <th onClick={() => onThClick(name)} key={name} id={name}>
+                    {thWrapper({ label, name })}
+                  </th>
+                ) : (
+                  <th onClick={() => onThClick(name)} key={name} id={name}>
+                    {label}
+                  </th>
                 )
-              })}
+              )}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </Style>
-  )
-}
+          </thead>
+
+          <tbody>
+            {tableSort.items?.map(({ rowLabel, rowValue }, trIndex) => (
+              <tr
+                key={trIndex}
+                onClick={() => onTrClick({ rowLabel, rowValue })}
+              >
+                {headerRow.map(({ name, tdWrapper }, tdIndex) => {
+                  if (rowLabel[name])
+                    return tdWrapper ? (
+                      <td id={rowLabel[name].name} key={tdIndex}>
+                        {tdWrapper({
+                          label: rowLabel[name].label,
+                          name: rowLabel[name].name
+                        })}
+                      </td>
+                    ) : (
+                      <td id={rowLabel[name].name} key={tdIndex}>
+                        {rowLabel[name].label}
+                      </td>
+                    )
+
+                  return (
+                    <td className='loading' key={tdIndex}>
+                      <DotsLoader size={32} color='white' />
+                    </td>
+                  )
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Style>
+    )
+  }
+)
 
 export default Table

@@ -1,4 +1,22 @@
+import { getStatusColor, StatusTypes } from 'utils/status'
+
 import styled from 'styled-components'
+
+interface CircleProps {
+  status?: StatusTypes
+}
+
+export const Circle = styled.div<CircleProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+
+  background-color: ${({ theme, status }) => getStatusColor(theme, status)};
+`
 
 const Style = styled.section`
   display: flex;
@@ -18,55 +36,12 @@ const Style = styled.section`
 
     width: max(100%, 280px);
     padding: 16px 16px 0px 8px;
+    margin-bottom: 24px;
   }
 
   .Table {
-    th,
-    td {
-      &#name {
-        width: 100%;
-      }
-
-      &#role {
-        min-width: 100px;
-      }
-
-      &#created_at {
-        display: flex;
-        justify-content: flex-end;
-
-        min-width: 82px;
-      }
-    }
-
-    th {
-      &#created_at button {
-        display: flex;
-        justify-content: center;
-      }
-
-      &#statusCircle {
-        &,
-        button {
-          min-width: 32px;
-        }
-
-        button {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-      }
-    }
-
-    td {
-      &#status {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        min-width: 32px;
-      }
+    #name {
+      width: 80%;
     }
   }
 
@@ -79,4 +54,5 @@ const Style = styled.section`
 
 export default Style
 
+Circle.displayName = 'Circle-Style'
 Style.displayName = 'Requests-Style'

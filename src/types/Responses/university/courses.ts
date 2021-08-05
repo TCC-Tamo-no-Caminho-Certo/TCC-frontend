@@ -11,3 +11,7 @@ export type CoursesType = CourseType[]
 export interface CoursesResType extends Response {
   courses: CoursesType
 }
+
+export interface CourseResType extends Response {
+  course: CourseType
+}

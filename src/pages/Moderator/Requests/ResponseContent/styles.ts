@@ -1,8 +1,9 @@
 import { getStatusColor, StatusTypes } from 'utils/status'
 
+import { RoleType } from 'types/Responses/user/roles'
+
 import { darken } from 'polished'
 import styled, { css } from 'styled-components'
-import { RoleType } from 'types/Responses/user/roles'
 
 interface InfosProps {
   userRole?: RoleType
@@ -17,6 +18,7 @@ export const Field = styled.div`
 
   padding: 8px;
   font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
+  color: ${({ theme }) => theme.colors.secondary};
 
   div {
     margin-top: 8px;
@@ -92,7 +94,7 @@ const Style = styled.div`
   display: flex;
   flex-direction: column;
 
-  height: 95vh;
+  height: 80vh;
   border-radius: 8px;
   overflow-y: scroll;
   width: max(100vw, 320px);
@@ -138,14 +140,12 @@ const Style = styled.div`
   #CloseIcon {
     position: absolute;
     top: 22px;
-    right: 24px;
+    right: 16px;
+
+    width: 18px;
+    height: 18px;
 
     stroke: ${({ theme }) => theme.colors.secondary};
-
-    path {
-      width: 16px;
-      height: 16px;
-    }
   }
 
   #delete {
@@ -215,12 +215,10 @@ const Style = styled.div`
       }
 
       &#radioAccept {
-        &:hover {
-          .wrapper {
-            width: 100%;
+        &:hover .wrapper {
+          width: 100%;
 
-            background-color: ${({ theme }) => darken(0.1, theme.colors.green)};
-          }
+          background-color: ${({ theme }) => darken(0.1, theme.colors.green)};
         }
 
         .wrapper {
@@ -231,12 +229,10 @@ const Style = styled.div`
       &#radioReject {
         border-radius: 0px 8px 8px 0px;
 
-        &:hover {
-          .wrapper {
-            width: 100%;
+        &:hover .wrapper {
+          width: 100%;
 
-            background-color: ${({ theme }) => theme.colors.red};
-          }
+          background-color: ${({ theme }) => theme.colors.red};
         }
 
         .wrapper {
@@ -284,12 +280,10 @@ const Style = styled.div`
     }
   }
 
-  #feedback {
-    p {
-      margin-top: 8px;
-      word-wrap: break-word;
-      font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
-    }
+  #feedback p {
+    margin-top: 8px;
+    word-wrap: break-word;
+    font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.8rem);
   }
 
   #dots {
