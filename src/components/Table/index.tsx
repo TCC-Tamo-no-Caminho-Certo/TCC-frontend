@@ -1,6 +1,5 @@
 import React, {
   forwardRef,
-  ReactElement,
   useCallback,
   useContext,
   useEffect,
@@ -9,6 +8,15 @@ import React, {
 } from 'react'
 import Style from './styles'
 
+import {
+  BodyRowType,
+  GetDataType,
+  HeaderType,
+  TableMethods,
+  TableProps,
+  TableStateType
+} from './types'
+
 import RefreshIcon from 'assets/global/RefreshIcon'
 import ArrowIcon, { arrowAnimation } from 'assets/global/ArrowIcon'
 
@@ -16,50 +24,11 @@ import DotsLoader from 'components/DotsLoader'
 
 import { ThemeContext } from 'styled-components'
 
-export interface TableMethods {
-  onRefreshIconClick: () => void
-}
-
-type LabelName = { label: string; name: string }
-
-export type HeaderType = {
-  label: string
-  name: string
-  tdWrapper?: (_data: LabelName) => ReactElement | ReactElement[]
-  thWrapper?: (_data: LabelName) => ReactElement | ReactElement[]
-}
-
-export type BodyRowType = {
-  rowValue: any
-  rowLabel: {
-    [key: string]: { label: string; name: string }
-  }
-}
-
-interface TableStateType {
-  direction: 'up' | 'down'
-  items: BodyRowType[]
-}
-
-interface TableProps {
-  getData: GetDataType
-  headerRow: HeaderType[]
-  onDataClick?: (_data: BodyRowType) => void
-  onRefreshClick?: () => void
-}
-
-export type GetDataType = () => Promise<BodyRowType[]>
-
 const initialTableSort: TableStateType = {
+  direction: 'up',
   items: [
-    {
-      rowLabel: {
-        initialTableRow: { label: '', name: '' }
-      },
-      rowValue: []
-    }
-  ],
-  direction: 'up'
+    { rowLabel: { initialTableRow: { label: '', name: '' } }, rowValue: [] }
+  ]
 }
 
 const Table = forwardRef<TableMethods, TableProps>(
@@ -127,9 +96,9 @@ const Table = forwardRef<TableMethods, TableProps>(
     return (
       <Style className='Table' ref={ref as any}>
         <RefreshIcon
+          id='TableRefreshIcon'
           animate={loading}
           onClick={onRefreshIconClick}
-          id='TableRefreshIcon'
         />
 
         <table>
@@ -205,5 +174,7 @@ const Table = forwardRef<TableMethods, TableProps>(
     )
   }
 )
+
+export type { GetDataType, BodyRowType, HeaderType, TableMethods }
 
 export default Table

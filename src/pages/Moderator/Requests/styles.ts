@@ -1,10 +1,18 @@
 import { getStatusColor, StatusTypes } from 'utils/status'
 
+import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
 interface CircleProps {
   status?: StatusTypes
 }
+
+export const Filter = styled.div`
+  width: 100%;
+  padding: 16px;
+`
+
+export const FilterButton = styled(motion.button).attrs({ type: 'button' })``
 
 export const Circle = styled.div<CircleProps>`
   display: flex;

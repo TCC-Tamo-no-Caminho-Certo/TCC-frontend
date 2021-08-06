@@ -6,6 +6,10 @@ const Style = styled.div`
 
   width: 100%;
 
+  form {
+    background-color: white;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
