@@ -4,22 +4,28 @@ import React, {
   useContext,
   useEffect,
   useImperativeHandle,
+  useRef,
   useState
 } from 'react'
-import Style from './styles'
+import Style, { FilterButton } from './styles'
 
 import {
   BodyRowType,
   GetDataType,
   HeaderType,
+  MakeRequestParams,
   TableMethods,
   TableProps,
   TableStateType
 } from './types'
 
+import useCombinedRefs from 'hooks/useCombinedRefs'
+
+import LoupeIcon from 'assets/Inputs/LoupeIcon'
 import RefreshIcon from 'assets/global/RefreshIcon'
 import ArrowIcon, { arrowAnimation } from 'assets/global/ArrowIcon'
 
+import Form, { Submit } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
 
 import { ThemeContext } from 'styled-components'
@@ -32,18 +38,23 @@ const initialTableSort: TableStateType = {
 }
 
 const Table = forwardRef<TableMethods, TableProps>(
-  ({ getData, headerRow, onRefreshClick, onDataClick }, ref) => {
+  ({ getData, headerRow, onRefreshClick, onDataClick, children }, ref) => {
     const theme = useContext(ThemeContext)
+    const tableRef = useRef<HTMLDivElement>(null)
+
+    const auxRef = useCombinedRefs([ref, tableRef])
 
     const [tableSort, setTableSort] = useState<TableStateType>(initialTableSort)
     const initialArrows = headerRow.map(() => 'right')
-
     const [arrows, setArrows] = useState(initialArrows)
     const [loading, setLoading] = useState(true)
+    const [clearFilters, setClearFilters] = useState(false)
+
+    let page = 1
 
     const onRefreshIconClick = () => {
       setLoading(true)
-      makeRequest()
+      makeRequest({ page: 1 })
       onRefreshClick && onRefreshClick()
     }
 
@@ -79,63 +90,116 @@ const Table = forwardRef<TableMethods, TableProps>(
       })
     }
 
-    const makeRequest = useCallback(async () => {
-      setLoading(true)
-      const items = await getData()
-      setLoading(false)
+    const onTableScroll = () => {
+      const table = auxRef.current
 
-      setTableSort(({ direction }) => ({ direction, items }))
-    }, [getData])
+      if (table) {
+        const position = Math.ceil(table.scrollHeight - table.scrollTop)
+
+        if (position <= table.clientHeight && !clearFilters) {
+          page += 1
+          makeRequest({ page, prev: true })
+        }
+      }
+    }
+
+    const makeRequest = useCallback(
+      async ({ filters, page, prev }: MakeRequestParams) => {
+        setLoading(true)
+        console.log('req')
+
+        const items = await getData({ filters, page })
+
+        setLoading(false)
+
+        prev
+          ? setTableSort(prev => ({
+              direction: prev.direction,
+              items: [...prev.items, ...items]
+            }))
+          : setTableSort(({ direction }) => ({ direction, items }))
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      },
+      [getData]
+    )
 
     useEffect(() => {
-      makeRequest()
+      makeRequest({ page: 1 })
     }, [makeRequest])
 
     useImperativeHandle(ref, () => ({ onRefreshIconClick }))
 
     return (
-      <Style className='Table' ref={ref as any}>
-        <RefreshIcon
-          id='TableRefreshIcon'
-          animate={loading}
-          onClick={onRefreshIconClick}
-        />
+      <>
+        <Form
+          className='TableFilters'
+          getData={data => {
+            makeRequest({ filters: data, page: 1 })
+          }}
+        >
+          {!clearFilters && children}
 
-        <table>
-          <thead>
-            <tr>
-              {headerRow.map(({ label, name, thWrapper }, index) =>
-                thWrapper ? (
-                  <th
-                    onClick={() => onThClick(name, index)}
-                    key={name}
-                    id={name}
-                  >
-                    {thWrapper({ label, name })}
-                  </th>
-                ) : (
-                  <th
-                    onClick={() => onThClick(name, index)}
-                    key={name}
-                    id={name}
-                  >
-                    {!loading && (
-                      <ArrowIcon
-                        className='ArrowIcon'
-                        initial='initialRight'
-                        animate={arrows[index]}
-                        variants={arrowAnimation}
-                      />
-                    )}
+          <FilterButton className='FilterButton'>
+            <Submit>
+              <LoupeIcon />
+              Buscar
+            </Submit>
 
-                    {label}
-                  </th>
-                )
-              )}
-            </tr>
-          </thead>
+            <button
+              type='button'
+              onClick={() => {
+                setClearFilters(true)
+                makeRequest({ page: 1 })
+                setTimeout(() => setClearFilters(false), 300)
+              }}
+            >
+              Limpar filtros
+            </button>
+          </FilterButton>
+        </Form>
 
-          {!loading && (
+        <Style className='Table' ref={auxRef as any} onScroll={onTableScroll}>
+          <RefreshIcon
+            id='TableRefreshIcon'
+            animate={loading}
+            onClick={onRefreshIconClick}
+          />
+
+          <table>
+            <thead>
+              <tr>
+                {headerRow.map(({ label, name, thWrapper }, index) =>
+                  thWrapper ? (
+                    <th
+                      onClick={() => onThClick(name, index)}
+                      key={name}
+                      className={name}
+                    >
+                      {thWrapper({ label, name })}
+                    </th>
+                  ) : (
+                    <th
+                      onClick={() => onThClick(name, index)}
+                      key={name}
+                      className={name}
+                    >
+                      {!loading && (
+                        <ArrowIcon
+                          className='ArrowIcon'
+                          initial='initialRight'
+                          animate={arrows[index]}
+                          variants={arrowAnimation}
+                        />
+                      )}
+
+                      {label}
+                    </th>
+                  )
+                )}
+              </tr>
+            </thead>
+
             <tbody>
               {tableSort.items?.map(({ rowLabel, rowValue }, trIndex) => (
                 <tr
@@ -145,14 +209,22 @@ const Table = forwardRef<TableMethods, TableProps>(
                   {headerRow.map(({ name, tdWrapper }, tdIndex) => {
                     if (rowLabel[name])
                       return tdWrapper ? (
-                        <td id={rowLabel[name].name} key={tdIndex}>
+                        <td
+                          key={tdIndex}
+                          className={name}
+                          id={rowLabel[name].name}
+                        >
                           {tdWrapper({
                             label: rowLabel[name].label,
                             name: rowLabel[name].name
                           })}
                         </td>
                       ) : (
-                        <td id={rowLabel[name].name} key={tdIndex}>
+                        <td
+                          key={tdIndex}
+                          className={name}
+                          id={rowLabel[name].name}
+                        >
                           {rowLabel[name].label}
                         </td>
                       )
@@ -162,15 +234,15 @@ const Table = forwardRef<TableMethods, TableProps>(
                 </tr>
               ))}
             </tbody>
-          )}
-        </table>
+          </table>
 
-        {loading && (
-          <div id='loader'>
-            <DotsLoader color={theme.colors.secondary} />
-          </div>
-        )}
-      </Style>
+          {loading && (
+            <div id='loader'>
+              <DotsLoader color={theme.colors.secondary} />
+            </div>
+          )}
+        </Style>
+      </>
     )
   }
 )

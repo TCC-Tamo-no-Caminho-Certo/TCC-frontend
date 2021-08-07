@@ -1,69 +1,137 @@
 import { darken } from 'polished'
 import styled from 'styled-components'
 
+export const FilterButton = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  width: 100%;
+
+  .Submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 40px;
+
+    border-radius: 16px 0 0 16px;
+
+    color: ${({ theme }) => theme.colors.secondary};
+    box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.23);
+    background-color: ${({ theme }) => theme.colors.primary};
+
+    .Icon {
+      height: 16px;
+      margin-right: 12px;
+
+      fill: ${({ theme }) => theme.colors.secondary};
+    }
+
+    & + button {
+      align-self: flex-end;
+
+      height: 40px;
+      width: 200px;
+      padding: 4px 16px;
+      transition: all 0.2s;
+      border-radius: 0 16px 16px 0;
+      font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
+
+      box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.23);
+      color: ${({ theme }) => theme.colors.primary};
+      background-color: ${({ theme }) => theme.colors.secondary};
+
+      &:hover {
+        transform: scale(1.01);
+
+        filter: brightness(1.1);
+      }
+    }
+  }
+`
+
 const Style = styled.div`
   position: relative;
 
   width: 100%;
+  overflow-y: scroll;
 
-  form {
-    background-color: white;
+  &::-webkit-scrollbar {
+    width: 8px;
   }
 
   table {
     width: 100%;
     border-collapse: collapse;
+    overflow-y: scroll;
+    border-spacing: 0px;
 
     th,
     td {
       padding: 8px;
+      user-select: none;
     }
 
-    thead tr {
-      box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.39);
+    thead {
+      z-index: 2;
 
-      th {
-        cursor: pointer;
-        text-align: left;
+      width: 100%;
+      background-color: ${({ theme }) => theme.colors.tertiary};
 
-        .ArrowIcon {
-          width: 18px;
-          margin-right: 8px;
+      tr {
+        box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.39);
 
-          fill: ${({ theme }) => theme.colors.secondary};
-        }
+        th {
+          cursor: pointer;
+          text-align: left;
 
-        &:first-child {
-          padding-left: 40px;
+          .ArrowIcon {
+            width: 18px;
+            margin-right: 8px;
+
+            fill: ${({ theme }) => theme.colors.secondary};
+          }
+
+          &:first-child {
+            padding-left: 40px;
+          }
         }
       }
     }
 
-    tbody tr {
-      &:hover {
-        cursor: pointer;
+    tbody {
+      tr {
+        height: 32px;
 
-        background-color: ${({ theme }) => darken(0.1, theme.colors.tertiary)};
-      }
+        &:hover {
+          cursor: pointer;
 
-      &:first-child td {
-        padding-top: 12px;
-      }
+          background-color: ${({ theme }) =>
+            darken(0.1, theme.colors.tertiary)};
+        }
 
-      &:first-child:hover {
-        box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.39) inset;
+        &:first-child td {
+          padding-top: 12px;
+        }
+
+        &:first-child:hover {
+          box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.39) inset;
+        }
       }
     }
   }
 
   #TableRefreshIcon {
     position: absolute;
+    top: 0;
+    z-index: 3;
 
-    height: 24px;
     width: 18px;
+    height: 24px;
     margin-left: 8px;
-
     transform: translateY(25%);
+
     fill: ${({ theme }) => theme.colors.secondary};
   }
 
@@ -73,9 +141,11 @@ const Style = styled.div`
     justify-content: center;
 
     width: 100%;
+    margin-top: 32px;
   }
 `
 
 export default Style
 
+FilterButton.displayName = 'FilterButton-Style'
 Style.displayName = 'Table-Style'

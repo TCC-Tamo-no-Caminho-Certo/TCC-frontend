@@ -1,5 +1,5 @@
-import React, { useContext, useRef, useState } from 'react'
-import Style, { Circle, Filter, FilterButton } from './styles'
+import React, { useCallback, useContext, useRef } from 'react'
+import Style, { Circle, CircleWrapper } from './styles'
 
 import ResponseContent from './ResponseContent'
 
@@ -7,11 +7,8 @@ import { getStatusLabel, StatusTypes } from 'utils/status'
 import { isoToDate } from 'utils/dates'
 import formatterName from 'utils/formatterName'
 import { getRoleLabel } from 'utils/roles'
-import transition from 'utils/transition'
 
 import api from 'services/api'
-
-import LoupeIcon from 'assets/Inputs/LoupeIcon'
 
 import Table, {
   BodyRowType,
@@ -21,7 +18,7 @@ import Table, {
 } from 'components/Table'
 import Role from 'components/Role'
 import Modal, { ModalMethods } from 'components/Modal'
-import { Datepicker, Select, Submit, Text } from 'components/Form'
+import { Datepicker, Select, Text } from 'components/Form'
 
 import {
   RequestsResType,
@@ -41,8 +38,8 @@ export interface SelectedTableData {
 
 export interface TableData {
   name: string
-  role: RoleType
   date: string
+  role: RoleType
   status: StatusTypes
 }
 
@@ -52,25 +49,15 @@ const headerRow: HeaderType[] = [
     name: 'status',
     thWrapper: () => <Circle />,
     tdWrapper: ({ name }) => (
-      <div
-        style={{
-          display: 'flex',
-          width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
+      <CircleWrapper>
         <Circle status={name as StatusTypes} />
-      </div>
+      </CircleWrapper>
     )
   },
+  { label: 'Nome', name: 'name' },
   {
-    label: 'Nome',
-    name: 'name'
-  },
-  {
-    label: 'Papel',
     name: 'role',
+    label: 'Papel',
     tdWrapper: ({ name }) => <Role role={name as RoleType} />
   },
   { label: 'Data', name: 'date' }
@@ -78,21 +65,17 @@ const headerRow: HeaderType[] = [
 
 const Requests = () => {
   const { colors } = useContext(ThemeContext)
+  const { secondary, red, tertiary, primary } = colors
 
   const modalRef = useRef<ModalMethods>(null)
   const tableRef = useRef<TableMethods>(null)
 
-  const [filters, setFilters] = useState()
-
   const selectStyle = {
     container: (before: any) => ({ ...before }),
-    singleValue: (before: any) => ({ ...before, color: colors.secondary }),
-    multiValueLabel: (before: any) => ({ ...before, color: colors.secondary }),
-    multiValueRemove: (before: any) => ({ ...before, color: colors.secondary }),
-    multiValue: (before: any) => ({
-      ...before,
-      backgroundColor: colors.primary
-    }),
+    singleValue: (before: any) => ({ ...before, color: secondary }),
+    multiValueLabel: (before: any) => ({ ...before, color: secondary }),
+    multiValueRemove: (before: any) => ({ ...before, color: secondary }),
+    multiValue: (before: any) => ({ ...before, backgroundColor: primary }),
     valueContainer: (before: any) => ({
       ...before,
       paddingLeft: 0,
@@ -101,18 +84,16 @@ const Requests = () => {
     menu: (before: any) => ({
       ...before,
       zIndex: 3,
-      color: colors.secondary,
-      backgroundColor: colors.primary,
-      border: `solid 1px ${colors.secondary}`
+      color: secondary,
+      backgroundColor: primary,
+      border: `solid 1px ${secondary}`
     }),
     control: (before: any) => ({
       ...before,
       paddingLeft: 8,
       backgroundColor: 'transparent',
-      border: `solid 1px ${colors.secondary}`,
-      ':hover': {
-        border: `solid 1px ${colors.secondary}`
-      }
+      border: `solid 1px ${secondary}`,
+      ':hover': { border: `solid 1px ${secondary}` }
     })
   }
 
@@ -120,23 +101,23 @@ const Requests = () => {
     ...beforeTheme,
     colors: {
       ...beforeTheme.colors,
-      danger: colors.red,
-      dangerLight: lighten(0.5, colors.red),
-      primary: colors.tertiary,
-      primary25: lighten(0.1, colors.tertiary),
-      primary50: lighten(0.2, colors.tertiary),
-      primary75: lighten(0.3, colors.tertiary),
-      neutral0: colors.secondary,
-      neutral5: colors.secondary,
-      neutral10: colors.secondary,
-      neutral20: colors.secondary,
-      neutral30: colors.secondary,
-      neutral40: colors.secondary,
-      neutral50: colors.secondary,
-      neutral60: colors.secondary,
-      neutral70: colors.secondary,
-      neutral80: colors.secondary,
-      neutral90: colors.secondary
+      danger: red,
+      dangerLight: lighten(0.5, red),
+      primary: tertiary,
+      primary25: lighten(0.1, tertiary),
+      primary50: lighten(0.2, tertiary),
+      primary75: lighten(0.3, tertiary),
+      neutral0: secondary,
+      neutral5: secondary,
+      neutral10: secondary,
+      neutral20: secondary,
+      neutral30: secondary,
+      neutral40: secondary,
+      neutral50: secondary,
+      neutral60: secondary,
+      neutral70: secondary,
+      neutral80: secondary,
+      neutral90: secondary
     }
   })
 
@@ -156,14 +137,15 @@ const Requests = () => {
     modalRef.current?.toggle(true)
   }
 
-  const getTableData: GetDataType = async () => {
+  const getTableData: GetDataType = useCallback(async ({ filters, page }) => {
     const tableData: BodyRowType[] = []
-    const page = 1
     const per_page = 50
 
     const { requests }: RequestsResType = await api.get(
       'users/roles/requests',
-      { data: { page, per_page, filters } }
+      {
+        params: { page, per_page, filters }
+      }
     )
 
     for (let i = 0; i < requests?.length; i++) {
@@ -173,29 +155,26 @@ const Requests = () => {
 
       tableData.push({
         rowLabel: {
-          name: { label: formatterName(user.name), name: user.name },
+          name: { name: user.name, label: formatterName(user.name) },
           role: {
-            label: getRoleLabel(requests[i].role),
-            name: requests[i].role
+            name: requests[i].role,
+            label: getRoleLabel(requests[i].role)
           },
           date: {
-            label: isoToDate(requests[i].created_at, 'day/month/2-year'),
-            name: requests[i].created_at
+            name: requests[i].created_at,
+            label: isoToDate(requests[i].created_at, 'day/month/2-year')
           },
           status: {
-            label: getStatusLabel(requests[i].status),
-            name: requests[i].status
+            name: requests[i].status,
+            label: getStatusLabel(requests[i].status)
           }
         },
-        rowValue: {
-          user,
-          request: requests[i]
-        }
+        rowValue: { user, request: requests[i] }
       })
     }
 
     return tableData
-  }
+  }, [])
 
   return (
     <>
@@ -204,19 +183,20 @@ const Requests = () => {
           <h1>Solicitações</h1>
         </header>
 
-        <Filter
-          getData={data => {
-            setFilters(data)
-          }}
+        <Table
+          ref={tableRef}
+          headerRow={headerRow}
+          getData={getTableData}
+          onDataClick={onTableDataClick}
         >
           <Text
-            name='name'
             type='text'
+            name='full_name'
             autoComplete='off'
             placeholder='Nome'
             textColors={{
-              focused: colors.secondary,
-              unfocused: colors.secondary
+              focused: secondary,
+              unfocused: secondary
             }}
           />
 
@@ -252,50 +232,34 @@ const Requests = () => {
             <Datepicker
               name='from'
               placeholder='De'
-              dateColors={{
-                disabled: colors.red,
-                body: colors.secondary,
-                selected: colors.tertiary,
-                header: darken(0.06, colors.tertiary)
-              }}
               textColors={{
-                focused: colors.secondary,
-                unfocused: colors.secondary
+                focused: secondary,
+                unfocused: secondary
+              }}
+              dateColors={{
+                disabled: red,
+                body: secondary,
+                selected: tertiary,
+                header: darken(0.06, tertiary)
               }}
             />
 
             <Datepicker
               name='to'
               placeholder='Até'
-              dateColors={{
-                disabled: colors.red,
-                body: colors.secondary,
-                selected: colors.tertiary,
-                header: darken(0.06, colors.tertiary)
-              }}
               textColors={{
-                focused: colors.secondary,
-                unfocused: colors.secondary
+                focused: secondary,
+                unfocused: secondary
+              }}
+              dateColors={{
+                disabled: red,
+                body: secondary,
+                selected: tertiary,
+                header: darken(0.06, tertiary)
               }}
             />
           </div>
-
-          <FilterButton animate={{ paddingTop: [700, 0], transition }}>
-            <Submit>
-              <LoupeIcon />
-              Buscar
-            </Submit>
-
-            <button type='button'>Limpar filtros</button>
-          </FilterButton>
-        </Filter>
-
-        <Table
-          ref={tableRef}
-          headerRow={headerRow}
-          getData={getTableData}
-          onDataClick={onTableDataClick}
-        />
+        </Table>
       </Style>
 
       <Modal ref={modalRef} closeIcon={false} />

@@ -26,9 +26,18 @@ export interface TableStateType {
 export interface TableProps {
   getData: GetDataType
   headerRow: HeaderType[]
-  filters?: boolean
+  children: ReactElement | ReactElement[]
   onRefreshClick?: () => void
   onDataClick?: (_data: BodyRowType) => void
 }
 
-export type GetDataType = () => Promise<BodyRowType[]>
+export interface GetDataParams {
+  page: number
+  filters?: any
+}
+
+export interface MakeRequestParams extends GetDataParams {
+  prev?: boolean
+}
+
+export type GetDataType = (_data: GetDataParams) => Promise<BodyRowType[]>
