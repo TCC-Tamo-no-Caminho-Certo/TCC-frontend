@@ -21,7 +21,7 @@ import Table, {
 } from 'components/Table'
 import Role from 'components/Role'
 import Modal, { ModalMethods } from 'components/Modal'
-import { Datepicker, Submit, Text } from 'components/Form'
+import { Datepicker, Select, Submit, Text } from 'components/Form'
 
 import {
   RequestsResType,
@@ -32,7 +32,6 @@ import { RoleType } from 'types/Responses/user/roles'
 
 import { darken, lighten } from 'polished'
 import { Theme } from 'react-select'
-import { Select } from 'semantic-ui-react'
 import { ThemeContext } from 'styled-components'
 
 export interface SelectedTableData {
@@ -221,61 +220,65 @@ const Requests = () => {
             }}
           />
 
-          <Select
-            name='role'
-            placeholder='Papel'
-            theming={selectTheme}
-            styling={selectStyle}
-            options={[
-              { label: 'Estudante', value: 'student' },
-              { label: 'Professor', value: 'professor' },
-              { label: 'Moderador', value: 'moderator' },
-              { label: 'Todos', value: 'all' }
-            ]}
-          />
+          <div className='row'>
+            <Select
+              name='role'
+              placeholder='Papel'
+              theming={selectTheme}
+              styling={selectStyle}
+              options={[
+                { label: 'Estudante', value: 'student' },
+                { label: 'Professor', value: 'professor' },
+                { label: 'Moderador', value: 'moderator' },
+                { label: 'Todos', value: 'all' }
+              ]}
+            />
 
-          <Select
-            name='status'
-            placeholder='Status'
-            theming={selectTheme}
-            styling={selectStyle}
-            options={[
-              { label: 'Aguardando', value: 'awaiting' },
-              { label: 'Aceito', value: 'accepted' },
-              { label: 'Recusado', value: 'rejected' },
-              { label: 'Todos', value: 'all' }
-            ]}
-          />
+            <Select
+              name='status'
+              placeholder='Status'
+              theming={selectTheme}
+              styling={selectStyle}
+              options={[
+                { label: 'Aguardando', value: 'awaiting' },
+                { label: 'Aceito', value: 'accepted' },
+                { label: 'Recusado', value: 'rejected' },
+                { label: 'Todos', value: 'all' }
+              ]}
+            />
+          </div>
 
-          <Datepicker
-            name='from'
-            placeholder='De'
-            dateColors={{
-              disabled: colors.red,
-              body: colors.secondary,
-              selected: colors.tertiary,
-              header: darken(0.06, colors.tertiary)
-            }}
-            textColors={{
-              focused: colors.secondary,
-              unfocused: colors.secondary
-            }}
-          />
+          <div className='row'>
+            <Datepicker
+              name='from'
+              placeholder='De'
+              dateColors={{
+                disabled: colors.red,
+                body: colors.secondary,
+                selected: colors.tertiary,
+                header: darken(0.06, colors.tertiary)
+              }}
+              textColors={{
+                focused: colors.secondary,
+                unfocused: colors.secondary
+              }}
+            />
 
-          <Datepicker
-            name='to'
-            placeholder='Até'
-            dateColors={{
-              disabled: colors.red,
-              body: colors.secondary,
-              selected: colors.tertiary,
-              header: darken(0.06, colors.tertiary)
-            }}
-            textColors={{
-              focused: colors.secondary,
-              unfocused: colors.secondary
-            }}
-          />
+            <Datepicker
+              name='to'
+              placeholder='Até'
+              dateColors={{
+                disabled: colors.red,
+                body: colors.secondary,
+                selected: colors.tertiary,
+                header: darken(0.06, colors.tertiary)
+              }}
+              textColors={{
+                focused: colors.secondary,
+                unfocused: colors.secondary
+              }}
+            />
+          </div>
 
           <FilterButton animate={{ paddingTop: [700, 0], transition }}>
             <Submit>
