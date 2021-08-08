@@ -64,8 +64,8 @@ const Containers = () => {
 
   useEffect(() => {
     dispatch(getUniversities())
-    dispatch(getEmails())
-  }, [dispatch])
+    if (user?.id) dispatch(getEmails({ userId: user.id }))
+  }, [dispatch, user?.id])
 
   return (
     <>
@@ -74,26 +74,29 @@ const Containers = () => {
           if (role === 'personal')
             return (
               <Card headerText='Dados Pessoais' key={role}>
-                <Avatar
-                  border
-                  shadow
-                  size={128}
-                  loaderColor={theme.colors.primary}
-                  onClick={() => imageRef.current?.toggleImageChanger()}
-                />
-
                 {loading ? (
                   <DotsLoader color={theme.colors.primary} />
                 ) : (
-                  formatUpdateUser({
-                    user,
-                    emails,
-                    role: 'personal',
-                    roles: { administrator: { university_id: 0 } },
-                    universities
-                  }).map((info: InputData) => (
-                    <Field data={info} key={info.name} />
-                  ))
+                  <>
+                    <Avatar
+                      border
+                      shadow
+                      size={128}
+                      withLoader={false}
+                      loaderColor={theme.colors.primary}
+                      onClick={() => imageRef.current?.toggleImageChanger()}
+                    />
+
+                    {formatUpdateUser({
+                      user,
+                      emails,
+                      role: 'personal',
+                      roles: { administrator: { university_id: 0 } },
+                      universities
+                    }).map((info: InputData) => (
+                      <Field data={info} key={info.name} />
+                    ))}
+                  </>
                 )}
               </Card>
             )

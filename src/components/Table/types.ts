@@ -14,7 +14,7 @@ export type HeaderType = {
 }
 
 export type BodyRowType = {
-  rowValue: any
+  rowValue?: any
   rowLabel: { [key: string]: { label: string; name: string } }
 }
 

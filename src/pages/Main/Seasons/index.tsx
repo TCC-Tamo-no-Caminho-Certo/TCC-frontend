@@ -77,7 +77,7 @@ const Seasons = forwardRef((_props, ref) => {
 
       setUniversities(universitiesOfUser)
     }
-  }, [user?.id, user?.selectedRole])
+  }, [user])
 
   useEffect(() => {
     getUniversitiesOfUser()

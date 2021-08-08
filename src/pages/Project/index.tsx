@@ -10,7 +10,7 @@ import ProjectIcon from 'assets/MainSidebar/ProjectIcon'
 
 import Sidebar, { RouteProps } from 'components/Sidebar'
 
-import { ProjectResType } from 'types/Responses/project'
+import { ProjectType } from 'types/Responses/project'
 import { ParticipantsResType } from 'types/Responses/project/participants'
 import { UniversityResType } from 'types/Responses/university'
 
@@ -19,7 +19,7 @@ import { useParams } from 'react-router-dom'
 const Profile = () => {
   const participants = useRef<ParticipantsResType>()
   const university = useRef<UniversityResType>()
-  const project = useRef<ProjectResType>()
+  const project = useRef<ProjectType>()
   const aboutProject = useRef(null)
   const members = useRef(null)
 

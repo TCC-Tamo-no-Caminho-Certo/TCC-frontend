@@ -33,13 +33,13 @@ const CreateSeason = ({ id, selecteds, setSelecteds }: CreateSeasonProps) => {
 
   const manipulateData = (data: any) => {
     const {
-      dispatch,
-      evaluate,
-      confirm,
-      in_progress,
+      title,
       begin,
       edict,
-      title,
+      confirm,
+      dispatch,
+      evaluate,
+      in_progress,
       description
     } = data
 

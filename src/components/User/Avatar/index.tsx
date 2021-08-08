@@ -18,6 +18,7 @@ interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
   border?: boolean
   avatarId?: string
   loaderColor?: string
+  withLoader?: boolean
   onClick?(): void
   onShadowClick?(): void
 }
@@ -28,6 +29,7 @@ const Avatar = ({
   onShadowClick,
   shadow = false,
   border = false,
+  withLoader = true,
   loaderColor = '#6e4850',
   ...rest
 }: AvatarProps) => {
@@ -69,7 +71,7 @@ const Avatar = ({
           )}
         </StyledAvatar>
       ) : (
-        <DotsLoader color={loaderColor} />
+        withLoader && <DotsLoader color={loaderColor} />
       )}
     </Style>
   )

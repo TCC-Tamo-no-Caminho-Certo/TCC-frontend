@@ -8,7 +8,6 @@ import api from 'services/api'
 import { RootState } from 'store'
 import { AsyncUserState } from 'store/Async/user'
 
-import Table from 'components/Table'
 import { File, Select, Submit, Text, Textarea } from 'components/Form'
 
 import { ProjectResType } from 'types/Responses/project'
@@ -52,17 +51,23 @@ const Projects = forwardRef((_props, ref) => {
 
   const getMyProjects = async () => {
     const myProjects = []
-    const myProjectsIds: ProjectsType = await api.get('/user/projects')
 
-    for (let i = 0; i < myProjectsIds.length; i++) {
-      const project: ProjectResType = await api.get(
-        `/projects/${myProjectsIds[i]}`
-      )
-      const university: UniversityResType = await api.get(
-        `/university/${project.university_id}`
+    if (user?.id) {
+      const myProjectsIds: ProjectsType = await api.get(
+        `/users/${user?.id}/projects`
       )
 
-      myProjects.push({ ...project, university })
+      for (let i = 0; i < myProjectsIds.length; i++) {
+        const { project }: ProjectResType = await api.get(
+          `/projects/${myProjectsIds[i]}`
+        )
+
+        const { university }: UniversityResType = await api.get(
+          `/university/${project.university_id}`
+        )
+
+        myProjects.push({ ...project, university })
+      }
     }
 
     return myProjects
@@ -105,16 +110,6 @@ const Projects = forwardRef((_props, ref) => {
         <header>
           <h1>Meus projetos</h1>
         </header>
-
-        {/* <Table
-          path='user/projects'
-          isLoading={false}
-          filters={{ name: true, from: true, to: true }}
-          headerData={[
-            { label: 'Nome', name: 'title' },
-            { label: 'Status', name: 'status' }
-          ]}
-        /> */}
 
         {user?.selectedRole === 'professor' && (
           <button id='newProject' onClick={() => modalRef?.current?.toggle()}>

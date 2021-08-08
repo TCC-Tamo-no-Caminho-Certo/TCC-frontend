@@ -11,25 +11,32 @@ export interface AsyncEmailsState {
   emails: EmailsType
 }
 
+interface GetEmailsParams {
+  userId: number
+}
+
 const initialState: AsyncEmailsState = { emails: [], loading: true }
 
 export const getUpdatedEmails = createAsyncThunk(
   'emails(getUpdatedEmails)',
-  async () => {
-    const { emails }: EmailsResType = await api.get('user/emails')
+  async ({ userId }: GetEmailsParams) => {
+    const { emails }: EmailsResType = await api.get(`users/${userId}/emails`)
+
     return { emails }
   }
 )
 
 export const getEmails = createAsyncThunk(
   'emails(getEmails)',
-  async (_param, { getState }) => {
+  async ({ userId }: GetEmailsParams, { getState }) => {
     const { asyncEmails } = getState() as RootState
 
     if (asyncEmails.emails.length === 0) {
-      const { emails }: EmailsResType = await api.get('user/emails')
+      const { emails }: EmailsResType = await api.get(`users/${userId}/emails`)
       return { emails }
     }
+
+    return asyncEmails
   }
 )
 
