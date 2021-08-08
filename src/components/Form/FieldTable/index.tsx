@@ -40,7 +40,6 @@ const DatesTable = ({
       <thead>
         <tr>
           <th>{header[0]}</th>
-
           <th>{header[1]}</th>
         </tr>
       </thead>
@@ -61,6 +60,8 @@ const DatesTable = ({
                 }
                 textProps={{
                   name,
+                  min: 1,
+                  max: 60,
                   type: 'number',
                   placeholder: 'Duração'
                 }}

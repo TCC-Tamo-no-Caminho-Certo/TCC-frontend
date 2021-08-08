@@ -15,12 +15,12 @@ import ArrowIcon, { arrowAnimation } from 'assets/global/ArrowIcon'
 import { Variants } from 'framer-motion'
 
 export interface AnimatedListProps {
-  id: string
-  title: string
+  id: number
+  title: ReactElement | ReactElement[] | string
   children: ReactElement | ReactElement[] | string
   addClose?: boolean
-  selecteds?: string[]
-  setSelecteds?: Dispatch<SetStateAction<string[] | undefined>>
+  selecteds?: number[]
+  setSelecteds?: Dispatch<SetStateAction<number[] | undefined>>
 }
 
 const titleAnimation: Variants = {
@@ -90,7 +90,7 @@ const AnimatedList = ({
           />
         )}
 
-        <span>{title}</span>
+        <div id='title'>{title}</div>
       </Header>
 
       <Content

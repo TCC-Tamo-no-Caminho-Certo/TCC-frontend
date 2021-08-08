@@ -21,6 +21,10 @@ const Style = styled.table`
   td {
     padding: 0 8px;
   }
+
+  .Text {
+    width: 100%;
+  }
 `
 
 export default Style

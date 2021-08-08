@@ -95,6 +95,7 @@ const Popup = forwardRef<PopupMethods, PopupProps>(
         top={top}
         ref={modalRef}
         bottom={bottom}
+        closeIcon={false}
         bgHeight={bgHeight}
         translateY={translateY}
         onClose={onPopupCloseClick}

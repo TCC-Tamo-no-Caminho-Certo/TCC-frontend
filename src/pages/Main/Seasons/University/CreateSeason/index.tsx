@@ -1,85 +1,127 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useContext } from 'react'
 import Style, { Begin } from './styles'
+
+import { SeasonsContext } from '../..'
+
+import createSeasonSchema from 'utils/validations/createSeasonSchema'
 
 import CalendarIcon from 'assets/global/CalendarIcon'
 
 import FieldTable from 'components/Form/FieldTable'
 import AnimatedList from 'components/AnimatedList'
-import { Field, File, Submit, Textarea } from 'components/Form'
+import { Field, File, Submit, Text, Textarea } from 'components/Form'
+import Popup from 'components/Popup'
+
+import { GlobalContext } from 'App'
 
 interface CreateSeasonProps {
-  id: string
-  selecteds?: string[]
-  setSelecteds?: Dispatch<SetStateAction<string[] | undefined>>
+  id: number
+  selecteds?: number[]
+  setSelecteds?: Dispatch<SetStateAction<number[] | undefined>>
 }
 
 const periodsData = [
-  {
-    name: 'dispatch',
-    value: undefined,
-    label: 'Envio de projetos'
-  },
-  {
-    name: 'evaluate',
-    value: undefined,
-    label: 'Avaliação de projetos'
-  },
-  {
-    name: 'confirm',
-    value: undefined,
-    label: 'Confirmar participação'
-  },
-  {
-    name: 'in_progress',
-    value: undefined,
-    label: 'Início do projeto'
-  }
+  { name: 'dispatch', value: undefined, label: 'Envio de projetos' },
+  { name: 'evaluate', value: undefined, label: 'Avaliação de projetos' },
+  { name: 'confirm', value: undefined, label: 'Confirmar participação' },
+  { value: undefined, name: 'in_progress', label: 'Em andamento' }
 ]
 
-const CreateSeason = ({ id, selecteds, setSelecteds }: CreateSeasonProps) => (
-  <AnimatedList
-    addClose
-    title='Adicionar temporada'
-    id={id}
-    selecteds={selecteds}
-    setSelecteds={setSelecteds}
-  >
-    <Style>
-      <Textarea name='description' placeholder='Descrição' />
+const CreateSeason = ({ id, selecteds, setSelecteds }: CreateSeasonProps) => {
+  const { popupRef } = useContext(GlobalContext)
+  const { getUniversitiesOfUser } = useContext(SeasonsContext)
 
-      <Begin>
-        <span>Início da temporada:</span>
+  const manipulateData = (data: any) => {
+    const {
+      dispatch,
+      evaluate,
+      confirm,
+      in_progress,
+      begin,
+      edict,
+      title,
+      description
+    } = data
 
-        <Field
-          enableEdit={true}
-          inputType='datepicker'
-          icon={CalendarIcon}
-          datepickerProps={{
-            name: 'begin',
-            placeholder: 'Duração em dias',
-            arrow: 'bottom'
-          }}
-        />
-      </Begin>
+    const periods = { confirm, evaluate, dispatch, in_progress }
+    return { begin, edict, title, periods, description }
+  }
 
-      <FieldTable
-        withoutDefaultValue
-        edit={true}
-        data={periodsData}
-        header={['Período', 'Duração (Dias)']}
-        valueComplement='Dias'
-      />
+  const afterResData = (data: any) => {
+    if (!data.success)
+      popupRef?.current?.configPopup({
+        type: 'error',
+        message: 'Algo inesperado aconteceu! Tente novamente'
+      })
+    else
+      popupRef?.current?.configPopup({
+        type: 'success',
+        message: 'Temporada adicionada!',
+        onClick: () => {
+          getUniversitiesOfUser && getUniversitiesOfUser()
+          setSelecteds && setSelecteds(undefined)
+        }
+      })
+  }
 
-      <File
-        noCropper
-        name='edict'
-        label='Enviar Edital'
-        accept='application/pdf'
-      />
+  return (
+    <>
+      <AnimatedList
+        addClose
+        title='Adicionar temporada'
+        id={id}
+        selecteds={selecteds}
+        setSelecteds={setSelecteds}
+      >
+        <Style
+          afterResData={afterResData}
+          schema={createSeasonSchema}
+          manipulateData={manipulateData}
+          path={`/universities/${id}/seasons`}
+        >
+          <Text name='title' placeholder='Título' maxLength={50} />
 
-      <Submit>Adicionar temporada</Submit>
-    </Style>
-  </AnimatedList>
-)
+          <Textarea
+            name='description'
+            placeholder='Descrição'
+            maxLength={500}
+          />
+
+          <Begin>
+            <Field
+              enableEdit={true}
+              inputType='datepicker'
+              icon={CalendarIcon}
+              datepickerProps={{
+                name: 'begin',
+                arrow: 'bottom',
+                placeholder: 'Início da temporada'
+              }}
+            />
+          </Begin>
+
+          <FieldTable
+            withoutDefaultValue
+            edit={true}
+            data={periodsData}
+            header={['Período', 'Duração (Dias)']}
+            valueComplement='Dias'
+          />
+
+          <File
+            noCropper
+            name='edict'
+            label='Enviar Edital'
+            accept='application/pdf'
+          />
+
+          <Submit>Adicionar</Submit>
+        </Style>
+      </AnimatedList>
+
+      <Popup ref={popupRef} />
+    </>
+  )
+}
 
 export default CreateSeason

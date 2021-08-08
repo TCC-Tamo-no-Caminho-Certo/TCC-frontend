@@ -4,15 +4,15 @@ import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
 export const Header = styled(motion.button)`
+  position: relative;
+  z-index: 2;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
-  position: relative;
-  z-index: 2;
-
   width: 100%;
-  padding: 16px;
+  height: 54px;
   cursor: pointer;
 
   color: ${({ theme }) => theme.colors.secondary};
@@ -22,7 +22,12 @@ export const Header = styled(motion.button)`
     filter: brightness(1.1);
   }
 
-  span {
+  #title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 100%;
     margin-left: 8px;
   }
 

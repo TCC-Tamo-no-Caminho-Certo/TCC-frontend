@@ -20,21 +20,13 @@ interface UniversityProps {
 const buttonAnimation: Variants = {
   initial: { borderRadius: '24px 24px 24px 24px' },
   rounded: { borderRadius: '24px 24px 24px 24px', transition },
-  unrounded: {
-    borderRadius: '24px 24px 0px 0px',
-    transition
-  }
+  unrounded: { borderRadius: '24px 24px 0px 0px', transition }
 }
 
 const bgAnimation: Variants = {
   initial: { y: -64, height: 0, opacity: 0 },
-  enter: { y: 0, opacity: 1, height: 'auto', transition },
-  exit: {
-    y: -64,
-    height: 0,
-    opacity: 0,
-    transition
-  }
+  exit: { y: -64, height: 0, opacity: 0, transition },
+  enter: { y: 0, opacity: 1, height: 'auto', transition }
 }
 
 const University = ({
@@ -42,7 +34,7 @@ const University = ({
   setSelecteds,
   university: { name, seasons, id, isAdmin }
 }: UniversityProps) => {
-  const [selectedSeasons, setSelectedSeasons] = useState<string[]>()
+  const [selectedSeasons, setSelectedSeasons] = useState<number[]>()
   const [disabled, setDisabled] = useState(false)
 
   const isSelected =
@@ -85,13 +77,14 @@ const University = ({
 
       <Presence variants={bgAnimation} condition={isSelected}>
         <Seasons>
-          {seasons ? (
-            seasons.map((season, index) => (
+          {seasons?.length !== 0 ? (
+            seasons?.map(season => (
               <Season
                 season={season}
+                id={season.id}
+                key={season.id}
                 isAdmin={isAdmin}
-                id={`${id}-${index}`}
-                key={`${id}-${index}`}
+                universityId={id}
                 selecteds={selectedSeasons}
                 setSelecteds={setSelectedSeasons}
               />
@@ -102,7 +95,7 @@ const University = ({
 
           {isAdmin && (
             <CreateSeason
-              id={`${id}-create`}
+              id={-1}
               selecteds={selectedSeasons}
               setSelecteds={setSelectedSeasons}
             />

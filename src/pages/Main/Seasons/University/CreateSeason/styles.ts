@@ -10,7 +10,7 @@ export const Begin = styled.div`
   width: 100%;
 
   .Field {
-    width: 180px;
+    width: 80%;
     padding: 0 8px;
     margin-left: 8px;
     border-radius: 16px;

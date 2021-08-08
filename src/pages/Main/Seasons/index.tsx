@@ -1,4 +1,11 @@
-import React, { forwardRef, useEffect, useState } from 'react'
+import React, {
+  createContext,
+  forwardRef,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from 'react'
 import Style, { Content, NotLinked } from './styles'
 
 import University from './University'
@@ -8,78 +15,14 @@ import api from 'services/api'
 import { RootState } from 'store'
 import { AsyncUserState } from 'store/Async/user'
 
+import DotsLoader from 'components/DotsLoader'
+
 import { SeasonsResType, SeasonsType } from 'types/Responses/university/seasons'
 import { UniversitiesResType } from 'types/Responses/university/universities'
 import { AdministratorType } from 'types/Responses/user/rolesData'
 
 import { useSelector } from 'react-redux'
-
-// const getAllUniversitiesOfUser = (): UniversityDataType[] => [
-//   {
-//     name: 'Universidade Anhembi Morumbi',
-//     id: 1,
-//     isAdmin: true,
-//     seasons: [
-//       {
-//         title: 'Primeira temporada',
-//         status: 'pre-release',
-//         begin: '19-08-2001',
-//         edict: 'edital.pdf',
-//         current_period: 'dispatch',
-//         description:
-//           'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu',
-//         periods: {
-//           confirm: 20,
-//           dispatch: 25,
-//           evaluate: 30,
-//           in_progress: 320
-//         }
-//       },
-//       {
-//         title: 'Primeira temporada',
-//         description:
-//           'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu',
-//         status: 'pre-release',
-//         edict: 'edital.pdf',
-//         begin: '19-08-2001',
-//         current_period: 'dispatch',
-//         periods: {
-//           confirm: 30,
-//           dispatch: 30,
-//           evaluate: 30,
-//           in_progress: 30
-//         }
-//       }
-//     ]
-//   },
-//   {
-//     name: 'Universidade Anhembi Morumbi 2',
-//     id: 2,
-//     isAdmin: false,
-//     seasons: [
-//       {
-//         title: 'Segunda temporada',
-//         begin: '19-08-2001',
-//         current_period: 'dispatch',
-//         description:
-//           'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu',
-//         status: 'pre-release',
-//         edict: 'edital.pdf',
-//         periods: {
-//           confirm: 30,
-//           dispatch: 30,
-//           evaluate: 30,
-//           in_progress: 30
-//         }
-//       }
-//     ]
-//   },
-//   {
-//     name: 'Universidade Anhembi Morumbi 3',
-//     id: 3,
-//     isAdmin: false
-//   }
-// ]
+import { ThemeContext } from 'styled-components'
 
 export interface UniversityDataType {
   id: number
@@ -88,7 +31,14 @@ export interface UniversityDataType {
   seasons?: SeasonsType
 }
 
+interface SeasonsContextProps {
+  getUniversitiesOfUser?: () => void
+}
+
+export const SeasonsContext = createContext<SeasonsContextProps>({})
+
 const Seasons = forwardRef((_props, ref) => {
+  const theme = useContext(ThemeContext)
   const { user } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
@@ -96,38 +46,42 @@ const Seasons = forwardRef((_props, ref) => {
   const [selectedUniversities, setSelectedUniversities] = useState<number[]>()
   const [universities, setUniversities] = useState<UniversityDataType[]>()
 
-  useEffect(() => {
-    ;(async () => {
-      if (user?.id) {
-        const universitiesOfUser: UniversityDataType[] = []
+  const getUniversitiesOfUser = useCallback(async () => {
+    const universitiesOfUser: UniversityDataType[] = []
 
-        const { universities }: UniversitiesResType = await api.get(
-          `users/${user?.id}/roles/universities`
+    if (user?.id) {
+      const { universities }: UniversitiesResType = await api.get(
+        `users/${user.id}/roles/universities`
+      )
+
+      for (let i = 0; i < universities?.length; i++) {
+        const { id, name } = universities[i]
+
+        const { seasons }: SeasonsResType = await api.get(
+          `universities/${id}/seasons`
         )
 
-        for (let i = 0; i < universities?.length; i++) {
-          const { id, name } = universities[i]
+        const { university_id }: AdministratorType = await api.get(
+          `users/${user.id}/roles/administrator`
+        )
 
-          const { seasons }: SeasonsResType = await api.get(
-            `university/${id}/seasons`
-          )
+        const isAdmin = university_id === id && user?.selectedRole === 'admin'
 
-          const { university_id }: AdministratorType = await api.get(
-            'roles/administrator'
-          )
-
-          universitiesOfUser?.push({
-            seasons,
-            name: name,
-            id: universities[i].id,
-            isAdmin: university_id === id && user?.selectedRole === 'admin'
-          })
-        }
-
-        setUniversities(universitiesOfUser)
+        universitiesOfUser?.push({
+          seasons,
+          name: name,
+          isAdmin: true,
+          id: universities[i].id
+        })
       }
-    })()
-  }, [user])
+
+      setUniversities(universitiesOfUser)
+    }
+  }, [user?.id, user?.selectedRole])
+
+  useEffect(() => {
+    getUniversitiesOfUser()
+  }, [getUniversitiesOfUser])
 
   return (
     <Style ref={ref as any}>
@@ -136,20 +90,24 @@ const Seasons = forwardRef((_props, ref) => {
       </header>
 
       <Content>
-        {universities?.length !== 0 && universities ? (
-          universities.map((university: UniversityDataType) => (
-            <University
-              key={university.id}
-              university={university}
-              selecteds={selectedUniversities}
-              setSelecteds={setSelectedUniversities}
-            />
-          ))
-        ) : (
+        {universities === undefined ? (
+          <DotsLoader color={theme.colors.secondary} />
+        ) : universities?.length === 0 ? (
           <NotLinked>
             <h2>Você não está vinculado a nenhuma universidade.</h2>
             <p>Cadastre um papel e vincule-se a alguma!</p>
           </NotLinked>
+        ) : (
+          <SeasonsContext.Provider value={{ getUniversitiesOfUser }}>
+            {universities?.map((university: UniversityDataType) => (
+              <University
+                key={university.id}
+                university={university}
+                selecteds={selectedUniversities}
+                setSelecteds={setSelectedUniversities}
+              />
+            ))}
+          </SeasonsContext.Provider>
         )}
       </Content>
     </Style>

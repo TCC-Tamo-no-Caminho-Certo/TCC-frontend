@@ -8,6 +8,7 @@ export interface PeriodsType {
 }
 
 export interface SeasonType {
+  id: number
   title: string
   edict: string
   begin: string

@@ -10,8 +10,8 @@ import { RootState } from 'store'
 import MailIcon from 'assets/Inputs/MailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import AlertIcon from 'assets/Inputs/AlertIcon'
-import Logo from 'assets/FullLogo'
 
+import FullLogo from 'components/FullLogo'
 // import Logo from 'components/Logo'
 import Form, { Checkbox, Submit, Text } from 'components/Form'
 import Presence from 'components/Presence'
@@ -86,7 +86,7 @@ const Aside = () => {
 
       <Content>
         <header>
-          <Logo />
+          <FullLogo />
         </header>
 
         <Form

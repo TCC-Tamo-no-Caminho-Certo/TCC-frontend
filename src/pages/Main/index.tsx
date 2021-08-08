@@ -19,6 +19,7 @@ const Main = () => {
   const { user } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
+
   const projectsRef = useRef(null)
   const seasonRef = useRef(null)
   const mapRef = useRef(null)
@@ -33,25 +34,25 @@ const Main = () => {
         paths: ['/session/main', '/session/main/map']
       },
       {
-        label: 'Temporadas',
         ref: seasonRef,
+        label: 'Temporadas',
         icon: () => <MapIcon />,
-        component: () => <Season ref={seasonRef} />,
-        paths: ['/session/main/season']
+        paths: ['/session/main/season'],
+        component: () => <Season ref={seasonRef} />
       },
       {
+        ref: projectsRef,
         label: 'Meus Projetos',
         icon: () => <ProjectIcon />,
-        component: () => <MyProjects ref={projectsRef} />,
-        ref: projectsRef,
-        paths: ['/session/main/myprojects']
+        paths: ['/session/main/myprojects'],
+        component: () => <MyProjects ref={projectsRef} />
       }
     ]
 
     if (user?.selectedRole === 'moderator' || user?.selectedRole === 'admin')
       sidebarSections.push({
-        label: 'Universidade',
         bottom: true,
+        label: 'Universidade',
         icon: () => <ProjectIcon />,
         paths: ['/session/moderator']
       })
@@ -62,7 +63,6 @@ const Main = () => {
   return (
     <>
       <Sidebar samePage title='Principal' routes={mainRoutes} />
-
       <RightMenu />
     </>
   )

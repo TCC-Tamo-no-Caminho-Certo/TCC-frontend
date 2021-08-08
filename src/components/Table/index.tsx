@@ -106,10 +106,7 @@ const Table = forwardRef<TableMethods, TableProps>(
     const makeRequest = useCallback(
       async ({ filters, page, prev }: MakeRequestParams) => {
         setLoading(true)
-        console.log('req')
-
         const items = await getData({ filters, page })
-
         setLoading(false)
 
         prev

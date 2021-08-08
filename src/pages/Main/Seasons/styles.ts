@@ -41,7 +41,6 @@ const Style = styled.section`
     justify-content: center;
 
     padding: 24px;
-
     width: max(100%, 280px);
   }
 
