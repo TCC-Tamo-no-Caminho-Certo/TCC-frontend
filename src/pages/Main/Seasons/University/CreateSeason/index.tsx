@@ -10,12 +10,12 @@ import CalendarIcon from 'assets/global/CalendarIcon'
 import FieldTable from 'components/Form/FieldTable'
 import AnimatedList from 'components/AnimatedList'
 import { Field, File, Submit, Text, Textarea } from 'components/Form'
-import Popup from 'components/Popup'
 
 import { GlobalContext } from 'App'
 
 interface CreateSeasonProps {
   id: number
+  universityId: number
   selecteds?: number[]
   setSelecteds?: Dispatch<SetStateAction<number[] | undefined>>
 }
@@ -27,7 +27,12 @@ const periodsData = [
   { value: undefined, name: 'in_progress', label: 'Em andamento' }
 ]
 
-const CreateSeason = ({ id, selecteds, setSelecteds }: CreateSeasonProps) => {
+const CreateSeason = ({
+  id,
+  selecteds,
+  setSelecteds,
+  universityId
+}: CreateSeasonProps) => {
   const { popupRef } = useContext(GlobalContext)
   const { getUniversitiesOfUser } = useContext(SeasonsContext)
 
@@ -65,7 +70,12 @@ const CreateSeason = ({ id, selecteds, setSelecteds }: CreateSeasonProps) => {
   }
 
   return (
-    <>
+    <Style
+      afterResData={afterResData}
+      schema={createSeasonSchema}
+      manipulateData={manipulateData}
+      path={`/universities/${universityId}/seasons`}
+    >
       <AnimatedList
         addClose
         title='Adicionar temporada'
@@ -73,54 +83,41 @@ const CreateSeason = ({ id, selecteds, setSelecteds }: CreateSeasonProps) => {
         selecteds={selecteds}
         setSelecteds={setSelecteds}
       >
-        <Style
-          afterResData={afterResData}
-          schema={createSeasonSchema}
-          manipulateData={manipulateData}
-          path={`/universities/${id}/seasons`}
-        >
-          <Text name='title' placeholder='Título' maxLength={50} />
+        <Text name='title' placeholder='Título' maxLength={50} />
 
-          <Textarea
-            name='description'
-            placeholder='Descrição'
-            maxLength={500}
+        <Textarea name='description' placeholder='Descrição' maxLength={500} />
+
+        <Begin>
+          <Field
+            enableEdit={true}
+            inputType='datepicker'
+            icon={CalendarIcon}
+            datepickerProps={{
+              name: 'begin',
+              arrow: 'bottom',
+              placeholder: 'Início da temporada'
+            }}
           />
+        </Begin>
 
-          <Begin>
-            <Field
-              enableEdit={true}
-              inputType='datepicker'
-              icon={CalendarIcon}
-              datepickerProps={{
-                name: 'begin',
-                arrow: 'bottom',
-                placeholder: 'Início da temporada'
-              }}
-            />
-          </Begin>
+        <FieldTable
+          withoutDefaultValue
+          edit={true}
+          data={periodsData}
+          header={['Período', 'Duração (Dias)']}
+          valueComplement='Dias'
+        />
 
-          <FieldTable
-            withoutDefaultValue
-            edit={true}
-            data={periodsData}
-            header={['Período', 'Duração (Dias)']}
-            valueComplement='Dias'
-          />
+        <File
+          noCropper
+          name='edict'
+          label='Enviar Edital'
+          accept='application/pdf'
+        />
 
-          <File
-            noCropper
-            name='edict'
-            label='Enviar Edital'
-            accept='application/pdf'
-          />
-
-          <Submit>Adicionar</Submit>
-        </Style>
+        <Submit>Adicionar</Submit>
       </AnimatedList>
-
-      <Popup ref={popupRef} />
-    </>
+    </Style>
   )
 }
 

@@ -58,6 +58,11 @@ const DatesTable = ({
                 conditionToEdit={
                   selecteds?.find(selected => selected === index) !== undefined
                 }
+                defaultValue={
+                  withoutDefaultValue
+                    ? undefined
+                    : `${value} ${valueComplement || ''}`
+                }
                 textProps={{
                   name,
                   min: 1,
@@ -65,11 +70,6 @@ const DatesTable = ({
                   type: 'number',
                   placeholder: 'Duração'
                 }}
-                defaultValue={
-                  withoutDefaultValue
-                    ? undefined
-                    : `${value} ${valueComplement || ''}`
-                }
               />
             </td>
           </tr>

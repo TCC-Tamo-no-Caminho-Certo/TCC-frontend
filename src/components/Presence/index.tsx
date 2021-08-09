@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactElement } from 'react'
+import React, { forwardRef, ReactNode } from 'react'
 
 import {
   AnimatePresence,
@@ -9,7 +9,7 @@ import {
 
 interface PresenceProps extends HTMLMotionProps<'div'> {
   condition: boolean
-  children: ReactElement | ReactElement[] | string
+  children: ReactNode
   presenceProps?: AnimatePresenceProps
 }
 

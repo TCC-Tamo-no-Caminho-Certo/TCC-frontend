@@ -37,13 +37,15 @@ const Field = ({
   const textRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    inputType === 'text' && textRef.current?.focus()
+    if (enableEdit) {
+      inputType === 'text' && textRef.current?.focus()
 
-    setTimeout(
-      () => inputType === 'datepicker' && datepickerRef.current?.click(),
-      300
-    )
-  }, [conditionToEdit, inputType])
+      setTimeout(
+        () => inputType === 'datepicker' && datepickerRef.current?.click(),
+        300
+      )
+    }
+  }, [conditionToEdit, enableEdit, inputType])
 
   return conditionToEdit || condition ? (
     <EditField id='editField' className='Field'>
@@ -72,7 +74,7 @@ const Field = ({
       style={{ cursor: enableEdit ? 'pointer' : 'default' }}
       onClick={() => {
         onFieldClick && onFieldClick()
-        conditionToEdit === undefined && setCondition(true)
+        if (!enableEdit) conditionToEdit === undefined && setCondition(true)
       }}
     >
       {conditionToEdit && <PencilIcon />}

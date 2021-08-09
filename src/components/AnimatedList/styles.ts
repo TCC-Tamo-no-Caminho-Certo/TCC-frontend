@@ -49,7 +49,6 @@ export const Content = styled(Presence)`
   justify-content: center;
 
   width: 100%;
-  padding: 8px;
   border-radius: 0px 0px 16px 16px;
 
   border: solid 1px ${({ theme }) => theme.colors.tertiary};
@@ -76,5 +75,5 @@ const Style = styled(motion.li)`
 
 export default Style
 
-Style.displayName = 'Content-Style'
+Content.displayName = 'Content-Style'
 Style.displayName = 'AnimatedList-Style'

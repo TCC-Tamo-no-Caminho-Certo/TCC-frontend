@@ -96,6 +96,7 @@ const University = ({
           {isAdmin && (
             <CreateSeason
               id={-1}
+              universityId={id}
               selecteds={selectedSeasons}
               setSelecteds={setSelectedSeasons}
             />

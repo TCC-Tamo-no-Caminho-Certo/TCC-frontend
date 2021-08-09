@@ -22,12 +22,25 @@ export const Begin = styled.div`
 `
 
 const Style = styled(Form)`
-  > * + * {
-    margin-top: 16px;
-  }
+  .AnimatedList .Content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
 
-  .Submit {
     width: 100%;
+    padding: 8px;
+    border-radius: 0px 0px 16px 16px;
+
+    border: solid 1px ${({ theme }) => theme.colors.tertiary};
+
+    > * + * {
+      margin-top: 16px;
+    }
+
+    .Submit {
+      width: 100%;
+    }
   }
 `
 

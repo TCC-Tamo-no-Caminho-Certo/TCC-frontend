@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext } from 'react'
+import React, { forwardRef, useContext, useEffect } from 'react'
 import Style, { CreateProject } from './styles'
 
 import createProjectSchema from 'utils/validations/createProjectSchema'
@@ -7,6 +7,11 @@ import api from 'services/api'
 
 import { RootState } from 'store'
 import { AsyncUserState } from 'store/Async/user'
+// eslint-disable-next-line prettier/prettier
+import {
+  AsyncUniversitiesState,
+  getUniversities
+} from 'store/Async/universities'
 
 import { File, Select, Submit, Text, Textarea } from 'components/Form'
 
@@ -16,37 +21,35 @@ import { ProjectsType } from 'types/Responses/user/projects'
 import { ProfessorType } from 'types/Responses/user/rolesData'
 
 import { GlobalContext } from 'App'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
 const Projects = forwardRef((_props, ref) => {
+  const { universities } = useSelector<RootState, AsyncUniversitiesState>(
+    ({ asyncUniversities }) => asyncUniversities
+  )
   const { user } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
+
   const { modalRef } = useContext(GlobalContext)
   const theme = useContext(ThemeContext)
 
+  const dispatch = useDispatch()
+
   const getUniversitiesOptions = async () => {
-    const universitiesOfProfessor = []
+    if (user?.id) return [{ label: '', value: '' }]
 
-    const { universities }: ProfessorType = await api.get(
-      '/user/roles/professor'
-    )
+    const { universities: professorUniversities }: ProfessorType =
+      await api.get(`/users/${user?.id}/roles/professor`)
 
-    for (let i = 0; i < universities.length; i++) {
-      const professorUniversity = universities[i]
+    if (!professorUniversities) return [{ label: '', value: '' }]
 
-      const { university }: UniversityResType = await api.get(
-        `/university/${professorUniversity.id}`
+    return universities
+      .filter(university =>
+        professorUniversities.find(({ id }) => id === university.id)
       )
-
-      universitiesOfProfessor.push({
-        value: university.id,
-        label: university.name
-      })
-    }
-
-    return universitiesOfProfessor
+      .map(university => ({ label: university.name, value: university.id }))
   }
 
   const getMyProjects = async () => {
@@ -81,7 +84,7 @@ const Projects = forwardRef((_props, ref) => {
           name='university'
           placeholder='Universidade'
           value={undefined}
-          options={[{ label: ':(', value: ';(' }]}
+          options={getUniversitiesOptions()}
         />
 
         <Text placeholder='Título' name='title' maxLength={36} />
@@ -103,6 +106,10 @@ const Projects = forwardRef((_props, ref) => {
       </CreateProject>
     )
   })
+
+  useEffect(() => {
+    dispatch(getUniversities())
+  }, [dispatch])
 
   return (
     <>

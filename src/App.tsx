@@ -42,9 +42,9 @@ export interface GlobalContextProps {
   }
 }
 
-const allThemes = { dark, light }
-
 export const GlobalContext = createContext<GlobalContextProps>({})
+
+const allThemes = { dark, light }
 
 const App = () => {
   const theme = useContext(ThemeContext)
@@ -64,10 +64,10 @@ const App = () => {
   }, [i18n])
 
   return (
-    <ThemeProvider theme={allThemes[selectedTheme]}>
-      <GlobalContext.Provider
-        value={{ modalRef, popupRef, overflow: { overflow, setOverflow } }}
-      >
+    <GlobalContext.Provider
+      value={{ modalRef, popupRef, overflow: { overflow, setOverflow } }}
+    >
+      <ThemeProvider theme={allThemes[selectedTheme]}>
         <GlobalStyle overflow={overflow} theme={theme} />
 
         <BrowserRouter>
@@ -77,8 +77,8 @@ const App = () => {
         <Popup ref={popupRef} />
 
         <Modal ref={modalRef} />
-      </GlobalContext.Provider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </GlobalContext.Provider>
   )
 }
 

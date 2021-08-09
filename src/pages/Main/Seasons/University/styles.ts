@@ -29,6 +29,8 @@ export const Seasons = styled.ul`
 `
 
 const Style = styled(motion.li)`
+  width: 90%;
+
   #universityName {
     position: relative;
     z-index: 3;
@@ -42,10 +44,6 @@ const Style = styled(motion.li)`
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.primary};
     border: solid 1px ${({ theme }) => theme.colors.secondary};
-  }
-
-  @media screen and (min-width: 375px) {
-    width: 90%;
   }
 
   @media screen and (min-width: 545px) {

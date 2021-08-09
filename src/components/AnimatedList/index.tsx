@@ -1,6 +1,7 @@
 import React, {
   Dispatch,
   ReactElement,
+  ReactNode,
   SetStateAction,
   useEffect,
   useState
@@ -17,7 +18,7 @@ import { Variants } from 'framer-motion'
 export interface AnimatedListProps {
   id: number
   title: ReactElement | ReactElement[] | string
-  children: ReactElement | ReactElement[] | string
+  children: ReactNode
   addClose?: boolean
   selecteds?: number[]
   setSelecteds?: Dispatch<SetStateAction<number[] | undefined>>
@@ -70,7 +71,7 @@ const AnimatedList = ({
   }, [isSelected])
 
   return (
-    <Style>
+    <Style className='AnimatedList'>
       <Header
         type='button'
         initial='initial'

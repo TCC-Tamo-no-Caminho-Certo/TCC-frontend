@@ -38,7 +38,7 @@ interface SeasonsContextProps {
 export const SeasonsContext = createContext<SeasonsContextProps>({})
 
 const Seasons = forwardRef((_props, ref) => {
-  const theme = useContext(ThemeContext)
+  const { colors } = useContext(ThemeContext)
   const { user } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
@@ -91,7 +91,7 @@ const Seasons = forwardRef((_props, ref) => {
 
       <Content>
         {universities === undefined ? (
-          <DotsLoader color={theme.colors.secondary} />
+          <DotsLoader color={colors.secondary} />
         ) : universities?.length === 0 ? (
           <NotLinked>
             <h2>Você não está vinculado a nenhuma universidade.</h2>
