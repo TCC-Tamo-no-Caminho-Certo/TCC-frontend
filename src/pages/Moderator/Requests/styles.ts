@@ -1,18 +1,16 @@
 import { getStatusColor, StatusTypes } from 'utils/status'
 
-import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
 interface CircleProps {
   status?: StatusTypes
 }
 
-export const Filter = styled.div`
-  width: 100%;
-  padding: 16px;
+export const CircleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
-
-export const FilterButton = styled(motion.button).attrs({ type: 'button' })``
 
 export const Circle = styled.div<CircleProps>`
   display: flex;
@@ -89,6 +87,24 @@ const Style = styled.section`
   }
 
   @media screen and (min-width: 545px) {
+    .Table {
+      .status {
+        width: 40px;
+      }
+
+      .role {
+        width: 120px;
+      }
+
+      .date {
+        width: 100px;
+      }
+
+      .name {
+        width: calc(100% - 40px - 120px - 100px);
+      }
+    }
+
     .TableFilters .row {
       flex-direction: row;
 
