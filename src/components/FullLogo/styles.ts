@@ -8,20 +8,19 @@ const Style = styled.div`
   width: 100%;
 
   svg {
-    height: 130px;
-
+    height: 100%;
     overflow: visible;
 
-    .cls-1 {
+    .color-1 {
       fill: ${({ theme }) => theme.colors.primary};
     }
 
-    .cls-2 {
+    .color-2 {
       fill: ${({ theme }) => theme.colors.secondary};
     }
 
-    .cls-3,
-    .cls-4 {
+    .color-3,
+    .color-4 {
       fill: ${({ theme }) => theme.colors.tertiary};
     }
   }

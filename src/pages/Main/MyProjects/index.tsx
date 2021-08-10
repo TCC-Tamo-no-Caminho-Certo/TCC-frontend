@@ -78,33 +78,36 @@ const Projects = forwardRef((_props, ref) => {
 
   modalRef?.current?.config({
     close: { top: 16, right: 16, color: theme.colors.tertiary },
-    content: (
-      <CreateProject schema={createProjectSchema}>
-        <Select
-          name='university'
-          placeholder='Universidade'
-          value={undefined}
-          options={getUniversitiesOptions()}
-        />
+    content: () =>
+      user?.selectedRole === 'professor' ? (
+        <CreateProject schema={createProjectSchema}>
+          <Select
+            name='university'
+            placeholder='Universidade'
+            value={undefined}
+            options={getUniversitiesOptions()}
+          />
 
-        <Text placeholder='Título' name='title' maxLength={36} />
+          <Text placeholder='Título' name='title' maxLength={36} />
 
-        <Textarea placeholder='Resumo' name='description' maxLength={500} />
+          <Textarea placeholder='Resumo' name='description' maxLength={500} />
 
-        <File
-          guides
-          bottom='50vh'
-          tranlateY='50%'
-          name='document'
-          bgHeight='200vh'
-          label='Documento'
-          accept='application/pdf'
-          noCropper={true}
-        />
+          <File
+            guides
+            bottom='50vh'
+            tranlateY='50%'
+            name='document'
+            bgHeight='200vh'
+            label='Documento'
+            accept='application/pdf'
+            noCropper={true}
+          />
 
-        <Submit>Criar projeto</Submit>
-      </CreateProject>
-    )
+          <Submit>Criar projeto</Submit>
+        </CreateProject>
+      ) : (
+        <></>
+      )
   })
 
   useEffect(() => {

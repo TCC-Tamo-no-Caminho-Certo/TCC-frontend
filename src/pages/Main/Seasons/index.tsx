@@ -19,7 +19,7 @@ import DotsLoader from 'components/DotsLoader'
 
 import { SeasonsResType, SeasonsType } from 'types/Responses/university/seasons'
 import { UniversitiesResType } from 'types/Responses/university/universities'
-import { AdministratorType } from 'types/Responses/user/rolesData'
+import { AdministratorResType } from 'types/Responses/user/rolesData'
 
 import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
@@ -61,16 +61,20 @@ const Seasons = forwardRef((_props, ref) => {
           `universities/${id}/seasons`
         )
 
-        const { university_id }: AdministratorType = await api.get(
+        const { administrator }: AdministratorResType = await api.get(
           `users/${user.id}/roles/administrator`
         )
 
-        const isAdmin = university_id === id && user?.selectedRole === 'admin'
+        const universityId = administrator.university.id
+
+        const isAdmin = !!(
+          universityId === id && user?.selectedRole === 'admin'
+        )
 
         universitiesOfUser?.push({
+          name,
+          isAdmin,
           seasons,
-          name: name,
-          isAdmin: true,
           id: universities[i].id
         })
       }

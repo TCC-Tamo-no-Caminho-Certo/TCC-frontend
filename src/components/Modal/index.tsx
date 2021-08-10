@@ -1,6 +1,7 @@
 import React, {
   forwardRef,
   ReactElement,
+  ReactNode,
   useContext,
   useImperativeHandle,
   useRef,
@@ -27,7 +28,7 @@ export interface ModalProps {
 
 interface ModalConfig {
   props?: ModalProps
-  content?: ReactElement | ReactElement[] | string
+  content?: ReactNode
   close?: { top?: number; right?: number; color?: string }
 }
 

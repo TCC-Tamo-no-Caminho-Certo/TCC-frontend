@@ -27,6 +27,7 @@ const DatesTable = ({
       <thead>
         <tr>
           <th>{header[0]}</th>
+
           <th>{header[1]}</th>
         </tr>
       </thead>

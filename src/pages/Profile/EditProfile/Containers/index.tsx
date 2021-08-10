@@ -91,7 +91,6 @@ const Containers = () => {
                       user,
                       emails,
                       role: 'personal',
-                      roles: { administrator: { university_id: 0 } },
                       universities
                     }).map((info: InputData) => (
                       <Field data={info} key={info.name} />
@@ -111,7 +110,6 @@ const Containers = () => {
                 formatUpdateUser({
                   user,
                   emails,
-                  roles: { administrator: { university_id: 0 } },
                   role: role as keyof ContainerForm,
                   universities
                 }).map((info: InputData) => (

@@ -1,3 +1,5 @@
+import { Response } from '../'
+
 export interface ProfessorType {
   postgraduate: boolean
   universities: {
@@ -13,6 +15,8 @@ export interface ProfessorType {
 }
 
 export interface StudentType {
+  lattes?: string
+  linkedin?: string
   universities: {
     id: number
     register: string
@@ -20,12 +24,10 @@ export interface StudentType {
     campus_id: number
     semester: boolean
   }[]
-  lattes?: string
-  linkedin?: string
 }
 
 export interface AdministratorType {
-  university_id: number
+  university: { id: number }
 }
 
 export interface ModeratorType {
@@ -41,4 +43,8 @@ export interface RolesDataType {
 
 export interface RolesDataResType extends Response {
   roles: RolesDataType
+}
+
+export interface AdministratorResType extends Response {
+  administrator: AdministratorType
 }

@@ -59,6 +59,14 @@ export const Content = styled.div`
     width: 100%;
   }
 
+  header {
+    height: clamp(94px, 15vw, 130px);
+
+    .FullLogo {
+      height: 100%;
+    }
+  }
+
   .Form {
     margin: 16px 0 8px 0;
 
@@ -81,6 +89,12 @@ export const Content = styled.div`
 
         height: max(5vh, 35px);
       }
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    header {
+      height: 25%;
     }
   }
 `
