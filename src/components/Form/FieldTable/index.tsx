@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Style from './styles'
 
 import CalendarIcon from 'assets/global/CalendarIcon'
@@ -22,19 +22,6 @@ const DatesTable = ({
   valueComplement,
   withoutDefaultValue = false
 }: DatesTableProps) => {
-  const [selecteds, setSelecteds] = useState<number[]>()
-
-  const onCloseClick = (id: number) => {
-    setSelecteds(prev => prev?.filter(currPrev => currPrev !== id))
-  }
-
-  const onFieldClick = (id: number) => {
-    setSelecteds(prev => {
-      if (prev?.find(currPrev => currPrev === id) !== undefined) return prev
-      return prev ? [...prev, id] : [id]
-    })
-  }
-
   return (
     <Style>
       <thead>
@@ -52,12 +39,7 @@ const DatesTable = ({
             <td>
               <Field
                 icon={CalendarIcon}
-                enableEdit={edit}
-                onCloseClick={() => onCloseClick(index)}
-                onFieldClick={() => onFieldClick(index)}
-                conditionToEdit={
-                  selecteds?.find(selected => selected === index) !== undefined
-                }
+                enableToEdit={edit}
                 defaultValue={
                   withoutDefaultValue
                     ? undefined

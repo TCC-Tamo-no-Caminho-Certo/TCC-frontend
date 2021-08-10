@@ -32,8 +32,8 @@ export const Edict = styled.a`
 
   width: 100%;
   height: 44px;
-  border-radius: 0 0 8px 8px;
   cursor: pointer;
+  border-radius: 0 0 8px 8px;
 
   color: ${({ theme }) => theme.colors.secondary};
   background-color: ${({ theme }) => theme.colors.primary};
@@ -58,11 +58,28 @@ export const Begin = styled.div`
   justify-content: center;
 
   width: 100%;
+  height: 43px;
   font-size: clamp(1.3rem, 0.6rem + 2.6vw, 2rem);
 
-  .Field {
+  span {
+    margin-bottom: 8px;
+  }
+
+  .DefaultField {
+    position: relative;
+
     height: 42px;
+    width: 230px;
     margin-left: 4px;
+
+    .Icon {
+      position: absolute;
+      top: 50%;
+      right: 0;
+
+      margin: 0 0 0 8px;
+      transform: translateY(-50%);
+    }
   }
 
   #label {
@@ -86,6 +103,7 @@ export const Begin = styled.div`
 
     span {
       margin-bottom: 0px;
+      margin-right: 8px;
     }
   }
 `
@@ -93,12 +111,12 @@ export const Begin = styled.div`
 const Style = styled(Form)<StyleProps>`
   .AnimatedList {
     .Header {
+      transition: padding ease-in-out 0.5s;
+
       padding: ${({ isAdmin, editing }) => {
         if (isAdmin && editing) return '0 48px'
         return isAdmin ? '0 48px 0 0' : '0'
       }};
-
-      transition: padding ease-in-out 0.5s;
     }
 
     .Content {
@@ -165,6 +183,7 @@ const Style = styled(Form)<StyleProps>`
 
 export default Style
 
+Remove.displayName = 'Remove-Style'
 Edit.displayName = 'Edit-Style'
 Edict.displayName = 'Edict-Style'
 Begin.displayName = 'Begin-Style'

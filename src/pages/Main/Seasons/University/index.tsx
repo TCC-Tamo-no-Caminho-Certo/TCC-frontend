@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from 'react'
-import Style, { Seasons } from './styles'
+import Style, { Seasons, UniversityName } from './styles'
 
 import CreateSeason from './CreateSeason'
 import Season from './Season'
@@ -9,7 +9,7 @@ import transition from 'utils/transition'
 
 import Presence from 'components/Presence'
 
-import { motion, Variants } from 'framer-motion'
+import { Variants } from 'framer-motion'
 
 interface UniversityProps {
   university: UniversityDataType
@@ -64,16 +64,15 @@ const University = ({
 
   return (
     <Style>
-      <motion.button
+      <UniversityName
         initial='initial'
-        id='universityName'
         disabled={disabled}
         onClick={onNameClick}
         variants={buttonAnimation}
         animate={isSelected ? 'unrounded' : 'rounded'}
       >
         {name}
-      </motion.button>
+      </UniversityName>
 
       <Presence variants={bgAnimation} condition={isSelected}>
         <Seasons>

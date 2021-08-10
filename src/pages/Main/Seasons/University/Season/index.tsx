@@ -38,8 +38,8 @@ const Season = ({
   universityId,
   season: { title, description, begin, edict, periods }
 }: SeasonProps) => {
-  const { popupRef } = useContext(GlobalContext)
   const { getUniversitiesOfUser } = useContext(SeasonsContext)
+  const { popupRef } = useContext(GlobalContext)
 
   const [editing, setEditing] = useState(false)
 
@@ -87,13 +87,45 @@ const Season = ({
     return { begin, edict, title, periods, description }
   }
 
+  const onRemoveClick = () => {
+    const onPopupOkClick = async () => {
+      const { success } = await api.delete(
+        `/universities/${universityId}/seasons/${id}`
+      )
+
+      if (!success)
+        popupRef?.current?.configPopup({
+          type: 'error',
+          setModal: true,
+          message: 'Algo inesperado aconteceu! Tente novamente'
+        })
+      else
+        popupRef?.current?.configPopup({
+          type: 'success',
+          message: 'Temporada removida',
+          setModal: true,
+          onClick: () => {
+            getUniversitiesOfUser && getUniversitiesOfUser()
+            setSelecteds && setSelecteds(undefined)
+          }
+        })
+    }
+
+    popupRef?.current?.configPopup({
+      setModal: true,
+      type: 'warning',
+      message: 'Tem certeza que deseja remover esta temporada',
+      onOkClick: onPopupOkClick
+    })
+  }
+
   return (
     <Style
       method='patch'
-      path={`/universities/${universityId}/seasons/${id}`}
+      editing={editing}
       afterResData={afterResData}
       manipulateData={manipulateData}
-      editing={editing}
+      path={`/universities/${universityId}/seasons/${id}`}
       isAdmin={
         isAdmin && selecteds?.find(season_id => season_id === id) !== undefined
       }
@@ -108,9 +140,9 @@ const Season = ({
 
         {editing ? (
           <Textarea
+            maxLength={500}
             name='description'
             placeholder='Descrição'
-            maxLength={500}
             defaultValue={description}
           />
         ) : (
@@ -123,9 +155,8 @@ const Season = ({
               <span>Início da temporada:</span>
 
               <Field
-                inputType='datepicker'
                 icon={CalendarIcon}
-                enableEdit={editing}
+                inputType='datepicker'
                 defaultValue={isoToDate(begin, 'day/month/2-year')}
                 datepickerProps={{
                   name: 'begin',
@@ -134,7 +165,7 @@ const Season = ({
               />
             </>
           ) : (
-            <div id='beginDate'>
+            <div>
               Início da temporada: {isoToDate(begin, 'day/month/2-year')}
             </div>
           )}
@@ -171,37 +202,7 @@ const Season = ({
         )}
 
         {isAdmin && editing && (
-          <Remove
-            onClick={async () => {
-              popupRef?.current?.configPopup({
-                setModal: true,
-                type: 'warning',
-                message: 'Tem certeza que deseja remover esta temporada',
-                onOkClick: async () => {
-                  const { success } = await api.delete(
-                    `/universities/${universityId}/seasons/${id}`
-                  )
-
-                  if (!success)
-                    popupRef?.current?.configPopup({
-                      type: 'error',
-                      setModal: true,
-                      message: 'Algo inesperado aconteceu! Tente novamente'
-                    })
-                  else
-                    popupRef?.current?.configPopup({
-                      type: 'success',
-                      message: 'Temporada removida',
-                      setModal: true,
-                      onClick: () => {
-                        getUniversitiesOfUser && getUniversitiesOfUser()
-                        setSelecteds && setSelecteds(undefined)
-                      }
-                    })
-                }
-              })
-            }}
-          >
+          <Remove onClick={onRemoveClick}>
             <TrashIcon />
           </Remove>
         )}

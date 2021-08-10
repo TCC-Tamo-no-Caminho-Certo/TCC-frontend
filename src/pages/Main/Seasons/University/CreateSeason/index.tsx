@@ -89,7 +89,6 @@ const CreateSeason = ({
 
         <Begin>
           <Field
-            enableEdit={true}
             inputType='datepicker'
             icon={CalendarIcon}
             datepickerProps={{

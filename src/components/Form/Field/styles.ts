@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 
 export const DefaultField = styled.div`
+  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,8 +11,13 @@ export const DefaultField = styled.div`
   cursor: pointer;
 
   .Icon {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+
     height: 18px;
-    margin-right: 16px;
+    cursor: pointer;
+    transform: translateY(-50%);
 
     fill: ${({ theme }) => theme.colors.primary};
   }
@@ -53,5 +60,5 @@ export const EditField = styled.div`
   }
 `
 
-EditField.displayName = 'EditField-Style'
 DefaultField.displayName = 'DefaultField-Style'
+EditField.displayName = 'EditField-Style'

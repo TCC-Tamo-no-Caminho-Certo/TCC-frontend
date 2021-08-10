@@ -19,11 +19,12 @@ const Style = styled.table`
   }
 
   td {
-    padding: 0 8px;
-  }
+    padding: 0 16px;
 
-  .Text {
-    width: 100%;
+    .Field > div,
+    .DefaultField {
+      width: 100%;
+    }
   }
 `
 
