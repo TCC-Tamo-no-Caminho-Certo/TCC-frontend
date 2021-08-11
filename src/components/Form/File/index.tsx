@@ -7,7 +7,7 @@ import CloseIcon from 'assets/global/CloseIcon'
 import CameraIcon from 'assets/Inputs/CameraIcon'
 import DownloadIcon from 'assets/global/Download'
 
-import Modal, { ModalMethods } from 'components/Modal'
+import Modal, { ModalForwardeds } from 'components/Modal'
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
 
 import 'cropperjs/dist/cropper.css'
@@ -29,14 +29,10 @@ interface FileProps extends ReactCropperProps {
 }
 
 const File = ({
-  top,
   name,
   label,
-  bottom,
   accept,
   onClick,
-  bgHeight,
-  tranlateY,
   download = true,
   maxSize = '2048',
   noCropper = false,
@@ -47,7 +43,7 @@ const File = ({
   const form = useContext<FormState | null>(FormContext)
 
   const fileRef = useRef<HTMLInputElement>(null)
-  const modalRef = useRef<ModalMethods>(null)
+  const modalRef = useRef<ModalForwardeds>(null)
 
   const [fileData, setFileData] = useState<string>()
   const [cropper, setCropper] = useState<any>()
@@ -132,13 +128,7 @@ const File = ({
       </div>
 
       {!noCropper && (
-        <Modal
-          top={top}
-          ref={modalRef}
-          bottom={bottom}
-          bgHeight={bgHeight}
-          translateY={tranlateY}
-        >
+        <Modal ref={modalRef}>
           <div id='container'>
             <CloseIcon onClick={() => modalRef.current?.toggle(false)} />
 

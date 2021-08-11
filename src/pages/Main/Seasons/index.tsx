@@ -68,7 +68,7 @@ const Seasons = forwardRef((_props, ref) => {
         const universityId = administrator.university.id
 
         const isAdmin = !!(
-          universityId === id && user?.selectedRole === 'admin'
+          universityId === id && user?.selectedRole === 'administrator'
         )
 
         universitiesOfUser?.push({

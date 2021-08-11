@@ -7,6 +7,8 @@ interface StyleProps {
 }
 
 const Style = styled.div<StyleProps>`
+  position: relative;
+
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -64,6 +66,16 @@ const Style = styled.div<StyleProps>`
 
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.primary};
+  }
+
+  .Icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+
+    height: 18px;
+
+    stroke: ${({ theme }) => theme.colors.secondary};
   }
 `
 

@@ -6,7 +6,7 @@ import { Animations, show } from '../../StudentProfessor/index'
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
 import { File } from 'components/Form'
-import RegisterEmail, { RegisterEmailMethods } from 'components/RegisterEmail'
+import RegisterEmail, { RegisterEmailForwardeds } from 'components/RegisterEmail'
 
 import { UniversityType } from 'types/Responses/university'
 import {
@@ -32,7 +32,7 @@ const Ways = ({
   setRegisterByEmail,
   selectedUniversity
 }: WaysProps) => {
-  const registerEmailRef = useRef<RegisterEmailMethods>(null)
+  const registerEmailRef = useRef<RegisterEmailForwardeds>(null)
 
   const { id, name, regex } = selectedUniversity
 
@@ -124,9 +124,8 @@ const Ways = ({
           ref={registerEmailRef}
           onSuccess={onEmailSuccess}
           regex={regex.email.student}
-          modal={{ translateY: '50%', bottom: '50vh' }}
         />,
-        document.getElementById('registerEmailPortal') as Element
+        document.getElementById('root') as Element
       )}
     </>
   )

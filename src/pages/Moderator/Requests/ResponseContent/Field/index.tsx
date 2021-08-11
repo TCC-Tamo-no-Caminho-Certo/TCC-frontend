@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from 'react'
+import React, { ReactNode, useContext } from 'react'
 import Style from './styles'
 
 import DotsLoader from 'components/DotsLoader'
@@ -8,7 +8,7 @@ import { ThemeContext } from 'styled-components'
 interface FieldProps {
   label: string
   value?: any
-  component?: () => ReactElement
+  component?: () => ReactNode
 }
 
 const Field = ({ label, value, component }: FieldProps) => {

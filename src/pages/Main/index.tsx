@@ -49,7 +49,10 @@ const Main = () => {
       }
     ]
 
-    if (user?.selectedRole === 'moderator' || user?.selectedRole === 'admin')
+    if (
+      user?.selectedRole === 'moderator' ||
+      user?.selectedRole === 'administrator'
+    )
       sidebarSections.push({
         bottom: true,
         label: 'Universidade',

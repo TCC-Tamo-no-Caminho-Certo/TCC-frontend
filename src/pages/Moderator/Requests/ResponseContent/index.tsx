@@ -11,19 +11,19 @@ import { AsyncUserState } from 'store/Async/user'
 
 import CloseIcon from 'assets/global/CloseIcon'
 import TrashIcon from 'assets/global/TrashIcon'
-import { CheckboxIconMethods } from 'assets/CheckboxIcon'
+import { CheckboxIconForwardeds } from 'assets/CheckboxIcon'
 
 import Avatar from 'components/User/Avatar'
 import Form, { Submit, Textarea } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
 import { BodyRowType } from 'components/Table'
 import Role from 'components/Role'
+import { PopupForwardeds } from 'components/Popup'
 
 import { EmailsResType } from 'types/Responses/user/emails'
 import { RoleType } from 'types/Responses/user/roles'
 import { CourseResType } from 'types/Responses/university/courses'
 
-import { GlobalContext } from 'App'
 import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 import * as Yup from 'yup'
@@ -56,17 +56,18 @@ const ResponseContent = ({
   resetTable,
   onCloseClick
 }: ResponseContentProps) => {
-  const { popupRef } = useContext(GlobalContext)
   const theme = useContext(ThemeContext)
   const { user } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
 
+  const popupRef = useRef<PopupForwardeds>(null)
+
   const [aditionalData, setAditionalData] = useState<AditionalDataState>()
   const [response, setResponse] = useState<'accepted' | 'rejected'>()
 
-  const acceptRef = useRef<CheckboxIconMethods>(null)
-  const rejectRef = useRef<CheckboxIconMethods>(null)
+  const acceptRef = useRef<CheckboxIconForwardeds>(null)
+  const rejectRef = useRef<CheckboxIconForwardeds>(null)
 
   const userData = data.rowValue.user
   const requestData = data.rowValue.request?.data
@@ -91,7 +92,7 @@ const ResponseContent = ({
         },
         onCloseClick: () => {
           popupRef?.current?.configPopup({
-            setModal: false,
+            open: false,
             message: '',
             type: 'warning'
           })
@@ -111,13 +112,13 @@ const ResponseContent = ({
         case 'Request not found!':
           if (data.rowLabel.status.name === 'rejected')
             popupRef?.current?.configPopup({
-              setModal: true,
+              open: true,
               type: 'error',
               message: 'Solicitação já foi recusada.'
             })
           else
             popupRef?.current?.configPopup({
-              setModal: true,
+              open: true,
               type: 'error',
               message: 'Solicitação não encontrada ou já aceita.'
             })

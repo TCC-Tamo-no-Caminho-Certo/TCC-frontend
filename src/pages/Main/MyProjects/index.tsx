@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext, useEffect } from 'react'
+import React, { forwardRef, useEffect, useRef } from 'react'
 import Style, { CreateProject } from './styles'
 
 import createProjectSchema from 'utils/validations/createProjectSchema'
@@ -14,15 +14,14 @@ import {
 } from 'store/Async/universities'
 
 import { File, Select, Submit, Text, Textarea } from 'components/Form'
+import Modal, { ModalForwardeds } from 'components/Modal'
 
 import { ProjectResType } from 'types/Responses/project'
 import { UniversityResType } from 'types/Responses/university'
 import { ProjectsType } from 'types/Responses/user/projects'
 import { ProfessorType } from 'types/Responses/user/rolesData'
 
-import { GlobalContext } from 'App'
 import { useDispatch, useSelector } from 'react-redux'
-import { ThemeContext } from 'styled-components'
 
 const Projects = forwardRef((_props, ref) => {
   const { universities } = useSelector<RootState, AsyncUniversitiesState>(
@@ -32,9 +31,7 @@ const Projects = forwardRef((_props, ref) => {
     ({ asyncUser }) => asyncUser
   )
 
-  const { modalRef } = useContext(GlobalContext)
-  const theme = useContext(ThemeContext)
-
+  const modalRef = useRef<ModalForwardeds>(null)
   const dispatch = useDispatch()
 
   const getUniversitiesOptions = async () => {
@@ -76,40 +73,6 @@ const Projects = forwardRef((_props, ref) => {
     return myProjects
   }
 
-  modalRef?.current?.config({
-    close: { top: 16, right: 16, color: theme.colors.tertiary },
-    content: () =>
-      user?.selectedRole === 'professor' ? (
-        <CreateProject schema={createProjectSchema}>
-          <Select
-            name='university'
-            placeholder='Universidade'
-            value={undefined}
-            options={getUniversitiesOptions()}
-          />
-
-          <Text placeholder='Título' name='title' maxLength={36} />
-
-          <Textarea placeholder='Resumo' name='description' maxLength={500} />
-
-          <File
-            guides
-            bottom='50vh'
-            tranlateY='50%'
-            name='document'
-            bgHeight='200vh'
-            label='Documento'
-            accept='application/pdf'
-            noCropper={true}
-          />
-
-          <Submit>Criar projeto</Submit>
-        </CreateProject>
-      ) : (
-        <></>
-      )
-  })
-
   useEffect(() => {
     dispatch(getUniversities())
   }, [dispatch])
@@ -127,6 +90,38 @@ const Projects = forwardRef((_props, ref) => {
           </button>
         )}
       </Style>
+
+      <Modal ref={modalRef}>
+        {user?.selectedRole === 'professor' ? (
+          <CreateProject schema={createProjectSchema}>
+            <Select
+              name='university'
+              placeholder='Universidade'
+              value={undefined}
+              options={getUniversitiesOptions()}
+            />
+
+            <Text placeholder='Título' name='title' maxLength={36} />
+
+            <Textarea placeholder='Resumo' name='description' maxLength={500} />
+
+            <File
+              guides
+              bottom='50vh'
+              tranlateY='50%'
+              name='document'
+              noCropper={true}
+              bgHeight='200vh'
+              label='Documento'
+              accept='application/pdf'
+            />
+
+            <Submit>Criar projeto</Submit>
+          </CreateProject>
+        ) : (
+          <></>
+        )}
+      </Modal>
     </>
   )
 })

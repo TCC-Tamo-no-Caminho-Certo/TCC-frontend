@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Form } from './styles'
 
 import { AddRoleContext } from '../../index'
@@ -12,11 +12,11 @@ import api from 'services/api'
 
 import { Select, Submit, Textarea } from 'components/Form'
 import { Option } from 'components/Form/Select'
+import Popup, { PopupForwardeds } from 'components/Popup'
 
 import { ProfessorType } from 'types/Responses/user/rolesData'
 import { ModeratorDataType, RequestType } from 'types/Responses/user/requests'
 
-import { GlobalContext } from 'App'
 import { motion } from 'framer-motion'
 import { useHistory } from 'react-router'
 
@@ -40,7 +40,7 @@ const verifyFullTime = (professor: ProfessorType, university_id: number) => {
 }
 
 const ModeratorForm = ({ request }: ModeratorProps) => {
-  const { popupRef } = useContext(GlobalContext)
+  const popupRef = useRef<PopupForwardeds>(null)
 
   const { universities } = useContext(AddRoleContext)
 
@@ -65,22 +65,11 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
     setValues(prev => ({ ...prev, university: selected }))
   }
 
-  useEffect(() => {
-    request &&
-      setValues({
-        university: options.university.find(
-          option => option.value === request.data.university_id
-        )
-      })
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [request])
-
   const afterSubmit = (res: any) => {
     if (res.success)
       if (fullTime)
         popupRef?.current?.configPopup({
-          setModal: true,
+          open: true,
           type: 'success',
           message: 'Papel adicionado',
           onClick: () => {
@@ -89,14 +78,14 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
         })
       else
         popupRef?.current?.configPopup({
-          setModal: true,
+          open: true,
           type: 'success',
           message: request ? 'Solicitação reenviada!' : 'Solicitação enviada!',
           onClick: () => history.push('/session/main')
         })
     else
       popupRef?.current?.configPopup({
-        setModal: true,
+        open: true,
         type: 'error',
         message: 'Falha ao enviar solicitação :('
       })
@@ -112,46 +101,61 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
     }))
   }, [universities])
 
+  useEffect(() => {
+    request &&
+      setValues({
+        university: options.university.find(
+          option => option.value === request.data.university_id
+        )
+      })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [request])
+
   return (
-    <Form
-      loading
-      method={request ? 'patch' : 'post'}
-      afterResData={afterSubmit}
-      schema={!fullTime ? withFullTime : withoutFullTime}
-      path={
-        request
-          ? `users/roles/requests/moderator/${request.id}`
-          : 'users/roles/requests/moderator'
-      }
-    >
-      <Select
-        id='cy-university'
-        name='university_id'
-        placeholder='Universidade'
-        value={values.university}
-        options={options.university}
-        onChange={onUniversityChange}
-      />
-
-      <motion.div
-        animate={{
-          height: !fullTime ? 'auto' : 0,
-          opacity: !fullTime ? 1 : 0
-        }}
+    <>
+      <Form
+        loading
+        method={request ? 'patch' : 'post'}
+        afterResData={afterSubmit}
+        schema={!fullTime ? withFullTime : withoutFullTime}
+        path={
+          request
+            ? `users/roles/requests/moderator/${request.id}`
+            : 'users/roles/requests/moderator'
+        }
       >
-        <Textarea
-          id='cy-pretext'
-          name='pretext'
-          placeholder='Descreva porquê você quer ser Moderador...'
-          maxLength={500}
-          defaultValue={request?.data.pretext}
+        <Select
+          id='cy-university'
+          name='university_id'
+          placeholder='Universidade'
+          value={values.university}
+          options={options.university}
+          onChange={onUniversityChange}
         />
-      </motion.div>
 
-      <Submit id='cy-submit'>
-        {!fullTime ? 'Enviar solicitação' : 'Tornar-se moderador!'}
-      </Submit>
-    </Form>
+        <motion.div
+          animate={{
+            height: !fullTime ? 'auto' : 0,
+            opacity: !fullTime ? 1 : 0
+          }}
+        >
+          <Textarea
+            id='cy-pretext'
+            name='pretext'
+            placeholder='Descreva porquê você quer ser Moderador...'
+            maxLength={500}
+            defaultValue={request?.data.pretext}
+          />
+        </motion.div>
+
+        <Submit id='cy-submit'>
+          {!fullTime ? 'Enviar solicitação' : 'Tornar-se moderador!'}
+        </Submit>
+      </Form>
+
+      <Popup ref={popupRef} />
+    </>
   )
 }
 

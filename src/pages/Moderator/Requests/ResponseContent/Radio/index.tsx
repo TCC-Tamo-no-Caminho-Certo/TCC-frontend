@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import Style from './styles'
 
-import CheckboxIcon, { CheckboxIconMethods } from 'assets/CheckboxIcon'
+import CheckboxIcon, { CheckboxIconForwardeds } from 'assets/CheckboxIcon'
 
 import { ThemeContext } from 'styled-components'
 
@@ -13,7 +13,7 @@ interface RadioProps {
   id: any
 }
 
-const Radio = React.forwardRef<CheckboxIconMethods, RadioProps>(
+const Radio = React.forwardRef<CheckboxIconForwardeds, RadioProps>(
   ({ onChange, onClick, name, label, id }, ref) => {
     const theme = useContext(ThemeContext)
 

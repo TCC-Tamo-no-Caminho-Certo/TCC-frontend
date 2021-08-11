@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useRef } from 'react'
 import Style, { Content } from './styles'
 
 import { passwordSchema } from 'utils/validations/forgotPassword'
@@ -10,13 +10,13 @@ import Logo from 'assets/FullLogo'
 
 import { Form, Submit, Text } from 'components/Form'
 import BackButton from 'components/BackButton'
+import Popup, { PopupForwardeds } from 'components/Popup'
 
-import { GlobalContext } from 'App'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 const ConfirmPassword = () => {
-  const { popupRef } = useContext(GlobalContext)
+  const popupRef = useRef<PopupForwardeds>(null)
 
   const dispatch = useDispatch()
   const history = useHistory()
@@ -26,7 +26,7 @@ const ConfirmPassword = () => {
 
   if (!code) {
     popupRef?.current?.configPopup({
-      setModal: true,
+      open: true,
       type: 'error',
       message: 'Código não fornecido',
       onOkClick: () => history.push('/'),
@@ -39,14 +39,14 @@ const ConfirmPassword = () => {
   const afterResetSubmit = (res: any) => {
     res.success
       ? popupRef?.current?.configPopup({
-          setModal: true,
+          open: true,
           type: 'success',
           message: 'Senha alterada!',
           onOkClick: () => history.push('/'),
           onCloseClick: () => history.push('/')
         })
       : popupRef?.current?.configPopup({
-          setModal: true,
+          open: true,
           type: 'error',
           message: 'Código inválido!',
           onCloseClick: () => history.push('/'),
@@ -55,56 +55,60 @@ const ConfirmPassword = () => {
   }
 
   return (
-    <Style>
-      <BackButton
-        to='/home'
-        onTap={() =>
-          dispatch(
-            HomeActions.update({
-              initial: false,
-              page: 'login'
-            })
-          )
-        }
-      />
+    <>
+      <Style>
+        <BackButton
+          to='/home'
+          onTap={() =>
+            dispatch(
+              HomeActions.update({
+                initial: false,
+                page: 'login'
+              })
+            )
+          }
+        />
 
-      <Content>
-        <Logo />
+        <Content>
+          <Logo />
 
-        <Form
-          loading
-          captcha
-          path='reset-password/*%'
-          schema={passwordSchema}
-          afterResData={afterResetSubmit}
-          addToPath={['code']}
-        >
-          <p>Digite sua nova senha</p>
+          <Form
+            loading
+            captcha
+            path='reset-password/*%'
+            schema={passwordSchema}
+            afterResData={afterResetSubmit}
+            addToPath={['code']}
+          >
+            <p>Digite sua nova senha</p>
 
-          <Text readOnly hidden name='code' value={code} />
+            <Text readOnly hidden name='code' value={code} />
 
-          <Text
-            eye
-            name='password'
-            type='password'
-            placeholder='Senha'
-            icon={PadlockIcon}
-          />
+            <Text
+              eye
+              name='password'
+              type='password'
+              placeholder='Senha'
+              icon={PadlockIcon}
+            />
 
-          <p>Confirme sua nova senha</p>
+            <p>Confirme sua nova senha</p>
 
-          <Text
-            eye
-            type='password'
-            name='confirmPassword'
-            placeholder='Confirmar senha'
-            icon={PadlockIcon}
-          />
+            <Text
+              eye
+              type='password'
+              name='confirmPassword'
+              placeholder='Confirmar senha'
+              icon={PadlockIcon}
+            />
 
-          <Submit>Redefinir</Submit>
-        </Form>
-      </Content>
-    </Style>
+            <Submit>Redefinir</Submit>
+          </Form>
+        </Content>
+      </Style>
+
+      <Popup ref={popupRef} />
+    </>
   )
 }
 

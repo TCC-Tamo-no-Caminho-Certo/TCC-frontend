@@ -1,61 +1,21 @@
 import styled from 'styled-components'
 
-interface ModalBackgroundProps {
-  height: string
-  zIndex: number
-}
-
-interface StyleProps {
-  top: any
-  bottom: any
-  zIndex: any
-  closeTop: any
-  closeColor: any
-  translateY: any
-  closeRight: any
-}
-
-export const ModalBackground = styled.div<ModalBackgroundProps>`
-  position: fixed;
+const Style = styled.div`
+  position: absolute;
   top: 0;
   left: 0;
-  z-index: ${({ zIndex }) => zIndex};
-
-  width: 100%;
-  height: ${({ height }) => height};
-
-  background-color: rgba(0, 0, 0, 0.75);
-`
-
-const Style = styled.div<StyleProps>`
-  position: fixed;
-  left: 50%;
-  bottom: ${({ bottom }) => bottom};
-  z-index: ${({ zIndex }) => zIndex + 1};
-  top: ${({ top, bottom }) => (bottom === 'auto' ? top : 'auto')};
+  z-index: 1000;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  transform: ${({ translateY }) => `translate(-50%, ${translateY})`};
+  width: 100vw;
+  height: 100vh;
 
-  width: 100%;
-
-  #ModalCloseIcon {
-    position: absolute;
-    top: ${({ closeTop }) => closeTop};
-    z-index: ${({ zIndex }) => zIndex + 10};
-    right: ${({ closeRight }) => closeRight};
-
-    width: 16px;
-    height: 16px;
-
-    stroke: ${({ closeColor }) => closeColor};
-  }
+  background-color: rgba(0, 0, 0, 0.75);
 `
 
 export default Style
 
-ModalBackground.displayName = 'ModalBackground-Style'
 Style.displayName = 'Modal-Style'

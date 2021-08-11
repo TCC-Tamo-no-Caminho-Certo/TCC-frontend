@@ -14,10 +14,10 @@ import Table, {
   BodyRowType,
   GetDataType,
   HeaderType,
-  TableMethods
+  TableForwardeds
 } from 'components/Table'
 import Role from 'components/Role'
-import Modal, { ModalMethods } from 'components/Modal'
+import Modal, { ModalForwardeds } from 'components/Modal'
 import { Datepicker, Select, Text } from 'components/Form'
 
 import {
@@ -67,8 +67,8 @@ const Requests = () => {
   const { colors } = useContext(ThemeContext)
   const { secondary, red, tertiary, primary } = colors
 
-  const modalRef = useRef<ModalMethods>(null)
-  const tableRef = useRef<TableMethods>(null)
+  const modalRef = useRef<ModalForwardeds>(null)
+  const tableRef = useRef<TableForwardeds>(null)
 
   const selectStyle = {
     container: (before: any) => ({ ...before }),
@@ -122,19 +122,15 @@ const Requests = () => {
   })
 
   const onTableDataClick = (data: BodyRowType) => {
-    modalRef.current?.config({
-      close: { right: 24 },
-      props: { top: '50%', translateY: '-50%' },
-      content: (
-        <ResponseContent
-          data={data}
-          onCloseClick={() => modalRef.current?.toggle(false)}
-          resetTable={() => tableRef.current?.onRefreshIconClick()}
-        />
-      )
-    })
-
     modalRef.current?.toggle(true)
+
+    modalRef.current?.content(
+      <ResponseContent
+        data={data}
+        onCloseClick={() => modalRef.current?.toggle(false)}
+        resetTable={() => tableRef.current?.onRefreshIconClick()}
+      />
+    )
   }
 
   const getTableData: GetDataType = useCallback(async ({ filters, page }) => {
@@ -262,7 +258,7 @@ const Requests = () => {
         </Table>
       </Style>
 
-      <Modal ref={modalRef} closeIcon={false} />
+      <Modal ref={modalRef} />
     </>
   )
 }

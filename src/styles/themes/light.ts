@@ -13,13 +13,14 @@ const light: Themes = {
     secondary: '#fcfcfc'
   },
   roles: {
-    admin: '#d62828',
+    administrator: '#d62828',
     guest: '#f5d936',
     student: '#00d053',
     customer: '#ff6b00',
     professor: '#329dff',
     evaluator: '#ba5eff',
-    moderator: '#64e3ff'
+    moderator: '#64e3ff',
+    developer: '#400080'
   },
   sidebar: {
     letters: '#fcfcfc',

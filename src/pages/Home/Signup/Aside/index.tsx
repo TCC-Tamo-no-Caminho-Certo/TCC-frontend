@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import Style, { Content } from './styles'
 
 import signupSchema from 'utils/validations/signup'
@@ -13,6 +13,7 @@ import FullLogo from 'components/FullLogo'
 // import ThemeSwitch from 'components/ThemeSwitch'
 import { Datepicker, Form, Submit, Text } from 'components/Form'
 import BackButton from 'components/BackButton'
+import Popup, { PopupForwardeds } from 'components/Popup'
 
 import { GlobalContext } from 'App'
 import { useTranslation } from 'react-i18next'
@@ -21,8 +22,9 @@ import { useHistory } from 'react-router'
 
 const Aside = () => {
   const home = useSelector<RootState, HomeState>(({ home }) => home)
-  const { popupRef } = useContext(GlobalContext)
   const { overflow } = useContext(GlobalContext)
+
+  const popupRef = useRef<PopupForwardeds>(null)
 
   const [disable, setDisable] = useState(false)
 
@@ -60,7 +62,7 @@ const Aside = () => {
   const afterSubmit = (res: any) => {
     if (res.success)
       popupRef?.current?.configPopup({
-        setModal: true,
+        open: true,
         type: 'success',
         message: t('signup.popup.success'),
         onClick: onSuccessClose
@@ -69,7 +71,7 @@ const Aside = () => {
       switch (res.error) {
         case 'User already exists':
           popupRef?.current?.configPopup({
-            setModal: true,
+            open: true,
             type: 'error',
             message: t('signup.popup.userExists'),
             onClick: () => {
@@ -82,7 +84,7 @@ const Aside = () => {
 
         default:
           popupRef?.current?.configPopup({
-            setModal: true,
+            open: true,
             type: 'error',
             message: t('signup.popup.defaultError')
           })
@@ -90,104 +92,105 @@ const Aside = () => {
   }
 
   return (
-    <Style>
-      <nav>
-        <BackButton
-          to='/home'
-          onTap={onBackButtonClick}
-          disabled={disable || home.disable}
-        />
-
-        {/* <ThemeSwitch /> */}
-      </nav>
-
-      <Content>
-        <header>
-          <FullLogo />
-        </header>
-
-        <Form
-          captcha
-          loading
-          path='sign-up'
-          schema={signupSchema}
-          afterResData={afterSubmit}
-          manipulateData={data => {
-            delete data.confirmPassword
-            return data
-          }}
-        >
-          <Text
-            name='name'
-            className='dual'
-            placeholder='Nome'
-            autoComplete='given-name'
-            data-cy='input-signup-name'
-            icon={WorldIcon}
+    <>
+      <Style>
+        <nav>
+          <BackButton
+            to='/home'
+            onTap={onBackButtonClick}
+            disabled={disable || home.disable}
           />
 
-          <Text
-            name='surname'
-            className='dual'
-            placeholder='Sobrenome'
-            autoComplete='family-name'
-            data-cy='input-signup-surname'
-            icon={WorldIcon}
-          />
+          {/* <ThemeSwitch /> */}
+        </nav>
 
-          <span className='aditionalInfo'>
-            Certifique-se de que corresponde ao nome no seu documento de
-            identificação oficial
-          </span>
+        <Content>
+          <header>
+            <FullLogo />
+          </header>
 
-          <Datepicker
-            isBirthday
-            arrow='bottom'
-            name='birthday'
-            data-cy='input-signup-birthday'
-            placeholder='Data de nascimento'
-            icon={UserLockedIcon}
-          />
+          <Form
+            captcha
+            loading
+            path='sign-up'
+            schema={signupSchema}
+            afterResData={afterSubmit}
+            manipulateData={data => {
+              delete data.confirmPassword
+              return data
+            }}
+          >
+            <Text
+              name='name'
+              className='dual'
+              placeholder='Nome'
+              autoComplete='given-name'
+              data-cy='input-signup-name'
+              icon={WorldIcon}
+            />
 
-          <span className='aditionalInfo'>
-            Você precisa ter pelo menos 18 anos
-          </span>
+            <Text
+              name='surname'
+              className='dual'
+              placeholder='Sobrenome'
+              autoComplete='family-name'
+              data-cy='input-signup-surname'
+              icon={WorldIcon}
+            />
 
-          <Text
-            name='email'
-            placeholder='E-mail'
-            autoComplete='email'
-            data-cy='input-signup-email'
-            icon={UserLockedIcon}
-          />
+            <span className='aditionalInfo'>
+              Certifique-se de que corresponde ao nome no seu documento de
+              identificação oficial
+            </span>
 
-          <span className='aditionalInfo'>
-            Enviaremos um e-mail para confirmação
-          </span>
+            <Datepicker
+              isBirthday
+              arrow='bottom'
+              name='birthday'
+              data-cy='input-signup-birthday'
+              placeholder='Data de nascimento'
+              icon={UserLockedIcon}
+            />
 
-          <Text
-            eye
-            name='password'
-            type='password'
-            className='dual'
-            placeholder='Senha'
-            autoComplete='new-password'
-            data-cy='input-signup-password'
-            icon={UserLockedIcon}
-          />
+            <span className='aditionalInfo'>
+              Você precisa ter pelo menos 18 anos
+            </span>
 
-          <Text
-            eye
-            type='password'
-            className='dual'
-            name='confirmPassword'
-            autoComplete='new-password'
-            placeholder='Confirmar Senha'
-            data-cy='input-signup-confirmPassword'
-            icon={UserLockedIcon}
-          />
+            <Text
+              name='email'
+              placeholder='E-mail'
+              autoComplete='email'
+              data-cy='input-signup-email'
+              icon={UserLockedIcon}
+            />
 
-          {/* <span className='aditionalInfo' id='terms'>
+            <span className='aditionalInfo'>
+              Enviaremos um e-mail para confirmação
+            </span>
+
+            <Text
+              eye
+              name='password'
+              type='password'
+              className='dual'
+              placeholder='Senha'
+              autoComplete='new-password'
+              data-cy='input-signup-password'
+              icon={UserLockedIcon}
+            />
+
+            <Text
+              eye
+              type='password'
+              className='dual'
+              name='confirmPassword'
+              autoComplete='new-password'
+              placeholder='Confirmar Senha'
+              data-cy='input-signup-confirmPassword'
+              icon={UserLockedIcon}
+            />
+
+            {/* <span className='aditionalInfo' id='terms'>
             Ao clicar em Concordar e concluir, concordo com os{' '}
             <a href='.link'>Termos de uso</a>, os{' '}
             <a href='.link'>Termos de Serviço e Pagamentos</a>, a{' '}
@@ -196,10 +199,13 @@ const Aside = () => {
             do Steams Lab.
           </span> */}
 
-          <Submit data-cy='button-signup-submit'>Concordar e concluir</Submit>
-        </Form>
-      </Content>
-    </Style>
+            <Submit data-cy='button-signup-submit'>Concordar e concluir</Submit>
+          </Form>
+        </Content>
+      </Style>
+
+      <Popup ref={popupRef} />
+    </>
   )
 }
 

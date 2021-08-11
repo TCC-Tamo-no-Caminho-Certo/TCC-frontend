@@ -1,130 +1,66 @@
 import React, {
   forwardRef,
-  ReactElement,
   ReactNode,
   useContext,
+  useEffect,
   useImperativeHandle,
   useRef,
   useState
 } from 'react'
-import Style, { ModalBackground } from './styles'
+import Style from './styles'
 
-import CloseIcon from 'assets/global/CloseIcon'
+import { GlobalContext } from 'App'
+import { createPortal } from 'react-dom'
 
-import { GlobalContext, GlobalContextProps } from 'App'
-import { ThemeContext } from 'styled-components'
-
-export interface ModalProps {
-  id?: string
-  top?: string
-  zIndex?: number
-  bottom?: string
-  bgHeight?: string
-  translateY?: string
-  children?: ReactElement | ReactElement[]
-  onClose?: () => void
-  closeIcon?: boolean
-}
-
-interface ModalConfig {
-  props?: ModalProps
-  content?: ReactNode
-  close?: { top?: number; right?: number; color?: string }
-}
-
-export interface ModalMethods {
+export interface ModalForwardeds {
   toggle: (_open?: boolean) => void
-  config: (_content: ModalConfig) => void
+  content: (_open?: ReactNode) => void
 }
 
-const initialConfig = { content: undefined, setModal: false }
+interface ModalProps {
+  children?: ReactNode
+}
 
-const Modal = forwardRef<ModalMethods, ModalProps>(
-  (
-    {
-      children,
-      closeIcon = true,
-      onClose,
-      top = '50vh',
-      bottom = 'auto',
-      bgHeight = '100%',
-      translateY = '-60%',
-      ...rest
-    },
-    ref
-  ) => {
-    const { overflow } = useContext<GlobalContextProps>(GlobalContext)
-    const theme = useContext(ThemeContext)
+const Modal = forwardRef<ModalForwardeds, ModalProps>(({ children }, ref) => {
+  const { overflow } = useContext(GlobalContext)
 
-    const [{ content, close, props }, setModalConfig] =
-      useState<ModalConfig>(initialConfig)
+  const content = useRef<ReactNode | null>(null)
 
-    const [openModal, setOpenModal] = useState(false)
+  const [open, setOpen] = useState(false)
 
-    const modalRef = useRef(null)
+  const root = document.getElementById('root')
 
-    const zindex = props?.zIndex ? props.zIndex : 9000
+  window.addEventListener('keydown', ({ key }) => {
+    key === 'Escape' && setOpen(false)
+  })
 
-    window.addEventListener('keydown', ({ key }) => {
-      key === 'Escape' && setOpenModal(false)
-    })
-
-    const toggle = (setModal?: boolean) => {
-      if (setModal === undefined) {
-        setOpenModal(!openModal)
-
-        overflow?.setOverflow &&
-          overflow?.setOverflow({ overflow: !setModal ? 'hidden' : 'auto' })
-      } else {
-        setOpenModal(setModal)
-
-        overflow?.setOverflow &&
-          overflow?.setOverflow({ overflow: setModal ? 'hidden' : 'auto' })
-      }
-    }
-
-    const config = (content: ModalConfig) => {
-      setTimeout(() => setModalConfig(content), 1)
-    }
-
-    const onBackgroundClick = () => {
-      onClose && onClose()
-      setOpenModal(false)
-      overflow?.setOverflow && overflow?.setOverflow({ overflow: 'auto' })
-    }
-
-    useImperativeHandle(ref, () => ({ config, toggle }))
-
-    return openModal ? (
-      <>
-        <ModalBackground
-          zIndex={zindex}
-          height={bgHeight}
-          onClick={onBackgroundClick}
-        />
-
-        <Style
-          top={props?.top || top}
-          ref={modalRef}
-          zIndex={props?.zIndex || zindex}
-          bottom={props?.bottom || bottom}
-          translateY={props?.translateY || translateY}
-          closeTop={close?.top ? `${close.top}px` : '8px'}
-          closeColor={close?.color || theme.colors.secondary}
-          closeRight={close?.right ? `${close.right}px` : '8px'}
-          {...rest}
-        >
-          {closeIcon && (
-            <CloseIcon id='ModalCloseIcon' onClick={onBackgroundClick} />
-          )}
-
-          {content || children}
-        </Style>
-      </>
-    ) : (
-      <></>
-    )
+  const forwardToggle = (toggleValue?: boolean) => {
+    toggleValue ? setOpen(toggleValue) : setOpen(!open)
   }
-)
+
+  const forwardContent = (contentValue: ReactNode) => {
+    if (content.current) content.current = contentValue
+  }
+
+  useEffect(() => {
+    if (overflow?.setOverflow)
+      open
+        ? overflow.setOverflow({ overflow: 'hidden' })
+        : overflow.setOverflow({ overflow: 'auto' })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open])
+
+  useImperativeHandle(ref, () => ({
+    toggle: forwardToggle,
+    content: forwardContent
+  }))
+
+  return open ? (
+    root &&
+      createPortal(<Style ref={ref as any}>{content || children}</Style>, root)
+  ) : (
+    <></>
+  )
+})
 
 export default Modal

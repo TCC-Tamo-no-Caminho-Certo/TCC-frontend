@@ -1,12 +1,12 @@
-import React, { ReactElement } from 'react'
+import React, { ReactNode } from 'react'
 import Style, { Header } from './styles'
 
 import { RoleType } from 'types/Responses/user/roles'
 
 interface CardProps {
-  headerText: string
-  children: (ReactElement | ReactElement[])[] | ReactElement
   role?: RoleType
+  headerText: string
+  children: ReactNode
 }
 
 const Card = ({ headerText, children, role }: CardProps) => {

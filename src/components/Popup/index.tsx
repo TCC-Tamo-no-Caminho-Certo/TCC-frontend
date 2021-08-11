@@ -7,42 +7,29 @@ import React, {
 } from 'react'
 import Style from './styles'
 
-import Modal, { ModalMethods } from 'components/Modal'
+import CloseIcon from 'assets/global/CloseIcon'
+
+import Modal, { ModalForwardeds } from 'components/Modal'
 
 export type PopupType = 'error' | 'warning' | 'success' | 'other'
 
-export interface PopupProps {
-  top?: string
-  bottom?: string
-  zIndex?: number
-  bgHeight?: string
-  translateY?: string
-}
-
 interface ConfigPopupProps {
   title?: string
+  open?: boolean
   type?: PopupType
   message?: string
-  setModal?: boolean
   onClick?: () => void
   onOkClick?: () => void
   onCloseClick?: () => void
 }
 
-export interface PopupMethods {
-  configPopup: (_props: ConfigPopupProps) => void
+export interface PopupForwardeds {
+  configPopup: (_config: ConfigPopupProps) => void
 }
 
-const initialState: ConfigPopupProps = {
-  type: 'warning',
-  setModal: false,
-  title: undefined,
-  message: undefined,
-  onOkClick: undefined,
-  onCloseClick: undefined
-}
+const initialState: ConfigPopupProps = { type: 'warning', open: false }
 
-const makeTitle = (type: PopupType, title?: string) => {
+const titleLabel = (type: PopupType, title?: string) => {
   switch (type) {
     case 'success':
       return 'Sucesso'
@@ -55,65 +42,56 @@ const makeTitle = (type: PopupType, title?: string) => {
   }
 }
 
-const Popup = forwardRef<PopupMethods, PopupProps>(
-  ({ bgHeight = '100vh', top, translateY, bottom }, ref) => {
-    const modalRef = useRef<ModalMethods>(null)
+const Popup = forwardRef<PopupForwardeds, any>((props, ref) => {
+  const modalRef = useRef<ModalForwardeds>(null)
 
-    const [
-      { type, setModal, message, title, onClick, onOkClick, onCloseClick },
-      setConfigState
-    ] = useState<ConfigPopupProps>(initialState)
+  const [
+    { type, open, message, title, onClick, onOkClick, onCloseClick },
+    setConfigState
+  ] = useState<ConfigPopupProps>(initialState)
 
-    const onPopupCloseClick = () => {
-      setConfigState(prev => ({ ...prev, setModal: false }))
+  const onPopupCloseClick = () => {
+    setConfigState(prev => ({ ...prev, open: false }))
 
-      if (onClick) onClick()
-      else onCloseClick && onCloseClick()
-    }
-
-    const onConfirmClick = () => {
-      setConfigState(prev => ({ ...prev, setModal: false }))
-
-      if (onClick) onClick()
-      else onOkClick && onOkClick()
-    }
-
-    const configPopup = (content: ConfigPopupProps) => setConfigState(content)
-
-    useImperativeHandle(ref, () => ({ configPopup }))
-
-    useEffect(() => {
-      modalRef.current?.toggle(setModal)
-
-      setModal
-        ? (document.documentElement.style.overflow = 'hidden')
-        : (document.documentElement.style.overflow = 'auto')
-    }, [setModal])
-
-    return (
-      <Modal
-        top={top}
-        ref={modalRef}
-        bottom={bottom}
-        closeIcon={false}
-        bgHeight={bgHeight}
-        translateY={translateY}
-        onClose={onPopupCloseClick}
-      >
-        <Style type={type || 'other'}>
-          <span>{makeTitle(type || 'other', title)}</span>
-
-          <hr />
-
-          <p>{message}</p>
-
-          <button id='cy-confirm-popup' type='button' onClick={onConfirmClick}>
-            Entendi!
-          </button>
-        </Style>
-      </Modal>
-    )
+    if (onClick) onClick()
+    else onCloseClick && onCloseClick()
   }
-)
+
+  const onPopupOkClick = () => {
+    setConfigState(prev => ({ ...prev, open: false }))
+
+    if (onClick) onClick()
+    else onOkClick && onOkClick()
+  }
+
+  const forwardConfigPopup = (content: ConfigPopupProps) =>
+    setConfigState(content)
+
+  useEffect(() => {
+    modalRef?.current?.toggle(open)
+  }, [open])
+
+  useImperativeHandle(ref, () => ({ configPopup: forwardConfigPopup }))
+
+  return open ? (
+    <Modal ref={modalRef}>
+      <Style type={type || 'other'}>
+        <CloseIcon onClick={onPopupCloseClick} />
+
+        <span>{titleLabel(type || 'other', title)}</span>
+
+        {message && <hr />}
+
+        <p>{message}</p>
+
+        <button type='button' onClick={onPopupOkClick}>
+          Entendi!
+        </button>
+      </Style>
+    </Modal>
+  ) : (
+    <></>
+  )
+})
 
 export default Popup

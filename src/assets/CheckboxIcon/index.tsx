@@ -8,7 +8,7 @@ import React, {
 import { motion, Variants } from 'framer-motion'
 import { ThemeContext } from 'styled-components'
 
-export interface CheckboxIconMethods {
+export interface CheckboxIconForwardeds {
   changeCheck: (_value: boolean) => void
 }
 
@@ -35,7 +35,7 @@ const pathAnimation: Variants = {
   }
 }
 
-const CheckboxIcon = forwardRef<CheckboxIconMethods, CheckboxInconProps>(
+const CheckboxIcon = forwardRef<CheckboxIconForwardeds, CheckboxInconProps>(
   ({ primary, secondary }, ref) => {
     const theme = useContext(ThemeContext)
 

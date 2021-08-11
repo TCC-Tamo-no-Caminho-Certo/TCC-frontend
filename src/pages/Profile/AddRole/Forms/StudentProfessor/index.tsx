@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import { Form } from './styles'
 
 import Ways from '../Container/Ways'
@@ -22,6 +28,7 @@ import { AsyncUserState } from 'store/Async/user'
 import { Checkbox, Select, Submit, Text } from 'components/Form'
 import { Option } from 'components/Form/Select'
 import Presence from 'components/Presence'
+import Popup, { PopupForwardeds } from 'components/Popup'
 
 import { UniversityType } from 'types/Responses/university'
 import { CampusResType } from 'types/Responses/university/campus'
@@ -33,7 +40,6 @@ import {
   StudentDataType
 } from 'types/Responses/user/requests'
 
-import { GlobalContext } from 'App'
 import { Variants } from 'framer-motion'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
@@ -124,11 +130,12 @@ export const hasInstitutionalEmail = (regex: string, emails?: EmailsType) => {
 }
 
 const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
-  const { user, loading } = useSelector<RootState, AsyncUserState>(
+  const { universities } = useContext(AddRoleContext)
+  const { user } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
-  const { universities } = useContext(AddRoleContext)
-  const { popupRef } = useContext(GlobalContext)
+
+  const popupRef = useRef<PopupForwardeds>(null)
 
   const [animations, setAnimations] = useState<Animations>(initialAnimations)
   const [options, setOptions] = useState<Options>(initialOptions)
@@ -282,7 +289,7 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
 
     if (success)
       popupRef?.current?.configPopup({
-        setModal: true,
+        open: true,
         type: 'success',
         message: request
           ? 'Solicitação reenviada!'
@@ -297,7 +304,7 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
       popupRef?.current?.configPopup({
         type: 'error',
         message: 'Algo deu errado :(',
-        setModal: true
+        open: true
       })
   }
 
@@ -457,6 +464,8 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
           </Submit>
         </Presence>
       </Form>
+
+      <Popup ref={popupRef} />
     </>
   )
 }

@@ -14,7 +14,7 @@ import {
   GetDataType,
   HeaderType,
   MakeRequestParams,
-  TableMethods,
+  TableForwardeds,
   TableProps,
   TableStateType
 } from './types'
@@ -37,7 +37,7 @@ const initialTableSort: TableStateType = {
   ]
 }
 
-const Table = forwardRef<TableMethods, TableProps>(
+const Table = forwardRef<TableForwardeds, TableProps>(
   ({ getData, headerRow, onRefreshClick, onDataClick, children }, ref) => {
     const theme = useContext(ThemeContext)
     const tableRef = useRef<HTMLDivElement>(null)
@@ -244,6 +244,6 @@ const Table = forwardRef<TableMethods, TableProps>(
   }
 )
 
-export type { GetDataType, BodyRowType, HeaderType, TableMethods }
+export type { GetDataType, BodyRowType, HeaderType, TableForwardeds }
 
 export default Table

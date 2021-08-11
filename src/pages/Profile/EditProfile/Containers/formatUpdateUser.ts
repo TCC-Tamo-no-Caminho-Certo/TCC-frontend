@@ -19,6 +19,7 @@ export interface ContainerForm {
   personal: InputData[]
   professor: InputData[]
   moderator: InputData[]
+  administrator: InputData[]
 }
 
 interface FormatUpdateUserProps {
@@ -44,7 +45,6 @@ const formatUpdateUser = ({
 }: FormatUpdateUserProps): InputData[] => {
   const getUniversityName = (id: number) => {
     const university = universities.find(university => university.id === id)
-
     return university ? university.name : ''
   }
 
@@ -232,12 +232,25 @@ const formatUpdateUser = ({
     }
   ]
 
+  const administrator: InputData[] = [
+    {
+      name: 'university_id',
+      label: 'Universidade',
+      value:
+        (roles?.administrator &&
+          getUniversityName(roles?.administrator.university.id)) ||
+        '',
+      editable: false
+    }
+  ]
+
   const formInputs: ContainerForm = {
     guest,
     student,
     personal,
     professor,
-    moderator
+    moderator,
+    administrator
   }
 
   return formInputs[role]

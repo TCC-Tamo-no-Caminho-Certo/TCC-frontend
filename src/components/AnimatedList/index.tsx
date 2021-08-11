@@ -1,6 +1,5 @@
 import React, {
   Dispatch,
-  ReactElement,
   ReactNode,
   SetStateAction,
   useEffect,
@@ -17,7 +16,7 @@ import { Variants } from 'framer-motion'
 
 export interface AnimatedListProps {
   id: number
-  title: ReactElement | ReactElement[] | string
+  title: ReactNode | string
   children: ReactNode
   addClose?: boolean
   selecteds?: number[]

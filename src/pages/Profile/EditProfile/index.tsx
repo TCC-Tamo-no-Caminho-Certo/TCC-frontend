@@ -2,7 +2,6 @@ import React, {
   createContext,
   Dispatch,
   SetStateAction,
-  useContext,
   useRef,
   useState
 } from 'react'
@@ -16,9 +15,9 @@ import { AsyncUserActions, AsyncUserState } from 'store/Async/user'
 import { RootState } from 'store'
 
 import { Form, Submit, Text } from 'components/Form'
-import Modal, { ModalMethods } from 'components/Modal'
+import Modal, { ModalForwardeds } from 'components/Modal'
+import Popup, { PopupForwardeds } from 'components/Popup'
 
-import { GlobalContext } from 'App'
 import { useDispatch, useSelector } from 'react-redux'
 
 interface EditProfileContextProps {
@@ -32,9 +31,9 @@ const EditProfile = () => {
   const { user } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
-  const { popupRef } = useContext(GlobalContext)
 
-  const confirmModal = useRef<ModalMethods>(null)
+  const modalRef = useRef<ModalForwardeds>(null)
+  const popupRef = useRef<PopupForwardeds>(null)
 
   const [globalChange, setGlobalChange] = useState(false)
 
@@ -44,11 +43,11 @@ const EditProfile = () => {
     if (res.success) {
       dispatch(AsyncUserActions.update({ user: { ...user, ...res.user } }))
 
-      confirmModal.current?.toggle()
+      modalRef?.current?.toggle()
 
       popupRef?.current?.configPopup({
         type: 'success',
-        setModal: true,
+        open: true,
         message: 'Dados alterados',
         onClick: () => setGlobalChange(false)
       })
@@ -58,73 +57,77 @@ const EditProfile = () => {
           popupRef?.current?.configPopup({
             type: 'error',
             message: 'Senha inválida!',
-            setModal: true
+            open: true
           })
           break
         default:
           popupRef?.current?.configPopup({
             type: 'error',
             message: 'Ops, algo deu errado :(',
-            setModal: true
+            open: true
           })
       }
   }
 
   return (
-    <Style>
-      <Form
-        loading
-        path='user'
-        method='patch'
-        schema={editProfileSchema}
-        afterResData={afterSubmit}
-        onError={(error: any) => {
-          error.message !== 'Você esqueceu de informar a senha!' &&
-            confirmModal.current?.toggle(false)
-        }}
-      >
-        <div id='submits'>
-          <button type='button' onClick={() => setGlobalChange(false)}>
-            Descartar alterações
-          </button>
+    <>
+      <Style>
+        <Form
+          loading
+          path='user'
+          method='patch'
+          schema={editProfileSchema}
+          afterResData={afterSubmit}
+          onError={(error: any) => {
+            error.message !== 'Você esqueceu de informar a senha!' &&
+              modalRef?.current?.toggle(false)
+          }}
+        >
+          <div id='submits'>
+            <button type='button' onClick={() => setGlobalChange(false)}>
+              Descartar alterações
+            </button>
 
-          <button
-            type='button'
-            onClick={() => {
-              confirmModal.current?.toggle(true)
-            }}
+            <button
+              type='button'
+              onClick={() => {
+                modalRef?.current?.toggle(true)
+              }}
+            >
+              Salvar
+            </button>
+          </div>
+
+          <EditProfileContext.Provider
+            value={{ globalChange, setGlobalChange }}
           >
-            Salvar
-          </button>
-        </div>
+            <Containers />
+          </EditProfileContext.Provider>
+        </Form>
+      </Style>
 
-        <EditProfileContext.Provider value={{ globalChange, setGlobalChange }}>
-          <Containers />
-        </EditProfileContext.Provider>
+      <Modal ref={modalRef}>
+        <ConfirmForm>
+          <span>Você precisa digitar sua senha para salvar as alterações!</span>
 
-        <Modal ref={confirmModal}>
-          <ConfirmForm>
-            <span>
-              Você precisa digitar sua senha para salvar as alterações!
-            </span>
+          <Text eye name='password' placeholder='Senha (Atual)' />
 
-            <Text eye name='password' placeholder='Senha (Atual)' />
+          <div id='buttons'>
+            <button
+              id='cancel'
+              type='button'
+              onClick={() => modalRef?.current?.toggle(false)}
+            >
+              Cancelar
+            </button>
 
-            <div id='buttons'>
-              <button
-                id='cancel'
-                type='button'
-                onClick={() => confirmModal.current?.toggle(false)}
-              >
-                Cancelar
-              </button>
+            <Submit>Confirmar</Submit>
+          </div>
+        </ConfirmForm>
+      </Modal>
 
-              <Submit>Confirmar</Submit>
-            </div>
-          </ConfirmForm>
-        </Modal>
-      </Form>
-    </Style>
+      <Popup ref={popupRef} />
+    </>
   )
 }
 

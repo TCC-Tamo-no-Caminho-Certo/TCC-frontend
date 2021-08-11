@@ -1,5 +1,11 @@
 import Style, { Begin, Edict, Edit, Remove } from './styles'
-import React, { Dispatch, SetStateAction, useContext, useState } from 'react'
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useRef,
+  useState
+} from 'react'
 
 import { SeasonsContext } from '../..'
 
@@ -16,10 +22,9 @@ import TrashIcon from 'assets/global/TrashIcon'
 import FieldTable from 'components/Form/FieldTable'
 import { Field, File, Submit, Text, Textarea } from 'components/Form'
 import AnimatedList from 'components/AnimatedList'
+import Popup, { PopupForwardeds } from 'components/Popup'
 
 import { SeasonType } from 'types/Responses/university/seasons'
-
-import { GlobalContext } from 'App'
 
 interface SeasonProps {
   id: number
@@ -39,7 +44,8 @@ const Season = ({
   season: { title, description, begin, edict, periods }
 }: SeasonProps) => {
   const { getUniversitiesOfUser } = useContext(SeasonsContext)
-  const { popupRef } = useContext(GlobalContext)
+
+  const popupRef = useRef<PopupForwardeds>(null)
 
   const [editing, setEditing] = useState(false)
 
@@ -56,14 +62,14 @@ const Season = ({
     if (!data.success)
       popupRef?.current?.configPopup({
         type: 'error',
-        setModal: true,
+        open: true,
         message: 'Algo inesperado aconteceu! Tente novamente'
       })
     else
       popupRef?.current?.configPopup({
         type: 'success',
         message: 'Alterações salvas!',
-        setModal: true,
+        open: true,
         onClick: () => {
           getUniversitiesOfUser && getUniversitiesOfUser()
           setSelecteds && setSelecteds(undefined)
@@ -96,14 +102,14 @@ const Season = ({
       if (!success)
         popupRef?.current?.configPopup({
           type: 'error',
-          setModal: true,
+          open: true,
           message: 'Algo inesperado aconteceu! Tente novamente'
         })
       else
         popupRef?.current?.configPopup({
           type: 'success',
           message: 'Temporada removida',
-          setModal: true,
+          open: true,
           onClick: () => {
             getUniversitiesOfUser && getUniversitiesOfUser()
             setSelecteds && setSelecteds(undefined)
@@ -112,7 +118,7 @@ const Season = ({
     }
 
     popupRef?.current?.configPopup({
-      setModal: true,
+      open: true,
       type: 'warning',
       message: 'Tem certeza que deseja remover esta temporada',
       onOkClick: onPopupOkClick
@@ -120,94 +126,99 @@ const Season = ({
   }
 
   return (
-    <Style
-      method='patch'
-      editing={editing}
-      afterResData={afterResData}
-      manipulateData={manipulateData}
-      path={`/universities/${universityId}/seasons/${id}`}
-      isAdmin={
-        isAdmin && selecteds?.find(season_id => season_id === id) !== undefined
-      }
-    >
-      <AnimatedList
-        id={id}
-        title={title}
-        selecteds={selecteds}
-        setSelecteds={setSelecteds}
+    <>
+      <Style
+        method='patch'
+        editing={editing}
+        afterResData={afterResData}
+        manipulateData={manipulateData}
+        path={`/universities/${universityId}/seasons/${id}`}
+        isAdmin={
+          isAdmin &&
+          selecteds?.find(season_id => season_id === id) !== undefined
+        }
       >
-        {editing && <Text name='title' placeholder='Título' maxLength={50} />}
+        <AnimatedList
+          id={id}
+          title={title}
+          selecteds={selecteds}
+          setSelecteds={setSelecteds}
+        >
+          {editing && <Text name='title' placeholder='Título' maxLength={50} />}
 
-        {editing ? (
-          <Textarea
-            maxLength={500}
-            name='description'
-            placeholder='Descrição'
-            defaultValue={description}
+          {editing ? (
+            <Textarea
+              maxLength={500}
+              name='description'
+              placeholder='Descrição'
+              defaultValue={description}
+            />
+          ) : (
+            <p>{description}</p>
+          )}
+
+          <Begin>
+            {editing ? (
+              <>
+                <span>Início da temporada:</span>
+
+                <Field
+                  icon={CalendarIcon}
+                  inputType='datepicker'
+                  defaultValue={isoToDate(begin, 'day/month/2-year')}
+                  datepickerProps={{
+                    name: 'begin',
+                    placeholder: 'Duração em dias'
+                  }}
+                />
+              </>
+            ) : (
+              <div>
+                Início da temporada: {isoToDate(begin, 'day/month/2-year')}
+              </div>
+            )}
+          </Begin>
+
+          <FieldTable
+            edit={editing}
+            data={periodsData}
+            valueComplement='Dias'
+            header={['Período', 'Duração (Dias)']}
           />
-        ) : (
-          <p>{description}</p>
-        )}
 
-        <Begin>
           {editing ? (
             <>
-              <span>Início da temporada:</span>
-
-              <Field
-                icon={CalendarIcon}
-                inputType='datepicker'
-                defaultValue={isoToDate(begin, 'day/month/2-year')}
-                datepickerProps={{
-                  name: 'begin',
-                  placeholder: 'Duração em dias'
-                }}
+              <File
+                noCropper
+                name='edict'
+                label='Enviar Edital'
+                accept='application/pdf'
               />
+
+              <Submit>Salvar alterações</Submit>
             </>
           ) : (
-            <div>
-              Início da temporada: {isoToDate(begin, 'day/month/2-year')}
-            </div>
+            <Edict download href={edict}>
+              <DownloadIcon /> Baixar edital
+            </Edict>
           )}
-        </Begin>
 
-        <FieldTable
-          edit={editing}
-          data={periodsData}
-          valueComplement='Dias'
-          header={['Período', 'Duração (Dias)']}
-        />
+          {isAdmin && (
+            <Edit onClick={() => setEditing(!editing)}>
+              {editing ? <CloseIcon /> : <PencilIcon />}
+            </Edit>
+          )}
 
-        {editing ? (
-          <>
-            <File
-              noCropper
-              name='edict'
-              label='Enviar Edital'
-              accept='application/pdf'
-            />
+          {isAdmin && editing && (
+            <Remove onClick={onRemoveClick}>
+              <TrashIcon />
+            </Remove>
+          )}
+        </AnimatedList>
+      </Style>
 
-            <Submit>Salvar alterações</Submit>
-          </>
-        ) : (
-          <Edict download href={edict}>
-            <DownloadIcon /> Baixar edital
-          </Edict>
-        )}
-
-        {isAdmin && (
-          <Edit onClick={() => setEditing(!editing)}>
-            {editing ? <CloseIcon /> : <PencilIcon />}
-          </Edit>
-        )}
-
-        {isAdmin && editing && (
-          <Remove onClick={onRemoveClick}>
-            <TrashIcon />
-          </Remove>
-        )}
-      </AnimatedList>
-    </Style>
+      <Popup ref={popupRef} />
+    </>
   )
 }
 

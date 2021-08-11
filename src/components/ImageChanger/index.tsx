@@ -16,24 +16,24 @@ import CloseIcon from 'assets/global/CloseIcon'
 
 import { Submit } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
-import Modal, { ModalMethods } from 'components/Modal'
+import Modal, { ModalForwardeds } from 'components/Modal'
+import { PopupForwardeds } from 'components/Popup'
 
-import { GlobalContext } from 'App'
 import 'cropperjs/dist/cropper.css'
 import { motion } from 'framer-motion'
 import { Cropper } from 'react-cropper'
 import { useDispatch } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
-export interface ImageChangerMethods {
+export interface ImageChangerForwardeds {
   toggleImageChanger: () => void
 }
 
 const ImageChanger = forwardRef((_props, ref) => {
-  const { popupRef } = useContext(GlobalContext)
   const theme = useContext(ThemeContext)
 
-  const modalRef = useRef<ModalMethods>(null)
+  const modalRef = useRef<ModalForwardeds>(null)
+  const popupRef = useRef<PopupForwardeds>(null)
 
   const [image, setImage] = useState()
   const [loader, setLoading] = useState(false)
@@ -99,13 +99,13 @@ const ImageChanger = forwardRef((_props, ref) => {
   }
 
   const onCloseClick = () => {
-    modalRef.current?.toggle()
+    modalRef.current?.toggle(false)
     setImage(undefined)
   }
 
-  const toggleImageChanger = () => modalRef.current?.toggle()
+  const forwardToggle = () => modalRef.current?.toggle()
 
-  useImperativeHandle(ref, () => ({ toggleImageChanger }))
+  useImperativeHandle(ref, () => ({ toggle: forwardToggle }))
 
   return (
     <Modal ref={modalRef}>

@@ -2,12 +2,13 @@ import { Response } from '../'
 
 export type RoleType =
   | 'guest'
-  | 'admin'
   | 'student'
   | 'professor'
   | 'customer'
   | 'evaluator'
   | 'moderator'
+  | 'developer'
+  | 'administrator'
 
 export type RolesType = RoleType[]
 

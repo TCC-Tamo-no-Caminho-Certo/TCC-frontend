@@ -12,10 +12,11 @@ import {
   getUniversities
 } from 'store/Async/universities'
 import { AsyncEmailsState, getEmails } from 'store/Async/emails'
+import { AsyncRolesDataState, getRolesData } from 'store/Async/rolesData'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
-import ImageChanger, { ImageChangerMethods } from 'components/ImageChanger'
+import ImageChanger, { ImageChangerForwardeds } from 'components/ImageChanger'
 import Avatar from 'components/User/Avatar'
 import DotsLoader from 'components/DotsLoader'
 import Slider from 'components/Slider'
@@ -38,16 +39,21 @@ const Containers = () => {
   const { emails } = useSelector<RootState, AsyncEmailsState>(
     ({ asyncEmails }) => asyncEmails
   )
+
+  const { roles } = useSelector<RootState, AsyncRolesDataState>(
+    ({ asyncRolesData }) => asyncRolesData
+  )
+
   const theme = useContext(ThemeContext)
 
-  const imageRef = useRef<ImageChangerMethods>(null)
+  const imageRef = useRef<ImageChangerForwardeds>(null)
 
   const { innerWidth } = useWindowDimensions()
   const [sliderWidth, setSliderWidth] = useState(innerWidth >= 600 ? 520 : 284)
 
   const dispatch = useDispatch()
 
-  const rolesToShow = ['student', 'professor', 'moderator']
+  const rolesToShow = ['student', 'professor', 'moderator', 'administrator']
 
   const rolesWithEdit = user?.roles
     ? user?.roles?.filter(role => rolesToShow.find(wished => wished === role))
@@ -65,6 +71,7 @@ const Containers = () => {
   useEffect(() => {
     dispatch(getUniversities())
     if (user?.id) dispatch(getEmails({ userId: user.id }))
+    if (user?.id) dispatch(getRolesData({ userId: user.id }))
   }, [dispatch, user?.id])
 
   return (
@@ -91,6 +98,7 @@ const Containers = () => {
                       user,
                       emails,
                       role: 'personal',
+                      roles,
                       universities
                     }).map((info: InputData) => (
                       <Field data={info} key={info.name} />
@@ -110,6 +118,7 @@ const Containers = () => {
                 formatUpdateUser({
                   user,
                   emails,
+                  roles,
                   role: role as keyof ContainerForm,
                   universities
                 }).map((info: InputData) => (

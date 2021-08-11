@@ -32,13 +32,14 @@ interface AddRoleState {
 }
 
 const allRoles: RolesType = [
-  'admin',
+  'administrator',
   'guest',
   'student',
   'professor',
   'customer',
   'evaluator',
-  'moderator'
+  'moderator',
+  'developer'
 ]
 
 export const AddRoleContext = createContext<AddRoleState>({

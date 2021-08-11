@@ -1,6 +1,6 @@
-import { ReactElement } from 'react'
+import { ReactNode } from 'react'
 
-export interface TableMethods {
+export interface TableForwardeds {
   onRefreshIconClick: () => void
 }
 
@@ -9,8 +9,8 @@ type LabelName = { label: string; name: string }
 export type HeaderType = {
   name: string
   label: string
-  tdWrapper?: (_data: LabelName) => ReactElement | ReactElement[]
-  thWrapper?: (_data: LabelName) => ReactElement | ReactElement[]
+  tdWrapper?: (_data: LabelName) => ReactNode
+  thWrapper?: (_data: LabelName) => ReactNode
 }
 
 export type BodyRowType = {
@@ -26,7 +26,7 @@ export interface TableStateType {
 export interface TableProps {
   getData: GetDataType
   headerRow: HeaderType[]
-  children: ReactElement | ReactElement[]
+  children: ReactNode
   onRefreshClick?: () => void
   onDataClick?: (_data: BodyRowType) => void
 }
