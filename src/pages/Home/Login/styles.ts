@@ -7,9 +7,6 @@ interface StyleProps {
 }
 
 const Style = styled(motion.section)<StyleProps>`
-  position: absolute;
-  top: 0;
-
   display: flex;
   flex-direction: column;
 

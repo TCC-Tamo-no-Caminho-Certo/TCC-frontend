@@ -11,6 +11,7 @@ export const Content = styled.div`
   > * {
     width: 100%;
   }
+
   header {
     height: clamp(94px, 25vw, 130px);
 

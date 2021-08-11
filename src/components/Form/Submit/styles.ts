@@ -24,11 +24,17 @@ const Style = styled.button`
   .DotsLoader {
     position: absolute;
     top: 0;
-    right: 10%;
+    right: 2%;
 
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  @media screen and (min-width: 400px) {
+    .DotsLoader {
+      right: 10%;
+    }
   }
 `
 

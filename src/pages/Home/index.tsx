@@ -37,29 +37,31 @@ const Home = () => {
   }, [dispatch, location.pathname])
 
   return (
-    <AnimatePresence>
-      <Switch location={location} key={location.key}>
-        <Route path='/home' exact>
-          <Login
-            exit='exit'
-            animate='default'
-            initial='initial'
-            transition={transition}
-            variants={loginAnimation}
-          />
-        </Route>
+    <div style={{ position: 'relative' }}>
+      <AnimatePresence>
+        <Switch location={location} key={location.key}>
+          <Route path='/home' exact>
+            <Login
+              exit='exit'
+              animate='default'
+              initial='initial'
+              transition={transition}
+              variants={loginAnimation}
+            />
+          </Route>
 
-        <Route path='/home/signup'>
-          <Signup
-            exit='exit'
-            initial='initial'
-            animate='default'
-            transition={transition}
-            variants={signupAnimation}
-          />
-        </Route>
-      </Switch>
-    </AnimatePresence>
+          <Route path='/home/signup'>
+            <Signup
+              exit='exit'
+              initial='initial'
+              animate='default'
+              transition={transition}
+              variants={signupAnimation}
+            />
+          </Route>
+        </Switch>
+      </AnimatePresence>
+    </div>
   )
 }
 

@@ -9,6 +9,7 @@ import { MotionProps } from 'framer-motion'
 const Signup = (props: MotionProps) => (
   <Style {...props}>
     <Aside />
+
     <Subscribe />
   </Style>
 )

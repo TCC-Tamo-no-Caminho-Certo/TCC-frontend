@@ -18,9 +18,9 @@ const Submit = forwardRef(
 
     return (
       <Style
-        className='Submit'
         ref={ref as any}
         type={type as any}
+        className='Submit'
         disabled={form?.loader}
         {...(rest as any)}
       >

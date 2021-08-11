@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const Style = styled(motion.section)`
   position: absolute;
-  top: 0;
+  top: 0px;
 
   display: flex;
   flex-direction: column;
