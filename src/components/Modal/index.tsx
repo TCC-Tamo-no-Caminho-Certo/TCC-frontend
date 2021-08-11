@@ -4,7 +4,6 @@ import React, {
   useContext,
   useEffect,
   useImperativeHandle,
-  useRef,
   useState
 } from 'react'
 import Style from './styles'
@@ -24,8 +23,7 @@ interface ModalProps {
 const Modal = forwardRef<ModalForwardeds, ModalProps>(({ children }, ref) => {
   const { overflow } = useContext(GlobalContext)
 
-  const content = useRef<ReactNode | null>(null)
-
+  const [content, setContent] = useState<ReactNode>()
   const [open, setOpen] = useState(false)
 
   const root = document.getElementById('root')
@@ -39,7 +37,7 @@ const Modal = forwardRef<ModalForwardeds, ModalProps>(({ children }, ref) => {
   }
 
   const forwardContent = (contentValue: ReactNode) => {
-    if (content.current) content.current = contentValue
+    setContent(contentValue)
   }
 
   useEffect(() => {
@@ -55,9 +53,8 @@ const Modal = forwardRef<ModalForwardeds, ModalProps>(({ children }, ref) => {
     content: forwardContent
   }))
 
-  return open ? (
-    root &&
-      createPortal(<Style ref={ref as any}>{content || children}</Style>, root)
+  return open && root ? (
+    createPortal(<Style ref={ref as any}>{content || children}</Style>, root)
   ) : (
     <></>
   )

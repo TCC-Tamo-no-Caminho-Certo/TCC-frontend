@@ -1,18 +1,18 @@
 import styled from 'styled-components'
 
 export const ConfirmCode = styled.div`
-  .Submit {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
 
-    .Icon {
-      width: 32px;
-      height: 32px;
-      margin-right: 8px;
+  p {
+    margin: 8px 0;
+  }
 
-      fill: ${({ theme }) => theme.colors.secondary};
-    }
+  .Submit .Icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+
+    fill: ${({ theme }) => theme.colors.secondary};
   }
 `
 
@@ -30,21 +30,29 @@ const Style = styled.div`
   background: ${({ theme }) => theme.colors.secondary};
 
   p {
-    margin: 0;
     text-align: center;
   }
 
-  form > * {
-    margin-top: 16px;
+  .FullLogo {
+    height: clamp(94px, 25vw, 130px);
   }
 
-  .FullLogo {
-    margin-bottom: 16px;
+  .Form {
+    margin-top: 8px;
+
+    > * + * {
+      margin-bottom: 8px;
+    }
+
+    .Submit {
+      margin-bottom: 0;
+    }
   }
 
   .Submit {
     width: 100%;
     height: 44px;
+    margin-bottom: 0px;
 
     > div {
       display: flex;

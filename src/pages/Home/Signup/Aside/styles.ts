@@ -12,7 +12,7 @@ export const Content = styled.div`
     width: 100%;
   }
   header {
-    height: clamp(94px, 15vw, 130px);
+    height: clamp(94px, 25vw, 130px);
 
     .FullLogo {
       height: 100%;
@@ -54,7 +54,7 @@ export const Content = styled.div`
 
   @media screen and (min-width: 1200px) {
     header {
-      height: 25%;
+      height: 18%;
     }
   }
 `

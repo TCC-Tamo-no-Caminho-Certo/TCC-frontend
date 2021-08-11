@@ -5,20 +5,30 @@ import { RiArrowLeftSLine } from 'react-icons/ri'
 import { useHistory } from 'react-router-dom'
 
 interface BackButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  to: string
-  onTap(): void
+  to?: string
+  onClick: () => void
 }
 
-const BackButton = ({ to, onTap, ...props }: BackButtonProps) => {
+const BackButton = ({
+  to,
+  onClick,
+  className = 'BackButton',
+  ...props
+}: BackButtonProps) => {
   const history = useHistory()
 
-  const onButtonClick = () => {
-    onTap()
-    history.push(to)
+  const onBackButtonClick = () => {
+    onClick()
+    to && history.push(to)
   }
 
   return (
-    <Style className='BackButton' onClick={onButtonClick} {...props}>
+    <Style
+      type='button'
+      className={className}
+      onClick={onBackButtonClick}
+      {...props}
+    >
       <RiArrowLeftSLine />
       Voltar
     </Style>

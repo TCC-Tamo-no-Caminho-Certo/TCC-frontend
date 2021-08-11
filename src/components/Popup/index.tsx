@@ -1,5 +1,6 @@
 import React, {
   forwardRef,
+  useContext,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -10,6 +11,8 @@ import Style from './styles'
 import CloseIcon from 'assets/global/CloseIcon'
 
 import Modal, { ModalForwardeds } from 'components/Modal'
+
+import { GlobalContext } from 'App'
 
 export type PopupType = 'error' | 'warning' | 'success' | 'other'
 
@@ -43,6 +46,7 @@ const titleLabel = (type: PopupType, title?: string) => {
 }
 
 const Popup = forwardRef<PopupForwardeds, any>((props, ref) => {
+  const { overflow } = useContext(GlobalContext)
   const modalRef = useRef<ModalForwardeds>(null)
 
   const [
@@ -53,12 +57,16 @@ const Popup = forwardRef<PopupForwardeds, any>((props, ref) => {
   const onPopupCloseClick = () => {
     setConfigState(prev => ({ ...prev, open: false }))
 
+    if (overflow?.setOverflow) overflow?.setOverflow({ overflow: 'auto' })
+
     if (onClick) onClick()
     else onCloseClick && onCloseClick()
   }
 
   const onPopupOkClick = () => {
     setConfigState(prev => ({ ...prev, open: false }))
+
+    if (overflow?.setOverflow) overflow?.setOverflow({ overflow: 'auto' })
 
     if (onClick) onClick()
     else onOkClick && onOkClick()

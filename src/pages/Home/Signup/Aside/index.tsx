@@ -97,7 +97,7 @@ const Aside = () => {
         <nav>
           <BackButton
             to='/home'
-            onTap={onBackButtonClick}
+            onClick={onBackButtonClick}
             disabled={disable || home.disable}
           />
 

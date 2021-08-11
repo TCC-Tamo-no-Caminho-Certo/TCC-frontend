@@ -3,27 +3,40 @@ import Style, { ConfirmCode } from './styles'
 
 import { emailSchema } from 'utils/validations/forgotPassword'
 
+import { HomeActions } from 'store/Sync/home'
+
 import SendEmailIcon from 'assets/global/SendEmailIcon'
 import PadlockIcon from 'assets/Inputs/PadlockIcon'
 import MailIcon from 'assets/Inputs/MailIcon'
-import Logo from 'assets/FullLogo'
 
 import Popup, { PopupForwardeds } from 'components/Popup'
 import { Form, Submit, Text } from 'components/Form'
+import FullLogo from 'components/FullLogo'
+import BackButton from 'components/BackButton'
 
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 const Content = () => {
+  const popupRef = useRef<PopupForwardeds>(null)
+
   const [userEmail, setUserEmail] = useState<string>()
   const [codeSend, setCodeSend] = useState(false)
 
   const history = useHistory()
+  const dispatch = useDispatch()
 
-  const popupRef = useRef<PopupForwardeds>(null)
+  const onBackButtonClick = () => {
+    if (codeSend) setCodeSend(false)
+    else {
+      dispatch(HomeActions.update({ initial: false, page: 'login' }))
+      history.push('/home')
+    }
+  }
 
-  const afterEmailSubmit = (res: any) => {
-    res.success
-      ? setTimeout(() => setCodeSend(true), 1)
+  const afterEmailSubmit = ({ success }: any) => {
+    success
+      ? setCodeSend(true)
       : popupRef?.current?.configPopup({
           open: true,
           type: 'error',
@@ -31,8 +44,8 @@ const Content = () => {
         })
   }
 
-  const afterCodeSubmit = (res: any) => {
-    res.success
+  const afterCodeSubmit = ({ success }: any) => {
+    success
       ? setTimeout(() => history.push('/reset-password'), 1)
       : popupRef?.current?.configPopup({
           open: true,
@@ -41,8 +54,8 @@ const Content = () => {
         })
   }
 
-  const afterCodeResent = (res: any) => {
-    res.success
+  const afterCodeResent = ({ success }: any) => {
+    success
       ? popupRef?.current?.configPopup({
           open: true,
           type: 'success',
@@ -57,20 +70,22 @@ const Content = () => {
 
   return (
     <>
+      <BackButton onClick={onBackButtonClick} />
+
       <Style>
-        <Logo />
+        <FullLogo />
 
         {!codeSend && (
           <Form
-            id='sendE-mail'
             loading
             captcha
-            path='forgot-password/*%'
             method='get'
-            addToPath={['email']}
+            id='sendE-mail'
             schema={emailSchema}
+            addToPath={['email']}
+            path='forgot-password/*%'
             afterResData={afterEmailSubmit}
-            getData={value => setUserEmail(value.email)}
+            getData={({ email }) => setUserEmail(email)}
           >
             <p>Digite seu email para recuperar a senha</p>
 
@@ -93,15 +108,16 @@ const Content = () => {
               captcha
               loading
               method='get'
+              addToPath={['email']}
               className='resendModal'
               path='forgot-password/*%'
               afterResData={afterCodeResent}
-              addToPath={['email']}
             >
               <Text hidden readOnly name='email' value={userEmail} />
 
               <Submit>
                 <SendEmailIcon />
+
                 <div>Reenviar código</div>
               </Submit>
             </Form>
@@ -109,10 +125,10 @@ const Content = () => {
             <Form
               loading
               captcha
-              path='reset-password/*%'
               addToPath={['code']}
+              path='reset-password/*%'
               afterResData={afterCodeSubmit}
-              getData={value => localStorage.setItem('@SLab_code', value.code)}
+              getData={({ code }) => localStorage.setItem('@SLab_code', code)}
             >
               <Text name='code' placeholder='Código' icon={PadlockIcon} />
 

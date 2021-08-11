@@ -60,7 +60,7 @@ export const Content = styled.div`
   }
 
   header {
-    height: clamp(94px, 15vw, 130px);
+    height: clamp(94px, 25vw, 130px);
 
     .FullLogo {
       height: 100%;
@@ -81,6 +81,7 @@ export const Content = styled.div`
       justify-content: center;
 
       a {
+        margin-bottom: 4px;
         align-self: flex-end;
       }
 
@@ -107,7 +108,7 @@ const Style = styled.aside`
   justify-content: center;
 
   width: 100%;
-  min-height: 80vh;
+  min-height: 100vh;
 
   background-color: ${({ theme }) => theme.colors.secondary};
   box-shadow: -8px 8px 6px 4px rgba(0, 0, 0, 0.14);
