@@ -1,6 +1,10 @@
 import { darken } from 'polished'
 import styled from 'styled-components'
 
+interface GeneralInfoProps {
+  status: string
+}
+
 export const Radios = styled.div`
   display: flex;
 
@@ -32,9 +36,9 @@ export const Radios = styled.div`
 export const Pretext = styled.div`
   padding: 16px;
   border-radius: 8px;
+  word-break: break-all;
 
   background-color: ${({ theme }) => theme.colors.primary};
-  word-break: break-all;
 
   p {
     padding: 8px 16px;
@@ -107,7 +111,20 @@ export const Header = styled.header`
   }
 `
 
-export const GeneralInfo = styled.div`
+export const GeneralInfo = styled.div<GeneralInfoProps>`
+  #status #value {
+    color: ${({ theme }) => {
+      switch (status) {
+        case 'accepted':
+          return theme.colors.green
+        case 'rejected':
+          return theme.colors.red
+        default:
+          return theme.colors.yellow
+      }
+    }};
+  }
+
   > * + * {
     margin-top: 16px;
   }
@@ -141,6 +158,7 @@ const Style = styled.div`
 `
 
 export default Style
+
 Radios.displayName = 'Radios-Style'
 Pretext.displayName = 'Pretext-Style'
 Voucher.displayName = 'Voucher-Style'

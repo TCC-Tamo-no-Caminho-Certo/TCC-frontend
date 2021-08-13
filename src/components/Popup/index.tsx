@@ -22,6 +22,7 @@ interface ConfigPopupProps {
   type?: PopupType
   message?: string
   onClick?: () => void
+  confirmTitle?: string
   onOkClick?: () => void
   onCloseClick?: () => void
 }
@@ -47,10 +48,20 @@ const titleLabel = (type: PopupType, title?: string) => {
 
 const Popup = forwardRef<PopupForwardeds, any>((props, ref) => {
   const { overflow } = useContext(GlobalContext)
+
   const modalRef = useRef<ModalForwardeds>(null)
 
   const [
-    { type, open, message, title, onClick, onOkClick, onCloseClick },
+    {
+      type,
+      open,
+      message,
+      title,
+      onClick,
+      onOkClick,
+      onCloseClick,
+      confirmTitle
+    },
     setConfigState
   ] = useState<ConfigPopupProps>(initialState)
 
@@ -83,7 +94,7 @@ const Popup = forwardRef<PopupForwardeds, any>((props, ref) => {
 
   return open ? (
     <Modal ref={modalRef}>
-      <Style type={type || 'other'}>
+      <Style type={type || 'other'} data-cy='Popup'>
         <CloseIcon onClick={onPopupCloseClick} />
 
         <span>{titleLabel(type || 'other', title)}</span>
@@ -93,7 +104,7 @@ const Popup = forwardRef<PopupForwardeds, any>((props, ref) => {
         <p>{message}</p>
 
         <button type='button' onClick={onPopupOkClick}>
-          Entendi!
+          {confirmTitle || 'Entendi'}
         </button>
       </Style>
     </Modal>

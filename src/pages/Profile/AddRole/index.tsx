@@ -18,6 +18,7 @@ import {
   AsyncUniversitiesState,
   getUniversities
 } from 'store/Async/universities'
+import { getEmails } from 'store/Async/emails'
 
 import { UniversitiesType } from 'types/Responses/university/universities'
 import { RolesType, RoleType } from 'types/Responses/user/roles'
@@ -74,7 +75,8 @@ const AddRole = () => {
 
   useEffect(() => {
     dispatch(getUniversities())
-  }, [dispatch])
+    if (user?.id) dispatch(getEmails({ userId: user.id }))
+  }, [dispatch, user])
 
   return (
     <>

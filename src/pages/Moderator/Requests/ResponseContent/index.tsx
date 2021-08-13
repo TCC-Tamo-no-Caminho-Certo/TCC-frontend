@@ -18,7 +18,7 @@ import Form, { Submit, Textarea } from 'components/Form'
 import DotsLoader from 'components/DotsLoader'
 import { BodyRowType } from 'components/Table'
 import Role from 'components/Role'
-import { PopupForwardeds } from 'components/Popup'
+import Popup, { PopupForwardeds } from 'components/Popup'
 
 import { EmailsResType } from 'types/Responses/user/emails'
 import { RoleType } from 'types/Responses/user/roles'
@@ -70,34 +70,38 @@ const ResponseContent = ({
   const rejectRef = useRef<CheckboxIconForwardeds>(null)
 
   const userData = data.rowValue.user
-  const requestData = data.rowValue.request?.data
+  const requestId = data.rowValue.request.id
   const himselfModeratorRequest = user?.id === userData?.id
+  const {
+    orcid,
+    lattes,
+    pretext,
+    linkedin,
+    campus_id,
+    course_id,
+    voucher_uuid,
+    university_id
+  } = data.rowValue.request?.data
 
   const formPath = () => {
-    if (requestData?.id)
+    if (requestId)
       return response === 'rejected'
-        ? `user/role/request/reject/${requestData?.id}`
-        : `user/role/request/accept/${requestData?.id}`
+        ? `user/role/request/reject/${requestId}`
+        : `user/role/request/accept/${requestId}`
   }
 
   const onTrashClick = () => {
-    data &&
-      popupRef?.current?.configPopup({
-        type: 'warning',
-        message: 'Tem certeza que deseja remover esta solicitação?',
-        onOkClick: async () => {
-          await api.delete(`user/role/request/${requestData?.id}`)
-          resetTable()
-          onCloseClick()
-        },
-        onCloseClick: () => {
-          popupRef?.current?.configPopup({
-            open: false,
-            message: '',
-            type: 'warning'
-          })
-        }
-      })
+    popupRef?.current?.configPopup({
+      open: true,
+      type: 'warning',
+      message: 'Tem certeza que deseja remover esta solicitação?',
+      confirmTitle: 'Sim',
+      onOkClick: async () => {
+        await api.delete(`users/roles/requests/${requestId}`)
+        resetTable()
+        onCloseClick()
+      }
+    })
   }
 
   const afterResponseSubmit = (res: any) => {
@@ -141,7 +145,6 @@ const ResponseContent = ({
       let userEmails = ''
 
       const { id } = userData
-      const { university_id, campus_id, course_id, voucher_uuid } = requestData
 
       if (id) {
         const { emails }: EmailsResType = await api.get(`users/${id}/emails`)
@@ -167,119 +170,121 @@ const ResponseContent = ({
 
       setAditionalData({ email: userEmails, course: userCourse, voucherUrl })
     })()
-  }, [requestData, userData])
+  }, [campus_id, course_id, university_id, userData, voucher_uuid])
 
   return (
-    <Style>
-      <Header>
-        {!himselfModeratorRequest && (
-          <button type='button' onClick={onTrashClick}>
-            <TrashIcon />
-            Excluir
-          </button>
-        )}
-
-        <CloseIcon onClick={onCloseClick} />
-      </Header>
-
-      {data ? (
-        <>
-          <GeneralInfo>
-            <Avatar size={120} avatarId={userData?.avatar_uuid} />
-
-            <Field label='Nome:' value={userData?.full_name} />
-
-            <Field
-              label='Papel:'
-              component={() => (
-                <Role role={data.rowLabel.role.name as RoleType} />
-              )}
-            />
-
-            <Field label='Status:' value={data.rowLabel.status.label} />
-
-            {requestData?.linkedin && (
-              <Field label='Linkedin:' value={requestData?.linkedin} />
-            )}
-
-            {requestData?.lattes && (
-              <Field label='Lattes:' value={requestData?.lattes} />
-            )}
-
-            {requestData?.orcid && (
-              <Field label='Orcid:' value={requestData?.orcid} />
-            )}
-
-            <Field label='Email:' value={aditionalData?.email} />
-
-            {!!(
-              data.rowLabel.role.name !== 'moderator' && requestData?.course_id
-            ) && <Field value={aditionalData?.course} label='Curso' />}
-
-            <Field label='Data:' value={data.rowLabel.date.label} />
-
-            {requestData?.pretext && (
-              <Pretext>
-                Justificativa: <p>{requestData?.pretext}</p>
-              </Pretext>
-            )}
-          </GeneralInfo>
-
-          {aditionalData?.voucherUrl && (
-            <Voucher>
-              <iframe src={aditionalData?.voucherUrl} frameBorder='0' />
-            </Voucher>
+    <>
+      <Style>
+        <Header>
+          {!himselfModeratorRequest && (
+            <button type='button' onClick={onTrashClick}>
+              <TrashIcon />
+              Excluir
+            </button>
           )}
 
-          <Radios>
-            <Radio
-              id='accept'
-              name='response'
-              label='Aceitar'
-              ref={acceptRef}
-              onChange={(e: any) => {
-                acceptRef.current?.changeCheck(true)
-                e.target.checked && setResponse('accepted')
-                rejectRef.current?.changeCheck(false)
-              }}
-            />
+          <CloseIcon onClick={onCloseClick} />
+        </Header>
 
-            <Radio
-              name='response'
-              id='reject'
-              label='Recusar'
-              ref={rejectRef}
-              onChange={(e: any) => {
-                rejectRef.current?.changeCheck(true)
-                e.target.checked && setResponse('rejected')
-                acceptRef.current?.changeCheck(false)
-              }}
-            />
-          </Radios>
+        {data ? (
+          <>
+            <GeneralInfo status={data.rowLabel.status.name}>
+              <Avatar size={120} avatarId={userData?.avatar_uuid} />
 
-          {!himselfModeratorRequest && (
-            <Form
-              loading
-              method='patch'
-              path={formPath()}
-              schema={formSchema(response)}
-              afterResData={afterResponseSubmit}
-            >
-              <Textarea
-                id='feedback'
-                name='feedback'
-                placeholder='Deixe uma resposta...'
-                maxLength={500}
+              <Field label='Nome:' value={userData?.full_name} />
+
+              <Field
+                label='Papel:'
+                component={() => (
+                  <Role role={data.rowLabel.role.name as RoleType} />
+                )}
               />
 
-              <Submit>Enviar resposta</Submit>
-            </Form>
-          )}
-        </>
-      ) : (
-        <DotsLoader color={theme.colors.secondary} />
-      )}
-    </Style>
+              <Field
+                id='status'
+                label='Status:'
+                value={data.rowLabel.status.label}
+              />
+
+              {linkedin && <Field label='Linkedin:' value={linkedin} />}
+
+              {lattes && <Field label='Lattes:' value={lattes} />}
+
+              {orcid && <Field label='Orcid:' value={orcid} />}
+
+              <Field label='Email:' value={aditionalData?.email} />
+
+              {!!(data.rowLabel.role.name !== 'moderator' && course_id) && (
+                <Field value={aditionalData?.course} label='Curso' />
+              )}
+
+              <Field label='Data:' value={data.rowLabel.date.label} />
+
+              {pretext && (
+                <Pretext>
+                  Justificativa: <p>{pretext}</p>
+                </Pretext>
+              )}
+            </GeneralInfo>
+
+            {aditionalData?.voucherUrl && (
+              <Voucher>
+                <iframe src={aditionalData?.voucherUrl} frameBorder='0' />
+              </Voucher>
+            )}
+
+            <Radios>
+              <Radio
+                id='accept'
+                name='response'
+                label='Aceitar'
+                ref={acceptRef}
+                onChange={(e: any) => {
+                  acceptRef.current?.changeCheck(true)
+                  e.target.checked && setResponse('accepted')
+                  rejectRef.current?.changeCheck(false)
+                }}
+              />
+
+              <Radio
+                id='reject'
+                name='response'
+                label='Recusar'
+                ref={rejectRef}
+                onChange={(e: any) => {
+                  rejectRef.current?.changeCheck(true)
+                  e.target.checked && setResponse('rejected')
+                  acceptRef.current?.changeCheck(false)
+                }}
+              />
+            </Radios>
+
+            {!himselfModeratorRequest && (
+              <Form
+                loading
+                method='patch'
+                path={formPath()}
+                schema={formSchema(response)}
+                afterResData={afterResponseSubmit}
+              >
+                <Textarea
+                  id='feedback'
+                  name='feedback'
+                  placeholder='Deixe uma resposta...'
+                  maxLength={500}
+                />
+
+                <Submit>Enviar resposta</Submit>
+              </Form>
+            )}
+          </>
+        ) : (
+          <DotsLoader color={theme.colors.secondary} />
+        )}
+      </Style>
+
+      <Popup ref={popupRef} />
+    </>
   )
 }
 

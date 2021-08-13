@@ -26,11 +26,11 @@ export const getUpdatedUniversities = createAsyncThunk(
 )
 
 export const getUniversities = createAsyncThunk(
-  'universities/getUniversitie',
+  'universities/getUniversities',
   async (_data, { getState }) => {
     const { universities } = getState() as AsyncUniversitiesState
 
-    if (universities.length === 0) {
+    if (!universities) {
       const { universities }: UniversitiesResType = await api.get(
         'universities'
       )

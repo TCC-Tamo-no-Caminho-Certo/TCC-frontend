@@ -23,7 +23,7 @@ import transition from 'utils/transition'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { AsyncUserState } from 'store/Async/user'
+import { AsyncEmailsState } from 'store/Async/emails'
 
 import { Checkbox, Select, Submit, Text } from 'components/Form'
 import { Option } from 'components/Form/Select'
@@ -33,7 +33,7 @@ import Popup, { PopupForwardeds } from 'components/Popup'
 import { UniversityType } from 'types/Responses/university'
 import { CampusResType } from 'types/Responses/university/campus'
 import { CoursesResType } from 'types/Responses/university/courses'
-import { EmailsResType, EmailsType } from 'types/Responses/user/emails'
+import { EmailsType } from 'types/Responses/user/emails'
 import {
   ProfessorDataType,
   RequestType,
@@ -122,26 +122,29 @@ const initialUniversity = {
   }
 }
 
-export const hasInstitutionalEmail = (regex: string, emails?: EmailsType) => {
-  const rgx = new RegExp(regex)
+export const hasInstitutionalEmail = (
+  universityId: number,
+  emails?: EmailsType
+) => {
+  console.log(emails)
 
-  if (emails) return !!emails.find(({ address }) => rgx.test(address))
+  if (emails)
+    return !!emails.find(({ university_id }) => university_id === universityId)
   return false
 }
 
 const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
   const { universities } = useContext(AddRoleContext)
-  const { user } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
+  const { emails } = useSelector<RootState, AsyncEmailsState>(
+    ({ asyncEmails }) => asyncEmails
   )
-
   const popupRef = useRef<PopupForwardeds>(null)
 
   const [animations, setAnimations] = useState<Animations>(initialAnimations)
   const [options, setOptions] = useState<Options>(initialOptions)
   const [registerByEmail, setRegisterByEmail] = useState(false)
   const [values, setValues] = useState<Values>(initialValues)
-  const [userEmails, setUserEmails] = useState<EmailsType>()
+
   const [selectedUniversity, setSelectedUniversity] =
     useState<UniversityType>(initialUniversity)
 
@@ -277,15 +280,14 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
 
   const onSemesterChange = () => {
     if (!request)
-      hasInstitutionalEmail(selectedUniversity.regex.email.student, userEmails)
+      hasInstitutionalEmail(selectedUniversity.id, emails)
         ? setAnimations(prev => ({ ...prev, submit: true }))
         : setAnimations(prev => ({ ...prev, ways: true }))
   }
 
   const afterSubmit = ({ success }: any) => {
     const byEmail =
-      registerByEmail ||
-      hasInstitutionalEmail(selectedUniversity.regex.email[role], userEmails)
+      registerByEmail || hasInstitutionalEmail(selectedUniversity.id, emails)
 
     if (success)
       popupRef?.current?.configPopup({
@@ -348,21 +350,12 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
       ...prev,
       course: [],
       university: universities?.map(({ name, id }) => ({
-        label: name,
-        value: id
+        value: id,
+        label: name
       }))
     }))
   }, [universities])
 
-  useEffect(() => {
-    ;(async () => {
-      const { emails }: EmailsResType = await api.get(
-        `users/${user?.id}/emails`
-      )
-
-      setUserEmails(emails)
-    })()
-  }, [user?.id])
   return (
     <>
       <Form
@@ -445,12 +438,14 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
           selectedUniversity={selectedUniversity}
         />
 
-        <Checkbox
-          id='cy-full_time'
-          name='full_time'
-          label='Sou professor em tempo integral'
-          defaultCheck={request?.data.full_time}
-        />
+        {role === 'professor' && (
+          <Checkbox
+            id='cy-full_time'
+            name='full_time'
+            label='Sou professor em tempo integral'
+            defaultCheck={request?.data.full_time}
+          />
+        )}
 
         <Presence
           exit='exit'

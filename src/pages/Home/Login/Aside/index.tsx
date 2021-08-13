@@ -113,7 +113,7 @@ const Aside = () => {
             name='email'
             placeholder='E-mail'
             autoComplete='email'
-            data-cy='input-login-email'
+            data-cy='Login-email'
             icon={MailIcon}
           />
 
@@ -121,16 +121,16 @@ const Aside = () => {
             eye
             name='password'
             type='password'
-            placeholder='Senha'
-            data-cy='input-login-password'
-            autoComplete='current-password'
             icon={PadlockIcon}
+            placeholder='Senha'
+            data-cy='Login-password'
+            autoComplete='current-password'
           />
 
           <div id='submit'>
             <Link to='/forgot-password'>Não consegue fazer login?</Link>
 
-            <Submit data-cy='button-login-submit'>Efetuar Login</Submit>
+            <Submit data-cy='Login-submit'>Efetuar Login</Submit>
           </div>
 
           <Checkbox name='remember' label='Permanecer conectado' />
@@ -140,6 +140,7 @@ const Aside = () => {
           <span>Ainda não possui uma conta ?</span>
 
           <button
+            data-cy='Login-register'
             type='button'
             onClick={onRegisterClick}
             disabled={disabled || home.disable}

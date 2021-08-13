@@ -228,10 +228,7 @@ const Requests = () => {
             <Datepicker
               name='from'
               placeholder='De'
-              textColors={{
-                focused: secondary,
-                unfocused: secondary
-              }}
+              textColors={{ focused: secondary, unfocused: secondary }}
               dateColors={{
                 disabled: red,
                 body: secondary,
@@ -243,10 +240,7 @@ const Requests = () => {
             <Datepicker
               name='to'
               placeholder='Até'
-              textColors={{
-                focused: secondary,
-                unfocused: secondary
-              }}
+              textColors={{ focused: secondary, unfocused: secondary }}
               dateColors={{
                 disabled: red,
                 body: secondary,

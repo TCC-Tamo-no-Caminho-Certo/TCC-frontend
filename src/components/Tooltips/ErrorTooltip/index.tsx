@@ -15,7 +15,7 @@ const ErrorTooltip = ({ error, ...props }: ErrorTooltipProps) => {
       position='top left'
       className='ErrorTooltip'
       trigger={
-        <Trigger className='Trigger'>
+        <Trigger className='Trigger' data-cy='Tooltip-error'>
           <AlertIcon />
         </Trigger>
       }

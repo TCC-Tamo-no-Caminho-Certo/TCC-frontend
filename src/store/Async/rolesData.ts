@@ -2,7 +2,7 @@ import api from 'services/api'
 
 import { RootState } from 'store'
 
-import { RolesDataResType, RolesDataType } from 'types/Responses/user/rolesData'
+import { RolesDataType } from 'types/Responses/user/rolesData'
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
@@ -23,25 +23,41 @@ const initialState: AsyncRolesDataState = {
 }
 
 export const getUpdatedRolesData = createAsyncThunk(
-  'roles(getUpdatedRolesData)',
-  async ({ userId }: GetEmailsParams) => {
-    const { roles }: RolesDataResType = await api.get(`users/${userId}/roles`)
+  'rolesData(getUpdatedRolesData)',
+  async ({ userId }: GetEmailsParams, { getState }) => {
+    const { asyncRolesData, asyncUser } = getState() as RootState
+    const userRoles = asyncUser.user?.roles
 
-    return { roles }
+    if (userRoles) {
+      const newRolesData: any = {}
+
+      for (let i = 0; i < userRoles.length; i++) {
+        const response = await api.get(`users/${userId}/roles/${userRoles[i]}`)
+        newRolesData[`${userRoles[i]}`] = response[`${userRoles[i]}`]
+      }
+
+      return { roles: newRolesData, firstTime: false }
+    }
+
+    return asyncRolesData
   }
 )
 
 export const getRolesData = createAsyncThunk(
-  'roles(getRoles)',
+  'rolesData(getRolesData)',
   async ({ userId }: GetEmailsParams, { getState }) => {
-    const { asyncRolesData } = getState() as RootState
+    const { asyncRolesData, asyncUser } = getState() as RootState
+    const userRoles = asyncUser.user?.roles
 
-    if (asyncRolesData.firstTime) {
-      const { roles }: RolesDataResType = await api.get(
-        `users/${userId}/roles/all`
-      )
+    if (asyncRolesData.firstTime && userRoles) {
+      const newRolesData: any = {}
 
-      return { roles, firstTime: false }
+      for (let i = 0; i < userRoles.length; i++) {
+        const response = await api.get(`users/${userId}/roles/${userRoles[i]}`)
+        newRolesData[`${userRoles[i]}`] = response[`${userRoles[i]}`]
+      }
+
+      return { roles: newRolesData, firstTime: false }
     }
 
     return asyncRolesData

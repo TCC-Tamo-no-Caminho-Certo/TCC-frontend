@@ -45,8 +45,15 @@ const liAnimation: Variants = {
 }
 
 const logoutAnimation: Variants = {
-  open: { y: [-16, 0], opacity: [0, 1], transition },
-  closed: { opacity: [1, 0], transition: { type: 'tween', duration: 0.1 } }
+  open: {
+    y: [-16, 0],
+    opacity: [0, 1],
+    transition: { ...transition, delay: 0.3 }
+  },
+  closed: {
+    opacity: [1, 0],
+    transition: { type: 'tween', duration: 0.1 }
+  }
 }
 
 const Menu = ({ width, height, condition }: MenuProps) => {
@@ -103,9 +110,10 @@ const Menu = ({ width, height, condition }: MenuProps) => {
           id='logout'
           type='button'
           animate='open'
-          variants={logoutAnimation}
           onClick={onLogoutClick}
           disabled={logoutLoading}
+          data-cy='RightMenu-logout'
+          variants={logoutAnimation}
         >
           {logoutLoading && <DotsLoader color={theme.colors.secondary} />}
 

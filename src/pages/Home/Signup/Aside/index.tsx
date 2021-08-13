@@ -15,6 +15,8 @@ import { Datepicker, Form, Submit, Text } from 'components/Form'
 import BackButton from 'components/BackButton'
 import Popup, { PopupForwardeds } from 'components/Popup'
 
+import { Response } from 'types/Responses'
+
 import { GlobalContext } from 'App'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -59,8 +61,10 @@ const Aside = () => {
     history.push('/home')
   }
 
-  const afterSubmit = (res: any) => {
-    if (res.success)
+  const afterSubmit = (response: Response) => {
+    console.log(response)
+
+    if (response.success)
       popupRef?.current?.configPopup({
         open: true,
         type: 'success',
@@ -68,7 +72,7 @@ const Aside = () => {
         onClick: onSuccessClose
       })
     else
-      switch (res.error) {
+      switch (response.error) {
         case 'User already exists':
           popupRef?.current?.configPopup({
             open: true,
@@ -125,7 +129,7 @@ const Aside = () => {
               className='dual'
               placeholder='Nome'
               autoComplete='given-name'
-              data-cy='input-signup-name'
+              data-cy='Signup-name'
               icon={WorldIcon}
             />
 
@@ -134,7 +138,7 @@ const Aside = () => {
               className='dual'
               placeholder='Sobrenome'
               autoComplete='family-name'
-              data-cy='input-signup-surname'
+              data-cy='Signup-surname'
               icon={WorldIcon}
             />
 
@@ -147,7 +151,7 @@ const Aside = () => {
               isBirthday
               arrow='bottom'
               name='birthday'
-              data-cy='input-signup-birthday'
+              data-cy='Signup-birthday'
               placeholder='Data de nascimento'
               icon={UserLockedIcon}
             />
@@ -160,7 +164,7 @@ const Aside = () => {
               name='email'
               placeholder='E-mail'
               autoComplete='email'
-              data-cy='input-signup-email'
+              data-cy='Signup-email'
               icon={UserLockedIcon}
             />
 
@@ -175,7 +179,7 @@ const Aside = () => {
               className='dual'
               placeholder='Senha'
               autoComplete='new-password'
-              data-cy='input-signup-password'
+              data-cy='Signup-password'
               icon={UserLockedIcon}
             />
 
@@ -186,7 +190,7 @@ const Aside = () => {
               name='confirmPassword'
               autoComplete='new-password'
               placeholder='Confirmar Senha'
-              data-cy='input-signup-confirmPassword'
+              data-cy='Signup-confirmPassword'
               icon={UserLockedIcon}
             />
 
@@ -199,7 +203,7 @@ const Aside = () => {
             do Steams Lab.
           </span> */}
 
-            <Submit data-cy='button-signup-submit'>Concordar e concluir</Submit>
+            <Submit data-cy='Signup-submit'>Concordar e concluir</Submit>
           </Form>
         </Content>
       </Style>

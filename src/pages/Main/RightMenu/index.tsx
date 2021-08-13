@@ -89,7 +89,10 @@ const RightMenu = () => {
             )}
 
             {innerWidth >= 545 && (
-              <GearIcon onClick={() => setIsOpen(!isOpen)} />
+              <GearIcon
+                data-cy='RightMenu-gear'
+                onClick={() => setIsOpen(!isOpen)}
+              />
             )}
 
             <Menu
@@ -109,6 +112,7 @@ const RightMenu = () => {
 
       {innerWidth <= 545 && (
         <Gear
+          data-cy='RightMenu-gear'
           onClick={() => {
             setIsOpen(!isOpen)
           }}

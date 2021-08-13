@@ -31,7 +31,7 @@ const Profile = () => {
           '/session/profile/change-role/professor',
           '/session/profile/change-role/evaluator',
           '/session/profile/change-role/moderator',
-          '/session/profile/change-role/admin'
+          '/session/profile/change-role/administrator'
         ]
       },
       {

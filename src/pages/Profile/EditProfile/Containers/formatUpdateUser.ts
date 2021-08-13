@@ -60,7 +60,7 @@ const formatUpdateUser = ({
     const institucionalUniversities = removeRepeatly(
       emails &&
         emails
-          .filter(current => current.institutional === true)
+          .filter(({ university_id }) => university_id)
           .map(({ address, university_id }) => ({ address, university_id }))
     )
 
@@ -130,11 +130,11 @@ const formatUpdateUser = ({
       date: true
     },
     {
-      name: 'new_password',
-      label: 'Nova senha:',
       value: '',
       editable: true,
-      dontShow: true
+      dontShow: true,
+      name: 'new_password',
+      label: 'Nova senha:'
     },
     // {
     //   name: 'new_password',
@@ -148,6 +148,18 @@ const formatUpdateUser = ({
       label: 'E-mail:',
       value: emails ? emails[0]?.address : undefined,
       editable: false
+    },
+    {
+      editable: true,
+      name: 'linkedin',
+      label: 'Linkedin:',
+      value: roles?.student?.linkedin || ''
+    },
+    {
+      name: 'lattes',
+      editable: true,
+      label: 'Lattes:',
+      value: roles?.student?.lattes || ''
     }
     // {
     //   name: 'phone',
@@ -161,24 +173,12 @@ const formatUpdateUser = ({
   const student: InputData[] = [
     ...getEmail('student'),
     {
-      name: 'linkedin',
-      label: 'Linkedin:',
-      value: roles?.student?.linkedin || '',
-      editable: false
-    },
-    {
-      name: 'lattes',
-      label: 'Lattes:',
-      value: roles?.student?.lattes || '',
-      editable: false
-    },
-    {
+      editable: false,
       name: 'semester',
       label: 'Semestre:',
       value: roles?.student?.universities
         ? `${roles?.student.universities[0].semester}° Semestre`
-        : '',
-      editable: false
+        : ''
     }
   ]
 

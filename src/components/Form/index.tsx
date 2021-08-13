@@ -208,10 +208,10 @@ const Form = ({
       const secondParam = params[method].data
       const resData = await api[method](firstParam, { ...secondParam })
 
-      if (resData) {
+      if (resData.response?.data) {
         loading && setShowLoader(false)
-        cbAfterResData && cbAfterResData(resData)
-      }
+        cbAfterResData && cbAfterResData(resData.response.data)
+      } else cbAfterResData && cbAfterResData(resData)
 
       return resData.success
     }
