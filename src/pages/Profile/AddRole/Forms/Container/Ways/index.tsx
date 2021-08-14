@@ -6,6 +6,7 @@ import { Animations, show } from '../../StudentProfessor/index'
 import AlertIcon from 'assets/Inputs/AlertIcon'
 
 import { File } from 'components/Form'
+// eslint-disable-next-line prettier/prettier
 import RegisterEmail, { RegisterEmailForwardeds } from 'components/RegisterEmail'
 
 import { UniversityType } from 'types/Responses/university'
@@ -120,7 +121,6 @@ const Ways = ({
         <RegisterEmail
           placeholder='E-mail institucional'
           title={name}
-          addData={{ id }}
           ref={registerEmailRef}
           onSuccess={onEmailSuccess}
           regex={regex.email.student}

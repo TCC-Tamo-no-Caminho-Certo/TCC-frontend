@@ -1,4 +1,4 @@
-import React, { ImgHTMLAttributes, memo, useState } from 'react'
+import React, { ImgHTMLAttributes, useState } from 'react'
 import Style, { StyledAvatar } from './styles'
 
 import { RootState } from 'store'
@@ -77,4 +77,4 @@ const Avatar = ({
   )
 }
 
-export default memo(Avatar)
+export default Avatar

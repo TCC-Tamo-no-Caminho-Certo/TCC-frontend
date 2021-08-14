@@ -13,15 +13,15 @@ const Profile = () => {
   const profileRoutes: RouteProps[] = useMemo(
     () => [
       {
-        label: 'Editar Perfil',
+        label: 'Editar perfil',
         icon: () => <EditUserIcon />,
         component: () => <EditProfile />,
         paths: ['/session/profile/edit-profile']
       },
       {
-        label: 'Adicionar Papel',
         exact: true,
         isBigInOther: true,
+        label: 'Adicionar papel',
         icon: () => <ChangeIcon />,
         component: () => <AddRole />,
         paths: [
@@ -35,8 +35,8 @@ const Profile = () => {
         ]
       },
       {
-        label: 'Voltar ao mapa',
         bottom: true,
+        label: 'Voltar ao mapa',
         icon: () => <MapIcon />,
         paths: ['/session/main/map']
       }

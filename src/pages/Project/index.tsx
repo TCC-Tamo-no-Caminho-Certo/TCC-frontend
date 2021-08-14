@@ -41,17 +41,17 @@ const Profile = () => {
         label: 'Projeto',
         ref: aboutProject,
         icon: () => <ProjectIcon />,
-        component: () => <About ref={aboutProject} project={project.current} />,
-        paths: [`/session/project/${id}`]
+        paths: [`/session/project/${id}`],
+        component: () => <About ref={aboutProject} project={project.current} />
       },
       {
-        label: 'Participantes',
         ref: members,
+        label: 'Participantes',
         icon: () => <ProjectIcon />,
+        paths: [`/session/project/${id}/participants`],
         component: () => (
           <Participants ref={members} participants={participants.current} />
-        ),
-        paths: [`/session/project/${id}/participants`]
+        )
       },
       {
         label: 'Voltar ao mapa',

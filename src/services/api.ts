@@ -5,7 +5,7 @@ interface Data {
 }
 
 const request = axios.create({
-  baseURL: 'https://dev.steamslab.com/api/'
+  baseURL: 'https://dev.steamslab.com/'
 })
 
 const api = {

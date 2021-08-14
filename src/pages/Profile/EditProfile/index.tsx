@@ -1,133 +1,60 @@
-import React, {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useRef,
-  useState
-} from 'react'
-import Style, { ConfirmForm } from './styles'
+import React, { useEffect, useState } from 'react'
+import Style from './styles'
 
-import Containers from './Containers'
+import ProfileRoles from './ProfileAndRoles'
+import Universities from './Universities'
 
-import editProfileSchema from 'utils/validations/editProfile'
+import api from 'services/api'
 
-import { AsyncUserActions, AsyncUserState } from 'store/Async/user'
 import { RootState } from 'store'
+import { AsyncUserState } from 'store/Async/user'
+import { getRolesData } from 'store/Async/rolesData'
+import { getEmails } from 'store/Async/emails'
+import { getUniversities } from 'store/Async/universities'
 
-import { Form, Submit, Text } from 'components/Form'
-import Modal, { ModalForwardeds } from 'components/Modal'
-import Popup, { PopupForwardeds } from 'components/Popup'
+import useWindowDimensions from 'hooks/useWindowDimensions'
 
 import { useDispatch, useSelector } from 'react-redux'
-
-interface EditProfileContextProps {
-  globalChange?: boolean
-  setGlobalChange?: Dispatch<SetStateAction<boolean>>
-}
-
-export const EditProfileContext = createContext<EditProfileContextProps>({})
 
 const EditProfile = () => {
   const { user } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
 
-  const modalRef = useRef<ModalForwardeds>(null)
-  const popupRef = useRef<PopupForwardeds>(null)
-
-  const [globalChange, setGlobalChange] = useState(false)
-
   const dispatch = useDispatch()
+  const { innerWidth } = useWindowDimensions()
 
-  const afterSubmit = (res: any) => {
-    if (res.success) {
-      dispatch(AsyncUserActions.update({ user: { ...user, ...res.user } }))
+  const [sliderWidth, setSliderWidth] = useState(innerWidth >= 600 ? 520 : 284)
 
-      modalRef?.current?.toggle()
+  useEffect(() => {
+    if (innerWidth <= 430) setSliderWidth(320)
+    else if (innerWidth <= 600) setSliderWidth(440)
+    else if (innerWidth <= 700) setSliderWidth(450)
+    else setSliderWidth(520)
+  }, [innerWidth])
 
-      popupRef?.current?.configPopup({
-        type: 'success',
-        open: true,
-        message: 'Dados alterados',
-        onClick: () => setGlobalChange(false)
-      })
-    } else
-      switch (res.error) {
-        case 'Incorrect password!':
-          popupRef?.current?.configPopup({
-            type: 'error',
-            message: 'Senha inválida!',
-            open: true
-          })
-          break
-        default:
-          popupRef?.current?.configPopup({
-            type: 'error',
-            message: 'Ops, algo deu errado :(',
-            open: true
-          })
-      }
-  }
+  useEffect(() => {
+    if (user?.id) {
+      dispatch(getRolesData({ userId: user.id }))
+      dispatch(getEmails({ userId: user?.id }))
+      dispatch(getUniversities())
+    }
+  }, [dispatch, user?.id])
 
   return (
-    <>
-      <Style>
-        <Form
-          loading
-          path='user'
-          method='patch'
-          schema={editProfileSchema}
-          afterResData={afterSubmit}
-          onError={(error: any) => {
-            error.message !== 'Você esqueceu de informar a senha!' &&
-              modalRef?.current?.toggle(false)
-          }}
-        >
-          <div id='submits'>
-            <button type='button' onClick={() => setGlobalChange(false)}>
-              Descartar alterações
-            </button>
+    <Style>
+      <header>
+        <h1>Editar perfil</h1>
+      </header>
 
-            <button
-              type='button'
-              onClick={() => {
-                modalRef?.current?.toggle(true)
-              }}
-            >
-              Salvar
-            </button>
-          </div>
+      <button type='button' onClick={() => api.delete('users/emails/7')}>
+        Remover email
+      </button>
 
-          <EditProfileContext.Provider
-            value={{ globalChange, setGlobalChange }}
-          >
-            <Containers />
-          </EditProfileContext.Provider>
-        </Form>
-      </Style>
+      <ProfileRoles sliderWidth={sliderWidth} />
 
-      <Modal ref={modalRef}>
-        <ConfirmForm>
-          <span>Você precisa digitar sua senha para salvar as alterações!</span>
-
-          <Text eye name='password' placeholder='Senha (Atual)' />
-
-          <div id='buttons'>
-            <button
-              id='cancel'
-              type='button'
-              onClick={() => modalRef?.current?.toggle(false)}
-            >
-              Cancelar
-            </button>
-
-            <Submit>Confirmar</Submit>
-          </div>
-        </ConfirmForm>
-      </Modal>
-
-      <Popup ref={popupRef} />
-    </>
+      <Universities sliderWidth={sliderWidth} />
+    </Style>
   )
 }
 

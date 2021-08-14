@@ -18,7 +18,7 @@ export interface AsyncUserState {
 }
 
 interface GetUserProps {
-  id: string
+  id: number
 }
 
 export const initialState: AsyncUserState = {
@@ -48,8 +48,8 @@ export const getUser = createAsyncThunk(
 
     return {
       user: {
-        ...asyncUser.user,
         ...user,
+        ...asyncUser.user,
         roles,
         selectedRole: getInitialSelectedRole(roles)
       }
@@ -62,6 +62,8 @@ const update = (state: AsyncUserState, { payload }: any) => {
 
   if (selectedRole !== undefined)
     localStorage.setItem('@SLab_selected_role', selectedRole)
+
+  console.log(payload)
 
   return { ...state, ...payload }
 }

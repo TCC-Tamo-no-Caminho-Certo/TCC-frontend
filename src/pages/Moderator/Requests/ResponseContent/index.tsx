@@ -86,8 +86,8 @@ const ResponseContent = ({
   const formPath = () => {
     if (requestId)
       return response === 'rejected'
-        ? `user/role/request/reject/${requestId}`
-        : `user/role/request/accept/${requestId}`
+        ? `users/roles/requests/${requestId}/reject`
+        : `users/roles/requests/${requestId}/accept`
   }
 
   const onTrashClick = () => {
@@ -124,7 +124,7 @@ const ResponseContent = ({
             popupRef?.current?.configPopup({
               open: true,
               type: 'error',
-              message: 'Solicitação não encontrada ou já aceita.'
+              message: 'Solicitação não encontrada ou já respondida.'
             })
 
           break

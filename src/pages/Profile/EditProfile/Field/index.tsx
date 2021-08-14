@@ -1,9 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Style, { Icon, Input, Label } from './styles'
 
-import { InputData } from '../formatUpdateUser'
-import { EditProfileContext } from '../../index'
-
 import { isoToDate } from 'utils/dates'
 
 import PencilIcon from 'assets/Inputs/PencilIcon'
@@ -15,20 +12,27 @@ import DotsLoader from 'components/DotsLoader'
 import { darken } from 'polished'
 import { ThemeContext } from 'styled-components'
 
+export interface InputData {
+  value?: any
+  name: string
+  label: string
+  date?: boolean
+  editable?: boolean
+  dontShow?: boolean
+}
+
 interface FieldProps {
   data: InputData
 }
 
-const Field = ({ data }: FieldProps) => {
-  const { globalChange, setGlobalChange } = useContext(EditProfileContext)
+const Field = ({
+  data: { name, label, value, editable = true, date = false, dontShow = false }
+}: FieldProps) => {
   const theme = useContext(ThemeContext)
 
   const inputRef = useRef<HTMLInputElement>(null)
 
   const [change, setChange] = useState(false)
-
-  const { name, label, date, dontShow, value, editable } = data
-
   const input = date ? (
     <Datepicker
       isBirthday
@@ -37,8 +41,8 @@ const Field = ({ data }: FieldProps) => {
       name={name}
       dateColors={{
         body: theme.colors.secondary,
-        header: darken(0.05, theme.colors.tertiary),
-        selected: theme.colors.primary
+        selected: theme.colors.primary,
+        header: darken(0.05, theme.colors.tertiary)
       }}
     />
   ) : (
@@ -52,17 +56,11 @@ const Field = ({ data }: FieldProps) => {
   )
 
   const onFieldClick = () => {
-    if (editable) {
-      change ? inputRef.current?.focus() : setChange(true)
-      globalChange === false && setGlobalChange && setGlobalChange(true)
-    }
+    if (editable) change ? inputRef.current?.focus() : setChange(true)
   }
 
   const onIconClick = () => {
-    if (editable) {
-      setChange(!change)
-      globalChange === false && setGlobalChange && setGlobalChange(true)
-    }
+    if (editable) setChange(!change)
   }
 
   const setInput = () => {
@@ -80,10 +78,6 @@ const Field = ({ data }: FieldProps) => {
   useEffect(() => {
     change && inputRef.current?.focus()
   }, [change])
-
-  useEffect(() => {
-    !globalChange && setChange(false)
-  }, [globalChange])
 
   return (
     <Style className='Field' key={name}>

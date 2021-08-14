@@ -3,10 +3,14 @@ import Style from './styles'
 
 import tokenSchema from 'utils/validations/tokenSchema'
 
+import { RootState } from 'store'
+import { AsyncUserState } from 'store/Async/user'
+
 import Form, { Submit, Text } from 'components/Form'
 import Modal, { ModalForwardeds } from 'components/Modal'
 import Popup, { PopupForwardeds } from 'components/Popup'
 
+import { useSelector } from 'react-redux'
 import * as Yup from 'yup'
 
 export interface RegisterEmailForwardeds {
@@ -23,6 +27,10 @@ interface RegisterEmailProps {
 
 const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
   ({ title, addData, regex, onSuccess, placeholder }, ref) => {
+    const { user } = useSelector<RootState, AsyncUserState>(
+      ({ asyncUser }) => asyncUser
+    )
+
     const modalRef = useRef<ModalForwardeds>(null)
     const popupRef = useRef<PopupForwardeds>(null)
 
@@ -31,13 +39,15 @@ const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
     const regexToMach = new RegExp(regex || '')
 
     const emailSchema = Yup.object({
-      email: Yup.string()
+      address: Yup.string()
         .email('O e-mail deve ser válido!')
         .matches(regexToMach, 'E-mail inválido!')
         .required('Você esqueceu de informar o email!')
     })
 
     const afterEmailSubmit = (res: any) => {
+      console.log(res)
+
       if (res.success) setCodeSend(true)
       else
         switch (res.error) {
@@ -88,16 +98,15 @@ const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
           <Style>
             <Form
               loading
-              path='user/email'
-              addData={addData}
               schema={emailSchema}
+              path='api/users/emails'
               afterResData={afterEmailSubmit}
             >
               {!codeSend && (
                 <>
                   <span>{title}</span>
 
-                  <Text name='email' placeholder={placeholder} />
+                  <Text name='address' placeholder={placeholder} />
 
                   <Submit>Enviar código de confirmação</Submit>
                 </>

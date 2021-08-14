@@ -9,7 +9,8 @@ import Style, { RightMenu } from './styles'
 
 import api from 'services/api'
 
-import { AsyncUserActions } from 'store/Async/user'
+import { AsyncUserActions, AsyncUserState, getUser } from 'store/Async/user'
+import { RootState } from 'store'
 
 import CameraIcon from 'assets/Inputs/CameraIcon'
 import CloseIcon from 'assets/global/CloseIcon'
@@ -22,15 +23,18 @@ import { PopupForwardeds } from 'components/Popup'
 import 'cropperjs/dist/cropper.css'
 import { motion } from 'framer-motion'
 import { Cropper } from 'react-cropper'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
 export interface ImageChangerForwardeds {
-  toggleImageChanger: () => void
+  toggle: () => void
 }
 
 const ImageChanger = forwardRef((_props, ref) => {
   const theme = useContext(ThemeContext)
+  const { user } = useSelector<RootState, AsyncUserState>(
+    ({ asyncUser }) => asyncUser
+  )
 
   const modalRef = useRef<ModalForwardeds>(null)
   const popupRef = useRef<PopupForwardeds>(null)
@@ -89,9 +93,10 @@ const ImageChanger = forwardRef((_props, ref) => {
         picture: cropper.getCroppedCanvas().toDataURL(type)
       })
 
-      dispatch(AsyncUserActions.update({ avatar_uuid }))
+      dispatch(AsyncUserActions.update({ user: { ...user, avatar_uuid } }))
       setLoading(false)
       onCloseClick()
+      user?.id && getUser({ id: user?.id })
     } else {
       setNoImage(true)
       setTimeout(() => setNoImage(false), 300)
