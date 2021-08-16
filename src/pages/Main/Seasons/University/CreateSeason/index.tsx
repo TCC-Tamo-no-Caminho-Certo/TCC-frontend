@@ -74,7 +74,7 @@ const CreateSeason = ({
         afterResData={afterResData}
         schema={createSeasonSchema}
         manipulateData={manipulateData}
-        path={`/universities/${universityId}/seasons`}
+        path={`api//universities/${universityId}/seasons`}
       >
         <AnimatedList
           id={id}

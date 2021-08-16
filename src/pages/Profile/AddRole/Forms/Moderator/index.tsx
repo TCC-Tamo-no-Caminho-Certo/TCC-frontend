@@ -58,7 +58,7 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
   const history = useHistory()
 
   const onUniversityChange = async (selected: Option) => {
-    const professor = await api.get('roles/professor')
+    const professor = await api.get('api/roles/professor')
 
     setFullTime(verifyFullTime(professor, Number(selected.value)))
 
@@ -121,8 +121,8 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
         schema={!fullTime ? withFullTime : withoutFullTime}
         path={
           request
-            ? `users/roles/requests/moderator/${request.id}`
-            : 'users/roles/requests/moderator'
+            ? `api/users/roles/requests/moderator/${request.id}`
+            : 'api/users/roles/requests/moderator'
         }
       >
         <Select

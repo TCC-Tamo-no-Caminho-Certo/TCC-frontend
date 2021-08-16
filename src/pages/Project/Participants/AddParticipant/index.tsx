@@ -56,7 +56,7 @@ const AddParticipant = () => {
   const months = []
 
   // const getUsers = async () => {
-  //   const users = api.get(`project/${id}`)
+  //   const users = api.get(`api/project/${id}`)
   // }
 
   for (let i = 1; i <= monthsQuantity; i++)

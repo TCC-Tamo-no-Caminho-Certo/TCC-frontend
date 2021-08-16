@@ -17,8 +17,8 @@ const ThemeSwitch = () => {
   return (
     <svg
       viewBox='0 0 42 42'
-      xmlns='http://www.w3.org/2000/svg'
       className='ThemeSwitch'
+      xmlns='http://www.w3.org/2000/svg'
       onClick={() =>
         dispatch(
           ThemeActions.changeTheme({

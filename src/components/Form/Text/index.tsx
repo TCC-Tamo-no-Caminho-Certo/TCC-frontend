@@ -58,8 +58,9 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
     ref
   ) => {
     const form = useContext<FormState | null>(FormContext)
-    const textRef = useRef<HTMLInputElement>(null)
     const { colors } = useContext(ThemeContext)
+
+    const textRef = useRef<HTMLInputElement>(null)
 
     const [error, setError] = useState<string>()
     const [isFilled, setIsFilled] = useState(false)

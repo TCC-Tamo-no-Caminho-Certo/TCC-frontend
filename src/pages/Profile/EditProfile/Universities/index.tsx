@@ -6,11 +6,7 @@ import api from 'services/api'
 import { RootState } from 'store'
 import { AsyncUserState } from 'store/Async/user'
 import { AsyncEmailsState } from 'store/Async/emails'
-import {
-  AsyncUniversitiesState,
-  getUniversities
-} from 'store/Async/universities'
-import { AsyncRolesDataState } from 'store/Async/rolesData'
+import { AsyncUniversitiesState } from 'store/Async/universities'
 
 import Slider from 'components/Slider'
 
@@ -38,30 +34,48 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
   const getUserUniversities = useCallback(async () => {
     if (user?.id) {
       const roles: UniversitiesResType = await api.get(
-        `users/${user?.id}/roles/universities`
+        `api/users/${user?.id}/roles/universities`
       )
+      console.log(emails)
 
-      const universitiesByEmails = emails.filter(
-        ({ university_id }) =>
-          !roles.universities.find(({ id }) => id === university_id) &&
-          university_id !== null
-      )
+      const universitiesByEmails = emails
+        .filter(
+          ({ university_id }) =>
+            !roles.universities.find(({ id }) => id === university_id) &&
+            university_id !== null
+        )
+        .map(({ university_id }) => ({ id: university_id }))
 
-      const formatUniversitiesByEmails = universitiesByEmails.map(
-        ({ university_id }) => {
-          const foundUniversity = universities.find(
-            ({ id }) => university_id === id
-          )
+      const universitiesByRoles = roles.universities.map(({ id }) => id)
 
-          return {
-            id: foundUniversity?.id,
-            name: foundUniversity?.name,
-            regex: foundUniversity?.regex
-          }
+      const idsOfuserUniversities = [
+        ...universitiesByRoles,
+        ...universitiesByEmails
+      ]
+
+      const formatterNewContainer = idsOfuserUniversities.map(containerId => {
+        const foundUniversity = universities?.find(
+          ({ id }) => containerId === id
+        )
+
+        return {
+          id: foundUniversity?.id,
+          name: foundUniversity?.name,
+          regex: foundUniversity?.regex
         }
-      )
+      })
 
-      setContainers([...roles.universities, ...formatUniversitiesByEmails])
+      console.clear()
+      console.log(emails)
+
+      console.table({
+        byRoles: universitiesByRoles,
+        byEmails: universitiesByEmails,
+        all: idsOfuserUniversities,
+        formmatter: formatterNewContainer
+      })
+
+      setContainers(formatterNewContainer)
     }
   }, [user?.id, emails, universities])
 

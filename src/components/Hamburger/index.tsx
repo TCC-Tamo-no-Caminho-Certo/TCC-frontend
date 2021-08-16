@@ -1,6 +1,8 @@
 import React, { forwardRef } from 'react'
 import Style, { MotionRect } from './styles'
 
+import { Variants } from 'framer-motion'
+
 interface HamburgerProps {
   toggle?(): void
   state: boolean
@@ -8,25 +10,25 @@ interface HamburgerProps {
   size?: number
 }
 
+const motionFirst: Variants = {
+  open: { rotate: 45, y: 7 },
+  closed: { rotate: 0, y: 0 }
+}
+
+const motionSecond: Variants = {
+  open: { x: 12, y: 0, width: 0 },
+  closed: { x: 0, y: 0, width: 24 }
+}
+
+const motionThird: Variants = {
+  open: { rotate: -45, y: -7 },
+  closed: { rotate: 0, y: 0 }
+}
+
 const Hamburger = forwardRef<any, HamburgerProps>(
   ({ toggle, state, color, size = 24 }, ref) => {
-    function onHamburgerClick() {
-      toggle?.()
-    }
-
-    const motionFirst = {
-      open: { rotate: 45, y: 7 },
-      closed: { rotate: 0, y: 0 }
-    }
-
-    const motionSecond = {
-      open: { x: 12, y: 0, width: 0 },
-      closed: { x: 0, y: 0, width: 24 }
-    }
-
-    const motionThird = {
-      open: { rotate: -45, y: -7 },
-      closed: { rotate: 0, y: 0 }
+    const onHamburgerClick = () => {
+      toggle && toggle()
     }
 
     const transition = { type: 'tween', duration: 0.2 }

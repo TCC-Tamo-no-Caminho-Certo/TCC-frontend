@@ -23,9 +23,7 @@ export default createGlobalStyle<GlobalProps>`
     body {
       font-size: clamp(1.6rem, 0.6rem + 2.6vw, 1.9rem);
       line-height: clamp(1.6rem, 0.6rem + 2.6vw, 1.9rem);
-
-  
-
+      
       color: ${({ theme }) => theme.colors.tertiary};
       background-color: ${({ theme }) => theme.colors.primary};
 
@@ -77,6 +75,7 @@ export default createGlobalStyle<GlobalProps>`
       input:-webkit-autofill:hover, 
       input:-webkit-autofill:focus, 
       input:-webkit-autofill:active  {
+        box-shadow: 0 0 0px 1000px white inset;
         transition: background-color 5000s ease-in-out 0s;
       }
 

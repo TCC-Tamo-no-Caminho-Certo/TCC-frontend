@@ -2,8 +2,8 @@ describe('Cadastrar papel de estudante', () => {
   it('Com e-mail institucional já cadastrado', () => {
     cy.accessAddRole()
 
-    cy.get('#cy-student').click()
-    cy.get('#cy-student > div > button').click()
+    cy.get('[data-cy=AddRole-student]').click()
+    cy.get('[data-cy=RoleInfo-roleButton]').click()
 
     cy.get('#lattes').click().type('Lattes de Estudante :D')
     cy.get('#linkedin').click().type('Linkedin de Estudante :D')
@@ -30,14 +30,11 @@ describe('Cadastrar papel de estudante', () => {
     cy.logout()
   })
 
-  it('Cadastrando e-mail institucional', () => {
+  it.only('Cadastrando e-mail institucional', () => {
     cy.accessAddRole()
 
-    cy.get('#cy-student').click()
-    cy.get('#cy-student > div > button').click()
-
-    cy.get('#lattes').click().type('Lattes de Estudante :D')
-    cy.get('#linkedin').click().type('Linkedin de Estudante :D')
+    cy.get('[data-cy=AddRole-student]').click()
+    cy.get('[data-cy=RoleInfo-roleButton]').click()
 
     cy.get('#cy-university').click()
     cy.get('#react-select-2-option-0').click()
@@ -53,8 +50,8 @@ describe('Cadastrar papel de estudante', () => {
     cy.get('#cy-semester').click()
     cy.get('#react-select-5-option-4').click()
 
-    cy.get('#cy-email').click()
-    cy.get('#email').click().type('21238239@anhembimorumbi.edu.br')
+    cy.get('[data-cy=Ways-email]').click()
+    cy.get('#address').click().type('21238239@anhembimorumbi.edu.br')
     cy.get('.label').click()
 
     cy.get('#token').click().type('1234')
@@ -71,11 +68,11 @@ describe('Cadastrar papel de estudante', () => {
     cy.logout()
   })
 
-  it.only('Enviando voucher', () => {
+  it('Enviando voucher', () => {
     cy.accessAddRole()
 
-    cy.get('#cy-student').click()
-    cy.get('#cy-student > div > button').click()
+    cy.get('[data-cy=AddRole-student]').click()
+    cy.get('[data-cy=RoleInfo-roleButton]').click()
 
     cy.get('#lattes').click().type('Lattes de Estudante :D')
     cy.get('#linkedin').click().type('Linkedin de Estudante :D')

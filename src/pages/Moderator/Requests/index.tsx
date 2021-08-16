@@ -138,7 +138,7 @@ const Requests = () => {
     const per_page = 50
 
     const { requests }: RequestsResType = await api.get(
-      'users/roles/requests',
+      'api/users/roles/requests',
       {
         params: { page, per_page, filters }
       }
@@ -146,7 +146,7 @@ const Requests = () => {
 
     for (let i = 0; i < requests?.length; i++) {
       const { user }: UserResType = await api.get(
-        `users/${requests[i].user_id}`
+        `api/users/${requests[i].user_id}`
       )
 
       tableData.push({

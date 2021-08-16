@@ -92,7 +92,7 @@ const Aside = () => {
         <Form
           captcha
           loading
-          path='sign-in'
+          path='api/sign-in'
           schema={loginSchema}
           afterResData={afterSubmit}
         >

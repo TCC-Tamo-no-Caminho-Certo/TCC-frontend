@@ -16,10 +16,10 @@ import { Variants } from 'framer-motion'
 
 export interface AnimatedListProps {
   id: number
-  title: ReactNode | string
-  children: ReactNode
   addClose?: boolean
+  children: ReactNode
   selecteds?: number[]
+  title: ReactNode | string
   setSelecteds?: Dispatch<SetStateAction<number[] | undefined>>
 }
 

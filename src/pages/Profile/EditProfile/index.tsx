@@ -46,14 +46,13 @@ const EditProfile = () => {
       <header>
         <h1>Editar perfil</h1>
       </header>
-
-      <button type='button' onClick={() => api.delete('users/emails/7')}>
-        Remover email
-      </button>
-
       <ProfileRoles sliderWidth={sliderWidth} />
 
       <Universities sliderWidth={sliderWidth} />
+
+      <button type='button' onClick={() => api.delete('api/users/emails/204')}>
+        Remover email
+      </button>
     </Style>
   )
 }

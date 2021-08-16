@@ -8,8 +8,8 @@ interface DotsProps {
   gap: number
   radius: number
   quantity: number
-  onRightClick(): void
   onLeftClick(): void
+  onRightClick(): void
   makeLeftTap?: boolean
   makeRightTap?: boolean
 }
@@ -19,8 +19,8 @@ const Dots: React.FC<DotsProps> = ({
   gap,
   radius,
   quantity,
-  onRightClick,
   onLeftClick,
+  onRightClick,
   makeLeftTap = false,
   makeRightTap = false
 }) => {
@@ -30,10 +30,10 @@ const Dots: React.FC<DotsProps> = ({
 
   const [position, setPosition] = useState(0)
 
-  const newLeftAnimation = useAnimation()
   const leftAnimation = useAnimation()
-  const centerAnimation = useAnimation()
   const rightAnimation = useAnimation()
+  const centerAnimation = useAnimation()
+  const newLeftAnimation = useAnimation()
   const newRightAnimation = useAnimation()
 
   const transition = useMemo(() => ({ type: 'tween', duration: 0.3 }), [])
@@ -58,12 +58,12 @@ const Dots: React.FC<DotsProps> = ({
       transition
     })
   }, [
-    leftAnimation,
-    centerAnimation,
-    rightAnimation,
-    newRightAnimation,
     move,
-    transition
+    transition,
+    leftAnimation,
+    rightAnimation,
+    centerAnimation,
+    newRightAnimation
   ])
 
   const resetLeftMove = useCallback(() => {
@@ -86,10 +86,10 @@ const Dots: React.FC<DotsProps> = ({
     })
   }, [
     leftAnimation,
-    centerAnimation,
     rightAnimation,
-    newRightAnimation,
-    resetTransition
+    resetTransition,
+    centerAnimation,
+    newRightAnimation
   ])
 
   const rightMove = useCallback(() => {
@@ -115,12 +115,12 @@ const Dots: React.FC<DotsProps> = ({
       transition
     })
   }, [
-    newLeftAnimation,
-    leftAnimation,
-    centerAnimation,
-    rightAnimation,
     move,
-    transition
+    transition,
+    leftAnimation,
+    rightAnimation,
+    centerAnimation,
+    newLeftAnimation
   ])
 
   const resetRightMove = useCallback(() => {
@@ -150,11 +150,11 @@ const Dots: React.FC<DotsProps> = ({
       transition: resetTransition
     })
   }, [
-    newLeftAnimation,
     leftAnimation,
-    centerAnimation,
     rightAnimation,
-    resetTransition
+    resetTransition,
+    centerAnimation,
+    newLeftAnimation
   ])
 
   const sequenceToLeft = useCallback(async () => {

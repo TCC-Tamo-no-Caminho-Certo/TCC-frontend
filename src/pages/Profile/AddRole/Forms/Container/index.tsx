@@ -64,7 +64,7 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
     if (roles?.length !== 0 && roles !== undefined)
       (async () => {
         const { requests }: RequestsResType = await api.get(
-          `users/${user?.id}/roles/requests`
+          `api/users/${user?.id}/roles/requests`
         )
 
         setRequest(requests.find(request => request.role === role))

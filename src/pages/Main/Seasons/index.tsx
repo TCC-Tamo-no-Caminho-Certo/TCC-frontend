@@ -51,18 +51,18 @@ const Seasons = forwardRef((_props, ref) => {
 
     if (user?.id) {
       const { universities }: UniversitiesResType = await api.get(
-        `users/${user.id}/roles/universities`
+        `api/users/${user.id}/roles/universities`
       )
 
       for (let i = 0; i < universities?.length; i++) {
         const { id, name } = universities[i]
 
         const { seasons }: SeasonsResType = await api.get(
-          `universities/${id}/seasons`
+          `api/universities/${id}/seasons`
         )
 
         const { administrator }: AdministratorResType = await api.get(
-          `users/${user.id}/roles/administrator`
+          `api/users/${user.id}/roles/administrator`
         )
 
         const universityId = administrator.university?.id

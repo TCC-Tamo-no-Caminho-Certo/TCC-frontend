@@ -3,14 +3,12 @@ import Style from './styles'
 
 import tokenSchema from 'utils/validations/tokenSchema'
 
-import { RootState } from 'store'
-import { AsyncUserState } from 'store/Async/user'
+import CloseIcon from 'assets/global/CloseIcon'
 
 import Form, { Submit, Text } from 'components/Form'
 import Modal, { ModalForwardeds } from 'components/Modal'
 import Popup, { PopupForwardeds } from 'components/Popup'
 
-import { useSelector } from 'react-redux'
 import * as Yup from 'yup'
 
 export interface RegisterEmailForwardeds {
@@ -27,10 +25,6 @@ interface RegisterEmailProps {
 
 const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
   ({ title, addData, regex, onSuccess, placeholder }, ref) => {
-    const { user } = useSelector<RootState, AsyncUserState>(
-      ({ asyncUser }) => asyncUser
-    )
-
     const modalRef = useRef<ModalForwardeds>(null)
     const popupRef = useRef<PopupForwardeds>(null)
 
@@ -46,8 +40,6 @@ const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
     })
 
     const afterEmailSubmit = (res: any) => {
-      console.log(res)
-
       if (res.success) setCodeSend(true)
       else
         switch (res.error) {
@@ -86,6 +78,13 @@ const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
         })
     }
 
+    const onCloseModalCick = () => {
+      console.log('tst')
+      modalRef.current?.toggle()
+
+      setCodeSend(false)
+    }
+
     const toggleRegister = (open?: boolean) => modalRef.current?.toggle(open)
 
     useImperativeHandle(ref, () => ({ toggleRegister }))
@@ -96,45 +95,44 @@ const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
 
         <Modal ref={modalRef}>
           <Style>
-            <Form
-              loading
-              schema={emailSchema}
-              path='api/users/emails'
-              afterResData={afterEmailSubmit}
-            >
-              {!codeSend && (
-                <>
-                  <span>{title}</span>
+            <CloseIcon onClick={onCloseModalCick} />
 
-                  <Text name='address' placeholder={placeholder} />
+            {!codeSend && (
+              <Form
+                loading
+                addData={addData}
+                schema={emailSchema}
+                path='api/users/emails'
+                afterResData={afterEmailSubmit}
+              >
+                <span>{title}</span>
 
-                  <Submit>Enviar código de confirmação</Submit>
-                </>
-              )}
-            </Form>
+                <Text name='address' placeholder={placeholder} />
 
-            <Form
-              loading
-              method='get'
-              id='tokenForm'
-              addToPath={['token']}
-              path='confirm/email/*%'
-              schema={tokenSchema}
-              afterResData={afterTokenSubmit}
-            >
-              {codeSend && (
-                <>
-                  <p>
-                    Digite o código de confirmação que foi enviado ao seu
-                    e-mail.
-                  </p>
+                <Submit>Enviar código de confirmação</Submit>
+              </Form>
+            )}
 
-                  <Text name='token' placeholder='Código' />
+            {codeSend && (
+              <Form
+                loading
+                method='get'
+                id='tokenForm'
+                addData={addData}
+                schema={tokenSchema}
+                addToPath={['token']}
+                path='confirm/email/*%'
+                afterResData={afterTokenSubmit}
+              >
+                <p>
+                  Digite o código de confirmação que foi enviado ao seu e-mail.
+                </p>
 
-                  <Submit>Validar</Submit>
-                </>
-              )}
-            </Form>
+                <Text name='token' placeholder='Código' />
+
+                <Submit>Validar</Submit>
+              </Form>
+            )}
           </Style>
         </Modal>
       </>

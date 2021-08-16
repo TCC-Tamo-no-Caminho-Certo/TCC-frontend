@@ -19,9 +19,9 @@ const Presence = forwardRef<any, PresenceProps>(
       children,
       condition,
       presenceProps,
-      initial = 'initial',
-      animate = 'enter',
       exit = 'exit',
+      animate = 'enter',
+      initial = 'initial',
       ...props
     },
     ref
@@ -29,11 +29,11 @@ const Presence = forwardRef<any, PresenceProps>(
     <AnimatePresence {...presenceProps}>
       {condition && (
         <motion.div
-          className='Presence'
           ref={ref}
           exit={exit}
           animate={animate}
           initial={initial}
+          className='Presence'
           {...props}
         >
           {children}

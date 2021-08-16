@@ -16,8 +16,6 @@ import {
   StudentDataType
 } from 'types/Responses/user/requests'
 
-import { createPortal } from 'react-dom'
-
 interface WaysProps {
   animations: Animations
   selectedUniversity: UniversityType
@@ -76,11 +74,19 @@ const Ways = ({
           <span>Forma de registro</span>
 
           <div>
-            <button type='button' onClick={onEmailButtonClick}>
+            <button
+              type='button'
+              onClick={onEmailButtonClick}
+              data-cy='Ways-email'
+            >
               E-mail institucional
             </button>
 
-            <button type='button' onClick={onVoucherButtonClick}>
+            <button
+              type='button'
+              data-cy='Ways-voucher'
+              onClick={onVoucherButtonClick}
+            >
               Enviar comprovante
             </button>
           </div>
@@ -109,24 +115,22 @@ const Ways = ({
             name='voucher'
             tranlateY='50%'
             bgHeight='200vh'
-            accept='application/pdf'
-            label='Enviar comprovante'
             noCropper={true}
             onChange={onFileChange}
+            accept='application/pdf'
+            label='Enviar comprovante'
           />
         </Voucher>
       </Style>
 
-      {createPortal(
-        <RegisterEmail
-          placeholder='E-mail institucional'
-          title={name}
-          ref={registerEmailRef}
-          onSuccess={onEmailSuccess}
-          regex={regex.email.student}
-        />,
-        document.getElementById('root') as Element
-      )}
+      <RegisterEmail
+        title={name}
+        ref={registerEmailRef}
+        onSuccess={onEmailSuccess}
+        regex={regex.email.student}
+        addData={{ university_id: id }}
+        placeholder='E-mail institucional'
+      />
     </>
   )
 }

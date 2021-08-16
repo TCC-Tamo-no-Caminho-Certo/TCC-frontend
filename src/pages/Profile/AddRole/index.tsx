@@ -96,7 +96,7 @@ const AddRole = () => {
 
         <div id='roles'>
           <RoleInfo
-            id='cy-student'
+            id='AddRole-student'
             title='Estudante'
             role='student'
             userRoles={labelRoles}
@@ -114,7 +114,7 @@ const AddRole = () => {
           />
 
           <RoleInfo
-            id='cy-professor'
+            data-cy='AddRole-professor'
             role='professor'
             title='Professor'
             userRoles={labelRoles}
@@ -134,6 +134,7 @@ const AddRole = () => {
           {(user?.roles?.includes('professor') ||
             user?.roles?.includes('moderator')) && (
             <RoleInfo
+              data-cy='AddRole-moderator'
               role='moderator'
               id='cy-moderator'
               title='Moderador'
@@ -154,14 +155,12 @@ const AddRole = () => {
         </div>
       </Style>
 
-      <AddRoleContext.Provider
-        value={{ roles: user?.roles, universities: universities }}
-      >
+      <AddRoleContext.Provider value={{ roles: user?.roles, universities }}>
         {roleSelected && (
           <Container
             ref={containerRef}
-            role={roleSelected}
             rolesRef={rolesRef}
+            role={roleSelected}
           />
         )}
       </AddRoleContext.Provider>

@@ -24,7 +24,7 @@ export interface Option {
 const Select = forwardRef(
   ({ isMulti, styling, theming, className = 'Select', ...props }: any, ref) => {
     const form = useContext<FormState | null>(FormContext)
-    const theme = useContext(ThemeContext)
+    const { colors } = useContext(ThemeContext)
 
     const selectRef = useRef(null)
 
@@ -38,24 +38,19 @@ const Select = forwardRef(
         paddingLeft: error ? 56 : 8,
         backgroundColor: 'transparent'
       }),
-      singleValue: (before: any) => ({
-        ...before,
-        color: theme.colors.primary
-      }),
+      singleValue: (before: any) => ({ ...before, color: colors.primary }),
       multiValue: (before: any) => ({
         ...before,
-        backgroundColor: theme.colors.primary
+        backgroundColor: colors.primary
       }),
       multiValueLabel: (before: any) => ({
         ...before,
-        color: theme.colors.secondary
+        color: colors.secondary
       }),
       multiValueRemove: (before: any) => ({
         ...before,
-        color: theme.colors.secondary,
-        ':hover': {
-          backgroundColor: theme.colors.tertiary
-        }
+        color: colors.secondary,
+        ':hover': { backgroundColor: colors.tertiary }
       })
     }
 
@@ -63,30 +58,30 @@ const Select = forwardRef(
       ...beforeTheme,
       colors: {
         ...beforeTheme.colors,
-        danger: theme.colors.red,
-        dangerLight: lighten(0.5, theme.colors.red),
-        primary: theme.colors.primary,
-        primary25: lighten(0.25, theme.colors.primary),
-        primary50: lighten(0.5, theme.colors.primary),
-        primary75: lighten(0.75, theme.colors.primary),
-        neutral0: theme.colors.secondary,
-        neutral5: theme.colors.tertiary,
-        neutral10: theme.colors.tertiary,
-        neutral20: theme.colors.tertiary,
-        neutral30: theme.colors.tertiary,
-        neutral40: theme.colors.tertiary,
-        neutral50: theme.colors.tertiary,
-        neutral60: theme.colors.tertiary,
-        neutral70: theme.colors.tertiary,
-        neutral80: theme.colors.tertiary,
-        neutral90: theme.colors.tertiary
+        danger: colors.red,
+        dangerLight: lighten(0.5, colors.red),
+        primary: colors.primary,
+        primary25: lighten(0.25, colors.primary),
+        primary50: lighten(0.5, colors.primary),
+        primary75: lighten(0.75, colors.primary),
+        neutral0: colors.secondary,
+        neutral5: colors.tertiary,
+        neutral10: colors.tertiary,
+        neutral20: colors.tertiary,
+        neutral30: colors.tertiary,
+        neutral40: colors.tertiary,
+        neutral50: colors.tertiary,
+        neutral60: colors.tertiary,
+        neutral70: colors.tertiary,
+        neutral80: colors.tertiary,
+        neutral90: colors.tertiary
       }
     })
 
     useEffect(() => {
       const select = {
-        inputRef: selectRef,
         setError,
+        inputRef: selectRef,
         type: isMulti ? 'multiSelect' : 'select'
       }
 
@@ -108,7 +103,7 @@ const Select = forwardRef(
           styles={styling || overridingStyles}
           noOptionsMessage={() => (
             <div id='noOptions'>
-              <DotsLoader color={theme.colors.primary} />
+              <DotsLoader color={colors.primary} />
               Carregando opções...
             </div>
           )}

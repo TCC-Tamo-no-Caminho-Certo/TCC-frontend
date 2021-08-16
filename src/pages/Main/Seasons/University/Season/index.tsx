@@ -132,7 +132,7 @@ const Season = ({
         editing={editing}
         afterResData={afterResData}
         manipulateData={manipulateData}
-        path={`/universities/${universityId}/seasons/${id}`}
+        path={`api//universities/${universityId}/seasons/${id}`}
         isAdmin={
           isAdmin &&
           selecteds?.find(season_id => season_id === id) !== undefined

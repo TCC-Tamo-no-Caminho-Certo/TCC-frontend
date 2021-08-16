@@ -20,7 +20,10 @@ const initialState: AsyncUniversitiesState = {
 export const getUpdatedUniversities = createAsyncThunk(
   'universities/getUpdatedUniversities',
   async () => {
-    const { universities }: UniversitiesResType = await api.get('universities')
+    const { universities }: UniversitiesResType = await api.get(
+      'api/universities'
+    )
+
     return { universities }
   }
 )
@@ -32,7 +35,7 @@ export const getUniversities = createAsyncThunk(
 
     if (!universities) {
       const { universities }: UniversitiesResType = await api.get(
-        'universities'
+        'api/universities'
       )
 
       return { universities }

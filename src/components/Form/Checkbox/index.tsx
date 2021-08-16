@@ -9,28 +9,19 @@ import { motion, Variants } from 'framer-motion'
 import { ThemeContext } from 'styled-components'
 
 interface CheckboxProps {
+  id?: string
   name: string
   label: string
-  id?: string
-  defaultCheck?: boolean
   onClick?: () => void
+  defaultCheck?: boolean
 }
 
 const pathAnimation: Variants = {
-  check: {
-    pathLength: 1,
-    transition: {
-      type: 'tween',
-      duration: 0.4
-    }
-  },
+  check: { pathLength: 1, transition: { type: 'tween', duration: 0.4 } },
   unCheck: {
-    d: 'M3 6 l3 4 l7 -6',
     pathLength: 0,
-    transition: {
-      type: 'tween',
-      duration: 0.2
-    }
+    d: 'M3 6 l3 4 l7 -6',
+    transition: { type: 'tween', duration: 0.2 }
   }
 }
 
@@ -55,23 +46,19 @@ const Checkbox = ({
   }, [defaultCheck])
 
   useEffect(() => {
-    const checkbox = {
-      inputRef: checkboxRef,
-      setError,
-      type: 'checkbox'
-    }
-
+    const checkbox = { inputRef: checkboxRef, setError, type: 'checkbox' }
     form?.registerInput(checkbox)
+
     return () => form?.removeInput(checkbox)
   }, [form])
 
   return (
     <Style
-      className='Checkbox'
-      onClick={onClick}
-      checked={checked}
-      error={!!error}
       id={id}
+      error={!!error}
+      checked={checked}
+      onClick={onClick}
+      className='Checkbox'
     >
       <ErrorTooltip error={!!error} content={error} />
 
@@ -85,8 +72,8 @@ const Checkbox = ({
       >
         <input
           readOnly
-          type='checkbox'
           name={name}
+          type='checkbox'
           ref={checkboxRef}
           checked={checked}
           {...rest}
@@ -103,17 +90,10 @@ const Checkbox = ({
 
           <defs>
             <motion.radialGradient
-              animate={{
-                cx: [0, 1, 1, 0, 0],
-                cy: [0, 0, 1, 1, 0]
-              }}
-              transition={{
-                type: 'tween',
-                duration: 3,
-                repeat: Infinity
-              }}
-              id='checkboxRadial'
               r='1'
+              id='checkboxRadial'
+              animate={{ cx: [0, 1, 1, 0, 0], cy: [0, 0, 1, 1, 0] }}
+              transition={{ type: 'tween', duration: 3, repeat: Infinity }}
             >
               <stop stopColor={theme.colors.tertiary} />
 
@@ -123,9 +103,9 @@ const Checkbox = ({
 
           <motion.path
             d=''
-            stroke='url(#checkboxRadial)'
             initial={false}
             variants={pathAnimation}
+            stroke='url(#checkboxRadial)'
             animate={checked ? 'check' : 'unCheck'}
           />
         </svg>

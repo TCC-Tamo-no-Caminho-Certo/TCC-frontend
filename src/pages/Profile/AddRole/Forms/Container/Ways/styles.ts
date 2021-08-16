@@ -48,11 +48,14 @@ export const Voucher = styled(Presence)`
 `
 
 export const Choose = styled(Presence)`
+  width: 100%;
+
   > span {
     height: 22px;
-
     font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
     line-height: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
+
+    color: ${({ theme }) => theme.colors.tertiary};
   }
 
   div {
@@ -100,6 +103,7 @@ export const Choose = styled(Presence)`
 
         & + button {
           margin-top: 0px;
+          margin-left: 8px;
         }
       }
     }
@@ -107,6 +111,9 @@ export const Choose = styled(Presence)`
 `
 
 const Style = styled.div`
+  width: 100%;
+  margin-top: 16px;
+
   > * + * {
     margin-top: 16px;
   }

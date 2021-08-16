@@ -86,8 +86,8 @@ const ResponseContent = ({
   const formPath = () => {
     if (requestId)
       return response === 'rejected'
-        ? `users/roles/requests/${requestId}/reject`
-        : `users/roles/requests/${requestId}/accept`
+        ? `api/users/roles/requests/${requestId}/reject`
+        : `api/users/roles/requests/${requestId}/accept`
   }
 
   const onTrashClick = () => {
@@ -97,7 +97,7 @@ const ResponseContent = ({
       message: 'Tem certeza que deseja remover esta solicitação?',
       confirmTitle: 'Sim',
       onOkClick: async () => {
-        await api.delete(`users/roles/requests/${requestId}`)
+        await api.delete(`api/users/roles/requests/${requestId}`)
         resetTable()
         onCloseClick()
       }
@@ -147,14 +147,16 @@ const ResponseContent = ({
       const { id } = userData
 
       if (id) {
-        const { emails }: EmailsResType = await api.get(`users/${id}/emails`)
+        const { emails }: EmailsResType = await api.get(
+          `api/users/${id}/emails`
+        )
 
         userEmails = emails.filter(({ main }: any) => main)[0]?.address
       }
 
       if (university_id && campus_id && course_id) {
         const { course }: CourseResType = await api.get(
-          `/universities/${university_id}/campus/${campus_id}/courses/${course_id}`
+          `api/universities/${university_id}/campus/${campus_id}/courses/${course_id}`
         )
 
         userCourse = course.name
@@ -162,7 +164,7 @@ const ResponseContent = ({
 
       if (voucher_uuid) {
         const { url } = await api.get(
-          `users/roles/requests/voucher/${voucher_uuid}`
+          `api/users/roles/requests/voucher/${voucher_uuid}`
         )
 
         voucherUrl = url

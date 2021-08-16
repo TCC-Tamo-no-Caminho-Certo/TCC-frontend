@@ -3,6 +3,7 @@ import React, {
   FormEvent,
   HTMLProps,
   RefObject,
+  useEffect,
   useMemo,
   useRef,
   useState
@@ -26,9 +27,9 @@ import { useHistory } from 'react-router-dom'
 import { ObjectSchema, ValidationError } from 'yup'
 
 export interface Ref {
-  inputRef: RefObject<any>
-  type: string
   value?: any
+  type: string
+  inputRef: RefObject<any>
   setError: (_message: string) => void
 }
 
@@ -46,12 +47,12 @@ export interface FormProps extends HTMLProps<HTMLFormElement> {
   className?: string
   addToPath?: string[]
   schema?: ObjectSchema
-  addData?: { [key: string]: any }
-  method?: 'post' | 'get' | 'delete' | 'patch' | 'put'
   getData?: (_data: any) => void
-  manipulateData?: (_data: any) => any
   onError?: (_error: any) => void
+  addData?: { [key: string]: any }
+  manipulateData?: (_data: any) => any
   afterResData?: (_resData: any) => void
+  method?: 'post' | 'get' | 'delete' | 'patch' | 'put'
 }
 
 export const FormContext = createContext<FormState | null>(null)
@@ -59,16 +60,16 @@ export const FormContext = createContext<FormState | null>(null)
 const Form = ({
   path,
   push,
-  loading,
   schema,
+  loading,
   getData,
   addData,
   captcha,
   onError,
   children,
   addToPath,
-  manipulateData,
   afterResData,
+  manipulateData,
   method = 'post',
   className = 'Form',
   ...rest
@@ -208,10 +209,11 @@ const Form = ({
       const secondParam = params[method].data
       const resData = await api[method](firstParam, { ...secondParam })
 
-      if (resData.response?.data) {
-        loading && setShowLoader(false)
+      loading && setShowLoader(false)
+
+      if (resData.response?.data)
         cbAfterResData && cbAfterResData(resData.response.data)
-      } else cbAfterResData && cbAfterResData(resData)
+      else cbAfterResData && cbAfterResData(resData)
 
       return resData.success
     }
@@ -244,18 +246,18 @@ const Form = ({
       data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false
 
     const submitRes = !haveErrors && (await makeRequest(afterResData))
-
-    loading && setShowLoader(false)
     push && submitRes && history.push(push)
   }
+
+  useEffect(() => setShowLoader(false), [])
 
   return (
     <form noValidate className={className} onSubmit={onSubmit} {...rest}>
       {captcha && (
         <ReCaptcha
           size='invisible'
-          sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
           ref={recaptchaRef}
+          sitekey='6LfC97YZAAAAANhOv1bglq0SOzU8WMjL2R64l1xD'
         />
       )}
 

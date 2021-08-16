@@ -19,7 +19,7 @@ export const getValidation = createAsyncThunk(
 
     if (!token) return { logged: false }
 
-    const { success } = await api.get('validate-session', {
+    const { success } = await api.get('api/validate-session', {
       headers: {
         authorization: `Bearer ${token}`
       }

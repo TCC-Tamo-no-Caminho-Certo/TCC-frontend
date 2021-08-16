@@ -83,7 +83,7 @@ const Content = () => {
             id='sendE-mail'
             schema={emailSchema}
             addToPath={['email']}
-            path='forgot-password/*%'
+            path='api/forgot-password/*%'
             afterResData={afterEmailSubmit}
             getData={({ email }) => setUserEmail(email)}
           >
@@ -110,7 +110,7 @@ const Content = () => {
               method='get'
               addToPath={['email']}
               className='resendModal'
-              path='forgot-password/*%'
+              path='api/forgot-password/*%'
               afterResData={afterCodeResent}
             >
               <Text hidden readOnly name='email' value={userEmail} />
@@ -126,7 +126,7 @@ const Content = () => {
               loading
               captcha
               addToPath={['code']}
-              path='reset-password/*%'
+              path='api/reset-password/*%'
               afterResData={afterCodeSubmit}
               getData={({ code }) => localStorage.setItem('@SLab_code', code)}
             >

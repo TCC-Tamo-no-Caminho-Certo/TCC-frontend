@@ -72,10 +72,10 @@ const File = ({
 
   useEffect(() => {
     const fileForInput = {
+      setError,
       type: 'file',
       inputRef: fileRef,
-      value: noCropper ? file : fileData,
-      setError
+      value: noCropper ? file : fileData
     }
 
     form?.registerInput(fileForInput)
@@ -134,13 +134,13 @@ const File = ({
 
             <Cropper
               center
-              dragMode='move'
-              className='Cropper'
               src={file}
               viewMode={3}
               guides={false}
+              dragMode='move'
               aspectRatio={1}
               background={false}
+              className='Cropper'
               minCropBoxWidth={80}
               minCropBoxHeight={80}
               checkOrientation={false}

@@ -66,7 +66,7 @@ const Menu = ({ width, height, condition }: MenuProps) => {
 
   const onLogoutClick = async () => {
     setLogoutLoading(true)
-    await api.get('logout')
+    await api.get('api/logout')
 
     localStorage.removeItem('@SLab_ac_token')
 
@@ -94,13 +94,21 @@ const Menu = ({ width, height, condition }: MenuProps) => {
           </button>
         </motion.li>
 
-        <motion.li key='editProfile' variants={liAnimation}>
+        <motion.li
+          key='editProfile'
+          variants={liAnimation}
+          data-cy='Menu-editProfile'
+        >
           <Link to='/session/profile/edit-profile'>
             <EditUserIcon /> Editar perfil
           </Link>
         </motion.li>
 
-        <motion.li key='orderNewRole' variants={liAnimation}>
+        <motion.li
+          key='orderNewRole'
+          variants={liAnimation}
+          data-cy='Menu-addRole'
+        >
           <Link to='/session/profile/change-role'>
             <AddRoleIcon /> Solicitar novo papel
           </Link>

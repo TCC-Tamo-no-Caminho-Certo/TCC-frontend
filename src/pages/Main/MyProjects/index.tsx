@@ -38,7 +38,7 @@ const Projects = forwardRef((_props, ref) => {
     if (user?.id) return [{ label: '', value: '' }]
 
     const { universities: professorUniversities }: ProfessorType =
-      await api.get(`/users/${user?.id}/roles/professor`)
+      await api.get(`api/users/${user?.id}/roles/professor`)
 
     if (!professorUniversities) return [{ label: '', value: '' }]
 
@@ -54,16 +54,16 @@ const Projects = forwardRef((_props, ref) => {
 
     if (user?.id) {
       const myProjectsIds: ProjectsType = await api.get(
-        `/users/${user?.id}/projects`
+        `api/users/${user?.id}/projects`
       )
 
       for (let i = 0; i < myProjectsIds.length; i++) {
         const { project }: ProjectResType = await api.get(
-          `/projects/${myProjectsIds[i]}`
+          `api/projects/${myProjectsIds[i]}`
         )
 
         const { university }: UniversityResType = await api.get(
-          `/university/${project.university_id}`
+          `api/university/${project.university_id}`
         )
 
         myProjects.push({ ...project, university })

@@ -33,7 +33,6 @@ import Popup, { PopupForwardeds } from 'components/Popup'
 import { UniversityType } from 'types/Responses/university'
 import { CampusResType } from 'types/Responses/university/campus'
 import { CoursesResType } from 'types/Responses/university/courses'
-import { EmailsType } from 'types/Responses/user/emails'
 import {
   ProfessorDataType,
   RequestType,
@@ -122,22 +121,12 @@ const initialUniversity = {
   }
 }
 
-export const hasInstitutionalEmail = (
-  universityId: number,
-  emails?: EmailsType
-) => {
-  console.log(emails)
-
-  if (emails)
-    return !!emails.find(({ university_id }) => university_id === universityId)
-  return false
-}
-
 const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
   const { universities } = useContext(AddRoleContext)
   const { emails } = useSelector<RootState, AsyncEmailsState>(
     ({ asyncEmails }) => asyncEmails
   )
+
   const popupRef = useRef<PopupForwardeds>(null)
 
   const [animations, setAnimations] = useState<Animations>(initialAnimations)
@@ -148,30 +137,20 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
   const [selectedUniversity, setSelectedUniversity] =
     useState<UniversityType>(initialUniversity)
 
+  useEffect(() => {
+    console.log(emails)
+  }, [emails])
+
   const history = useHistory()
 
   const formPath = request
-    ? `users/roles/requests/${request.id}/${role}`
-    : `users/roles/requests/${role}`
+    ? `api/users/roles/requests/${request.id}/${role}`
+    : `api/users/roles/requests/${role}`
 
-  const setInitialCampusOptions = useCallback(async () => {
-    if (request) {
-      const { campus }: CampusResType = await api.get(
-        `universities/${request.data.university_id}/campus`
-      )
-
-      if (campus) {
-        const campusOption = campus.map(({ name, id }) => ({
-          label: name,
-          value: id
-        }))
-
-        setOptions(prev => ({ ...prev, campusOption }))
-
-        return campusOption
-      }
-    }
-  }, [request])
+  const hasInstitutionalEmail = (universityId: number) =>
+    emails
+      ? !!emails.find(({ university_id }) => university_id === universityId)
+      : false
 
   const getFormSchema = () => {
     const registerRegex = universities?.find(
@@ -191,7 +170,7 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
   const onUniversityChange = async (selected: Option) => {
     if (values.university !== selected) {
       const { campus }: CampusResType = await api.get(
-        `universities/${selected.value}/campus`
+        `api/universities/${selected.value}/campus`
       )
 
       setOptions(prev => ({
@@ -235,7 +214,7 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
   const onCampusChange = async (selected: Option) => {
     if (values.campus !== selected) {
       const { courses }: CoursesResType = await api.get(
-        `/universities/campus/${selected.value}/courses`
+        `api/universities/campus/${selected.value}/courses`
       )
 
       setOptions(prev => ({
@@ -280,14 +259,14 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
 
   const onSemesterChange = () => {
     if (!request)
-      hasInstitutionalEmail(selectedUniversity.id, emails)
+      hasInstitutionalEmail(selectedUniversity.id)
         ? setAnimations(prev => ({ ...prev, submit: true }))
         : setAnimations(prev => ({ ...prev, ways: true }))
   }
 
   const afterSubmit = ({ success }: any) => {
     const byEmail =
-      registerByEmail || hasInstitutionalEmail(selectedUniversity.id, emails)
+      registerByEmail || hasInstitutionalEmail(selectedUniversity.id)
 
     if (success)
       popupRef?.current?.configPopup({
@@ -309,6 +288,25 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
         open: true
       })
   }
+
+  const setInitialCampusOptions = useCallback(async () => {
+    if (request) {
+      const { campus }: CampusResType = await api.get(
+        `api/universities/${request.data.university_id}/campus`
+      )
+
+      if (campus) {
+        const campusOption = campus.map(({ name, id }) => ({
+          label: name,
+          value: id
+        }))
+
+        setOptions(prev => ({ ...prev, campusOption }))
+
+        return campusOption
+      }
+    }
+  }, [request])
 
   useEffect(() => {
     if (request)
@@ -430,18 +428,10 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
           </Presence>
         )}
 
-        <Ways
-          request={request}
-          animations={animations}
-          setAnimations={setAnimations}
-          setRegisterByEmail={setRegisterByEmail}
-          selectedUniversity={selectedUniversity}
-        />
-
         {role === 'professor' && (
           <Checkbox
-            id='cy-full_time'
             name='full_time'
+            id='cy-full_time'
             label='Sou professor em tempo integral'
             defaultCheck={request?.data.full_time}
           />
@@ -454,11 +444,17 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
           variants={show}
           condition={animations.submit}
         >
-          <Submit id='cy-submit' type='submit'>
-            Enviar solicitação
-          </Submit>
+          <Submit type='submit'>Enviar solicitação</Submit>
         </Presence>
       </Form>
+
+      <Ways
+        request={request}
+        animations={animations}
+        setAnimations={setAnimations}
+        setRegisterByEmail={setRegisterByEmail}
+        selectedUniversity={selectedUniversity}
+      />
 
       <Popup ref={popupRef} />
     </>

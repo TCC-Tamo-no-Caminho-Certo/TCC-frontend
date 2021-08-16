@@ -134,10 +134,10 @@ const Style = styled.div<StyleProps>`
 
     .cropper-center::after {
       top: 0;
-      transform: translateY(-50%);
 
       width: 1px;
       height: 8px;
+      transform: translateY(-50%);
 
       background-color: ${({ theme }) => theme.colors.white};
     }

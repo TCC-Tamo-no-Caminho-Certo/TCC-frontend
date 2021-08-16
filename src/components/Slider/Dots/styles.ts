@@ -38,7 +38,7 @@ const Style = styled.div.attrs({
     transform: scale(1.4);
   }
 `
+export default Style
+
 Dot.displayName = 'Dot-Style'
 Style.displayName = 'Dots-Style'
-
-export default Style

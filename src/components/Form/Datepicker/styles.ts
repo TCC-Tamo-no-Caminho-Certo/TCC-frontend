@@ -3,9 +3,9 @@ import { DatepickerColors } from './'
 import styled, { css } from 'styled-components'
 
 interface StyleProps {
-  colors: DatepickerColors
-  withoutStyle: boolean
   arrow?: string
+  withoutStyle: boolean
+  colors: DatepickerColors
 }
 
 const Style = styled.div<StyleProps>`
@@ -53,8 +53,8 @@ const Style = styled.div<StyleProps>`
 
         .Calendar__monthArrowWrapper {
           display: flex;
-          justify-content: center;
           align-items: center;
+          justify-content: center;
 
           width: 24px;
           height: 24px;
@@ -156,8 +156,8 @@ const Style = styled.div<StyleProps>`
         color: ${header};
 
         &:hover {
-          background-color: ${selected} !important;
           color: ${body} !important;
+          background-color: ${selected} !important;
         }
       }
 

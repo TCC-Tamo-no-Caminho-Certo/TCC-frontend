@@ -36,8 +36,8 @@ Cypress.Commands.add(
   'accessAddRole',
   (email = 'miguelandradebarreto2@gmail.com', password = 'Miguel@1234') => {
     cy.login(email, password)
-    cy.get('#Gear').click()
-    cy.get('#openProfile > :nth-child(4) > a').click()
+    cy.get('[data-cy=RightMenu-gear]').click()
+    cy.get('[data-cy=Menu-addRole]').click()
   }
 )
 

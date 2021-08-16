@@ -17,8 +17,8 @@ export interface DatepickerColors {
 }
 
 export interface DatepickerProps extends TextProps {
-  withoutStyle?: boolean
   isBirthday?: boolean
+  withoutStyle?: boolean
   dateColors?: DatepickerColors
   arrow?: 'auto' | 'top' | 'bottom'
 }
@@ -28,21 +28,21 @@ type YearButton = HTMLButtonElement | null
 const actualDate = new Date()
 
 const present = {
-  year: actualDate.getFullYear(),
+  day: actualDate.getDate(),
   month: actualDate.getMonth(),
-  day: actualDate.getDate()
+  year: actualDate.getFullYear()
 }
 
 const minimumDate = {
+  day: present.day,
   year: present.year - 120,
-  month: present.month + 1,
-  day: present.day
+  month: present.month + 1
 }
 
 const maximumDate = {
+  day: present.day,
   year: present.year - 18,
-  month: present.month + 1,
-  day: present.day
+  month: present.month + 1
 }
 
 const Datepicker = forwardRef<any, DatepickerProps>(
@@ -110,19 +110,19 @@ const Datepicker = forwardRef<any, DatepickerProps>(
 
     return (
       <Style
-        className='Datepicker'
-        ref={ref as any}
         arrow={arrow}
+        ref={ref as any}
         colors={dateColors}
+        className='Datepicker'
         withoutStyle={withoutStyle}
       >
         <DatePicker
-          calendarClassName='CalendarSize'
           locale={ptbr}
           value={selectedDate}
           onChange={setSelectedDate}
           calendarPopperPosition={arrow}
           renderInput={renderCustomInput}
+          calendarClassName='CalendarSize'
           selectorEndingYear={present.year}
           selectorStartingYear={minimumDate.year}
           maximumDate={isBirthday ? maximumDate : undefined}

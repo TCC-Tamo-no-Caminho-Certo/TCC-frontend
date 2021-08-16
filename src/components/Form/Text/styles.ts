@@ -4,13 +4,13 @@ import { lighten } from 'polished'
 import styled, { css } from 'styled-components'
 
 interface StyleProps {
-  colors: TextColors
   hasEye: boolean
   hasIcon: boolean
+  hidden?: boolean
   optional: boolean
   isFilled: boolean
+  colors: TextColors
   isErrored: boolean
-  hidden?: boolean
 }
 
 export const IconSpace = styled.div`
@@ -94,8 +94,8 @@ const Style = styled.div<StyleProps>`
     ${({ hasIcon }) =>
       !hasIcon &&
       css`
-        padding-left: 16px;
         width: 100%;
+        padding-left: 16px;
       `}
 
     ${({ isErrored }) =>

@@ -37,12 +37,7 @@ const api = {
     const token = localStorage.getItem('@SLab_ac_token')
 
     const axiosConfig = token
-      ? {
-          headers: {
-            authorization: `Bearer ${token}`
-          },
-          ...config
-        }
+      ? { headers: { authorization: `Bearer ${token}` }, ...config }
       : config
 
     try {
@@ -61,12 +56,7 @@ const api = {
     const token = localStorage.getItem('@SLab_ac_token')
 
     const axiosConfig = token
-      ? {
-          headers: {
-            authorization: `Bearer ${token}`
-          },
-          ...config
-        }
+      ? { headers: { authorization: `Bearer ${token}` }, ...config }
       : config
 
     try {
@@ -85,12 +75,7 @@ const api = {
     const token = localStorage.getItem('@SLab_ac_token')
 
     const axiosConfig = token
-      ? {
-          headers: {
-            authorization: `Bearer ${token}`
-          },
-          ...config
-        }
+      ? { headers: { authorization: `Bearer ${token}` }, ...config }
       : config
 
     try {
@@ -109,12 +94,7 @@ const api = {
     const token = localStorage.getItem('@SLab_ac_token')
 
     const axiosConfig = token
-      ? {
-          headers: {
-            authorization: `Bearer ${token}`
-          },
-          ...config
-        }
+      ? { headers: { authorization: `Bearer ${token}` }, ...config }
       : config
 
     try {

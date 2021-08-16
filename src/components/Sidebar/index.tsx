@@ -37,10 +37,10 @@ export interface RouteProps {
 }
 
 interface SidebarProps {
-  routes: RouteProps[]
   title?: string
   width?: number
   samePage?: boolean
+  routes: RouteProps[]
   closedWidth?: number
   scrollBarSize?: number
 }
@@ -69,10 +69,10 @@ const Sidebar = ({
     ({ sidebar }) => sidebar
   )
 
+  const burgerRef = useRef<any>(null)
+
   const { innerWidth } = useWindowDimensions()
   const [isLarge, setisLarge] = useState(innerWidth >= 545)
-
-  const burgerRef = useRef<any>(null)
 
   const { pathname } = useLocation()
   const dispatch = useDispatch()

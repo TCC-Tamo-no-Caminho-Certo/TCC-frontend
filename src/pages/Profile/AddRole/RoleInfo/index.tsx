@@ -21,7 +21,7 @@ import { motion, useCycle, Variants } from 'framer-motion'
 import { useSelector } from 'react-redux'
 
 interface RoleInfoProps {
-  id: string
+  id?: string
   role: RoleType
   title: string
   color: string
@@ -62,6 +62,7 @@ const RoleInfo = ({
   role,
   title,
   color,
+
   onClick,
   benefits,
   userRoles,
@@ -91,7 +92,7 @@ const RoleInfo = ({
       confirmTitle: 'Tenho certeza',
       onOkClick: async () => {
         if (user) {
-          const { success } = await api.delete(`users/roles/${role}`)
+          const { success } = await api.delete(`api/users/roles/${role}`)
 
           if (success)
             popupRef.current?.configPopup({
@@ -116,6 +117,7 @@ const RoleInfo = ({
         <button
           type='button'
           className='title'
+          data-cy={id}
           onClick={() => {
             toggleShow(!show)
             rotate()
@@ -157,6 +159,7 @@ const RoleInfo = ({
             {!noButton &&
               (!haveThisRole ? (
                 <motion.button
+                  data-cy='RoleInfo-roleButton'
                   type='button'
                   variants={button}
                   onClick={onButtonClick}

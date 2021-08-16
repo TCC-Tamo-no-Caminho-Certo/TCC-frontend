@@ -30,7 +30,7 @@ const Profile = () => {
       project.current = await api.get(`project/${id}`)
       participants.current = await api.get(`university/${id}/participants`)
       university.current = await api.get(
-        `university/${project.current?.university_id}`
+        `api/university/${project.current?.university_id}`
       )
     })()
   }, [id])

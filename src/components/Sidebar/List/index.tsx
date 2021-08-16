@@ -42,16 +42,16 @@ const List = ({ routes, isLarge, bottom = false, ...props }: ListProps) => {
 
   return (
     <Style
-      initial='initial'
       variants={ul}
       bottom={bottom}
+      initial='initial'
       animate={open ? 'enter' : 'exit'}
       {...props}
     >
       {routes.map(({ paths, ref, icon: Icon, label }, index) => (
         <ListItem
-          isOpen={!!open}
           key={paths[0]}
+          isOpen={!!open}
           itemPaths={paths}
           pathname={pathname}
           onClick={() => {
@@ -73,11 +73,7 @@ const List = ({ routes, isLarge, bottom = false, ...props }: ListProps) => {
             animate={{
               x: 0,
               opacity: 1,
-              transition: {
-                type: 'tween',
-                duration: 0.4,
-                delay: 0.1 * index
-              }
+              transition: { type: 'tween', duration: 0.4, delay: 0.1 * index }
             }}
           >
             {label}

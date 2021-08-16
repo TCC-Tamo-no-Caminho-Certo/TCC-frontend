@@ -38,8 +38,8 @@ const Style = styled.div<StyleProps>`
 
     svg {
       position: absolute;
-      left: 0;
       top: 0;
+      left: 0;
 
       width: 100%;
       height: 100%;

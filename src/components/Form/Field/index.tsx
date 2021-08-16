@@ -13,10 +13,10 @@ interface FieldProps {
   defaultValue?: any
   textProps?: TextProps
   enableToEdit?: boolean
-  inputType?: 'text' | 'datepicker'
-  datepickerProps?: DatepickerProps
   onFieldClick?: () => void
   onCloseClick?: () => void
+  inputType?: 'text' | 'datepicker'
+  datepickerProps?: DatepickerProps
 }
 
 const Field = ({
@@ -26,8 +26,8 @@ const Field = ({
   onFieldClick,
   defaultValue,
   datepickerProps,
-  enableToEdit = true,
-  inputType = 'text'
+  inputType = 'text',
+  enableToEdit = true
 }: FieldProps) => {
   const [editing, setEditing] = useState(false)
 

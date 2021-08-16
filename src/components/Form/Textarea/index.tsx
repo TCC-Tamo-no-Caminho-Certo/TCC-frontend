@@ -15,18 +15,12 @@ import { MotionProps } from 'framer-motion'
 
 interface TextareaProps extends HTMLProps<HTMLTextAreaElement> {
   containerProps?: MotionProps
-  textColors?: {
-    unfocused: string
-    focused: string
-  }
+  textColors?: { unfocused: string; focused: string }
 }
 
 const Textarea = ({
   containerProps,
-  textColors = {
-    focused: '#d65881',
-    unfocused: '#6e4850'
-  },
+  textColors = { focused: '#d65881', unfocused: '#6e4850' },
   ...props
 }: TextareaProps) => {
   const form = useContext<FormState | null>(FormContext)

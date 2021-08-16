@@ -32,7 +32,9 @@ export const getUpdatedRolesData = createAsyncThunk(
       const newRolesData: any = {}
 
       for (let i = 0; i < userRoles.length; i++) {
-        const response = await api.get(`users/${userId}/roles/${userRoles[i]}`)
+        const response = await api.get(
+          `api/users/${userId}/roles/${userRoles[i]}`
+        )
         newRolesData[`${userRoles[i]}`] = response[`${userRoles[i]}`]
       }
 
@@ -55,7 +57,7 @@ export const getRolesData = createAsyncThunk(
       for (let i = 0; i < userRoles.length; i++)
         if (userRoles[i] !== 'guest') {
           const response = await api.get(
-            `users/${userId}/roles/${userRoles[i]}`
+            `api/users/${userId}/roles/${userRoles[i]}`
           )
 
           newRolesData[`${userRoles[i]}`] = response[`${userRoles[i]}`]

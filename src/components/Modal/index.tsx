@@ -26,14 +26,14 @@ const Modal = forwardRef<ModalForwardeds, ModalProps>(({ children }, ref) => {
   const [content, setContent] = useState<ReactNode>()
   const [open, setOpen] = useState(false)
 
-  const root = document.getElementById('root')
+  const root = document.getElementById('modal')
 
   window.addEventListener('keydown', ({ key }) => {
     key === 'Escape' && setOpen(false)
   })
 
   const forwardToggle = (toggleValue?: boolean) => {
-    toggleValue ? setOpen(toggleValue) : setOpen(!open)
+    toggleValue !== undefined ? setOpen(toggleValue) : setOpen(!open)
   }
 
   const forwardContent = (contentValue: ReactNode) => {

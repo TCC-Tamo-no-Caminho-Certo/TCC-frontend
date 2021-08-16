@@ -6,17 +6,17 @@ import Dots from './Dots'
 import { motion } from 'framer-motion'
 
 interface SliderProps {
-  children: any
-  width: number
   gap: number
+  width: number
+  children: any
   gapVertical?: number
 }
 
 const Slider = ({
-  children: containers,
   gap,
   width,
-  gapVertical = gap
+  gapVertical = gap,
+  children: containers
 }: SliderProps) => {
   const move = width + gap
   const quantity = containers.length
