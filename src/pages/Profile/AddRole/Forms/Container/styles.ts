@@ -9,7 +9,7 @@ interface ContentProps {
 }
 
 export const ScrollButton = styled.button.attrs({ type: 'button' })`
-  margin-bottom: 8px;
+  margin-top: 18px;
 
   color: ${({ theme }) => theme.colors.tertiary};
 

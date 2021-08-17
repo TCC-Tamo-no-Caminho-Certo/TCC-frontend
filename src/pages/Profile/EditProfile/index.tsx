@@ -4,8 +4,7 @@ import Style from './styles'
 import ProfileRoles from './ProfileAndRoles'
 import Universities from './Universities'
 
-import api from 'services/api'
-
+// import api from 'services/api'
 import { RootState } from 'store'
 import { AsyncUserState } from 'store/Async/user'
 import { getRolesData } from 'store/Async/rolesData'
@@ -46,13 +45,15 @@ const EditProfile = () => {
       <header>
         <h1>Editar perfil</h1>
       </header>
+
       <ProfileRoles sliderWidth={sliderWidth} />
 
       <Universities sliderWidth={sliderWidth} />
 
-      <button type='button' onClick={() => api.delete('api/users/emails/204')}>
+      {/*
+      <button type='button' onClick={() => api.delete('api/users/emails/207')}>
         Remover email
-      </button>
+      </button> */}
     </Style>
   )
 }

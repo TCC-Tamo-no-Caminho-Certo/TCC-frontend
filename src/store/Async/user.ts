@@ -18,7 +18,7 @@ export interface AsyncUserState {
 }
 
 interface GetUserProps {
-  id: number
+  id?: number
 }
 
 export const initialState: AsyncUserState = {
@@ -42,9 +42,17 @@ const getInitialSelectedRole = (roles: RolesType) => {
 export const getUser = createAsyncThunk(
   'user/getUser',
   async ({ id }: GetUserProps, { getState }) => {
+    const loggedId = Number(
+      localStorage.getItem('@SLab_ac_token')?.split('-')[0]
+    )
+
     const { asyncUser } = getState() as RootState
-    const { user }: UserResType = await api.get(`api/users/${id}`)
-    const { roles }: RolesResType = await api.get(`api/users/${id}/roles`)
+    const { user }: UserResType = await api.get(`api/users/${id || loggedId}`)
+    const { roles: resRoles }: RolesResType = await api.get(
+      `api/users/${id || loggedId}/roles`
+    )
+
+    const roles = resRoles.length === 0 ? (['guest'] as RolesType) : resRoles
 
     return {
       user: {
@@ -62,8 +70,6 @@ const update = (state: AsyncUserState, { payload }: any) => {
 
   if (selectedRole !== undefined)
     localStorage.setItem('@SLab_selected_role', selectedRole)
-
-  console.log(payload)
 
   return { ...state, ...payload }
 }

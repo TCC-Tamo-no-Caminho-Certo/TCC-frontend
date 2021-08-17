@@ -51,9 +51,9 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
   const conbinedRefs = useCombinedRefs(ref, hereRef)
 
   const forms = {
+    moderator: <ModeratorForm request={request} />,
     student: <StudentProfessor role='student' request={request} />,
-    professor: <StudentProfessor role='professor' request={request} />,
-    moderator: <ModeratorForm request={request} />
+    professor: <StudentProfessor role='professor' request={request} />
   }
 
   const onScrollButtonClick = () => {

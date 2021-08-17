@@ -79,7 +79,6 @@ const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
     }
 
     const onCloseModalCick = () => {
-      console.log('tst')
       modalRef.current?.toggle()
 
       setCodeSend(false)
@@ -118,7 +117,6 @@ const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
                 loading
                 method='get'
                 id='tokenForm'
-                addData={addData}
                 schema={tokenSchema}
                 addToPath={['token']}
                 path='confirm/email/*%'

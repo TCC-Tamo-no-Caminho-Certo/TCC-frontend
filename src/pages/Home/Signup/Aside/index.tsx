@@ -62,8 +62,6 @@ const Aside = () => {
   }
 
   const afterSubmit = (response: Response) => {
-    console.log(response)
-
     if (response.success)
       popupRef?.current?.configPopup({
         open: true,

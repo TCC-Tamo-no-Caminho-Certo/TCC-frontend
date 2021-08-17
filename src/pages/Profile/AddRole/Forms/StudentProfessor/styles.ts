@@ -1,70 +1,18 @@
 import OriginalForm from 'components/Form'
+import Presence from 'components/Presence'
 
 import styled from 'styled-components'
 
-export const Voucher = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+export const Choose = styled(Presence)`
   width: 100%;
 
-  padding: 8px 16px;
-  margin-bottom: 16px;
-  border-radius: 16px;
-
-  border: solid 1px ${({ theme }) => theme.colors.primary};
-
-  #ar {
-    width: 100%;
-  }
-
-  #warning {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin-bottom: 8px;
+  > span {
+    height: 22px;
+    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
+    line-height: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
 
     color: ${({ theme }) => theme.colors.tertiary};
-
-    b,
-    p {
-      width: 100%;
-      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.6rem);
-    }
-
-    p {
-      padding: 0 8px;
-      text-align: center;
-
-      .Icon {
-        height: 16px;
-        margin-right: 8px;
-        transform: translateY(15%);
-
-        fill: ${({ theme }) => theme.colors.primary};
-      }
-    }
-
-    b {
-      color: ${({ theme }) => theme.colors.primary};
-    }
-
-    b#moderator {
-      font-weight: normal;
-
-      color: ${({ theme }) => theme.roles.moderator};
-    }
   }
-
-  .File {
-    width: 100%;
-  }
-`
-
-export const Ways = styled.div`
-  margin-bottom: 0px;
 
   div {
     display: flex;
@@ -72,7 +20,7 @@ export const Ways = styled.div`
     flex-direction: column;
     justify-content: space-evenly;
 
-    margin: 16px 0;
+    margin-top: 8px;
 
     button {
       display: flex;
@@ -102,13 +50,6 @@ export const Ways = styled.div`
     }
   }
 
-  #title {
-    height: 22px;
-    margin-top: 16px;
-    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
-    line-height: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
-  }
-
   @media screen and (min-width: 425px) {
     div {
       flex-direction: row;
@@ -118,9 +59,55 @@ export const Ways = styled.div`
 
         & + button {
           margin-top: 0px;
+          margin-left: 8px;
         }
       }
     }
+  }
+`
+
+export const Voucher = styled(Presence)`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  width: 100%;
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  border-radius: 16px;
+
+  border: solid 1px ${({ theme }) => theme.colors.primary};
+
+  p {
+    width: 100%;
+    padding: 0 8px;
+    text-align: center;
+    margin-bottom: 8px;
+    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.6rem);
+
+    color: ${({ theme }) => theme.colors.tertiary};
+
+    b {
+      color: ${({ theme }) => theme.colors.primary};
+    }
+
+    .Icon {
+      height: 16px;
+      margin-right: 8px;
+      transform: translateY(15%);
+
+      fill: ${({ theme }) => theme.colors.primary};
+    }
+
+    #moderator {
+      font-weight: normal;
+
+      color: ${({ theme }) => theme.roles.moderator};
+    }
+  }
+
+  .File {
+    width: 100%;
   }
 `
 
@@ -155,14 +142,9 @@ export const Form = styled(OriginalForm)`
     box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.39);
   }
 
-  .Checkbox {
-    margin-bottom: 16px;
-
-    .CheckboxLabel {
-      max-width: 250px;
-
-      font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.7rem);
-    }
+  .Checkbox .CheckboxLabel {
+    max-width: 250px;
+    font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.7rem);
   }
 
   @media screen and (min-width: 440px) {
@@ -172,6 +154,15 @@ export const Form = styled(OriginalForm)`
   }
 `
 
+const Style = styled.div`
+  width: 100%;
+
+  > * + * {
+    margin-top: 8px;
+  }
+`
+
+export default Style
+
 Voucher.displayName = 'Student-Voucher-Style'
-Ways.displayName = 'Student-Ways-Style'
 Form.displayName = 'StudentProfessor-Form-Style'

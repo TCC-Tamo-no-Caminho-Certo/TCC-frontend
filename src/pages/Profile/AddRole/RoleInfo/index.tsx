@@ -22,13 +22,13 @@ import { useSelector } from 'react-redux'
 
 interface RoleInfoProps {
   id?: string
-  role: RoleType
   title: string
   color: string
+  role: RoleType
+  onClick?(): void
   benefits: string[]
   noButton?: boolean
   userRoles?: string[]
-  onClick?(): void
   onLabelClick?(): void
 }
 
@@ -62,7 +62,6 @@ const RoleInfo = ({
   role,
   title,
   color,
-
   onClick,
   benefits,
   userRoles,
@@ -159,10 +158,10 @@ const RoleInfo = ({
             {!noButton &&
               (!haveThisRole ? (
                 <motion.button
-                  data-cy='RoleInfo-roleButton'
                   type='button'
                   variants={button}
                   onClick={onButtonClick}
+                  data-cy='RoleInfo-roleButton'
                 >
                   Quero ser {title}!
                 </motion.button>

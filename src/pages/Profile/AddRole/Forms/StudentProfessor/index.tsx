@@ -5,9 +5,8 @@ import React, {
   useRef,
   useState
 } from 'react'
-import { Form } from './styles'
+import Style, { Choose, Form, Voucher } from './styles'
 
-import Ways from '../Container/Ways'
 import { AddRoleContext } from '../../index'
 
 import {
@@ -24,11 +23,16 @@ import api from 'services/api'
 
 import { RootState } from 'store'
 import { AsyncEmailsState } from 'store/Async/emails'
+import { getUser } from 'store/Async/user'
 
-import { Checkbox, Select, Submit, Text } from 'components/Form'
+import AlertIcon from 'assets/Inputs/AlertIcon'
+
+import { Checkbox, File, Select, Submit, Text } from 'components/Form'
 import { Option } from 'components/Form/Select'
 import Presence from 'components/Presence'
 import Popup, { PopupForwardeds } from 'components/Popup'
+// eslint-disable-next-line prettier/prettier
+import RegisterEmail, { RegisterEmailForwardeds } from 'components/RegisterEmail'
 
 import { UniversityType } from 'types/Responses/university'
 import { CampusResType } from 'types/Responses/university/campus'
@@ -40,7 +44,7 @@ import {
 } from 'types/Responses/user/requests'
 
 import { Variants } from 'framer-motion'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 interface StudentProfessorProps {
@@ -127,6 +131,7 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
     ({ asyncEmails }) => asyncEmails
   )
 
+  const registerEmailRef = useRef<RegisterEmailForwardeds>(null)
   const popupRef = useRef<PopupForwardeds>(null)
 
   const [animations, setAnimations] = useState<Animations>(initialAnimations)
@@ -137,20 +142,40 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
   const [selectedUniversity, setSelectedUniversity] =
     useState<UniversityType>(initialUniversity)
 
-  useEffect(() => {
-    console.log(emails)
-  }, [emails])
-
+  const dispatch = useDispatch()
   const history = useHistory()
 
   const formPath = request
     ? `api/users/roles/requests/${request.id}/${role}`
     : `api/users/roles/requests/${role}`
 
+  const onVoucherButtonClick = () =>
+    setAnimations((prev: any) => ({ ...prev, voucher: true }))
+
+  const onEmailButtonClick = () => {
+    setAnimations((prev: any) => ({
+      ...prev,
+      submit: false,
+      voucher: false
+    }))
+
+    registerEmailRef.current?.toggleRegister()
+  }
+
   const hasInstitutionalEmail = (universityId: number) =>
     emails
       ? !!emails.find(({ university_id }) => university_id === universityId)
       : false
+
+  const onEmailSuccess = () => {
+    setAnimations(prev => ({
+      ...prev,
+      ways: false,
+      submit: true
+    }))
+
+    setRegisterByEmail(true)
+  }
 
   const getFormSchema = () => {
     const registerRegex = universities?.find(
@@ -165,6 +190,10 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
       return role === 'student'
         ? studentEmailSchema(registerRegex || '')
         : professorEmailSchema(registerRegex || '')
+  }
+
+  const onFileChange = () => {
+    setAnimations(prev => ({ ...prev, submit: true }))
   }
 
   const onUniversityChange = async (selected: Option) => {
@@ -279,6 +308,7 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
           : 'Solicitação enviada!',
         onClick: () => {
           history.push('/session/main')
+          dispatch(getUser({}))
         }
       })
     else
@@ -355,7 +385,7 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
   }, [universities])
 
   return (
-    <>
+    <Style>
       <Form
         loading
         path={formPath}
@@ -364,7 +394,6 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
         method={request ? 'patch' : 'post'}
       >
         <Select
-          id='cy-university'
           name='university_id'
           placeholder='Universidade'
           value={values.university}
@@ -428,6 +457,61 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
           </Presence>
         )}
 
+        <Choose
+          exit='exit'
+          animate='enter'
+          variants={show}
+          condition={animations.ways}
+        >
+          <span>Forma de registro</span>
+
+          <div>
+            <button
+              type='button'
+              data-cy='Ways-email'
+              onClick={onEmailButtonClick}
+            >
+              E-mail institucional
+            </button>
+
+            <button
+              type='button'
+              data-cy='Ways-voucher'
+              onClick={onVoucherButtonClick}
+            >
+              Enviar comprovante
+            </button>
+          </div>
+        </Choose>
+
+        <Voucher
+          exit='exit'
+          animate='enter'
+          variants={show}
+          condition={animations.voucher}
+        >
+          <p>
+            <AlertIcon />
+            {` Este processo ${
+              request ? '' : 'é mais lento pois'
+            } requer confirmação de um `}
+            <b id='moderator'>Moderador</b> de sua universidade. O formato do
+            arquivo deve ser <b>PDF</b>.
+          </p>
+
+          <File
+            guides
+            bottom='50vh'
+            name='voucher'
+            tranlateY='50%'
+            bgHeight='200vh'
+            noCropper={true}
+            onChange={onFileChange}
+            accept='application/pdf'
+            label='Enviar comprovante'
+          />
+        </Voucher>
+
         {role === 'professor' && (
           <Checkbox
             name='full_time'
@@ -448,16 +532,17 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
         </Presence>
       </Form>
 
-      <Ways
-        request={request}
-        animations={animations}
-        setAnimations={setAnimations}
-        setRegisterByEmail={setRegisterByEmail}
-        selectedUniversity={selectedUniversity}
+      <RegisterEmail
+        ref={registerEmailRef}
+        onSuccess={onEmailSuccess}
+        title={selectedUniversity.name}
+        placeholder='E-mail institucional'
+        regex={selectedUniversity.regex.email.student}
+        addData={{ university_id: selectedUniversity.id }}
       />
 
       <Popup ref={popupRef} />
-    </>
+    </Style>
   )
 }
 

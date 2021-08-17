@@ -79,81 +79,78 @@ const AddRole = () => {
   }, [dispatch, user])
 
   return (
-    <>
-      <Style ref={rolesRef}>
-        <h2>Escolher Papel</h2>
+    <Style ref={rolesRef}>
+      <h2>Escolher Papel</h2>
 
-        <p>
-          Escolha um papel para poder ter mais acesso ao Steams Labs! Lorem
-          ipsum dolor sit amet, consectetur adipiscing elit. Fusce gravida
-          convallis magna, vel dignissim leo porttitor quis. Donec dolor dolor,
-          sagittis a lacus sed, interdum egestas ipsum. In at odio efficitur,
-          iaculis libero sed, consectetur nibh. Proin euismod auctor tempus.
-          Vivamus eleifend tellus purus, id imperdiet sapien pharetra quis.
-          Praesent mattis dolor a dictum scelerisque. Maecenas et tortor
-          elementum.
-        </p>
+      <p>
+        Escolha um papel para poder ter mais acesso ao Steams Labs! Lorem ipsum
+        dolor sit amet, consectetur adipiscing elit. Fusce gravida convallis
+        magna, vel dignissim leo porttitor quis. Donec dolor dolor, sagittis a
+        lacus sed, interdum egestas ipsum. In at odio efficitur, iaculis libero
+        sed, consectetur nibh. Proin euismod auctor tempus. Vivamus eleifend
+        tellus purus, id imperdiet sapien pharetra quis. Praesent mattis dolor a
+        dictum scelerisque. Maecenas et tortor elementum.
+      </p>
 
-        <div id='roles'>
+      <div id='roles'>
+        <RoleInfo
+          id='AddRole-student'
+          title='Estudante'
+          role='student'
+          userRoles={labelRoles}
+          color={theme.roles.student}
+          onClick={() => {
+            containerRef.current?.scrollIntoView({ behavior: 'smooth' })
+            setRoleSelected('student')
+          }}
+          benefits={[
+            'Participar de propostas',
+            'Candidatar-se a um projeto',
+            'Aceitar convites para propostas e projetos',
+            'Candidatar-se a um projeto'
+          ]}
+        />
+
+        <RoleInfo
+          data-cy='AddRole-professor'
+          role='professor'
+          title='Professor'
+          userRoles={labelRoles}
+          color={theme.roles.professor}
+          onClick={() => {
+            containerRef.current?.scrollIntoView({ behavior: 'smooth' })
+            setRoleSelected('professor')
+          }}
+          benefits={[
+            'Pode fazer tudo que um estudante pode fazer',
+            'Pedir revisão de propostas',
+            'Remover estudantes de propostas, somente professor coordenador pode remover outros professores',
+            'Solicitar papel de Revisor'
+          ]}
+        />
+
+        {(user?.roles?.includes('professor') ||
+          user?.roles?.includes('moderator')) && (
           <RoleInfo
-            id='AddRole-student'
-            title='Estudante'
-            role='student'
+            data-cy='AddRole-moderator'
+            role='moderator'
+            id='cy-moderator'
+            title='Moderador'
             userRoles={labelRoles}
-            color={theme.roles.student}
+            color={theme.roles.moderator}
             onClick={() => {
               containerRef.current?.scrollIntoView({ behavior: 'smooth' })
-              setRoleSelected('student')
+              setRoleSelected('moderator')
             }}
             benefits={[
-              'Participar de propostas',
-              'Candidatar-se a um projeto',
-              'Aceitar convites para propostas e projetos',
-              'Candidatar-se a um projeto'
+              'Aceitar solicitação de mudança para Revisor ',
+              'Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores (devem estar na mesma instituição)',
+              'Ver usuários da instituição',
+              'Alterar status da proposta'
             ]}
           />
-
-          <RoleInfo
-            data-cy='AddRole-professor'
-            role='professor'
-            title='Professor'
-            userRoles={labelRoles}
-            color={theme.roles.professor}
-            onClick={() => {
-              containerRef.current?.scrollIntoView({ behavior: 'smooth' })
-              setRoleSelected('professor')
-            }}
-            benefits={[
-              'Pode fazer tudo que um estudante pode fazer',
-              'Pedir revisão de propostas',
-              'Remover estudantes de propostas, somente professor coordenador pode remover outros professores',
-              'Solicitar papel de Revisor'
-            ]}
-          />
-
-          {(user?.roles?.includes('professor') ||
-            user?.roles?.includes('moderator')) && (
-            <RoleInfo
-              data-cy='AddRole-moderator'
-              role='moderator'
-              id='cy-moderator'
-              title='Moderador'
-              userRoles={labelRoles}
-              color={theme.roles.moderator}
-              onClick={() => {
-                containerRef.current?.scrollIntoView({ behavior: 'smooth' })
-                setRoleSelected('moderator')
-              }}
-              benefits={[
-                'Aceitar solicitação de mudança para Revisor ',
-                'Aceitar solicitações de Convidados para se tornarem Estudantes ou Professores (devem estar na mesma instituição)',
-                'Ver usuários da instituição',
-                'Alterar status da proposta'
-              ]}
-            />
-          )}
-        </div>
-      </Style>
+        )}
+      </div>
 
       <AddRoleContext.Provider value={{ roles: user?.roles, universities }}>
         {roleSelected && (
@@ -164,7 +161,7 @@ const AddRole = () => {
           />
         )}
       </AddRoleContext.Provider>
-    </>
+    </Style>
   )
 }
 

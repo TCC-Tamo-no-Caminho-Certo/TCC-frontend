@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
 interface HeaderProps {
   isOpen: boolean
@@ -7,8 +7,11 @@ interface HeaderProps {
 
 interface ContentProps {
   index: number
+  isOpen?: boolean
+  isLarge: boolean
   samePage: boolean
-  innerWidth: number
+  openWidth: number
+  closedWidth: number
   hasScrollBar: boolean
 }
 
@@ -37,8 +40,8 @@ export const Header = styled.div<HeaderProps>`
     display: flex;
     align-items: center;
 
-    height: 72px;
     width: 100%;
+    height: 72px;
     user-select: none;
     white-space: nowrap;
     font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.9rem);
@@ -59,14 +62,7 @@ export const SidebarNav = styled(motion.nav)`
 
   min-width: 320px;
 
-  ${({ theme }) =>
-    theme.sidebar.background.search(/gradient/)
-      ? css`
-          background: ${theme.sidebar.background};
-        `
-      : css`
-          background-color: ${theme.sidebar.background};
-        `}
+  background-color: ${({ theme }) => theme.sidebar.background};
 
   @media screen and (min-width: 545px) {
     height: 100vh;
@@ -75,14 +71,18 @@ export const SidebarNav = styled(motion.nav)`
 `
 
 export const Content = styled(motion.div)<ContentProps>`
+  position: relative;
+  right: 0px;
+
   section {
     position: relative;
     right: 0px;
 
-    width: 100%;
     min-height: 100vh;
-    margin-top: ${({ index, innerWidth }) =>
-      index === 0 && innerWidth < 545 ? '72px' : '0px'};
+    margin-top: ${({ index, isLarge, samePage }) => {
+      if (samePage) return !isLarge && index === 0 ? '72px' : '0px'
+      return isLarge ? '0px' : '72px'
+    }};
 
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.tertiary};
@@ -93,17 +93,10 @@ const Style = styled.div<StyleProps>`
   display: flex;
   flex-direction: column;
 
-  width: max(100vw - 8px, 312px);
+  width: max(100vw, 312px);
 
   @media screen and (min-width: 545px) {
-    ${({ hasScroll }) =>
-      hasScroll
-        ? css`
-            width: max(100vw - 16px, 312px);
-          `
-        : css`
-            width: max(100vw, 312px);
-          `}
+    width: max(100vw, 312px);
   }
 `
 
@@ -111,5 +104,5 @@ export default Style
 
 Header.displayName = 'Header-Style'
 Content.displayName = 'Content-Style'
-SidebarNav.displayName = 'SidebarNav-Style'
 Style.displayName = 'SidebarWrapper-Style'
+SidebarNav.displayName = 'SidebarNav-Style'

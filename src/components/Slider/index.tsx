@@ -19,7 +19,7 @@ const Slider = ({
   children: containers
 }: SliderProps) => {
   const move = width + gap
-  const quantity = containers.length
+  const quantity = containers?.length
   const isPar = quantity % 2 === 0
   const limit = move * ((quantity - 1) / 2)
 
@@ -65,9 +65,9 @@ const Slider = ({
         onDragEnd={onDragged}
         dragConstraints={{ left: 0, right: 0 }}
       >
-        {containers.map((container: any) => (
+        {containers?.map((container: any, index: number) => (
           <Container
-            key={container.key}
+            key={index}
             width={`${width}px`}
             animate={{ x: xValue }}
             transition={{ type: 'tween', duration: 0.5 }}

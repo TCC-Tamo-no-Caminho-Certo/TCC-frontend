@@ -173,6 +173,7 @@ const Form = ({
       schema && schema.validateSync(data, { abortEarly: false })
     } catch (error) {
       haveErrors = true
+
       if (error instanceof ValidationError) {
         error.inner.forEach(errorElement => {
           const index = refs.findIndex(({ inputRef: { current } }) =>
@@ -241,6 +242,7 @@ const Form = ({
     validate()
 
     !haveErrors && addToPath && parsePath()
+    haveErrors && loading && setShowLoader(false)
 
     if (captcha)
       data.captcha = (await recaptchaRef.current?.executeAsync()) ?? false

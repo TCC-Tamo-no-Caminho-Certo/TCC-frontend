@@ -36,7 +36,6 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
       const roles: UniversitiesResType = await api.get(
         `api/users/${user?.id}/roles/universities`
       )
-      console.log(emails)
 
       const universitiesByEmails = emails
         .filter(
@@ -53,7 +52,7 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
         ...universitiesByEmails
       ]
 
-      const formatterNewContainer = idsOfuserUniversities.map(containerId => {
+      const formatedContainer = idsOfuserUniversities.map(containerId => {
         const foundUniversity = universities?.find(
           ({ id }) => containerId === id
         )
@@ -65,17 +64,7 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
         }
       })
 
-      console.clear()
-      console.log(emails)
-
-      console.table({
-        byRoles: universitiesByRoles,
-        byEmails: universitiesByEmails,
-        all: idsOfuserUniversities,
-        formmatter: formatterNewContainer
-      })
-
-      setContainers(formatterNewContainer)
+      setContainers(formatedContainer)
     }
   }, [user?.id, emails, universities])
 
@@ -85,9 +74,9 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
 
   return (
     <Style>
-      {/* <Slider gap={200} gapVertical={32} width={sliderWidth}>
-        containers
-      </Slider> */}
+      <Slider gap={200} gapVertical={32} width={sliderWidth}>
+        {containers?.map(({ name }) => name)}
+      </Slider>
     </Style>
   )
 }
