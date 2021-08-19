@@ -1,4 +1,8 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+
+interface StyleProps {
+  isCheckbox: boolean
+}
 
 export const Label = styled.div`
   min-width: 64px;
@@ -6,12 +10,18 @@ export const Label = styled.div`
 `
 
 export const Input = styled.div`
-  flex: 1;
-
   .value,
   .Datepicker input,
   .Text {
     font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
+  }
+
+  .Select {
+    width: 70%;
+
+    .Select__control {
+      border: none;
+    }
   }
 
   .Datepicker,
@@ -72,7 +82,7 @@ export const Icon = styled.div`
   }
 `
 
-const Style = styled.div`
+const Style = styled.div<StyleProps>`
   position: relative;
 
   display: flex;
@@ -86,7 +96,8 @@ const Style = styled.div`
   border-radius: 5px;
 
   color: ${({ theme }) => theme.colors.tertiary};
-  border: solid 1px ${({ theme }) => theme.colors.tertiary};
+  border: ${({ isCheckbox, theme }) =>
+    isCheckbox ? 'none' : `solid 1px ${theme.colors.tertiary}`};
 
   & + & {
     margin-top: 24px;
@@ -98,6 +109,21 @@ const Style = styled.div`
     justify-content: center;
 
     height: 40px;
+  }
+
+  ${Label} {
+    min-width: ${({ isCheckbox }) => (isCheckbox ? '50%' : '64px')};
+  }
+
+  ${Input} {
+    ${({ isCheckbox }) =>
+      isCheckbox
+        ? css`
+            width: 50%;
+          `
+        : css`
+            flex: 1;
+          `}
   }
 
   @media screen and (min-width: 545px) {

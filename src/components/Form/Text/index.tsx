@@ -31,6 +31,7 @@ export interface TextColors {
 export interface TextProps extends HTMLProps<HTMLInputElement> {
   icon?: FC
   eye?: boolean
+  inputId?: string
   isDate?: boolean
   optional?: boolean
   pasteAndDrop?: boolean
@@ -44,15 +45,16 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
       value,
       onBlur,
       hidden,
+      inputId,
       icon: Icon,
       placeholder,
+      textColors,
       eye = false,
       type = 'text',
       isDate = false,
       optional = false,
       className = 'Text',
       pasteAndDrop = true,
-      textColors,
       ...rest
     },
     ref
@@ -127,7 +129,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
         <input
           spellCheck='false'
           value={value}
-          id={rest.name}
+          id={inputId || rest.name}
           ref={ref || auxRef}
           type={hiddenInput()}
           onBlur={onInputBlur}

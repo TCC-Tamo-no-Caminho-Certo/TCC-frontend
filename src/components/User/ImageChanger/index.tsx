@@ -89,7 +89,7 @@ const ImageChanger = forwardRef((_props, ref) => {
     if (cropper.cropped) {
       setLoading(true)
 
-      const { avatar_uuid } = await api.put('/user/avatar', {
+      const { avatar_uuid } = await api.put('api/user/avatar', {
         picture: cropper.getCroppedCanvas().toDataURL(type)
       })
 

@@ -10,11 +10,13 @@ interface SliderProps {
   width: number
   children: any
   gapVertical?: number
+  startAtByCenter?: number
 }
 
 const Slider = ({
   gap,
   width,
+  startAtByCenter,
   gapVertical = gap,
   children: containers
 }: SliderProps) => {
@@ -26,9 +28,13 @@ const Slider = ({
   const [makeLeftMove, setMakeLeftMove] = useState(false)
   const [makeRightMove, setMakeRightMove] = useState(false)
 
-  const [xValue, setXValue] = useState(isPar ? move / 2 : 0)
+  const [xValue, setXValue] = useState(
+    startAtByCenter ? move * startAtByCenter : isPar ? move / 2 : 0
+  )
 
-  useEffect(() => setXValue(isPar ? move / 2 : 0), [move, isPar])
+  useEffect(() => {
+    setXValue(startAtByCenter ? move * startAtByCenter : isPar ? move / 2 : 0)
+  }, [move, isPar, startAtByCenter])
 
   const onLeftClick = () => {
     if (xValue > -limit) setXValue(xValue - move)
@@ -41,8 +47,8 @@ const Slider = ({
   }
 
   const onDragged = (_event: any, info: any) => {
-    const maxSwipeToAnimate = 20000
     const offset = info.offset.x
+    const maxSwipeToAnimate = 20000
     const velocity = info.velocity.x
     const swipe = Math.abs(offset) * velocity
 
@@ -54,7 +60,6 @@ const Slider = ({
       onRightClick()
     }
   }
-
   return (
     <Style className='Slider' gap={`${gap}px`} gapVertical={`${gapVertical}px`}>
       <motion.ul
@@ -69,6 +74,7 @@ const Slider = ({
           <Container
             key={index}
             width={`${width}px`}
+            initial={{ x: startAtByCenter ? move * startAtByCenter : xValue }}
             animate={{ x: xValue }}
             transition={{ type: 'tween', duration: 0.5 }}
           >

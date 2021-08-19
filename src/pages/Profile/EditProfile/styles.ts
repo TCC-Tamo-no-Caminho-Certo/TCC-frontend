@@ -2,9 +2,9 @@ import styled from 'styled-components'
 
 const Style = styled.section`
   header {
-    position: absolute;
-
+    width: 100%;
     padding: 24px;
+    text-align: center;
   }
 `
 

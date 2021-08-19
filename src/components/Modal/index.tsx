@@ -6,7 +6,7 @@ import React, {
   useImperativeHandle,
   useState
 } from 'react'
-import Style from './styles'
+import Style, { Background } from './styles'
 
 import { GlobalContext } from 'App'
 import { createPortal } from 'react-dom'
@@ -54,7 +54,14 @@ const Modal = forwardRef<ModalForwardeds, ModalProps>(({ children }, ref) => {
   }))
 
   return open && root ? (
-    createPortal(<Style ref={ref as any}>{content || children}</Style>, root)
+    createPortal(
+      <>
+        <Background onClick={() => setOpen(false)} />
+
+        <Style ref={ref as any}>{content || children}</Style>
+      </>,
+      root
+    )
   ) : (
     <></>
   )

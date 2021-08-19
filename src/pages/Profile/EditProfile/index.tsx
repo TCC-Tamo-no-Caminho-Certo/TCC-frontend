@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Style from './styles'
 
 import ProfileRoles from './ProfileAndRoles'
@@ -13,6 +13,8 @@ import { getUniversities } from 'store/Async/universities'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
+import Popup, { PopupForwardeds } from 'components/Popup'
+
 import { useDispatch, useSelector } from 'react-redux'
 
 const EditProfile = () => {
@@ -25,10 +27,13 @@ const EditProfile = () => {
 
   const [sliderWidth, setSliderWidth] = useState(innerWidth >= 600 ? 520 : 284)
 
+  const popupRef = useRef<PopupForwardeds>(null)
+
   useEffect(() => {
-    if (innerWidth <= 430) setSliderWidth(320)
-    else if (innerWidth <= 600) setSliderWidth(440)
-    else if (innerWidth <= 700) setSliderWidth(450)
+    if (innerWidth <= 376) setSliderWidth(300)
+    else if (innerWidth <= 430) setSliderWidth(350)
+    else if (innerWidth <= 600) setSliderWidth(400)
+    else if (innerWidth <= 700) setSliderWidth(430)
     else setSliderWidth(520)
   }, [innerWidth])
 
@@ -41,20 +46,24 @@ const EditProfile = () => {
   }, [dispatch, user?.id])
 
   return (
-    <Style>
-      <header>
-        <h1>Editar perfil</h1>
-      </header>
+    <>
+      <Style>
+        <header>
+          <h1>Editar perfil</h1>
+        </header>
 
-      <ProfileRoles sliderWidth={sliderWidth} />
+        <ProfileRoles sliderWidth={sliderWidth} />
 
-      <Universities sliderWidth={sliderWidth} />
+        <Universities sliderWidth={sliderWidth} />
 
-      {/*
+        {/*
       <button type='button' onClick={() => api.delete('api/users/emails/207')}>
         Remover email
       </button> */}
-    </Style>
+      </Style>
+
+      <Popup ref={popupRef} />
+    </>
   )
 }
 

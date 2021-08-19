@@ -11,6 +11,15 @@ const Style = styled.div`
   min-height: 100vh;
 
   color: ${({ theme }) => theme.colors.secondary};
+
+  .Card .Form {
+    width: 100%;
+
+    .Submit {
+      width: 100%;
+      margin-top: 24px;
+    }
+  }
 `
 
 export default Style

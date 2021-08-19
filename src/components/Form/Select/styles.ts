@@ -31,6 +31,10 @@ const Style = styled.div<StyleProps>`
     }
   }
 
+  * {
+    border: none;
+  }
+
   ${({ isErrored }) =>
     isErrored &&
     css`

@@ -80,7 +80,7 @@ export const show: Variants = {
   enter: { x: [320, 0], opacity: [0, 1], transition }
 }
 
-const semesterOptions: Option[] = [
+export const semesterOptions: Option[] = [
   { value: 1, label: '1° Semestre' },
   { value: 2, label: '2° Semestre' },
   { value: 3, label: '3° Semestre' },

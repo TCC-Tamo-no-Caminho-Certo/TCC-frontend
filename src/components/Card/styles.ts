@@ -1,5 +1,6 @@
-import styled from 'styled-components'
 import { RoleType } from 'types/Responses/user/roles'
+
+import styled from 'styled-components'
 
 interface HeaderProps {
   role?: RoleType
@@ -33,17 +34,13 @@ const Style = styled.div`
 
   width: 100%;
   border-radius: 16px;
-  padding: 64px 24px 32px 12px;
+  padding: 64px 16px 16px 16px;
 
   box-shadow: 8px 8px 4px 0px rgba(0, 0, 0, 0.49);
   background-color: ${({ theme }) => theme.colors.secondary};
 
   .Avatar {
     margin-bottom: 24px;
-  }
-
-  @media screen and (min-width: 620px) {
-    padding: 64px 24px 32px 24px;
   }
 `
 
