@@ -47,8 +47,9 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
 
   const imageRef = useRef<ImageChangerForwardeds>(null)
 
-  const rolesToShow: RoleType[] = ['student', 'professor']
   const [globalEdit, setGlobalEdit] = useState<any>()
+
+  const rolesToShow: RoleType[] = ['student', 'professor']
 
   const dispatch = useDispatch()
 
@@ -136,8 +137,8 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
       // },
       {
         name: 'email',
-        editable: false,
         label: 'E-mail:',
+        editable: false,
         value: emails ? emails[0]?.address : undefined
       }
       // {
@@ -152,6 +153,21 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
     const formInputs: ContainerForm = { student, professor, personal }
 
     return formInputs[role as keyof ContainerForm]
+  }
+
+  const onPersonalEditSuccess = (response: any) => {
+    dispatch(
+      AsyncUserActions.update({
+        user: { ...user, ...response.user }
+      })
+    )
+
+    setGlobalEdit(undefined)
+  }
+
+  const onRolesEditSuccess = () => {
+    user?.id && dispatch(getRolesData({ userId: user?.id }))
+    setGlobalEdit(false)
   }
 
   return (
@@ -171,18 +187,10 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
                   path='api/user'
                   loading={userLoading}
                   headerText='Dados pessoais'
+                  onSuccess={onPersonalEditSuccess}
                   schema={profileAndRolesSchema[role]}
                   onSaveClick={() => {
                     setGlobalEdit(false)
-                  }}
-                  onSuccess={res => {
-                    dispatch(
-                      AsyncUserActions.update({
-                        user: { ...user, ...res.user }
-                      })
-                    )
-
-                    setGlobalEdit(undefined)
                   }}
                 >
                   <Avatar
@@ -209,12 +217,9 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
                 key={role}
                 role={role as RoleType}
                 loading={rolesDataLoading}
+                onSuccess={onRolesEditSuccess}
                 path={`api/users/roles/${role}`}
                 headerText={`Dados de ${getRoleLabel(role as RoleType)}`}
-                onSuccess={() => {
-                  user?.id && dispatch(getRolesData({ userId: user?.id }))
-                  setGlobalEdit(false)
-                }}
                 onSaveClick={() => {
                   setGlobalEdit(undefined)
                 }}

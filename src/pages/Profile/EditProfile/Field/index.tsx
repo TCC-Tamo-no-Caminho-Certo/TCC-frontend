@@ -25,6 +25,8 @@ export interface InputData {
   label: string
   editable?: boolean
   dontShow?: boolean
+  withEditIcon?: boolean
+  onEditClick?: () => void
   type?: 'text' | 'date' | 'select' | 'checkbox'
   options?: Option[] | Promise<Option[] | undefined>
 }
@@ -41,9 +43,11 @@ const Field = ({
     label,
     value,
     options,
+    onEditClick,
     type = 'text',
     editable = true,
-    dontShow = false
+    dontShow = false,
+    withEditIcon = false
   },
   editing
 }: FieldProps) => {
@@ -123,6 +127,16 @@ const Field = ({
     if (type === 'checkbox') checkboxRef.current?.check(value)
   }, [type, value])
 
+  const showIcon = () => {
+    if ((editable && !withEditIcon) || (!editable && withEditIcon))
+      return change ? (
+        <CloseIcon />
+      ) : (
+        <PencilIcon onClick={() => onEditClick && onEditClick()} />
+      )
+    return <></>
+  }
+
   return (
     <Style key={name} className='Field' isCheckbox={type === 'checkbox'}>
       <Label className='button' onClick={onFieldClick}>
@@ -138,7 +152,7 @@ const Field = ({
       </Input>
 
       <Icon className='button' onClick={onIconClick}>
-        {editable ? change ? <CloseIcon /> : <PencilIcon /> : <></>}
+        {showIcon()}
       </Icon>
     </Style>
   )

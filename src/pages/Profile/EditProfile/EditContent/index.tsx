@@ -29,6 +29,7 @@ interface EditContentProps {
   schema?: ObjectSchema
   onSaveClick?: () => void
   onSuccess?: (_res: any) => void
+  manipulateData?: (_data: any) => any
 }
 
 const EditContent = ({
@@ -39,7 +40,8 @@ const EditContent = ({
   children,
   onSuccess,
   headerText,
-  onSaveClick
+  onSaveClick,
+  manipulateData
 }: EditContentProps) => {
   const theme = useContext(ThemeContext)
 
@@ -82,6 +84,11 @@ const EditContent = ({
       }
   }
 
+  const defaultManipulateData = (formData: any) => {
+    const data = manipulateData ? manipulateData(formData) : formData
+    return { ...data, password }
+  }
+
   useEffect(() => {
     if (password) {
       formRef.current?.dispatchEvent(new Event('submit', { cancelable: true }))
@@ -101,7 +108,7 @@ const EditContent = ({
             method='patch'
             schema={schema}
             afterResData={afterResData}
-            // manipulateData={(data: any) => ({ ...data, password })}
+            manipulateData={defaultManipulateData}
           >
             {children}
 

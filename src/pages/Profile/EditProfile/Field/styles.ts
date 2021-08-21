@@ -5,7 +5,12 @@ interface StyleProps {
 }
 
 export const Label = styled.div`
-  min-width: 64px;
+  width: 100px;
+  overflow: hidden;
+  text-align: center;
+
+  line-break: loose;
+  word-wrap: break-word;
   font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
 `
 
@@ -91,7 +96,6 @@ const Style = styled.div<StyleProps>`
   justify-content: center;
 
   width: 100%;
-  height: 80px;
   padding: 0 4px;
   border-radius: 5px;
 
@@ -108,7 +112,7 @@ const Style = styled.div<StyleProps>`
     align-items: center;
     justify-content: center;
 
-    height: 40px;
+    min-height: 40px;
   }
 
   ${Label} {
@@ -127,7 +131,6 @@ const Style = styled.div<StyleProps>`
   }
 
   @media screen and (min-width: 545px) {
-    height: 40px;
     flex-direction: row;
 
     button#icon {

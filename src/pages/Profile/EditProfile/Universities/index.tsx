@@ -16,10 +16,10 @@ import { AsyncUniversitiesState } from 'store/Async/universities'
 import Form, { Submit } from 'components/Form'
 import Slider from 'components/Slider'
 import Card from 'components/Card'
-import { Option } from 'components/Form/Select'
 
 import { RoleType } from 'types/Responses/user/roles'
-import { CampusResType } from 'types/Responses/university/campus'
+import { OneCampusResType } from 'types/Responses/university/campus'
+import { CourseResType } from 'types/Responses/university/courses'
 
 import { useSelector } from 'react-redux'
 
@@ -31,20 +31,25 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
   const { universities } = useSelector<RootState, AsyncUniversitiesState>(
     ({ asyncUniversities }) => asyncUniversities
   )
-
   const { emails } = useSelector<RootState, AsyncEmailsState>(
     ({ asyncEmails }) => asyncEmails
   )
-
   const { user } = useSelector<RootState, AsyncUserState>(
     ({ asyncUser }) => asyncUser
   )
-
   const { roles } = useSelector<RootState, AsyncRolesDataState>(
     ({ asyncRolesData }) => asyncRolesData
   )
 
   const [containers, setContainers] = useState<any[]>()
+  const [studentData, setStudentData] = useState<any>({
+    campus: '',
+    course: ''
+  })
+  const [professorData, setProfessorData] = useState<any>({
+    campus: '',
+    course: ''
+  })
 
   const getUserUniversities = useCallback(async () => {
     const containers: any[] = []
@@ -76,20 +81,48 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
     getUserUniversities()
   }, [getUserUniversities])
 
-  const rolesInputData = (role: RoleType, container: any): InputData[] => {
-    const getCampus = async (): Promise<Option[] | undefined> => {
-      const { campus }: CampusResType = await api.get(
-        `api/universities/${container.university_id}/campus`
+  const getCampusAndCourseLabel = useCallback(async () => {
+    const studentContainer = containers?.find(
+      container => container.role === 'student'
+    )
+    const professorContainer = containers?.find(
+      container => container.role === 'professor'
+    )
+
+    if (studentContainer) {
+      const { id, course_id, campus_id } = studentContainer
+
+      const { campus }: OneCampusResType = await api.get(
+        `api/universities/${id}/campus/${campus_id}`
       )
 
-      if (campus)
-        return campus.map(({ name, id }) => ({
-          label: name,
-          value: id
-        }))
-      return undefined
+      const { course }: CourseResType = await api.get(
+        `api/universities/${id}/campus/${campus_id}/courses/${course_id}`
+      )
+
+      setStudentData({ campus: campus?.name, course: course?.name })
     }
 
+    if (professorContainer) {
+      const { id, course_id, campus_id } = professorContainer
+
+      const { campus }: OneCampusResType = await api.get(
+        `api/universities/${id}/campus/${campus_id}`
+      )
+
+      const { course }: CourseResType = await api.get(
+        `api/universities/${id}/campus/${campus_id}/courses/${course_id}`
+      )
+
+      setProfessorData({ campus: campus?.name, course: course?.name })
+    }
+  }, [containers])
+
+  useEffect(() => {
+    getCampusAndCourseLabel()
+  }, [containers, getCampusAndCourseLabel])
+
+  const rolesInputData = (role: RoleType, container: any) => {
     const student: InputData[] = [
       {
         editable: false,
@@ -99,26 +132,22 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
       },
       {
         name: 'campus',
-        type: 'select',
         editable: false,
         label: 'Campus:',
-        options: getCampus(),
-        value: container?.campus_id
+        value: studentData.campus
       },
       {
         name: 'course',
-        type: 'select',
         label: 'Curso:',
         editable: false,
-        value: container?.course_id
+        value: studentData.course
       },
       {
-        type: 'select',
         editable: false,
         name: 'semester',
         label: 'Semestre:',
-        value: container.semester,
-        options: semesterOptions
+        options: semesterOptions,
+        value: `${container.semester}° Semestre`
       }
     ]
 
@@ -133,13 +162,13 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
         name: 'campus',
         editable: false,
         label: 'Campus:',
-        value: container?.campus_id
+        value: professorData.campus
       },
       {
         name: 'course',
         editable: false,
         label: 'Curso:',
-        value: container?.course_id
+        value: professorData.course
       }
     ]
 
@@ -170,7 +199,7 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
         {containers?.map((container, index) => (
           <Card headerText={container.name} role={container.role} key={index}>
             <Form method='patch' path='api/'>
-              {rolesInputData(container.role, container)?.map(data => (
+              {rolesInputData(container.role, container)?.map((data: any) => (
                 <Field key={data.name} data={data} />
               ))}
 
