@@ -1,7 +1,7 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useRef } from 'react'
 import Style from './styles'
 
-import Field, { InputData } from '../Field'
+import { InputData } from '../Field'
 import EditContent from '../EditContent'
 
 import { getRoleLabel } from 'utils/roles'
@@ -46,8 +46,6 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
   >(({ asyncRolesData }) => asyncRolesData)
 
   const imageRef = useRef<ImageChangerForwardeds>(null)
-
-  const [globalEdit, setGlobalEdit] = useState<any>()
 
   const rolesToShow: RoleType[] = ['student', 'professor']
 
@@ -161,24 +159,16 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
         user: { ...user, ...response.user }
       })
     )
-
-    setGlobalEdit(undefined)
   }
 
   const onRolesEditSuccess = () => {
     user?.id && dispatch(getRolesData({ userId: user?.id }))
-    setGlobalEdit(false)
   }
 
   return (
     <>
       <Style>
-        <Slider
-          gap={200}
-          gapVertical={32}
-          width={sliderWidth}
-          startAtByCenter={1}
-        >
+        <Slider gap={200} gapVertical={32} width={sliderWidth}>
           {rolesToEdit.map(role => {
             if (role === 'personal')
               return (
@@ -187,11 +177,9 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
                   path='api/user'
                   loading={userLoading}
                   headerText='Dados pessoais'
+                  fields={rolesInputData(role)}
                   onSuccess={onPersonalEditSuccess}
                   schema={profileAndRolesSchema[role]}
-                  onSaveClick={() => {
-                    setGlobalEdit(false)
-                  }}
                 >
                   <Avatar
                     border
@@ -201,14 +189,6 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
                     loaderColor={theme.colors.primary}
                     onClick={() => imageRef.current?.toggle()}
                   />
-
-                  {rolesInputData(role).map((info: InputData) => (
-                    <Field
-                      data={info}
-                      key={info.name}
-                      editing={globalEdit?.[role]}
-                    />
-                  ))}
                 </EditContent>
               )
 
@@ -217,21 +197,11 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
                 key={role}
                 role={role as RoleType}
                 loading={rolesDataLoading}
+                fields={rolesInputData(role)}
                 onSuccess={onRolesEditSuccess}
                 path={`api/users/roles/${role}`}
                 headerText={`Dados de ${getRoleLabel(role as RoleType)}`}
-                onSaveClick={() => {
-                  setGlobalEdit(undefined)
-                }}
-              >
-                {rolesInputData(role).map(data => (
-                  <Field
-                    data={data}
-                    key={data.name}
-                    editing={globalEdit?.[role]}
-                  />
-                ))}
-              </EditContent>
+              />
             )
           })}
         </Slider>

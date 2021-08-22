@@ -7,6 +7,8 @@ import React, {
 } from 'react'
 import { Buttons, ConfirmForm } from './styles'
 
+import Field, { InputData } from '../Field'
+
 import CloseIcon from 'assets/global/CloseIcon'
 
 import Card from 'components/Card'
@@ -25,7 +27,8 @@ interface EditContentProps {
   role?: RoleType
   loading?: boolean
   headerText: string
-  children: ReactNode
+  fields: InputData[]
+  children?: ReactNode
   schema?: ObjectSchema
   onSaveClick?: () => void
   onSuccess?: (_res: any) => void
@@ -36,6 +39,7 @@ const EditContent = ({
   role,
   path,
   schema,
+  fields,
   loading,
   children,
   onSuccess,
@@ -50,6 +54,7 @@ const EditContent = ({
   const formRef = useRef<HTMLFormElement>(null)
 
   const [password, setPassword] = useState()
+  const [globalEditing, setGlobalEditing] = useState<boolean>()
 
   const onGetConfirmForm = ({ password }: any) => {
     modalRef?.current?.toggle(false)
@@ -63,6 +68,7 @@ const EditContent = ({
         type: 'success',
         message: 'Dados alterados',
         onClick: () => {
+          setGlobalEditing(false)
           onSuccess && onSuccess(res)
         }
       })
@@ -99,6 +105,8 @@ const EditContent = ({
   return (
     <>
       <Card headerText={headerText} role={role}>
+        {children}
+
         {loading ? (
           <DotsLoader color={theme.colors.primary} />
         ) : (
@@ -110,7 +118,14 @@ const EditContent = ({
             afterResData={afterResData}
             manipulateData={defaultManipulateData}
           >
-            {children}
+            {fields.map(data => (
+              <Field
+                data={data}
+                key={data.name}
+                globalEditing={globalEditing}
+                setGlobalEditing={setGlobalEditing}
+              />
+            ))}
 
             <Submit
               type='button'

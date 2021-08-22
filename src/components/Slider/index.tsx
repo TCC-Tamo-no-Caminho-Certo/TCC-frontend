@@ -9,35 +9,33 @@ interface SliderProps {
   gap: number
   width: number
   children: any
+  quantity?: number
   gapVertical?: number
-  startAtByCenter?: number
+  initialAtCenter?: boolean
 }
 
 const Slider = ({
   gap,
   width,
-  startAtByCenter,
   gapVertical = gap,
-  children: containers
+  children: containers,
+  quantity: quantityProp,
+  initialAtCenter = false
 }: SliderProps) => {
   const move = width + gap
-  const quantity = containers?.length
+  const quantity = quantityProp || containers?.length
   const isPar = quantity % 2 === 0
   const limit = move * ((quantity - 1) / 2)
 
   const [makeLeftMove, setMakeLeftMove] = useState(false)
   const [makeRightMove, setMakeRightMove] = useState(false)
-
   const [xValue, setXValue] = useState(
-    startAtByCenter ? move * startAtByCenter : isPar ? move / 2 : 0
+    initialAtCenter ? (isPar ? move / 2 : 0) : isPar ? limit / 2 : limit
   )
 
-  useEffect(() => {
-    setXValue(startAtByCenter ? move * startAtByCenter : isPar ? move / 2 : 0)
-  }, [move, isPar, startAtByCenter])
-
   const onLeftClick = () => {
-    if (xValue > -limit) setXValue(xValue - move)
+    if (limit !== 0 && xValue > -limit) setXValue(xValue - move)
+
     setMakeLeftMove(false)
   }
 
@@ -60,6 +58,11 @@ const Slider = ({
       onRightClick()
     }
   }
+
+  useEffect(() => {
+    setXValue(initialAtCenter ? (isPar ? move / 2 : 0) : limit)
+  }, [initialAtCenter, isPar, limit, move])
+
   return (
     <Style className='Slider' gap={`${gap}px`} gapVertical={`${gapVertical}px`}>
       <motion.ul
@@ -74,8 +77,8 @@ const Slider = ({
           <Container
             key={index}
             width={`${width}px`}
-            initial={{ x: startAtByCenter ? move * startAtByCenter : xValue }}
             animate={{ x: xValue }}
+            initial={{ x: xValue }}
             transition={{ type: 'tween', duration: 0.5 }}
           >
             {container}

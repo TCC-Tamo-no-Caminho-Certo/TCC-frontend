@@ -203,7 +203,7 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
                 <Field key={data.name} data={data} />
               ))}
 
-              <Submit>Salvar alterações</Submit>
+              {container.address && <Submit>Salvar alterações</Submit>}
             </Form>
           </Card>
         ))}

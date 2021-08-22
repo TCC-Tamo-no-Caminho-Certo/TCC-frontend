@@ -1,4 +1,11 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import Style, { Icon, Input, Label } from './styles'
 
 import { isoToDate } from 'utils/dates'
@@ -33,7 +40,8 @@ export interface InputData {
 
 interface FieldProps {
   data: InputData
-  editing?: boolean
+  globalEditing?: boolean
+  setGlobalEditing?: Dispatch<SetStateAction<boolean | undefined>>
 }
 
 const Field = ({
@@ -49,7 +57,8 @@ const Field = ({
     dontShow = false,
     withEditIcon = false
   },
-  editing
+  globalEditing,
+  setGlobalEditing
 }: FieldProps) => {
   const theme = useContext(ThemeContext)
 
@@ -116,8 +125,11 @@ const Field = ({
   }
 
   useEffect(() => {
-    editing !== undefined && setChange(editing)
-  }, [editing])
+    if (globalEditing !== undefined) {
+      setChange(globalEditing)
+      setGlobalEditing && setGlobalEditing(undefined)
+    }
+  }, [globalEditing, setGlobalEditing])
 
   useEffect(() => {
     change && inputRef.current?.focus()
