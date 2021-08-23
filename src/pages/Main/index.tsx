@@ -1,6 +1,5 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 
-import Map from './Map'
 import RightMenu from './RightMenu'
 import Season from './Seasons'
 import MyProjects from '../Main/MyProjects'
@@ -22,17 +21,8 @@ const Main = () => {
 
   const projectsRef = useRef(null)
   const seasonRef = useRef(null)
-  const mapRef = useRef(null)
-
-  const mainRoutes = useMemo((): RouteProps[] => {
-    const sidebarSections: RouteProps[] = [
-      {
-        label: 'Mapa',
-        ref: mapRef,
-        icon: () => <MapIcon />,
-        component: () => <Map ref={mapRef} />,
-        paths: ['/session/main', '/session/main/map']
-      },
+  const sidebarSections: RouteProps[] = useMemo(
+    () => [
       {
         ref: seasonRef,
         label: 'Temporadas',
@@ -47,8 +37,11 @@ const Main = () => {
         paths: ['/session/main/myprojects'],
         component: () => <MyProjects ref={projectsRef} />
       }
-    ]
+    ],
+    []
+  )
 
+  useEffect(() => {
     if (
       user?.selectedRole === 'moderator' ||
       user?.selectedRole === 'administrator'
@@ -59,13 +52,12 @@ const Main = () => {
         icon: () => <ProjectIcon />,
         paths: ['/session/moderator']
       })
-
-    return sidebarSections
-  }, [user?.selectedRole])
+  }, [sidebarSections, user?.selectedRole])
 
   return (
     <>
-      <Sidebar samePage title='Principal' routes={mainRoutes} />
+      <Sidebar samePage title='Principal' routes={sidebarSections} />
+
       <RightMenu />
     </>
   )

@@ -47,6 +47,13 @@ const Style = styled.section`
   @media screen and (min-width: 545px) {
     header {
       padding: 32px;
+      justify-content: flex-start;
+    }
+  }
+
+  @media screen and (min-width: 1000px) {
+    header {
+      justify-content: center;
     }
   }
 `

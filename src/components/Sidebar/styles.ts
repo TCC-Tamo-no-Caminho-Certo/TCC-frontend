@@ -7,12 +7,8 @@ interface HeaderProps {
 
 interface ContentProps {
   index: number
-  isOpen?: boolean
   isLarge: boolean
   samePage: boolean
-  openWidth: number
-  closedWidth: number
-  hasScrollBar: boolean
 }
 
 interface StyleProps {
@@ -60,13 +56,10 @@ export const SidebarNav = styled(motion.nav)`
   left: 0;
   z-index: 100;
 
-  min-width: 320px;
-
   background-color: ${({ theme }) => theme.sidebar.background};
 
   @media screen and (min-width: 545px) {
     height: 100vh;
-    min-width: 72px;
   }
 `
 
@@ -93,10 +86,10 @@ const Style = styled.div<StyleProps>`
   display: flex;
   flex-direction: column;
 
-  width: max(100vw, 312px);
+  width: max(100%, 312px);
 
   @media screen and (min-width: 545px) {
-    width: max(100vw, 312px);
+    width: max(100%, 312px);
   }
 `
 

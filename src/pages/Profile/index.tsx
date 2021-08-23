@@ -38,7 +38,7 @@ const Profile = () => {
         bottom: true,
         label: 'Voltar ao mapa',
         icon: () => <MapIcon />,
-        paths: ['/session/main/map']
+        paths: ['/session/main']
       }
     ],
     []

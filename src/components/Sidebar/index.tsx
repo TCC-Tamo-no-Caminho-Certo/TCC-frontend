@@ -1,6 +1,5 @@
 import React, {
   RefObject,
-  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -66,106 +65,56 @@ const Sidebar = ({
   )
 
   const burgerRef = useRef<any>(null)
+
   const { innerWidth } = useWindowDimensions()
-  const [hasScroll, setHasScroll] = useState(false)
+
   const [isLarge, setisLarge] = useState(innerWidth >= 545)
-
-  const getMarginLeft = useCallback(() => {
-    if (isLarge) {
-      if (open === undefined) return open ? width : closedWidth
-      return !open ? width : closedWidth
-    }
-
-    return 0
-  }, [closedWidth, isLarge, open, width])
-
-  const [marginLeft, setMarginLeft] = useState(getMarginLeft())
-
-  const getSubtract = useCallback(() => {
-    if (isLarge)
-      if (open === undefined) return hasScroll ? closedWidth : closedWidth
-      else if (!open) return hasScroll ? width : width
-      else return hasScroll ? closedWidth : closedWidth
-    else return 0
-  }, [closedWidth, hasScroll, isLarge, open, width])
-
-  const [contentWidth, setContentWidth] = useState(
-    `calc(100% - ${getSubtract()}px)`
-  )
+  const [contentWidth, setContentWidth] = useState('100%')
 
   const { pathname } = useLocation()
   const dispatch = useDispatch()
 
-  const root = document.getElementById('root')
-
-  useEffect(() => {
-    if (root) setHasScroll(root?.scrollHeight > window?.innerHeight)
-  }, [root?.scrollHeight, root])
-
-  useEffect(() => {
-    setContentWidth(`calc(100% - ${getSubtract()}px)`)
-  }, [closedWidth, getSubtract, hasScroll, isLarge, open, width])
-
-  useEffect(() => {
-    setMarginLeft(getMarginLeft())
-  }, [hasScroll, isLarge, closedWidth, open, width, pathname, getMarginLeft])
-
-  const motionBackground: Variants = {
-    open: { transition, height: '100vh', width: isLarge ? width : '100%' },
-    closed: {
-      transition,
-      width: isLarge ? closedWidth : '100%',
-      height: isLarge ? '100vh' : closedWidth
-    }
-  }
-
-  const content: Variants = {
-    open: {
-      marginLeft,
-      width: contentWidth,
-      transition: { type: 'tween', duration: 0.31 }
-    },
-    closed: {
-      marginLeft,
-      width: contentWidth,
-      transition: { type: 'tween', duration: 0.29 }
-    }
-  }
-
   const onToggle = () => dispatch(SidebarActions.toggleSidebar(!open))
+
+  useEffect(() => {
+    let subtract = 0
+
+    if (isLarge)
+      if (open) subtract = width
+      else subtract = closedWidth
+
+    setContentWidth('calc(100% - ' + subtract + 'px)')
+  }, [closedWidth, isLarge, open, width])
 
   useEffect(() => {
     const route = routes.find(({ paths }) =>
       paths.find(path => path === pathname)
     )
 
-    setTimeout(
-      () => route?.ref?.current?.scrollIntoView({ behavior: 'smooth' }),
-      1
-    )
+    route?.ref?.current?.scrollIntoView({ behavior: 'smooth' })
   }, [pathname, routes, overflow])
-
-  useEffect(() => {
-    if (open !== undefined) {
-      dispatch(SidebarActions.toggleSidebar(!open))
-
-      setTimeout(() => {
-        dispatch(SidebarActions.toggleSidebar(!!open))
-      }, 0.1)
-    } else dispatch(SidebarActions.toggleSidebar(false))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, isLarge])
 
   useEffect(() => {
     setisLarge(innerWidth >= 545)
   }, [innerWidth])
 
   return (
-    <Style draggable='false'>
+    <Style draggable='false' id='sidebar'>
       <SidebarNav
-        variants={motionBackground}
-        animate={open ? 'open' : 'closed'}
-        initial={!isLarge ? 'open' : 'closed'}
+        initial={{ width: closedWidth }}
+        animate={
+          open
+            ? {
+                transition,
+                height: '100vh',
+                width: isLarge ? width : '100%'
+              }
+            : {
+                transition,
+                width: isLarge ? closedWidth : '100%',
+                height: isLarge ? '100vh' : closedWidth
+              }
+        }
       >
         <Header isOpen={!!open}>
           <Hamburger
@@ -199,18 +148,24 @@ const Sidebar = ({
 
       {routes.map(({ paths, component, exact }, index) => (
         <Content
-          isOpen={open}
           index={index}
           key={paths[0]}
           isLarge={isLarge}
-          openWidth={width}
-          variants={content}
           samePage={samePage}
-          closedWidth={closedWidth}
-          hasScrollBar={hasScroll}
           id={paths[0].replaceAll('/', '--')}
-          animate={open ? 'open' : 'closed'}
-          initial={open ? 'open' : 'closed'}
+          animate={
+            open
+              ? {
+                  width: contentWidth,
+                  x: isLarge ? width : 0,
+                  transition: { type: 'tween', duration: 0.31 }
+                }
+              : {
+                  width: contentWidth,
+                  x: isLarge ? closedWidth : 0,
+                  transition: { type: 'tween', duration: 0.29 }
+                }
+          }
         >
           {samePage
             ? component && component()
