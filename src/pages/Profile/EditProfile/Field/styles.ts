@@ -5,13 +5,16 @@ interface StyleProps {
 }
 
 export const Label = styled.div`
-  width: 100px;
   overflow: hidden;
   text-align: center;
 
   line-break: loose;
   word-wrap: break-word;
   font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
+
+  @media screen and (min-width) {
+    width: 100px;
+  }
 `
 
 export const Input = styled.div`
@@ -120,20 +123,24 @@ const Style = styled.div<StyleProps>`
   }
 
   ${Input} {
-    ${({ isCheckbox }) =>
-      isCheckbox
-        ? css`
-            width: 50%;
-          `
-        : css`
-            flex: 1;
-          `}
+    flex: 1;
   }
 
   @media screen and (min-width: 545px) {
     flex-direction: row;
 
-    button#icon {
+    ${Input} {
+      ${({ isCheckbox }) =>
+        isCheckbox
+          ? css`
+              width: 50%;
+            `
+          : css`
+              flex: 1;
+            `}
+    }
+
+    #icon {
       position: static;
     }
   }

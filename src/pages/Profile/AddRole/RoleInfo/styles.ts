@@ -22,7 +22,7 @@ const Style = styled.div<StyleProps>`
 
     cursor: pointer;
     margin-bottom: 16px;
-    -webkit-user-select: none;
+    user-select: none;
     font-size: clamp(2rem, 0.6rem + 2.6vw, 2.2rem);
 
     color: ${({ color }) => color};

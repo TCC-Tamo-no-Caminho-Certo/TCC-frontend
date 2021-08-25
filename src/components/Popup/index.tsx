@@ -93,7 +93,7 @@ const Popup = forwardRef<PopupForwardeds, any>((props, ref) => {
   useImperativeHandle(ref, () => ({ configPopup: forwardConfigPopup }))
 
   return open ? (
-    <Modal ref={modalRef}>
+    <Modal ref={modalRef} zIndex={2000}>
       <Style type={type || 'other'} data-cy='Popup'>
         <CloseIcon onClick={onPopupCloseClick} />
 

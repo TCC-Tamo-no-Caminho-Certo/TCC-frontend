@@ -38,24 +38,27 @@ const getMonthLabel = (month: Month) => {
 export const isoToDate = (date: string, returnType: ReturnType): string => {
   const dates = date?.split('T')[0]?.split('-')
 
-  switch (returnType) {
-    case 'all':
-      return `${dates[2]}/${dates[1]}/${dates[0]}`
+  if (dates)
+    switch (returnType) {
+      case 'all':
+        return `${dates[2]}/${dates[1]}/${dates[0]}`
 
-    case 'day/month':
-      return `${dates[2]}/${dates[1]}`
+      case 'day/month':
+        return `${dates[2]}/${dates[1]}`
 
-    case 'day/month/2-year': {
-      const year = dates[0].split('')
-      return `${dates[2]}/${dates[1]}/${year[2] + year[3]}`
+      case 'day/month/2-year': {
+        const year = dates[0].split('')
+        return `${dates[2]}/${dates[1]}/${year[2] + year[3]}`
+      }
+
+      case 'day/inFull-year':
+        return date[2] + getMonthLabel(date[1] as Month)
+
+      default:
+        return ''
     }
 
-    case 'day/inFull-year':
-      return date[2] + getMonthLabel(date[1] as Month)
-
-    default:
-      return ''
-  }
+  return ''
 }
 
 export const isoToDatepicker = (date?: string): DayValue => {

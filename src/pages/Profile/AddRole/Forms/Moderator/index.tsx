@@ -80,8 +80,8 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
         popupRef?.current?.configPopup({
           open: true,
           type: 'success',
-          message: request ? 'Solicitação reenviada!' : 'Solicitação enviada!',
-          onClick: () => history.push('/session/main')
+          onClick: () => history.push('/session/main'),
+          message: request ? 'Solicitação reenviada!' : 'Solicitação enviada!'
         })
     else
       popupRef?.current?.configPopup({

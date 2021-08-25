@@ -126,6 +126,8 @@ const Sidebar = ({
 
           <Presence
             id='title'
+            exit='closed'
+            animate='open'
             initial='initial'
             condition={!!open}
             variants={motionTitle}

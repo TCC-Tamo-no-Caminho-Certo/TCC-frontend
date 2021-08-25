@@ -22,6 +22,7 @@ export const Rejected = styled.div`
   width: 100%;
   padding: 16px;
   border-radius: 8px;
+  margin-bottom: 16px;
 
   border: solid 1px ${({ theme }) => theme.colors.primary};
 

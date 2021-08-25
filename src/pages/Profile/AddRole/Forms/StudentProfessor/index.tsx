@@ -54,9 +54,9 @@ interface StudentProfessorProps {
 
 interface Options {
   campus: Option[]
-  course: Option[]
-  semester: Option[]
-  university: Option[]
+  courses: Option[]
+  semesters: Option[]
+  universities: Option[]
 }
 
 export interface Animations {
@@ -105,9 +105,9 @@ const initialAnimations = {
 
 const initialOptions = {
   campus: [],
-  course: [],
-  university: [],
-  semester: semesterOptions
+  courses: [],
+  universities: [],
+  semesters: semesterOptions
 }
 
 const initialValues = {
@@ -146,7 +146,7 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
   const history = useHistory()
 
   const formPath = request
-    ? `api/users/roles/requests/${request.id}/${role}`
+    ? `api/users/roles/requests/${request.id}`
     : `api/users/roles/requests/${role}`
 
   const onVoucherButtonClick = () =>
@@ -162,10 +162,21 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
     registerEmailRef.current?.toggleRegister()
   }
 
-  const hasInstitutionalEmail = (universityId: number) =>
-    emails
-      ? !!emails.find(({ university_id }) => university_id === universityId)
-      : false
+  const hasInstitutionalEmail = (universityId: number) => {
+    const university = universities.find(({ id }) => universityId === id)
+
+    const institutionalEmails = emails.filter(
+      ({ university_id }) => university_id === universityId
+    )
+
+    if (university)
+      for (let i = 0; i < institutionalEmails.length; i++) {
+        const regex = new RegExp(university.regex.email[role])
+        if (regex.test(institutionalEmails[i].address)) return true
+      }
+
+    return false
+  }
 
   const onEmailSuccess = () => {
     setAnimations(prev => ({
@@ -197,82 +208,73 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
   }
 
   const onUniversityChange = async (selected: Option) => {
-    if (values.university !== selected) {
-      const { campus }: CampusResType = await api.get(
-        `api/universities/${selected.value}/campus`
-      )
+    const { campus }: CampusResType = await api.get(
+      `api/universities/${selected.value}/campus`
+    )
 
-      setOptions(prev => ({
-        ...prev,
-        campus: campus.map(({ name, id }) => ({ label: name, value: id }))
-      }))
+    setOptions(prev => ({
+      ...prev,
+      campus: campus.map(({ name, id }) => ({ label: name, value: id }))
+    }))
 
-      setValues(prev => ({
-        ...prev,
-        campus: undefined,
-        course: undefined,
-        university: selected
-      }))
+    setValues(prev => ({
+      ...prev,
+      campus: undefined,
+      course: undefined,
+      university: selected
+    }))
 
+    setAnimations(prev => ({
+      ...prev,
+      ar: false,
+      course: false,
+      campus: false,
+      semester: false
+    }))
+
+    setTimeout(() => {
       setAnimations(prev => ({
         ...prev,
-        ar: false,
-        course: false,
-        campus: false,
-        semester: false
+        ar: true,
+        campus: true
       }))
+    }, 300)
 
-      setTimeout(() => {
-        setAnimations(prev => ({
-          ...prev,
-          ar: true,
-          campus: true
-        }))
-      }, 300)
+    if (!request) {
+      const newSelected = universities?.find(({ id }) => id === selected.value)
 
-      if (!request) {
-        const newSelected = universities?.find(
-          ({ id }) => id === selected.value
-        )
-
-        newSelected && setSelectedUniversity(newSelected)
-      }
+      newSelected && setSelectedUniversity(newSelected)
     }
   }
 
   const onCampusChange = async (selected: Option) => {
-    if (values.campus !== selected) {
-      const { courses }: CoursesResType = await api.get(
-        `api/universities/campus/${selected.value}/courses`
-      )
+    const { courses }: CoursesResType = await api.get(
+      `api/universities/campus/${selected.value}/courses`
+    )
 
-      setOptions(prev => ({
-        ...prev,
-        course: courses.map(({ id, name }: any) => ({ value: id, label: name }))
+    setOptions(prev => ({
+      ...prev,
+      courses: courses.map(({ id, name }: any) => ({ value: id, label: name }))
+    }))
+
+    if (!values.campus) {
+      setValues(prev => ({ ...prev, campus: selected }))
+      setAnimations(prev => ({ ...prev, course: true }))
+    } else {
+      setValues(prev => ({
+        university: prev.university,
+        campus: selected,
+        course: undefined
       }))
 
-      if (!values.campus) {
-        setValues(prev => ({ ...prev, campus: selected }))
-        setAnimations(prev => ({ ...prev, course: true }))
-      } else {
-        setValues(prev => ({
-          university: prev.university,
-          campus: selected,
-          course: undefined
-        }))
+      setAnimations(prev => ({
+        ...prev,
+        ways: false,
+        course: false,
+        semester: false
+      }))
 
-        setAnimations(prev => ({
-          ...prev,
-          ways: false,
-          course: false,
-          semester: false
-        }))
-
-        setTimeout(
-          () => setAnimations(prev => ({ ...prev, course: true })),
-          300
-        )
-      }
+      setTimeout(() => setAnimations(prev => ({ ...prev, course: true })), 300)
     }
   }
 
@@ -297,15 +299,16 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
     const byEmail =
       registerByEmail || hasInstitutionalEmail(selectedUniversity.id)
 
+    const message = () => {
+      if (!request) return byEmail ? 'Papel Adicionado' : 'Solicitação enviada!'
+      else return 'Solicitação reenviada!'
+    }
+
     if (success)
       popupRef?.current?.configPopup({
         open: true,
         type: 'success',
-        message: request
-          ? 'Solicitação reenviada!'
-          : byEmail
-          ? 'Papel Adicionado'
-          : 'Solicitação enviada!',
+        message: message(),
         onClick: () => {
           history.push('/session/main')
           dispatch(getUser({}))
@@ -319,6 +322,25 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
       })
   }
 
+  const setInitialCoursesOptions = useCallback(async () => {
+    if (request) {
+      const { courses }: CoursesResType = await api.get(
+        `api/universities/campus/${request.data.campus_id}/courses`
+      )
+
+      if (courses) {
+        const coursesOptions = courses.map(({ name, id }) => ({
+          label: name,
+          value: id
+        }))
+
+        setOptions(prev => ({ ...prev, courses: coursesOptions }))
+
+        return coursesOptions
+      }
+    }
+  }, [request])
+
   const setInitialCampusOptions = useCallback(async () => {
     if (request) {
       const { campus }: CampusResType = await api.get(
@@ -331,7 +353,7 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
           value: id
         }))
 
-        setOptions(prev => ({ ...prev, campusOption }))
+        setOptions(prev => ({ ...prev, campus: campusOption }))
 
         return campusOption
       }
@@ -342,15 +364,16 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
     if (request)
       (async () => {
         const campusOptions = await setInitialCampusOptions()
+        const coursesOptions = await setInitialCoursesOptions()
 
         setValues({
-          university: options.university.find(
+          university: options.universities.find(
             ({ value }) => value === request.data.university_id
           ),
           campus: campusOptions?.find(
             ({ value }) => value === request.data.campus_id
           ),
-          course: options.course.find(
+          course: coursesOptions?.find(
             ({ value }) => value === request.data.course_id
           )
         })
@@ -376,8 +399,8 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
   useEffect(() => {
     setOptions(prev => ({
       ...prev,
-      course: [],
-      university: universities?.map(({ name, id }) => ({
+      courses: [],
+      universities: universities?.map(({ name, id }) => ({
         value: id,
         label: name
       }))
@@ -397,8 +420,8 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
           name='university_id'
           placeholder='Universidade'
           value={values.university}
-          options={options.university}
           onChange={onUniversityChange}
+          options={options.universities}
         />
 
         <Presence
@@ -430,7 +453,7 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
             id='cy-course'
             name='course_id'
             value={values.course}
-            options={options.course}
+            options={options.courses}
             onChange={onCourseChange}
             placeholder={
               role === 'professor' ? 'Curso com maior carga horária' : 'Curso'
@@ -448,9 +471,9 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
               id='cy-semester'
               name='semester'
               placeholder='Semestre'
-              options={options.semester}
+              options={options.semesters}
               onChange={onSemesterChange}
-              defaultValue={options.semester.find(
+              defaultValue={options.semesters.find(
                 ({ value }) => value === request?.data.semester
               )}
             />

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 
 import RightMenu from './RightMenu'
 import Season from './Seasons'
@@ -21,8 +21,9 @@ const Main = () => {
 
   const projectsRef = useRef(null)
   const seasonRef = useRef(null)
-  const sidebarSections: RouteProps[] = useMemo(
-    () => [
+
+  const sidebarSections: RouteProps[] = useMemo(() => {
+    const routes: RouteProps[] = [
       {
         ref: seasonRef,
         label: 'Temporadas',
@@ -37,22 +38,21 @@ const Main = () => {
         paths: ['/session/main/myprojects'],
         component: () => <MyProjects ref={projectsRef} />
       }
-    ],
-    []
-  )
+    ]
 
-  useEffect(() => {
     if (
       user?.selectedRole === 'moderator' ||
       user?.selectedRole === 'administrator'
     )
-      sidebarSections.push({
+      routes.push({
         bottom: true,
         label: 'Universidade',
         icon: () => <ProjectIcon />,
         paths: ['/session/moderator']
       })
-  }, [sidebarSections, user?.selectedRole])
+
+    return routes
+  }, [user?.selectedRole])
 
   return (
     <>

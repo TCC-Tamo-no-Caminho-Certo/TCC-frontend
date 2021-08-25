@@ -120,8 +120,8 @@ const Season = ({
     popupRef?.current?.configPopup({
       open: true,
       type: 'warning',
-      message: 'Tem certeza que deseja remover esta temporada',
-      onOkClick: onPopupOkClick
+      onOkClick: onPopupOkClick,
+      message: 'Tem certeza que deseja remover esta temporada'
     })
   }
 

@@ -8,7 +8,7 @@ interface StyleProps {
 
 const Style = styled.div<StyleProps>`
   position: relative;
-  z-index: 2000;
+  z-index: 3000;
 
   display: flex;
   align-items: center;

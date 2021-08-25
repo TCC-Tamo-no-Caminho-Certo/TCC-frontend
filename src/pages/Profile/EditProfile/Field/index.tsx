@@ -14,7 +14,6 @@ import PencilIcon from 'assets/Inputs/PencilIcon'
 import CloseIcon from 'assets/global/CloseIcon'
 
 import { Checkbox, Datepicker, Select, Text } from 'components/Form'
-import DotsLoader from 'components/DotsLoader'
 import { Option } from 'components/Form/Select'
 import { CheckboxForwardeds } from 'components/Form/Checkbox'
 
@@ -45,20 +44,20 @@ interface FieldProps {
 }
 
 const Field = ({
+  globalEditing,
+  setGlobalEditing,
   data: {
-    id = '',
     name,
     label,
     value,
     options,
+    id = '',
     onEditClick,
     type = 'text',
     editable = true,
     dontShow = false,
     withEditIcon = false
-  },
-  globalEditing,
-  setGlobalEditing
+  }
 }: FieldProps) => {
   const theme = useContext(ThemeContext)
 
@@ -115,9 +114,7 @@ const Field = ({
           )
       }
 
-    return value === undefined ? (
-      <DotsLoader />
-    ) : (
+    return (
       <div className='value'>
         {type === 'date' ? isoToDate(value as string, 'all') : value}
       </div>

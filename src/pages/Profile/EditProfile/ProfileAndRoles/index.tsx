@@ -8,16 +8,19 @@ import { getRoleLabel } from 'utils/roles'
 import profileAndRolesSchema from 'utils/validations/editProfile'
 
 import { RootState } from 'store'
-import { AsyncRolesDataState, getRolesData } from 'store/Async/rolesData'
 import { AsyncUserActions, AsyncUserState } from 'store/Async/user'
 import { AsyncEmailsState } from 'store/Async/emails'
+import { AsyncRolesDataState, getUpdatedRolesData } from 'store/Async/rolesData'
 
 import Slider from 'components/Slider'
 import Avatar from 'components/User/Avatar'
 // eslint-disable-next-line prettier/prettier
 import ImageChanger, { ImageChangerForwardeds } from 'components/User/ImageChanger'
+// eslint-disable-next-line prettier/prettier
+import RegisterEmail, { RegisterEmailForwardeds } from 'components/RegisterEmail'
 
 import { RoleType } from 'types/Responses/user/roles'
+import { RolesDataType } from 'types/Responses/user/rolesData'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
@@ -40,16 +43,16 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
   const { emails } = useSelector<RootState, AsyncEmailsState>(
     ({ asyncEmails }) => asyncEmails
   )
-  const { roles, loading: rolesDataLoading } = useSelector<
-    RootState,
-    AsyncRolesDataState
-  >(({ asyncRolesData }) => asyncRolesData)
+  const { roles } = useSelector<RootState, AsyncRolesDataState>(
+    ({ asyncRolesData }) => asyncRolesData
+  )
 
+  const registerEmailRef = useRef<RegisterEmailForwardeds>(null)
   const imageRef = useRef<ImageChangerForwardeds>(null)
 
-  const rolesToShow: RoleType[] = ['student', 'professor']
-
   const dispatch = useDispatch()
+
+  const rolesToShow: RoleType[] = ['student', 'professor']
 
   const rolesWithEdit = user?.roles
     ? user?.roles?.filter(role => rolesToShow.find(wished => wished === role))
@@ -61,14 +64,14 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
     const student: InputData[] = [
       {
         name: 'linkedin',
-        label: 'Linkedin',
+        label: 'Linkedin:',
         id: 'student-linkedin',
         value: roles?.student?.linkedin
       },
       {
         name: 'lattes',
         id: 'student-lattes',
-        label: 'Currículo Lattes',
+        label: 'Currículo Lattes:',
         value: roles?.student?.lattes
       }
     ]
@@ -76,25 +79,25 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
     const professor: InputData[] = [
       {
         name: 'linkedin',
-        label: 'Linkedin',
+        label: 'Linkedin:',
         id: 'professor-linkedin',
         value: roles?.professor?.linkedin
       },
       {
         name: 'lattes',
         id: 'professor-lattes',
-        label: 'Currículo Lattes',
+        label: 'Currículo Lattes:',
         value: roles?.professor?.lattes
       },
       {
         name: 'orcid',
-        label: 'Orcid',
+        label: 'Orcid:',
         value: roles?.professor?.orcid
       },
       {
         type: 'checkbox',
         name: 'postgraduate',
-        label: 'Pós-graduação',
+        label: 'Pós-graduação:',
         value: roles?.professor?.postgraduate
       }
     ]
@@ -136,8 +139,10 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
       {
         name: 'email',
         label: 'E-mail:',
-        editable: false,
-        value: emails ? emails[0]?.address : undefined
+        value: emails ? emails[0]?.address : undefined,
+        onEditClick: () => {
+          registerEmailRef.current?.toggleRegister(true)
+        }
       }
       // {
       //   date: true,
@@ -154,15 +159,11 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
   }
 
   const onPersonalEditSuccess = (response: any) => {
-    dispatch(
-      AsyncUserActions.update({
-        user: { ...user, ...response.user }
-      })
-    )
+    dispatch(AsyncUserActions.update({ user: { ...user, ...response.user } }))
   }
 
-  const onRolesEditSuccess = () => {
-    user?.id && dispatch(getRolesData({ userId: user?.id }))
+  const onRolesEditSuccess = (role: RoleType) => {
+    user?.id && dispatch(getUpdatedRolesData({ userId: user.id, role }))
   }
 
   return (
@@ -180,6 +181,10 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
                   fields={rolesInputData(role)}
                   onSuccess={onPersonalEditSuccess}
                   schema={profileAndRolesSchema[role]}
+                  manipulateData={data => {
+                    delete data.email
+                    return data
+                  }}
                 >
                   <Avatar
                     border
@@ -196,11 +201,13 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
               <EditContent
                 key={role}
                 role={role as RoleType}
-                loading={rolesDataLoading}
                 fields={rolesInputData(role)}
-                onSuccess={onRolesEditSuccess}
                 path={`api/users/roles/${role}`}
+                loading={!roles[role as keyof RolesDataType]}
                 headerText={`Dados de ${getRoleLabel(role as RoleType)}`}
+                onSuccess={() => {
+                  onRolesEditSuccess(role)
+                }}
               />
             )
           })}
@@ -208,6 +215,13 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
       </Style>
 
       <ImageChanger ref={imageRef} />
+
+      <RegisterEmail
+        placeholder='E-mail'
+        ref={registerEmailRef}
+        title='Digite seu novo e-mail'
+        onSuccess={() => {}}
+      />
     </>
   )
 }

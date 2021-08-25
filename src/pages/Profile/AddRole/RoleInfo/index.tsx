@@ -7,7 +7,7 @@ import { getRoleLabel } from 'utils/roles'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { AsyncUserState } from 'store/Async/user'
+import { AsyncUserState, getUser } from 'store/Async/user'
 
 import CheckIcon from 'assets/global/CheckIcon'
 import ArrowIcon from 'assets/global/ArrowIcon'
@@ -15,10 +15,11 @@ import ArrowIcon from 'assets/global/ArrowIcon'
 import Presence from 'components/Presence'
 import Popup, { PopupForwardeds } from 'components/Popup'
 
-import { RoleType } from 'types/Responses/user/roles'
+import { RolesResType, RoleType } from 'types/Responses/user/roles'
+import { RequestsResType } from 'types/Responses/user/requests'
 
 import { motion, useCycle, Variants } from 'framer-motion'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 interface RoleInfoProps {
   id?: string
@@ -77,6 +78,8 @@ const RoleInfo = ({
   const [show, toggleShow] = useState(false)
   const [deg, rotate] = useCycle(0, -90)
 
+  const dispatch = useDispatch()
+
   const haveThisRole = userRoles?.includes(title)
 
   const onButtonClick = () => {
@@ -91,13 +94,26 @@ const RoleInfo = ({
       confirmTitle: 'Tenho certeza',
       onOkClick: async () => {
         if (user) {
-          const { success } = await api.delete(`api/users/roles/${role}`)
+          const { success }: RolesResType = await api.delete(
+            `api/users/roles/${role}`
+          )
+          const { requests }: RequestsResType = await api.get(
+            `api/users/${user?.id}/roles/requests`
+          )
+
+          const requestToRemove = requests.find(
+            request => request.role === role
+          )
+
+          if (requestToRemove)
+            await api.delete(`api/users/roles/requests/${requestToRemove?.id}`)
 
           if (success)
             popupRef.current?.configPopup({
               open: true,
               type: 'success',
-              message: 'Papel removido'
+              message: 'Papel removido',
+              onClick: () => dispatch(getUser({ id: user.id }))
             })
           else
             popupRef.current?.configPopup({

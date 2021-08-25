@@ -112,6 +112,10 @@ export const Header = styled.header`
 `
 
 export const GeneralInfo = styled.div<GeneralInfoProps>`
+  > * + * {
+    margin-top: 16px;
+  }
+
   #status #value {
     color: ${({ theme }) => {
       switch (status) {
@@ -125,8 +129,30 @@ export const GeneralInfo = styled.div<GeneralInfoProps>`
     }};
   }
 
-  > * + * {
-    margin-top: 16px;
+  @media screen and (min-width: 800px) {
+    display: flex;
+    flex-wrap: wrap;
+
+    > * + * {
+      width: 80%;
+    }
+
+    #role,
+    #status,
+    #date {
+      margin-left: 16px;
+      width: calc(20% - 16px);
+    }
+
+    #name,
+    #date {
+      margin-top: 0px;
+    }
+
+    #name {
+      flex: 1;
+      margin-left: 16px;
+    }
   }
 `
 
@@ -135,7 +161,7 @@ const Style = styled.div`
   align-items: center;
   flex-direction: column;
 
-  width: 90%;
+  width: 90vw;
   height: 90vh;
   padding: 16px;
   overflow-x: hidden;

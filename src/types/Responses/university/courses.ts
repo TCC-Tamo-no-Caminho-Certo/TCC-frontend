@@ -1,6 +1,7 @@
 import { Response } from '../index'
 
 export type CourseType = {
+  id: number
   name: string
   courses_id: number
   university_id: number

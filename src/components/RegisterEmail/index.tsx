@@ -65,7 +65,7 @@ const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
         popupRef?.current?.configPopup({
           open: true,
           type: 'success',
-          message: 'E-mail confirmado, termine a solicitação!'
+          message: 'E-mail confirmado!'
         })
 
         onSuccess && onSuccess()
@@ -80,7 +80,6 @@ const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
 
     const onCloseModalCick = () => {
       modalRef.current?.toggle()
-
       setCodeSend(false)
     }
 

@@ -40,8 +40,8 @@ interface AditionalDataState {
   voucherUrl?: string
 }
 
-const formSchema = (response?: 'rejected' | 'accepted') =>
-  response === 'rejected'
+const formSchema = (response?: 'reject' | 'accept') =>
+  response === 'reject'
     ? Yup.object({
         feedback: Yup.string().required(
           'Ao recusar deve-se enviar uma justificativa'
@@ -64,7 +64,7 @@ const ResponseContent = ({
   const popupRef = useRef<PopupForwardeds>(null)
 
   const [aditionalData, setAditionalData] = useState<AditionalDataState>()
-  const [response, setResponse] = useState<'accepted' | 'rejected'>()
+  const [response, setResponse] = useState<'accept' | 'reject'>()
 
   const acceptRef = useRef<CheckboxIconForwardeds>(null)
   const rejectRef = useRef<CheckboxIconForwardeds>(null)
@@ -83,13 +83,6 @@ const ResponseContent = ({
     university_id
   } = data.rowValue.request?.data
 
-  const formPath = () => {
-    if (requestId)
-      return response === 'rejected'
-        ? `api/users/roles/requests/${requestId}/reject`
-        : `api/users/roles/requests/${requestId}/accept`
-  }
-
   const onTrashClick = () => {
     popupRef?.current?.configPopup({
       open: true,
@@ -99,7 +92,13 @@ const ResponseContent = ({
       onOkClick: async () => {
         await api.delete(`api/users/roles/requests/${requestId}`)
         resetTable()
-        onCloseClick()
+
+        popupRef.current?.configPopup({
+          open: true,
+          type: 'success',
+          onClick: onCloseClick,
+          message: 'Solicitação removida'
+        })
       }
     })
   }
@@ -107,9 +106,13 @@ const ResponseContent = ({
   const afterResponseSubmit = (res: any) => {
     if (res.success)
       popupRef?.current?.configPopup({
+        open: true,
         type: 'success',
         message: 'Resposta enviada.',
-        onClick: onCloseClick
+        onClick: () => {
+          resetTable()
+          onCloseClick()
+        }
       })
     else
       switch (res.error) {
@@ -193,38 +196,45 @@ const ResponseContent = ({
             <GeneralInfo status={data.rowLabel.status.name}>
               <Avatar size={120} avatarId={userData?.avatar_uuid} />
 
-              <Field label='Nome:' value={userData?.full_name} />
+              <Field id='name' label='Nome' value={userData?.full_name} />
+
+              <Field id='date' label='Data' value={data.rowLabel.date.label} />
+
+              <Field id='email' label='Email' value={aditionalData?.email} />
 
               <Field
-                label='Papel:'
+                id='status'
+                label='Status'
+                value={data.rowLabel.status.label}
+              />
+
+              {!!(data.rowLabel.role.name !== 'moderator' && course_id) && (
+                <Field
+                  id='course'
+                  label='Curso'
+                  value={aditionalData?.course}
+                />
+              )}
+
+              <Field
+                id='role'
+                label='Papel'
                 component={() => (
                   <Role role={data.rowLabel.role.name as RoleType} />
                 )}
               />
 
-              <Field
-                id='status'
-                label='Status:'
-                value={data.rowLabel.status.label}
-              />
-
-              {linkedin && <Field label='Linkedin:' value={linkedin} />}
-
-              {lattes && <Field label='Lattes:' value={lattes} />}
-
-              {orcid && <Field label='Orcid:' value={orcid} />}
-
-              <Field label='Email:' value={aditionalData?.email} />
-
-              {!!(data.rowLabel.role.name !== 'moderator' && course_id) && (
-                <Field value={aditionalData?.course} label='Curso' />
+              {linkedin && (
+                <Field id='linkedin' label='Linkedin' value={linkedin} />
               )}
 
-              <Field label='Data:' value={data.rowLabel.date.label} />
+              {lattes && <Field id='lattes' label='Lattes' value={lattes} />}
+
+              {orcid && <Field id='orcid' label='Orcid' value={orcid} />}
 
               {pretext && (
                 <Pretext>
-                  Justificativa: <p>{pretext}</p>
+                  Justificativa <p>{pretext}</p>
                 </Pretext>
               )}
             </GeneralInfo>
@@ -243,7 +253,7 @@ const ResponseContent = ({
                 ref={acceptRef}
                 onChange={(e: any) => {
                   acceptRef.current?.changeCheck(true)
-                  e.target.checked && setResponse('accepted')
+                  e.target.checked && setResponse('accept')
                   rejectRef.current?.changeCheck(false)
                 }}
               />
@@ -255,7 +265,7 @@ const ResponseContent = ({
                 ref={rejectRef}
                 onChange={(e: any) => {
                   rejectRef.current?.changeCheck(true)
-                  e.target.checked && setResponse('rejected')
+                  e.target.checked && setResponse('reject')
                   acceptRef.current?.changeCheck(false)
                 }}
               />
@@ -265,15 +275,15 @@ const ResponseContent = ({
               <Form
                 loading
                 method='patch'
-                path={formPath()}
                 schema={formSchema(response)}
                 afterResData={afterResponseSubmit}
+                path={`api/users/roles/requests/${requestId}/${response}`}
               >
                 <Textarea
                   id='feedback'
+                  maxLength={500}
                   name='feedback'
                   placeholder='Deixe uma resposta...'
-                  maxLength={500}
                 />
 
                 <Submit>Enviar resposta</Submit>
