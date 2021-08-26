@@ -1,11 +1,20 @@
 import * as Yup from 'yup'
 
+export interface EditProfileSchema {
+  student: Yup.ObjectSchema
+  personal: Yup.ObjectSchema
+  professor: Yup.ObjectSchema
+}
+
 const linkelattes = {
   linkedin: Yup.string().matches(
-    /^((http|https):\/\/)www\.linkedin\.com\/[a-zA-Z0-9-]{1,40}$/
+    /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9-/]{1,40}$/,
+    'Linkedin inválido!'
   ),
-
-  lattes: Yup.string().matches(/^http:\/\/lattes\.cnpq\.br\/[0-9]{1,40}$/)
+  lattes: Yup.string().matches(
+    /^http:\/\/lattes\.cnpq\.br\/[0-9]{1,40}$/,
+    'Lattes inválido!'
+  )
 }
 
 const personal = Yup.object({

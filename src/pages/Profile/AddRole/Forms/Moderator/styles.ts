@@ -17,7 +17,6 @@ export const Form = styled(OriginalForm)`
 
   .Textarea {
     width: 100%;
-    height: 200px;
     margin-bottom: 16px;
   }
 

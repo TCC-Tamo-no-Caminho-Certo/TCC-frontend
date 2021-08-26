@@ -8,7 +8,9 @@ import {
   withoutFullTime
 } from 'utils/validations/addRoleForms/moderator'
 
-import api from 'services/api'
+import { AsyncRolesDataState, getUpdatedRolesData } from 'store/Async/rolesData'
+import { RootState } from 'store'
+import { AsyncUserState } from 'store/Async/user'
 
 import { Select, Submit, Textarea } from 'components/Form'
 import { Option } from 'components/Form/Select'
@@ -18,6 +20,7 @@ import { ProfessorType } from 'types/Responses/user/rolesData'
 import { ModeratorDataType, RequestType } from 'types/Responses/user/requests'
 
 import { motion } from 'framer-motion'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 interface Options {
@@ -25,7 +28,7 @@ interface Options {
 }
 
 interface Values {
-  university: Option | null | undefined
+  university?: Option | null
 }
 
 interface ModeratorProps {
@@ -34,39 +37,40 @@ interface ModeratorProps {
 
 const verifyFullTime = (professor: ProfessorType, university_id: number) => {
   const { universities } = professor
-  const selectedUniversity = universities.find(({ id }) => id === university_id)
+  const selectedUniversity = universities?.find(
+    ({ id }) => id === university_id
+  )
 
   return selectedUniversity ? selectedUniversity.full_time : false
 }
 
 const ModeratorForm = ({ request }: ModeratorProps) => {
-  const popupRef = useRef<PopupForwardeds>(null)
-
   const { universities } = useContext(AddRoleContext)
+  const { roles } = useSelector<RootState, AsyncRolesDataState>(
+    ({ asyncRolesData }) => asyncRolesData
+  )
+  const { user } = useSelector<RootState, AsyncUserState>(
+    ({ asyncUser }) => asyncUser
+  )
 
-  const [options, setOptions] = useState<Options>({
-    university: universities.map(({ name, id }) => ({
-      label: name,
-      value: id
-    }))
-  })
-  const [values, setValues] = useState<Values>({
-    university: undefined
-  })
+  const popupRef = useRef<PopupForwardeds>(null)
+  const [values, setValues] = useState<Values>({ university: undefined })
   const [fullTime, setFullTime] = useState(false)
+  const [options, setOptions] = useState<Options>({
+    university: universities.map(({ name, id }) => ({ label: name, value: id }))
+  })
 
+  const dispatch = useDispatch()
   const history = useHistory()
 
   const onUniversityChange = async (selected: Option) => {
-    const professor = await api.get('api/roles/professor')
-
-    setFullTime(verifyFullTime(professor, Number(selected.value)))
-
+    roles.professor &&
+      setFullTime(verifyFullTime(roles.professor, Number(selected.value)))
     setValues(prev => ({ ...prev, university: selected }))
   }
 
-  const afterSubmit = (res: any) => {
-    if (res.success)
+  const afterSubmit = (response: any) => {
+    if (response.success)
       if (fullTime)
         popupRef?.current?.configPopup({
           open: true,
@@ -105,25 +109,28 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
     request &&
       setValues({
         university: options.university.find(
-          option => option.value === request.data.university_id
+          ({ value }) => value === request.data.university_id
         )
       })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request])
 
+  useEffect(() => {
+    user?.id &&
+      dispatch(getUpdatedRolesData({ userId: user.id, role: 'professor' }))
+  }, [dispatch, user?.id])
+
   return (
     <>
       <Form
         loading
-        method={request ? 'patch' : 'post'}
         afterResData={afterSubmit}
-        schema={!fullTime ? withFullTime : withoutFullTime}
-        path={
-          request
-            ? `api/users/roles/requests/moderator/${request.id}`
-            : 'api/users/roles/requests/moderator'
-        }
+        method={request ? 'patch' : 'post'}
+        schema={fullTime ? withFullTime : withoutFullTime}
+        path={`api/users/roles/requests/moderator${
+          request?.id ? `/${request.id}` : ''
+        }`}
       >
         <Select
           id='cy-university'
@@ -136,16 +143,16 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
 
         <motion.div
           animate={{
-            height: !fullTime ? 'auto' : 0,
-            opacity: !fullTime ? 1 : 0
+            opacity: !fullTime ? 1 : 0,
+            height: !fullTime ? 'auto' : 0
           }}
         >
           <Textarea
-            id='cy-pretext'
             name='pretext'
-            placeholder='Descreva porquê você quer ser Moderador...'
+            id='cy-pretext'
             maxLength={500}
             defaultValue={request?.data.pretext}
+            placeholder='Descreva porquê você quer ser Moderador...'
           />
         </motion.div>
 

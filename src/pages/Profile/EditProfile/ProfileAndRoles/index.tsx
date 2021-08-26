@@ -5,11 +5,12 @@ import { InputData } from '../Field'
 import EditContent from '../EditContent'
 
 import { getRoleLabel } from 'utils/roles'
-import profileAndRolesSchema from 'utils/validations/editProfile'
+// eslint-disable-next-line prettier/prettier
+import profileAndRolesSchema, { EditProfileSchema } from 'utils/validations/editProfile'
 
 import { RootState } from 'store'
 import { AsyncUserActions, AsyncUserState } from 'store/Async/user'
-import { AsyncEmailsState } from 'store/Async/emails'
+import { AsyncEmailsState, getUpdatedEmails } from 'store/Async/emails'
 import { AsyncRolesDataState, getUpdatedRolesData } from 'store/Async/rolesData'
 
 import Slider from 'components/Slider'
@@ -205,6 +206,7 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
                 path={`api/users/roles/${role}`}
                 loading={!roles[role as keyof RolesDataType]}
                 headerText={`Dados de ${getRoleLabel(role as RoleType)}`}
+                schema={profileAndRolesSchema[role as keyof EditProfileSchema]}
                 onSuccess={() => {
                   onRolesEditSuccess(role)
                 }}
@@ -219,8 +221,11 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
       <RegisterEmail
         placeholder='E-mail'
         ref={registerEmailRef}
+        addData={{ main: true }}
         title='Digite seu novo e-mail'
-        onSuccess={() => {}}
+        onSuccess={() => {
+          user?.id && dispatch(getUpdatedEmails({ userId: user.id }))
+        }}
       />
     </>
   )

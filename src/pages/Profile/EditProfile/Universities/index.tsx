@@ -1,9 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import Style from './styles'
 
-import Field, { InputData } from '../Field'
+import { InputData } from '../Field'
 import { ContainerForm } from '../ProfileAndRoles'
 import { semesterOptions } from '../../AddRole/Forms/StudentProfessor'
+import EditContent from '../EditContent'
+
+import { getRoleLabel } from 'utils/roles'
 
 import api from 'services/api'
 
@@ -13,9 +16,7 @@ import { AsyncUserState } from 'store/Async/user'
 import { AsyncEmailsState } from 'store/Async/emails'
 import { AsyncUniversitiesState } from 'store/Async/universities'
 
-import Form, { Submit } from 'components/Form'
 import Slider from 'components/Slider'
-import Card from 'components/Card'
 
 import { RoleType } from 'types/Responses/user/roles'
 import { OneCampusResType } from 'types/Responses/university/campus'
@@ -82,11 +83,9 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
   }, [getUserUniversities])
 
   const getCampusAndCourseLabel = useCallback(async () => {
-    const studentContainer = containers?.find(
-      container => container.role === 'student'
-    )
+    const studentContainer = containers?.find(({ role }) => role === 'student')
     const professorContainer = containers?.find(
-      container => container.role === 'professor'
+      ({ role }) => role === 'professor'
     )
 
     if (studentContainer) {
@@ -196,16 +195,14 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
   return (
     <Style>
       <Slider gap={200} gapVertical={32} width={sliderWidth}>
-        {containers?.map((container, index) => (
-          <Card headerText={container.name} role={container.role} key={index}>
-            <Form method='patch' path='api/'>
-              {rolesInputData(container.role, container)?.map((data: any) => (
-                <Field key={data.name} data={data} />
-              ))}
-
-              {container.address && <Submit>Salvar alterações</Submit>}
-            </Form>
-          </Card>
+        {containers?.map(container => (
+          <EditContent
+            key={container.role}
+            role={container.role as RoleType}
+            path={`api/users/roles/${container.role}`}
+            fields={rolesInputData(container.role, container)}
+            headerText={`Dados de ${getRoleLabel(container.role as RoleType)}`}
+          />
         ))}
       </Slider>
     </Style>

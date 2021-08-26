@@ -6,9 +6,8 @@ interface StyleProps {
 
 export const Label = styled.div`
   overflow: hidden;
-  text-align: center;
-
   line-break: loose;
+  text-align: center;
   word-wrap: break-word;
   font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
 
@@ -18,6 +17,8 @@ export const Label = styled.div`
 `
 
 export const Input = styled.div`
+  text-align: center;
+
   .value,
   .Datepicker input,
   .Text {
@@ -63,11 +64,6 @@ export const Input = styled.div`
 `
 
 export const Icon = styled.div`
-  position: absolute;
-  top: 0px;
-  right: 8px;
-  z-index: 1000;
-
   width: 24px;
   text-align: right;
   font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
@@ -115,7 +111,7 @@ const Style = styled.div<StyleProps>`
     align-items: center;
     justify-content: center;
 
-    min-height: 40px;
+    height: 42px;
   }
 
   ${Label} {

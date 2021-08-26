@@ -127,15 +127,19 @@ const EditContent = ({
               />
             ))}
 
-            <Submit
-              type='button'
-              onClick={() => {
-                modalRef.current?.toggle()
-                onSaveClick && onSaveClick()
-              }}
-            >
-              Salvar alterações
-            </Submit>
+            {fields.find(
+              ({ editable }) => editable || editable === undefined
+            ) && (
+              <Submit
+                type='button'
+                onClick={() => {
+                  modalRef.current?.toggle()
+                  onSaveClick && onSaveClick()
+                }}
+              >
+                Salvar alterações
+              </Submit>
+            )}
           </Form>
         )}
       </Card>
