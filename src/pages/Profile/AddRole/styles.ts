@@ -1,7 +1,6 @@
-import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
-const Style = styled(motion.section)`
+const Style = styled.section`
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -32,7 +31,6 @@ const Style = styled(motion.section)`
 
     width: 80%;
     margin-bottom: 64px;
-    padding: 0 24px 24px 24px;
 
     .RoleInfo {
       padding: 24px;

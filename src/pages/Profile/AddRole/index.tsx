@@ -94,9 +94,9 @@ const AddRole = () => {
 
       <div id='roles'>
         <RoleInfo
-          id='AddRole-student'
-          title='Estudante'
           role='student'
+          title='Estudante'
+          id='AddRole-student'
           userRoles={labelRoles}
           color={theme.roles.student}
           onClick={() => {

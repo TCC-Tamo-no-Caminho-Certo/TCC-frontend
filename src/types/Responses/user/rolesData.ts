@@ -4,6 +4,7 @@ export interface ProfessorType {
   postgraduate: boolean
   universities: {
     id: number
+    name: string
     register: string
     course_id: number
     campus_id: number
@@ -19,6 +20,7 @@ export interface StudentType {
   linkedin?: string
   universities: {
     id: number
+    name: string
     register: string
     course_id: number
     campus_id: number
@@ -27,11 +29,11 @@ export interface StudentType {
 }
 
 export interface AdministratorType {
-  university: { id: number }
+  university: { id: number; name: string }
 }
 
 export interface ModeratorType {
-  universities: { id: number }[]
+  universities: { id: number; name: string }[]
 }
 
 export interface RolesDataType {

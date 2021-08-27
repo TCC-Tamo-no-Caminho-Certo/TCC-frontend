@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import Style from './styles'
+import Style, { Buttons, Title } from './styles'
 
 import transition from 'utils/transition'
 import { getRoleLabel } from 'utils/roles'
@@ -33,29 +33,16 @@ interface RoleInfoProps {
   onLabelClick?(): void
 }
 
-const container: Variants = {
-  show: {
-    opacity: 1,
-    height: 'auto',
-    cursor: 'pointer',
-    transition: { ...transition, staggerChildren: 0.05 }
-  },
-  hidden: {
-    height: 0,
-    opacity: 0,
-    cursor: 'pointer',
-    transition: { ...transition, staggerDirection: -1, staggerChildren: 0.1 }
-  }
-}
-
 const item: Variants = {
+  initial: { y: '0%', opacity: 0 },
   show: { y: ['-100%', '0%'], opacity: [0, 1], transition },
   hidden: { y: ['0%', '-100%'], opacity: [1, 0], transition }
 }
 
-const button: Variants = {
-  show: { opacity: [0, 1], transition },
-  hidden: { opacity: [1, 0], transition }
+export const content: Variants = {
+  initial: { height: 0 },
+  hidden: { height: 0, transition },
+  show: { height: 'auto', transition }
 }
 
 const RoleInfo = ({
@@ -126,56 +113,53 @@ const RoleInfo = ({
     })
   }
 
+  const onTitleClick = () => {
+    toggleShow(!show)
+    rotate()
+    onLabelClick && onLabelClick()
+  }
+
   return (
     <>
       <Style className='RoleInfo' id={id} color={color} title={title}>
-        <button
-          type='button'
-          className='title'
-          data-cy={id}
-          onClick={() => {
-            toggleShow(!show)
-            rotate()
-            onLabelClick && onLabelClick()
-          }}
-        >
-          <ArrowIcon
-            animate={{
-              rotate: deg,
-              transition: {
-                type: 'tween',
-                duration: 0.3
-              }
-            }}
-          />
+        <Title type='button' data-cy={id} onClick={onTitleClick}>
+          <ArrowIcon animate={{ rotate: deg, transition }} />
 
           {title}
-        </button>
+        </Title>
 
         <Presence
           exit='hidden'
           animate='show'
           condition={show}
-          variants={container}
+          initial='initial'
+          variants={content}
         >
           <ul>
             {benefits.map((benefit, index) => (
-              <motion.li key={index} variants={item}>
+              <motion.li
+                key={index}
+                exit='hidden'
+                animate='show'
+                variants={item}
+              >
                 <p>
                   <CheckIcon />
-
                   {benefit}
                 </p>
               </motion.li>
             ))}
           </ul>
 
-          <>
-            {!noButton &&
-              (!haveThisRole ? (
+          {!noButton && (
+            <Buttons>
+              {!haveThisRole ? (
                 <motion.button
+                  id='wantBe'
                   type='button'
-                  variants={button}
+                  exit='hidden'
+                  animate='show'
+                  variants={item}
                   onClick={onButtonClick}
                   data-cy='RoleInfo-roleButton'
                 >
@@ -185,22 +169,27 @@ const RoleInfo = ({
                 <>
                   <motion.button
                     disabled
-                    id='roleAlreadyExists'
-                    variants={button}
+                    exit='hidden'
+                    animate='show'
+                    id='alreadyAm'
+                    variants={item}
                   >
                     Já sou {title}!
                   </motion.button>
 
                   <motion.button
+                    exit='hidden'
+                    animate='show'
                     id='deleteRole'
-                    variants={button}
+                    variants={item}
                     onClick={onDeleteButtonClick}
                   >
                     Remover papel
                   </motion.button>
                 </>
-              ))}
-          </>
+              )}
+            </Buttons>
+          )}
         </Presence>
       </Style>
 

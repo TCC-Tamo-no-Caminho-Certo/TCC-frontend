@@ -5,6 +5,51 @@ interface StyleProps {
   title: string
 }
 
+export const Buttons = styled.div`
+  width: 100%;
+
+  button {
+    width: 100%;
+    height: 32px;
+    margin-top: 8px;
+    min-height: 32px;
+    border-radius: 10px;
+    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
+  }
+
+  #wantBe {
+    background-color: ${({ color }) => color};
+    color: ${({ theme }) => theme.colors.secondary};
+  }
+
+  #alreadyAm {
+    background-color: transparent;
+  }
+
+  #deleteRole {
+    color: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.red};
+  }
+`
+
+export const Title = styled.button`
+  display: flex;
+  align-items: center;
+
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 8px;
+  font-size: clamp(2rem, 0.6rem + 2.6vw, 2.2rem);
+
+  .Icon {
+    width: 18px;
+    height: 12px;
+    margin-right: 8px;
+
+    fill: ${({ color }) => color};
+  }
+`
+
 const Style = styled.div<StyleProps>`
   grid-area: ${({ title }) => title};
 
@@ -16,74 +61,37 @@ const Style = styled.div<StyleProps>`
   width: 300px;
   margin-top: 24px;
 
-  .title {
-    display: flex;
-    align-items: center;
+  ul li {
+    font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
 
-    cursor: pointer;
-    margin-bottom: 16px;
-    user-select: none;
-    font-size: clamp(2rem, 0.6rem + 2.6vw, 2.2rem);
-
-    color: ${({ color }) => color};
+    color: ${({ theme }) => theme.colors.secondary};
 
     .Icon {
       width: 18px;
       height: 12px;
       margin-right: 8px;
 
+      fill: ${({ theme }) => theme.colors.green};
+    }
+  }
+
+  ${Title} {
+    color: ${({ color }) => color};
+
+    .Icon {
       fill: ${({ color }) => color};
     }
   }
 
-  div {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    opacity: 0;
-
-    ul li {
-      font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
-
-      opacity: 0;
-      color: ${({ theme }) => theme.colors.secondary};
-
-      & + li {
-        margin-top: 8px;
-      }
-
-      .Icon {
-        width: 18px;
-        height: 12px;
-        margin-right: 8px;
-
-        fill: ${({ theme }) => theme.colors.green};
-      }
-    }
-
-    button {
-      width: 100%;
-      height: 32px;
-      margin-top: 24px;
-      min-height: 32px;
-      border-radius: 10px;
-      font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
-
-      opacity: 0;
-      color: ${({ theme }) => theme.colors.secondary};
+  ${Buttons} {
+    #wantBe {
       background-color: ${({ color }) => color};
+      color: ${({ theme }) => theme.colors.secondary};
     }
 
-    #roleAlreadyExists {
-      background-color: transparent;
+    #alreadyAm {
       border: solid 1px ${({ color }) => color};
-    }
-
-    #deleteRole {
-      margin-top: 16px;
-
-      background-color: ${({ theme }) => theme.colors.red};
+      color: ${({ color }) => color};
     }
   }
 `

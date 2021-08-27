@@ -27,6 +27,16 @@ import { useDispatch, useSelector } from 'react-redux'
 interface UniversitiesProps {
   sliderWidth: number
 }
+interface Container {
+  id: number
+  name: string
+  role: RoleType
+  register: string
+  campus_id: number
+  address?: string
+  course_id: number
+  semester?: boolean
+}
 
 const Universities = ({ sliderWidth }: UniversitiesProps) => {
   const { universities } = useSelector<RootState, AsyncUniversitiesState>(
@@ -45,7 +55,7 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
   const registerEmailRef = useRef<RegisterEmailForwardeds>(null)
 
   const [universityOfEditingEmail, setUniversityOfEditingEmail] = useState()
-  const [containers, setContainers] = useState<any[]>()
+  const [containers, setContainers] = useState<Container[]>()
   const [professorData, setProfessorData] = useState<any>({
     campus: '',
     course: ''
@@ -64,8 +74,10 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
       if (role === 'student' || role === 'professor')
         roles[role]?.universities.forEach((university: any) => {
           const foundUniversity = universities.find(
-            storeUniversity => storeUniversity.id === university.id
+            ({ id }) => id === university.id
           )
+
+          console.log(university)
 
           const registerRegex = foundUniversity?.regex.register[role]
           const emailRegex = foundUniversity?.regex.email[role]
