@@ -2,7 +2,7 @@ import { Response } from '../'
 
 export interface EmailType {
   id: number
-  main: boolean
+  main: number
   address: string
   university_id: number
   institutional: boolean

@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import { Buttons, ConfirmForm } from './styles'
 
-import Field, { InputData } from '../Field'
+import Field, { InputData } from './Field'
 
 import CloseIcon from 'assets/global/CloseIcon'
 

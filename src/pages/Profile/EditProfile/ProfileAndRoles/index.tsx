@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from 'react'
 import Style from './styles'
 
-import { InputData } from '../Field'
+import { InputData } from '../EditContent/Field'
 import EditContent from '../EditContent'
 
 import { getRoleLabel } from 'utils/roles'
@@ -140,7 +140,9 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
       {
         name: 'email',
         label: 'E-mail:',
-        value: emails ? emails[0]?.address : undefined,
+        value: emails.find(({ main }) => main === 1)?.address,
+        editable: false,
+        withEditIcon: true,
         onEditClick: () => {
           registerEmailRef.current?.toggleRegister(true)
         }

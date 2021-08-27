@@ -9,6 +9,7 @@ export const Label = styled.div`
   line-break: loose;
   text-align: center;
   word-wrap: break-word;
+
   font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
 
   @media screen and (min-width) {
@@ -58,14 +59,19 @@ export const Input = styled.div`
     align-items: center;
     justify-content: center;
 
-    height: 100%;
-    width: calc(100% - 64px);
+    height: 42px;
+    width: calc(100% - 16px);
+    overflow: hidden;
   }
 `
 
 export const Icon = styled.div`
+  position: absolute;
+  top: 21px;
+  right: 8px;
+
   width: 24px;
-  text-align: right;
+  transform: translateY(-50%);
   font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
 
   .Icon {
@@ -83,6 +89,11 @@ export const Icon = styled.div`
     path {
       stroke-width: 50;
     }
+  }
+
+  @media screen and (min-width: 545px) {
+    position: static;
+    transform: translateY(0);
   }
 `
 
@@ -134,10 +145,6 @@ const Style = styled.div<StyleProps>`
           : css`
               flex: 1;
             `}
-    }
-
-    #icon {
-      position: static;
     }
   }
 `

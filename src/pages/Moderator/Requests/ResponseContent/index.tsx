@@ -245,31 +245,33 @@ const ResponseContent = ({
               </Voucher>
             )}
 
-            <Radios>
-              <Radio
-                id='accept'
-                name='response'
-                label='Aceitar'
-                ref={acceptRef}
-                onChange={(e: any) => {
-                  acceptRef.current?.changeCheck(true)
-                  e.target.checked && setResponse('accept')
-                  rejectRef.current?.changeCheck(false)
-                }}
-              />
+            {!himselfModeratorRequest && (
+              <Radios>
+                <Radio
+                  id='accept'
+                  name='response'
+                  label='Aceitar'
+                  ref={acceptRef}
+                  onChange={(e: any) => {
+                    acceptRef.current?.changeCheck(true)
+                    e.target.checked && setResponse('accept')
+                    rejectRef.current?.changeCheck(false)
+                  }}
+                />
 
-              <Radio
-                id='reject'
-                name='response'
-                label='Recusar'
-                ref={rejectRef}
-                onChange={(e: any) => {
-                  rejectRef.current?.changeCheck(true)
-                  e.target.checked && setResponse('reject')
-                  acceptRef.current?.changeCheck(false)
-                }}
-              />
-            </Radios>
+                <Radio
+                  id='reject'
+                  name='response'
+                  label='Recusar'
+                  ref={rejectRef}
+                  onChange={(e: any) => {
+                    rejectRef.current?.changeCheck(true)
+                    e.target.checked && setResponse('reject')
+                    acceptRef.current?.changeCheck(false)
+                  }}
+                />
+              </Radios>
+            )}
 
             {!himselfModeratorRequest && (
               <Form

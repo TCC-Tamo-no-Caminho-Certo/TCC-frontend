@@ -148,11 +148,9 @@ const Field = ({
 
   return (
     <Style key={name} className='Field' isCheckbox={type === 'checkbox'}>
-      <Label className='button' onClick={onFieldClick}>
-        {label}
-      </Label>
+      <Label onClick={onFieldClick}>{label}</Label>
 
-      <Input className='button' onClick={onFieldClick}>
+      <Input onClick={onFieldClick}>
         {type === 'checkbox' ? (
           <Checkbox name={name} ref={checkboxRef} disabled={!editable} />
         ) : (
@@ -160,9 +158,7 @@ const Field = ({
         )}
       </Input>
 
-      <Icon className='button' onClick={onIconClick}>
-        {showIcon()}
-      </Icon>
+      <Icon onClick={onIconClick}>{showIcon()}</Icon>
     </Style>
   )
 }

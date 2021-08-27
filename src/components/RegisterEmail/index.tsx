@@ -3,12 +3,19 @@ import Style from './styles'
 
 import tokenSchema from 'utils/validations/tokenSchema'
 
+import api from 'services/api'
+
+import { RootState } from 'store'
+import { AsyncEmailsState, getUpdatedEmails } from 'store/Async/emails'
+import { AsyncUserState } from 'store/Async/user'
+
 import CloseIcon from 'assets/global/CloseIcon'
 
 import Form, { Submit, Text } from 'components/Form'
 import Modal, { ModalForwardeds } from 'components/Modal'
 import Popup, { PopupForwardeds } from 'components/Popup'
 
+import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
 
 export interface RegisterEmailForwardeds {
@@ -25,10 +32,19 @@ interface RegisterEmailProps {
 
 const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
   ({ title, addData, regex, onSuccess, placeholder }, ref) => {
+    const { user } = useSelector<RootState, AsyncUserState>(
+      ({ asyncUser }) => asyncUser
+    )
+    const { emails } = useSelector<RootState, AsyncEmailsState>(
+      ({ asyncEmails }) => asyncEmails
+    )
+
     const modalRef = useRef<ModalForwardeds>(null)
     const popupRef = useRef<PopupForwardeds>(null)
 
     const [codeSend, setCodeSend] = useState(false)
+
+    const dispatch = useDispatch()
 
     const regexToMach = new RegExp(regex || '')
 
@@ -60,6 +76,15 @@ const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
         }
     }
 
+    const removeAndUpdateEmails = async () => {
+      const beforeEmail = emails?.find(({ main }) => main === 1)
+
+      beforeEmail?.id &&
+        (await api.delete(`api/users/emails/${beforeEmail?.id}`))
+
+      user?.id && dispatch(getUpdatedEmails({ userId: user.id }))
+    }
+
     const afterTokenSubmit = (res: any) => {
       if (res.success) {
         popupRef?.current?.configPopup({
@@ -67,6 +92,8 @@ const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
           type: 'success',
           message: 'E-mail confirmado!'
         })
+
+        if (addData) removeAndUpdateEmails()
 
         onSuccess && onSuccess()
         toggleRegister()

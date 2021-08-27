@@ -57,12 +57,12 @@ const EditProfile = () => {
 
         <Universities sliderWidth={sliderWidth} />
 
-        {/* <button
+        <button
           type='button'
-          onClick={() => api.delete('api/users/emails/214')}
+          onClick={() => api.delete('api/users/emails/216')}
         >
           Remover email
-        </button> */}
+        </button>
       </Style>
 
       <Popup ref={popupRef} />

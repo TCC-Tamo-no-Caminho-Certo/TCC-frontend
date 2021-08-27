@@ -1,28 +1,28 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Style from './styles'
 
-import { InputData } from '../Field'
+import { InputData } from '../EditContent/Field'
 import { ContainerForm } from '../ProfileAndRoles'
 import { semesterOptions } from '../../AddRole/Forms/StudentProfessor'
 import EditContent from '../EditContent'
-
-import { getRoleLabel } from 'utils/roles'
 
 import api from 'services/api'
 
 import { RootState } from 'store'
 import { AsyncRolesDataState } from 'store/Async/rolesData'
 import { AsyncUserState } from 'store/Async/user'
-import { AsyncEmailsState } from 'store/Async/emails'
+import { AsyncEmailsState, getUpdatedEmails } from 'store/Async/emails'
 import { AsyncUniversitiesState } from 'store/Async/universities'
 
 import Slider from 'components/Slider'
+// eslint-disable-next-line prettier/prettier
+import RegisterEmail, { RegisterEmailForwardeds } from 'components/RegisterEmail'
 
 import { RoleType } from 'types/Responses/user/roles'
 import { OneCampusResType } from 'types/Responses/university/campus'
 import { CourseResType } from 'types/Responses/university/courses'
 
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 interface UniversitiesProps {
   sliderWidth: number
@@ -42,15 +42,20 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
     ({ asyncRolesData }) => asyncRolesData
   )
 
+  const registerEmailRef = useRef<RegisterEmailForwardeds>(null)
+
+  const [universityOfEditingEmail, setUniversityOfEditingEmail] = useState()
   const [containers, setContainers] = useState<any[]>()
-  const [studentData, setStudentData] = useState<any>({
-    campus: '',
-    course: ''
-  })
   const [professorData, setProfessorData] = useState<any>({
     campus: '',
     course: ''
   })
+  const [studentData, setStudentData] = useState<any>({
+    campus: '',
+    course: ''
+  })
+
+  const dispatch = useDispatch()
 
   const getUserUniversities = useCallback(async () => {
     const containers: any[] = []
@@ -77,10 +82,6 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
 
     setContainers(containers)
   }, [emails, roles, universities, user?.roles])
-
-  useEffect(() => {
-    getUserUniversities()
-  }, [getUserUniversities])
 
   const getCampusAndCourseLabel = useCallback(async () => {
     const studentContainer = containers?.find(({ role }) => role === 'student')
@@ -116,6 +117,10 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
       setProfessorData({ campus: campus?.name, course: course?.name })
     }
   }, [containers])
+
+  useEffect(() => {
+    getUserUniversities()
+  }, [getUserUniversities])
 
   useEffect(() => {
     getCampusAndCourseLabel()
@@ -176,7 +181,12 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
         name: 'address',
         editable: false,
         label: 'E-mail:',
-        value: container?.address
+        withEditIcon: true,
+        value: container?.address,
+        onEditClick: () => {
+          setUniversityOfEditingEmail(container?.id)
+          registerEmailRef.current?.toggleRegister(true)
+        }
       })
 
     container?.address &&
@@ -184,7 +194,12 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
         name: 'address',
         editable: false,
         label: 'E-mail:',
-        value: container?.address
+        withEditIcon: true,
+        value: container?.address,
+        onEditClick: () => {
+          setUniversityOfEditingEmail(container?.id)
+          registerEmailRef.current?.toggleRegister(true)
+        }
       })
 
     const formInputs: any = { student, professor }
@@ -193,19 +208,31 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
   }
 
   return (
-    <Style>
-      <Slider gap={200} gapVertical={32} width={sliderWidth}>
-        {containers?.map(container => (
-          <EditContent
-            key={container.role}
-            role={container.role as RoleType}
-            path={`api/users/roles/${container.role}`}
-            fields={rolesInputData(container.role, container)}
-            headerText={`Dados de ${getRoleLabel(container.role as RoleType)}`}
-          />
-        ))}
-      </Slider>
-    </Style>
+    <>
+      <Style>
+        <Slider gap={200} gapVertical={32} width={sliderWidth}>
+          {containers?.map(container => (
+            <EditContent
+              key={container.role}
+              headerText={container.name}
+              role={container.role as RoleType}
+              path={`api/users/roles/${container.role}`}
+              fields={rolesInputData(container.role, container)}
+            />
+          ))}
+        </Slider>
+      </Style>
+
+      <RegisterEmail
+        placeholder='E-mail'
+        ref={registerEmailRef}
+        title='Digite seu novo e-mail'
+        addData={{ university_id: universityOfEditingEmail }}
+        onSuccess={() => {
+          user?.id && dispatch(getUpdatedEmails({ userId: user.id }))
+        }}
+      />
+    </>
   )
 }
 
