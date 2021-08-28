@@ -15,8 +15,9 @@ import { AsyncEmailsState, getUpdatedEmails } from 'store/Async/emails'
 import { AsyncUniversitiesState } from 'store/Async/universities'
 
 import Slider from 'components/Slider'
-// eslint-disable-next-line prettier/prettier
-import RegisterEmail, { RegisterEmailForwardeds } from 'components/RegisterEmail'
+import RegisterEmail, {
+  RegisterEmailForwardeds
+} from 'components/RegisterEmail'
 
 import { RoleType } from 'types/Responses/user/roles'
 import { OneCampusResType } from 'types/Responses/university/campus'

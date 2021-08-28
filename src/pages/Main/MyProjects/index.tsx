@@ -7,7 +7,6 @@ import api from 'services/api'
 
 import { RootState } from 'store'
 import { AsyncUserState } from 'store/Async/user'
-// eslint-disable-next-line prettier/prettier
 import {
   AsyncUniversitiesState,
   getUniversities

@@ -104,8 +104,8 @@ const Field = ({
         default:
           return (
             <Text
-              inputId={id}
               name={name}
+              inputId={id}
               ref={inputRef}
               eye={dontShow}
               placeholder=' '
@@ -119,6 +119,17 @@ const Field = ({
         {type === 'date' ? isoToDate(value as string, 'all') : value}
       </div>
     )
+  }
+
+  const showIcon = () => {
+    if ((editable && !withEditIcon) || (!editable && withEditIcon))
+      return change ? (
+        <CloseIcon />
+      ) : (
+        <PencilIcon onClick={() => onEditClick && onEditClick()} />
+      )
+
+    return <></>
   }
 
   useEffect(() => {
@@ -135,16 +146,6 @@ const Field = ({
   useEffect(() => {
     if (type === 'checkbox') checkboxRef.current?.check(value)
   }, [type, value])
-
-  const showIcon = () => {
-    if ((editable && !withEditIcon) || (!editable && withEditIcon))
-      return change ? (
-        <CloseIcon />
-      ) : (
-        <PencilIcon onClick={() => onEditClick && onEditClick()} />
-      )
-    return <></>
-  }
 
   return (
     <Style key={name} className='Field' isCheckbox={type === 'checkbox'}>

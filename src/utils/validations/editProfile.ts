@@ -36,7 +36,12 @@ const personal = Yup.object({
     .matches(/^(?=.*[A-Z])/, 'Sua senha deve conter uma letra maiúscula')
     .matches(/^(?=.*[a-z])/, 'Sua senha deve conter uma letra minuscula')
     .matches(/^(?=.*\d)/, 'Sua senha deve conter um número')
-    .min(8, 'Sua senha deve conter mais que 8 caracteres')
+    .min(8, 'Sua senha deve conter mais que 8 caracteres'),
+
+  confirm_new_password: Yup.string().oneOf(
+    [Yup.ref('new_password')],
+    'As senhas não se correspondem.'
+  )
 })
 
 const student = Yup.object(linkelattes)
@@ -47,7 +52,7 @@ const professor = Yup.object({
   full_time: Yup.boolean()
 })
 
-const profileAndRolesSchema = {
+const profileAndRolesSchema: EditProfileSchema = {
   student,
   personal,
   professor

@@ -214,7 +214,10 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
 
     setOptions(prev => ({
       ...prev,
-      campus: campus.map(({ name, id }) => ({ label: name, value: id }))
+      campus: campus.map(({ name, id }) => ({
+        label: name,
+        value: id
+      }))
     }))
 
     setValues(prev => ({
@@ -254,7 +257,10 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
 
     setOptions(prev => ({
       ...prev,
-      courses: courses.map(({ id, name }: any) => ({ value: id, label: name }))
+      courses: courses.map(({ id, name }: any) => ({
+        value: id,
+        label: name
+      }))
     }))
 
     if (!values.campus) {

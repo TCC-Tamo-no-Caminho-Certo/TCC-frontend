@@ -4,8 +4,7 @@ import Style from './styles'
 import { InputData } from '../EditContent/Field'
 import EditContent from '../EditContent'
 
-import { getRoleLabel } from 'utils/roles'
-// eslint-disable-next-line prettier/prettier
+import { getRoleLabel } from 'utils/roles' // eslint-disable-next-line prettier/prettier
 import profileAndRolesSchema, { EditProfileSchema } from 'utils/validations/editProfile'
 
 import { RootState } from 'store'
@@ -15,10 +14,9 @@ import { AsyncRolesDataState, getUpdatedRolesData } from 'store/Async/rolesData'
 
 import Slider from 'components/Slider'
 import Avatar from 'components/User/Avatar'
-// eslint-disable-next-line prettier/prettier
+import Popup, { PopupForwardeds } from 'components/Popup' // eslint-disable-next-line prettier/prettier
+import RegisterEmail, { RegisterEmailForwardeds } from 'components/RegisterEmail' // eslint-disable-next-line prettier/prettier
 import ImageChanger, { ImageChangerForwardeds } from 'components/User/ImageChanger'
-// eslint-disable-next-line prettier/prettier
-import RegisterEmail, { RegisterEmailForwardeds } from 'components/RegisterEmail'
 
 import { RoleType } from 'types/Responses/user/roles'
 import { RolesDataType } from 'types/Responses/user/rolesData'
@@ -50,6 +48,7 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
 
   const registerEmailRef = useRef<RegisterEmailForwardeds>(null)
   const imageRef = useRef<ImageChangerForwardeds>(null)
+  const popupRef = useRef<PopupForwardeds>(null)
 
   const dispatch = useDispatch()
 
@@ -130,13 +129,13 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
         name: 'new_password',
         label: 'Nova senha:'
       },
-      // {
-      //   value: '',
-      //   dontShow: true,
-      //   editable: true,
-      //   name: 'new_password',
-      //   label: 'Confirmar nova senha:',
-      // },
+      {
+        value: '',
+        dontShow: true,
+        editable: true,
+        name: 'confirm_new_password',
+        label: 'Confirmar nova senha:'
+      },
       {
         name: 'email',
         label: 'E-mail:',
@@ -147,13 +146,6 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
           registerEmailRef.current?.toggleRegister(true)
         }
       }
-      // {
-      //   date: true,
-      //   name: 'phone',
-      //   editable: true,
-      //   label: 'Celular:',
-      //   value: user?.phone ? '' : user?.phone,
-      // }
     ]
 
     const formInputs: ContainerForm = { student, professor, personal }
@@ -176,28 +168,43 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
           {rolesToEdit.map(role => {
             if (role === 'personal')
               return (
-                <EditContent
-                  key={role}
-                  path='api/user'
-                  loading={userLoading}
-                  headerText='Dados pessoais'
-                  fields={rolesInputData(role)}
-                  onSuccess={onPersonalEditSuccess}
-                  schema={profileAndRolesSchema[role]}
-                  manipulateData={data => {
-                    delete data.email
-                    return data
-                  }}
-                >
-                  <Avatar
-                    border
-                    shadow
-                    size={128}
-                    withLoader={false}
-                    loaderColor={theme.colors.primary}
-                    onClick={() => imageRef.current?.toggle()}
-                  />
-                </EditContent>
+                <>
+                  <EditContent
+                    key={role}
+                    path='api/user'
+                    loading={userLoading}
+                    headerText='Dados pessoais'
+                    fields={rolesInputData(role)}
+                    onSuccess={onPersonalEditSuccess}
+                    schema={profileAndRolesSchema[role]}
+                    manipulateData={data => {
+                      delete data.email
+
+                      if (data.new_password && !data.confirm_confirmPassword) {
+                        delete data.new_password
+
+                        popupRef.current?.configPopup({
+                          open: true,
+                          type: 'error',
+                          message:
+                            'Senha não alterada. Confirme sua nova senha!'
+                        })
+                      }
+
+                      delete data.confirm_new_password
+                      return data
+                    }}
+                  >
+                    <Avatar
+                      border
+                      shadow
+                      size={128}
+                      withLoader={false}
+                      loaderColor={theme.colors.primary}
+                      onClick={() => imageRef.current?.toggle()}
+                    />
+                  </EditContent>
+                </>
               )
 
             return (
@@ -229,6 +236,8 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
           user?.id && dispatch(getUpdatedEmails({ userId: user.id }))
         }}
       />
+
+      <Popup ref={popupRef} />
     </>
   )
 }
