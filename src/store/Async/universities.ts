@@ -1,5 +1,7 @@
 import api from 'services/api'
 
+import { RootState } from 'store'
+
 import {
   UniversitiesResType,
   UniversitiesType
@@ -7,64 +9,45 @@ import {
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-export interface AsyncUniversitiesState {
+interface GetUniversitiesParams {
+  updated?: boolean
+}
+
+export interface UniversitiesState {
   loading: boolean
   universities: UniversitiesType
 }
 
-const initialState: AsyncUniversitiesState = {
+const initialState: UniversitiesState = {
   loading: true,
   universities: []
 }
 
-export const getUpdatedUniversities = createAsyncThunk(
-  'universities/getUpdatedUniversities',
-  async () => {
-    const { universities }: UniversitiesResType = await api.get(
-      'api/universities'
-    )
-
-    return { universities }
-  }
-)
-
 export const getUniversities = createAsyncThunk(
   'universities/getUniversities',
-  async (_data, { getState }) => {
-    const { universities } = getState() as AsyncUniversitiesState
+  async ({ updated }: GetUniversitiesParams, { getState }) => {
+    const { universities: storeUniversities } = getState() as RootState
 
-    if (!universities) {
+    if (updated || storeUniversities.universities.length === 0) {
       const { universities }: UniversitiesResType = await api.get(
         'api/universities'
       )
 
       return { universities }
     }
+
+    return { universities: storeUniversities.universities }
   }
 )
 
-const AsyncUniversities = createSlice({
-  name: 'universities',
+const Universities = createSlice({
   initialState,
   reducers: {},
-  extraReducers: builder => {
-    builder.addCase(getUniversities.pending, state => ({
-      ...state,
-      loading: true
-    }))
+  name: 'universities',
+  extraReducers: ({ addCase }) => {
+    addCase(getUniversities.pending, state => ({ ...state, loading: true }))
 
-    builder.addCase(getUniversities.fulfilled, (state, action) => ({
-      ...state,
-      ...action.payload,
-      loading: false
-    }))
-
-    builder.addCase(getUpdatedUniversities.pending, state => ({
-      ...state,
-      loading: true
-    }))
-
-    builder.addCase(getUpdatedUniversities.fulfilled, (state, action) => ({
+    addCase(getUniversities.fulfilled, (state, action) => ({
       ...state,
       ...action.payload,
       loading: false
@@ -72,6 +55,6 @@ const AsyncUniversities = createSlice({
   }
 })
 
-export const AsyncUniversitiesActions = AsyncUniversities.actions
+export const UniversitiesActions = Universities.actions
 
-export default AsyncUniversities
+export default Universities

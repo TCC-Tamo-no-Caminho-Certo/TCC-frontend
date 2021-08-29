@@ -7,7 +7,7 @@ import { getRoleLabel } from 'utils/roles'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { AsyncUserState, getUser } from 'store/Async/user'
+import { getUser, UserState } from 'store/Async/user'
 
 import CheckIcon from 'assets/global/CheckIcon'
 import ArrowIcon from 'assets/global/ArrowIcon'
@@ -56,9 +56,7 @@ const RoleInfo = ({
   onLabelClick,
   noButton = false
 }: RoleInfoProps) => {
-  const { user } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
-  )
+  const { user } = useSelector<RootState, UserState>(({ user }) => user)
 
   const popupRef = useRef<PopupForwardeds>(null)
 

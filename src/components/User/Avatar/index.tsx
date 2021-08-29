@@ -2,7 +2,7 @@ import React, { ImgHTMLAttributes, useState } from 'react'
 import Style, { StyledAvatar } from './styles'
 
 import { RootState } from 'store'
-import { AsyncUserState } from 'store/Async/user'
+import { UserState } from 'store/Async/user'
 
 import AvatarIcon from 'assets/Inputs/AvatarIcon'
 import CameraIcon from 'assets/Inputs/CameraIcon'
@@ -33,9 +33,7 @@ const Avatar = ({
   loaderColor = '#6e4850',
   ...rest
 }: AvatarProps) => {
-  const { user } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
-  )
+  const { user } = useSelector<RootState, UserState>(({ user }) => user)
 
   const [hovering, setHovering] = useState(false)
 

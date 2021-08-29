@@ -6,7 +6,7 @@ import Universities from './Universities'
 
 // import api from 'services/api'
 import { RootState } from 'store'
-import { AsyncUserState } from 'store/Async/user'
+import { UserState } from 'store/Async/user'
 import { getRolesData } from 'store/Async/rolesData'
 import { getEmails } from 'store/Async/emails'
 import { getUniversities } from 'store/Async/universities'
@@ -18,9 +18,7 @@ import Popup, { PopupForwardeds } from 'components/Popup'
 import { useDispatch, useSelector } from 'react-redux'
 
 const EditProfile = () => {
-  const { user } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
-  )
+  const { user } = useSelector<RootState, UserState>(({ user }) => user)
 
   const dispatch = useDispatch()
   const { innerWidth } = useWindowDimensions()
@@ -41,7 +39,7 @@ const EditProfile = () => {
     if (user?.id) {
       dispatch(getRolesData({ userId: user.id }))
       dispatch(getEmails({ userId: user?.id }))
-      dispatch(getUniversities())
+      dispatch(getUniversities({}))
     }
   }, [dispatch, user?.id])
 

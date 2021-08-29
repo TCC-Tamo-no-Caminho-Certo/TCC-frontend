@@ -41,7 +41,6 @@ const allThemes = { dark, light }
 
 const App = () => {
   const theme = useContext(ThemeContext)
-
   const { theme: selectedTheme } = useSelector<RootState, ThemeState>(
     ({ theme }) => theme
   )

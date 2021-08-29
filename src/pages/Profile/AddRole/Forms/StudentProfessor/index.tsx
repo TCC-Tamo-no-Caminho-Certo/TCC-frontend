@@ -22,7 +22,7 @@ import transition from 'utils/transition'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { AsyncEmailsState } from 'store/Async/emails'
+import { EmailsState } from 'store/Async/emails'
 import { getUser } from 'store/Async/user'
 
 import AlertIcon from 'assets/Inputs/AlertIcon'
@@ -32,7 +32,9 @@ import { Option } from 'components/Form/Select'
 import Presence from 'components/Presence'
 import Popup, { PopupForwardeds } from 'components/Popup'
 // eslint-disable-next-line prettier/prettier
-import RegisterEmail, { RegisterEmailForwardeds } from 'components/RegisterEmail'
+import RegisterEmail, {
+  RegisterEmailForwardeds
+} from 'components/RegisterEmail'
 
 import { UniversityType } from 'types/Responses/university'
 import { CampusResType } from 'types/Responses/university/campus'
@@ -127,9 +129,7 @@ const initialUniversity = {
 
 const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
   const { universities } = useContext(AddRoleContext)
-  const { emails } = useSelector<RootState, AsyncEmailsState>(
-    ({ asyncEmails }) => asyncEmails
-  )
+  const { emails } = useSelector<RootState, EmailsState>(({ emails }) => emails)
 
   const registerEmailRef = useRef<RegisterEmailForwardeds>(null)
   const popupRef = useRef<PopupForwardeds>(null)

@@ -7,10 +7,10 @@ const roles: RolesLabel = {
   evaluator: 'Revisor',
   student: 'Estudante',
   professor: 'Professor',
-  administrator: 'Administrador',
   customer: 'Proponente',
   moderator: 'Moderador',
-  developer: 'Desenvolvedor'
+  developer: 'Desenvolvedor',
+  administrator: 'Administrador'
 }
 
 export const getRoleLabel = (roleKey?: RoleType) =>

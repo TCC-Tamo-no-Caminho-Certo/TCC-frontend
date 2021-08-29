@@ -9,10 +9,10 @@ import EditContent from '../EditContent'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { AsyncRolesDataState } from 'store/Async/rolesData'
-import { AsyncUserState } from 'store/Async/user'
-import { AsyncEmailsState, getUpdatedEmails } from 'store/Async/emails'
-import { AsyncUniversitiesState } from 'store/Async/universities'
+import { RolesDataState } from 'store/Async/rolesData'
+import { UserState } from 'store/Async/user'
+import { EmailsState, getEmails } from 'store/Async/emails'
+import { UniversitiesState } from 'store/Async/universities'
 
 import Slider from 'components/Slider'
 import RegisterEmail, {
@@ -40,17 +40,13 @@ interface Container {
 }
 
 const Universities = ({ sliderWidth }: UniversitiesProps) => {
-  const { universities } = useSelector<RootState, AsyncUniversitiesState>(
-    ({ asyncUniversities }) => asyncUniversities
+  const { universities } = useSelector<RootState, UniversitiesState>(
+    ({ universities }) => universities
   )
-  const { emails } = useSelector<RootState, AsyncEmailsState>(
-    ({ asyncEmails }) => asyncEmails
-  )
-  const { user } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
-  )
-  const { roles } = useSelector<RootState, AsyncRolesDataState>(
-    ({ asyncRolesData }) => asyncRolesData
+  const { emails } = useSelector<RootState, EmailsState>(({ emails }) => emails)
+  const { user } = useSelector<RootState, UserState>(({ user }) => user)
+  const { roles } = useSelector<RootState, RolesDataState>(
+    ({ rolesData }) => rolesData
   )
 
   const registerEmailRef = useRef<RegisterEmailForwardeds>(null)
@@ -242,7 +238,7 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
         title='Digite seu novo e-mail'
         addData={{ university_id: universityOfEditingEmail }}
         onSuccess={() => {
-          user?.id && dispatch(getUpdatedEmails({ userId: user.id }))
+          user?.id && dispatch(getEmails({ userId: user.id, updated: true }))
         }}
       />
     </>

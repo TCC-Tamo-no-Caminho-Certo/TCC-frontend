@@ -13,11 +13,8 @@ import Container from './Forms/Container'
 import { getRoleLabel } from 'utils/roles'
 
 import { RootState } from 'store'
-import { AsyncUserState } from 'store/Async/user'
-import {
-  AsyncUniversitiesState,
-  getUniversities
-} from 'store/Async/universities'
+import { UserState } from 'store/Async/user'
+import { getUniversities, UniversitiesState } from 'store/Async/universities'
 import { getEmails } from 'store/Async/emails'
 
 import { UniversitiesType } from 'types/Responses/university/universities'
@@ -49,12 +46,10 @@ export const AddRoleContext = createContext<AddRoleState>({
 })
 
 const AddRole = () => {
-  const { universities } = useSelector<RootState, AsyncUniversitiesState>(
-    ({ asyncUniversities }) => asyncUniversities
+  const { universities } = useSelector<RootState, UniversitiesState>(
+    ({ universities }) => universities
   )
-  const { user } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
-  )
+  const { user } = useSelector<RootState, UserState>(({ user }) => user)
 
   const theme = useContext(ThemeContext)
 
@@ -74,7 +69,7 @@ const AddRole = () => {
   }, [roleSelected, pathname])
 
   useEffect(() => {
-    dispatch(getUniversities())
+    dispatch(getUniversities({}))
     if (user?.id) dispatch(getEmails({ userId: user.id }))
   }, [dispatch, user])
 

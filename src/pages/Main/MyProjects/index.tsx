@@ -6,11 +6,8 @@ import createProjectSchema from 'utils/validations/createProjectSchema'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { AsyncUserState } from 'store/Async/user'
-import {
-  AsyncUniversitiesState,
-  getUniversities
-} from 'store/Async/universities'
+import { UserState } from 'store/Async/user'
+import { getUniversities, UniversitiesState } from 'store/Async/universities'
 
 import { File, Select, Submit, Text, Textarea } from 'components/Form'
 import Modal, { ModalForwardeds } from 'components/Modal'
@@ -23,12 +20,10 @@ import { ProfessorType } from 'types/Responses/user/rolesData'
 import { useDispatch, useSelector } from 'react-redux'
 
 const Projects = forwardRef((_props, ref) => {
-  const { universities } = useSelector<RootState, AsyncUniversitiesState>(
-    ({ asyncUniversities }) => asyncUniversities
+  const { universities } = useSelector<RootState, UniversitiesState>(
+    ({ universities }) => universities
   )
-  const { user } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
-  )
+  const { user } = useSelector<RootState, UserState>(({ user }) => user)
 
   const modalRef = useRef<ModalForwardeds>(null)
   const dispatch = useDispatch()
@@ -73,7 +68,7 @@ const Projects = forwardRef((_props, ref) => {
   }
 
   useEffect(() => {
-    dispatch(getUniversities())
+    dispatch(getUniversities({}))
   }, [dispatch])
 
   return (

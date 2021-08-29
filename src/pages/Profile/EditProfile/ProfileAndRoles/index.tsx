@@ -5,18 +5,24 @@ import { InputData } from '../EditContent/Field'
 import EditContent from '../EditContent'
 
 import { getRoleLabel } from 'utils/roles' // eslint-disable-next-line prettier/prettier
-import profileAndRolesSchema, { EditProfileSchema } from 'utils/validations/editProfile'
+import profileAndRolesSchema, {
+  EditProfileSchema
+} from 'utils/validations/editProfile'
 
 import { RootState } from 'store'
-import { AsyncUserActions, AsyncUserState } from 'store/Async/user'
-import { AsyncEmailsState, getUpdatedEmails } from 'store/Async/emails'
-import { AsyncRolesDataState, getUpdatedRolesData } from 'store/Async/rolesData'
+import { UserActions, UserState } from 'store/Async/user'
+import { EmailsState, getEmails } from 'store/Async/emails'
+import { getRolesData, RolesDataState } from 'store/Async/rolesData'
 
 import Slider from 'components/Slider'
 import Avatar from 'components/User/Avatar'
 import Popup, { PopupForwardeds } from 'components/Popup' // eslint-disable-next-line prettier/prettier
-import RegisterEmail, { RegisterEmailForwardeds } from 'components/RegisterEmail' // eslint-disable-next-line prettier/prettier
-import ImageChanger, { ImageChangerForwardeds } from 'components/User/ImageChanger'
+import RegisterEmail, {
+  RegisterEmailForwardeds
+} from 'components/RegisterEmail' // eslint-disable-next-line prettier/prettier
+import ImageChanger, {
+  ImageChangerForwardeds
+} from 'components/User/ImageChanger'
 
 import { RoleType } from 'types/Responses/user/roles'
 import { RolesDataType } from 'types/Responses/user/rolesData'
@@ -36,14 +42,12 @@ export interface ContainerForm {
 
 const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
   const theme = useContext(ThemeContext)
-  const { user, loading: userLoading } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
+  const { user, loading: userLoading } = useSelector<RootState, UserState>(
+    ({ user }) => user
   )
-  const { emails } = useSelector<RootState, AsyncEmailsState>(
-    ({ asyncEmails }) => asyncEmails
-  )
-  const { roles } = useSelector<RootState, AsyncRolesDataState>(
-    ({ asyncRolesData }) => asyncRolesData
+  const { emails } = useSelector<RootState, EmailsState>(({ emails }) => emails)
+  const { roles } = useSelector<RootState, RolesDataState>(
+    ({ rolesData }) => rolesData
   )
 
   const registerEmailRef = useRef<RegisterEmailForwardeds>(null)
@@ -154,11 +158,11 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
   }
 
   const onPersonalEditSuccess = (response: any) => {
-    dispatch(AsyncUserActions.update({ user: { ...user, ...response.user } }))
+    dispatch(UserActions.update({ ...response.user }))
   }
 
   const onRolesEditSuccess = (role: RoleType) => {
-    user?.id && dispatch(getUpdatedRolesData({ userId: user.id, role }))
+    user?.id && dispatch(getRolesData({ userId: user.id, role, updated: true }))
   }
 
   return (
@@ -233,7 +237,7 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
         addData={{ main: true }}
         title='Digite seu novo e-mail'
         onSuccess={() => {
-          user?.id && dispatch(getUpdatedEmails({ userId: user.id }))
+          user?.id && dispatch(getEmails({ userId: user.id, updated: true }))
         }}
       />
 

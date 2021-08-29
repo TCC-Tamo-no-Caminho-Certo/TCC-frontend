@@ -1,11 +1,17 @@
+/// <reference types='cypress'/>
+
 Cypress.Commands.add(
   'login',
   (email = 'miguelandradebarreto2@gmail.com', password = 'Miguel@1234') => {
     cy.visit('/home')
     cy.get('[data-cy=Login-email]').type(email)
     cy.get('[data-cy=Login-password]').type(password)
+
+    cy.intercept({ method: 'POST', url: '/api/sign-in' }, () => {}).as(
+      'sign-in'
+    )
+
     cy.get('[data-cy=Login-submit]').click()
-    cy.url().should('contains', '/session/main')
   }
 )
 
@@ -22,10 +28,11 @@ Cypress.Commands.add(
     trigger,
     errorMessage,
     contain = 'contains',
-    submit = '[data-cy=Signup-submit]',
-    content = '.content'
+    content = '.content',
+    submit = '[data-cy=Signup-submit]'
   }) => {
     cy.get(submit).click()
+
     if (contain === 'contains') {
       cy.get(trigger).trigger('mouseover')
       cy.get(content).contains(errorMessage)

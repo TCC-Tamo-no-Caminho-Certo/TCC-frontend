@@ -9,7 +9,7 @@ import Style, { RightMenu } from './styles'
 
 import api from 'services/api'
 
-import { AsyncUserActions, AsyncUserState, getUser } from 'store/Async/user'
+import { getUser, UserActions, UserState } from 'store/Async/user'
 import { RootState } from 'store'
 
 import CameraIcon from 'assets/Inputs/CameraIcon'
@@ -32,9 +32,7 @@ export interface ImageChangerForwardeds {
 
 const ImageChanger = forwardRef((_props, ref) => {
   const theme = useContext(ThemeContext)
-  const { user } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
-  )
+  const { user } = useSelector<RootState, UserState>(({ user }) => user)
 
   const modalRef = useRef<ModalForwardeds>(null)
   const popupRef = useRef<PopupForwardeds>(null)
@@ -93,7 +91,7 @@ const ImageChanger = forwardRef((_props, ref) => {
         picture: cropper.getCroppedCanvas().toDataURL(type)
       })
 
-      dispatch(AsyncUserActions.update({ user: { ...user, avatar_uuid } }))
+      dispatch(UserActions.update({ avatar_uuid }))
       setLoading(false)
       onCloseClick()
       user?.id && getUser({ id: user?.id })

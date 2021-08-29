@@ -20,7 +20,7 @@ import CloseIcon from 'assets/global/CloseIcon'
 import TrashIcon from 'assets/global/TrashIcon'
 
 import FieldTable from 'components/Form/FieldTable'
-import { Field, File, Submit, Text, Textarea } from 'components/Form'
+import Form, { Field, File, Submit, Text, Textarea } from 'components/Form'
 import AnimatedList from 'components/AnimatedList'
 import Popup, { PopupForwardeds } from 'components/Popup'
 
@@ -126,17 +126,17 @@ const Season = ({
   }
 
   return (
-    <>
-      <Style
+    <Style
+      editing={editing}
+      isAdmin={
+        isAdmin && selecteds?.find(season_id => season_id === id) !== undefined
+      }
+    >
+      <Form
         method='patch'
-        editing={editing}
         afterResData={afterResData}
         manipulateData={manipulateData}
         path={`api//universities/${universityId}/seasons/${id}`}
-        isAdmin={
-          isAdmin &&
-          selecteds?.find(season_id => season_id === id) !== undefined
-        }
       >
         <AnimatedList
           id={id}
@@ -215,10 +215,10 @@ const Season = ({
             </Remove>
           )}
         </AnimatedList>
-      </Style>
+      </Form>
 
       <Popup ref={popupRef} />
-    </>
+    </Style>
   )
 }
 

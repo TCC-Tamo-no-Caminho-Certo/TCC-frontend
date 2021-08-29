@@ -7,7 +7,7 @@ import transition from 'utils/transition'
 
 import api from 'services/api'
 
-import { AsyncUserActions } from 'store/Async/user'
+import { UserActions } from 'store/Async/user'
 import { HomeActions } from 'store/Sync/home'
 import { getValidation } from 'store/Async/validation'
 
@@ -70,7 +70,7 @@ const Menu = ({ width, height, condition }: MenuProps) => {
 
     localStorage.removeItem('@SLab_ac_token')
 
-    dispatch(AsyncUserActions.reset())
+    dispatch(UserActions.reset())
     dispatch(getValidation())
     dispatch(HomeActions.update({ initial: false, page: 'login' }))
   }

@@ -7,7 +7,7 @@ import Radio from './Radio'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { AsyncUserState } from 'store/Async/user'
+import { UserState } from 'store/Async/user'
 
 import CloseIcon from 'assets/global/CloseIcon'
 import TrashIcon from 'assets/global/TrashIcon'
@@ -57,9 +57,7 @@ const ResponseContent = ({
   onCloseClick
 }: ResponseContentProps) => {
   const theme = useContext(ThemeContext)
-  const { user } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
-  )
+  const { user } = useSelector<RootState, UserState>(({ user }) => user)
 
   const popupRef = useRef<PopupForwardeds>(null)
 

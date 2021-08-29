@@ -7,27 +7,17 @@ import { RoleType } from 'types/Responses/user/roles'
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-export interface AsyncRolesDataState {
+type RolesWithData = keyof RolesDataType
+
+export interface RolesDataState {
   loading: boolean
-  firstTime: boolean
   roles: RolesDataType
 }
 
-interface GetEmailsParams {
+interface GetRolesDataParams {
+  role?: RoleType
   userId: number
-}
-
-interface GetUpdatedEmailsParams {
-  userId: number
-  role: RoleType
-}
-
-type RolesWithData = keyof RolesDataType
-
-const initialState: AsyncRolesDataState = {
-  roles: {},
-  loading: true,
-  firstTime: true
+  updated?: boolean
 }
 
 const rolesWithData: RolesWithData[] = [
@@ -37,69 +27,38 @@ const rolesWithData: RolesWithData[] = [
   'administrator'
 ]
 
-export const getUpdatedRolesData = createAsyncThunk(
-  'rolesData(getUpdatedRolesData)',
-  async ({ userId, role }: GetUpdatedEmailsParams, { getState }) => {
-    const { asyncRolesData, asyncUser } = getState() as RootState
-    const userRoles = asyncUser.user?.roles
-
-    if (userRoles)
-      if (role) {
-        const withData = rolesWithData.find(
-          roleWithData => role === roleWithData
-        )
-
-        if (withData) {
-          const newRolesData: RolesDataType = {}
-          const response = await api.get(`api/users/${userId}/roles/${role}`)
-
-          newRolesData[`${role}` as keyof RolesDataType] = response[`${role}`]
-
-          return {
-            firstTime: false,
-            roles: { ...asyncRolesData.roles, ...newRolesData }
-          }
-        }
-      } else {
-        const newRolesData: RolesDataType = {}
-
-        for (let i = 0; i < userRoles.length; i++) {
-          const withData = rolesWithData.find(
-            roleWithData => userRoles[i] === roleWithData
-          )
-
-          if (withData) {
-            const newRolesData: RolesDataType = {}
-            const response = await api.get(
-              `api/users/${userId}/roles/${userRoles[i]}`
-            )
-
-            newRolesData[`${userRoles[i]}` as keyof RolesDataType] =
-              response[`${userRoles[i]}`]
-          }
-        }
-
-        return {
-          firstTime: false,
-          roles: { ...asyncRolesData.roles, ...newRolesData }
-        }
-      }
-
-    return asyncRolesData
-  }
-)
+const initialState: RolesDataState = {
+  roles: {},
+  loading: true
+}
 
 export const getRolesData = createAsyncThunk(
   'rolesData(getRolesData)',
-  async ({ userId }: GetEmailsParams, { getState }) => {
-    const { asyncRolesData, asyncUser } = getState() as RootState
-    const userRoles = asyncUser.user?.roles
+  async ({ userId, role, updated }: GetRolesDataParams, { getState }) => {
+    const { rolesData, user } = getState() as RootState
+    const userRoles = user.user?.roles
 
-    if (userRoles && asyncRolesData.firstTime) {
+    if (role) {
+      const haveData = rolesWithData.find(roleWithData => role === roleWithData)
+      const alreadyHave = rolesData.roles[role as keyof RolesDataType]
+
+      if (haveData && (updated || !alreadyHave)) {
+        const newRoleData: RolesDataType = {}
+        const response = await api.get(`api/users/${userId}/roles/${role}`)
+        newRoleData[`${role}` as keyof RolesDataType] = response[`${role}`]
+        return { roles: { ...rolesData.roles, ...newRoleData } }
+      }
+
+      return rolesData
+    } else if (userRoles && (updated || rolesData.roles === {})) {
       const newRolesData: RolesDataType = {}
 
-      for (let i = 0; i < userRoles.length; i++)
-        if (rolesWithData.find(role => userRoles[i] === role)) {
+      for (let i = 0; i < userRoles.length; i++) {
+        const haveData = rolesWithData.find(
+          roleWithData => userRoles[i] === roleWithData
+        )
+
+        if (haveData) {
           const response = await api.get(
             `api/users/${userId}/roles/${userRoles[i]}`
           )
@@ -107,39 +66,23 @@ export const getRolesData = createAsyncThunk(
           newRolesData[`${userRoles[i]}` as keyof RolesDataType] =
             response[`${userRoles[i]}`]
         }
-
-      return {
-        firstTime: false,
-        roles: { ...asyncRolesData.roles, ...newRolesData }
       }
+
+      return { roles: newRolesData }
     }
 
-    return asyncRolesData
+    return rolesData
   }
 )
 
-const AsyncRolesData = createSlice({
-  name: 'roles',
+const RolesData = createSlice({
   initialState,
   reducers: {},
-  extraReducers: builder => {
-    builder.addCase(getRolesData.pending, state => ({
-      ...state,
-      loading: true
-    }))
+  name: 'roles',
+  extraReducers: ({ addCase }) => {
+    addCase(getRolesData.pending, state => ({ ...state, loading: true }))
 
-    builder.addCase(getRolesData.fulfilled, (state, action) => ({
-      ...state,
-      ...action.payload,
-      loading: false
-    }))
-
-    builder.addCase(getUpdatedRolesData.pending, state => ({
-      ...state,
-      loading: true
-    }))
-
-    builder.addCase(getUpdatedRolesData.fulfilled, (state, action) => ({
+    addCase(getRolesData.fulfilled, (state, action) => ({
       ...state,
       ...action.payload,
       loading: false
@@ -147,6 +90,6 @@ const AsyncRolesData = createSlice({
   }
 })
 
-export const AsyncRolesDataActions = AsyncRolesData.actions
+export const RolesDataActions = RolesData.actions
 
-export default AsyncRolesData
+export default RolesData

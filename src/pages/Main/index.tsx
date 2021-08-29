@@ -5,7 +5,7 @@ import Season from './Seasons'
 import MyProjects from '../Main/MyProjects'
 
 import { RootState } from 'store'
-import { AsyncUserState } from 'store/Async/user'
+import { UserState } from 'store/Async/user'
 
 import MapIcon from 'assets/MainSidebar/MapIcon'
 import ProjectIcon from 'assets/MainSidebar/ProjectIcon'
@@ -15,9 +15,7 @@ import Sidebar, { RouteProps } from 'components/Sidebar'
 import { useSelector } from 'react-redux'
 
 const Main = () => {
-  const { user } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
-  )
+  const { user } = useSelector<RootState, UserState>(({ user }) => user)
 
   const projectsRef = useRef(null)
   const seasonRef = useRef(null)

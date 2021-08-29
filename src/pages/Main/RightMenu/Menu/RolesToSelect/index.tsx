@@ -3,7 +3,7 @@ import Style, { RoleLi } from './styles'
 
 import { getRoleLabel } from 'utils/roles'
 
-import { AsyncUserActions, AsyncUserState } from 'store/Async/user'
+import { UserActions, UserState } from 'store/Async/user'
 import { RootState } from 'store'
 
 import CloseIcon from 'assets/global/CloseIcon'
@@ -19,16 +19,10 @@ interface RolesToSelectProps {
 
 const RolesToSelect = ({ state, setState }: RolesToSelectProps) => {
   const dispatch = useDispatch()
-  const { user } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
-  )
+  const { user } = useSelector<RootState, UserState>(({ user }) => user)
 
   const onRoleClick = (role: RoleType) =>
-    dispatch(
-      AsyncUserActions.update({
-        user: { ...user, selectedRole: role }
-      })
-    )
+    dispatch(UserActions.update({ selectedRole: role }))
 
   return state ? (
     <Style onMouseLeave={() => setState(false)}>

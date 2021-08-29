@@ -70,12 +70,7 @@ export const isoToDatepicker = (date?: string): DayValue => {
       year: Number(dates[0]),
       month: Number(dates[1])
     }
-  else
-    return {
-      day: 0,
-      year: 0,
-      month: 0
-    }
+  else return { day: 0, year: 0, month: 0 }
 }
 
 export const dateToValue = (date?: string) => {

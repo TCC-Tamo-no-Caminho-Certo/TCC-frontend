@@ -1,4 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Reducer } from 'store'
+
+import { createSlice } from '@reduxjs/toolkit'
 
 export interface HomeState {
   initial?: boolean
@@ -6,20 +8,21 @@ export interface HomeState {
   page?: 'login' | 'signup'
 }
 
-type Payload = PayloadAction<HomeState>
-
 const initialState: HomeState = {
+  page: 'login',
   disable: false,
-  initial: false,
-  page: 'login'
+  initial: false
 }
+
+const update: Reducer<HomeState> = (state, { payload }) => ({
+  ...state,
+  ...payload
+})
 
 const Home = createSlice({
   name: 'home',
   initialState,
-  reducers: {
-    update: (state, action: Payload) => ({ ...state, ...action.payload })
-  }
+  reducers: { update }
 })
 
 export const HomeActions = Home.actions

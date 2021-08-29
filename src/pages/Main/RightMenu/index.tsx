@@ -7,7 +7,7 @@ import { getRoleLabel } from 'utils/roles'
 import formatterName from 'utils/formatterName'
 
 import { RootState } from 'store'
-import { AsyncUserState } from 'store/Async/user'
+import { UserState } from 'store/Async/user'
 
 import useWindowDimensions from 'hooks/useWindowDimensions'
 
@@ -24,8 +24,8 @@ import { ThemeContext } from 'styled-components'
 
 const RightMenu = () => {
   const theme = useContext(ThemeContext)
-  const { user, loading } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
+  const { user, loading } = useSelector<RootState, UserState>(
+    ({ user }) => user
   )
 
   const { innerWidth } = useWindowDimensions()

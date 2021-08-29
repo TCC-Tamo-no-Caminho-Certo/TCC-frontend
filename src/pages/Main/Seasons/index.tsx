@@ -10,18 +10,18 @@ import Style, { Content, NotLinked } from './styles'
 
 import University from './University'
 
-import api from 'services/api'
-
 import { RootState } from 'store'
-import { AsyncUserState } from 'store/Async/user'
+import { UserState } from 'store/Async/user'
+import {
+  getUserUniversities,
+  UserUniversitiesState
+} from 'store/Async/userUniversities'
 
 import DotsLoader from 'components/DotsLoader'
 
-import { SeasonsResType, SeasonsType } from 'types/Responses/university/seasons'
-import { UniversitiesResType } from 'types/Responses/university/universities'
-import { AdministratorResType } from 'types/Responses/user/rolesData'
+import { SeasonsType } from 'types/Responses/university/seasons'
 
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 
 export interface UniversityDataType {
@@ -39,49 +39,39 @@ export const SeasonsContext = createContext<SeasonsContextProps>({})
 
 const Seasons = forwardRef((_props, ref) => {
   const { colors } = useContext(ThemeContext)
-  const { user } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
-  )
+  const { user } = useSelector<RootState, UserState>(({ user }) => user)
+  const { universities: userUniversities } = useSelector<
+    RootState,
+    UserUniversitiesState
+  >(({ userUniversities }) => userUniversities)
 
-  const [selectedUniversities, setSelectedUniversities] = useState<number[]>()
   const [universities, setUniversities] = useState<UniversityDataType[]>()
+  const [selectedUniversities, setSelectedUniversities] = useState<number[]>()
 
-  const getUniversitiesOfUser = useCallback(async () => {
-    const universitiesOfUser: UniversityDataType[] = []
+  const dispatch = useDispatch()
 
-    if (user?.id) {
-      const { universities }: UniversitiesResType = await api.get(
-        `api/users/${user.id}/roles/universities`
-      )
+  useEffect(() => {
+    setUniversities(
+      userUniversities?.map(university => {
+        const isSelectedAdmin = university.isAdmin
+          ? user?.selectedRole === 'administrator'
+          : university.isAdmin
 
-      for (let i = 0; i < universities?.length; i++) {
-        const { id, name } = universities[i]
+        return { ...university, isAdmin: isSelectedAdmin }
+      })
+    )
+  }, [user?.selectedRole, userUniversities])
 
-        const { seasons }: SeasonsResType = await api.get(
-          `api/universities/${id}/seasons`
-        )
-
-        const { administrator }: AdministratorResType = await api.get(
-          `api/users/${user.id}/roles/administrator`
-        )
-
-        const universityId = administrator.university?.id
-
-        const isAdmin = !!(
-          universityId === id && user?.selectedRole === 'administrator'
-        )
-
-        universitiesOfUser?.push({
-          name,
-          isAdmin,
-          seasons,
-          id: universities[i].id
+  const getUniversitiesOfUser = useCallback(() => {
+    if (user?.id && user?.roles)
+      dispatch(
+        getUserUniversities({
+          userId: user.id,
+          userRoles: user?.roles,
+          updated: true
         })
-      }
-
-      setUniversities(universitiesOfUser)
-    }
-  }, [user])
+      )
+  }, [dispatch, user?.id, user?.roles])
 
   useEffect(() => {
     getUniversitiesOfUser()

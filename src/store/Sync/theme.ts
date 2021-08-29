@@ -1,28 +1,27 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Reducer } from 'store'
+
+import { createSlice } from '@reduxjs/toolkit'
 
 type Themes = 'light' | 'dark'
-
-const localTheme = localStorage.getItem('@SLab_theme') as Themes
 
 export interface ThemeState {
   theme: Themes
 }
 
 const initialState: ThemeState = {
-  theme: localTheme || 'light'
+  theme: (localStorage.getItem('@SLab_theme') as Themes) || 'light'
 }
 
-type Payload = PayloadAction<ThemeState>
+const changeTheme: Reducer<ThemeState> = (state, { payload }) => {
+  localStorage.setItem('@SLab_theme', payload.theme)
+
+  return { theme: payload.theme }
+}
 
 const Theme = createSlice({
-  name: 'theme',
   initialState,
-  reducers: {
-    changeTheme: (state, { payload }: Payload) => {
-      localStorage.setItem('@SLab_theme', payload.theme)
-      return { theme: payload.theme }
-    }
-  }
+  name: 'theme',
+  reducers: { changeTheme }
 })
 
 export const ThemeActions = Theme.actions

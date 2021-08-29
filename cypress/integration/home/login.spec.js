@@ -1,3 +1,5 @@
+/// <reference types='cypress'/>
+
 describe.skip('Validar login', () => {
   it('#mostrar erros', () => {
     cy.visit('/home')

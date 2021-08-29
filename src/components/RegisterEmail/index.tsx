@@ -6,8 +6,8 @@ import tokenSchema from 'utils/validations/tokenSchema'
 import api from 'services/api'
 
 import { RootState } from 'store'
-import { AsyncEmailsState, getUpdatedEmails } from 'store/Async/emails'
-import { AsyncUserState } from 'store/Async/user'
+import { EmailsState, getEmails } from 'store/Async/emails'
+import { UserState } from 'store/Async/user'
 
 import CloseIcon from 'assets/global/CloseIcon'
 
@@ -32,11 +32,9 @@ interface RegisterEmailProps {
 
 const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
   ({ title, addData, regex, onSuccess, placeholder }, ref) => {
-    const { user } = useSelector<RootState, AsyncUserState>(
-      ({ asyncUser }) => asyncUser
-    )
-    const { emails } = useSelector<RootState, AsyncEmailsState>(
-      ({ asyncEmails }) => asyncEmails
+    const { user } = useSelector<RootState, UserState>(({ user }) => user)
+    const { emails } = useSelector<RootState, EmailsState>(
+      ({ emails }) => emails
     )
 
     const modalRef = useRef<ModalForwardeds>(null)
@@ -82,7 +80,7 @@ const RegisterEmail = forwardRef<RegisterEmailForwardeds, RegisterEmailProps>(
       beforeEmail?.id &&
         (await api.delete(`api/users/emails/${beforeEmail?.id}`))
 
-      user?.id && dispatch(getUpdatedEmails({ userId: user.id }))
+      user?.id && dispatch(getEmails({ userId: user.id, updated: true }))
     }
 
     const afterTokenSubmit = (res: any) => {

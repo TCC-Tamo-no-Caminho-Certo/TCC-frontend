@@ -1,10 +1,8 @@
-import Form from 'components/Form'
-
 import styled from 'styled-components'
 
 interface StyleProps {
-  isAdmin: boolean
-  editing: boolean
+  isAdmin?: boolean
+  editing?: boolean
 }
 
 export const Remove = styled.div`
@@ -108,74 +106,76 @@ export const Begin = styled.div`
   }
 `
 
-const Style = styled(Form)<StyleProps>`
-  .AnimatedList {
-    .Header {
-      transition: padding ease-in-out 0.5s;
+const Style = styled.div<StyleProps>`
+  .Form {
+    .AnimatedList {
+      .Header {
+        transition: padding ease-in-out 0.5s;
 
-      padding: ${({ isAdmin, editing }) => {
-        if (isAdmin && editing) return '0 48px'
-        return isAdmin ? '0 48px 0 0' : '0'
-      }};
-    }
-
-    .Content {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      justify-content: center;
-
-      width: 100%;
-      padding: 8px;
-      border-radius: 0px 0px 16px 16px;
-
-      border: solid 1px ${({ theme }) => theme.colors.tertiary};
-
-      > * + * {
-        margin-top: 16px;
+        padding: ${({ isAdmin, editing }) => {
+          if (isAdmin && editing) return '0 48px'
+          return isAdmin ? '0 48px 0 0' : '0'
+        }};
       }
 
-      p {
-        margin-top: 0px;
-        word-break: break-all;
-      }
-
-      .Submit {
-        width: 100%;
-      }
-
-      .Textarea {
-        min-width: 100%;
-
-        textarea {
-          background-color: transparent;
-        }
-      }
-
-      ${Edit}, ${Remove} {
-        position: absolute;
-        top: 0;
-        z-index: 2;
-
+      .Content {
         display: flex;
         align-items: center;
+        flex-direction: column;
         justify-content: center;
 
-        width: 48px;
-        height: 54px;
-        margin-top: 0px;
+        width: 100%;
+        padding: 8px;
+        border-radius: 0px 0px 16px 16px;
 
-        .Icon {
-          height: 22px;
+        border: solid 1px ${({ theme }) => theme.colors.tertiary};
 
-          fill: ${({ theme }) => theme.colors.secondary};
+        > * + * {
+          margin-top: 16px;
+        }
+
+        p {
+          margin-top: 0px;
+          word-break: break-all;
+        }
+
+        .Submit {
+          width: 100%;
+        }
+
+        .Textarea {
+          min-width: 100%;
+
+          textarea {
+            background-color: transparent;
+          }
+        }
+
+        ${Edit}, ${Remove} {
+          position: absolute;
+          top: 0;
+          z-index: 2;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          width: 48px;
+          height: 54px;
+          margin-top: 0px;
+
+          .Icon {
+            height: 22px;
+
+            fill: ${({ theme }) => theme.colors.secondary};
+          }
         }
       }
     }
   }
 
   @media screen and (min-width: 400px) {
-    .AnimatedList .Content {
+    .Form .AnimatedList .Content {
       padding: 16px;
     }
   }

@@ -3,25 +3,31 @@ import AsyncUser from './Async/user'
 import Theme from './Sync/theme'
 import Sidebar from './Sync/sidebar'
 import AsyncValidation from './Async/validation'
-import asyncUniversities from './Async/universities'
-import AsyncEmails from './Async/emails'
+import universities from './Async/universities'
+import Emails from './Async/emails'
 import AsyncRolesData from './Async/rolesData'
+import UserUniversities from './Async/userUniversities'
 
-import { configureStore } from '@reduxjs/toolkit'
+import { CaseReducer, configureStore, PayloadAction } from '@reduxjs/toolkit'
 
-export type RootState = ReturnType<typeof store.getState>
+export type RootState = ReturnType<typeof Store.getState>
+export type Reducer<T> = CaseReducer<T, PayloadAction<T>>
 
-const store = configureStore({
+const Store = configureStore({
   reducer: {
+    validation: AsyncValidation.reducer,
+
+    user: AsyncUser.reducer,
+    rolesData: AsyncRolesData.reducer,
+    emails: Emails.reducer,
+    userUniversities: UserUniversities.reducer,
+
     home: Home.reducer,
     theme: Theme.reducer,
     sidebar: Sidebar.reducer,
-    asyncUser: AsyncUser.reducer,
-    asyncEmails: AsyncEmails.reducer,
-    asyncValidation: AsyncValidation.reducer,
-    asyncRolesData: AsyncRolesData.reducer,
-    asyncUniversities: asyncUniversities.reducer
+
+    universities: universities.reducer
   }
 })
 
-export default store
+export default Store

@@ -6,34 +6,24 @@ import { EmailsResType, EmailsType } from 'types/Responses/user/emails'
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-export interface AsyncEmailsState {
+export interface EmailsState {
   loading: boolean
   emails: EmailsType
 }
 
 interface GetEmailsParams {
   userId: number
+  updated?: boolean
 }
 
-const initialState: AsyncEmailsState = { emails: [], loading: true }
-
-export const getUpdatedEmails = createAsyncThunk(
-  'emails(getUpdatedEmails)',
-  async ({ userId }: GetEmailsParams) => {
-    const { emails }: EmailsResType = await api.get(
-      `api/users/${userId}/emails`
-    )
-
-    return { emails }
-  }
-)
+const initialState: EmailsState = { emails: [], loading: true }
 
 export const getEmails = createAsyncThunk(
   'emails(getEmails)',
-  async ({ userId }: GetEmailsParams, { getState }) => {
-    const { asyncEmails } = getState() as RootState
+  async ({ userId, updated }: GetEmailsParams, { getState }) => {
+    const { emails } = getState() as RootState
 
-    if (asyncEmails.emails.length === 0) {
+    if (updated || emails.emails.length === 0) {
       const { emails }: EmailsResType = await api.get(
         `api/users/${userId}/emails`
       )
@@ -41,29 +31,18 @@ export const getEmails = createAsyncThunk(
       return { emails }
     }
 
-    return asyncEmails
+    return emails
   }
 )
 
-const AsyncEmails = createSlice({
-  name: 'emails',
+const Emails = createSlice({
   initialState,
   reducers: {},
-  extraReducers: builder => {
-    builder.addCase(getEmails.pending, state => ({ ...state, loading: true }))
+  name: 'emails',
+  extraReducers: ({ addCase }) => {
+    addCase(getEmails.pending, state => ({ ...state, loading: true }))
 
-    builder.addCase(getEmails.fulfilled, (state, action) => ({
-      ...state,
-      ...action.payload,
-      loading: false
-    }))
-
-    builder.addCase(getUpdatedEmails.pending, state => ({
-      ...state,
-      loading: true
-    }))
-
-    builder.addCase(getUpdatedEmails.fulfilled, (state, action) => ({
+    addCase(getEmails.fulfilled, (state, action) => ({
       ...state,
       ...action.payload,
       loading: false
@@ -71,6 +50,6 @@ const AsyncEmails = createSlice({
   }
 })
 
-export const AsyncEmailsActions = AsyncEmails.actions
+export const EmailsActions = Emails.actions
 
-export default AsyncEmails
+export default Emails

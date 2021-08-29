@@ -17,7 +17,7 @@ import { getRoleLabel } from 'utils/roles'
 
 import api from 'services/api'
 
-import { AsyncUserState } from 'store/Async/user'
+import { UserState } from 'store/Async/user'
 import { RootState } from 'store'
 
 import useCombinedRefs from 'hooks/useCombinedRefs'
@@ -40,9 +40,7 @@ interface ContainerProps {
 
 const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
   const { roles } = useContext(AddRoleContext)
-  const { user } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
-  )
+  const { user } = useSelector<RootState, UserState>(({ user }) => user)
 
   const hereRef = useRef<HTMLDivElement>(null)
 

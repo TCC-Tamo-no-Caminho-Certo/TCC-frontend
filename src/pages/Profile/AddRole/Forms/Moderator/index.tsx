@@ -8,9 +8,9 @@ import {
   withoutFullTime
 } from 'utils/validations/addRoleForms/moderator'
 
-import { AsyncRolesDataState, getUpdatedRolesData } from 'store/Async/rolesData'
+import { getRolesData, RolesDataState } from 'store/Async/rolesData'
 import { RootState } from 'store'
-import { AsyncUserState } from 'store/Async/user'
+import { UserState } from 'store/Async/user'
 
 import { Select, Submit, Textarea } from 'components/Form'
 import { Option } from 'components/Form/Select'
@@ -46,12 +46,10 @@ const verifyFullTime = (professor: ProfessorType, university_id: number) => {
 
 const ModeratorForm = ({ request }: ModeratorProps) => {
   const { universities } = useContext(AddRoleContext)
-  const { roles } = useSelector<RootState, AsyncRolesDataState>(
-    ({ asyncRolesData }) => asyncRolesData
+  const { roles } = useSelector<RootState, RolesDataState>(
+    ({ rolesData }) => rolesData
   )
-  const { user } = useSelector<RootState, AsyncUserState>(
-    ({ asyncUser }) => asyncUser
-  )
+  const { user } = useSelector<RootState, UserState>(({ user }) => user)
 
   const popupRef = useRef<PopupForwardeds>(null)
   const [values, setValues] = useState<Values>({ university: undefined })
@@ -118,7 +116,9 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
 
   useEffect(() => {
     user?.id &&
-      dispatch(getUpdatedRolesData({ userId: user.id, role: 'professor' }))
+      dispatch(
+        getRolesData({ userId: user.id, role: 'professor', updated: true })
+      )
   }, [dispatch, user?.id])
 
   return (
