@@ -139,18 +139,20 @@ const Season = ({
     if (editing)
       components.push(
         <Text
+          key='title'
           name='title'
+          maxLength={50}
           placeholder='Título'
           defaultValue={season.title}
-          maxLength={50}
         />,
         <Textarea
           maxLength={500}
+          key='description'
           name='description'
           placeholder='Descrição'
           defaultValue={season.description}
         />,
-        <Begin>
+        <Begin key='editing-begin'>
           <span>Início da temporada:</span>
 
           <Field
@@ -175,38 +177,39 @@ const Season = ({
             }}
           />
         </Begin>,
-        <>
-          <File
-            noCropper
-            name='edict'
-            label='Enviar Edital'
-            accept='application/pdf'
-          />
-
-          <Submit>Salvar alterações</Submit>
-        </>
+        <FieldTable
+          edit={editing}
+          key='fieldTable'
+          data={periodsData}
+          valueComplement='Dias'
+          header={['Período', 'Duração (Dias)']}
+        />,
+        <File
+          noCropper
+          key='edict'
+          name='edict'
+          label='Enviar Edital'
+          accept='application/pdf'
+        />,
+        <Submit key='submit'>Salvar alterações</Submit>
       )
     else
       components.push(
-        <p>{season.description}</p>,
-        <Begin>
+        <p key='description'>{season.description}</p>,
+        <Begin key='begin'>
           Início da temporada: {isoToDate(season.begin, 'day/month/2-year')}
         </Begin>,
-        <Edict download href={season.edict}>
+        <FieldTable
+          edit={editing}
+          key='fieldTable'
+          data={periodsData}
+          valueComplement='Dias'
+          header={['Período', 'Duração (Dias)']}
+        />,
+        <Edict key='edict' download href={season.edict}>
           <DownloadIcon /> Baixar edital
         </Edict>
       )
-
-    components.splice(
-      components.length - 1,
-      0,
-      <FieldTable
-        edit={editing}
-        data={periodsData}
-        valueComplement='Dias'
-        header={['Período', 'Duração (Dias)']}
-      />
-    )
 
     return components
   }
@@ -222,6 +225,7 @@ const Season = ({
         >
           <List
             id={id}
+            listKey='seasons'
             title={season.title}
             selecteds={selecteds}
             setSelecteds={setSelecteds}
@@ -236,7 +240,7 @@ const Season = ({
           </Edit>
         )}
 
-        {isAdmin && editing && isSelected && (
+        {isAdmin && isSelected && editing && (
           <Remove onClick={onRemoveClick}>
             <TrashIcon />
           </Remove>

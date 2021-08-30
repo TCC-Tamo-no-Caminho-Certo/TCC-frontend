@@ -4,6 +4,7 @@ import Style from './styles'
 import { motion, Transition, Variants } from 'framer-motion'
 
 interface AnimatedListProps {
+  keyItem: string
   condition: boolean
   className?: string
   children?: ReactNode[]
@@ -18,6 +19,7 @@ const ulAnimation: Variants = {
 }
 
 const AnimatedList = ({
+  keyItem,
   children,
   condition,
   className = 'AnimatedList'
@@ -54,7 +56,7 @@ const AnimatedList = ({
         variants={ulAnimation}
       >
         {children?.map((item, index) => (
-          <li key={index}>{item}</li>
+          <li key={keyItem + index}>{item}</li>
         ))}
       </motion.ul>
     </Style>

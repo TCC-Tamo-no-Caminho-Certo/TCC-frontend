@@ -86,6 +86,7 @@ const CreateSeason = ({
             id={id}
             addClose
             selecteds={selecteds}
+            listKey='create-season'
             title='Adicionar temporada'
             setSelecteds={setSelecteds}
           >

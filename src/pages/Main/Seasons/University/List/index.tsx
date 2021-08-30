@@ -18,6 +18,7 @@ import { Variants } from 'framer-motion'
 
 export interface ListProps {
   id: number
+  listKey: string
   addClose?: boolean
   children: ReactNode
   selecteds?: number[]
@@ -34,8 +35,9 @@ const titleAnimation: Variants = {
 const List = ({
   id,
   title,
-  children,
+  listKey,
   addClose,
+  children,
   selecteds,
   setSelecteds
 }: ListProps) => {
@@ -81,7 +83,11 @@ const List = ({
         <div id='title'>{title}</div>
       </Header>
 
-      <AnimatedList className='Content' condition={isSelected}>
+      <AnimatedList
+        keyItem={listKey}
+        className='Content'
+        condition={isSelected}
+      >
         {children as any[]}
       </AnimatedList>
     </Style>

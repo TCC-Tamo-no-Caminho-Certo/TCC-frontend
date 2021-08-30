@@ -22,7 +22,7 @@ export const Seasons = styled.div`
   }
 `
 
-const Style = styled(motion.li)`
+const Style = styled.div`
   width: 90%;
 
   .AnimatedList {

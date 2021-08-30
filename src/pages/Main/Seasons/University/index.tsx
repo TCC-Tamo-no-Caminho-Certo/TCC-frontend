@@ -80,9 +80,9 @@ const University = ({
     if (isAdmin)
       components.push(
         <CreateSeason
-          key='createSeason'
           id={-1}
           universityId={id}
+          key='create-season'
           selecteds={selectedSeasons}
           setSelecteds={setSelectedSeasons}
         />
@@ -103,13 +103,7 @@ const University = ({
         {name}
       </UniversityName>
 
-      <AnimatedList condition={isSelected}>
-        {seasons?.length === 0 && (
-          <div id='noSeasons' key='noSeason'>
-            Esta universidade não pussui temporadas
-          </div>
-        )}
-
+      <AnimatedList condition={isSelected} keyItem='university'>
         {seasonsComponents()}
       </AnimatedList>
     </Style>
@@ -117,29 +111,3 @@ const University = ({
 }
 
 export default University
-
-/* {seasons?.length !== 0 ? (
-  seasons?.map(season => (
-    <Season
-      season={season}
-      id={season.id}
-      key={season.id}
-      isAdmin={isAdmin}
-      universityId={id}
-      selecteds={selectedSeasons}
-      setSelecteds={setSelectedSeasons}
-    />
-  ))
-  ) : (
-    <div id='noSeasons'>Esta universidade não pussui temporadas</div>
-  )}
-
-  {isAdmin && (
-    <CreateSeason
-      id={-1}
-      universityId={id}
-      selecteds={selectedSeasons}
-      setSelecteds={setSelectedSeasons}
-    />
-  )}
-*/

@@ -41,7 +41,7 @@ export const Header = styled(motion.button)`
   }
 `
 
-const Style = styled(motion.li)`
+const Style = styled.div`
   position: relative;
   z-index: 1;
 
