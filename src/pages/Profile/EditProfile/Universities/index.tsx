@@ -15,9 +15,8 @@ import { EmailsState, getEmails } from 'store/Async/emails'
 import { UniversitiesState } from 'store/Async/universities'
 
 import Slider from 'components/Slider'
-import RegisterEmail, {
-  RegisterEmailForwardeds
-} from 'components/RegisterEmail'
+// eslint-disable-next-line prettier/prettier
+import RegisterEmail, { RegisterEmailForwardeds } from 'components/RegisterEmail'
 
 import { RoleType } from 'types/Responses/user/roles'
 import { OneCampusResType } from 'types/Responses/university/campus'
@@ -73,8 +72,6 @@ const Universities = ({ sliderWidth }: UniversitiesProps) => {
           const foundUniversity = universities.find(
             ({ id }) => id === university.id
           )
-
-          console.log(university)
 
           const registerRegex = foundUniversity?.regex.register[role]
           const emailRegex = foundUniversity?.regex.email[role]

@@ -105,6 +105,7 @@ const Text = forwardRef<HTMLInputElement, TextProps>(
       <Style
         id={id}
         hasEye={!!eye}
+        isDate={isDate}
         hidden={hidden}
         hasIcon={!!Icon}
         isFilled={isFilled}

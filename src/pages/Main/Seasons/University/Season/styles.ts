@@ -1,18 +1,20 @@
 import styled from 'styled-components'
 
 interface StyleProps {
-  isAdmin?: boolean
   editing?: boolean
+  isAdmin?: boolean
 }
 
 export const Remove = styled.div`
-  left: 0;
+  left: 16px;
+  border-radius: 16px 0 0 0;
 
   background-color: ${({ theme }) => theme.colors.red};
 `
 
 export const Edit = styled.div`
   right: 0;
+  border-radius: 0 16px 0 0;
 
   background-color: ${({ theme }) => theme.colors.primary};
 
@@ -31,6 +33,7 @@ export const Edict = styled.a`
   width: 100%;
   height: 44px;
   cursor: pointer;
+  margin-bottom: 8px;
   border-radius: 0 0 8px 8px;
 
   color: ${({ theme }) => theme.colors.secondary};
@@ -44,8 +47,8 @@ export const Edict = styled.a`
     height: 18px;
     margin-right: 8px;
 
-    background-color: ${({ theme }) => theme.colors.primary};
     fill: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.primary};
   }
 `
 
@@ -56,7 +59,6 @@ export const Begin = styled.div`
   justify-content: center;
 
   width: 100%;
-  height: 43px;
   font-size: clamp(1.3rem, 0.6rem + 2.6vw, 2rem);
 
   span {
@@ -66,9 +68,9 @@ export const Begin = styled.div`
   .DefaultField {
     position: relative;
 
-    height: 42px;
     width: 230px;
     margin-left: 4px;
+    min-height: 43px;
 
     .Icon {
       position: absolute;
@@ -80,6 +82,10 @@ export const Begin = styled.div`
     }
   }
 
+  .Field .CalendarSize {
+    font-size: 8px !important;
+  }
+
   #label {
     margin-bottom: 8px;
   }
@@ -87,7 +93,7 @@ export const Begin = styled.div`
   @media screen and (min-width: 545px) {
     .Field {
       .CalendarSize {
-        font-size: 9px !important;
+        font-size: 8px !important;
       }
 
       > div {
@@ -100,83 +106,78 @@ export const Begin = styled.div`
     flex-direction: row;
 
     span {
-      margin-bottom: 0px;
-      margin-right: 8px;
+      margin: 0 0 0 8px;
     }
   }
 `
 
 const Style = styled.div<StyleProps>`
-  .Form {
-    .AnimatedList {
-      .Header {
-        transition: padding ease-in-out 0.5s;
+  position: relative;
+  padding: 16px;
 
-        padding: ${({ isAdmin, editing }) => {
-          if (isAdmin && editing) return '0 48px'
-          return isAdmin ? '0 48px 0 0' : '0'
-        }};
+  .List {
+    .Header {
+      transition: padding ease-in-out 0.5s;
+
+      padding: ${({ isAdmin, editing }) => {
+        if (isAdmin && editing) return '0 48px'
+        return isAdmin ? '0 48px 0 0' : '0'
+      }};
+    }
+
+    .Content {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+
+      border-radius: 0px 0px 16px 16px;
+
+      border: solid 1px ${({ theme }) => theme.colors.tertiary};
+
+      > * {
+        width: 100%;
+        padding: 0 8px;
+        margin-top: 8px;
       }
 
-      .Content {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        justify-content: center;
+      p {
+        word-break: break-all;
+      }
 
+      .Submit {
         width: 100%;
-        padding: 8px;
-        border-radius: 0px 0px 16px 16px;
+        margin: 8px 0;
+      }
 
-        border: solid 1px ${({ theme }) => theme.colors.tertiary};
+      .Textarea {
+        min-width: 100%;
 
-        > * + * {
-          margin-top: 16px;
-        }
-
-        p {
-          margin-top: 0px;
-          word-break: break-all;
-        }
-
-        .Submit {
-          width: 100%;
-        }
-
-        .Textarea {
-          min-width: 100%;
-
-          textarea {
-            background-color: transparent;
-          }
-        }
-
-        ${Edit}, ${Remove} {
-          position: absolute;
-          top: 0;
-          z-index: 2;
-
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          width: 48px;
-          height: 54px;
-          margin-top: 0px;
-
-          .Icon {
-            height: 22px;
-
-            fill: ${({ theme }) => theme.colors.secondary};
-          }
+        textarea {
+          background-color: transparent;
         }
       }
     }
   }
 
-  @media screen and (min-width: 400px) {
-    .Form .AnimatedList .Content {
-      padding: 16px;
+  ${Edit}, ${Remove} {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 48px;
+    height: 54px;
+    margin-top: 0px;
+
+    .Icon {
+      height: 22px;
+
+      fill: ${({ theme }) => theme.colors.secondary};
     }
   }
 `

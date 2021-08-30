@@ -12,6 +12,7 @@ Cypress.Commands.add(
     )
 
     cy.get('[data-cy=Login-submit]').click()
+    cy.url().should('contains', '/session/main')
   }
 )
 

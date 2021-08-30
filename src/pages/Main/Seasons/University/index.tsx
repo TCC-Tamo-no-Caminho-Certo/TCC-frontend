@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from 'react'
-import Style, { Seasons, UniversityName } from './styles'
+import Style, { UniversityName } from './styles'
 
 import CreateSeason from './CreateSeason'
 import Season from './Season'
@@ -7,26 +7,23 @@ import { UniversityDataType } from '../index'
 
 import transition from 'utils/transition'
 
-import Presence from 'components/Presence'
+import AnimatedList from 'components/AnimatedList'
 
 import { Variants } from 'framer-motion'
 
 interface UniversityProps {
-  university: UniversityDataType
   selecteds?: number[]
+  university: UniversityDataType
   setSelecteds?: Dispatch<SetStateAction<number[] | undefined>>
 }
 
 const buttonAnimation: Variants = {
   initial: { borderRadius: '24px 24px 24px 24px' },
-  rounded: { borderRadius: '24px 24px 24px 24px', transition },
-  unrounded: { borderRadius: '24px 24px 0px 0px', transition }
-}
-
-const bgAnimation: Variants = {
-  initial: { y: -64, height: 0, opacity: 0 },
-  exit: { y: -64, height: 0, opacity: 0, transition },
-  enter: { y: 0, opacity: 1, height: 'auto', transition }
+  unrounded: { borderRadius: '24px 24px 0px 0px', transition },
+  rounded: {
+    borderRadius: '24px 24px 24px 24px',
+    transition: { ...transition, delay: 0.3 }
+  }
 }
 
 const University = ({
@@ -62,6 +59,38 @@ const University = ({
     setTimeout(() => setDisabled(false), 400)
   }
 
+  const seasonsComponents = () => {
+    const components = []
+
+    if (seasons)
+      components.push(
+        ...seasons.map(season => (
+          <Season
+            id={season.id}
+            key={season.id}
+            season={season}
+            isAdmin={isAdmin}
+            universityId={id}
+            selecteds={selectedSeasons}
+            setSelecteds={setSelectedSeasons}
+          />
+        ))
+      )
+
+    if (isAdmin)
+      components.push(
+        <CreateSeason
+          key='createSeason'
+          id={-1}
+          universityId={id}
+          selecteds={selectedSeasons}
+          setSelecteds={setSelectedSeasons}
+        />
+      )
+
+    return components
+  }
+
   return (
     <Style>
       <UniversityName
@@ -74,36 +103,43 @@ const University = ({
         {name}
       </UniversityName>
 
-      <Presence variants={bgAnimation} condition={isSelected}>
-        <Seasons>
-          {seasons?.length !== 0 ? (
-            seasons?.map(season => (
-              <Season
-                season={season}
-                id={season.id}
-                key={season.id}
-                isAdmin={isAdmin}
-                universityId={id}
-                selecteds={selectedSeasons}
-                setSelecteds={setSelectedSeasons}
-              />
-            ))
-          ) : (
-            <div id='noSeasons'>Esta universidade não pussui temporadas</div>
-          )}
+      <AnimatedList condition={isSelected}>
+        {seasons?.length === 0 && (
+          <div id='noSeasons' key='noSeason'>
+            Esta universidade não pussui temporadas
+          </div>
+        )}
 
-          {isAdmin && (
-            <CreateSeason
-              id={-1}
-              universityId={id}
-              selecteds={selectedSeasons}
-              setSelecteds={setSelectedSeasons}
-            />
-          )}
-        </Seasons>
-      </Presence>
+        {seasonsComponents()}
+      </AnimatedList>
     </Style>
   )
 }
 
 export default University
+
+/* {seasons?.length !== 0 ? (
+  seasons?.map(season => (
+    <Season
+      season={season}
+      id={season.id}
+      key={season.id}
+      isAdmin={isAdmin}
+      universityId={id}
+      selecteds={selectedSeasons}
+      setSelecteds={setSelectedSeasons}
+    />
+  ))
+  ) : (
+    <div id='noSeasons'>Esta universidade não pussui temporadas</div>
+  )}
+
+  {isAdmin && (
+    <CreateSeason
+      id={-1}
+      universityId={id}
+      selecteds={selectedSeasons}
+      setSelecteds={setSelectedSeasons}
+    />
+  )}
+*/

@@ -69,7 +69,7 @@ const Field = ({
     </EditField>
   ) : (
     <DefaultField className='DefaultField'>
-      {defaultValue}
+      <div>{defaultValue}</div>
 
       {enableToEdit && <PencilIcon onClick={onPencilClick} />}
     </DefaultField>

@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components'
 
 interface StyleProps {
   hasEye: boolean
+  isDate: boolean
   hasIcon: boolean
   hidden?: boolean
   optional: boolean
@@ -81,6 +82,12 @@ const Style = styled.div<StyleProps>`
           -webkit-text-fill-color: ${lighten(0.1, theme.colors.tertiary)};
         `}
     }
+
+    ${({ isDate }) =>
+      isDate &&
+      css`
+        cursor: pointer;
+      `}
 
     ${({ hasEye, hasIcon }) =>
       hasEye && hasIcon

@@ -29,6 +29,7 @@ const Style = styled.section`
   justify-content: center;
 
   min-height: 100vh;
+  padding-bottom: 48px;
 
   header {
     position: absolute;

@@ -3,13 +3,14 @@ import Style, { Begin } from './styles'
 
 import { SeasonsContext } from '../..'
 
+import List from 'pages/Main/Seasons/University/List'
+
 import createSeasonSchema from 'utils/validations/createSeasonSchema'
 
 import CalendarIcon from 'assets/global/CalendarIcon'
 
 import FieldTable from 'components/Form/FieldTable'
-import AnimatedList from 'components/AnimatedList'
-import { Field, File, Submit, Text, Textarea } from 'components/Form'
+import Form, { Field, File, Submit, Text, Textarea } from 'components/Form'
 import Popup, { PopupForwardeds } from 'components/Popup'
 
 interface CreateSeasonProps {
@@ -35,6 +36,8 @@ const CreateSeason = ({
   const popupRef = useRef<PopupForwardeds>(null)
   const { getUniversitiesOfUser } = useContext(SeasonsContext)
 
+  const actualDate = new Date()
+
   const manipulateData = (data: any) => {
     const {
       title,
@@ -54,11 +57,13 @@ const CreateSeason = ({
   const afterResData = (data: any) => {
     if (!data.success)
       popupRef?.current?.configPopup({
+        open: true,
         type: 'error',
         message: 'Algo inesperado aconteceu! Tente novamente'
       })
     else
       popupRef?.current?.configPopup({
+        open: true,
         type: 'success',
         message: 'Temporada adicionada!',
         onClick: () => {
@@ -70,56 +75,70 @@ const CreateSeason = ({
 
   return (
     <>
-      <Style
-        afterResData={afterResData}
-        schema={createSeasonSchema}
-        manipulateData={manipulateData}
-        path={`api//universities/${universityId}/seasons`}
-      >
-        <AnimatedList
-          id={id}
-          addClose
-          selecteds={selecteds}
-          title='Adicionar temporada'
-          setSelecteds={setSelecteds}
+      <Style>
+        <Form
+          afterResData={afterResData}
+          schema={createSeasonSchema}
+          manipulateData={manipulateData}
+          path={`api/universities/${universityId}/seasons`}
         >
-          <Text name='title' placeholder='Título' maxLength={50} />
+          <List
+            id={id}
+            addClose
+            selecteds={selecteds}
+            title='Adicionar temporada'
+            setSelecteds={setSelecteds}
+          >
+            <Text name='title' placeholder='Título' maxLength={50} />
 
-          <Textarea
-            maxLength={500}
-            name='description'
-            placeholder='Descrição'
-          />
-
-          <Begin>
-            <Field
-              icon={CalendarIcon}
-              inputType='datepicker'
-              datepickerProps={{
-                name: 'begin',
-                arrow: 'bottom',
-                placeholder: 'Início da temporada'
-              }}
+            <Textarea
+              maxLength={500}
+              name='description'
+              placeholder='Descrição'
             />
-          </Begin>
 
-          <FieldTable
-            edit={true}
-            data={periodsData}
-            withoutDefaultValue
-            valueComplement='Dias'
-            header={['Período', 'Duração (Dias)']}
-          />
+            <Begin>
+              <Field
+                icon={CalendarIcon}
+                inputType='datepicker'
+                datepickerProps={{
+                  name: 'begin',
+                  arrow: 'bottom',
+                  placeholder: 'Início da temporada',
+                  startYear: actualDate.getFullYear(),
+                  endYear: actualDate.getFullYear() + 2,
+                  minimumDate: {
+                    year: actualDate.getFullYear(),
+                    month: actualDate.getMonth() + 1,
+                    day: actualDate.getDate()
+                  },
+                  maximumDate: {
+                    year: actualDate.getFullYear() + 2,
+                    month: actualDate.getMonth() + 1,
+                    day: actualDate.getDate()
+                  }
+                }}
+              />
+            </Begin>
 
-          <File
-            noCropper
-            name='edict'
-            label='Enviar Edital'
-            accept='application/pdf'
-          />
+            <FieldTable
+              edit={true}
+              data={periodsData}
+              withoutDefaultValue
+              valueComplement='Dias'
+              header={['Período', 'Duração (Dias)']}
+            />
 
-          <Submit>Adicionar</Submit>
-        </AnimatedList>
+            <File
+              noCropper
+              name='edict'
+              label='Enviar Edital'
+              accept='application/pdf'
+            />
+
+            <Submit>Adicionar</Submit>
+          </List>
+        </Form>
       </Style>
 
       <Popup ref={popupRef} />

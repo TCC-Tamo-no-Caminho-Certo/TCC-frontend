@@ -1,105 +1,62 @@
-import React, {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useState
-} from 'react'
-import Style, { Content, Header } from './styles'
+import React, { ReactNode, useEffect, useState } from 'react'
+import Style from './styles'
 
-import transition from 'utils/transition'
+import { motion, Transition, Variants } from 'framer-motion'
 
-import AddCloseIcon from 'assets/AddCloseIcon'
-import ArrowIcon, { arrowAnimation } from 'assets/global/ArrowIcon'
-
-import { Variants } from 'framer-motion'
-
-export interface AnimatedListProps {
-  id: number
-  addClose?: boolean
-  children: ReactNode
-  selecteds?: number[]
-  title: ReactNode | string
-  setSelecteds?: Dispatch<SetStateAction<number[] | undefined>>
+interface AnimatedListProps {
+  condition: boolean
+  className?: string
+  children?: ReactNode[]
 }
 
-const titleAnimation: Variants = {
-  initial: { borderRadius: '16px 16px 16px 16px' },
-  unrounded: { borderRadius: '16px 16px 0px 0px', transition },
-  rounded: {
-    borderRadius: '16px 16px 16px 16px',
-    transition: { ...transition, delay: 0.3 }
-  }
-}
+const transition: Transition = { duration: 0.3, type: 'tween' }
 
-const contentAnimation: Variants = {
-  initial: { height: 0, opacity: 0, overflow: 'hidden' },
-  exit: { height: 0, opacity: 0, overflow: 'hidden', transition },
-  enter: {
-    overflow: 'visible',
-    opacity: 1,
-    height: 'auto',
-    transition: { ...transition, delay: 0.1 }
-  }
+const ulAnimation: Variants = {
+  initial: { y: '-100%' },
+  enter: { y: 0, transition },
+  exit: { y: '-100%', transition }
 }
 
 const AnimatedList = ({
-  id,
-  title,
   children,
-  addClose,
-  selecteds,
-  setSelecteds
+  condition,
+  className = 'AnimatedList'
 }: AnimatedListProps) => {
-  const [disabled, setDisabled] = useState(false)
+  const [overflow, setOverflow] = useState('hidden')
 
-  const isSelected =
-    selecteds?.find(season_id => season_id === id) !== undefined
-
-  const onTitleClick = () => {
-    setSelecteds &&
-      setSelecteds(prev => {
-        if (isSelected) return prev?.filter(currPrev => currPrev !== id)
-        return prev ? [...prev, id] : [id]
-      })
+  const presenceAnimation: Variants = {
+    exit: { opacity: 0, height: 0, overflow: 'hidden', transition },
+    initial: { opacity: 0, height: 0, overflow: 'hidden', transition },
+    enter: { opacity: 1, height: 'auto', overflow: overflow, transition }
   }
 
   useEffect(() => {
-    setDisabled(true)
-    setTimeout(() => setDisabled(false), 400)
-  }, [isSelected])
+    if (condition) {
+      setOverflow('hidden')
+
+      setTimeout(() => {
+        setOverflow('visible')
+      }, 300)
+    } else setOverflow('hidden')
+  }, [condition])
 
   return (
-    <Style className='AnimatedList'>
-      <Header
-        type='button'
+    <Style
+      condition={condition}
+      className='AnimatedList'
+      variants={presenceAnimation}
+    >
+      <motion.ul
+        exit='exit'
+        animate='enter'
         initial='initial'
-        className='Header'
-        disabled={disabled}
-        onClick={onTitleClick}
-        variants={titleAnimation}
-        animate={isSelected ? 'unrounded' : 'rounded'}
+        className={className}
+        variants={ulAnimation}
       >
-        {addClose ? (
-          <AddCloseIcon condition={isSelected} />
-        ) : (
-          <ArrowIcon
-            initial='initialRight'
-            variants={arrowAnimation}
-            animate={isSelected ? 'bottom' : 'right'}
-          />
-        )}
-
-        <div id='title'>{title}</div>
-      </Header>
-
-      <Content
-        className='Content'
-        condition={isSelected}
-        variants={contentAnimation}
-      >
-        {children}
-      </Content>
+        {children?.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </motion.ul>
     </Style>
   )
 }

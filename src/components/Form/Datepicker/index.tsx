@@ -17,6 +17,10 @@ export interface DatepickerColors {
 }
 
 export interface DatepickerProps extends TextProps {
+  endYear?: number
+  minimumDate?: any
+  maximumDate?: any
+  startYear?: number
   isBirthday?: boolean
   withoutStyle?: boolean
   dateColors?: DatepickerColors
@@ -51,9 +55,13 @@ const Datepicker = forwardRef<any, DatepickerProps>(
       name,
       arrow,
       value,
+      endYear,
+      startYear,
       icon: Icon,
       isBirthday,
       withoutStyle = false,
+      minimumDate: minimumDateProp,
+      maximumDate: maximumDateProp,
       dateColors = {
         body: '#fcfcfc',
         header: '#6e4850',
@@ -123,10 +131,14 @@ const Datepicker = forwardRef<any, DatepickerProps>(
           calendarPopperPosition={arrow}
           renderInput={renderCustomInput}
           calendarClassName='CalendarSize'
-          selectorEndingYear={present.year}
-          selectorStartingYear={minimumDate.year}
-          maximumDate={isBirthday ? maximumDate : undefined}
-          minimumDate={isBirthday ? minimumDate : undefined}
+          selectorEndingYear={endYear || present.year}
+          selectorStartingYear={startYear || minimumDate.year}
+          maximumDate={
+            maximumDateProp || (isBirthday ? maximumDate : undefined)
+          }
+          minimumDate={
+            minimumDateProp || (isBirthday ? minimumDate : undefined)
+          }
         />
       </Style>
     )

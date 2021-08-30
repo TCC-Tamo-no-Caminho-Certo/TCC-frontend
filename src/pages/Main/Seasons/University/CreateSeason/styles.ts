@@ -1,38 +1,27 @@
-import Form from 'components/Form'
-
 import styled from 'styled-components'
 
-export const Begin = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+export const Begin = styled.div``
 
-  width: 100%;
+const Style = styled.div`
+  padding: 16px;
 
-  .CalendarSize {
-    font-size: 9px !important;
-  }
-`
-
-const Style = styled(Form)`
-  .AnimatedList .Content {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-
-    width: 100%;
-    padding: 8px;
-    border-radius: 0px 0px 16px 16px;
-
+  .Form .List {
     border: solid 1px ${({ theme }) => theme.colors.tertiary};
+  }
 
-    > * + * {
-      margin-top: 16px;
-    }
+  .Form .List .Content {
+    padding: 8px;
 
-    .Submit {
+    > li {
       width: 100%;
+
+      & + li {
+        margin-top: 8px;
+      }
+
+      .Submit {
+        width: 100%;
+      }
     }
   }
 `

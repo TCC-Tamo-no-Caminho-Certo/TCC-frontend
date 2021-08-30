@@ -4,8 +4,6 @@ const Style = styled.table`
   width: 100%;
   border-collapse: collapse;
 
-  background-color: ${({ theme }) => theme.colors.secondary};
-
   th,
   td {
     height: 45px;
@@ -19,11 +17,20 @@ const Style = styled.table`
   }
 
   td {
-    padding: 0 16px;
+    padding: 0 8px;
 
     .Field > div,
     .DefaultField {
       width: 100%;
+    }
+
+    .DefaultField .Icon {
+    }
+  }
+
+  @media screen and (min-width: 425px) {
+    td {
+      padding: 0 16px;
     }
   }
 `

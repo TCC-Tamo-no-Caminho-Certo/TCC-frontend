@@ -9,6 +9,8 @@ import React, {
 
 import { SeasonsContext } from '../..'
 
+import List from 'pages/Main/Seasons/University/List'
+
 import { isoToDate } from 'utils/dates'
 
 import api from 'services/api'
@@ -21,7 +23,6 @@ import TrashIcon from 'assets/global/TrashIcon'
 
 import FieldTable from 'components/Form/FieldTable'
 import Form, { Field, File, Submit, Text, Textarea } from 'components/Form'
-import AnimatedList from 'components/AnimatedList'
 import Popup, { PopupForwardeds } from 'components/Popup'
 
 import { SeasonType } from 'types/Responses/university/seasons'
@@ -37,11 +38,11 @@ interface SeasonProps {
 
 const Season = ({
   id,
+  season,
   isAdmin,
   selecteds,
   setSelecteds,
-  universityId,
-  season: { title, description, begin, edict, periods }
+  universityId
 }: SeasonProps) => {
   const { getUniversitiesOfUser } = useContext(SeasonsContext)
 
@@ -49,7 +50,10 @@ const Season = ({
 
   const [editing, setEditing] = useState(false)
 
-  const { confirm, dispatch, evaluate, in_progress } = periods
+  const actualDate = new Date()
+  const { confirm, dispatch, evaluate, in_progress } = season.periods
+  const isSelected =
+    selecteds?.find(season_id => season_id === id) !== undefined
 
   const periodsData = [
     { name: 'dispatch', value: dispatch, label: 'Envio de projetos' },
@@ -58,18 +62,18 @@ const Season = ({
     { name: 'in_progress', value: in_progress, label: 'Início do projeto' }
   ]
 
-  const afterResData = (data: any) => {
-    if (!data.success)
+  const afterResData = ({ success }: any) => {
+    if (!success)
       popupRef?.current?.configPopup({
-        type: 'error',
         open: true,
+        type: 'error',
         message: 'Algo inesperado aconteceu! Tente novamente'
       })
     else
       popupRef?.current?.configPopup({
+        open: true,
         type: 'success',
         message: 'Alterações salvas!',
-        open: true,
         onClick: () => {
           getUniversitiesOfUser && getUniversitiesOfUser()
           setSelecteds && setSelecteds(undefined)
@@ -77,39 +81,43 @@ const Season = ({
       })
   }
 
-  const manipulateData = (data: any) => {
-    const {
-      dispatch,
-      evaluate,
-      confirm,
-      in_progress,
-      begin,
-      edict,
-      title,
-      description
-    } = data
+  const manipulateData = ({
+    begin,
+    edict,
+    title,
+    confirm,
+    evaluate,
+    dispatch,
+    in_progress,
+    description
+  }: any) => {
+    const periods = {
+      confirm: confirm || season.periods.confirm,
+      dispatch: dispatch || season.periods.dispatch,
+      evaluate: evaluate || season.periods.evaluate,
+      in_progress: in_progress || season.periods.in_progress
+    }
 
-    const periods = { confirm, evaluate, dispatch, in_progress }
     return { begin, edict, title, periods, description }
   }
 
   const onRemoveClick = () => {
     const onPopupOkClick = async () => {
       const { success } = await api.delete(
-        `/universities/${universityId}/seasons/${id}`
+        `api/universities/${universityId}/seasons/${id}`
       )
 
       if (!success)
         popupRef?.current?.configPopup({
-          type: 'error',
           open: true,
+          type: 'error',
           message: 'Algo inesperado aconteceu! Tente novamente'
         })
       else
         popupRef?.current?.configPopup({
+          open: true,
           type: 'success',
           message: 'Temporada removida',
-          open: true,
           onClick: () => {
             getUniversitiesOfUser && getUniversitiesOfUser()
             setSelecteds && setSelecteds(undefined)
@@ -125,100 +133,118 @@ const Season = ({
     })
   }
 
-  return (
-    <Style
-      editing={editing}
-      isAdmin={
-        isAdmin && selecteds?.find(season_id => season_id === id) !== undefined
-      }
-    >
-      <Form
-        method='patch'
-        afterResData={afterResData}
-        manipulateData={manipulateData}
-        path={`api//universities/${universityId}/seasons/${id}`}
-      >
-        <AnimatedList
-          id={id}
-          title={title}
-          selecteds={selecteds}
-          setSelecteds={setSelecteds}
-        >
-          {editing && <Text name='title' placeholder='Título' maxLength={50} />}
+  const components = () => {
+    const components = []
 
-          {editing ? (
-            <Textarea
-              maxLength={500}
-              name='description'
-              placeholder='Descrição'
-              defaultValue={description}
-            />
-          ) : (
-            <p>{description}</p>
-          )}
+    if (editing)
+      components.push(
+        <Text
+          name='title'
+          placeholder='Título'
+          defaultValue={season.title}
+          maxLength={50}
+        />,
+        <Textarea
+          maxLength={500}
+          name='description'
+          placeholder='Descrição'
+          defaultValue={season.description}
+        />,
+        <Begin>
+          <span>Início da temporada:</span>
 
-          <Begin>
-            {editing ? (
-              <>
-                <span>Início da temporada:</span>
-
-                <Field
-                  icon={CalendarIcon}
-                  inputType='datepicker'
-                  defaultValue={isoToDate(begin, 'day/month/2-year')}
-                  datepickerProps={{
-                    name: 'begin',
-                    placeholder: 'Duração em dias'
-                  }}
-                />
-              </>
-            ) : (
-              <div>
-                Início da temporada: {isoToDate(begin, 'day/month/2-year')}
-              </div>
-            )}
-          </Begin>
-
-          <FieldTable
-            edit={editing}
-            data={periodsData}
-            valueComplement='Dias'
-            header={['Período', 'Duração (Dias)']}
+          <Field
+            icon={CalendarIcon}
+            inputType='datepicker'
+            defaultValue={isoToDate(season.begin, 'day/month/2-year')}
+            datepickerProps={{
+              name: 'begin',
+              placeholder: 'Duração em dias',
+              startYear: actualDate.getFullYear(),
+              endYear: actualDate.getFullYear() + 2,
+              minimumDate: {
+                day: actualDate.getDate(),
+                year: actualDate.getFullYear(),
+                month: actualDate.getMonth() + 1
+              },
+              maximumDate: {
+                day: actualDate.getDate(),
+                month: actualDate.getMonth() + 1,
+                year: actualDate.getFullYear() + 2
+              }
+            }}
+          />
+        </Begin>,
+        <>
+          <File
+            noCropper
+            name='edict'
+            label='Enviar Edital'
+            accept='application/pdf'
           />
 
-          {editing ? (
-            <>
-              <File
-                noCropper
-                name='edict'
-                label='Enviar Edital'
-                accept='application/pdf'
-              />
+          <Submit>Salvar alterações</Submit>
+        </>
+      )
+    else
+      components.push(
+        <p>{season.description}</p>,
+        <Begin>
+          Início da temporada: {isoToDate(season.begin, 'day/month/2-year')}
+        </Begin>,
+        <Edict download href={season.edict}>
+          <DownloadIcon /> Baixar edital
+        </Edict>
+      )
 
-              <Submit>Salvar alterações</Submit>
-            </>
-          ) : (
-            <Edict download href={edict}>
-              <DownloadIcon /> Baixar edital
-            </Edict>
-          )}
+    components.splice(
+      components.length - 1,
+      0,
+      <FieldTable
+        edit={editing}
+        data={periodsData}
+        valueComplement='Dias'
+        header={['Período', 'Duração (Dias)']}
+      />
+    )
 
-          {isAdmin && (
-            <Edit onClick={() => setEditing(!editing)}>
-              {editing ? <CloseIcon /> : <PencilIcon />}
-            </Edit>
-          )}
+    return components
+  }
 
-          {isAdmin && editing && (
-            <Remove onClick={onRemoveClick}>
-              <TrashIcon />
-            </Remove>
-          )}
-        </AnimatedList>
-      </Form>
+  return (
+    <>
+      <Style editing={editing} isAdmin={isAdmin && isSelected}>
+        <Form
+          method='patch'
+          afterResData={afterResData}
+          manipulateData={manipulateData}
+          path={`api/universities/${universityId}/seasons/${id}`}
+        >
+          <List
+            id={id}
+            title={season.title}
+            selecteds={selecteds}
+            setSelecteds={setSelecteds}
+          >
+            {components()}
+          </List>
+        </Form>
+
+        {isAdmin && isSelected && (
+          <Edit onClick={() => setEditing(!editing)}>
+            {editing ? <CloseIcon /> : <PencilIcon />}
+          </Edit>
+        )}
+
+        {isAdmin && editing && isSelected && (
+          <Remove onClick={onRemoveClick}>
+            <TrashIcon />
+          </Remove>
+        )}
+      </Style>
 
       <Popup ref={popupRef} />
-    </Style>
+    </>
   )
 }
 

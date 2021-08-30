@@ -21,6 +21,7 @@ export const StyledTextarea = styled.textarea<StyledTextareaProps>`
 
   color: ${({ textColors }) => textColors.unfocused};
   border: solid 1px ${({ textColors }) => textColors.unfocused};
+  background-color: transparent;
 
   &::placeholder {
     fill: ${({ textColors }) => textColors.unfocused};

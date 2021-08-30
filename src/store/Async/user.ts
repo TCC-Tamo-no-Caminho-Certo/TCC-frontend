@@ -12,7 +12,7 @@ import {
 
 type Reducer = CaseReducer<UserState, PayloadAction<Partial<UserOnStateType>>>
 
-export interface UserOnStateType extends UserType {
+export interface UserOnStateType extends Partial<UserType> {
   roles?: RolesType
   selectedRole?: RoleType
 }
@@ -47,7 +47,7 @@ const update: Reducer = (state, { payload }) => {
   if (selectedRole !== undefined)
     localStorage.setItem('@SLab_selected_role', selectedRole)
 
-  return { ...state, ...payload }
+  return { ...state, user: { ...state.user, ...payload } }
 }
 
 export const getUser = createAsyncThunk(

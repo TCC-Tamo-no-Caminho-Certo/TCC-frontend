@@ -7,7 +7,7 @@ import {
   motion
 } from 'framer-motion'
 
-interface PresenceProps extends HTMLMotionProps<'div'> {
+export interface PresenceProps extends HTMLMotionProps<'div'> {
   condition: boolean
   children: ReactNode
   presenceProps?: AnimatePresenceProps
