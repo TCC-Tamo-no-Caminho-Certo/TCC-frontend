@@ -56,13 +56,18 @@ const List = ({
 
   useEffect(() => {
     setDisabled(true)
-    setTimeout(() => setDisabled(false), 400)
+    const disableTimeout = setTimeout(() => setDisabled(false), 400)
+
+    return () => {
+      clearTimeout(disableTimeout)
+    }
   }, [isSelected])
 
   return (
-    <Style className='List'>
+    <Style className='List' data-cy='List'>
       <Header
         type='button'
+        data-cy='List-Header'
         initial='initial'
         className='Header'
         disabled={disabled}

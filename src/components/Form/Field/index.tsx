@@ -56,7 +56,10 @@ const Field = ({
   }, [enableToEdit, inputType])
 
   return editing || !defaultValue ? (
-    <EditField className='Field'>
+    <EditField
+      className='Field'
+      data-cy={`Field-${textProps?.name || datepickerProps?.name}`}
+    >
       {Icon && <Icon id='icon' />}
 
       {inputType === 'text' && <Text ref={textRef} {...(textProps as any)} />}
@@ -68,7 +71,10 @@ const Field = ({
       {defaultValue && <CloseIcon id='closeIcon' onClick={onCloseIconClick} />}
     </EditField>
   ) : (
-    <DefaultField className='DefaultField'>
+    <DefaultField
+      className='DefaultField'
+      data-cy={`DefaultField-${textProps?.name || datepickerProps?.name}`}
+    >
       <div>{defaultValue}</div>
 
       {enableToEdit && <PencilIcon onClick={onPencilClick} />}

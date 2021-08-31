@@ -261,6 +261,7 @@ const Form = React.forwardRef<any, FormProps>(
       <form
         ref={ref}
         noValidate
+        data-cy='Form'
         onSubmit={onSubmit}
         className={className}
         {...rest}

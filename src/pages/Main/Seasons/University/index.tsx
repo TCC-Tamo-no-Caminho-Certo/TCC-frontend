@@ -92,12 +92,13 @@ const University = ({
   }
 
   return (
-    <Style>
+    <Style data-cy='University'>
       <UniversityName
         initial='initial'
         disabled={disabled}
         onClick={onNameClick}
         variants={buttonAnimation}
+        data-cy={`Seasons(${name})`}
         animate={isSelected ? 'unrounded' : 'rounded'}
       >
         {name}

@@ -129,7 +129,7 @@ const Season = ({
       open: true,
       type: 'warning',
       onOkClick: onPopupOkClick,
-      message: 'Tem certeza que deseja remover esta temporada'
+      message: 'Tem certeza que deseja remover esta temporada?'
     })
   }
 
@@ -216,7 +216,7 @@ const Season = ({
 
   return (
     <>
-      <Style editing={editing} isAdmin={isAdmin && isSelected}>
+      <Style editing={editing} isAdmin={isAdmin && isSelected} data-cy='Season'>
         <Form
           method='patch'
           afterResData={afterResData}
@@ -235,13 +235,13 @@ const Season = ({
         </Form>
 
         {isAdmin && isSelected && (
-          <Edit onClick={() => setEditing(!editing)}>
+          <Edit onClick={() => setEditing(!editing)} data-cy='EditIcon'>
             {editing ? <CloseIcon /> : <PencilIcon />}
           </Edit>
         )}
 
         {isAdmin && isSelected && editing && (
-          <Remove onClick={onRemoveClick}>
+          <Remove onClick={onRemoveClick} data-cy='RemoveIcon'>
             <TrashIcon />
           </Remove>
         )}

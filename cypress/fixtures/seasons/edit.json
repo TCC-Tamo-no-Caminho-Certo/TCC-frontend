@@ -1,0 +1,10 @@
+{
+  "confirm": 20,
+  "dispatch": 40,
+  "evaluate": 30,
+  "in_progress": 10,
+  "begin": "22/02/2022",
+  "edict": "assets/test.pdf",
+  "title": "Cypress Season Title Edited",
+  "description": "Cypress Season Description Edited"
+}

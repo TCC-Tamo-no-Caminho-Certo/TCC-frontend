@@ -109,13 +109,14 @@ const File = ({
           )}
         </div>
 
-        <label onClick={() => onClick && onClick()}>
+        <label htmlFor={name} onClick={() => onClick && onClick()}>
           <CameraIcon />
 
           {label}
 
           <input
             type='file'
+            id={name}
             name={name}
             ref={fileRef}
             accept={accept}

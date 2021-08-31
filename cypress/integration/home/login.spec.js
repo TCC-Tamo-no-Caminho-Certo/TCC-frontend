@@ -8,12 +8,12 @@ describe.skip('Validar login', () => {
   })
 })
 
-describe('Fazer login e logout', () => {
-  it('login', () => {
-    cy.login()
+describe('Fazer sign-in e sign-out', () => {
+  it.only('sign-in', () => {
+    cy.typeSignIn()
   })
 
-  it('logout', () => {
+  it('sign-out', () => {
     cy.logout()
   })
 })

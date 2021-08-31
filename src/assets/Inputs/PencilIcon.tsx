@@ -3,6 +3,7 @@ import React from 'react'
 const PencilIcon = (props: any) => (
   <svg
     id='PencilIcon'
+    data-cy='PencilIcon'
     className='Icon'
     xmlns='http://www.w3.org/2000/svg'
     fill='none'

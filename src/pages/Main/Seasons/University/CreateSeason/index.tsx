@@ -55,13 +55,7 @@ const CreateSeason = ({
   }
 
   const afterResData = (data: any) => {
-    if (!data.success)
-      popupRef?.current?.configPopup({
-        open: true,
-        type: 'error',
-        message: 'Algo inesperado aconteceu! Tente novamente'
-      })
-    else
+    if (data.success)
       popupRef?.current?.configPopup({
         open: true,
         type: 'success',
@@ -71,11 +65,24 @@ const CreateSeason = ({
           setSelecteds && setSelecteds(undefined)
         }
       })
+    else if (data.error === 'Dispatch can not overwrite another dispatch!')
+      popupRef?.current?.configPopup({
+        open: true,
+        type: 'error',
+        message:
+          'Período de envio não pode sobrescrever o período de envio de outra temporada!'
+      })
+    else
+      popupRef?.current?.configPopup({
+        open: true,
+        type: 'error',
+        message: 'Algo inesperado aconteceu! Tente novamente'
+      })
   }
 
   return (
     <>
-      <Style>
+      <Style data-cy='CreateSeason'>
         <Form
           afterResData={afterResData}
           schema={createSeasonSchema}

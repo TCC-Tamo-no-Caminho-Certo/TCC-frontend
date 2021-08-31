@@ -18,6 +18,6 @@
     "types": ["jest"],
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "src/types"],
   "files": ["src/styles/themes/styled.d.ts"]
 }

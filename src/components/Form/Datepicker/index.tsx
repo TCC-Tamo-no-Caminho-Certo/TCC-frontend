@@ -121,11 +121,13 @@ const Datepicker = forwardRef<any, DatepickerProps>(
         arrow={arrow}
         ref={ref as any}
         colors={dateColors}
+        data-cy='Datepicker'
         className='Datepicker'
         withoutStyle={withoutStyle}
       >
         <DatePicker
           locale={ptbr}
+          data-cy='Calendar'
           value={selectedDate}
           onChange={setSelectedDate}
           calendarPopperPosition={arrow}

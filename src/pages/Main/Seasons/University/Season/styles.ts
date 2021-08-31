@@ -7,6 +7,7 @@ interface StyleProps {
 
 export const Remove = styled.div`
   left: 16px;
+  cursor: pointer;
   border-radius: 16px 0 0 0;
 
   background-color: ${({ theme }) => theme.colors.red};

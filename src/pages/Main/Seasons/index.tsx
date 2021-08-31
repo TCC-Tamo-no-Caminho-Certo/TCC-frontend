@@ -98,7 +98,6 @@ const Seasons = forwardRef((_props, ref) => {
                 key={university.id}
                 university={university}
                 selecteds={selectedUniversities}
-                data-cy={`Seasons-${university.name}`}
                 setSelecteds={setSelectedUniversities}
               />
             ))}

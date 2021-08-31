@@ -45,6 +45,7 @@ const Textarea = ({
       </div>
 
       <StyledTextarea
+        id={props.name}
         data-autoresize
         {...(props as any)}
         textColors={textColors}

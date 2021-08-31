@@ -18,6 +18,7 @@ const Submit = forwardRef(
 
     return (
       <Style
+        data-cy='Submit'
         ref={ref as any}
         type={type as any}
         className='Submit'

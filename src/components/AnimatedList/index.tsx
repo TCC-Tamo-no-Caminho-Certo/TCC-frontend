@@ -8,6 +8,7 @@ interface AnimatedListProps {
   condition: boolean
   className?: string
   children?: ReactNode[]
+  dataCy?: string
 }
 
 const transition: Transition = { duration: 0.3, type: 'tween' }
@@ -54,6 +55,7 @@ const AnimatedList = ({
         initial='initial'
         className={className}
         variants={ulAnimation}
+        data-cy='AnimatedList'
       >
         {children?.map((item, index) => (
           <li key={keyItem + index}>{item}</li>
