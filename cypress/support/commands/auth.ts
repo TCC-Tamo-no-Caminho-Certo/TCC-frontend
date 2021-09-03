@@ -1,10 +1,7 @@
-import SigninReqType from '../../src/types/Requests/sign-in'
-
-import 'cypress-file-upload'
-
 /// <reference types='cypress'/>
+import SigninReqType from '../../../src/types/Requests/sign-in'
 
-Cypress.Commands.add('typeSignIn', (fixture = 'user') => {
+export const typeSignIn = (fixture: string = 'user'): void => {
   cy.fixture(fixture).then((signIn: SigninReqType) => {
     cy.intercept({ method: 'POST', url: 'api/sign-in' }, request => {
       expect(request.body.email).to.equal(signIn.email)
@@ -23,28 +20,11 @@ Cypress.Commands.add('typeSignIn', (fixture = 'user') => {
     cy.get('[data-cy=Login-submit]').click()
     cy.url().should('contains', '/session/main')
   })
-})
+}
 
-Cypress.Commands.add('logout', () => {
+export const signOut = (): void => {
   cy.url().should('exist', '/session/main')
   cy.get('[data-cy=RightMenu-gear]').click()
   cy.get('[data-cy=RightMenu-logout]').click()
   cy.url().should('not.contains', '/session')
-})
-
-Cypress.Commands.add('datepicker', (date: string) => {
-  const usableDate = date.split('/')
-  const day = usableDate[0]
-  const year = usableDate[2]
-  const month = usableDate[1]
-
-  cy.get('[data-testid=year-selector]')
-    .find('> li > button')
-    .contains(year)
-    .click()
-
-  cy.get('.-shown > .Calendar__monthText').click()
-  cy.get(`:nth-child(${month}) > .Calendar__monthSelectorItemText`).click()
-
-  cy.get('[role=gridcell]').contains(day).click()
-})
+}

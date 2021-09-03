@@ -66,25 +66,16 @@ export const Begin = styled.div`
     margin-bottom: 8px;
   }
 
-  .DefaultField {
+  .DefaultField,
+  .Field {
     position: relative;
 
     width: 230px;
-    margin-left: 4px;
-    min-height: 43px;
-
-    .Icon {
-      position: absolute;
-      top: 50%;
-      right: 0;
-
-      margin: 0 0 0 8px;
-      transform: translateY(-50%);
-    }
+    height: 44px;
   }
 
   .Field .CalendarSize {
-    font-size: 8px !important;
+    font-size: 9px !important;
   }
 
   #label {
@@ -103,11 +94,19 @@ export const Begin = styled.div`
     }
   }
 
-  @media screen and (min-width: 900px) {
+  @media screen and (min-width: 700px) {
     flex-direction: row;
 
     span {
-      margin: 0 0 0 8px;
+      margin: 0 8px 0 0;
+    }
+  }
+
+  @media screen and (min-width: 800px) {
+    .Field {
+      .CalendarSize {
+        font-size: 9px !important;
+      }
     }
   }
 `

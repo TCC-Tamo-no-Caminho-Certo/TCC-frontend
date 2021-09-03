@@ -11,7 +11,7 @@ describe('Seasons', () => {
   })
 
   afterEach(() => {
-    cy.logout()
+    cy.signOut()
   })
 
   it('Create season', () => {
@@ -36,7 +36,7 @@ describe('Seasons', () => {
         cy.get('@CreateSeasonForm').find('#description').type(description)
 
         cy.get('@CreateSeasonForm').find('#begin').click()
-        cy.datepicker(begin)
+        cy.setDatepicker(begin)
 
         cy.get('@CreateSeasonForm').find('#dispatch').type(dispatch)
         cy.get('@CreateSeasonForm').find('#evaluate').type(evaluate)
@@ -128,7 +128,7 @@ describe('Seasons', () => {
 
         cy.get('[data-cy=DefaultField-begin] > [data-cy=PencilIcon]').click()
         cy.get('#begin').click()
-        cy.datepicker(begin)
+        cy.setDatepicker(begin)
 
         cy.get('[data-cy=DefaultField-dispatch] > [data-cy=PencilIcon]').click()
         cy.get('#dispatch').type(dispatch)

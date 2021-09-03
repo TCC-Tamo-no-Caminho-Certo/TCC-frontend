@@ -5,13 +5,12 @@ export const DefaultField = styled.div`
   align-items: center;
   justify-content: center;
 
-  height: 100%;
   cursor: pointer;
 
   .Icon {
     height: 18px;
     cursor: pointer;
-    margin-left: 16px;
+    margin-left: 8px;
 
     fill: ${({ theme }) => theme.colors.primary};
   }
