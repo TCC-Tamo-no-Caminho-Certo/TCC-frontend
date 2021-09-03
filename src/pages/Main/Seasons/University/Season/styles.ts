@@ -75,7 +75,7 @@ export const Begin = styled.div`
   }
 
   .Field .CalendarSize {
-    font-size: 9px !important;
+    font-size: 8px !important;
   }
 
   #label {
@@ -83,14 +83,8 @@ export const Begin = styled.div`
   }
 
   @media screen and (min-width: 545px) {
-    .Field {
-      .CalendarSize {
-        font-size: 8px !important;
-      }
-
-      > div {
-        width: 180px;
-      }
+    .Field > div {
+      width: 180px;
     }
   }
 

@@ -125,23 +125,25 @@ const Datepicker = forwardRef<any, DatepickerProps>(
         className='Datepicker'
         withoutStyle={withoutStyle}
       >
-        <DatePicker
-          locale={ptbr}
-          data-cy='Calendar'
-          value={selectedDate}
-          onChange={setSelectedDate}
-          calendarPopperPosition={arrow}
-          renderInput={renderCustomInput}
-          calendarClassName='CalendarSize'
-          selectorEndingYear={endYear || present.year}
-          selectorStartingYear={startYear || minimumDate.year}
-          maximumDate={
-            maximumDateProp || (isBirthday ? maximumDate : undefined)
-          }
-          minimumDate={
-            minimumDateProp || (isBirthday ? minimumDate : undefined)
-          }
-        />
+        <div style={{ position: 'relative', zIndex: 3000 }}>
+          <DatePicker
+            locale={ptbr}
+            data-cy='Calendar'
+            value={selectedDate}
+            onChange={setSelectedDate}
+            calendarPopperPosition={arrow}
+            renderInput={renderCustomInput}
+            calendarClassName='CalendarSize'
+            selectorEndingYear={endYear || present.year}
+            selectorStartingYear={startYear || minimumDate.year}
+            maximumDate={
+              maximumDateProp || (isBirthday ? maximumDate : undefined)
+            }
+            minimumDate={
+              minimumDateProp || (isBirthday ? minimumDate : undefined)
+            }
+          />
+        </div>
       </Style>
     )
   }
