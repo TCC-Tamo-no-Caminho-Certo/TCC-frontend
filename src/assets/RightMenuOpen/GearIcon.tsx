@@ -4,6 +4,7 @@ const GearIcon = (props: any) => (
   <svg
     id='Gear'
     fill='none'
+    data-cy='Gear'
     className='Icon'
     viewBox='0 0 512 512'
     xmlns='http://www.w3.org/2000/svg'

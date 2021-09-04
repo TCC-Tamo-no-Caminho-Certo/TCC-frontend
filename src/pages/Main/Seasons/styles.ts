@@ -5,7 +5,7 @@ export const NotLinked = styled.div`
   text-align: center;
   border-radius: 8px;
 
-  box-shadow: 3px 3px 4px 0px rgba(0, 0, 0, 0.49);
+  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
   background-color: ${({ theme }) => theme.colors.primary};
 `
 

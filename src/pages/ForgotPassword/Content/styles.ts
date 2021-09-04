@@ -26,7 +26,7 @@ const Style = styled.div`
   border-radius: 10px;
   width: min(90%, 500px);
 
-  box-shadow: -8px 8px 10px -4px rgba(0, 0, 0, 0.49);
+  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
   background: ${({ theme }) => theme.colors.secondary};
 
   p {

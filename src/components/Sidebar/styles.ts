@@ -56,6 +56,7 @@ export const SidebarNav = styled(motion.nav)`
   left: 0;
   z-index: 100;
 
+  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.2);
   background-color: ${({ theme }) => theme.sidebar.background};
 
   @media screen and (min-width: 545px) {

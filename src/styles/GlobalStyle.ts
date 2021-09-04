@@ -137,7 +137,6 @@ export default createGlobalStyle<GlobalProps>`
   }
 
   @media screen and (min-width: 545px) {
-
     html body {
       &::-webkit-scrollbar {
         width: 16px;

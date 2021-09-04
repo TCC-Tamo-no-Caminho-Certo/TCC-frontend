@@ -1,7 +1,8 @@
 /// <reference types='cypress'/>
+
 import SigninReqType from '../../../src/types/Requests/sign-in'
 
-export const typeSignIn = (fixture: string = 'user'): void => {
+export const typeSignIn = (fixture: string = 'user') => {
   cy.fixture(fixture).then((signIn: SigninReqType) => {
     cy.intercept({ method: 'POST', url: 'api/sign-in' }, request => {
       expect(request.body.email).to.equal(signIn.email)
@@ -18,11 +19,12 @@ export const typeSignIn = (fixture: string = 'user'): void => {
     cy.get('[data-cy=Login-password]').type(signIn.password)
 
     cy.get('[data-cy=Login-submit]').click()
+
     cy.url().should('contains', '/session/main')
   })
 }
 
-export const signOut = (): void => {
+export const signOut = () => {
   cy.url().should('exist', '/session/main')
   cy.get('[data-cy=RightMenu-gear]').click()
   cy.get('[data-cy=RightMenu-logout]').click()

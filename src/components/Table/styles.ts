@@ -18,7 +18,7 @@ export const FilterButton = styled.div`
     border-radius: 16px 0 0 16px;
 
     color: ${({ theme }) => theme.colors.secondary};
-    box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.23);
+    box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
     background-color: ${({ theme }) => theme.colors.primary};
 
     .Icon {
@@ -38,7 +38,7 @@ export const FilterButton = styled.div`
       border-radius: 0 16px 16px 0;
       font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
 
-      box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.23);
+      box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
       color: ${({ theme }) => theme.colors.primary};
       background-color: ${({ theme }) => theme.colors.secondary};
 
@@ -80,7 +80,7 @@ const Style = styled.div`
       background-color: ${({ theme }) => theme.colors.tertiary};
 
       tr {
-        box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.39);
+        box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
 
         th {
           cursor: pointer;
@@ -116,7 +116,7 @@ const Style = styled.div`
         }
 
         &:first-child:hover {
-          box-shadow: 0px 8px 5px 0px rgba(0, 0, 0, 0.39) inset;
+          box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
         }
       }
     }

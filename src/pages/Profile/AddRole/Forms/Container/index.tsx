@@ -77,7 +77,7 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
 
   return (
     <Style ref={conbinedRefs}>
-      <Content role={role}>
+      <Content role={role} data-cy='Container'>
         <Header>
           {request ? 'Acompanhar solicitação' : 'Solicitação de perfil'}
         </Header>
@@ -103,7 +103,7 @@ const Container = forwardRef<any, ContainerProps>(({ role, rolesRef }, ref) => {
 
         {request?.status !== 'awaiting' && forms[role as keyof Forms]}
 
-        <ScrollButton onClick={onScrollButtonClick}>
+        <ScrollButton onClick={onScrollButtonClick} data-cy='Scroll-Button'>
           Escolher outro papel
         </ScrollButton>
       </Content>

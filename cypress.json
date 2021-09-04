@@ -1,5 +1,5 @@
 {
-  "supportFile": "cypress/support/index.ts",
+  "scrollBehavior": "center",
   "baseUrl": "http://localhost:3000",
-  "scrollBehavior": "center"
+  "supportFile": "cypress/support/index.ts"
 }

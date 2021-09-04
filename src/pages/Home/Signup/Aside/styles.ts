@@ -72,7 +72,7 @@ const Style = styled.aside`
   padding: 48px 0;
   min-height: 100vh;
 
-  box-shadow: 8px 8px 6px 4px rgba(0, 0, 0, 0.14);
+  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
   background-color: ${({ theme }) => theme.colors.secondary};
 
   nav {

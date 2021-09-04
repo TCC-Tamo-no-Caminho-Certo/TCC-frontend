@@ -50,6 +50,7 @@ export const AddRole = styled(Presence)`
     border-radius: 8px;
     transform: translateX(50%);
 
+    box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.primary};
 
@@ -114,9 +115,11 @@ export const Background = styled.svg<BackgroundProps>`
   margin-right: 16px;
 
   width: max(100vw, 300px);
-
   height: ${({ isOpen, openHeight, closedHeight }) =>
     isOpen ? openHeight : closedHeight};
+
+  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
+  clip-path: inset(0px 0px -20px 0px);
 
   path {
     fill: ${({ theme }) => darken(0.1, theme.colors.tertiary)};

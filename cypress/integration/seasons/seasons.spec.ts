@@ -14,7 +14,7 @@ describe('Seasons', () => {
     cy.signOut()
   })
 
-  it('Create season', () => {
+  it('Create season', { scrollBehavior: 'center' }, () => {
     cy.get('[data-cy=CreateSeason] [data-cy=List-Header]').click()
     cy.get('[data-cy=CreateSeason] [data-cy=List] [data-cy=AnimatedList]').as(
       'CreateSeasonForm'
@@ -32,7 +32,6 @@ describe('Seasons', () => {
         in_progress
       }) => {
         cy.get('@CreateSeasonForm').find('#title').type(title)
-
         cy.get('@CreateSeasonForm').find('#description').type(description)
 
         cy.get('@CreateSeasonForm').find('#begin').click()
@@ -48,10 +47,7 @@ describe('Seasons', () => {
         cy.get('#fileName').should('exist')
         cy.get('[data-cy=Submit]').click()
 
-        cy.get('[data-cy=Popup]')
-          .should('exist')
-          .contains('Temporada adicionada!')
-        cy.get('[data-cy=Popup] > button').click()
+        cy.popup('Temporada adicionada!')
 
         cy.get('[data-cy=University]').find('[data-cy=Season]').contains(title)
       }
@@ -107,6 +103,7 @@ describe('Seasons', () => {
     cy.get('[data-cy=Season] [data-cy=List] [data-cy=AnimatedList]').as(
       'EditSeasonForm'
     )
+
     cy.fixture('seasons/edit').then(
       ({
         begin,
@@ -147,8 +144,8 @@ describe('Seasons', () => {
         cy.get('@EditSeasonForm').find('input[type="file"]').attachFile(edict)
 
         cy.get('[data-cy=Submit]').click()
-        cy.get('[data-cy=Popup]').contains('Alterações salvas!')
-        cy.get('[data-cy=Popup] > button').click()
+
+        cy.popup('Alterações salvas!')
       }
     )
   })
@@ -160,12 +157,8 @@ describe('Seasons', () => {
 
     cy.get('[data-cy=EditIcon]').click()
     cy.get('[data-cy=RemoveIcon]').click()
-    cy.get('[data-cy=Popup]')
-      .should('exist')
-      .contains('Tem certeza que deseja remover esta temporada?')
-    cy.get('[data-cy=Popup] > button').click()
 
-    cy.get('[data-cy=Popup]').should('exist').contains('Temporada removida')
-    cy.get('[data-cy=Popup] > button').click()
+    cy.popup('Tem certeza que deseja remover esta temporada?')
+    cy.popup('Temporada removida')
   })
 })

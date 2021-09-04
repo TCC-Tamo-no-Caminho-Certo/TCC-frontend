@@ -95,6 +95,7 @@ const Select = forwardRef(
         <ErrorTooltip error={!!error} content={error} />
 
         <RealSelect
+          id={props.name}
           ref={selectRef}
           isMulti={isMulti}
           classNamePrefix='Select'

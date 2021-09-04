@@ -36,7 +36,7 @@ const Style = styled.div`
   border-radius: 16px;
   padding: 64px 16px 16px 16px;
 
-  box-shadow: 8px 8px 4px 0px rgba(0, 0, 0, 0.49);
+  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
   background-color: ${({ theme }) => theme.colors.secondary};
 
   .Avatar {

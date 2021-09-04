@@ -111,7 +111,7 @@ const Style = styled.aside`
   min-height: 100vh;
 
   background-color: ${({ theme }) => theme.colors.secondary};
-  box-shadow: -8px 8px 6px 4px rgba(0, 0, 0, 0.14);
+  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
 
   .ThemeSwitch {
     position: absolute;

@@ -8,6 +8,7 @@ const Style = styled.button`
   transition: all 0.2s;
   height: clamp(35px, 3vh + 2vw, 44px);
 
+  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
   color: ${({ theme }) => theme.colors.secondary};
   background-color: ${({ theme }) => theme.colors.primary};
 

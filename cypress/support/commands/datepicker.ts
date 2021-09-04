@@ -1,4 +1,5 @@
 /// <reference types='cypress'/>
+
 import 'cypress-file-upload'
 
 export const setDatepicker = (date: string): void => {

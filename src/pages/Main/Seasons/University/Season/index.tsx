@@ -161,6 +161,7 @@ const Season = ({
             defaultValue={isoToDate(season.begin, 'day/month/2-year')}
             datepickerProps={{
               name: 'begin',
+              arrow: 'bottom',
               placeholder: 'Duração em dias',
               startYear: actualDate.getFullYear(),
               endYear: actualDate.getFullYear() + 2,

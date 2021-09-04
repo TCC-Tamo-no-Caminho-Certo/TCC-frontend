@@ -35,7 +35,7 @@ export const Choose = styled(Presence)`
       font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.7rem);
 
       color: ${({ theme }) => theme.colors.white};
-      box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.39);
+      box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
       background-color: ${({ theme }) => theme.colors.tertiary};
 
       &:hover {
@@ -139,7 +139,7 @@ export const Form = styled(OriginalForm)`
     width: 100%;
     transition: all 0s ease 0s;
 
-    box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.39);
+    box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
   }
 
   .Checkbox .CheckboxLabel {

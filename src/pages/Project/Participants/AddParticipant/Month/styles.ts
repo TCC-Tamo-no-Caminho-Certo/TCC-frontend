@@ -65,7 +65,7 @@ const Style = styled(motion.li)<StyleProps>`
   border-radius: 16px;
   font-size: clamp(1rem, 0.6rem + 2.6vw, 1.6rem);
 
-  box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.39);
+  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
   background-color: ${({ theme }) => theme.colors.tertiary};
 
   & + .Month {
@@ -78,8 +78,8 @@ const Style = styled(motion.li)<StyleProps>`
 
   .Textarea {
     position: relative;
-    z-index: ${({ showTask }) => (showTask ? 2 : -1)};
     height: auto;
+    z-index: ${({ showTask }) => (showTask ? 2 : -1)};
 
     textarea {
       height: auto;

@@ -19,14 +19,17 @@ export const Buttons = styled.div`
 
   #wantBe {
     background-color: ${({ color }) => color};
+    box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.2);
     color: ${({ theme }) => theme.colors.secondary};
   }
 
   #alreadyAm {
+    box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.2);
     background-color: transparent;
   }
 
   #deleteRole {
+    box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.2);
     color: ${({ theme }) => theme.colors.secondary};
     background-color: ${({ theme }) => theme.colors.red};
   }

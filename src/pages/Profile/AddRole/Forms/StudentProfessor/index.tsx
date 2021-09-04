@@ -32,9 +32,7 @@ import { Option } from 'components/Form/Select'
 import Presence from 'components/Presence'
 import Popup, { PopupForwardeds } from 'components/Popup'
 // eslint-disable-next-line prettier/prettier
-import RegisterEmail, {
-  RegisterEmailForwardeds
-} from 'components/RegisterEmail'
+import RegisterEmail, { RegisterEmailForwardeds } from 'components/RegisterEmail'
 
 import { UniversityType } from 'types/Responses/university'
 import { CampusResType } from 'types/Responses/university/campus'
@@ -445,7 +443,6 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
 
         <Presence animate='enter' variants={show} condition={animations.campus}>
           <Select
-            id='cy-campus'
             name='campus_id'
             placeholder='Câmpus'
             value={values.campus}
@@ -456,7 +453,6 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
 
         <Presence animate='enter' variants={show} condition={animations.course}>
           <Select
-            id='cy-course'
             name='course_id'
             value={values.course}
             options={options.courses}
@@ -474,7 +470,6 @@ const StudentProfessor = ({ request, role }: StudentProfessorProps) => {
             condition={animations.semester}
           >
             <Select
-              id='cy-semester'
               name='semester'
               placeholder='Semestre'
               options={options.semesters}

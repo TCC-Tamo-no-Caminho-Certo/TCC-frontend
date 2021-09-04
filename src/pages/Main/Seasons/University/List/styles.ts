@@ -52,7 +52,7 @@ const Style = styled.div`
 
   border-radius: 18px;
 
-  box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.49);
+  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
 
   .AnimatedList {
     width: 100%;
