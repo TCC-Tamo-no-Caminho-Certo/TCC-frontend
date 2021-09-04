@@ -73,6 +73,9 @@ const Style = styled.div`
   z-index: 4;
 
   width: 100%;
+  clip-path: inset(-20px 0px -20px -20px);
+  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
+  border-radius: 16px 0 0 16px;
 
   .Icon {
     position: absolute;

@@ -5,6 +5,7 @@ import Menu from './Menu'
 
 import { getRoleLabel } from 'utils/roles'
 import formatterName from 'utils/formatterName'
+import transition from 'utils/transition'
 
 import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
@@ -17,7 +18,7 @@ import AddRoleIcon from 'assets/RightMenuOpen/AddRoleIcon'
 import Avatar from 'components/User/Avatar'
 import DotsLoader from 'components/DotsLoader'
 
-import { motion, Variants } from 'framer-motion'
+import { Variants } from 'framer-motion'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { ThemeContext } from 'styled-components'
@@ -28,24 +29,16 @@ const RightMenu = () => {
     ({ user }) => user
   )
 
+  const [isOpen, setIsOpen] = useState(false)
   const { innerWidth } = useWindowDimensions()
   const [width, setWidth] = useState(innerWidth)
-  const [isOpen, setIsOpen] = useState(false)
 
   const closedHeight = 112
   const openHeight = 300 + closedHeight
 
-  const motionPath: Variants = {
-    closed: {
-      d: `M0,0 H${width} V${closedHeight} H0 V0 Z`,
-      opacity: innerWidth >= 545 ? 1 : 0.95,
-      transition: { type: 'tween', duration: 0.2 }
-    },
-    open: {
-      opacity: 1,
-      d: `M0,0 H${width} V${openHeight} H0 V0 Z`,
-      transition: { type: 'tween', duration: 0.2 }
-    }
+  const backgroundAnimation: Variants = {
+    open: { height: openHeight, transition },
+    closed: { height: closedHeight, transition }
   }
 
   useEffect(() => {
@@ -58,16 +51,10 @@ const RightMenu = () => {
       {(isOpen === true || innerWidth >= 545) && (
         <div onMouseLeave={() => setIsOpen(false)}>
           <Background
-            isOpen={isOpen}
-            openHeight={`${openHeight}px`}
-            closedHeight={`${closedHeight}px`}
-          >
-            <motion.path
-              initial={false}
-              variants={motionPath}
-              animate={isOpen ? 'open' : 'closed'}
-            />
-          </Background>
+            initial={false}
+            variants={backgroundAnimation}
+            animate={isOpen ? 'open' : 'closed'}
+          />
 
           <Style closedHeight={`${closedHeight}px`}>
             {loading ? (

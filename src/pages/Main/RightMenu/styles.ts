@@ -4,17 +4,12 @@ import Presence from 'components/Presence'
 
 import { RoleType } from 'types/Responses/user/roles'
 
+import { motion } from 'framer-motion'
 import { darken } from 'polished'
 import styled from 'styled-components'
 
 interface UserInfoProps {
   selectedRole?: RoleType
-}
-
-interface BackgroundProps {
-  isOpen: boolean
-  openHeight: string
-  closedHeight: string
 }
 
 interface StyleProps {
@@ -108,18 +103,17 @@ export const UserInfo = styled.div<UserInfoProps>`
   }
 `
 
-export const Background = styled.svg<BackgroundProps>`
+export const Background = styled(motion.div)`
   position: fixed;
   top: 0;
   z-index: 110;
   margin-right: 16px;
 
   width: max(100vw, 300px);
-  height: ${({ isOpen, openHeight, closedHeight }) =>
-    isOpen ? openHeight : closedHeight};
 
-  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
   clip-path: inset(0px 0px -20px 0px);
+  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
+  background-color: ${({ theme }) => darken(0.1, theme.colors.tertiary)};
 
   path {
     fill: ${({ theme }) => darken(0.1, theme.colors.tertiary)};
