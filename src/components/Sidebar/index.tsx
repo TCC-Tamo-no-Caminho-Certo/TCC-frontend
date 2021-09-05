@@ -101,7 +101,7 @@ const Sidebar = ({
   return (
     <Style draggable='false' id='sidebar'>
       <SidebarNav
-        initial={{ width: closedWidth }}
+        initial={{ width: open ? width : closedWidth }}
         animate={
           open
             ? {
