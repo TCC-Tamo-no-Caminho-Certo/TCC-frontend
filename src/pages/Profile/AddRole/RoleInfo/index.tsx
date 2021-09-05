@@ -75,7 +75,7 @@ const RoleInfo = ({
     popupRef.current?.configPopup({
       open: true,
       type: 'warning',
-      message: `Tem certeza que deseja excluir o papel: ${getRoleLabel(role)}`,
+      message: `Tem certeza que deseja excluir o papel: ${getRoleLabel(role)}?`,
       confirmTitle: 'Tenho certeza',
       onOkClick: async () => {
         if (user) {
@@ -180,6 +180,7 @@ const RoleInfo = ({
                     animate='show'
                     id='deleteRole'
                     variants={item}
+                    data-cy='DeleteRole'
                     onClick={onDeleteButtonClick}
                   >
                     Remover papel

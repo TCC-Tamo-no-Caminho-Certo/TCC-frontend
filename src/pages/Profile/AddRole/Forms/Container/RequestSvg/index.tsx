@@ -53,7 +53,7 @@ const RequestSvg = ({ status = 'awaiting' }: RequestSvgProps) => {
   }, [status])
 
   return (
-    <Style className='RequestSvg' status={status}>
+    <Style className='RequestSvg' data-cy='RequestSVG' status={status}>
       <ul>
         <li>Solicitação enviada</li>
         <li>Em análise</li>

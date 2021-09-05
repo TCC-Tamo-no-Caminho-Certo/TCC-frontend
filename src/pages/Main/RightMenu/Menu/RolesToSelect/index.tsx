@@ -25,7 +25,7 @@ const RolesToSelect = ({ state, setState }: RolesToSelectProps) => {
     dispatch(UserActions.update({ selectedRole: role }))
 
   return state ? (
-    <Style onMouseLeave={() => setState(false)}>
+    <Style onMouseLeave={() => setState(false)} data-cy='RolesToSwitch'>
       {innerWidth < 545 && <CloseIcon onClick={() => setState(false)} />}
 
       <ul>

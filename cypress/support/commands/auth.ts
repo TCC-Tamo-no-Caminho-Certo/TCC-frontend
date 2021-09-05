@@ -26,7 +26,7 @@ export const typeSignIn = (fixture: string = 'user') => {
 
 export const signOut = () => {
   cy.url().should('exist', '/session/main')
-  cy.get('[data-cy=RightMenu-gear]').click()
+  cy.get('[data-cy=Gear]').click()
   cy.get('[data-cy=RightMenu-logout]').click()
   cy.url().should('not.contains', '/session')
 }

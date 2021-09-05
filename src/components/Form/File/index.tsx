@@ -119,6 +119,7 @@ const File = ({
             id={name}
             name={name}
             ref={fileRef}
+            data-cy='File'
             accept={accept}
             onChange={onChange}
             data-max-size={maxSize}

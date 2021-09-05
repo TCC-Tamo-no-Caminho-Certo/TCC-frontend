@@ -87,7 +87,11 @@ const Menu = ({ width, height, condition }: MenuProps) => {
       >
         <motion.hr variants={hrAnimation} />
 
-        <motion.li key='toggleRole' variants={liAnimation}>
+        <motion.li
+          key='toggleRole'
+          variants={liAnimation}
+          data-cy='Menu-SwitchRole'
+        >
           <button type='button' onClick={() => setChangeRole(!changeRole)}>
             <ChangeIcon />
             Alternar entre papéis

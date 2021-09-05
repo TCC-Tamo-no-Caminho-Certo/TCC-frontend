@@ -8,7 +8,6 @@
     "baseUrl": "src",
     "module": "esnext",
     "skipLibCheck": true,
-    "types": ["cypress", "node"],
     "esModuleInterop": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
@@ -16,7 +15,8 @@
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["dom", "dom.iterable", "esnext"]
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": ["cypress", "cypress-file-upload", "node"],
   },
   "files": ["src/styles/themes/styled.d.ts"],
   "include": ["src", "src/types", "cypress/**/*.ts", "node_modules/cypress"]

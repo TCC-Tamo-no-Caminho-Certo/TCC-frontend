@@ -52,6 +52,7 @@ const List = ({ routes, isLarge, bottom = false, ...props }: ListProps) => {
         <ListItem
           key={paths[0]}
           isOpen={!!open}
+          data-cy={label}
           itemPaths={paths}
           pathname={pathname}
           onClick={() => {
