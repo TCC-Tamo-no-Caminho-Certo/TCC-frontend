@@ -77,7 +77,7 @@ export const getUserUniversities = createAsyncThunk(
 
 const UserUniversities = createSlice({
   initialState,
-  reducers: {},
+  reducers: { reset: () => initialState },
   name: 'userUniversities',
   extraReducers: ({ addCase }) => {
     addCase(getUserUniversities.pending, state => ({ ...state, loading: true }))
@@ -90,6 +90,6 @@ const UserUniversities = createSlice({
   }
 })
 
-export const UniversitiesActions = UserUniversities.actions
+export const UserUniversitiesActions = UserUniversities.actions
 
 export default UserUniversities

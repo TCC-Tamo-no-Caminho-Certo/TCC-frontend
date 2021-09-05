@@ -37,8 +37,8 @@ export const getEmails = createAsyncThunk(
 
 const Emails = createSlice({
   initialState,
-  reducers: {},
   name: 'emails',
+  reducers: { reset: () => initialState },
   extraReducers: ({ addCase }) => {
     addCase(getEmails.pending, state => ({ ...state, loading: true }))
 

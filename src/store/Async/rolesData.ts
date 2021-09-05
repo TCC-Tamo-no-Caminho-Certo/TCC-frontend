@@ -77,8 +77,8 @@ export const getRolesData = createAsyncThunk(
 
 const RolesData = createSlice({
   initialState,
-  reducers: {},
   name: 'roles',
+  reducers: { reset: () => initialState },
   extraReducers: ({ addCase }) => {
     addCase(getRolesData.pending, state => ({ ...state, loading: true }))
 

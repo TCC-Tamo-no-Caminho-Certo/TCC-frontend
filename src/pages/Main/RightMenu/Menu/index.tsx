@@ -10,6 +10,8 @@ import api from 'services/api'
 import { UserActions } from 'store/Async/user'
 import { HomeActions } from 'store/Sync/home'
 import { getValidation } from 'store/Async/validation'
+import { EmailsActions } from 'store/Async/emails'
+import { UserUniversitiesActions } from 'store/Async/userUniversities'
 
 import LogoutIcon from 'assets/RightMenuOpen/LogoutIcon'
 import AddRoleIcon from 'assets/RightMenuOpen/AddRoleIcon'
@@ -71,6 +73,9 @@ const Menu = ({ width, height, condition }: MenuProps) => {
     localStorage.removeItem('@SLab_ac_token')
 
     dispatch(UserActions.reset())
+    dispatch(EmailsActions.reset())
+    dispatch(UserUniversitiesActions.reset())
+
     dispatch(getValidation())
     dispatch(HomeActions.update({ initial: false, page: 'login' }))
   }
