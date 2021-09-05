@@ -1,11 +1,15 @@
 /// <reference types='cypress'/>
 
 describe('Seasons', () => {
+  before(() => {
+    cy.visit('/home')
+  })
+
   beforeEach(() => {
     cy.typeSignIn('moderator')
 
     cy.intercept('GET', '/api/universities/1/seasons').as('universities')
-    cy.wait('@universities')
+    cy.wait('@universities', { timeout: Infinity })
 
     cy.get('[data-cy="Seasons(Universidade Anhembi Morumbi)"]').click()
   })
@@ -42,11 +46,10 @@ describe('Seasons', () => {
         cy.get('@CreateSeasonForm').find('#confirm').type(confirm)
         cy.get('@CreateSeasonForm').find('#in_progress').type(in_progress)
 
-        cy.get('@CreateSeasonForm').find('input[type="file"]').attachFile(edict)
+        cy.get('@CreateSeasonForm').find('[data-cy=File]').attachFile(edict)
+        cy.get('@CreateSeasonForm').find('#fileName').should('exist')
 
-        cy.get('#fileName').should('exist')
-        cy.get('[data-cy=Submit]').click()
-
+        cy.get('@CreateSeasonForm').find('[data-cy=Submit]').click()
         cy.popup('Temporada adicionada!')
 
         cy.get('[data-cy=University]').find('[data-cy=Season]').contains(title)

@@ -27,12 +27,6 @@ const AnimatedList = ({
 }: AnimatedListProps) => {
   const [overflow, setOverflow] = useState('hidden')
 
-  const presenceAnimation: Variants = {
-    exit: { opacity: 0, height: 0, transition },
-    initial: { opacity: 0, height: 0, transition },
-    enter: { opacity: 1, height: 'auto', transition }
-  }
-
   useEffect(() => {
     if (condition) {
       setOverflow('hidden')
@@ -43,16 +37,13 @@ const AnimatedList = ({
     } else setOverflow('hidden')
   }, [condition])
 
-  useEffect(() => {
-    console.log(overflow)
-  }, [overflow])
-
   return (
     <Style
-      style={{ overflow }}
       condition={condition}
       className='AnimatedList'
-      variants={presenceAnimation}
+      initial={{ overflow: 'hidden', opacity: 1, height: 0 }}
+      animate={{ overflow, opacity: 1, height: 'auto', transition }}
+      exit={{ overflow: 'hidden', opacity: 1, height: 0, transition }}
     >
       <motion.ul
         exit='exit'

@@ -74,7 +74,7 @@ const Menu = ({ width, height, condition }: MenuProps) => {
 
     dispatch(UserActions.reset())
     dispatch(EmailsActions.reset())
-    dispatch(UserUniversitiesActions.reset())
+    // dispatch(UserUniversitiesActions.reset())
 
     dispatch(getValidation())
     dispatch(HomeActions.update({ initial: false, page: 'login' }))

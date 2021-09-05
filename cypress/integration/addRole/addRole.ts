@@ -31,6 +31,10 @@ const accessRole = (role: RoleType, remove: boolean = false) => {
 }
 
 describe('request student role using voucher', () => {
+  before(() => {
+    cy.visit('/home')
+  })
+
   afterEach(() => {
     cy.signOut()
   })
