@@ -18,7 +18,7 @@ describe('Seasons', () => {
     cy.signOut()
   })
 
-  it('Create season', { scrollBehavior: 'center' }, () => {
+  it('Create season', () => {
     cy.get('[data-cy=CreateSeason] [data-cy=List-Header]').click()
     cy.get('[data-cy=CreateSeason] [data-cy=List] [data-cy=AnimatedList]').as(
       'CreateSeasonForm'

@@ -7,6 +7,7 @@
     "eject": "react-scripts eject",
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "cyrun": "cypress run --browser chrome",
     "cyopen": "node_modules/.bin/cypress open",
     "deploy": "npm run build && dotnet ./lbe/LuaBuildEvents.dll ./lbe/script/deploy.lua"
   },

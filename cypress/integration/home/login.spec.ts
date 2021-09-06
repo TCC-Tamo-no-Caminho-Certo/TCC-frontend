@@ -1,15 +1,15 @@
 /// <reference types="cypress" />
 
-describe('Fazer sign-in e sign-out', () => {
+describe('Sign-in and sign-out', () => {
   before(() => {
     cy.visit('/home')
   })
 
-  it('sign-in', () => {
+  it('Sign-in', () => {
     cy.typeSignIn()
   })
 
-  it('sign-out', () => {
+  it('Sign-out', () => {
     cy.signOut()
   })
 })
