@@ -119,8 +119,14 @@ const RoleInfo = ({
 
   return (
     <>
-      <Style className='RoleInfo' id={id} color={color} title={title}>
-        <Title type='button' data-cy={id} onClick={onTitleClick}>
+      <Style
+        id={id}
+        color={color}
+        title={title}
+        className='RoleInfo'
+        data-cy={`RoleInfo-${role}`}
+      >
+        <Title data-cy='Title' type='button' onClick={onTitleClick}>
           <ArrowIcon animate={{ rotate: deg, transition }} />
 
           {title}

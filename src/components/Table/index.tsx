@@ -200,6 +200,7 @@ const Table = forwardRef<TableForwardeds, TableProps>(
             <tbody>
               {tableSort.items?.map(({ rowLabel, rowValue }, trIndex) => (
                 <tr
+                  data-cy='TableTr'
                   key={trIndex}
                   onClick={() => onTrClick({ rowLabel, rowValue })}
                 >
@@ -210,6 +211,7 @@ const Table = forwardRef<TableForwardeds, TableProps>(
                           key={tdIndex}
                           className={name}
                           id={rowLabel[name].name}
+                          data-cy={rowLabel[name].name}
                         >
                           {tdWrapper({
                             label: rowLabel[name].label,
@@ -221,6 +223,7 @@ const Table = forwardRef<TableForwardeds, TableProps>(
                           key={tdIndex}
                           className={name}
                           id={rowLabel[name].name}
+                          data-cy={rowLabel[name].name}
                         >
                           {rowLabel[name].label}
                         </td>

@@ -80,6 +80,7 @@ const Checkbox = forwardRef<CheckboxForwardeds, CheckboxProps>(
         <button
           id='checkbox'
           type='button'
+          data-cy={`Checkbox-${name}`}
           onClick={() => {
             if (!disabled) {
               setChecked(!checked)

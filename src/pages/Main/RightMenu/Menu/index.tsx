@@ -11,7 +11,6 @@ import { UserActions } from 'store/Async/user'
 import { HomeActions } from 'store/Sync/home'
 import { getValidation } from 'store/Async/validation'
 import { EmailsActions } from 'store/Async/emails'
-import { UserUniversitiesActions } from 'store/Async/userUniversities'
 
 import LogoutIcon from 'assets/RightMenuOpen/LogoutIcon'
 import AddRoleIcon from 'assets/RightMenuOpen/AddRoleIcon'

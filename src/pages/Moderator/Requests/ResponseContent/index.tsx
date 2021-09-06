@@ -180,7 +180,7 @@ const ResponseContent = ({
       <Style>
         <Header>
           {!himselfModeratorRequest && (
-            <button type='button' onClick={onTrashClick}>
+            <button type='button' onClick={onTrashClick} data-cy='Trash'>
               <TrashIcon />
               Excluir
             </button>
