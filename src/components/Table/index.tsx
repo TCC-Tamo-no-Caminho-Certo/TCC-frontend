@@ -144,6 +144,7 @@ const Table = forwardRef<TableForwardeds, TableProps>(
             </Submit>
 
             <button
+              className='ClearButton'
               type='button'
               onClick={() => {
                 setClearFilters(true)

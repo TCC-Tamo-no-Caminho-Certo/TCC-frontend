@@ -64,8 +64,8 @@ const Style = styled.div<StyleProps>`
     border-radius: 10px;
 
     border: none;
-    background-color: transparent;
     color: ${({ color }) => color};
+    background-color: transparent !important;
     -webkit-text-fill-color: ${({ color }) => color};
 
     &::placeholder {

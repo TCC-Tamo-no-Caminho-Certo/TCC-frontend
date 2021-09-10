@@ -10,15 +10,9 @@ const Style = styled.div<StyleProps>`
   margin: 0;
   padding: 0px;
 
-  .Select__menu {
-    z-index: 1000;
-  }
-
   .Select__single-value {
     display: flex;
     align-items: center;
-
-    height: 100%;
   }
 
   #noOptions {

@@ -10,7 +10,6 @@ import Style from './styles'
 import { FormContext, FormState } from '../'
 
 import ErrorTooltip from 'components/Tooltips/ErrorTooltip'
-import DotsLoader from 'components/DotsLoader'
 
 import { lighten } from 'polished'
 import RealSelect, { Theme } from 'react-select'
@@ -31,14 +30,20 @@ const Select = forwardRef(
     const [error, setError] = useState<string>()
 
     const overridingStyles = {
-      menu: (before: any) => ({ ...before, zIndex: 3 }),
+      menu: (before: any) => ({ ...before }),
       valueContainer: (before: any) => ({ ...before, paddingLeft: 0 }),
       control: (before: any) => ({
         ...before,
         paddingLeft: error ? 56 : 8,
+        height: 'clamp(40px, 3vh + 2vw, 44px)%',
+
         backgroundColor: 'transparent'
       }),
-      singleValue: (before: any) => ({ ...before, color: colors.primary }),
+      singleValue: (before: any) => ({
+        ...before,
+        color: colors.primary,
+        height: '100%'
+      }),
       multiValue: (before: any) => ({
         ...before,
         backgroundColor: colors.primary
@@ -100,14 +105,10 @@ const Select = forwardRef(
           isMulti={isMulti}
           classNamePrefix='Select'
           onBlur={() => setError('')}
+          menuPortalTarget={document.body}
           theme={theming || overridingTheme}
           styles={styling || overridingStyles}
-          noOptionsMessage={() => (
-            <div id='noOptions'>
-              <DotsLoader color={colors.primary} />
-              Carregando opções...
-            </div>
-          )}
+          noOptionsMessage={() => <div id='noOptions'>Nada encontrado</div>}
           {...props}
         />
       </Style>

@@ -113,6 +113,7 @@ const Style = styled.aside`
   width: 100%;
   min-height: 100vh;
 
+  box-shadow: ${({ theme }) => theme.shadow.invertedNormal};
   background-color: ${({ theme }) => theme.colors.secondary};
 
   .ThemeSwitch {

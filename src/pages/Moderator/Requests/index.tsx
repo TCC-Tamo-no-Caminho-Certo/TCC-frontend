@@ -71,7 +71,9 @@ const Requests = () => {
   const tableRef = useRef<TableForwardeds>(null)
 
   const selectStyle = {
-    container: (before: any) => ({ ...before }),
+    container: (before: any) => ({
+      ...before
+    }),
     singleValue: (before: any) => ({ ...before, color: secondary }),
     multiValueLabel: (before: any) => ({ ...before, color: secondary }),
     multiValueRemove: (before: any) => ({ ...before, color: secondary }),
@@ -83,7 +85,6 @@ const Requests = () => {
     }),
     menu: (before: any) => ({
       ...before,
-      zIndex: 3,
       color: secondary,
       backgroundColor: primary,
       border: `solid 1px ${secondary}`
@@ -93,7 +94,8 @@ const Requests = () => {
       paddingLeft: 8,
       backgroundColor: 'transparent',
       border: `solid 1px ${secondary}`,
-      ':hover': { border: `solid 1px ${secondary}` }
+      ':hover': { border: `solid 1px ${secondary}` },
+      height: 'clamp(38px, 3vh + 2vw, 42px)'
     })
   }
 
