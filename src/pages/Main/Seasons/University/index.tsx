@@ -62,7 +62,7 @@ const University = ({
   const seasonsComponents = () => {
     const components = []
 
-    if (seasons)
+    if (seasons && seasons.length !== 0)
       components.push(
         ...seasons.map(season => (
           <Season
@@ -75,6 +75,12 @@ const University = ({
             setSelecteds={setSelectedSeasons}
           />
         ))
+      )
+    else
+      components.push(
+        <div id='noSeasons' key='noSeasons'>
+          Esta universidade não possui temporadas
+        </div>
       )
 
     if (isAdmin)
