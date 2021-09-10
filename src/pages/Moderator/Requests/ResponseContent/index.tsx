@@ -284,6 +284,10 @@ const ResponseContent = ({
                   maxLength={500}
                   name='feedback'
                   placeholder='Deixe uma resposta...'
+                  textColors={{
+                    focused: theme.colors.secondary,
+                    unfocused: theme.colors.secondary
+                  }}
                 />
 
                 <Submit>Enviar resposta</Submit>

@@ -139,10 +139,12 @@ const Requests = () => {
     const tableData: BodyRowType[] = []
     const per_page = 50
 
+    console.log(filters)
+
     const { requests }: RequestsResType = await api.get(
       'api/users/roles/requests',
       {
-        params: { page, per_page, filters }
+        params: { page, per_page, ...filters }
       }
     )
 

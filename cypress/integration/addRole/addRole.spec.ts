@@ -148,11 +148,11 @@ describe('Request Professor role using voucher', () => {
     cy.get('[data-cy="Voltar ao mapa"]').click()
   })
 
-  it.skip('Remove request', () => {
+  it('Remove request', () => {
     removeRequest('professor')
   })
 
-  it.skip('Remove role', () => {
+  it('Remove role', () => {
     cy.typeSignIn()
     accessRole('professor', true)
   })

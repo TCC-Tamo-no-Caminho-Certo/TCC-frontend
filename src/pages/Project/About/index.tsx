@@ -29,7 +29,7 @@ const About = forwardRef<any, AboutProps>(({ project, university }, ref) => {
     <Style ref={ref as any} status={project?.status}>
       <header>
         <div id='nameStatus'>
-          <h1>{project?.title}</h1>
+          <h1>Título de um projeto</h1>
 
           <div id='status'>
             <div id='circle' />
@@ -38,10 +38,19 @@ const About = forwardRef<any, AboutProps>(({ project, university }, ref) => {
           </div>
         </div>
 
-        <h2>{university?.name}</h2>
+        <h2>Universidade Anhembi Morumbi (UAM)</h2>
       </header>
 
-      <p>{project?.resume}</p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
+        ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis
+        dis parturient montes, nascetur ridiculus mus. Donec quam felis,
+        ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa
+        quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget,
+        arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+        Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras
+        dapibu
+      </p>
     </Style>
   )
 })
