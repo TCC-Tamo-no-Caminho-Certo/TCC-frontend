@@ -49,7 +49,6 @@ export const Content = styled.div`
 
     .Submit {
       margin-top: 16px;
-      height: max(5vh, 35px);
     }
   }
 
@@ -72,7 +71,7 @@ const Style = styled.aside`
   padding: 48px 0;
   min-height: 100vh;
 
-  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: ${({ theme }) => theme.shadow.normal};
   background-color: ${({ theme }) => theme.colors.secondary};
 
   nav {

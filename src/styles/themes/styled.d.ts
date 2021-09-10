@@ -1,4 +1,4 @@
-import Themes from './index'
+import { Themes } from './index'
 
 import 'styled-components'
 

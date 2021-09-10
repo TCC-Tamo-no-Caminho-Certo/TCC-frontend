@@ -1,5 +1,5 @@
 import React, { forwardRef, useEffect, useRef } from 'react'
-import Style, { CreateProject } from './styles'
+import Style, { CreateProject, NewProject } from './styles'
 
 import createProjectSchema from 'utils/validations/createProjectSchema'
 
@@ -79,9 +79,9 @@ const Projects = forwardRef((_props, ref) => {
         </header>
 
         {user?.selectedRole === 'professor' && (
-          <button id='newProject' onClick={() => modalRef?.current?.toggle()}>
+          <NewProject onClick={() => modalRef?.current?.toggle()}>
             Criar novo projeto
-          </button>
+          </NewProject>
         )}
       </Style>
 

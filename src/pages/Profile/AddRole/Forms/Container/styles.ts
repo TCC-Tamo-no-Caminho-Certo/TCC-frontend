@@ -70,7 +70,7 @@ export const Content = styled(Card)<ContentProps>`
     margin-bottom: 16px;
     font-size: clamp(1.6rem, 0.6rem + 2.6vw, 2.2rem);
 
-    color: ${({ theme, role }: any) => theme.roles[role]};
+    color: ${({ theme, role }: any) => theme.colors.roles[role]};
   }
 
   @media screen and (min-width: 545px) {

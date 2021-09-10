@@ -37,7 +37,7 @@ const Style = styled.div<StyleProps>`
       font-size: clamp(1.1rem, 0.6rem + 2.6vw, 1.8rem);
 
       color: ${({ theme }) => theme.colors.secondary};
-      box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
+      box-shadow: ${({ theme }) => theme.shadow.normal};
       background-color: ${({ theme }) => theme.colors.primary};
 
       &:hover {

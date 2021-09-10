@@ -21,7 +21,7 @@ export const Header = styled.div<HeaderProps>`
 
   color: ${({ theme }) => theme.colors.secondary};
   background-color: ${({ theme, role }: any) =>
-    role ? theme.roles[role] : theme.colors.primary}; ;
+    role ? theme.colors.roles[role] : theme.colors.primary}; ;
 `
 
 const Style = styled.div`
@@ -36,7 +36,7 @@ const Style = styled.div`
   border-radius: 16px;
   padding: 64px 16px 16px 16px;
 
-  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: ${({ theme }) => theme.shadow.normal};
   background-color: ${({ theme }) => theme.colors.secondary};
 
   .Avatar {

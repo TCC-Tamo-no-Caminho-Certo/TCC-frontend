@@ -148,12 +148,39 @@ describe('Request Professor role using voucher', () => {
     cy.get('[data-cy="Voltar ao mapa"]').click()
   })
 
-  it('Remove request', () => {
+  it.skip('Remove request', () => {
     removeRequest('professor')
+  })
+
+  it.skip('Remove role', () => {
+    cy.typeSignIn()
+    accessRole('professor', true)
+  })
+})
+
+describe('#Add Moderator role', () => {
+  before(() => {
+    cy.visit('/home')
+  })
+
+  afterEach(() => {
+    cy.signOut()
+  })
+
+  it('Do request', () => {
+    cy.typeSignIn()
+    accessRole('moderator')
+
+    cy.fixture('roles/moderator').then(fixture => {
+      cy.setSelect('#university_id', fixture.university)
+    })
+
+    cy.get('[data-cy=Submit]').click()
+    cy.popup('Papel adicionado')
   })
 
   it('Remove role', () => {
     cy.typeSignIn()
-    accessRole('professor', true)
+    accessRole('moderator', true)
   })
 })

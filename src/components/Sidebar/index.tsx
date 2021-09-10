@@ -121,7 +121,7 @@ const Sidebar = ({
             state={!!open}
             ref={burgerRef}
             toggle={onToggle}
-            color={theme.sidebar.letters}
+            color={theme.colors.sidebar.letters}
           />
 
           <Presence

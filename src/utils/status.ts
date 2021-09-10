@@ -1,4 +1,4 @@
-import Themes from 'styles/themes'
+import { Themes } from 'styles/themes'
 
 export type StatusTypes = 'accepted' | 'rejected' | 'awaiting'
 

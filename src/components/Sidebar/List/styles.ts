@@ -19,7 +19,7 @@ export const ListItem = styled.li<ListItemProps>`
   ${({ pathname, itemPaths, theme }) =>
     itemPaths?.find(itemPath => itemPath === pathname) &&
     css`
-      background-color: ${theme.sidebar.selected};
+      background-color: ${theme.colors.sidebar.selected};
     `}
 
   #icon {
@@ -33,8 +33,8 @@ export const ListItem = styled.li<ListItemProps>`
       width: 24px;
       height: 24px;
 
-      fill: ${({ theme }) => theme.sidebar.letters};
-      stroke: ${({ theme }) => theme.sidebar.letters};
+      fill: ${({ theme }) => theme.colors.sidebar.letters};
+      stroke: ${({ theme }) => theme.colors.sidebar.letters};
     }
   }
 
@@ -47,7 +47,7 @@ export const ListItem = styled.li<ListItemProps>`
     user-select: none;
     white-space: nowrap;
 
-    color: ${({ theme }) => theme.sidebar.letters};
+    color: ${({ theme }) => theme.colors.sidebar.letters};
   }
 
   @media screen and (min-width: 545px) {

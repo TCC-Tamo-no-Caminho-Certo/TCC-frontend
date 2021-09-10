@@ -17,14 +17,14 @@ export const RoleLi = styled.li<RoleLiProps>`
     background-color: ${({ theme }) => theme.colors.primary};
 
     &:hover {
-      background-color: ${({ theme, role }: any) => theme.roles[role]};
+      background-color: ${({ theme, role }: any) => theme.colors.roles[role]};
     }
   }
 
   &:first-child {
     button {
       &:hover {
-        background-color: ${({ theme, role }: any) => theme.roles[role]};
+        background-color: ${({ theme, role }: any) => theme.colors.roles[role]};
       }
     }
   }
@@ -32,7 +32,7 @@ export const RoleLi = styled.li<RoleLiProps>`
   &:last-child {
     button {
       &:hover {
-        background-color: ${({ theme, role }: any) => theme.roles[role]};
+        background-color: ${({ theme, role }: any) => theme.colors.roles[role]};
       }
     }
   }
@@ -40,7 +40,7 @@ export const RoleLi = styled.li<RoleLiProps>`
   &:only-child {
     button {
       &:hover {
-        background-color: ${({ theme, role }: any) => theme.roles[role]};
+        background-color: ${({ theme, role }: any) => theme.colors.roles[role]};
       }
     }
   }
@@ -74,7 +74,7 @@ const Style = styled.div`
 
   width: 100%;
   clip-path: inset(-20px 0px -20px -20px);
-  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: ${({ theme }) => theme.shadow.normal};
   border-radius: 16px 0 0 16px;
 
   .Icon {

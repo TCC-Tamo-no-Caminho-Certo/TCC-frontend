@@ -38,7 +38,7 @@ export const Body = styled(Presence)`
 const Style = styled(motion.li)<StyleProps>`
   border-radius: 16px;
 
-  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: ${({ theme }) => theme.shadow.normal};
   background-color: ${({ theme }) => darken(0.1, theme.colors.tertiary)};
 `
 

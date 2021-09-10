@@ -10,7 +10,7 @@ const Style = styled.section`
   border-radius: 10px;
   width: min(90%, 500px);
 
-  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: ${({ theme }) => theme.shadow.normal};
   background: ${({ theme }) => theme.colors.secondary};
 
   p {

@@ -23,7 +23,7 @@ export const Header = styled.div<HeaderProps>`
   height: 72px;
 
   border-bottom: ${({ theme, isOpen }) =>
-    isOpen ? `solid 2px ${theme.sidebar.letters}` : 'none'};
+    isOpen ? `solid 2px ${theme.colors.sidebar.letters}` : 'none'};
 
   .Hamburger {
     position: relative;
@@ -42,11 +42,12 @@ export const Header = styled.div<HeaderProps>`
     white-space: nowrap;
     font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.9rem);
 
-    color: ${({ theme }) => theme.sidebar.letters};
+    color: ${({ theme }) => theme.colors.sidebar.letters};
   }
 
   @media screen and (min-width: 545px) {
-    border-bottom: ${({ theme }) => `solid 2px ${theme.sidebar.letters}`};
+    border-bottom: ${({ theme }) =>
+      `solid 2px ${theme.colors.sidebar.letters}`};
   }
 `
 
@@ -57,7 +58,7 @@ export const SidebarNav = styled(motion.nav)`
   z-index: 100;
 
   box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.2);
-  background-color: ${({ theme }) => theme.sidebar.background};
+  background-color: ${({ theme }) => theme.colors.sidebar.background};
 
   @media screen and (min-width: 545px) {
     height: 100vh;

@@ -28,7 +28,7 @@ const Style = styled.div<StyleProps>`
         --cl-color-disabledd: ${disabled} !important;
         --cl-color-primary-light: ${body} !important;
 
-        box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
+        box-shadow: ${({ theme }) => theme.shadow.normal};
       }
 
       .DatePicker__calendarContainer {

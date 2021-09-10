@@ -35,9 +35,9 @@ export interface GlobalContextProps {
   }
 }
 
-export const GlobalContext = createContext<GlobalContextProps>({})
-
 const allThemes = { dark, light }
+
+export const GlobalContext = createContext<GlobalContextProps>({})
 
 const App = () => {
   const theme = useContext(ThemeContext)
@@ -57,7 +57,6 @@ const App = () => {
     <GlobalContext.Provider value={{ overflow: { overflow, setOverflow } }}>
       <ThemeProvider theme={allThemes[selectedTheme]}>
         <GlobalStyle theme={theme} overflow={overflow} />
-
         <BrowserRouter>
           <Routes />
         </BrowserRouter>

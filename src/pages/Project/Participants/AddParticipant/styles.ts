@@ -57,7 +57,7 @@ const Style = styled(motion.article)`
   border-radius: 24px;
 
   color: ${({ theme }) => theme.colors.secondary};
-  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: ${({ theme }) => theme.shadow.normal};
   background-color: ${({ theme }) => darken(0.1, theme.colors.tertiary)};
 `
 

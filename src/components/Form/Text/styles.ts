@@ -39,9 +39,8 @@ const Style = styled.div<StyleProps>`
   align-items: center;
 
   border-radius: 10px;
-  height: clamp(35px, 3vh + 2vw, 44px);
+  height: clamp(40px, 3vh + 2vw, 44px);
 
-  background-color: transparent;
   border: solid 1px ${({ colors }) => colors.unfocused};
 
   &:focus-within {

@@ -65,7 +65,7 @@ const Style = styled(motion.li)<StyleProps>`
   border-radius: 16px;
   font-size: clamp(1rem, 0.6rem + 2.6vw, 1.6rem);
 
-  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: ${({ theme }) => theme.shadow.normal};
   background-color: ${({ theme }) => theme.colors.tertiary};
 
   & + .Month {

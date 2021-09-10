@@ -111,10 +111,10 @@ const Aside = () => {
 
           <Text
             name='email'
+            icon={MailIcon}
             placeholder='E-mail'
             autoComplete='email'
             data-cy='Login-email'
-            icon={MailIcon}
           />
 
           <Text

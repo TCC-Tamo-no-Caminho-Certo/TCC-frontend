@@ -92,7 +92,7 @@ const AddRole = () => {
           role='student'
           title='Estudante'
           userRoles={labelRoles}
-          color={theme.roles.student}
+          color={theme.colors.roles.student}
           onClick={() => {
             containerRef.current?.scrollIntoView({ behavior: 'smooth' })
             setRoleSelected('student')
@@ -109,7 +109,7 @@ const AddRole = () => {
           role='professor'
           title='Professor'
           userRoles={labelRoles}
-          color={theme.roles.professor}
+          color={theme.colors.roles.professor}
           onClick={() => {
             containerRef.current?.scrollIntoView({ behavior: 'smooth' })
             setRoleSelected('professor')
@@ -129,7 +129,7 @@ const AddRole = () => {
             id='cy-moderator'
             title='Moderador'
             userRoles={labelRoles}
-            color={theme.roles.moderator}
+            color={theme.colors.roles.moderator}
             onClick={() => {
               containerRef.current?.scrollIntoView({ behavior: 'smooth' })
               setRoleSelected('moderator')

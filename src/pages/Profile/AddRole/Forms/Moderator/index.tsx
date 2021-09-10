@@ -133,7 +133,6 @@ const ModeratorForm = ({ request }: ModeratorProps) => {
         }`}
       >
         <Select
-          id='cy-university'
           name='university_id'
           placeholder='Universidade'
           value={values.university}

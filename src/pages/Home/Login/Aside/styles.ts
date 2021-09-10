@@ -54,6 +54,7 @@ export const Content = styled.div`
   justify-content: center;
 
   width: clamp(284px, 70%, 530px);
+  padding: 24 0px;
 
   > * {
     width: 100%;
@@ -87,10 +88,12 @@ export const Content = styled.div`
 
       .Submit {
         width: 100%;
-
-        height: max(5vh, 35px);
       }
     }
+  }
+
+  @media screen and (min-height: 600px) {
+    padding: 0px;
   }
 
   @media screen and (min-width: 1200px) {
@@ -111,7 +114,6 @@ const Style = styled.aside`
   min-height: 100vh;
 
   background-color: ${({ theme }) => theme.colors.secondary};
-  box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.4);
 
   .ThemeSwitch {
     position: absolute;

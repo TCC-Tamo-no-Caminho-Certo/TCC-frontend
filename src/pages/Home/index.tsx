@@ -12,23 +12,21 @@ import { Route, Switch, useLocation } from 'react-router-dom'
 
 const transition = { type: 'tween', duration: 1 }
 
+const loginAnimation: Variants = {
+  enter: { x: '0vw' },
+  exit: { x: '-100vw', transition }
+}
+
+const signupAnimation: Variants = {
+  enter: { x: '0vw' },
+  exit: { x: '100vw', transition }
+}
+
 const Home = () => {
   const { initial } = useSelector<RootState, HomeState>(({ home }) => home)
 
   const dispatch = useDispatch()
   const location = useLocation()
-
-  const loginAnimation: Variants = {
-    exit: { x: '-100vw' },
-    default: { x: '0vw' },
-    initial: { x: initial ? '-100vw' : '0vw' }
-  }
-
-  const signupAnimation: Variants = {
-    exit: { x: '100vw' },
-    default: { x: '0vw' },
-    initial: { x: initial ? '100vw' : '0vw' }
-  }
 
   useEffect(() => {
     location.pathname === '/home/signup'
@@ -43,20 +41,20 @@ const Home = () => {
           <Route path='/home' exact>
             <Login
               exit='exit'
-              animate='default'
-              initial='initial'
+              animate='enter'
               transition={transition}
               variants={loginAnimation}
+              initial={initial ? 'exit' : 'enter'}
             />
           </Route>
 
           <Route path='/home/signup'>
             <Signup
               exit='exit'
-              initial='initial'
-              animate='default'
+              animate='enter'
               transition={transition}
               variants={signupAnimation}
+              initial={initial ? 'exit' : 'enter'}
             />
           </Route>
         </Switch>

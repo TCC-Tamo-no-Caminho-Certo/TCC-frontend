@@ -16,7 +16,7 @@ const Style = styled.div`
     span + span {
       font-size: clamp(1.3rem, 0.6rem + 2.6vw, 1.6rem);
 
-      color: ${({ theme }) => theme.roles.student};
+      color: ${({ theme }) => theme.colors.roles.student};
     }
   }
 
