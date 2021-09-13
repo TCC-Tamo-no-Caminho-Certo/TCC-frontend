@@ -136,6 +136,8 @@ const Season = ({
   const components = () => {
     const components = []
 
+    console.log(season)
+
     if (editing)
       components.push(
         <Text
@@ -207,8 +209,13 @@ const Season = ({
           valueComplement='Dias'
           header={['Período', 'Duração (Dias)']}
         />,
-        <Edict key='edict' download href={season.edict}>
-          <DownloadIcon /> Baixar edital
+        <Edict
+          download
+          key='edict'
+          target='_blank'
+          href={`https://s3.steamslab.com/edict/${season.edict_uuid}`}
+        >
+          <DownloadIcon /> Visualizar edital
         </Edict>
       )
 
