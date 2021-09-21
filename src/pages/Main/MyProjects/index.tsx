@@ -7,7 +7,7 @@ import api from 'services/api'
 
 import { RootState } from 'store'
 import { UserState } from 'store/Async/user'
-import { getUniversities, UniversitiesState } from 'store/Async/universities'
+import { getRolesData, RolesDataState } from 'store/Async/rolesData'
 
 import { File, Select, Submit, Text, Textarea } from 'components/Form'
 import Modal, { ModalForwardeds } from 'components/Modal'
@@ -15,33 +15,18 @@ import Modal, { ModalForwardeds } from 'components/Modal'
 import { ProjectResType } from 'types/Responses/project'
 import { UniversityResType } from 'types/Responses/university'
 import { ProjectsType } from 'types/Responses/user/projects'
-import { ProfessorType } from 'types/Responses/user/rolesData'
 
 import { useDispatch, useSelector } from 'react-redux'
 
 const Projects = forwardRef((_props, ref) => {
-  const { universities } = useSelector<RootState, UniversitiesState>(
-    ({ universities }) => universities
+  const { roles } = useSelector<RootState, RolesDataState>(
+    ({ rolesData }) => rolesData
   )
   const { user } = useSelector<RootState, UserState>(({ user }) => user)
 
   const modalRef = useRef<ModalForwardeds>(null)
+
   const dispatch = useDispatch()
-
-  const getUniversitiesOptions = async () => {
-    if (user?.id) return [{ label: '', value: '' }]
-
-    const { universities: professorUniversities }: ProfessorType =
-      await api.get(`api/users/${user?.id}/roles/professor`)
-
-    if (!professorUniversities) return [{ label: '', value: '' }]
-
-    return universities
-      .filter(university =>
-        professorUniversities.find(({ id }) => id === university.id)
-      )
-      .map(university => ({ label: university.name, value: university.id }))
-  }
 
   const getMyProjects = async () => {
     const myProjects = []
@@ -67,9 +52,21 @@ const Projects = forwardRef((_props, ref) => {
     return myProjects
   }
 
+  const getUniversitiesOptions = () => {
+    const professorUniversities = roles.professor?.universities
+
+    return professorUniversities?.map(({ name, id }) => ({
+      label: name,
+      value: id
+    }))
+  }
+
   useEffect(() => {
-    dispatch(getUniversities({}))
-  }, [dispatch])
+    user?.id &&
+      dispatch(
+        getRolesData({ userId: user?.id, role: 'professor', updated: true })
+      )
+  }, [dispatch, user?.id])
 
   return (
     <>
@@ -89,9 +86,9 @@ const Projects = forwardRef((_props, ref) => {
         {user?.selectedRole === 'professor' ? (
           <CreateProject schema={createProjectSchema}>
             <Select
+              noPortal
               name='university'
               placeholder='Universidade'
-              value={undefined}
               options={getUniversitiesOptions()}
             />
 

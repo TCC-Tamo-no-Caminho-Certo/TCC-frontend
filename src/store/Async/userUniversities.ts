@@ -62,8 +62,6 @@ export const getUserUniversities = createAsyncThunk(
           `api/universities/${id}/seasons`
         )
 
-        console.log('real', seasons)
-
         newUserUniversities.push({
           name,
           seasons,

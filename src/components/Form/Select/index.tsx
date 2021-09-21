@@ -21,7 +21,17 @@ export interface Option {
 }
 
 const Select = forwardRef(
-  ({ isMulti, styling, theming, className = 'Select', ...props }: any, ref) => {
+  (
+    {
+      isMulti,
+      styling,
+      theming,
+      noPortal,
+      className = 'Select',
+      ...props
+    }: any,
+    ref
+  ) => {
     const form = useContext<FormState | null>(FormContext)
     const { colors } = useContext(ThemeContext)
 
@@ -105,9 +115,9 @@ const Select = forwardRef(
           isMulti={isMulti}
           classNamePrefix='Select'
           onBlur={() => setError('')}
-          menuPortalTarget={document.body}
           theme={theming || overridingTheme}
           styles={styling || overridingStyles}
+          menuPortalTarget={noPortal ? undefined : document.body}
           noOptionsMessage={() => <div id='noOptions'>Nada encontrado</div>}
           {...props}
         />

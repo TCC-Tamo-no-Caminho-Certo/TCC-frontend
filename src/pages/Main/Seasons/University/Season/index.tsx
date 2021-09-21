@@ -136,8 +136,6 @@ const Season = ({
   const components = () => {
     const components = []
 
-    console.log(season)
-
     if (editing)
       components.push(
         <Text

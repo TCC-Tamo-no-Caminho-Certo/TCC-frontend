@@ -73,9 +73,10 @@ const Style = styled.div`
   z-index: 4;
 
   width: 100%;
+  border-radius: 16px 0 16px 16px;
   clip-path: inset(-20px 0px -20px -20px);
+
   box-shadow: ${({ theme }) => theme.shadow.normal};
-  border-radius: 16px 0 0 16px;
 
   .Icon {
     position: absolute;
