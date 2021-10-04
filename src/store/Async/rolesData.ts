@@ -37,6 +37,7 @@ export const getRolesData = createAsyncThunk(
   async ({ userId, role, updated }: GetRolesDataParams, { getState }) => {
     const { rolesData, user } = getState() as RootState
     const userRoles = user.user?.roles
+    const isEmpty = Object.keys(rolesData.roles).length === 0
 
     if (role) {
       const haveData = rolesWithData.find(roleWithData => role === roleWithData)
@@ -50,7 +51,7 @@ export const getRolesData = createAsyncThunk(
       }
 
       return rolesData
-    } else if (userRoles && (updated || rolesData.roles === {})) {
+    } else if (userRoles && (updated || isEmpty)) {
       const newRolesData: RolesDataType = {}
 
       for (let i = 0; i < userRoles.length; i++) {

@@ -5,9 +5,7 @@ import { InputData } from '../EditContent/Field'
 import EditContent from '../EditContent'
 
 import { getRoleLabel } from 'utils/roles' // eslint-disable-next-line prettier/prettier
-import profileAndRolesSchema, {
-  EditProfileSchema
-} from 'utils/validations/editProfile'
+import profileAndRolesSchema, { EditProfileSchema } from 'utils/validations/editProfile'
 
 import { RootState } from 'store'
 import { UserActions, UserState } from 'store/Async/user'
@@ -17,12 +15,8 @@ import { getRolesData, RolesDataState } from 'store/Async/rolesData'
 import Slider from 'components/Slider'
 import Avatar from 'components/User/Avatar'
 import Popup, { PopupForwardeds } from 'components/Popup' // eslint-disable-next-line prettier/prettier
-import RegisterEmail, {
-  RegisterEmailForwardeds
-} from 'components/RegisterEmail' // eslint-disable-next-line prettier/prettier
-import ImageChanger, {
-  ImageChangerForwardeds
-} from 'components/User/ImageChanger'
+import RegisterEmail, { RegisterEmailForwardeds } from 'components/RegisterEmail' // eslint-disable-next-line prettier/prettier
+import ImageChanger, { ImageChangerForwardeds } from 'components/User/ImageChanger'
 
 import { RoleType } from 'types/Responses/user/roles'
 import { RolesDataType } from 'types/Responses/user/rolesData'
@@ -41,14 +35,14 @@ export interface ContainerForm {
 }
 
 const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
-  const theme = useContext(ThemeContext)
   const { user, loading: userLoading } = useSelector<RootState, UserState>(
     ({ user }) => user
   )
-  const { emails } = useSelector<RootState, EmailsState>(({ emails }) => emails)
   const { roles } = useSelector<RootState, RolesDataState>(
     ({ rolesData }) => rolesData
   )
+  const { emails } = useSelector<RootState, EmailsState>(({ emails }) => emails)
+  const theme = useContext(ThemeContext)
 
   const registerEmailRef = useRef<RegisterEmailForwardeds>(null)
   const imageRef = useRef<ImageChangerForwardeds>(null)
@@ -165,6 +159,23 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
     user?.id && dispatch(getRolesData({ userId: user.id, role, updated: true }))
   }
 
+  const manipulateData = (data: any) => {
+    delete data.email
+
+    if (data.new_password && !data.confirm_confirmPassword) {
+      delete data.new_password
+
+      popupRef.current?.configPopup({
+        open: true,
+        type: 'error',
+        message: 'Senha não alterada. Confirme sua nova senha!'
+      })
+    }
+
+    delete data.confirm_new_password
+    return data
+  }
+
   return (
     <>
       <Style>
@@ -172,43 +183,25 @@ const ProfileRoles = ({ sliderWidth }: ProfileAndRolesProps) => {
           {rolesToEdit.map(role => {
             if (role === 'personal')
               return (
-                <>
-                  <EditContent
-                    key={role}
-                    path='api/user'
-                    loading={userLoading}
-                    headerText='Dados pessoais'
-                    fields={rolesInputData(role)}
-                    onSuccess={onPersonalEditSuccess}
-                    schema={profileAndRolesSchema[role]}
-                    manipulateData={data => {
-                      delete data.email
-
-                      if (data.new_password && !data.confirm_confirmPassword) {
-                        delete data.new_password
-
-                        popupRef.current?.configPopup({
-                          open: true,
-                          type: 'error',
-                          message:
-                            'Senha não alterada. Confirme sua nova senha!'
-                        })
-                      }
-
-                      delete data.confirm_new_password
-                      return data
-                    }}
-                  >
-                    <Avatar
-                      border
-                      shadow
-                      size={128}
-                      withLoader={false}
-                      loaderColor={theme.colors.primary}
-                      onClick={() => imageRef.current?.toggle()}
-                    />
-                  </EditContent>
-                </>
+                <EditContent
+                  key={role}
+                  path='api/user'
+                  loading={userLoading}
+                  headerText='Dados pessoais'
+                  fields={rolesInputData(role)}
+                  manipulateData={manipulateData}
+                  onSuccess={onPersonalEditSuccess}
+                  schema={profileAndRolesSchema[role]}
+                >
+                  <Avatar
+                    border
+                    shadow
+                    size={128}
+                    withLoader={false}
+                    loaderColor={theme.colors.primary}
+                    onClick={() => imageRef.current?.toggle()}
+                  />
+                </EditContent>
               )
 
             return (

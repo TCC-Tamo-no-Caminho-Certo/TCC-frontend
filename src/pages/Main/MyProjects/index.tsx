@@ -84,10 +84,11 @@ const Projects = forwardRef((_props, ref) => {
 
   useEffect(() => {
     user?.id &&
+      user.selectedRole === 'professor' &&
       dispatch(
         getRolesData({ userId: user?.id, role: 'professor', updated: true })
       )
-  }, [dispatch, user?.id])
+  }, [dispatch, user?.id, user?.selectedRole])
 
   return (
     <>

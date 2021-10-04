@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Style from './styles'
 
-import ProfileRoles from './ProfileAndRoles'
+import ProfileAndRoles from './ProfileAndRoles'
 import Universities from './Universities'
 
 import api from 'services/api'
@@ -37,6 +37,7 @@ const EditProfile = () => {
   }, [innerWidth])
 
   useEffect(() => {
+    console.log(user?.id)
     if (user?.id) {
       dispatch(getRolesData({ userId: user.id }))
       dispatch(getEmails({ userId: user?.id }))
@@ -51,7 +52,7 @@ const EditProfile = () => {
           <h1>Editar perfil</h1>
         </header>
 
-        <ProfileRoles sliderWidth={sliderWidth} />
+        <ProfileAndRoles sliderWidth={sliderWidth} />
 
         <Universities sliderWidth={sliderWidth} />
 
