@@ -25,8 +25,8 @@ export interface TableStateType {
 
 export interface TableProps {
   getData: GetDataType
+  children?: ReactNode
   headerRow: HeaderType[]
-  children: ReactNode
   onRefreshClick?: () => void
   onDataClick?: (_data: BodyRowType) => void
 }

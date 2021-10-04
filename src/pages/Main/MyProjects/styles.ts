@@ -41,15 +41,22 @@ export const NewProject = styled.button`
 const Style = styled.section`
   position: relative;
 
+  .TableFilters {
+    padding: 24px;
+
+    .Text {
+      margin-bottom: 24px;
+    }
+  }
+
   header {
     display: flex;
     align-items: center;
     justify-content: center;
 
+    padding-top: 24px;
     text-align: center;
     width: max(100%, 280px);
-
-    padding-top: 24px;
   }
 `
 export default Style

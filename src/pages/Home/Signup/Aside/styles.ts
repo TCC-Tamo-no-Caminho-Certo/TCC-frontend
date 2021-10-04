@@ -69,7 +69,7 @@ const Style = styled.aside`
 
   width: 100%;
   padding: 48px 0;
-  min-height: 100vh;
+  height: 100vh;
 
   box-shadow: ${({ theme }) => theme.shadow.normal};
   background-color: ${({ theme }) => theme.colors.secondary};

@@ -40,15 +40,16 @@ const initialTableSort: TableStateType = {
 const Table = forwardRef<TableForwardeds, TableProps>(
   ({ getData, headerRow, onRefreshClick, onDataClick, children }, ref) => {
     const theme = useContext(ThemeContext)
-    const tableRef = useRef<HTMLDivElement>(null)
 
-    const auxRef = useCombinedRefs([ref, tableRef])
-
-    const [tableSort, setTableSort] = useState<TableStateType>(initialTableSort)
-    const initialArrows = headerRow.map(() => 'right')
-    const [arrows, setArrows] = useState(initialArrows)
     const [loading, setLoading] = useState(true)
     const [clearFilters, setClearFilters] = useState(false)
+    const [tableSort, setTableSort] = useState<TableStateType>(initialTableSort)
+
+    const tableRef = useRef<HTMLDivElement>(null)
+    const auxRef = useCombinedRefs([ref, tableRef])
+
+    const initialArrows = headerRow.map(() => 'right')
+    const [arrows, setArrows] = useState(initialArrows)
 
     let page = 1
 
@@ -137,24 +138,26 @@ const Table = forwardRef<TableForwardeds, TableProps>(
         >
           {!clearFilters && children}
 
-          <FilterButton className='FilterButton'>
-            <Submit>
-              <LoupeIcon />
-              Buscar
-            </Submit>
+          {children && (
+            <FilterButton className='FilterButton'>
+              <Submit>
+                <LoupeIcon />
+                Buscar
+              </Submit>
 
-            <button
-              className='ClearButton'
-              type='button'
-              onClick={() => {
-                setClearFilters(true)
-                makeRequest({ page: 1 })
-                setTimeout(() => setClearFilters(false), 300)
-              }}
-            >
-              Limpar filtros
-            </button>
-          </FilterButton>
+              <button
+                type='button'
+                className='ClearButton'
+                onClick={() => {
+                  setClearFilters(true)
+                  makeRequest({ page: 1 })
+                  setTimeout(() => setClearFilters(false), 300)
+                }}
+              >
+                Limpar filtros
+              </button>
+            </FilterButton>
+          )}
         </Form>
 
         <Style className='Table' ref={auxRef as any} onScroll={onTableScroll}>
@@ -201,8 +204,8 @@ const Table = forwardRef<TableForwardeds, TableProps>(
             <tbody>
               {tableSort.items?.map(({ rowLabel, rowValue }, trIndex) => (
                 <tr
-                  data-cy='TableTr'
                   key={trIndex}
+                  data-cy='TableTr'
                   onClick={() => onTrClick({ rowLabel, rowValue })}
                 >
                   {headerRow.map(({ name, tdWrapper }, tdIndex) => {

@@ -200,17 +200,18 @@ const Style = styled.div<StyleProps>`
       `}
     `
   }}
+
+  @media screen and (min-width: 545px) and (min-height: 800px) {
+    .CalendarSize {
+      font-size: 10px !important;
+    }
+  }
+
   @media screen and (min-height: 900px) {
     .Calendar__monthSelector.-open,
     .Calendar__yearSelector.-open {
       margin-top: 1%;
       padding-bottom: 10%;
-    }
-  }
-
-  @media screen and (min-width: 545px) {
-    .CalendarSize {
-      font-size: 10px !important;
     }
   }
 `

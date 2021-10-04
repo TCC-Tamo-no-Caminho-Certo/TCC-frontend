@@ -141,9 +141,7 @@ const Requests = () => {
 
     const { requests }: RequestsResType = await api.get(
       'api/users/roles/requests',
-      {
-        params: { page, per_page, ...filters }
-      }
+      { params: { page, per_page, ...filters } }
     )
 
     for (let i = 0; i < requests?.length; i++) {

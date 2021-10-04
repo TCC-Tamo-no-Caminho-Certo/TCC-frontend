@@ -6,6 +6,9 @@ export const FilterButton = styled.div`
   flex-direction: row;
 
   width: 100%;
+  border-radius: 16px;
+
+  box-shadow: ${({ theme }) => theme.shadow.normal};
 
   .Submit {
     display: flex;
@@ -14,11 +17,10 @@ export const FilterButton = styled.div`
 
     width: 100%;
     height: 40px;
-
+    box-shadow: none;
     border-radius: 16px 0 0 16px;
 
     color: ${({ theme }) => theme.colors.secondary};
-    box-shadow: ${({ theme }) => theme.shadow.normal};
     background-color: ${({ theme }) => theme.colors.primary};
 
     .Icon {
@@ -38,14 +40,11 @@ export const FilterButton = styled.div`
       border-radius: 0 16px 16px 0;
       font-size: clamp(1.5rem, 0.6rem + 2.6vw, 1.8rem);
 
-      box-shadow: ${({ theme }) => theme.shadow.normal};
-      color: ${({ theme }) => theme.colors.primary};
+      color: ${({ theme }) => theme.colors.tertiary};
       background-color: ${({ theme }) => theme.colors.secondary};
 
       &:hover {
         transform: scale(1.01);
-
-        filter: brightness(1.1);
       }
     }
   }
@@ -85,6 +84,7 @@ const Style = styled.div`
         th {
           cursor: pointer;
           text-align: left;
+          font-weight: normal;
 
           .ArrowIcon {
             width: 18px;

@@ -53,10 +53,10 @@ const Content = () => {
         <Form
           loading
           captcha
+          push='home'
           addToPath={['code']}
           schema={passwordSchema}
-          path='reset-password/*%'
-          push='home'
+          path='api/reset-password/*%'
           afterResData={afterResetSubmit}
         >
           <p>Digite sua nova senha</p>
